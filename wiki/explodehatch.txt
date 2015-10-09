@@ -1,0 +1,139 @@
+===== explodehatch =====
+
+===== C# =====
+<code c#>
+public static Rhino.Commands.Result ExplodeHatch(Rhino.RhinoDoc doc)
+{
+  const ObjectType filter = Rhino.DocObjects.ObjectType.Hatch;
+  Rhino.DocObjects.ObjRef objref;
+  Rhino.Commands.Result rc = Rhino.Input.RhinoGet.GetOneObject("Select hatch to explode", false, filter, out objref);
+  if (rc != Rhino.Commands.Result.Success || objref == null)
+    return rc;
+
+  Rhino.Geometry.Hatch hatch = objref.Geometry() as Rhino.Geometry.Hatch;
+  if (null == hatch)
+    return Rhino.Commands.Result.Failure;
+
+  Rhino.Geometry.GeometryBase[] hatch_geom = hatch.Explode();
+  if (null != hatch_geom)
+  {
+    for (int i = 0; i < hatch_geom.Length; i++)
+    {
+      Rhino.Geometry.GeometryBase geom = hatch_geom[i];
+      if (null != geom)
+      {
+        switch (geom.ObjectType)
+        {
+          case Rhino.DocObjects.ObjectType.Point:
+            {
+              Rhino.Geometry.Point point = geom as Rhino.Geometry.Point;
+              if (null != point)
+                doc.Objects.AddPoint(point.Location);
+            }
+            break;
+          case Rhino.DocObjects.ObjectType.Curve:
+            {
+              Rhino.Geometry.Curve curve = geom as Rhino.Geometry.Curve;
+              if (null != curve)
+                doc.Objects.AddCurve(curve);
+            }
+            break;
+          case Rhino.DocObjects.ObjectType.Brep:
+            {
+              Rhino.Geometry.Brep brep = geom as Rhino.Geometry.Brep;
+              if (null != brep)
+                doc.Objects.AddBrep(brep);
+            }
+            break;
+        }
+      }
+    }
+  }
+
+  return Rhino.Commands.Result.Success;
+}
+</code>
+===== VB.NET =====
+<code vb>
+Public Shared Function ExplodeHatch(ByVal doc As Rhino.RhinoDoc) As Rhino.Commands.Result
+
+  Const filter As ObjectType = Rhino.DocObjects.ObjectType.Hatch
+  Dim objref As Rhino.DocObjects.ObjRef = Nothing
+  Dim rc As Rhino.Commands.Result = Rhino.Input.RhinoGet.GetOneObject("Select hatch to explode", False, filter, objref)
+  If rc <> Rhino.Commands.Result.Success OrElse objref Is Nothing Then
+    Return rc
+  End If
+
+  Dim hatch As Rhino.Geometry.Hatch = DirectCast(objref.Geometry(), Rhino.Geometry.Hatch)
+  If hatch Is Nothing Then
+    Return Rhino.Commands.Result.Failure
+  End If
+
+  Dim hatch_geom As Rhino.Geometry.GeometryBase() = hatch.Explode()
+  If hatch_geom IsNot Nothing Then
+    For i As Integer = 0 To hatch_geom.Length - 1
+      Dim geom As Rhino.Geometry.GeometryBase = hatch_geom(i)
+      If geom IsNot Nothing Then
+        Select Case geom.ObjectType
+          Case Rhino.DocObjects.ObjectType.Point
+            If True Then
+              Dim point As Rhino.Geometry.Point = TryCast(geom, Rhino.Geometry.Point)
+              If point IsNot Nothing Then
+                doc.Objects.AddPoint(point.Location)
+              End If
+            End If
+            Exit Select
+          Case Rhino.DocObjects.ObjectType.Curve
+            If True Then
+              Dim curve As Rhino.Geometry.Curve = TryCast(geom, Rhino.Geometry.Curve)
+              If curve IsNot Nothing Then
+                doc.Objects.AddCurve(curve)
+              End If
+            End If
+            Exit Select
+          Case Rhino.DocObjects.ObjectType.Brep
+            If True Then
+              Dim brep As Rhino.Geometry.Brep = TryCast(geom, Rhino.Geometry.Brep)
+              If brep IsNot Nothing Then
+                doc.Objects.AddBrep(brep)
+              End If
+            End If
+            Exit Select
+        End Select
+      End If
+    Next
+  End If
+
+  Return Rhino.Commands.Result.Success
+End Function
+
+</code>
+===== Python =====
+<code python>
+import Rhino
+import scriptcontext
+
+def ExplodeHatch():
+    filter = Rhino.DocObjects.ObjectType.Hatch
+    rc, objref = Rhino.Input.RhinoGet.GetOneObject("Select hatch to explode", False, filter)
+    if rc != Rhino.Commands.Result.Success: return
+
+    hatch = objref.Geometry()
+    if not hatch: return
+
+    hatch_geom = hatch.Explode()
+    if hatch_geom:
+      for geom in hatch_geom:
+          if geom.ObjectType == Rhino.DocObjects.ObjectType.Point:
+              scriptcontext.doc.Objects.AddPoint(geom)
+          elif geom.ObjectType == Rhino.DocObjects.ObjectType.Curve:
+              scriptcontext.doc.Objects.AddCurve(geom)
+          elif geom.ObjectType == Rhino.DocObjects.ObjectType.Brep:
+              scriptcontext.doc.Objects.AddBrep(geom)
+      scriptcontext.doc.Views.Redraw()
+
+if __name__=="__main__":
+    ExplodeHatch()
+</code>
+
+{{tag>Developer rhinocommon}}

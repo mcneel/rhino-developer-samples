@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{13118475-399a-414b-8ce1-35e305976a24}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile />
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <InterpreterId>{fcc291aa-427c-498c-a4d7-4502d6449b8c}</InterpreterId>
+    <InterpreterVersion>2.7</InterpreterVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <LaunchProvider>IronPython (.NET) launcher</LaunchProvider>
+    <CommandLineArguments />
+    <InterpreterPath>
+    </InterpreterPath>
+    <DebugStdLib>False</DebugStdLib>
+    <InterpreterArguments />
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Compile Include="ex_determinecurrentlanguage.py" />
+    <Compile Include="ex_displayprecision.py" />
+    <Compile Include="ex_dividebysegments.py" />
+    <Compile Include="ex_dividecurvestraight.py" />
+    <Compile Include="ex_activeviewport.py" />
+    <Compile Include="ex_addbackgroundbitmap.py" />
+    <Compile Include="ex_addbrepbox.py" />
+    <Compile Include="ex_addchildlayer.py" />
+    <Compile Include="ex_addcircle.py" />
+    <Compile Include="ex_addclippingplane.py" />
+    <Compile Include="ex_addcone.py" />
+    <Compile Include="ex_addcylinder.py" />
+    <Compile Include="ex_addlayer.py" />
+    <Compile Include="ex_addlayout.py" />
+    <Compile Include="ex_addline.py" />
+    <Compile Include="ex_addlineardimension.py" />
+    <Compile Include="ex_addlineardimension2.py" />
+    <Compile Include="ex_addmaterial.py" />
+    <Compile Include="ex_addmesh.py" />
+    <Compile Include="ex_addnamedview.py" />
+    <Compile Include="ex_addnurbscircle.py" />
+    <Compile Include="ex_addnurbscurve.py" />
+    <Compile Include="ex_addobjectstogroup.py" />
+    <Compile Include="ex_addradialdimension.py" />
+    <Compile Include="ex_addsphere.py" />
+    <Compile Include="ex_addtext.py" />
+    <Compile Include="ex_addtexture.py" />
+    <Compile Include="ex_addtorus.py" />
+    <Compile Include="ex_addtruncatedcone.py" />
+    <Compile Include="ex_advanceddisplay.py" />
+    <Compile Include="ex_arclengthpoint.py" />
+    <Compile Include="ex_arraybydistance.py" />
+    <Compile Include="ex_blockinsertionpoint.py" />
+    <Compile Include="ex_booleandifference.py" />
+    <Compile Include="ex_circlecenter.py" />
+    <Compile Include="ex_closestpoint.py" />
+    <Compile Include="ex_commandlineoptions.py" />
+    <Compile Include="ex_conduitarrowheads.py" />
+    <Compile Include="ex_constrainedcopy.py" />
+    <Compile Include="ex_copygroups.py" />
+    <Compile Include="ex_createblock.py" />
+    <Compile Include="ex_createmeshfrombrep.py" />
+    <Compile Include="ex_createsurfaceexample.py" />
+    <Compile Include="ex_crvdeviation.py" />
+    <Compile Include="ex_curveboundingbox.py" />
+    <Compile Include="ex_curvebrepbox.py" />
+    <Compile Include="ex_curveclosestpoint.py" />
+    <Compile Include="ex_curvereverse.py" />
+    <Compile Include="ex_curvesurfaceintersect.py" />
+    <Compile Include="ex_customgeometryfilter.py" />
+    <Compile Include="ex_customundo.py" />
+    <Compile Include="ex_deleteblock.py" />
+    <Compile Include="ex_dimstyle.py" />
+    <Compile Include="ex_dividebylength.py" />
+    <Compile Include="ex_dotnetmovepointobjects.py" />
+    <Compile Include="ex_dotnetmovepointobjectsnonuniform.py" />
+    <Compile Include="ex_drawoverlay.py" />
+    <Compile Include="ex_drawstring.py" />
+    <Compile Include="ex_dupborder.py" />
+    <Compile Include="ex_duplicateobject.py" />
+    <Compile Include="ex_dupmeshboundary.py" />
+    <Compile Include="ex_edgesrf.py" />
+    <Compile Include="ex_edittext.py" />
+    <Compile Include="ex_elevation.py" />
+    <Compile Include="ex_evnormal.py" />
+    <Compile Include="ex_explodehatch.py" />
+    <Compile Include="ex_extendcurve.py" />
+    <Compile Include="ex_extendsurface.py" />
+    <Compile Include="ex_extractisocurve.py" />
+    <Compile Include="ex_extractthumbnail.py" />
+    <Compile Include="ex_findobjectsbyname.py" />
+    <Compile Include="ex_getangle.py" />
+    <Compile Include="ex_getedgefaces.py" />
+    <Compile Include="ex_getmultiplewithoptions.py" />
+    <Compile Include="ex_getpointdynamicdraw.py" />
+    <Compile Include="ex_gettext.py" />
+    <Compile Include="ex_getuuid.py" />
+    <Compile Include="ex_hatchcurve.py" />
+    <Compile Include="ex_insertknot.py" />
+    <Compile Include="ex_instancedefinitionobjects.py" />
+    <Compile Include="ex_intersectcurves.py" />
+    <Compile Include="ex_intersectlinecircle.py" />
+    <Compile Include="ex_intersectlines.py" />
+    <Compile Include="ex_isbrepbox.py" />
+    <Compile Include="ex_isocurvedensity.py" />
+    <Compile Include="ex_issurfaceinplane.py" />
+    <Compile Include="ex_leader.py" />
+    <Compile Include="ex_locklayer.py" />
+    <Compile Include="ex_loft.py" />
+    <Compile Include="ex_makerhinocontours.py" />
+    <Compile Include="ex_meshdrawing.py" />
+    <Compile Include="ex_meshvolume.py" />
+    <Compile Include="ex_modifylightcolor.py" />
+    <Compile Include="ex_modifyobjectcolor.py" />
+    <Compile Include="ex_movecplane.py" />
+    <Compile Include="ex_moveobjectstocurrentlayer.py" />
+    <Compile Include="ex_objectdecoration.py" />
+    <Compile Include="ex_objectdisplaymode.py" />
+    <Compile Include="ex_objectiterator.py" />
+    <Compile Include="ex_objectlayer.py" />
+    <Compile Include="ex_objectname.py" />
+    <Compile Include="ex_offsetcurve.py" />
+    <Compile Include="ex_orientonsrf.py" />
+    <Compile Include="ex_ortho.py" />
+    <Compile Include="ex_pickobjects.py" />
+    <Compile Include="ex_pickpoint.py" />
+    <Compile Include="ex_prepostpick.py" />
+    <Compile Include="ex_principalcurvature.py" />
+    <Compile Include="ex_printinstancedefinitions.py" />
+    <Compile Include="ex_printinstancedefinitiontree.py" />
+    <Compile Include="ex_projectpointstobreps.py" />
+    <Compile Include="ex_renameblock.py" />
+    <Compile Include="ex_renamelayer.py" />
+    <Compile Include="ex_reparameterizecrv.py" />
+    <Compile Include="ex_replacecolordialog.py" />
+    <Compile Include="ex_replacehatchpattern.py" />
+    <Compile Include="ex_screencaptureview.py" />
+    <Compile Include="ex_selectgroupobject.py" />
+    <Compile Include="ex_sellayer.py" />
+    <Compile Include="ex_setactiveview.py" />
+    <Compile Include="ex_setviewname.py" />
+    <Compile Include="ex_sortpoints.py" />
+    <Compile Include="ex_splitbrepwithplane.py" />
+    <Compile Include="ex_srfpt.py" />
+    <Compile Include="ex_sweep1.py" />
+    <Compile Include="ex_textjustify.py" />
+    <Compile Include="ex_tightboundingbox.py" />
+    <Compile Include="ex_transformbrep.py" />
+    <Compile Include="ex_unrollsurface.py" />
+    <Compile Include="ex_unrollsurface2.py" />
+    <Compile Include="ex_viewportresolution.py" />
+    <Compile Include="ex_zoomtoobject.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="RhinoCommon, Version=5.1.30000.10, Culture=neutral, PublicKeyToken=552281e97c755530">
+      <Name>RhinoCommon</Name>
+      <AssemblyName>RhinoCommon.dll</AssemblyName>
+      <HintPath>\Program Files\Rhinoceros 5.0 (64-bit)\System\RhinoCommon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{fcc291aa-427c-498c-a4d7-4502d6449b8c}\2.7" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>

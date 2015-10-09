@@ -1,0 +1,125 @@
+===== ortho =====
+
+===== C# =====
+<code c#>
+public class OrthoCommand : Command
+{
+  public override string EnglishName
+  {
+    get { return "csOrtho"; }
+  }
+
+  protected override Result RunCommand(RhinoDoc doc, RunMode mode)
+  {
+    var gp = new GetPoint();
+    gp.SetCommandPrompt("Start of line");
+    gp.Get();
+    if (gp.CommandResult() != Result.Success)
+      return gp.CommandResult();
+    var start_point = gp.Point();
+
+    var original_ortho = ModelAidSettings.Ortho;
+    if (!original_ortho)
+      ModelAidSettings.Ortho = true;
+
+    gp.SetCommandPrompt("End of line");
+    gp.SetBasePoint(start_point, false);
+    gp.DrawLineFromPoint(start_point, true);
+    gp.Get();
+    if (gp.CommandResult() != Result.Success)
+      return gp.CommandResult();
+    var end_point = gp.Point();
+
+    if (ModelAidSettings.Ortho != original_ortho)
+      ModelAidSettings.Ortho = original_ortho;
+
+    doc.Objects.AddLine(start_point, end_point);
+    doc.Views.Redraw();
+    return Result.Success;
+  }
+}
+</code>
+===== VB.NET =====
+<code vb>
+Public Class OrthoCommand
+  Inherits Command
+  Public Overrides ReadOnly Property EnglishName() As String
+    Get
+      Return "vbOrtho"
+    End Get
+  End Property
+
+  Protected Overrides Function RunCommand(doc As RhinoDoc, mode As RunMode) As Result
+    Dim gp = New GetPoint()
+    gp.SetCommandPrompt("Start of line")
+    gp.[Get]()
+    If gp.CommandResult() <> Result.Success Then
+      Return gp.CommandResult()
+    End If
+    Dim start_point = gp.Point()
+
+    Dim original_ortho = ModelAidSettings.Ortho
+    If Not original_ortho Then
+      ModelAidSettings.Ortho = True
+    End If
+
+    gp.SetCommandPrompt("End of line")
+    gp.SetBasePoint(start_point, False)
+    gp.DrawLineFromPoint(start_point, True)
+    gp.[Get]()
+    If gp.CommandResult() <> Result.Success Then
+      Return gp.CommandResult()
+    End If
+    Dim end_point = gp.Point()
+
+    If ModelAidSettings.Ortho <> original_ortho Then
+      ModelAidSettings.Ortho = original_ortho
+    End If
+
+    doc.Objects.AddLine(start_point, end_point)
+    doc.Views.Redraw()
+    Return Result.Success
+  End Function
+End Class
+d Namespace
+</code>
+===== Python =====
+<code python>
+from Rhino import *
+from Rhino.ApplicationSettings import *
+from Rhino.Commands import *
+from Rhino.Input.Custom import *
+from scriptcontext import doc
+
+def RunCommand():
+  gp = GetPoint()
+  gp.SetCommandPrompt("Start of line")
+  gp.Get()
+  if gp.CommandResult() != Result.Success:
+    return gp.CommandResult()
+  start_point = gp.Point()
+
+  original_ortho = ModelAidSettings.Ortho
+  if not original_ortho:
+    ModelAidSettings.Ortho = True
+
+  gp.SetCommandPrompt("End of line")
+  gp.SetBasePoint(start_point, False)
+  gp.DrawLineFromPoint(start_point, True)
+  gp.Get()
+  if gp.CommandResult() != Result.Success:
+    return gp.CommandResult()
+  end_point = gp.Point()
+
+  if ModelAidSettings.Ortho != original_ortho:
+    ModelAidSettings.Ortho = original_ortho
+
+  doc.Objects.AddLine(start_point, end_point)
+  doc.Views.Redraw()
+  return Result.Success
+
+if __name__ == "__main__":
+  RunCommand()
+</code>
+
+{{tag>Developer rhinocommon}}

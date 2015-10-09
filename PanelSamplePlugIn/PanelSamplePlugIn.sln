@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PanelSamplePlugIn", "PanelSamplePlugIn.csproj", "{887A24BA-6AEA-4B45-89E3-020EF6EE21EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug32|Any CPU = Debug32|Any CPU
+		Debug64|Any CPU = Debug64|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{887A24BA-6AEA-4B45-89E3-020EF6EE21EA}.Debug32|Any CPU.ActiveCfg = Debug32|Any CPU
+		{887A24BA-6AEA-4B45-89E3-020EF6EE21EA}.Debug32|Any CPU.Build.0 = Debug32|Any CPU
+		{887A24BA-6AEA-4B45-89E3-020EF6EE21EA}.Debug64|Any CPU.ActiveCfg = Debug64|Any CPU
+		{887A24BA-6AEA-4B45-89E3-020EF6EE21EA}.Debug64|Any CPU.Build.0 = Debug64|Any CPU
+		{887A24BA-6AEA-4B45-89E3-020EF6EE21EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{887A24BA-6AEA-4B45-89E3-020EF6EE21EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

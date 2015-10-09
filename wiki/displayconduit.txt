@@ -1,0 +1,49 @@
+===== displayconduit =====
+
+===== C# =====
+<code c#>
+[System.Runtime.InteropServices.Guid("422669A5-52B9-48A1-8DDD-61A13D9ACAB6")]
+public class DisplayConduitCommand : Command
+{
+  public override string EnglishName { get { return "csIntroToDisplayConduits"; } }
+
+  protected override Result RunCommand(RhinoDoc doc, RunMode mode)
+  {
+    var conduit = new MyConduit {Enabled = true};
+    doc.Views.Redraw();
+    return Result.Success;
+  }
+}
+
+class MyConduit : Rhino.Display.DisplayConduit
+{
+  protected override void CalculateBoundingBox(CalculateBoundingBoxEventArgs e)
+  {
+    base.CalculateBoundingBox(e);
+    e.BoundingBox.Union(e.Display.Viewport.ConstructionPlane().Origin);
+  }
+
+  protected override void PreDrawObjects(DrawEventArgs e)
+  {
+    base.PreDrawObjects(e);
+
+    var cPlane = e.Display.Viewport.ConstructionPlane();
+    var xColor = Rhino.ApplicationSettings.AppearanceSettings.GridXAxisLineColor;
+    var yColor = Rhino.ApplicationSettings.AppearanceSettings.GridYAxisLineColor;
+    var zColor = Rhino.ApplicationSettings.AppearanceSettings.GridZAxisLineColor;
+
+    e.Display.EnableDepthWriting(false);
+    e.Display.EnableDepthTesting(false);
+
+    e.Display.DrawPoint(cPlane.Origin, System.Drawing.Color.White);
+    e.Display.DrawArrow(new Line(cPlane.Origin, new Vector3d(cPlane.XAxis) * 10.0), xColor);
+    e.Display.DrawArrow(new Line(cPlane.Origin, new Vector3d(cPlane.YAxis) * 10.0), yColor);
+    e.Display.DrawArrow(new Line(cPlane.Origin, new Vector3d(cPlane.ZAxis) * 10.0), zColor);
+
+    e.Display.EnableDepthWriting(false);
+    e.Display.EnableDepthTesting(false);
+  }
+}
+</code>
+
+{{tag>Developer rhinocommon}}

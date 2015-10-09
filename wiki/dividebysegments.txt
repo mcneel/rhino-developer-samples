@@ -1,0 +1,126 @@
+===== dividebysegments =====
+
+===== C# =====
+<code c#>
+public class DivideBySegmentsCommand : Rhino.Commands.Command
+{
+  public override string EnglishName
+  {
+    get { return "csDivideCurveBySegments"; }
+  }
+
+  protected override Result RunCommand(RhinoDoc doc, RunMode mode)
+  {
+    const ObjectType filter = ObjectType.Curve; 
+    ObjRef objref;
+    var rc = RhinoGet.GetOneObject("Select curve to divide", false, filter, out objref);
+    if (rc != Result.Success || objref == null)
+      return rc;
+
+    var curve = objref.Curve();
+    if (curve == null || curve.IsShort(RhinoMath.ZeroTolerance))
+      return Result.Failure;
+
+    var segment_count = 2;
+    rc = RhinoGet.GetInteger("Divide curve into how many segments?", false, ref segment_count);
+    if (rc != Result.Success)
+      return rc;
+
+    Point3d[] points;
+    curve.DivideByCount(segment_count, true, out points);
+    if (points == null)
+      return Result.Failure;
+
+    foreach (var point in points)
+      doc.Objects.AddPoint(point);
+
+    doc.Views.Redraw();
+    return Result.Success;
+  }
+}
+</code>
+===== VB.NET =====
+<code vb>
+Public Class DivideBySegmentsCommand
+  Inherits Rhino.Commands.Command
+  Public Overrides ReadOnly Property EnglishName() As String
+    Get
+      Return "vbDivideCurveBySegments"
+    End Get
+  End Property
+
+  Protected Overrides Function RunCommand(doc As RhinoDoc, mode As RunMode) As Result
+    Const filter As ObjectType = ObjectType.Curve
+    Dim objref As ObjRef
+    Dim rc = RhinoGet.GetOneObject("Select curve to divide", False, filter, objref)
+    If rc <> Result.Success OrElse objref Is Nothing Then
+      Return rc
+    End If
+
+    Dim curve = objref.Curve()
+    If curve Is Nothing OrElse curve.IsShort(RhinoMath.ZeroTolerance) Then
+      Return Result.Failure
+    End If
+
+    Dim segment_count = 2
+    rc = RhinoGet.GetInteger("Divide curve into how many segments?", False, segment_count)
+    If rc <> Result.Success Then
+      Return rc
+    End If
+
+    Dim points As Point3d()
+    curve.DivideByCount(segment_count, True, points)
+    If points Is Nothing Then
+      Return Result.Failure
+    End If
+
+    For Each point As Point3d In points
+      doc.Objects.AddPoint(point)
+    Next
+
+    doc.Views.Redraw()
+    Return Result.Success
+  End Function
+End Class
+d Namespace
+</code>
+===== Python =====
+<code python>
+from Rhino.DocObjects import *
+from Rhino.Input import *
+from Rhino.Commands import *
+from Rhino.Geometry import *
+from Rhino import *
+from scriptcontext import doc
+
+def RunCommand():
+  rc, objref = RhinoGet.GetOneObject("Select curve to divide", False, ObjectType.Curve)
+  if rc <> Result.Success or objref == None:
+    return rc
+  
+  curve = objref.Curve()
+  if curve == None or curve.IsShort(RhinoMath.ZeroTolerance):
+    return Result.Failure
+  
+  segment_count = 2
+  rc, segment_count = RhinoGet.GetInteger(
+    "Divide curve into how many segments?", False, segment_count)
+  if rc <> Result.Success:
+    return rc
+  
+  curve_params = curve.DivideByCount(segment_count, True)
+  if curve_params == None:
+    return Result.Failure
+  
+  points = [curve.PointAt(t) for t in curve_params]
+  for point in points:
+    doc.Objects.AddPoint(point)
+  
+  doc.Views.Redraw()
+  return Result.Success
+  
+if __name__ == "__main__":
+    RunCommand()
+</code>
+
+{{tag>Developer rhinocommon}}

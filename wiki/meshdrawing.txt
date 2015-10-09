@@ -1,0 +1,239 @@
+===== meshdrawing =====
+
+===== C# =====
+<code c#>
+[System.Runtime.InteropServices.Guid("DE24BC2C-B2E7-4CA1-B2BE-BC0ED742E645")]
+public class MeshDrawingCommand : Command
+{
+  public override string EnglishName { get { return "csDrawMesh"; } }
+
+  protected override Result RunCommand(RhinoDoc doc, RunMode mode)
+  {
+    var gs = new GetObject();
+    gs.SetCommandPrompt("select sphere");
+    gs.GeometryFilter = ObjectType.Surface;
+    gs.DisablePreSelect();
+    gs.SubObjectSelect = false;
+    gs.Get();
+    if (gs.CommandResult() != Result.Success)
+      return gs.CommandResult();
+
+    Sphere sphere;
+    gs.Object(0).Surface().TryGetSphere(out sphere);
+    if (sphere.IsValid)
+    {
+      var mesh = Mesh.CreateFromSphere(sphere, 10, 10);
+      if (mesh == null)
+        return Result.Failure;
+
+      var conduit = new DrawBlueMeshConduit(mesh) {Enabled = true};
+      doc.Views.Redraw();
+
+      string inStr = "";
+      Rhino.Input.RhinoGet.GetString("press <Enter> to continue", true, ref inStr);
+
+      conduit.Enabled = false;
+      doc.Views.Redraw();
+      return Result.Success;
+    }
+    else
+      return Result.Failure;
+  }
+}
+
+class DrawBlueMeshConduit : DisplayConduit
+{
+  Mesh _mesh = null;
+  Color _color;
+  DisplayMaterial _material = null;
+  BoundingBox _bbox;
+
+  public DrawBlueMeshConduit(Mesh mesh)
+  {
+    // set up as much data as possible so we do the minimum amount of work possible inside
+    // the actual display code
+    _mesh = mesh;
+    _color = System.Drawing.Color.Blue;
+    _material = new DisplayMaterial();
+    _material.Diffuse = _color;
+    if (_mesh != null && _mesh.IsValid)
+      _bbox = _mesh.GetBoundingBox(true);
+  }
+
+  // this is called every frame inside the drawing code so try to do as little as possible
+  // in order to not degrade display speed. Don't create new objects if you don't have to as this
+  // will incur an overhead on the heap and garbage collection.
+  protected override void CalculateBoundingBox(CalculateBoundingBoxEventArgs e)
+  {
+    base.CalculateBoundingBox(e);
+    // Since we are dynamically drawing geometry, we needed to override
+    // CalculateBoundingBox. Otherwise, there is a good chance that our
+    // dynamically drawing geometry would get clipped.
+ 
+    // Union the mesh's bbox with the scene's bounding box
+    e.BoundingBox.Union(_bbox);
+  }
+
+  protected override void PreDrawObjects(DrawEventArgs e)
+  {
+    base.PreDrawObjects(e);
+    var vp = e.Display.Viewport;
+    if (vp.DisplayMode.EnglishName.ToLower() == "wireframe")
+      e.Display.DrawMeshWires(_mesh, _color);
+    else
+      e.Display.DrawMeshShaded(_mesh, _material);
+  }
+}
+</code>
+===== VB.NET =====
+<code vb>
+<System.Runtime.InteropServices.Guid("083735A9-1D78-46DB-A569-0CE94F30949F")> _
+Public Class MeshDrawingCommand
+  Inherits Command
+  Public Overrides ReadOnly Property EnglishName() As String
+    Get
+      Return "vbDrawMesh"
+    End Get
+  End Property
+
+  Protected Overrides Function RunCommand(doc As RhinoDoc, mode As RunMode) As Result
+    Dim gs = New GetObject()
+    gs.SetCommandPrompt("select sphere")
+    gs.GeometryFilter = ObjectType.Surface
+    gs.DisablePreSelect()
+    gs.SubObjectSelect = False
+    gs.[Get]()
+    If gs.CommandResult() <> Result.Success Then
+      Return gs.CommandResult()
+    End If
+
+    Dim sphere As Sphere
+    gs.[Object](0).Surface().TryGetSphere(sphere)
+    If sphere.IsValid Then
+      Dim mesh__1 = Mesh.CreateFromSphere(sphere, 10, 10)
+      If mesh__1 Is Nothing Then
+        Return Result.Failure
+      End If
+      Dim conduit = New DrawBlueMeshConduit(mesh__1)
+      conduit.Enabled = True
+
+      doc.Views.Redraw()
+
+      Dim inStr As String = ""
+      Rhino.Input.RhinoGet.GetString("press <Enter> to continue", True, inStr)
+
+      conduit.Enabled = False
+      doc.Views.Redraw()
+      Return Result.Success
+    Else
+      Return Result.Failure
+    End If
+  End Function
+End Class
+
+Class DrawBlueMeshConduit
+  Inherits DisplayConduit
+  Private _mesh As Mesh = Nothing
+  Private _color As Color
+  Private _material As DisplayMaterial = Nothing
+  Private _bbox As BoundingBox
+
+  Public Sub New(mesh As Mesh)
+    ' set up as much data as possible so we do the minimum amount of work possible inside
+    ' the actual display code
+    _mesh = mesh
+    _color = System.Drawing.Color.Blue
+    _material = New DisplayMaterial()
+    _material.Diffuse = _color
+    If _mesh IsNot Nothing AndAlso _mesh.IsValid Then
+      _bbox = _mesh.GetBoundingBox(True)
+    End If
+  End Sub
+
+  ' this is called every frame inside the drawing code so try to do as little as possible
+  ' in order to not degrade display speed. Don't create new objects if you don't have to as this
+  ' will incur an overhead on the heap and garbage collection.
+  Protected Overrides Sub CalculateBoundingBox(e As CalculateBoundingBoxEventArgs)
+    MyBase.CalculateBoundingBox(e)
+    ' Since we are dynamically drawing geometry, we needed to override
+    ' CalculateBoundingBox. Otherwise, there is a good chance that our
+    ' dynamically drawing geometry would get clipped.
+
+    ' Union the mesh's bbox with the scene's bounding box
+    e.BoundingBox.Union(_bbox)
+  End Sub
+
+  Protected Overrides Sub PreDrawObjects(e As DrawEventArgs)
+    MyBase.PreDrawObjects(e)
+    Dim vp = e.Display.Viewport
+    If vp.DisplayMode.EnglishName.ToLower() = "wireframe" Then
+      e.Display.DrawMeshWires(_mesh, _color)
+    Else
+      e.Display.DrawMeshShaded(_mesh, _material)
+    End If
+  End Sub
+End Class
+d Namespace
+</code>
+===== Python =====
+<code python>
+import rhinoscriptsyntax as rs
+from scriptcontext import doc
+import Rhino
+import System
+import System.Drawing
+
+def RunCommand():
+  gs = Rhino.Input.Custom.GetObject()
+  gs.SetCommandPrompt("select sphere")
+  gs.GeometryFilter = Rhino.DocObjects.ObjectType.Surface
+  gs.DisablePreSelect()
+  gs.SubObjectSelect = False
+  gs.Get()
+  if gs.CommandResult() != Rhino.Commands.Result.Success:
+    return gs.CommandResult()
+
+  b, sphere = gs.Object(0).Surface().TryGetSphere()
+  if sphere.IsValid:
+    mesh = Rhino.Geometry.Mesh.CreateFromSphere(sphere, 10, 10)
+    if mesh == None:
+      return Rhino.Commands.Result.Failure
+
+    conduit = DrawBlueMeshConduit(mesh)
+    conduit.Enabled = True
+    doc.Views.Redraw()
+
+    inStr = rs.GetString("press <Enter> to continue")
+
+    conduit.Enabled = False
+    doc.Views.Redraw()
+    return Rhino.Commands.Result.Success
+  else:
+    return Rhino.Commands.Result.Failure
+
+class DrawBlueMeshConduit(Rhino.Display.DisplayConduit):
+  def __init__(self, mesh):
+    self.mesh = mesh
+    self.color = System.Drawing.Color.Blue
+    self.material = Rhino.Display.DisplayMaterial()
+    self.material.Diffuse = self.color
+    if mesh != None and mesh.IsValid:
+      self.bbox = mesh.GetBoundingBox(True)
+
+  def CalculateBoundingBox(self, calculateBoundingBoxEventArgs):
+    #super.CalculateBoundingBox(calculateBoundingBoxEventArgs)
+    calculateBoundingBoxEventArgs.BoundingBox.Union(self.bbox)
+
+  def PreDrawObjects(self, drawEventArgs):
+    #base.PreDrawObjects(rawEventArgs)
+    gvp = drawEventArgs.Display.Viewport
+    if gvp.DisplayMode.EnglishName.ToLower() == "wireframe":
+      drawEventArgs.Display.DrawMeshWires(self.mesh, self.color)
+    else:
+      drawEventArgs.Display.DrawMeshShaded(self.mesh, self.material)
+
+if __name__ == "__main__":
+    RunCommand()
+</code>
+
+{{tag>Developer rhinocommon}}

@@ -1,0 +1,66 @@
+===== textjustify =====
+
+===== C# =====
+<code c#>
+public class TextJustifyCommand : Command
+{
+  public override string EnglishName { get { return "csTextJustify"; } }
+
+  protected override Result RunCommand(RhinoDoc doc, RunMode mode)
+  {
+    var text_entity = new TextEntity
+    {
+      Plane = Plane.WorldXY,
+      Text = "Hello Rhino!",
+      Justification = TextJustification.MiddleCenter,
+      FontIndex = doc.Fonts.FindOrCreate("Arial", false, false)
+    };
+
+    doc.Objects.AddText(text_entity);
+    doc.Views.Redraw();
+
+    return Result.Success;
+  }
+}
+</code>
+===== VB.NET =====
+<code vb>
+Public Class TextJustifyCommand
+  Inherits Command
+  Public Overrides ReadOnly Property EnglishName() As String
+    Get
+      Return "vbTextJustify"
+    End Get
+  End Property
+
+  Protected Overrides Function RunCommand(doc As RhinoDoc, mode As RunMode) As Result
+    Dim text_entity = New TextEntity()
+    text_entity.Plane = Plane.WorldXY
+    text_entity.Text = "Hello Rhino!"
+    text_entity.Justification = TextJustification.MiddleCenter
+    text_entity.FontIndex = doc.Fonts.FindOrCreate("Arial", False, False)
+
+    doc.Objects.AddText(text_entity)
+    doc.Views.Redraw()
+
+    Return Result.Success
+  End Function
+End Class
+d Namespace
+</code>
+===== Python =====
+<code python>
+from scriptcontext import doc
+from Rhino.Geometry import *
+
+text_entity = TextEntity()
+text_entity.Plane = Plane.WorldXY
+text_entity.Text = "Hello Rhino!"
+text_entity.Justification = TextJustification.MiddleCenter
+text_entity.FontIndex = doc.Fonts.FindOrCreate("Arial", False, False)
+
+doc.Objects.AddText(text_entity)
+doc.Views.Redraw()
+</code>
+
+{{tag>Developer rhinocommon}}

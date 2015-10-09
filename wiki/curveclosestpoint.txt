@@ -1,0 +1,115 @@
+===== curveclosestpoint =====
+
+===== C# =====
+<code c#>
+[System.Runtime.InteropServices.Guid("DA8EA15E-977F-4FB3-8123-235578D18548")]
+public class CurveClosestPointCommand : Command
+{
+  public override string EnglishName { get { return "csFindCurveParameterAtPoint"; } }
+
+  protected override Result RunCommand(RhinoDoc doc, RunMode mode)
+  {
+    Rhino.DocObjects.ObjRef objref;
+    var rc = RhinoGet.GetOneObject("Select curve", true, ObjectType.Curve,out objref);
+    if(rc!= Result.Success)
+      return rc;
+    var curve = objref.Curve();
+    if( curve==null )
+      return Result.Failure;
+
+    var gp = new GetPoint();
+    gp.SetCommandPrompt("Pick a location on the curve");
+    gp.Constrain(curve, false);
+    gp.Get();
+    if (gp.CommandResult() != Result.Success)
+      return gp.CommandResult();
+
+    var point = gp.Point();
+    double closestPointParam;
+    if (curve.ClosestPoint(point, out closestPointParam))
+    {
+      RhinoApp.WriteLine(string.Format("point: ({0},{1},{2}), parameter: {3}", point.X, point.Y, point.Z, closestPointParam));
+      doc.Objects.AddPoint(point);
+      doc.Views.Redraw();
+    }
+    return Result.Success;
+  }
+}
+</code>
+===== VB.NET =====
+<code vb>
+<System.Runtime.InteropServices.Guid("6BB1D924-10B4-4998-A3FE-0D4FFA78E070")> _
+Public Class CurveClosestPointCommand
+  Inherits Command
+  Public Overrides ReadOnly Property EnglishName() As String
+    Get
+      Return "vbFindCurveParameterAtPoint"
+    End Get
+  End Property
+
+  Protected Overrides Function RunCommand(doc As RhinoDoc, mode As RunMode) As Result
+    Dim objref As Rhino.DocObjects.ObjRef
+    Dim rc = RhinoGet.GetOneObject("Select curve", True, ObjectType.Curve, objref)
+    If rc <> Result.Success Then
+      Return rc
+    End If
+    Dim curve = objref.Curve()
+    If curve Is Nothing Then
+      Return Result.Failure
+    End If
+
+    Dim gp = New GetPoint()
+    gp.SetCommandPrompt("Pick a location on the curve")
+    gp.Constrain(curve, False)
+    gp.[Get]()
+    If gp.CommandResult() <> Result.Success Then
+      Return gp.CommandResult()
+    End If
+
+    Dim point = gp.Point()
+    Dim closestPointParam As Double
+    If curve.ClosestPoint(point, closestPointParam) Then
+      RhinoApp.WriteLine(String.Format("point: ({0},{1},{2}), parameter: {3}", point.X, point.Y, point.Z, closestPointParam))
+      doc.Objects.AddPoint(point)
+      doc.Views.Redraw()
+    End If
+    Return Result.Success
+  End Function
+End Class
+d Namespace
+</code>
+===== Python =====
+<code python>
+import Rhino
+import scriptcontext
+import rhinoscriptsyntax as rs
+
+def RunCommand():
+  rc, objref = Rhino.Input.RhinoGet.GetOneObject("Select curve", True, Rhino.DocObjects.ObjectType.Curve)
+  if(rc!= Rhino.Commands.Result.Success):
+    return rc
+  crv = objref.Curve()
+  if( crv == None ):
+    return Rhino.Commands.Result.Failure
+
+  gp = Rhino.Input.Custom.GetPoint()
+  gp.SetCommandPrompt("Pick a location on the curve")
+  gp.Constrain(crv, False)
+  gp.Get()
+  if (gp.CommandResult() != Rhino.Commands.Result.Success):
+    return gp.CommandResult();
+
+  p = gp.Point()
+  b, cp = crv.ClosestPoint(p)
+  if (b):
+    print "point: ({0},{1},{2}), parameter: {3}".format(p.X, p.Y, p.Z, cp)
+    scriptcontext.doc.Objects.AddPoint(p)
+    scriptcontext.doc.Views.Redraw()
+
+  return Rhino.Commands.Result.Success
+
+if __name__=="__main__":
+  RunCommand()
+</code>
+
+{{tag>Developer rhinocommon}}

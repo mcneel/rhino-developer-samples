@@ -1,0 +1,295 @@
+===== pickobjects =====
+
+===== C# =====
+<code c#>
+[System.Runtime.InteropServices.Guid("9F849A9F-ED1D-41F8-9413-C2104939C126")]
+public class ex_pickobjects : Rhino.Commands.Command
+{
+  private List<ConduitPoint> conduitPoints = new List<ConduitPoint>();
+
+  public override string EnglishName { get { return "csPickPoints"; } }
+
+  protected override Rhino.Commands.Result RunCommand(RhinoDoc doc, Rhino.Commands.RunMode mode)
+  {
+    var conduit = new PointsConduit(conduitPoints);
+    conduit.Enabled = true;
+
+    var gp = new Rhino.Input.Custom.GetPoint();
+    while (true)
+    {
+      gp.SetCommandPrompt("click location to create point. (<ESC> exit)");
+      gp.AcceptNothing(true);
+      gp.Get();
+      if (gp.CommandResult() != Rhino.Commands.Result.Success)
+        break;
+      conduitPoints.Add(new ConduitPoint(gp.Point()));
+      doc.Views.Redraw();
+    }
+
+    var gcp = new GetConduitPoint(conduitPoints);
+    while (true)
+    {
+      gcp.SetCommandPrompt("select conduit point. (<ESC> to exit)");
+      gcp.AcceptNothing(true);
+      gcp.Get(true);
+      doc.Views.Redraw();
+      if (gcp.CommandResult() != Rhino.Commands.Result.Success)
+        break;
+    }
+
+    return Rhino.Commands.Result.Success;
+  }
+}
+
+public class ConduitPoint
+{
+  public ConduitPoint(Point3d point)
+  {
+    Color = System.Drawing.Color.White;
+    Point = point;
+  }
+  public System.Drawing.Color Color { get; set; }
+  public Point3d Point { get; set; }
+}
+
+public class GetConduitPoint : GetPoint
+{
+  private List<ConduitPoint> _conduitPoints;
+ 
+  public GetConduitPoint(List<ConduitPoint> conduitPoints )
+  {
+    _conduitPoints = conduitPoints;
+  }
+
+  protected override void OnMouseDown(GetPointMouseEventArgs e)
+  {
+    base.OnMouseDown(e);
+    var picker = new PickContext();
+    picker.View = e.Viewport.ParentView;
+
+    picker.PickStyle = PickStyle.PointPick;
+
+    var xform = e.Viewport.GetPickTransform(e.WindowPoint);
+    picker.SetPickTransform(xform);
+
+    foreach (var cp in _conduitPoints)
+    {
+      double depth;
+      double distance;
+      if (picker.PickFrustumTest(cp.Point, out depth, out distance))
+        cp.Color = System.Drawing.Color.Red;
+      else
+        cp.Color = System.Drawing.Color.White;
+    }
+  }
+}
+
+class PointsConduit : Rhino.Display.DisplayConduit
+{
+  private List<ConduitPoint> _conduitPoints;
+ 
+  public PointsConduit(List<ConduitPoint> conduitPoints )
+  {
+    _conduitPoints = conduitPoints;
+  }
+
+  protected override void DrawForeground(Rhino.Display.DrawEventArgs e)
+  {
+    if (_conduitPoints != null)
+      foreach (var cp in _conduitPoints) 
+      e.Display.DrawPoint(cp.Point, PointStyle.Simple, 3, cp.Color);
+  }
+}
+</code>
+===== VB.NET =====
+<code vb>
+<System.Runtime.InteropServices.Guid("E215AEB1-6A4C-4180-90F7-3926D9C6DD77")> _
+Public Class ex_pickobjects
+  Inherits Rhino.Commands.Command
+  Private conduitPoints As New List(Of ConduitPoint)()
+
+  Public Overrides ReadOnly Property EnglishName() As String
+    Get
+      Return "vbPickPoints"
+    End Get
+  End Property
+
+  Protected Overrides Function RunCommand(doc As RhinoDoc, mode As Rhino.Commands.RunMode) As Rhino.Commands.Result
+    Dim conduit = New PointsConduit(conduitPoints)
+    conduit.Enabled = True
+
+    Dim gp = New Rhino.Input.Custom.GetPoint()
+    While True
+      gp.SetCommandPrompt("click location to create point. (<ESC> exit)")
+      gp.AcceptNothing(True)
+      gp.[Get]()
+      If gp.CommandResult() <> Rhino.Commands.Result.Success Then
+        Exit While
+      End If
+      conduitPoints.Add(New ConduitPoint(gp.Point()))
+      doc.Views.Redraw()
+    End While
+
+    Dim gcp = New GetConduitPoint(conduitPoints)
+    While True
+      gcp.SetCommandPrompt("select conduit point. (<ESC> to exit)")
+      gcp.AcceptNothing(True)
+      gcp.[Get](True)
+      doc.Views.Redraw()
+      If gcp.CommandResult() <> Rhino.Commands.Result.Success Then
+        Exit While
+      End If
+    End While
+
+    Return Rhino.Commands.Result.Success
+  End Function
+End Class
+
+Public Class ConduitPoint
+  Public Sub New(point__1 As Point3d)
+    Color = System.Drawing.Color.White
+    Point = point__1
+  End Sub
+  Public Property Color() As System.Drawing.Color
+    Get
+      Return m_Color
+    End Get
+    Set(value As System.Drawing.Color)
+      m_Color = value
+    End Set
+  End Property
+  Private m_Color As System.Drawing.Color
+  Public Property Point() As Point3d
+    Get
+      Return m_Point
+    End Get
+    Set(value As Point3d)
+      m_Point = value
+    End Set
+  End Property
+  Private m_Point As Point3d
+End Class
+
+Public Class GetConduitPoint
+  Inherits GetPoint
+  Private _conduitPoints As List(Of ConduitPoint)
+
+  Public Sub New(conduitPoints As List(Of ConduitPoint))
+    _conduitPoints = conduitPoints
+  End Sub
+
+  Protected Overrides Sub OnMouseDown(e As GetPointMouseEventArgs)
+    MyBase.OnMouseDown(e)
+    Dim picker = New PickContext()
+    picker.View = e.Viewport.ParentView
+
+    picker.PickStyle = PickStyle.PointPick
+
+    Dim xform = e.Viewport.GetPickTransform(e.WindowPoint)
+    picker.SetPickTransform(xform)
+
+    For Each cp As ConduitPoint In _conduitPoints
+      Dim depth As Double
+      Dim distance As Double
+      If picker.PickFrustumTest(cp.Point, depth, distance) Then
+        cp.Color = System.Drawing.Color.Red
+      Else
+        cp.Color = System.Drawing.Color.White
+      End If
+    Next
+  End Sub
+End Class
+
+Class PointsConduit
+  Inherits Rhino.Display.DisplayConduit
+  Private _conduitPoints As List(Of ConduitPoint)
+
+  Public Sub New(conduitPoints As List(Of ConduitPoint))
+    _conduitPoints = conduitPoints
+  End Sub
+
+  Protected Overrides Sub DrawForeground(e As Rhino.Display.DrawEventArgs)
+    If _conduitPoints IsNot Nothing Then
+      For Each cp As ConduitPoint In _conduitPoints
+        e.Display.DrawPoint(cp.Point, PointStyle.Simple, 3, cp.Color)
+      Next
+    End If
+  End Sub
+End Class
+d Namespace
+</code>
+===== Python =====
+<code python>
+import System.Drawing
+import Rhino.Input.Custom
+from scriptcontext import doc
+
+def RunCommand():
+  conduitPoints = []
+  conduit = PointsConduit(conduitPoints)
+  conduit.Enabled = True
+
+  gp = Rhino.Input.Custom.GetPoint()
+  result = Rhino.Commands.Result.Success
+
+  while True:
+    gp.SetCommandPrompt("click location to create point. (<ESC> exit)")
+    gp.AcceptNothing(True)
+    gp.Get()
+    result = gp.CommandResult()
+    if result != Rhino.Commands.Result.Success:
+      break
+    conduitPoints.append(ConduitPoint(gp.Point()))
+    doc.Views.Redraw()
+    
+  gcp = GetConduitPoint(conduitPoints)
+  result = Rhino.Commands.Result.Success
+  
+  while True:
+    gcp.SetCommandPrompt("select conduit point. (<ESC> to exit)")
+    gcp.AcceptNothing(True)
+    gcp.Get(True)
+    doc.Views.Redraw()
+    if gcp.CommandResult() != Rhino.Commands.Result.Success:
+      break
+    
+  return Rhino.Commands.Result.Success
+
+class ConduitPoint():
+  def __init__(self, point):
+    self.Color = System.Drawing.Color.White
+    self.Point = point
+
+class GetConduitPoint(Rhino.Input.Custom.GetPoint):
+  def __init__(self, conduitPoints):
+    self.conduitPoints = conduitPoints
+
+  def OnMouseDown(self, getPointMouseEventArgs):
+    picker = PickContext()
+    picker.View = getPointMouseEventArgs.Viewport.ParentView
+
+    picker.PickStyle = PickStyle.PointPick
+
+    xform = getPointMouseEventArgs.Viewport.GetPickTransform(getPointMouseEventArgs.WindowPoint)
+    picker.SetPickTransform(xform)
+
+    for cp in conduitPoints:
+      b, depth, distance = picker.PickFrustumTest(cp.Point)
+      if b:
+        cp.Color = System.Drawing.Color.Red
+      else:
+        cp.Color = System.Drawing.Color.White
+
+class PointsConduit(Rhino.Display.DisplayConduit):
+  def __init__(self, conduitPoints ):
+    self.conduitPoints = conduitPoints
+
+  def DrawForeground(self, drawEventArgs):
+    for cp in conduitPoints:
+      drawEventArgs.Display.DrawPoint(cp.Point, PointStyle.Simple, 3, cp.Color)
+
+if __name__ == "__main__":
+  RunCommand()
+</code>
+
+{{tag>Developer rhinocommon}}

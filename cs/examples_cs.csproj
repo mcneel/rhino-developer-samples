@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FCC9B40E-4D9E-4F0E-A437-F57DF9BF6EA5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>examples_cs</RootNamespace>
+    <AssemblyName>examples_cs</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomMeshCommand.cs" />
+    <Compile Include="ex_addlayout.cs" />
+    <Compile Include="ex_addmeshbox.cs" />
+    <Compile Include="ex_analysismode.cs" />
+    <Compile Include="examples_csPlugIn.cs" />
+    <Compile Include="examples_csCommand.cs" />
+    <Compile Include="ex_activeviewport.cs" />
+    <Compile Include="ex_addbackgroundbitmap.cs" />
+    <Compile Include="ex_addbrepbox.cs" />
+    <Compile Include="ex_addchildlayer.cs" />
+    <Compile Include="ex_addcircle.cs" />
+    <Compile Include="ex_addclippingplane.cs" />
+    <Compile Include="ex_addcone.cs" />
+    <Compile Include="ex_addcylinder.cs" />
+    <Compile Include="ex_addlayer.cs" />
+    <Compile Include="ex_addline.cs" />
+    <Compile Include="ex_addlineardimension.cs" />
+    <Compile Include="ex_addlineardimension2.cs" />
+    <Compile Include="ex_addmaterial.cs" />
+    <Compile Include="ex_addmesh.cs" />
+    <Compile Include="ex_addnamedview.cs" />
+    <Compile Include="ex_addnurbscircle.cs" />
+    <Compile Include="ex_addnurbscurve.cs" />
+    <Compile Include="ex_addobjectstogroup.cs" />
+    <Compile Include="ex_addsphere.cs" />
+    <Compile Include="ex_addtext.cs" />
+    <Compile Include="ex_addtexture.cs" />
+    <Compile Include="ex_addtorus.cs" />
+    <Compile Include="ex_addtruncatedcone.cs" />
+    <Compile Include="ex_advanceddisplay.cs" />
+    <Compile Include="ex_arclengthpoint.cs" />
+    <Compile Include="ex_arraybydistance.cs" />
+    <Compile Include="ex_blockinsertionpoint.cs" />
+    <Compile Include="ex_booleandifference.cs" />
+    <Compile Include="ex_boxshell.cs" />
+    <Compile Include="ex_circlecenter.cs" />
+    <Compile Include="ex_closestpoint.cs" />
+    <Compile Include="ex_commandlineoptions.cs" />
+    <Compile Include="ex_conduitdrawshadedmesh.cs" />
+    <Compile Include="ex_conduitarrowheads.cs" />
+    <Compile Include="ex_conduitbitmap.cs" />
+    <Compile Include="ex_copygroups.cs" />
+    <Compile Include="ex_createblock.cs" />
+    <Compile Include="ex_createmeshfrombrep.cs" />
+    <Compile Include="ex_createsurfaceexample.cs" />
+    <Compile Include="ex_createspiral.cs" />
+    <Compile Include="ex_crvdeviation.cs" />
+    <Compile Include="ex_curveboundingbox.cs" />
+    <Compile Include="ex_curvebrepbox.cs" />
+    <Compile Include="ex_curveclosestpoint.cs" />
+    <Compile Include="ex_curvereverse.cs" />
+    <Compile Include="ex_curvesurfaceintersect.cs" />
+    <Compile Include="ex_customgeometryfilter.cs" />
+    <Compile Include="ex_custompython.cs" />
+    <Compile Include="ex_customundo.cs" />
+    <Compile Include="ex_deleteblock.cs" />
+    <Compile Include="ex_addradialdimension.cs" />
+    <Compile Include="ex_determinecurrentlanguage.cs" />
+    <Compile Include="ex_dimstyle.cs" />
+    <Compile Include="ex_displayconduit.cs" />
+    <Compile Include="ex_displayorder.cs" />
+    <Compile Include="ex_displayprecision.cs" />
+    <Compile Include="ex_dividebylength.cs" />
+    <Compile Include="ex_dividebysegments.cs" />
+    <Compile Include="ex_dividecurvestraight.cs" />
+    <Compile Include="ex_dotneteventwatcher.cs" />
+    <Compile Include="ex_dotnetmovepointobjects.cs" />
+    <Compile Include="ex_dotnetmovepointobjectsnonuniform.cs" />
+    <Compile Include="ex_drawoverlay.cs" />
+    <Compile Include="ex_drawstring.cs" />
+    <Compile Include="ex_dupborder.cs" />
+    <Compile Include="ex_duplicateobject.cs" />
+    <Compile Include="ex_dupmeshboundary.cs" />
+    <Compile Include="ex_edgesrf.cs" />
+    <Compile Include="ex_edittext.cs" />
+    <Compile Include="ex_elevation.cs" />
+    <Compile Include="ex_evnormal.cs" />
+    <Compile Include="ex_explodehatch.cs" />
+    <Compile Include="ex_extendcurve.cs" />
+    <Compile Include="ex_extendsurface.cs" />
+    <Compile Include="ex_extractisocurve.cs" />
+    <Compile Include="ex_extractthumbnail.cs" />
+    <Compile Include="ex_extractrendermesh.cs" />
+    <Compile Include="ex_extrudebrepface.cs" />
+    <Compile Include="ex_filletcurves.cs" />
+    <Compile Include="ex_findobjectsbyname.cs" />
+    <Compile Include="ex_constrainedcopy.cs" />
+    <Compile Include="ex_getangle.cs" />
+    <Compile Include="ex_getmultiplewithoptions.cs" />
+    <Compile Include="ex_getpointdynamicdraw.cs" />
+    <Compile Include="ex_gettext.cs" />
+    <Compile Include="ex_getuuid.cs" />
+    <Compile Include="ex_gumball.cs" />
+    <Compile Include="ex_hatchcurve.cs" />
+    <Compile Include="ex_historyCommand.cs" />
+    <Compile Include="ex_import3dm.cs" />
+    <Compile Include="ex_insertknot.cs" />
+    <Compile Include="ex_instancearchivefilestatus.cs" />
+    <Compile Include="ex_instancedefinitionobjects.cs" />
+    <Compile Include="ex_intersectcurves.cs" />
+    <Compile Include="ex_intersectlinecircle.cs" />
+    <Compile Include="ex_intersectlines.cs" />
+    <Compile Include="ex_isbrepbox.cs" />
+    <Compile Include="ex_isocurvedensity.cs" />
+    <Compile Include="ex_issurfaceinplane.cs" />
+    <Compile Include="ex_leader.cs" />
+    <Compile Include="ex_locklayer.cs" />
+    <Compile Include="ex_loft.cs" />
+    <Compile Include="ex_makerhinocontours.cs" />
+    <Compile Include="ex_maximizeview.cs" />
+    <Compile Include="ex_meshdrawing.cs" />
+    <Compile Include="ex_meshvolume.cs" />
+    <Compile Include="ex_modifylightcolor.cs" />
+    <Compile Include="ex_modifyobjectcolor.cs" />
+    <Compile Include="ex_movecplane.cs" />
+    <Compile Include="ex_movegripobjects.cs" />
+    <Compile Include="ex_moveobjectstocurrentlayer.cs" />
+    <Compile Include="ex_nestedblock.cs" />
+    <Compile Include="ex_nurbscurveincreasedegree.cs" />
+    <Compile Include="ex_nurbssurfaceincreasedegree.cs" />
+    <Compile Include="ex_objectcolor.cs" />
+    <Compile Include="ex_objectdecoration.cs" />
+    <Compile Include="ex_objectdisplaymode.cs" />
+    <Compile Include="ex_objectiterator.cs" />
+    <Compile Include="ex_objectlayer.cs" />
+    <Compile Include="ex_objectname.cs" />
+    <Compile Include="ex_offsetcurve.cs" />
+    <Compile Include="ex_orientonsrf.cs" />
+    <Compile Include="ex_ortho.cs" />
+    <Compile Include="ex_pickobjects.cs" />
+    <Compile Include="ex_pickpoint.cs" />
+    <Compile Include="ex_planesurface.cs" />
+    <Compile Include="ex_pointatcursor.cs" />
+    <Compile Include="ex_prepostpick.cs" />
+    <Compile Include="ex_principalcurvature.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ex_printinstancedefinitions.cs" />
+    <Compile Include="ex_printinstancedefinitiontree.cs" />
+    <Compile Include="ex_projectpointstobreps.cs" />
+    <Compile Include="ex_projectpointstomeshesex.cs" />
+    <Compile Include="ex_renameblock.cs" />
+    <Compile Include="ex_renamelayer.cs" />
+    <Compile Include="ex_reparameterizecrv.cs" />
+    <Compile Include="ex_replacecolordialog.cs" />
+    <Compile Include="ex_replacehatchpattern.cs" />
+    <Compile Include="ex_rhinogettransform.cs" />
+    <Compile Include="ex_rhinopageviewwidthheight.cs" />
+    <Compile Include="ex_screencaptureview.cs" />
+    <Compile Include="ex_selectgroupobject.cs" />
+    <Compile Include="ex_sellayer.cs" />
+    <Compile Include="ex_setactiveview.cs" />
+    <Compile Include="ex_setviewname.cs" />
+    <Compile Include="ex_showsurfacedirection.cs" />
+    <Compile Include="ex_spacemorph.cs" />
+    <Compile Include="ex_splitbrepwithplane.cs" />
+    <Compile Include="ex_spritedrawing.cs" />
+    <Compile Include="ex_srfpt.cs" />
+    <Compile Include="ex_sweep1.cs" />
+    <Compile Include="ex_sweep2.cs" />
+    <Compile Include="ex_textjustify.cs" />
+    <Compile Include="ex_tightboundingbox.cs" />
+    <Compile Include="ex_transformbrep.cs" />
+    <Compile Include="ex_tweakcolors.cs" />
+    <Compile Include="ex_tweencurve.cs" />
+    <Compile Include="ex_unrollsurface.cs" />
+    <Compile Include="ex_unrollsurface2.cs" />
+    <Compile Include="ex_userdataCommand.cs" />
+    <Compile Include="ex_viewportresolution.cs" />
+    <Compile Include="ex_zoomtoobject.cs" />
+    <Compile Include="OptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OptionsControl.Designer.cs">
+      <DependentUpon>OptionsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ex_selbyusertext.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WpfOptionsPage.xaml.cs">
+      <DependentUpon>WpfOptionsPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="OptionsControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OptionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="WpfOptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mapping_match.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\dotnet\RhinoCommon.csproj">
+      <Project>{ED38373E-290C-4BDE-ACBA-1601484E582A}</Project>
+      <Name>RhinoCommon</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)\$(ProjectName).rhp"
+
+Erase "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,73 @@
+===== planesurface =====
+
+===== C# =====
+<code c#>
+[System.Runtime.InteropServices.Guid("FF4A7FB1-52AF-4654-A7C9-73B3885243FB")]
+public class PlaneSurfaceCommand : Command
+{
+  public override string EnglishName { get { return "csPlaneSurface"; } }
+
+  protected override Result RunCommand(RhinoDoc doc, RunMode mode)
+  {
+    Point3d[] corners;
+    var rc = Rhino.Input.RhinoGet.GetRectangle(out corners);
+    if (rc != Result.Success)
+      return rc;
+
+    var plane = new Plane(corners[0], corners[1], corners[2]);
+    var plane_surface = new PlaneSurface(plane, 
+                                          new Interval(0, corners[0].DistanceTo(corners[1])), 
+                                          new Interval(0, corners[1].DistanceTo(corners[2])));
+    doc.Objects.Add(plane_surface);
+    doc.Views.Redraw();
+    return Result.Success;
+  }
+}
+</code>
+===== VB.NET =====
+<code vb>
+<System.Runtime.InteropServices.Guid("742C3173-B25A-4C43-9BB9-8636C26928AC")> _
+Public Class PlaneSurfaceCommand
+  Inherits Command
+  Public Overrides ReadOnly Property EnglishName() As String
+    Get
+      Return "vbPlaneSurface"
+    End Get
+  End Property
+
+  Protected Overrides Function RunCommand(doc As RhinoDoc, mode As RunMode) As Result
+    Dim corners As Point3d()
+    Dim rc = Rhino.Input.RhinoGet.GetRectangle(corners)
+    If rc <> Result.Success Then
+      Return rc
+    End If
+
+    Dim plane = New Plane(corners(0), corners(1), corners(2))
+    Dim plane_surface = New PlaneSurface(plane, New Interval(0, corners(0).DistanceTo(corners(1))), New Interval(0, corners(1).DistanceTo(corners(2))))
+    doc.Objects.Add(plane_surface)
+    doc.Views.Redraw()
+    Return Result.Success
+  End Function
+End Class
+d Namespace
+</code>
+===== Python =====
+<code python>
+import Rhino;
+import rhinoscriptsyntax as rs
+
+def RunCommand():
+  rc, corners = Rhino.Input.RhinoGet.GetRectangle()
+  if rc <> Rhino.Commands.Result.Success:
+      return rc
+
+  plane = Rhino.Geometry.Plane(corners[0], corners[1], corners[2])
+  u_dir = rs.Distance(corners[0], corners[1])
+  v_dir = rs.Distance(corners[1], corners[2])
+  rs.AddPlaneSurface(plane, u_dir, v_dir)
+
+if __name__ == "__main__":
+    RunCommand()
+</code>
+
+{{tag>Developer rhinocommon}}

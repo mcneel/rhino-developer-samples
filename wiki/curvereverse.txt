@@ -1,0 +1,82 @@
+===== curvereverse =====
+
+===== C# =====
+<code c#>
+[System.Runtime.InteropServices.Guid("B2BD61F7-FFB8-46CA-A03D-92F4811C0D98")]
+public class ReverseCurveCommand : Command
+{
+  public override string EnglishName { get { return "csReverseCurve"; } }
+
+  protected override Result RunCommand(RhinoDoc doc, RunMode mode)
+  {
+    ObjRef[] objRefs; 
+    var rc = RhinoGet.GetMultipleObjects("Select curves to reverse", true, ObjectType.Curve, out objRefs);
+    if (rc != Result.Success)
+      return rc;
+
+    foreach (var objRef in objRefs)
+    {
+      var curveCopy = objRef.Curve().DuplicateCurve();
+      if (curveCopy != null)
+      {
+        curveCopy.Reverse();
+        doc.Objects.Replace(objRef, curveCopy);
+      }
+    }
+    return Result.Success;
+  }
+}
+</code>
+===== VB.NET =====
+<code vb>
+<System.Runtime.InteropServices.Guid("732BA8B1-6436-4556-8303-F3D9C7F41A8F")> _
+Public Class ReverseCurveCommand
+  Inherits Command
+  Public Overrides ReadOnly Property EnglishName() As String
+    Get
+      Return "vbReverseCurve"
+    End Get
+  End Property
+
+  Protected Overrides Function RunCommand(doc As RhinoDoc, mode As RunMode) As Result
+    Dim objRefs As ObjRef()
+    Dim rc = RhinoGet.GetMultipleObjects("Select curves to reverse", True, ObjectType.Curve, objRefs)
+    If rc <> Result.Success Then
+      Return rc
+    End If
+
+    For Each objRef As ObjRef In objRefs
+      Dim curveCopy = objRef.Curve().DuplicateCurve()
+      If curveCopy IsNot Nothing Then
+        curveCopy.Reverse()
+        doc.Objects.Replace(objRef, curveCopy)
+      End If
+    Next
+    Return Result.Success
+  End Function
+End Class
+d Namespace
+</code>
+===== Python =====
+<code python>
+import rhinoscriptsyntax as rs
+from scriptcontext import *
+import Rhino
+
+def ReverseCurves():
+    crvs = rs.GetObjects("Select curves to reverse", rs.filter.curve)
+    if not crvs: return
+    
+    for crvid in crvs:
+        crv = rs.coercecurve(crvid)
+        if not crv: continue
+        dup = crv.DuplicateCurve()
+        if dup:
+            dup.Reverse()
+        doc.Objects.Replace(crvid, dup)
+
+if __name__ == "__main__":
+    ReverseCurves()
+</code>
+
+{{tag>Developer rhinocommon}}

@@ -1,0 +1,13 @@
+﻿<Page x:Class="examples_cs.WpfOptionsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" Height="430" Width="380">
+  <DockPanel>
+    <Button DockPanel.Dock="Top" Background="Red">1 (Top)</Button>
+    <Button DockPanel.Dock="Left" Background="Orange">2 (Left)</Button>
+    <Button DockPanel.Dock="Right" Background="Yellow">3 (Right)</Button>
+    <Button DockPanel.Dock="Bottom" Background="Lime">4 (Bottom)</Button>
+    <TextBox AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible" KeyDown="OnKeyDown" BorderThickness="1">Type in some text...</TextBox>
+  </DockPanel>
+</Page>
