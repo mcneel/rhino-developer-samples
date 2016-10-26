@@ -43,7 +43,7 @@ class DrawBlueMeshConduit(Rhino.Display.DisplayConduit):
 
   def CalculateBoundingBox(self, calculateBoundingBoxEventArgs):
     #super.CalculateBoundingBox(calculateBoundingBoxEventArgs)
-    calculateBoundingBoxEventArgs.BoundingBox.Union(self.bbox)
+    calculateBoundingBoxEventArgs.IncludeBoundingBox(self.bbox)
 
   def PreDrawObjects(self, drawEventArgs):
     #base.PreDrawObjects(rawEventArgs)

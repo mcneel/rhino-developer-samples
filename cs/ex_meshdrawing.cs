@@ -76,7 +76,7 @@ namespace examples_cs
       // dynamically drawing geometry would get clipped.
  
       // Union the mesh's bbox with the scene's bounding box
-      e.BoundingBox.Union(m_bbox);
+      e.IncludeBoundingBox(m_bbox);
     }
 
     protected override void PreDrawObjects(DrawEventArgs e)

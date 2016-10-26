@@ -79,7 +79,7 @@ Namespace examples_vb
       ' dynamically drawing geometry would get clipped.
 
       ' Union the mesh's bbox with the scene's bounding box
-      e.BoundingBox.Union(_bbox)
+      e.IncludeBoundingBox(_bbox)
     End Sub
 
     Protected Overrides Sub PreDrawObjects(e As DrawEventArgs)

@@ -32,7 +32,7 @@ namespace examples_cs
     protected override void CalculateBoundingBox(CalculateBoundingBoxEventArgs e)
     {
       base.CalculateBoundingBox(e);
-      e.BoundingBox.Union(e.Display.Viewport.ConstructionPlane().Origin);
+      e.IncludeBoundingBox(e.Display.Viewport.ConstructionPlane().Origin);
     }
 
     protected override void PreDrawObjects(DrawEventArgs e)
