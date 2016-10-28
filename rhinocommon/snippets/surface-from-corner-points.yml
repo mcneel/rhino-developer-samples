@@ -1,0 +1,22 @@
+---
+title: Surface from Corner Points
+description: Demonstrates how to create a surface from a set of corner points.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/srfpt
+order: 1
+keywords:
+- surface
+- corner
+- points
+layout: code-sample-rhinocommon

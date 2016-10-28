@@ -1,0 +1,23 @@
+---
+title: Add Command Line Options
+description: Demonstrates how to add command-line options as inputs to your command.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/commandlineoptions
+order: 1
+keywords:
+- add
+- command
+- line
+- options
+layout: code-sample-rhinocommon

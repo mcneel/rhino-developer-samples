@@ -1,0 +1,23 @@
+---
+title: Divide by Length Points
+description: Demonstrates how to divide a user-selected curve into a set of spaced
+  points along the curve.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/dividebylength
+order: 1
+keywords:
+- divide
+- length
+- points
+layout: code-sample-rhinocommon

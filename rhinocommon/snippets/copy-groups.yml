@@ -1,0 +1,23 @@
+---
+title: Copy Groups
+description: Demonstrates how to duplicate objects with grouping.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/copygroups
+order: 1
+keywords:
+- duplicating
+- objects
+- with
+- group
+layout: code-sample-rhinocommon

@@ -1,0 +1,22 @@
+---
+title: Boolean Difference
+description: Demonstrates how to perform a boolean difference operation on two selected
+  polysurfaces.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/booleandifference
+order: 1
+keywords:
+- boolean
+- difference
+layout: code-sample-rhinocommon

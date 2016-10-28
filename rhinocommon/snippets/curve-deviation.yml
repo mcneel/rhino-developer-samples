@@ -1,0 +1,23 @@
+---
+title: Curve Deviation
+description: Demonstrates how to determine the deviation between two curves.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/crvdeviation
+order: 1
+keywords:
+- determine
+- deviation
+- between
+- curves
+layout: code-sample-rhinocommon

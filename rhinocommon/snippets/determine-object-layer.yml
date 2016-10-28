@@ -1,0 +1,24 @@
+---
+title: Determine Object Layer
+description: Demonstrates how to determine which layer a user-specified object is
+  on and print the name.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+- Layers
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/objectlayer
+order: 1
+keywords:
+- determine
+- objects
+- layer
+layout: code-sample-rhinocommon

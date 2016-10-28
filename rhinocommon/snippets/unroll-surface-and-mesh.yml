@@ -1,0 +1,24 @@
+---
+title: Unroll Surface and Mesh
+description: Unroll developable surface and associated mesh
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/unrollsurface2
+order: 1
+keywords:
+- unroll
+- developable
+- surface
+- associated
+- mesh
+layout: code-sample-rhinocommon

@@ -1,0 +1,23 @@
+---
+title: Increase NURBS Curve Degree
+description: Demonstrates how to increase the degree of a NURBS curve.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/nurbscurveincreasedegree
+order: 1
+keywords:
+- increasing
+- degree
+- nurbs
+- curve
+layout: code-sample-rhinocommon

@@ -1,0 +1,23 @@
+---
+title: Get Angle
+description: Demonstrates how to interactively pick an angle given a base point and
+  two reference points.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Picking and Selection
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/getangle
+order: 1
+keywords:
+- interactively
+- pick
+- angle
+layout: code-sample-rhinocommon

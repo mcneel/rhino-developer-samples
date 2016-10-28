@@ -1,0 +1,21 @@
+---
+title: Reverse Curve
+description: Demonstrates how to reverse the direction of user-specified curves.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/curvereverse
+order: 1
+keywords:
+- reverse
+- curve
+layout: code-sample-rhinocommon

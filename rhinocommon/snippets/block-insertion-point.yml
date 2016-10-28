@@ -1,0 +1,24 @@
+---
+title: Block Insertion Point
+description: Demonstrates how to set (or reset) the block insertion point of a block
+  instance.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Blocks
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/blockinsertionpoint
+order: 1
+keywords:
+- obtain
+- insertion
+- point
+- block
+layout: code-sample-rhinocommon

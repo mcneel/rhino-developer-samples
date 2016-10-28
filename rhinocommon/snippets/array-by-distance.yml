@@ -1,0 +1,23 @@
+---
+title: Array By Distance
+description: Demonstrates how to array a user-selected object by specifying a start
+  point and a contraint line.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/arraybydistance
+order: 1
+keywords:
+- array
+- distance
+- command
+layout: code-sample-rhinocommon

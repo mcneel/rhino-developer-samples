@@ -1,0 +1,23 @@
+---
+title: Select Objects in Object Groups
+description: Demonstrates how to select objects that are an object group.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Picking and Selection
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/selectgroupobject
+order: 1
+keywords:
+- select
+- objects
+- groups
+layout: code-sample-rhinocommon

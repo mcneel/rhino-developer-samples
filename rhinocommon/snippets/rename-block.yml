@@ -1,0 +1,23 @@
+---
+title: Rename Block
+description: Demonstrates how to rename an instance definition (block).
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Blocks
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/renameblock
+order: 1
+keywords:
+- rename
+- instance
+- definition
+- block
+layout: code-sample-rhinocommon

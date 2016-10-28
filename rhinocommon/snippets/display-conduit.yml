@@ -1,0 +1,23 @@
+---
+title: Display Conduit
+description: Demonstrates a basic display conduit that draws a custom axis in the
+  Rhino viewport.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: unset
+order: 1
+keywords:
+- display
+- conduit
+- introduction
+- rhinocommon
+layout: code-sample-rhinocommon

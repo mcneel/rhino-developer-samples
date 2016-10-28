@@ -1,0 +1,23 @@
+---
+title: Constrained Copy
+description: Demonstrates how to use a constrained GetPoint to copy a curve.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/constrainedcopy
+order: 1
+keywords:
+- constrained
+- getpoint
+- copy
+- curve
+layout: code-sample-rhinocommon

@@ -1,0 +1,21 @@
+---
+title: Edit Text
+description: Demonstrates how to edit selected text, replacing it with new text.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/edittext
+order: 1
+keywords:
+- edit
+- text
+layout: code-sample-rhinocommon

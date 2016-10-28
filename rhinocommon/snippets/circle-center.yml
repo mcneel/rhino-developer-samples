@@ -1,0 +1,23 @@
+---
+title: Circle Center
+description: Demonstrates how to find the center of a circle.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/circlecenter
+order: 1
+keywords:
+- find
+- circles
+- their
+- centers
+layout: code-sample-rhinocommon

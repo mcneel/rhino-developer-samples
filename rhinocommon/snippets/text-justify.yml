@@ -1,0 +1,22 @@
+---
+title: Text Justify
+description: Demonstrates how to set text justification with a specific font.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/textjustify
+order: 1
+keywords:
+- justifying
+- text
+- entities
+layout: code-sample-rhinocommon

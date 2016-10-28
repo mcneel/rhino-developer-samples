@@ -1,0 +1,24 @@
+---
+title: Object Iterator
+description: Demonstrates how to iterate (or enumerate) through Rhino's geometry table.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/objectiterator
+order: 1
+keywords:
+- iterate
+- through
+- rhinos
+- geometry
+- table
+layout: code-sample-rhinocommon

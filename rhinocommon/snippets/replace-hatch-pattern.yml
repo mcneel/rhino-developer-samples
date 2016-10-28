@@ -1,0 +1,23 @@
+---
+title: Replace Hatch Pattern
+description: Demonstrates how to replace an object's hatch pattern.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/replacehatchpattern
+order: 1
+keywords:
+- replacing
+- hatch
+- objects
+- pattern
+layout: code-sample-rhinocommon

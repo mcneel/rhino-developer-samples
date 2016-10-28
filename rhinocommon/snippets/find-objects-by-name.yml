@@ -1,0 +1,22 @@
+---
+title: Find Objects by Name
+description: Demonstrates how to find objects by their name or label.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/findobjectsbyname
+order: 1
+keywords:
+- find
+- objects
+- name
+layout: code-sample-rhinocommon

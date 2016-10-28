@@ -1,0 +1,21 @@
+---
+title: Add Sphere
+description: Demonstrates how to create a sphere from a center point and radius.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/addsphere
+order: 1
+keywords:
+- add
+- sphere
+layout: code-sample-rhinocommon

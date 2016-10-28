@@ -1,0 +1,21 @@
+---
+title: Read Dimension Text
+description: Demonstrates how to read dimension text from an annotation object.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/gettext
+order: 1
+keywords:
+- read
+- dimension
+- text
+layout: code-sample-rhinocommon

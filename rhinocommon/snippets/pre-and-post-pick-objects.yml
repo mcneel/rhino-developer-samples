@@ -1,0 +1,23 @@
+---
+title: Pre and Post-Pick Objects
+description: Demonstrates how to customize Rhino's pre and post picking of objects
+  behavior.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/prepostpick
+order: 1
+keywords:
+- pre-pick
+- post-pick
+- objects
+layout: code-sample-rhinocommon

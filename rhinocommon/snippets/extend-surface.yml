@@ -1,0 +1,21 @@
+---
+title: Extend Surface
+description: Demonstrates how to extend a user-specified edge of a surface.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/extendsurface
+order: 1
+keywords:
+- extend
+- surface
+layout: code-sample-rhinocommon

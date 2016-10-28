@@ -1,0 +1,22 @@
+---
+title: Explode Hatch
+description: Demonstrates how to explode a user-specified hatch object into its constituent
+  parts (curves, points, etc.)
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/explodehatch
+order: 1
+keywords:
+- explode
+- hatch
+layout: code-sample-rhinocommon

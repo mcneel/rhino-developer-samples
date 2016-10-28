@@ -1,0 +1,24 @@
+---
+title: Isocurve Density
+description: Demonstrates how to adjust the the isocurve density of a user-specified
+  surface.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/isocurvedensity
+order: 1
+keywords:
+- adjusting
+- surface
+- isocurve
+- density
+layout: code-sample-rhinocommon

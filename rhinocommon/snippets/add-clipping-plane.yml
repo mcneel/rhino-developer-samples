@@ -1,0 +1,22 @@
+---
+title: Add Clipping Plane
+description: Demonstrates how to add a clipping plane from an array or corner points.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/addclippingplane
+order: 1
+keywords:
+- add
+- clipping
+- plane
+layout: code-sample-rhinocommon

@@ -1,0 +1,22 @@
+---
+title: Display Order
+description: Demonstrates the order of how objects are drawn in the Rhino viewport
+  and how to change it.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/displayorder
+order: 1
+keywords:
+- display
+- order
+layout: code-sample-rhinocommon

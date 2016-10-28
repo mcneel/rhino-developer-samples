@@ -1,0 +1,24 @@
+---
+title: Curve Bounding Box
+description: Demonstrates how to create a curve bounding box (world and plane oriented).
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/curveboundingbox
+order: 1
+keywords:
+- curve
+- bounding
+- world
+- plane
+- oriented
+layout: code-sample-rhinocommon

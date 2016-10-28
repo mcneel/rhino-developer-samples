@@ -1,0 +1,23 @@
+---
+title: Intersecting Line and Circle
+description: Demonstrates how to find the intersection point(s) of a circle and a
+  line.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/intersectlinecircle
+order: 1
+keywords:
+- intersecting
+- line
+- with
+- circle
+layout: code-sample-rhinocommon

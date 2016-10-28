@@ -1,0 +1,22 @@
+---
+title: Planar Surface
+description: Demonstrates how to create a planar surface from a rectangle.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/planesurface
+order: 1
+keywords:
+- create
+- plane
+- surface
+layout: code-sample-rhinocommon

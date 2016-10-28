@@ -1,0 +1,21 @@
+---
+title: Mesh Volume
+description: Demonstrates how to calculate the volume of a user-specified closed mesh.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/meshvolume
+order: 1
+keywords:
+- volume
+- meshes
+layout: code-sample-rhinocommon

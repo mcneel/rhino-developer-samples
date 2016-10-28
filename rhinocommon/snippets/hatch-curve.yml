@@ -1,0 +1,22 @@
+---
+title: Hatch Curve
+description: Demonstrates how to create a hatch from a curve.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/hatchcurve
+order: 1
+keywords:
+- creating
+- hatch
+- curve
+layout: code-sample-rhinocommon

@@ -1,0 +1,23 @@
+---
+title: Change Dimension Style
+description: Demonstrates how to change the dimension style on all objects in a Rhino
+  document.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/dimstyle
+order: 1
+keywords:
+- change
+- dimension
+- style
+layout: code-sample-rhinocommon

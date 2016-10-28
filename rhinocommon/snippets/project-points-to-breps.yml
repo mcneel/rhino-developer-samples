@@ -1,0 +1,22 @@
+---
+title: Project Points to Breps
+description: Demonstrates how to project points to Brep objects.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/projectpointstobreps
+order: 1
+keywords:
+- projecting
+- points
+- breps
+layout: code-sample-rhinocommon

@@ -1,0 +1,21 @@
+---
+title: Fillet Curves
+description: Demonstrates how to fillet two curves by a specified radius.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/filletcurves
+order: 1
+keywords:
+- fillet
+- curves
+layout: code-sample-rhinocommon

@@ -1,0 +1,21 @@
+---
+title: Add Mesh
+description: Demonstrates how to construct a mesh from a list of vertices and faces.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/addmesh
+order: 1
+keywords:
+- add
+- mesh
+layout: code-sample-rhinocommon

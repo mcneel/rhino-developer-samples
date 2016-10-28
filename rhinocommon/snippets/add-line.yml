@@ -1,0 +1,21 @@
+---
+title: Add Line
+description: Demonstrates how to construct a line from two points.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/addline
+order: 1
+keywords:
+- add
+- line
+layout: code-sample-rhinocommon

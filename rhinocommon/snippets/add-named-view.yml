@@ -1,0 +1,24 @@
+---
+title: Add Named View
+description: Demonstrates how to add a named view to a Rhino model from a user-specified
+  view and camera location.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+- Viewports and Views
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/addnamedview
+order: 1
+keywords:
+- add
+- named
+- view
+layout: code-sample-rhinocommon

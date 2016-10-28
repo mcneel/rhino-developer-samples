@@ -1,0 +1,23 @@
+---
+title: Add Linear Dimension2
+description: Demonstrates how to add a linear dimension from two points given an offset
+  point.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/addlineardimension2
+order: 1
+keywords:
+- add
+- linear
+- dimension2
+layout: code-sample-rhinocommon

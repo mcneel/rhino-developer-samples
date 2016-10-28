@@ -1,0 +1,22 @@
+---
+title: Visual Analysis Modes
+description: Demonstrates how to set the visual analysis mode to Z analysis for user-specified
+  objects.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/analysismode
+order: 1
+keywords:
+- visual
+- analysis
+- modes
+layout: code-sample-rhinocommon

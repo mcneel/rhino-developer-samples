@@ -1,0 +1,24 @@
+---
+title: Furthest Z on Surface given X Y
+description: Demonstrates how to determine the furthest Z on surface given the X Y
+  coordinates.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/elevation
+order: 1
+keywords:
+- determine
+- furthest
+- surface
+- given
+layout: code-sample-rhinocommon

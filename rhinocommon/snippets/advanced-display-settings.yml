@@ -1,0 +1,24 @@
+---
+title: Advanced Display Settings
+description: Demonstrates how to change advanced display settings in Rhino where the
+  mesh wireframe thickness (in pixels) is modified.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/advanceddisplay
+order: 1
+keywords:
+- modifying
+- advanced
+- display
+- settings
+layout: code-sample-rhinocommon

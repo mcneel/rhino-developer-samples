@@ -1,0 +1,23 @@
+---
+title: Increase NURBS Surface Degree
+description: Demonstrates how to increase the degree of a NURBS surface.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/nurbssurfaceincreasedegree
+order: 1
+keywords:
+- increasing
+- degree
+- nurbs
+- surface
+layout: code-sample-rhinocommon

@@ -1,0 +1,22 @@
+---
+title: Add Linear Dimension
+description: Demonstrates how to add a linear dimension to a Rhino model.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/addlineardimension
+order: 1
+keywords:
+- add
+- linear
+- dimension
+layout: code-sample-rhinocommon

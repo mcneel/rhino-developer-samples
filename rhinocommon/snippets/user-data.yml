@@ -1,0 +1,24 @@
+---
+title: User Data
+description: RhinoCommon object plugin user data
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Adding Objects
+origin: unset
+order: 1
+keywords:
+- info
+- rhinocommon
+- object
+- plugin
+- user
+- data
+layout: code-sample-rhinocommon

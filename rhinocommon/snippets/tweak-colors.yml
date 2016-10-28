@@ -1,0 +1,20 @@
+---
+title: Tweak Colors
+description: Demonstrates how to set the default paint colors in Rhino.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: unset
+order: 1
+keywords:
+- tweak
+- colors
+layout: code-sample-rhinocommon

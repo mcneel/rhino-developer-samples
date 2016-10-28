@@ -1,0 +1,25 @@
+---
+title: Determine Normal Direction of Brep Face
+description: Demonstrates how to determine the normal direction of a Brep face at
+  a specified point.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/evnormal
+order: 1
+keywords:
+- determine
+- normal
+- direction
+- brep
+- face
+layout: code-sample-rhinocommon

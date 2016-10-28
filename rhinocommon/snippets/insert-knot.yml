@@ -1,0 +1,21 @@
+---
+title: Insert Knot
+description: Demonstrates how to insert a knot into a user-selected NURBS curve.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/intertknot
+order: 1
+keywords:
+- insert
+- knot
+layout: code-sample-rhinocommon

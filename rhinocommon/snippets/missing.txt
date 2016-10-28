@@ -1,0 +1,92 @@
+--- /Users/will/Desktop/devdocs.txt	2016-10-28 16:14:48.000000000 +0100
++++ /Users/will/Desktop/rhinocommon.txt	2016-10-28 16:15:35.000000000 +0100
+@@ -1,16 +1,17 @@
++CustomMeshCommand.cs
++OptionsControl.Designer.cs
++OptionsControl.cs
++WpfOptionsPage.xaml.cs
++ex_activeviewport.cs => determine-active-viewport.cs
+@@ -18,141 +19,159 @@
++ex_addtext.cs
++ex_advanceddisplay.cs => advanced-display-settings.cs !
++ex_analysismode.cs
++ex_arclengthpoint.cs
++ex_closestpoint.cs => closest-point-calculation-with-rtree.cs !
++ex_commandlineoptions.cs => add-command-line-options.cs
++ex_conduitarrowheads.cs => display-conduit-arrowheads.cs
++ex_conduitbitmap.cs
++ex_createblock.cs => create-block-definition.cs
++ex_createsurfaceexample.cs
++ex_crvdeviation.cs => curve-deviation.cs !
++ex_curvebrepbox.cs
++ex_curveclosestpoint.cs
++ex_curvereverse.cs => reverse-curve.cs !
++ex_curvesurfaceintersect.cs => curve-surface-intersection.cs !
++ex_deleteblock.cs => delete-block-instance-definition.cs !
++ex_determinecurrentlanguage.cs => determine-language-setting.cs !
++ex_dimstyle.cs => change-dimension-style.cs !
++ex_dividebylength.cs => divide-by-length-points.cs !
++ex_dividebysegments.cs => divide-curve-by-segments.cs !
++ex_dotneteventwatcher.cs
++ex_dotnetmovepointobjects.cs => move-points.cs !
++ex_dotnetmovepointobjectsnonuniform.cs => move-points-non-uniform.cs !
++ex_drawoverlay.cs
++ex_drawstring.cs
++ex_dupborder.cs => duplicated-surface-border.cs !
++ex_dupmeshboundary.cs => duplicated-surface-boundary.cs !
++ex_edgesrf.cs => surface-from-edge-curves !
++ex_elevation.cs
++ex_evnormal.cs
++ex_extractthumbnail.cs
++ex_getpointdynamicdraw.cs => dynamically-draw-geometry-when-picking-points.cs !
++ex_gettext.cs
++ex_getuuid.cs => get-object-uuid.cs !
++ex_gumball.cs
++ex_historyCommand.cs
++ex_import3dm.cs
++ex_intersectcurves.cs => calculate-curve-intersections.cs !
++ex_intersectlinecircle.cs => intersect-line-and-circle.cs !
++ex_isbrepbox.cs => isbrepbox-test.cs !
++ex_issurfaceinplane.cs => is-planar-surface-in-plane.cs !
++ex_leader.cs => add-leader.cs !
++ex_loft.cs => loft-surfaces.cs !
++ex_makerhinocontours.cs => create-contour-curves.cs !
++ex_maximizeview.cs
++ex_meshdrawing.cs => draw-mesh.cs !
++ex_nestedblock.cs => add-nested-block.cs !
++ex_nurbscurveincreasedegree.cs => increase-nurbs-curve-degree.cs !
++ex_nurbssurfaceincreasedegree.cs => increase-nurbs-surface-degree.cs !
++ex_objectdecoration.cs
++ex_objectlayer.cs => determine-object-layer.cs !
++ex_objectname.cs => rename-object.cs !
++ex_orientonsrf.cs => orient-on-surface.cs !
++ex_ortho.cs => orthogonal-mode.cs !
++ex_pickobjects.cs
++ex_planesurface.cs
++ex_pointatcursor.cs
++ex_prepostpick.cs => pre-and-post-pick-objects.cs !
++ex_principalcurvature.cs
++ex_printinstancedefinitions.cs
++ex_printinstancedefinitiontree.cs
++ex_projectpointstomeshesex.cs => project-points-to-mesh.cs !
++ex_reparameterizecrv.cs => reparameterize-curves.cs !
++ex_replacecolordialog.cs => replace-the-color-picking-dialog.cs !
++ex_rhinogettransform.cs
++ex_rhinopageviewwidthheight.cs => set-rhinopageview-width-and-height.cs !
++ex_screencaptureview.cs
++ex_selbyusertext.cs
++ex_selectgroupobject.cs => select-objects-in-object-groups.cs !
++ex_sellayer.cs => select-objects-on-layer.cs !
++ex_setactiveview.cs => get-and-set-the-active-view.cs !
++ex_setviewname.cs => set-viewport-name.cs !
++ex_splitbrepwithplane.cs => split-breps-with-planes.cs !
++ex_srfpt.cs => surface-from-corner-points.cs !
++ex_ssget.cs
++ex_sweep1.cs => sweep-surfaces-with-sweep1.cs !
++ex_sweep2.cs
++ex_tightboundingbox.cs
++ex_transformbrep.cs => transform-breps.cs !
++ex_unrollsurface2.cs => unroll-surface.cs !
++ex_userdataCommand.cs => user-data.cs !
++examples_csCommand.cs
++examples_csPlugIn.cs

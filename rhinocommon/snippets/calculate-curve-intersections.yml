@@ -1,0 +1,23 @@
+---
+title: Calculate Curve Intersections
+description: Demonstrates how to calculate the intersection points between two user-specified
+  curves.
+author: steve@mcneel.com
+apis:
+- RhinoCommon
+languages:
+- C#
+- Python
+- VB
+platforms:
+- Windows
+- Mac
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/rhinocommonsamples/intersectcurves
+order: 1
+keywords:
+- calculate
+- curve
+- intersections
+layout: code-sample-rhinocommon
