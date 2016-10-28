@@ -1,0 +1,18 @@
+---
+title: Add Arrowheads to Curves
+description: Demonstrates how arrowheads can be added to any curve object my modifying
+  attributes.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/sdksamples/objectdecoration
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

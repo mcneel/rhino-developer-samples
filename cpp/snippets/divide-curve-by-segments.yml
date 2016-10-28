@@ -1,0 +1,18 @@
+---
+title: Divide a Curve by Segments
+description: Demonstrates how to divide a selected curve object by a specified number
+  of segments.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/sdksamples/dividecurvesegments
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

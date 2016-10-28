@@ -1,0 +1,17 @@
+---
+title: Duplicate Object
+description: Demonstrates how to make a copy of a CRhinoObject-derived object.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/sdksamples/duplicateobject
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

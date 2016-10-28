@@ -1,0 +1,17 @@
+---
+title: Add Background Bitmaps to Viewports
+description: Demonstrates how to add a background bitmap to a viewport.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/sdksamples/addbackgroundbitmap
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

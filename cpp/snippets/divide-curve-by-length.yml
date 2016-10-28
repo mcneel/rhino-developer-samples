@@ -1,0 +1,17 @@
+---
+title: Divide a Curve by Length
+description: Demonstrates how to divide a curve object by a specified length.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/sdksamples/dividecurvelength
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

@@ -1,0 +1,17 @@
+---
+title: Mesh Boolean Intersection
+description: Demonstrates how to intersect meshes.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/sdksamples/meshbooleanintersection
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

@@ -1,0 +1,18 @@
+---
+title: CRhinoGetFileDialog to Preview Bitmaps
+description: Demonstrates how to use the CRhinoGetFileDialog class to preview bitmap
+  images.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/sdksamples/getfiledialog
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

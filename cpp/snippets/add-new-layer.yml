@@ -1,0 +1,18 @@
+---
+title: Add a New Layer
+description: Demonstrates how to add a new layer to Rhino.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+- Layers
+origin: http://wiki.mcneel.com/developer/sdksamples/addlayer
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

@@ -1,0 +1,17 @@
+---
+title: Ghost Viewport
+description: Demonstrates how to set a viewport to ghosted display.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Viewports and Views
+origin: http://wiki.mcneel.com/developer/sdksamples/ghostedshade
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

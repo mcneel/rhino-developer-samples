@@ -1,0 +1,18 @@
+---
+title: Extracting Isoparametric Curves from Surfaces
+description: Demonstrates how to extract isoparametric curves from surfaces.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Curves
+- Surfaces
+origin: http://wiki.mcneel.com/developer/sdksamples/extractisocurve
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

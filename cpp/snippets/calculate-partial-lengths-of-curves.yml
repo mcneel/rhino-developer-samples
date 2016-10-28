@@ -1,0 +1,18 @@
+---
+title: Calculating Partial Lengths of Curves
+description: Demonstrates how to calculate the length of a curve from the start point
+  to some point on the curve.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/sdksamples/curvelength
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

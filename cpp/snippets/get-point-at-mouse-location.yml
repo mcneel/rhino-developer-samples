@@ -1,0 +1,17 @@
+---
+title: Get Point at Mouse Location
+description: Discusses how to convert a 2D screen point into a 3D world point.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Picking and Selection
+origin: http://wiki.mcneel.com/developer/sdksamples/pointatcursor
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

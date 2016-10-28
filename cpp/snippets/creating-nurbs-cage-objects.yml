@@ -1,0 +1,17 @@
+---
+title: Creating NURBS Cage Objects
+description: Demonstrates how to create a NURBS Cage objects.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/sdksamples/addcage
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

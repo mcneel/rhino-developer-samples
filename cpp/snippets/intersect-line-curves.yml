@@ -1,0 +1,17 @@
+---
+title: Intersect Line Curves
+description: Demonstrates how to intersect line curves.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/sdksamples/intersectlines
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

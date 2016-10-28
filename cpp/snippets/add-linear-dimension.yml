@@ -1,0 +1,17 @@
+---
+title: Add a Linear Dimension
+description: Demonstrates how to add a linear dimension object.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/sdksamples/addlineardimension
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

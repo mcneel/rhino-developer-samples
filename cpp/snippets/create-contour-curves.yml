@@ -1,0 +1,18 @@
+---
+title: Create Contour Curves
+description: Demonstrates how to create contour curves through surfaces, breps, and
+  meshes using the MakeRhinoContours() function.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/sdksamples/makerhinocontours
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

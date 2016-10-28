@@ -1,0 +1,17 @@
+---
+title: Block Definition Geometry
+description: Demonstrates how to obtain a block instance's definition geometry.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Blocks
+origin: http://wiki.mcneel.com/developer/sdksamples/instancedefinitionobjects
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

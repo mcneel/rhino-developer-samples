@@ -1,0 +1,18 @@
+---
+title: Add a Line Curve Object
+description: Demonstrates how to add a line curve.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+- Curves
+origin: http://wiki.mcneel.com/developer/sdksamples/addline
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

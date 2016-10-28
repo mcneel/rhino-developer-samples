@@ -1,0 +1,17 @@
+---
+title: Intersecting Meshes
+description: Demonstrates how to intersect two meshes.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/sdksamples/meshmeshintersection
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

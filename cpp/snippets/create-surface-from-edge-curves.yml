@@ -1,0 +1,19 @@
+---
+title: Create Surface from Edge Curves
+description: Demonstrates how to create a surface object from four edge curves.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+- Curves
+- Surfaces
+origin: http://wiki.mcneel.com/developer/sdksamples/edgesrf
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

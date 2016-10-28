@@ -1,0 +1,18 @@
+---
+title: Deviation between two Curves
+description: Demonstrates how to determine the deviation between two curves using
+  the RhinoGetOverlapDistance() function.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/sdksamples/crvdeviation
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

@@ -1,0 +1,17 @@
+---
+title: Modify Grip Weight
+description: Demonstrates how to modify the weight of a grip object.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/sdksamples/setgripweight
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

@@ -1,0 +1,17 @@
+---
+title: Intersect Curves with Meshes
+description: Demonstrates how to intersect a curve with a mesh.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/sdksamples/meshcurveintersect
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

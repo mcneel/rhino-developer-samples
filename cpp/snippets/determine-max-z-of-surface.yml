@@ -1,0 +1,18 @@
+---
+title: Determine the Maximum Z Coordinate Value of a Surface
+description: Demonstrates how determine the maximum Z coordinate value of a surface
+  or polysurface given some X,Y coordinate.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Surfaces
+origin: http://wiki.mcneel.com/developer/sdksamples/elevation
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

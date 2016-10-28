@@ -1,0 +1,18 @@
+---
+title: Calculate Solid Volumes
+description: Demonstrates how to calculating the volumes of closed surface, polysurface,
+  and mesh objects.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Surfaces
+origin: http://wiki.mcneel.com/developer/sdksamples/solidvolume
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

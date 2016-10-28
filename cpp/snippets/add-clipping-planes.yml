@@ -1,0 +1,17 @@
+---
+title: Add Clipping Planes
+description: Demonstrates how to add a viewport clipping plane object.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/sdksamples/addclippingplane
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

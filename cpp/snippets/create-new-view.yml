@@ -1,0 +1,19 @@
+---
+title: Create New View
+description: Demonstrates how to create a new view that has the properties of an existing
+  view.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+- Viewports and Views
+origin: http://wiki.mcneel.com/developer/sdksamples/newview
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

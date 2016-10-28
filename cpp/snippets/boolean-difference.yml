@@ -1,0 +1,18 @@
+---
+title: Boolean Difference
+description: Demonstrates how to perform a Boolean Difference operation on two sets
+  of polysurfaces.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/sdksamples/booleandifference
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

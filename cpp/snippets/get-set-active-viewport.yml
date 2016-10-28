@@ -1,0 +1,17 @@
+---
+title: Get and Set Active Viewport
+description: Demonstrates how to get and set the active view.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Viewports and Views
+origin: http://wiki.mcneel.com/developer/sdksamples/setactiveview
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

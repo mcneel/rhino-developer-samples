@@ -1,0 +1,17 @@
+---
+title: Fillet Curve
+description: Demonstrates how to create a fillet between two curves.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+origin: http://wiki.mcneel.com/developer/sdksamples/filletcurve
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

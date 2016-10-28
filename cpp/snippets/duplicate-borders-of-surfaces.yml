@@ -1,0 +1,17 @@
+---
+title: Duplicate the Borders of Surfaces
+description: Demonstrates how to duplicate the borders of surfaces and polysurfaces.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Surfaces
+origin: http://wiki.mcneel.com/developer/sdksamples/dupborder
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

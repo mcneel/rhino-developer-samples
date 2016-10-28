@@ -1,0 +1,18 @@
+---
+title: Convert an Arc to a NURBS Curve
+description: Demonstrates how to convert an ON_ArcCurve object to an ON_NurbsCurve
+  object.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/sdksamples/convertarctonurbs
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

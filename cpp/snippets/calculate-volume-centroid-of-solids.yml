@@ -1,0 +1,17 @@
+---
+title: Calculate Volume Centroid of Solids
+description: http://wiki.mcneel.com/developer/sdksamples/volumecentroid
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/sdksamples/volumecentroid
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

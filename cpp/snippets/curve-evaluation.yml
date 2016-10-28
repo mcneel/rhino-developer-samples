@@ -1,0 +1,17 @@
+---
+title: Curve Evaluation
+description: Demonstrates how to evaluate a curve.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Curves
+origin: http://wiki.mcneel.com/developer/sdksamples/crvevaluate
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

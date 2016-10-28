@@ -1,0 +1,18 @@
+---
+title: Add a Cone Surface
+description: Demonstrates how to create a cone using ON_BrepCone.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Adding Objects
+- Surfaces
+origin: http://wiki.mcneel.com/developer/sdksamples/addcone
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

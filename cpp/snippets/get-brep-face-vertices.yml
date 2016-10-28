@@ -1,0 +1,17 @@
+---
+title: Get Brep Face Vertices
+description: Demonstrates how to get the vertices of a Brep face.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Other
+origin: http://wiki.mcneel.com/developer/sdksamples/getfacevertices
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp

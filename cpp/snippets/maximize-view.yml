@@ -1,0 +1,17 @@
+---
+title: Maximize View
+description: Demonstrates how to maximize a view.
+author: dale@mcneel.com
+apis:
+- C/C++
+languages:
+- C/C++
+platforms:
+- Windows
+categories:
+- Viewports and Views
+origin: http://wiki.mcneel.com/developer/sdksamples/maximizeview
+order: 1
+keywords:
+- rhino
+layout: code-sample-cpp
