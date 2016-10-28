@@ -70,6 +70,7 @@
     <Compile Include="CustomMeshCommand.cs" />
     <Compile Include="ex_addlayout.cs" />
     <Compile Include="ex_addmeshbox.cs" />
+    <Compile Include="ex_addtwistedcube.cs" />
     <Compile Include="ex_analysismode.cs" />
     <Compile Include="examples_csPlugIn.cs" />
     <Compile Include="examples_csCommand.cs" />
