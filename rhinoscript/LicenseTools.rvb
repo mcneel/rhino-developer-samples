@@ -1,0 +1,198 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LicenseTools.rvb -- February 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetInstallDriveSerialNumber()
+  
+  Dim oFSO, oDrive
+  
+  Set oFSO = CreateObject("Scripting.FileSystemObject")
+  
+  On Error Resume Next
+  Set oDrive = oFSO.GetDrive(oFSO.GetDriveName(Rhino.InstallFolder()))
+  
+  If Err.Number = 0 Then
+    GetInstallDriveSerialNumber = CStr(Hex(oDrive.SerialNumber))
+  Else
+    GetInstallDriveSerialNumber = Null
+  End If
+  
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetLicenseFilePath()
+  
+  Dim oShell, strPath
+  
+  ' Probably should store the file somewhere else.
+  ' But hey, this is just a sample...
+    
+  Set oShell = CreateObject("WScript.Shell")
+
+  On Error Resume Next
+  strPath = oShell.SpecialFolders("Desktop")
+
+  If Err.Number = 0 Then
+    GetLicenseFilePath = strPath & "\MyScript.lic"
+  Else
+    GetLicenseFilePath = Null
+  End If
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function EncryptText(strText, strPassword)
+  
+  Dim a, b, c, i, j, k, temp
+  Dim strCipher, nLength
+  Dim arrBox(255), arrKey(255)
+
+  nLength = Len(strPassword)
+  For a = 0 To 255
+    arrKey(a) = Asc(Mid(strPassword, (a Mod nLength) + 1, 1))
+    arrBox(a) = a
+  Next
+
+  b = 0
+  
+  For a = 0 To 255
+    b = (b + arrBox(a) + arrKey(a)) Mod 256
+    temp = arrBox(a)
+    arrBox(a) = arrBox(b)
+    arrBox(b) = temp
+  Next
+  
+  i = 0
+  j = 0
+  
+  For a = 1 To Len(strText)
+    i = (i + 1) Mod 256
+    j = (j + arrBox(i)) Mod 256
+    temp = arrBox(i)
+    arrBox(i) = arrBox(j)
+    arrBox(j) = temp
+    k = arrBox((arrBox(i) + arrBox(j)) Mod 256)
+    c = Asc(Mid(strText, a, 1)) Xor k
+    strCipher = strCipher & Chr(c)
+  Next
+
+  EncryptText = strCipher
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function WriteFile(strFile, strText)
+
+  Dim objFSO, strFolder, objFile
+
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  
+  ' Probably should verify the folder exists first
+  ' But hey, this is just a sample...
+  
+  On Error Resume Next
+  Set objFile = objFSO.CreateTextFile(strFile, True)
+  
+  If Err.Number = 0 Then
+    Call objFile.WriteLine(strText)
+    objFile.Close
+    WriteFile = True
+  Else
+    WriteFile = False
+  End If
+  
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ReadFile(strFile)
+  
+  Const ForReading = 1
+  Dim objFSO, objFile
+  
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+  On Error Resume Next
+  Set objFile = objFSO.OpenTextFile(strFile, ForReading)
+  If Err.Number = 0 Then
+    ReadFile = objFile.ReadLine
+    objFile.Close
+  Else
+    ReadFile = Null
+  End If
+  
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function WriteLicenseFile(strLicense)
+  
+  Dim strPath, strPassword, strEncrypt
+  WriteLicenseFile = False
+
+  strPath = GetLicenseFilePath()
+  If IsNull(strPath) Then Exit Function
+    
+  strPassword = GetInstallDriveSerialNumber()
+  If IsNull(strPassword) Then Exit Function
+
+  strEncrypt = EncryptText(strLicense, strPassword)
+  WriteLicenseFile = WriteFile(strPath, strEncrypt)
+  
+End Function  
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ReadLicenseFile()
+  
+  Dim strPath, strPassword, strEncrypt
+  ReadLicenseFile = False
+
+  strPath = GetLicenseFilePath()
+  If IsNull(strPath) Then Exit Function
+
+  strEncrypt = ReadFile(strPath)
+  If IsNull(strEncrypt) Then Exit Function
+    
+  strPassword = GetInstallDriveSerialNumber()
+  If IsNull(strPassword) Then Exit Function
+
+  ReadLicenseFile = EncryptText(strEncrypt, strPassword)
+  
+End Function 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub InstallLicense()
+  
+  Dim strLicense
+  
+  strLicense = Rhino.StringBox("Enter your license key.", , "MyScript")
+  If IsNull(strLicense) Then Exit Sub
+    
+  strLicense = Trim(strLicense)
+  If Len(strLicense) = 0 Then Exit Sub
+    
+  If WriteLicenseFile(strLicense) Then
+    Call MsgBox("License file written successfully!", 65,  "MyScript")
+  Else
+    Call MsgBox("Error writing license file!", 17,  "MyScript")
+  End If
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DisplayLicense()
+  
+  Dim strLicense
+  
+  strLicense = ReadLicenseFile()
+  If IsNull(strLicense) Then
+    Call MsgBox("Error reading license file!", 17,  "MyScript")
+  Else
+    Call MsgBox(strLicense, 65,  "MyScript")
+  End If
+  
+End Sub

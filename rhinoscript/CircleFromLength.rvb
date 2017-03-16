@@ -1,0 +1,28 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CircleFromLength.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: CircleFromLength
+' Purpose:    Create a circle from a center point and a circumference.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CircleFromLength
+
+  Dim arrCenter, arrPlane, dblLength, dblRadius, strObject
+
+  arrCenter = Rhino.GetPoint("Center point of circle")
+  If IsArray(arrCenter) Then
+    arrPlane = Rhino.MovePlane(Rhino.ViewCPlane, arrCenter)
+    dblLength = Rhino.GetReal("Circle circumference")
+    If IsNumeric(dblLength) And (dblLength > 0.0) Then
+      dblRadius = dblLength / (2 * Rhino.PI)
+      strObject = Rhino.AddCircle(arrPlane, dblRadius)
+      Rhino.SelectObject strObject
+    End If
+  End If
+
+End Sub

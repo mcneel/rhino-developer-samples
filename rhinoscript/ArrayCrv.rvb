@@ -1,0 +1,38 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ArrayCrv.rvb -- July 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ArrayCrv()
+  
+  Dim arrObject, arrBasePt, strCurve, intCount
+  Dim arrPlane, arrParams, arrFrame, arrXform, i
+  
+  arrObjects = Rhino.GetObjects("Select objects to array")
+  If IsNull(arrObjects) Then Exit Sub
+    
+  arrBasePt = Rhino.GetPoint("Base point")
+  If IsNull(arrObjects) Then Exit Sub
+    
+  arrPlane = Rhino.MovePlane(Rhino.ViewCPlane, arrBasePt)
+  
+  strCurve = Rhino.GetObject("Path curve", 4)
+  If IsNull(strCurve) Then Exit Sub
+    
+  intCount = Rhino.GetInteger("Number of items", 2, 2)
+  If IsNull(intCount) Then Exit Sub
+    
+  If Not Rhino.IsCurveClosed(strCurve) Then intCount = intCount - 1
+    
+  arrParams = Rhino.DivideCurve(strCurve, intCount, False, False)
+  For i = 0 To UBound(arrParams)
+    arrFrame = Rhino.CurveFrame(strCurve, arrParams(i))
+    arrXform = Rhino.XformRotation(arrPlane, arrFrame)
+    Call Rhino.TransformObjects(arrObjects, arrXform, True)
+  Next    
+  
+End Sub

@@ -1,0 +1,117 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportNamedPoints.rvb -- October 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+' Declare global variables
+Dim g_nCounter
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: CreateNamedPoints
+' Purpose:    Creates points with sequential object names.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CreateNamedPoints
+  
+  ' Declare variables
+  Dim arrPoints
+  Dim strMessage, strObject
+  Dim i
+  
+  ' Initialize global counter, if necessary
+  If IsNull(g_nCounter) Then
+    g_nCounter = g_nCounter + 1
+  End If
+  
+  ' Create points
+  strMessage = "Location of point object"
+  arrPoints = Rhino.GetPoints(False, False, strMessage, strMessage)
+  If IsArray(arrPoints) Then
+    For i = 0 To UBound(arrPoints)
+      strObject = Rhino.AddPoint(arrPoints(i))
+      If Not IsNull(strObject) Then
+        g_nCounter = g_nCounter + 1
+        Rhino.ObjectName strObject, CStr(g_nCounter)
+      End If
+    Next
+  End If
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: ExportNamedPoints
+' Purpose:    Export points, sorted by object name, to a text file.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportNamedPoints
+  
+  ' Declare constants
+  Const rhPoint = 1
+  
+  ' Declare variables
+  Dim arrObjects, arrNames, arrSorted, arrPoint
+  Dim strObject, strName, strFilter, strFileName
+  Dim objFSO, objStream
+  Dim i
+  
+  ' Select points objects to export
+  arrObjects = Rhino.GetObjects("Select points to export", rhPoint, True, True) 
+  If Not IsArray(arrObjects) Then Exit Sub
+
+  ' Define array of object names
+  ReDim arrNames(UBound(arrObjects))
+
+  ' Build array of object names
+  For i = 0 To UBound(arrObjects)
+    strName = Rhino.ObjectName(arrObjects(i))
+    If IsNull(strName) Then
+      MsgBox "Selected point object is unnamed."
+      Exit Sub
+    Else
+      arrNames(i) = strName
+    End If
+  Next
+
+  ' Sort the array of object names    
+  arrSorted = Rhino.Sort(arrNames)
+  If Not IsArray(arrSorted) Then Exit Sub 
+  
+  ' Prompt the user to specify a file name    
+  strFilter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*||"
+  strFileName = Rhino.SaveFileName("Save Point Coordinates As", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+  
+  ' Get the file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  
+  ' Open a text file to write to
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+    
+  ' For each object name in the sorted array,
+  ' find all of the objects that have that name
+  ' and export their point coordinates
+  For Each strName In arrSorted
+    arrObjects = Rhino.ObjectsByName(strName)
+    If IsArray(arrObjects) Then
+      For Each strObject In arrObjects
+        ' Export the point coordintes vertices
+        arrPoint = Rhino.PointCoordinates(strObject)
+        If IsArray(arrPoint) Then
+          objStream.WriteLine Rhino.Pt2Str(arrPoint)
+        End If
+      Next
+    End If
+  Next
+  
+  ' Close the file
+  objStream.Close
+
+End Sub
+ 

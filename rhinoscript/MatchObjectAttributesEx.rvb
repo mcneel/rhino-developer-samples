@@ -1,0 +1,59 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MatchObjectAttributesEx.rvb -- March 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Matches, or copies, the attributes of a source object to a
+'   target object or an array of target objects. If the source 
+'   object is not specified, the attributes of the target object(s)
+'   will be reset to Rhino's default object attributes.
+' Parameters:
+'   arrTargets - An array of strings identifying the target objects.
+'   strSource  - The identifier of the source object. If the source
+'                object is not specified, the attributes of the target 
+'                object(s) will be reset to Rhino's default object
+'                attributes.
+'   intMode    - The group mode flag, where:
+'                  intMode = -1, remove all groups from target
+'                  intMode =  0, do not copy source groups to target
+'                  intMode =  1, copy source group to target
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function MatchObjectAttributesEx(arrTargets, strSource, intMode)
+
+	Dim strTarget, arrGroups, strGroup
+	
+	If intMode < -1 Then
+		intMode = -1
+	ElseIf intMode > 1 Then
+		intMode = 1
+	End If
+	
+	For Each strTarget In arrTargets
+		
+		If intMode = 0 Then
+			arrGroups = Rhino.ObjectGroups(strTarget)
+		Else
+			arrGroups = Null
+		End If
+		
+		Call Rhino.MatchObjectAttributes(strTarget, strSource)
+		
+		If intMode = -1 Or intMode = 0 Then
+			Call Rhino.RemoveObjectFromAllGroups(strTarget)
+		End If
+
+		If intMode = 0 And Not IsNull(arrGroups) Then
+			For Each strGroup In arrGroups
+				Call Rhino.AddObjectToGroup(strTarget, strGroup)
+			Next
+		End If
+		
+	Next	
+	
+End Function

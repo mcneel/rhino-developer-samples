@@ -1,0 +1,32 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DumpDocumentData.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: DumpDocumentData
+' Purpose:    Lists all RhinoScript document data to the command line.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DumpDocumentData
+
+  Dim arrApps, strApp, arrKeys, strKey, strValue
+
+  arrApps = Rhino.GetDocumentData()
+  If IsArray(arrApps) Then
+    For Each strApp In arrApps
+      arrKeys = Rhino.GetDocumentData(strApp)
+      If IsArray(arrKeys) Then
+        For Each strKey In arrKeys
+          strValue = Rhino.GetDocumentData(strApp, strKey)
+          If Not IsNull(strValue) Then
+            Rhino.Print strApp & " - " & strKey & " - " & strValue
+          End If
+        Next
+      End If
+    Next
+  End If
+  
+End Sub

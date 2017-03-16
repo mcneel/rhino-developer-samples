@@ -1,0 +1,76 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' IsCurveSquare.rvb -- May 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub TestIsCurveSquare
+  
+	Dim strObject
+  
+	strObject = Rhino.GetObject("Select curve for square test", 4, True)
+	If IsNull(strObject) Then Exit Sub
+    
+	If IsCurveSquare(strObject) Then
+		Call Rhino.Print("The curve is a square")
+	Else
+		Call Rhino.Print("The curve is not a square")
+	End If
+  
+End Sub
+
+Function IsCurveSquare(strCurve)
+  
+	' Local variables
+	Dim arrPoints, dblTol, dblAngTol, dblLength, dblAngle, i
+	Dim dblTemp, arrPt0, arrPt1, arrPt2, arrVec0, arrVec1
+  
+	' Return value
+	IsCurveSquare = False
+  
+	' Is the curve a polyline?
+	If Not Rhino.IsPolyline(strCurve) Then Exit Function
+    
+	' Is the curve planar?
+	If Not Rhino.IsCurvePlanar(strCurve) Then Exit Function
+    
+	arrPoints = Rhino.PolylineVertices(strCurve)
+	If UBound(arrPoints) <> 4 Then Exit Function
+    
+	dblTol = Rhino.UnitAbsoluteTolerance
+	dblLength = Null
+  
+	' Are the segments of the polyline the same length (within tolerance)?
+	For i = 0 To UBound(arrPoints) - 1
+		dblTemp = Rhino.Distance(arrPoints(i), arrPoints(i + 1))
+		If IsNull(dblLength) Then
+			dblLength = dblTemp
+		ElseIf Abs(dblLength - dblTemp) >= dblTol Then 
+			Exit Function
+		End If
+	Next
+    
+	dblAngTol = Rhino.UnitAngleTolerance
+	dblAngle = Null
+   
+	' Is the angle between each segment the same (within tolerance)?
+	For i = 1 To UBound(arrPoints) - 2
+		arrPt0 = arrPoints(i - 1)
+		arrPt1 = arrPoints(i)
+		arrPt2 = arrPoints(i + 1)
+		arrVec0 = Rhino.VectorUnitize(Rhino.VectorCreate(arrPt1, arrPt0))
+		arrVec1 = Rhino.VectorUnitize(Rhino.VectorCreate(arrPt1, arrPt2))
+		dblTemp = Rhino.VectorAngle(arrVec0, arrVec1)
+		If IsNull(dblAngle) Then
+			dblAngle = dblTemp
+		ElseIf Abs(dblAngle - dblTemp) >= dblAngTol Then 
+			Exit Function
+		End If
+	Next
+
+	' Must be a square
+	IsCurveSquare = True
+   
+End Function

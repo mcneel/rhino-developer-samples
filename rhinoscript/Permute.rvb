@@ -1,0 +1,78 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Permute.rvb -- March 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub TestPermute
+  Dim arr, n
+  arr = Array(1,2,3,4)
+  n = UBound(arr) + 1
+  Rhino.ClearCommandHistory
+  Call Rhino.Print(PermuteCount(n))
+  Call Permute(arr, 0, n)
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Permute
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Permute(ByRef arr, ByVal start, ByVal n)
+  Dim i, j
+  Call PermutePrint(arr)
+  If (start < n) Then
+    For i = n-2 To start Step -1
+      For j = i+1 To n-1
+        Call PermuteSwap(arr, i, j)
+        Call Permute(arr, i+1, n)
+      Next
+      Call PermuteRotate(arr, i, n)
+    Next
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PermutePrint
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PermutePrint(ByRef arr)
+  Dim s, v
+  s = ""
+  For Each v In arr
+    s = s & CStr(v) & vbTab
+  Next
+  Rhino.Print s
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PermuteSwap
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PermuteSwap(ByRef arr, ByVal i, ByVal j)
+  Dim tmp
+  tmp = arr(i)
+  arr(i) = arr(j)
+  arr(j) = tmp
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PermuteRotate
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PermuteRotate(ByRef arr, ByVal start, ByVal n)
+  Dim tmp, i
+  tmp = arr(start)
+  For i = start To n-2
+    arr(i) = arr(i+1)
+  Next
+  arr(n-1) = tmp
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PermuteCount (e.g. Factorial)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function PermuteCount(ByVal n)
+  If n <= 1 Then
+  	PermuteCount = 1
+  Else
+    PermuteCount = n * PermuteCount(n-1)
+  End If
+End Function

@@ -1,0 +1,21 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ToggleCurveDir.rvb -- October 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub ToggleCurveDir()
+  Dim arrCurves, strCurve
+  arrCurves = Rhino.GetObjects("Select curves", 4, True)
+  If IsArray(arrCurves) Then
+    For Each strCurve In arrCurves
+      If Rhino.CurveArrows(strCurve) > 0 Then
+        Call Rhino.CurveArrows(strCurve, 0)
+      Else
+        Call Rhino.CurveArrows(strCurve, 2)
+      End If
+    Next  
+  End If
+End Sub

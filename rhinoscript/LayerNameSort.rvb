@@ -1,0 +1,37 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BaseballSeam.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0 and Rhino 5.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub LayerNameSort()
+
+	Dim arrNames, arrNormalSort, arrLogicalSort, strName
+	arrNames = Rhino.LayerNames
+
+	Rhino.ClearCommandHistory
+	
+	Call Rhino.Print("Layer names - no sort")
+	For Each strName In arrNames
+		Call Rhino.Print("  " & strName)
+	Next
+	
+	Call Rhino.Print("--")
+	
+	Call Rhino.Print("Layer names - sort ascending")
+	arrNormalSort = Rhino.SortStrings(arrNames, True, True, False)
+	For Each strName In arrNormalSort
+		Call Rhino.Print("  " & strName)
+	Next
+	
+	Call Rhino.Print("--")
+	
+	Call Rhino.Print("Layer names - logical sort ascending")
+	arrLogicalSort = Rhino.SortStrings(arrNames, True, True, True)
+	For Each strName In arrLogicalSort
+		Call Rhino.Print("  " & strName)
+	Next
+	
+End Sub

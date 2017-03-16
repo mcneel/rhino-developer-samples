@@ -1,0 +1,106 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MakeNurbsCurve.rvb -- January 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: MakeNurbsCurve
+' Purpose:    Makes a NURBS curve with specified degree, control points,
+'             weights, and knot vector.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub MakeNurbsCurve
+  
+  ' Specify degree and number of control points:
+  '  The degree must be >= 1 and the number of control points
+  '  must be >= (degree+1).  The number of knots is always
+  '  (number of control points + degree - 1).
+  ' Make a non-rational degree 3 NURBS curve with 7 control points
+  Dim intDegree, intCVCount, intKnotCount
+  intDegree = 3
+  intCVCount = 10
+  intKnotCount = intCVCount+intDegree-1
+
+  ' Control Points:
+  '  Specify "Euclidean" (world 3-D) locations for the control points.
+  '  Make room for intCVCount control points in the arrControlPoints
+  '  array. The number you pass to ReDim is the maximum valid
+  '  index which is 1 less than the size of the array.
+  Dim arrControlPoints()
+  ReDim arrControlPoints(intCVCount-1)
+  arrControlPoints(0) = Array(0.0, 0.0, 0.0)
+  arrControlPoints(1) = Array(1.0, 2.0, 3.0)
+  arrControlPoints(2) = Array(5.0, 8.0, 9.0)
+  arrControlPoints(3) = Array(4.0, 7.0, 2.0)
+  arrControlPoints(4) = Array(8.0, 5.0, 6.0)
+  arrControlPoints(5) = Array(9.0, 5.0, 2.0)
+  arrControlPoints(6) = Array(5.0, 3.0, 2.0)
+  arrControlPoints(7) = Array(6.0, 2.0, 3.0)
+  arrControlPoints(8) = Array(7.0, 4.0, 2.0)
+  arrControlPoints(9) = Array(8.0, 5.0, 3.0)
+
+  ' Specify Weights:
+  '  Weights must be > 0.  In general you should set the
+  '  first and last weight to 1.
+  '  Make room for intCVCount weight values in the arrWeights
+  '  array. The number you pass to ReDim is the maximum valid
+  '  index which is 1 less than the size of the array.
+  Dim arrWeights()
+  ReDim arrWeights(intCVCount-1)
+  arrWeights(0) = 1.0
+  arrWeights(1) = 1.1
+  arrWeights(2) = 0.7
+  arrWeights(3) = 2.0
+  arrWeights(4) = 1.8
+  arrWeights(5) = 0.9
+  arrWeights(6) = 2.0
+  arrWeights(7) = 1.3
+  arrWeights(8) = 0.8
+  arrWeights(9) = 1.0
+
+  ' Specify Knots:
+  '  Make room for intKnotCount knot values in the arrKnots
+  '  array. The number you pass to ReDim is the maximum valid
+  '  index which is 1 less than the size of the array.
+  Dim arrKnots()
+  ReDim arrKnots(intKnotCount-1)
+
+  ' Unless you are doing something special, knot vectors
+  ' should be clamped.  "Clamped" means the first and last
+  ' degree many knots are the same.  In this example the
+  ' first three knots are 0 and the last three knots are 5.
+  ' The interior knots can have multiplicity from 1
+  ' (a "simple" knot) to intDegree (a "full multiplicity")
+  ' knot.
+
+  ' Start with a full multiplicity knot
+  arrKnots(0) = 0.0
+  arrKnots(1) = 0.0
+  arrKnots(2) = 0.0
+
+  ' Simple interior knot
+  arrKnots(3) = 1.0
+
+  ' Simple interior knot
+  arrKnots(4) = 3.0
+
+  ' Full multiplicity interior knot
+  arrKnots(5) = 5.0
+  arrKnots(6) = 5.0
+  arrKnots(7) = 5.0
+
+  ' Simple interior knot
+  arrKnots(8) = 7.12345
+
+  ' End with a full multiplicity knot
+  arrKnots(9)  = 9.0
+  arrKnots(10) = 9.0
+  arrKnots(11) = 9.0
+
+  ' Make the NURBS curve
+  Dim strObject
+  strObject = Rhino.AddNurbsCurve(arrControlPoints, arrKnots, intDegree, arrWeights)
+
+End Sub

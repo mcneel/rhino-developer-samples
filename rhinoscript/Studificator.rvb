@@ -1,0 +1,76 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Studificator.rvb -- March 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Creates a stud from a line
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Studificator()
+  
+  ' Everybody knows a stud is not really 2" x 4"...
+  Const length = 3.5
+  Const width = 1.5 
+  
+  ' Local variables
+  Dim line, origin, ending, plane
+  Dim v(1), pt(3), points(4), pline, stud
+  
+  ' Pick the line to studify
+  line = Rhino.GetObject("Select line", 4, True, True)
+  If IsNull(line) Then Exit Sub
+  If Not Rhino.IsLine(line) Then Exit Sub
+    
+  ' This will speed things up a bit
+  Call Rhino.EnableRedraw(False)
+    
+  ' Sanity check
+  If Rhino.CurveLength(line) <= Rhino.UnitAbsoluteTolerance Then Exit Sub
+
+  ' Get some data from the line    
+  origin = Rhino.CurveStartPoint(line)
+  ending = Rhino.CurveEndPoint(line)
+  
+  ' Since lines don't have any information that tell us how our
+  ' stud should be oriented, we'll just cook some something that
+  ' is at least consistent.
+  plane = Rhino.CurvePerpFrame(line, Rhino.CurveClosestPoint(line, origin))
+
+  ' Scale some vectors based on the dimensions
+  v(0) = Rhino.VectorScale(plane(1), length * 0.5)
+  v(1) = Rhino.VectorScale(plane(2), width * 0.5)   
+  
+  ' Cook up some temporary points
+  pt(0) = Rhino.PointAdd(origin, v(0))
+  pt(1) = Rhino.PointAdd(origin, Rhino.VectorReverse(v(0)))
+  pt(2) = Rhino.PointAdd(origin, v(1))
+  pt(3) = Rhino.PointAdd(origin, Rhino.VectorReverse(v(1)))
+
+  ' Define the points of the base rectangle
+  points(0) = Rhino.PointAdd(pt(0), Rhino.VectorReverse(v(1)))
+  points(1) = Rhino.PointAdd(pt(3), Rhino.VectorReverse(v(0)))
+  points(2) = Rhino.PointAdd(pt(1), v(1))
+  points(3) = Rhino.PointAdd(pt(2), v(0))
+  points(4) = points(0)  
+  
+  ' Create the base rectangle
+  pline = Rhino.AddPolyline(points)
+  
+  ' Extrude it along the line
+  stud = Rhino.ExtrudeCurveStraight(pline, origin, ending)
+  
+  ' Cap the ends of the stud
+  Call Rhino.CapPlanarHoles(stud)
+  
+  ' Delete the stuff we don't need anymore
+  Call Rhino.DeleteObject(pline)
+  Call Rhino.DeleteObject(line)
+  
+  ' All done
+  Call Rhino.EnableRedraw(True)
+ 
+End Sub

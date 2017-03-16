@@ -1,0 +1,75 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Carats.rvb -- October 2016
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Main subroutine
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Carats
+  
+	' Declare local constants
+	Const RH_SURFACE = 8
+	Const RH_POLYSRF = 16
+	Const RH_MESH = 32
+	Const RH_CM = 3
+	Const DS_DIAMOND = 3.51
+  
+	' Declare local variables
+	Dim strObject, intType
+	Dim arrVolume, dblVolume, strVolume, dblScale
+	Dim dblDensity, strDensity
+	Dim dblWeight, strWeight
+	Dim dblCarats, strCarats
+  
+	' Prompt to select a solid object
+	intType = RH_SURFACE + RH_POLYSRF + RH_MESH
+	strObject = Rhino.GetObject("Select solid surface, polysurface, or mesh", intType, True)
+	If IsNull(strObject) Then Exit Sub
+	If Not Rhino.IsObjectSolid(strObject) Then Exit Sub
+
+	' Calculate the volume of the selected object
+	dblVolume = Null
+	If Rhino.IsMesh(strObject) Then
+		arrVolume = Rhino.MeshVolume(strObject)
+		If IsArray(arrVolume) Then dblVolume = arrVolume(1)
+		Else
+			arrVolume = Rhino.SurfaceVolume(strObject)
+		If IsArray(arrVolume) Then dblVolume = arrVolume(0)
+	End If
+  
+	' Verify volume
+	If IsNull(dblVolume) Then
+		Call Rhino.Print("Unable to calculate volume.")
+		Exit Sub
+	End If
+	  
+	' Convert volume to cubic centimeters
+	dblScale = Rhino.UnitScale(RH_CM)
+	dblVolume = dblVolume * (dblScale ^ 3)	
+	strVolume = FormatNumber(dblVolume, 3)
+	Call Rhino.Print("Volume = " & strVolume & " cc")
+  
+	' Calculate the weight in grams
+	dblWeight = dblVolume * DS_DIAMOND
+	strWeight = FormatNumber(dblWeight, 3)
+	Call Rhino.Print("Weight = " & strWeight & " gm")
+	
+	' Calculate density
+	dblDensity = dblWeight / dblVolume
+	strDensity = FormatNumber(dblDensity, 3)
+	Call Rhino.Print("Density = " & strDensity & " g/cc")
+
+	' Calculate carats
+	dblCarats = dblWeight / 0.2
+	strCarats = FormatNumber(dblCarats, 3)
+	Call Rhino.Print("Carats = " & strCarats & " cts")
+	
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Call Rhino.AddStartupScript(Rhino.LastLoadedScriptFile)
+Call Rhino.AddAlias("Carats", "_NoEcho _-RunScript (Carats)")

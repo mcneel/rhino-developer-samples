@@ -1,0 +1,39 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelLayerObjects.rvb -- May 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This subroutine allows you to select all of the objects on a
+' layer just by selecting an object on that layer.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelLayerObjects
+  
+  Dim arrObjects, strObject
+  Dim objLayers, objKey, strLayer
+  
+  ' Pick objects on layers that you want selected
+  arrObjects = Rhino.GetObjects("Select objects", 0, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+  
+  ' Create a dictionary object for tracking layers  
+  Set objLayers = CreateObject("Scripting.Dictionary")
+  
+  ' Add object layers to the dictionary
+  For Each strObject In arrObjects
+    strLayer = Rhino.ObjectLayer(strObject)
+    If (False = objLayers.Exists(strLayer)) Then
+      Call objLayers.Add(strLayer, True)
+    End If
+  Next
+  
+  ' Select the layer objects
+  For Each objKey In objLayers
+    Call Rhino.ObjectsByLayer(CStr(objKey), True)
+  Next
+  
+End Sub

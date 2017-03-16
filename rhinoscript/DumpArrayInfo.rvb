@@ -1,0 +1,106 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DumpArrayInfo.rvb -- October 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Prints an array to the command line
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DumpArrayInfo(arr)
+  Dim i, j, d, b
+  If IsArray(arr) Then
+    For i = 0 To UBound(arr)
+      If IsArray(arr(i)) Then
+        d = GetArrayDim(arr(i))
+        If IsNull(d) Then
+          Rhino.Print "Element(" & CStr(i) & ") is not dimensioned"
+        Else
+          Rhino.Print "Element(" & CStr(i) & ") dimension = " & CStr(d)
+          For j = 1 To d
+            b = GetArrayUBound(arr(i), j)
+            If IsNull(b) Then
+              Rhino.Print "  Dimension(" & CStr(j) & ") has no bounds"
+            Else
+              Rhino.Print "  Dimension(" & CStr(j) & ") bounds = " & CStr(b)
+            End If
+          Next
+        End If
+      Else
+        Rhino.Print "Element(" & CStr(i) & ") is not an array"
+      End If
+    Next
+  End If
+End Sub
+  
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Description
+'  Returns the dimension of an array.
+'Parameters
+'  arr - Name of the array variable.
+'Returns
+'  The dimension of the array if successful.
+'  Null on error.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetArrayDim(ByVal arr)
+  GetArrayDim = Null
+  Dim i
+  If IsArray(arr) Then
+    For i = 1 To 60
+      On Error Resume Next
+      UBound arr, i
+      If Err.Number <> 0 Then
+        GetArrayDim = i-1
+        Exit Function
+      End If
+    Next
+    GetArrayDim = i
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Description
+'  Safely returns the largest available subscript for 
+'  the indicated dimension of an array.
+'Parameters
+'  arr - Name of the array variable.
+'  i   - Number indicating which dimension's upper bound to return.
+'Returns
+'  The upper bounds for the indicated dimension if successful.
+'  Null on error.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetArrayUBound(ByVal arr, ByVal i)
+  GetArrayUBound = Null
+  If IsArray(arr) Then
+    On Error Resume Next
+    b = UBound(arr, i)
+    If Err.Number = 0 Then GetArrayUBound = b
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Tester
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestDumpArrayInfo
+  
+  Dim arr0(6)
+  Dim arr1(5,4)
+  Dim arr2(3,2,1)
+  Dim arr3()
+  Dim arr4
+  
+  Dim arr(4)
+  arr(0) = arr0
+  arr(1) = arr1
+  arr(2) = arr2
+  arr(3) = arr3
+  arr(4) = arr4  
+  
+  DumpArrayInfo arr
+  
+End Sub
+
+TestDumpArrayInfo

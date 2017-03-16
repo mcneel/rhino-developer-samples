@@ -1,0 +1,43 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DumpIgesHeader.rvb -- April 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Prints the header of an IGES file to the command line.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DumpIgesHeader()
+  
+  Const MaxLines = 10
+  Const ForReading = 1
+  
+  Dim strFilter, strFileName
+  Dim objFSO, objStream, strText, nCount
+  
+  strFilter = "IGES Files (*.igs; *.iges)|*.igs; *.iges||"
+  strFileName = Rhino.OpenFileName("Open", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+  
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  On Error Resume Next
+  Set objStream = objFSO.OpenTextFile(strFileName, ForReading)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  strText = ""
+  nCount = 0
+  Do While (nCount < MaxLines And objStream.AtEndOfStream <> True)
+    strText = strText & objStream.ReadLine & VbCrLf
+    nCount = nCount + 1
+  Loop
+   
+  objStream.Close
+	
+  Call Rhino.TextOut(strText, "Dump IGES Header")  
+  
+End Sub

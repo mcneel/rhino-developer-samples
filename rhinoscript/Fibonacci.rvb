@@ -1,0 +1,112 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Fibonacci.rvb -- June 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Tests the functions below
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestFibonacci
+  
+  Dim s, a, n, i, st, et
+  
+  a = Array("Iterative", "Recursive", "Space", "Binet")
+  s = Rhino.GetString("Fibonacci algorithm to use",,a)
+  If IsNull(s) Then Exit Sub
+    
+  n = Rhino.GetInteger("Number of iterations", 20, 1, 100)
+  If IsNull(n) Then Exit Sub
+    
+  Select Case s
+    ' Iterative
+    Case "Iterative"
+      st = Timer
+      For i = 0 To n - 1
+        Rhino.Print Fib_1(i)
+      Next
+      et = Timer
+    ' Recursive
+    Case "Recursive"
+      st = Timer
+      For i = 0 To n - 1
+        Rhino.Print Fib_2(i)
+      Next
+      et = Timer
+    ' Space
+    Case "Space"
+      st = Timer
+      For i = 0 To n - 1
+        Rhino.Print Fib_3(i)
+      Next
+      et = Timer
+    'Binet  
+    Case Else
+      st = Timer
+      For i = 0 To n - 1
+        Rhino.Print Fib_4(i)
+      Next
+      et = Timer
+  End Select
+  
+  Call Rhino.Print(s & " calculation completed in " & FormatNumber(et-st,3) & " seconds.")
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Compute Fibonacci number using iteration
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function Fib_1(n)
+  Dim f, i
+  If (n < 2) Then
+    Fib_1 = n
+  Else
+    ReDim f(n-1)
+    f(0) = 1
+    f(1) = 1
+    For i = 2 To n - 1
+      f(i) = f(i-1) + f(i-2)
+    Next
+    Fib_1 = f(n-1)
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Compute Fibonacci number using recursion
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function Fib_2(n)
+  If (n < 2) Then
+    Fib_2 = n
+  Else
+    Fib_2 = Fib_2(n-1) + Fib_2(n-2)
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Compute Fibonacci number using space complexity
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function Fib_3(n)
+  Dim a, b, c, i
+  If (n < 2) Then
+    Fib_3 = n
+  Else  
+    a = 1
+    b = 1
+    For i = 2 To n -1
+      c = a + b
+      a = b
+      b = c
+    Next           
+    Fib_3 = b
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Compute Fibonacci number using Binet's formula
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function Fib_4(n)
+   Fib_4 = Round(((Sqr(5) + 1) / 2) ^ n / Sqr(5))
+End Function

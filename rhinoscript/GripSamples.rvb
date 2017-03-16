@@ -1,0 +1,42 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GripSamples.rvb -- January 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Searches a model to see if any curves
+' or surfaces have grips on. If so, it
+' select all of the object's grips.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Grip1
+  Dim arr, str
+  arr = Rhino.ObjectsByType(12)
+  If IsArray(arr) Then
+    For Each str In arr
+      If Rhino.ObjectGripCount(str) > 0 Then
+        Rhino.SelectObjectGrips str
+      End If
+    Next
+  End If
+End Sub  
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Searches a model to see if any curves
+' or surfaces have grips on. If so, it
+' turns the grips off and selects the object.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Grip2
+  Dim arr, str
+  arr = Rhino.ObjectsByType(12)
+  If IsArray(arr) Then
+    For Each str In arr
+      If Rhino.ObjectGripCount(str) > 0 Then
+        Rhino.EnableObjectGrips str, vbFalse
+        Rhino.SelectObject str
+      End If
+    Next
+  End If
+End Sub  

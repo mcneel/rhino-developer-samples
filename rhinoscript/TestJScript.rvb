@@ -1,0 +1,17 @@
+<%@Language=JScript%>
+
+/////////////////////////////////////////////////////////////////////////////
+// TestJScript.rvb -- November 2012
+// If this code works, it was written by Dale Fugier.
+// If not, I don/t know who wrote it.
+// Works with RhinoScript 5.0.
+/////////////////////////////////////////////////////////////////////////////
+
+function Hello()
+{
+  // JScript sample
+  msg = "Hello from JScript";
+  Rhino.MessageBox(msg);
+}
+
+Hello();

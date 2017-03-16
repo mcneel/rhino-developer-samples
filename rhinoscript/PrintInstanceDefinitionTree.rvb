@@ -1,0 +1,78 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PrintInstanceDefinitionTree.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PrintInstanceDefinitionTree
+' Print the names of all instance definitions, including objects and
+' sub-instances, in a tree-style format,
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PrintInstanceDefinitionTree
+  
+  Dim arrDefs, strDef
+  
+  arrDefs = Rhino.BlockNames
+  If IsNull(arrDefs) Then
+    Call Rhino.Print("No instance definitions found.")
+    Exit Sub
+  End If
+  
+  Rhino.ClearCommandHistory
+  For Each strDef In arrDefs
+    Call PrintInstanceDefinition(strDef, 0)
+  Next
+ 
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PrintInstanceDefinition
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PrintInstanceDefinition(ByVal strDef, ByVal nIndent)
+  
+  Dim strNode, strPad, arrObjects, strObject
+  
+  Call FormatTree(nIndent, strNode, strPad)
+  Call Rhino.Print(FormatMessage("%1%%2% Instance definition = %3%", Array(strPad, strNode, strDef)))
+
+  arrObjects = Rhino.BlockObjects(strDef)
+  If IsArray(arrObjects) Then
+    nIndent = nIndent + 1
+    Call FormatTree(nIndent, strNode, strPad)
+    For Each strObject In arrObjects
+      If Rhino.IsBlockInstance(strObject) Then
+        Call PrintInstanceDefinition(Rhino.BlockInstanceName(strObject), nIndent + 1)
+      Else
+        Call PrintString("%1%%2% Object = %3%", Array(strPad, strNode, Rhino.ObjectDescription(strObject)))
+      End If  
+    Next        
+  End If
+  
+End Sub
+      
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PrintString
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PrintString(ByVal strString, ByVal arrArguments)
+  Dim i
+  For i = 0 To UBound(arrArguments)
+    strString = Replace(strString, "%" & CStr(i+1) & "%", CStr(arrArguments(i)))
+  Next
+  Call Rhino.Print(strString)
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FormatTree
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub FormatTree(ByVal nIndent, ByRef strNode, ByRef strPad)
+  If (nIndent = 0) Then
+    strNode = ChrW(&H2500)
+    strPad = ""
+  Else
+    strNode = ChrW(&H2514)
+    strPad = String(4 * nIndent, " ")   
+  End If 
+End Sub

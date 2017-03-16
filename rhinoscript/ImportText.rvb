@@ -1,0 +1,37 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ImportText.rvb -- September 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ImportText()
+
+  Dim strFile, arrPoint
+  Dim objFSO, objFile, strText
+  
+  strFile = Rhino.OpenFileName("Open", "Text Files (*.txt)|*.txt||")
+  If IsNull(strFile) Then Exit Sub
+
+  arrPoint = Rhino.GetPoint("Start point")
+  If IsNull(arrPoint) Then Exit Sub
+
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  Set objFile = objFSO.OpenTextFile(strFile, 1)
+
+  strText = ""
+  While Not objFile.AtEndOfStream
+    If Len(strText) > 0 Then
+      strText = strText & VbCrLf
+    End If
+    strText = strText & objFile.ReadLine
+  Wend
+
+  objFile.Close
+  Set objFSO = Nothing
+  
+  Call Rhino.AddText(strText, arrPoint)
+
+End Sub

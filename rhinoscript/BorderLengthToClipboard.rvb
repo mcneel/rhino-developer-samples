@@ -1,0 +1,42 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BorderLengthToClipboard.rvb -- September 2008
+' If this code works, it was written by Mary Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub BorderLengthToClipboard()
+  
+  ' Declare local variables
+  Dim obj, borders, crv, sum, length
+  
+  ' Pick object
+  obj = Rhino.GetObject("Select surface or polysurface", 24)
+  If IsNull(obj) Then Exit Sub
+
+  ' Try to duplicate border    
+  borders = Rhino.DuplicateSurfaceBorder(obj)
+  If IsNull(borders) Then
+    Call Rhino.Print("Unable to duplicate surface border.")
+    Exit Sub
+  End If
+  
+  ' Sum up border curves
+  sum = 0
+  For Each crv In borders
+    length = Rhino.CurveLength(crv)
+    sum = sum + length
+  Next
+  
+  ' Delete border curves
+  Call Rhino.DeleteObjects(borders)
+  
+  ' Copy sum to clipboard
+  Call Rhino.ClipboardText(CStr(sum))
+  
+  ' Optional - popup sum
+  ' Call MsgBox("Sum = " & CStr(sum))
+  ' Call Rhino.Print("Sum = " & CStr(sum))
+  
+End Sub

@@ -1,0 +1,98 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ArionExport.rvb -- June 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This is this script's main subroutine...
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArionExport()
+	
+	' Local declarations
+	Dim strArion, strPath, strName, strFile, strCmd, objShell
+	
+	' Before we do anything, check to see if Arion is installed
+	strArion = GetArionPath()
+	If IsNull(strArion) Then
+		Call MsgBox("Arion renderer not installed.", vbOKOnly + vbCritical, "ArionExport")
+		Exit Sub
+	End If
+	
+	' Get the current file's path and name
+	strPath = Rhino.DocumentPath
+	strName = Rhino.DocumentName
+	If IsNull(strPath) Or IsNull(strName) Then
+		Call MsgBox("Please save your model before running this script.", vbOKOnly + vbExclamation, "ArionExport")
+		Exit Sub
+	End If
+
+	' Change the file extension
+	strName = Replace(strName,".3dm", ".obj")
+	
+	' Surround the entire string with double-quote characters
+	strFile = Chr(34) & strPath & strName & Chr(34)
+	
+	' Build the big command script string
+	strCmd = "_-SaveAs " & strFile & _
+		" _Geometry=_Mesh" & _
+		" _EndOfLine=_CRLF" & _
+		" _ExportRhinoObjectNames=_ExportObjectsAsOBJObjects" & _
+		" _ExportRhinoGroupOrLayerNames=_ExportLayersAsOBJGroups" & _
+		" _SortByOBJGroups=_No" & _
+		" _ExportMaterialDefinitions=_No" & _
+		" _YUp=_Yes" & _
+		" _ExportMeshTextureCoordinates=_No" & _
+		" _ExportMeshVertexNormals=_No" & _
+		" _ExportMaterialDefinitions=_No" & _
+		" _WrapLongLines=_Yes" & _
+		" _VertexWelding=_Unmodified" & _
+		" _WritePrecision=16" & _
+		" _Enter _Enter"
+    
+	' Script the command    
+	Call Rhino.Command(strCmd, 0)
+	
+	' I think this is the correct file to run. But since I cannot run it,
+	' I could be wrong...
+	strArion = strArion & "\Tools\Arion.exe"
+
+	' Get a shell object
+	Set objShell = CreateObject("Shell.Application")
+
+	' Assuming Arion.exe accepts command line parameters, this is one way
+	' we might be able to launch the program and have it load a file.
+	' But, since I cannot run it, I have no way of know if this works.
+	'Call objShell.ShellExecute(strArion, strPath & strName, "", "open", 1)
+
+	' This is just here for testing purposes
+	Call objShell.ShellExecute("Notepad.exe", strFile, "", "open", 1)
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' If Arion is installed, then there should be some information in the 
+' Windows Registry that indicates its install folder. This function
+' will try to retrieve that intall folder.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetArionPath()
+  
+	Const HKEY_LOCAL_MACHINE = &H80000002
+	Dim objRegistry, strKeyPath, strValueName, strValue, nResult
+
+	Set objRegistry = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\default:StdRegProv")
+
+	strKeyPath = "SOFTWARE\RandomControl\arion\path"
+	strValueName = "installdir"
+	
+	nResult = objRegistry.GetStringValue(HKEY_LOCAL_MACHINE, strKeyPath, strValueName, strValue)
+	If (nResult = 0) Then
+		GetArionPath = strValue
+	Else
+		GetArionPath = Null
+	End If
+  
+End Function

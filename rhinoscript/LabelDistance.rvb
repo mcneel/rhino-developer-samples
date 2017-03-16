@@ -1,0 +1,128 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LabelDistance.rvb -- February 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description
+'   Creates a special, labeled dimension and then
+'   exports it to a commma-delimited file
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub LabelDistance
+  
+  ' Local variables
+  Dim strDim, strLabel, strUserText, arrData, dblValue
+  
+  ' Prompt the user to create a linear dimension
+  strDim = AddLinearDimension
+  If IsNull(strDim) Then Exit Sub
+
+  ' Add a user-defined label to the dimension
+  strLabel = "MyLabel"
+  strUserText = "<> - " & strLabel
+  Call Rhino.DimensionUserText(strDim, strUserText)
+  
+  ' Get the value of the dimension
+  dblValue = Rhino.DimensionValue(strDim)
+  
+  ' Build an array to dump to a delimited file
+  arrData = Array(strLabel, dblValue)
+  
+  ' Write the delimited file
+  Call WriteToDelimitedFile(arrData)
+ 
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Create a linear dimension.
+' Returns:
+'   The dimension object's identifier, if successful.
+'   Null if not successful.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function AddLinearDimension
+
+  ' Local variable
+  Dim arrResults
+  
+  ' Set default return value
+  AddLinearDimension = Null
+  
+  ' Script Rhino's dimension command
+  Call Rhino.Command("_Dim")
+  
+  ' Get the command results
+  arrResults = Rhino.LastCreatedObjects
+  If IsArray(arrResults) Then
+    If UBound(arrResults) = 0 Then
+      If Rhino.IsLinearDimension(arrResults(0)) Then
+        ' Return dimension object's identifier
+        AddLinearDimension = arrResults(0)
+      End If
+    End If
+  End If
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Returns the user's desktop folder
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetDesktopFolder
+  
+  ' Local variable
+  Dim objShell
+  
+  ' Create a shell object
+  Set objShell = CreateObject("WScript.Shell")
+  
+  ' Get and return the desktop folder
+  GetDesktopFolder = objShell.SpecialFolders("Desktop")
+  
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Get the filename to create
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub WriteToDelimitedFile(arrData)
+  
+  ' Local constants
+  Const ForAppending = 8, TristateTrue = -1
+ 
+  ' Local variables
+  Dim strFileName, objFSO, objStream, strLine, i
+  
+  ' For this example, use a hard-coded file name
+  strFileName = GetDesktopFolder & "\LabelDistance.csv"
+  
+  ' Create a file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  
+  ' Try opening our file for appending, create if needed
+  On Error Resume Next
+  Set objStream = objFSO.OpenTextFile(strFileName, ForAppending, True, TristateTrue)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  ' Build a comma-delimited string to write
+  strLine = ""
+  For i = 0 To UBound(arrData)
+    strLine = strLine & CStr(arrData(i))
+    If i < UBound(arrData) Then
+      strLine = strLine & ","
+    End If
+  Next
+
+  ' Write to the file
+  objStream.WriteLine(strLine)
+
+  ' Close the file
+  objStream.Close
+  
+End Sub

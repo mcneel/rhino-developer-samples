@@ -1,0 +1,25 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ToRoman.rvb -- June 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Convert a number into Roman numeral
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ToRoman(number)
+  Dim aOnes : aOnes = Array("","I","II","III","IV","V","VI","VII","VIII","IX")
+  Dim aTens : aTens = Array("","X","XX","XXX","XL","L","LX","LXX","LXXX","XC")
+  Dim aHund : aHund = Array("","C","CC","CCC","CD","D","DC","DCC","DCCC","CM")
+  Dim aThou : aThou = Array("","M","MM","MMM","MMMM","MMMMM")
+  Dim v, w, x, y
+  v = ((number - (number Mod 1000)) / 1000)
+  number = (number Mod 1000)
+  w = ((number - (number Mod 100)) / 100)
+  number = (number Mod 100)
+  x = ((number - (number Mod 10)) / 10)
+  y = (number Mod 10)
+  ToRoman = aThou(v) & aHund(w) & aTens(x) & aOnes(y)
+End Function

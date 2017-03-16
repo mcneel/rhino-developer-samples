@@ -1,0 +1,88 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RhinoUnrollSurface.rvb -- April 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TestRhinoUnrollSurface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestRhinoUnrollSurface
+  
+  Dim strSurface : strSurface = Rhino.GetObject("Select surface or polysurface to unroll", 8 + 16)
+  If IsNull(strSurface) Then Exit Sub
+
+  Dim strPrompt : strPrompt = "Select curves on polysurface to unroll"
+  If Rhino.IsSurface(strSurface) Then strPrompt = "Select curves on surface to unroll"
+    
+  Dim arrCurves : arrCurves = Rhino.GetObjects(strPrompt, 4)
+    
+  Dim i, arrResults : arrResults = RhinoUnrollSurface(strSurface, arrCurves, True, False)
+  If IsArray(arrResults) Then
+    For i = 0 To UBound(arrResults)
+      Call Rhino.Print(arrResults(i))
+    Next
+  End If
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RhinoUnrollSurface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function RhinoUnrollSurface(strSurface, arrCurves, blnExplode, blnLabels)
+  
+  ' Default return value  
+  RhinoUnrollSurface = Null
+  
+  ' For speed, turn of screen redrawing
+  Call Rhino.EnableRedraw(False)
+  
+  ' Save any selected objects
+  Dim arrSaved : arrSaved = Rhino.SelectedObjects
+  
+  ' Unselect all objects
+  Rhino.UnSelectAllObjects
+  
+  ' Select the surface to unroll
+  Rhino.SelectObject strSurface
+
+  ' Format curve string
+  Dim i : i = 0
+  Dim strCurves : strCurves = " _Enter"
+  If IsArray(arrCurves) Then
+    strCurves = ""
+    For i = 0 To UBound(arrCurves)
+      strCurves = strCurves & " _SelId " & arrCurves(i)
+    Next
+    strCurves = strCurves & " _Enter"
+  End If
+  
+  ' Format explode string
+  Dim strExplode : strExplode = " _Explode=_Yes"
+  If (blnExplode = False) Then strExplode = " _Explode=_No"
+  
+  ' Format labels string
+  Dim strLabels : strLabels = " _Labels=_No"
+  If (blnLabels = True) Then strLabels = " _Labels=_Yes"
+
+ ' Script the command
+  Dim strCommand : strCommand = "_-UnrollSrf" & strExplode & strLabels & strCurves
+  Call Rhino.Command(strCommand, 0)
+
+  ' Return the results
+  RhinoUnrollSurface = Rhino.LastCreatedObjects
+
+  ' Unselect all objects
+  Rhino.UnSelectAllObjects
+
+  ' If any objects were selected before calling
+  ' this function, re-select them
+  If IsArray(arrSaved) Then Rhino.SelectObjects(arrSaved)
+
+  ' Don't forget to turn redrawing back on
+  Call Rhino.EnableRedraw(True)
+  
+End Function

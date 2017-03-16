@@ -1,0 +1,28 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LoadDefaultHatchPatterns.rvb -- October 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Function LoadDefaultHatchPatterns
+
+  Const CommonAppData = &H23&
+  Dim objShell, objFolder, objFolderItem
+  Dim strPath, arrPatterns
+   
+  Set objShell  = CreateObject("Shell.Application") 
+  Set objFolder = objShell.Namespace(CommonAppData) 
+  Set objFolderItem = objFolder.Self 
+  
+  strPath = objFolderItem.Path & "\McNeel\Rhinoceros\4.0\English\Support\hatchpatterns_1033.txt"
+  
+  arrPatterns = Rhino.AddHatchPatterns(strPath, False)
+  If IsArray(arrPatterns) Then
+    LoadDefaultHatchPatterns = UBound(arrPatterns) + 1
+  Else
+    LoadDefaultHatchPatterns = 0
+  End If
+
+End Function

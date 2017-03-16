@@ -1,0 +1,61 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SetRenderColorFromObjectColor.rvb -- February 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub SetRenderColorFromObjectColor
+  
+  ' Constants
+  Const rhColorByLayer = 0
+  Const rhColorByObject = 1
+  
+  ' Variables
+  Dim aObjects, sObject
+  Dim nColor, nSource
+  Dim sLayer, nMaterial
+  
+  ' Get all objects in the document
+  aObjects = Rhino.AllObjects
+  If Not IsArray(aObjects) Then Exit Sub
+
+  ' Process each object    
+  For Each sObject In aObjects
+    
+    ' Get the object's color and color source
+    nColor = Rhino.ObjectColor(sObject)
+    nSource = Rhino.ObjectColorSource(sObject)
+    nMaterial = -1
+    
+    ' If the object's color source is "by layer"
+    ' then get the layer's material index    
+    If (nSource = rhColorByLayer) Then
+      sLayer = Rhino.ObjectLayer(sObject)
+      nMaterial = Rhino.LayerMaterialIndex(sLayer)
+      If( nMaterial < 0 ) Then
+        nMaterial = Rhino.AddMaterialToLayer(sLayer)
+      End If
+
+    ' If the object's color sourc is "by object"
+    ' then get the object's material index    
+    ElseIf (nSource = rhColorByObject) Then
+      nMaterial = Rhino.ObjectMaterialIndex(sObject)
+      If( nMaterial < 0 ) Then
+        nMaterial = Rhino.AddMaterialToObject(sObject)
+      End If
+    End If
+    
+    ' Set the material color
+    If (nMaterial >= 0) Then
+      If (nColor <> Rhino.MaterialColor(nMaterial)) Then
+        Rhino.MaterialColor nMaterial, nColor
+      End If
+    End If
+    
+  Next
+    
+  Rhino.Redraw
+  
+End Sub

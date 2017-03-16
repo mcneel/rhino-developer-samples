@@ -1,0 +1,66 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FindRunningProcess.rvb -- February 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Example of how to find and terminate a running process.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestGetRunningProcesses
+  Dim strFile, nCount
+  strFile = "Notepad.exe"
+  nCount = FindRunningProcess(strFile)
+  If (0 = nCount) Then
+    Call Rhino.Print("There are no instances of " & CQuote(strFile) & " running.")
+  ElseIf (1 = nCount) Then
+    Call Rhino.Print("There is 1 instance of " & CQuote(strFile) & " running.")
+  Else
+    Call Rhino.Print("There are " & CStr(nCount) & " instances of " & CQuote(strFile) & " running.")
+  End If    
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Tests to see if a process, or application, is running. 
+' Parameters:
+'   strName [in] - The name of the process, or application (e.g. "Notepad.exe")
+' Returns:
+'   The number of running instances of strName
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FindRunningProcess(strName)
+  Dim objWMIService, colProcess
+  Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2") 
+  Set colProcess = objWMIService.ExecQuery("Select Name from Win32_Process WHERE Name='" & strName & "'")
+  FindRunningProcess = colProcess.Count
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Ends, or terminates, a process, or application. 
+' Parameters:
+'   strName [in] - The name of the process, or application (e.g. "Notepad.exe")
+' Returns:
+'   The number of running instances of strName that were terminated.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function EndRunningProcess(strName)
+  Dim objWMIService, colProcess, nCount
+  Set objWMIService = GetObject("winmgmts:{impersonationLevel=impersonate}!\\.\root\cimv2") 
+  Set colProcess = objWMIService.ExecQuery("Select Name from Win32_Process WHERE Name='" & strName & "'")
+  nCount = 0
+  For Each objProcess In colProcessList
+    If (0 = objProcess.Terminate()) Then nCount = nCount + 1
+  Next
+  EndRunningProcess = nCount
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Surrounds a string with double-quote characters. 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CQuote(val)
+  CQuote = Chr(34) & CStr(val) & Chr(34)
+End Function

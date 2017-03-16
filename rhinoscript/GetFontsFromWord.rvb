@@ -1,0 +1,48 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GetFontsFromWord.rvb -- April 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Get font face names from Microsoft Word
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetFontsFromWord()
+  
+  Dim objWord, arrFonts(), strFont, i
+  
+  On Error Resume Next
+  Set objWord = CreateObject("Word.Application")
+  If Err Then
+    GetFontsFromWord = Null
+    Exit Function
+  End If
+
+  i = 0
+  For Each strFont In objWord.FontNames
+    ReDim Preserve arrFonts(i)
+    arrFonts(i) = strFont
+    i = i + 1
+  Next
+  
+  GetFontsFromWord = arrFonts
+  objWord.Quit
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Tester
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestGetFontsFromWord
+  Dim arrFonts, arrSort
+  Rhino.ClearCommandHistory
+  arrFonts = GetFontsFromWord()
+  If IsArray(arrFonts) Then
+    arrSort = Rhino.SortStrings(arrFonts)
+    MsgBox Rhino.ListBox(arrSort)
+  Else
+    Rhino.Print "Failed to get Word fonts."
+  End If    
+End Sub

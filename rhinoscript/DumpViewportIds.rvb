@@ -1,0 +1,35 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DumpRhinoVersions.rvb -- June 2015
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub DumpViewportIds
+	
+	Dim arrViews, strView, i
+	Dim arrLayouts, strLayout, arrDetails, arrNames
+
+	arrViews = Rhino.ViewNames(False, 0)
+	Call Rhino.Print("** Standard Views **")
+	For Each strView In arrViews
+		Call Rhino.Print(strView & " = " & Rhino.ViewTitle(strView))
+	Next
+	
+	arrLayouts = Rhino.ViewNames(False, 1)
+	If IsArray(arrLayouts) Then
+		Call Rhino.Print("** Page Layout Views **")
+		For Each strLayout In arrLayouts
+			Call Rhino.Print(strLayout & " = " & Rhino.ViewTitle(strLayout))
+			arrDetails = Rhino.DetailNames(strLayout, False)
+			If IsArray(arrDetails) Then
+				arrNames = Rhino.DetailNames(strLayout, True)
+				For i = 0 To UBound(arrDetails)
+					Call Rhino.Print("  " & arrDetails(i) & " = " & Rhino.ViewTitle(arrNames(i)))
+				Next
+			End If
+		Next
+	End If
+
+End Sub

@@ -1,0 +1,22 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Factorial.rvb -- December 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub TestFactorial
+  n = Rhino.GetInteger("Number of factorials to calculate", , 1)
+  If IsNumeric(n) Then
+    MsgBox Factorial(n)
+  End If
+End Sub
+
+Function Factorial(n)
+  If n <= 1 Then
+    Factorial = 1
+  Else
+    Factorial = n * Factorial(n-1)
+  End If
+End Function
+

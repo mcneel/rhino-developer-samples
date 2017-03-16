@@ -1,0 +1,46 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExtrudePlanarCurves.rvb -- December 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Main subroutine
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExtrudePlanarCurves
+	
+	Dim arrCurves, dblDistance
+	Dim strCurve, arrPlane, arrDir, arrPoint
+	
+	arrCurves = Rhino.GetObjects("Select planar curves to extrude", 4, True, True)
+	If IsNull(arrCurves) Then Exit Sub
+	
+	dblDistance = Rhino.GetReal("Extrusion distance", 1.0)
+	If IsNull(dblDistance) Then Exit Sub
+	If 0 = dblDistance Then Exit Sub
+	
+	Call Rhino.EnableRedraw(False)
+	
+	For Each strCurve In arrCurves
+		If Rhino.IsCurvePlanar(strCurve) Then
+			arrPlane = Rhino.CurvePlane(strCurve)
+			If IsArray(arrPlane) Then
+				arrDir = Rhino.VectorScale(arrPlane(3), dblDistance)
+				arrPoint = Rhino.PointAdd(arrPlane(0), arrDir)
+				Call Rhino.ExtrudeCurveStraight(strCurve, arrPlane(0), arrPoint)
+			End If
+		End If
+	Next
+
+	Call Rhino.EnableRedraw(True)
+	
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Drag & drop support
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Rhino.AddStartUpScript Rhino.LastLoadedScriptFile
+Rhino.AddAlias "ExtrudePlanarCurves", "_-RunScript (ExtrudePlanarCurves)"

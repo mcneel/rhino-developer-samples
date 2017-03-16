@@ -1,0 +1,57 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MakePanelPoints.rvb -- February 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub MakePanelPoints
+  
+  ' Get the surface object
+  Dim strObject
+  strObject = Rhino.GetObject("Select polysurface to grid", 16)
+  If IsNull(strObject) Then Exit Sub
+  
+  ' Get the number of rows
+  Dim nRows
+  nRows = Rhino.GetInteger("Number of rows", 2, 2)
+  If IsNull(nRows) Then Exit Sub
+  nRows = nRows - 1
+  
+  ' Get the number of columns
+  Dim nCols
+  nCols = Rhino.GetInteger("Number of columns", 2, 2)
+  If IsNull(nCols) Then Exit Sub
+  nCols = nCols - 1
+  
+  ' Explode the polysurface
+  Dim arrObjects
+  arrObjects = Rhino.ExplodePolySurfaces(strObject)
+  If Not IsArray(arrObjects) Then Exit Sub
+  
+  Rhino.EnableRedraw False
+  
+  ' Process each exploded surface
+  Dim U, V, i, j, arrUV(1), arrPt
+  For Each strObject In arrObjects
+
+    ' Get the domain of the surface
+    U = Rhino.SurfaceDomain(strObject, 0)
+    V = Rhino.SurfaceDomain(strObject, 1)
+  
+    ' Add the points
+    For i = 0 To nRows
+      arrUV(0) = U(0) + (((U(1) - U(0)) / nRows) * i)
+      For j = 0 To nCols
+        arrUV(1) = V(0) + (((V(1) - V(0)) / nCols) * j)
+        arrPt = Rhino.EvaluateSurface(strObject, arrUV)
+        If IsArray(arrPt) Then Rhino.AddPoint arrPt
+      Next
+    Next
+  Next
+
+  Rhino.DeleteObjects arrObjects
+  Rhino.EnableRedraw True
+  
+End Sub

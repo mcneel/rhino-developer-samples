@@ -1,0 +1,54 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportCSV.rvb -- September 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub ExportCSV
+  
+  ' Pick some objects to export properties
+  Dim arrObjects
+  arrObjects = Rhino.GetObjects("Select objects to export",,, vbTrue)
+  If Not IsArray(arrObjects) Then Exit Sub
+  
+  ' Prompt the user to specify a file name    
+  Dim strFilter, strFileName
+  strFilter = "Object Properties (*.csv)|*.csv|All Files (*.*)|*.*||"
+  strFileName = Rhino.SaveFileName("Export As", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+
+  ' Get the file system object
+  Dim objFSO, objStream
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  
+  ' Open a text file to write to
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  ' Write each point as text to the file
+  Dim strObject, strName, strDesc, strLayer, strText
+  For Each strObject In arrObjects
+    strName = Rhino.ObjectName(strObject)
+    If IsNull(strName) Then strName = ""
+    strDesc = Rhino.ObjectDescription(strObject)
+    If IsNull(strDesc) Then strDesc = ""
+    strLayer = Rhino.ObjectLayer(strObject)
+    If IsNull(strLayer) Then strLayer = ""
+    strText = QuoteString(strName) & "," & QuoteString(strDesc) & "," & QuoteString(strLayer)
+    objStream.WriteLine strText
+  Next
+
+  ' Close the file
+  objStream.Close
+
+End Sub
+
+Function QuoteString(str)
+  QuoteString = Chr(34) & CStr(str) & Chr(34)    
+End Function  

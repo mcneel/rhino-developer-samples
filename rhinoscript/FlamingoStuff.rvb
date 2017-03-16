@@ -1,0 +1,40 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FlamingoStuff.rvb -- June 2004
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Function FlamingoBuildNumber()
+  Dim objShell, strKey, strBuildNumber
+  Set objShell = CreateObject("WScript.Shell")
+  strKey = "HKEY_LOCAL_MACHINE\Software\McNeel\Flamingo\1.1\MostRecent"
+  On Error Resume Next
+  strBuildNumber = objShell.RegRead(strKey)
+  If Err.Number <> 0 Then
+    FlamingoBuildNumber = Null
+  Else
+    FlamingoBuildNumber = strBuildNumber
+  End If
+  Set objShell = Nothing
+End Function
+
+Function IsFlamingoInstalled()
+  IsFlamingoInstalled = vbFalse
+  Const rhRenderPlugin = 1
+  Dim arrPlugins, strPlugin
+  arrPlugins = Rhino.PlugIns(rhRenderPlugin)
+  If IsArray(arrPlugins) Then
+    For Each strPlugin In arrPlugins
+      If StrComp(strPlugIn, "Flamingo Raytrace 1.1", vbTextCompare) = 0 Then
+        IsFlamingoInstalled = vbTrue
+        Exit Function
+      ElseIf StrComp(strPlugIn, "Flamingo Photometric 1.1", vbTextCompare) = 0 Then     
+        IsFlamingoInstalled = vbTrue
+        Exit Function
+      End If
+    Next
+  End If
+End Function

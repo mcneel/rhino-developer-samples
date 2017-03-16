@@ -1,0 +1,46 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ReadSphereFile.rvb -- April 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Sample data:
+' 0.0,0.0,0.0,4.0,0
+' 10.0,0.0,0.0,4.0,255
+' 10.0,10.0,0.0,4.0,65280
+' 0.0,10.0,0.0,4.0,16711680
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ReadSphereFile()
+  
+  Dim filename, data, i
+  Dim p(2), r, c, sphere
+  
+  filename = Rhino.OpenFileName("Open", "Spheres Files (*.txt)|*.txt||")
+  If IsNull(filename) Then Exit Sub
+
+  data = Rhino.ReadDelimitedFile(filename)
+  If IsNull(data) Then Exit Sub
+
+  Call Rhino.EnableRedraw(False)
+  
+  For i = 0 To UBound(data, 1)
+    If UBound(data, 2) = 4 Then
+      p(0) = data(i, 0) ' x coord
+      p(1) = data(i, 1) ' y coord
+      p(2) = data(i, 2) ' z coord
+      r = data(i, 3)    ' radius
+      c = data(i, 4)    ' rgb color
+      sphere = Rhino.AddSphere(p, r)
+      If Not IsNull(sphere) Then
+        Call Rhino.ObjectColor(sphere, c)
+      End If
+    End If
+  Next
+
+  Call Rhino.EnableRedraw(True)
+     
+End Sub

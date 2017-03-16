@@ -1,0 +1,57 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' QuickBlockLink.rvb -- March 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Creates a linked block (quickly I guess...)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub QuickBlockLink
+  
+  ' Local variables
+  Dim arrObjects, arrPoint, strFile
+  Dim arrCopy, strPoint
+  
+  ' Select some objects that define the block
+  arrObjects = Rhino.GetObjects("Select objects to define block", 0, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+  
+  ' Pick the block's base point
+  arrPoint = Rhino.GetPoint("Block base point")
+  If IsNull(arrPoint) Then Exit Sub
+
+  ' Get a file name to create    
+  strFile = Rhino.SaveFileName("Save", "Rhino 3D Model (*.3dm)|*.3dm||")
+  If IsNull(strFile) Then Exit Sub
+
+  ' Turn off screen redrawing so the screen won't flicker    
+  Call Rhino.EnableRedraw(False)    
+
+  ' Copy the block objects to the world origin
+  arrCopy = Rhino.CopyObjects(arrObjects, arrPoint, Array(0,0,0))
+
+  ' Unselect all objects
+  Rhino.UnselectAllObjects
+  
+  ' Select just the objects we copied
+  Call Rhino.SelectObjects(arrCopy)
+
+  ' Export the selected objects
+  Call Rhino.Command("_-Export " & Chr(34) & strFile & Chr(34), 0)
+  
+  ' Insert a block
+  strPoint = Rhino.Pt2Str(arrPoint)
+  Call Rhino.Command("_-Insert _File=_Yes " & strFile & " _Block " & strPoint & " _Enter _Enter", 0)  
+
+  ' Delete the copied objects
+  Call Rhino.DeleteObjects(arrCopy)
+  Call Rhino.DeleteObjects(arrObjects)
+  
+  ' Turn redrawing back on
+  Call Rhino.EnableRedraw(True)    
+  
+End Sub

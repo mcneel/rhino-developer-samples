@@ -1,0 +1,160 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DynamicArray.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Class:   DynamicArray
+' Purpose: VBScript dynamic array class
+' Usage:
+'          Set arr = New DynamicArray  ' Create an instance of DynamicArray
+'          arr.Add "Hello Rhino"       ' Add a new element
+'          Rhino.Print arr.Data(0)     ' Retrieve the value
+'          Set arr = Nothing           ' Destroy the instance
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Class DynamicArray
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Private data member
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Private m_aData
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Initialize event.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Private Sub Class_Initialize()
+    m_aData = Array(0)
+  End Sub
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Terminate event.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Private Sub Class_Terminate()
+    ReDim m_aData(0)
+  End Sub
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Returns the value at a given position in the array.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Property Get Data(iPos)
+    If iPos < LBound(m_aData) Or iPos > UBound(m_aData) Then
+      Exit Property
+    End If
+    If IsObject(m_aData(iPos)) Then
+      Set Data = m_aData(iPos)
+    Else
+      Data = m_aData(iPos)
+    End If
+  End Property
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Sets the value at a given position in the array.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Property Let Data(iPos, vValue)
+    If iPos < LBound(m_aData) Then Exit Property
+      If iPos > UBound(m_aData) Then
+        ReDim Preserve m_aData(iPos)
+      End If
+      If IsObject(vValue) Then
+        Set m_aData(iPos) = vValue
+      Else
+        m_aData(iPos) = vValue
+      End If
+    End Property
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Returns the entire array.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Property Get DataArray()
+    DataArray = m_aData
+  End Property
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Returns the starting index of the array.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Property Get StartIndex()
+    StartIndex = LBound(m_aData)
+  End Property
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Returns the ending index of the array.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Property Get EndIndex()
+    EndIndex = UBound(m_aData)
+  End Property
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Returns the number of data elements in the array.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Property Get Count()
+    Count = UBound(m_aData) - LBound(m_aData)
+  End Property
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Adds a new element to the array.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Function Add(vValue)
+    If IsObject(vValue) Then
+      Set m_aData(UBound(m_aData)) = vValue
+    Else
+      m_aData(UBound(m_aData)) = vValue
+    End If
+    Add = UBound(m_aData)
+    ReDim Preserve m_aData(UBound(m_aData) + 1)
+  End Function
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Inserts a new element at a given position in the array.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Function Insert(iPos, vValue)
+    If iPos > UBound(m_aData) Then
+      Call Add(vValue)
+      Exit Function
+    ElseIf iPos >= LBound(m_aData) Then
+      Dim iLoop
+      For iLoop = UBound(m_aData) To iPos + 1 Step -1
+        If IsObject(m_aData(iLoop - 1)) Then
+          Set m_aData(iLoop) = m_aData(iLoop - 1)
+        Else
+          m_aData(iLoop) = m_aData(iLoop - 1)
+        End If
+      Next
+      If IsObject(vValue) Then
+        Set m_aData(iPos) = vValue
+      Else
+        m_aData(iPos) = vValue
+      End If
+      Insert = UBound(m_aData)
+      ReDim Preserve m_aData(UBound(m_aData) + 1)
+    End If
+  End Function
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Deletes an element from the array. Shrinks the array by 1.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Sub Delete(iPos)
+    If iPos < LBound(m_aData) Or iPos > UBound(m_aData) Then
+      Exit Sub
+    End If
+    Dim iLoop
+    For iLoop = iPos To UBound(m_aData) - 1
+      If IsObject(m_aData(iLoop + 1)) Then
+        Set m_aData(iLoop) = m_aData(iLoop + 1)
+      Else
+        m_aData(iLoop) = m_aData(iLoop + 1)
+      End If
+    Next
+    ReDim Preserve m_aData(UBound(m_aData) - 1)
+  End Sub
+
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  ' Reinitializes the array. Removes any existing elements.
+  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Public Sub Flush()
+    ReDim m_aData(0)
+  End Sub
+
+End Class

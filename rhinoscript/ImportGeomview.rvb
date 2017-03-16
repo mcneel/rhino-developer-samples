@@ -1,0 +1,87 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ImportGeomview.rvb -- August 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub ImportGeomview
+
+  Const ForReading = 1
+  
+  Dim strFileName, objFSO, objFile
+  Dim strLine, arrSplit, i, j
+  Dim arrVertices(), arrFaces(), arrFace()
+
+  strFileName = Rhino.OpenFileName("Import Geomview", "Geomview OFF (*.off)|*.off||")
+  If IsNull(strFileName) Then Exit Sub
+  
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  Set objFile = objFSO.OpenTextFile(strFileName, ForReading)
+  
+  ' Read header
+  strLine = Trim(objFile.ReadLine)
+
+  ' Read sizes
+  strLine = Trim(objFile.ReadLine)
+  arrSplit = Rhino.Strtok(strLine, " ")
+  
+  ReDim arrVertices(CInt(arrSplit(0)) - 1)
+  ReDim arrFaces(CInt(arrSplit(1)) - 1)
+   
+  For i = 0 To UBound(arrVertices)
+    strLine = Trim(objFile.ReadLine)
+    arrSplit = Rhino.Strtok(strLine, " ")
+    For j = 0 To UBound(arrSplit)
+      arrSplit(j) = CDbl(arrSplit(j))
+    Next
+    arrVertices(i) = arrSplit
+  Next
+  
+  For i = 0 To UBound(arrFaces)
+    strLine = Trim(objFile.ReadLine)
+    arrSplit = Rhino.Strtok(strLine, " ")
+    For j = 0 To UBound(arrSplit)
+      arrSplit(j) = CDbl(arrSplit(j))
+    Next
+    ReDim arrFace(arrSplit(0) - 1)
+    For j = 1 To UBound(arrFace) + 1
+      arrFace(j - 1) = arrSplit(j)
+    Next
+    arrFaces(i) = arrFace
+  Next  
+
+  objFile.Close
+  
+  Call CreateSolid(arrVertices, arrFaces)
+  
+End Sub
+
+Sub CreateSolid(arrVertices, arrFaces)
+	
+	Dim arrSurfaces()
+	ReDim arrSurfaces(UBound(arrFaces))
+	
+	' Create each face
+	Dim i, j, arrFace, arrPoints(), strPolyline, arrPlanarSrf
+	For i = 0 To UBound(arrFaces)
+		arrFace = arrFaces(i)
+		ReDim arrPoints(UBound(arrFace) + 1)
+		For j = 0 To UBound(arrFace)
+			arrPoints(j) = arrVertices(arrFace(j))
+		Next
+		arrPoints(UBound(arrFace) + 1) = arrPoints(0)
+		strPolyline = Rhino.AddPolyline(arrPoints)
+		arrPlanarSrf = Rhino.AddPlanarSrf(Array(strPolyline))
+		arrSurfaces(i) = arrPlanarSrf(0)
+		Rhino.DeleteObject strPolyline
+	Next
+
+
+	' Join all of the faces
+	Rhino.SelectObjects arrSurfaces
+	Rhino.Command "_-Join"
+	Rhino.UnselectAllObjects
+
+End Sub

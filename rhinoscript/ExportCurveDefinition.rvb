@@ -1,0 +1,134 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportCurveDefinition.rvb -- July 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' The main script procedure
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportCurveDefinition
+  
+  ' Declare local variables
+  Dim strCurve, strFileName, objFSO, objStream
+  Dim strName, nCount, nDegree, bRational, arrPoints, arrWeights, arrKnots
+  Dim strTemp, i
+  
+  ' Pick the curve to export
+  strCurve = Rhino.GetObject("Select curve for definition export", 4, True)
+  If IsNull(strCurve) Then Exit Sub
+
+  ' Get the file name to create    
+  strFileName = Rhino.SaveFileName("Export", "Curve Definition (*.dat)|*.dat|All Files (*.*)|*.*||")
+  If IsNull(strFileName) Then Exit Sub
+
+  ' Get the file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+  ' Create a new text file
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+  
+  ' Here we go...  
+
+  ' Write an empty line
+  Call objStream.WriteLine("")
+  
+  ' Write start CURVE_DEFINITION
+  Call objStream.WriteLine("@CURVE_DEFINITION {")
+  
+  ' Write start CURVE_NAME
+  strName = Rhino.ObjectName(strCurve)
+  If IsNull(strName) Then strName = strCurve
+  Call objStream.WriteLine("  @CURVE_NAME {" & strName & "} {")
+
+  ' Write IS_DEFINED_IN_FRAME (not sure what this means...)
+  Call objStream.WriteLine("    @IS_DEFINED_IN_FRAME {INERTIAL}")
+  
+  ' Write start POINT_DEFINITION
+  Call objStream.WriteLine("    @POINT_DEFINITION {")
+
+  ' Write NUMBER_OF_CONTROL_POINTS
+  nCount = Rhino.CurvePointCount(strCurve)
+  Call objStream.WriteLine("      @NUMBER_OF_CONTROL_POINTS {" & CStr(nCount) & "}")
+
+  ' Write DEGREE_OF_CURVE
+  nDegree = Rhino.CurveDegree(strCurve)
+  Call objStream.WriteLine("      @DEGREE_OF_CURVE {" & CStr(nDegree) & "}")
+
+  ' Write RATIONAL_CURVE_FLAG
+  bRational = Rhino.IsCurveRational(strCurve)
+  If (bRational = True) Then
+    strTemp = "YES"
+  Else
+    strTemp = "NO"
+  End If
+  Call objStream.WriteLine("      @RATIONAL_CURVE_FLAG {" & strTemp & "}")
+
+  ' Write COORDINATES
+  arrPoints = Rhino.CurvePoints(strCurve)
+  arrWeights = Rhino.CurveWeights(strCurve)
+  For i = 0 To UBound(arrPoints)
+    strTemp = FormatControlPoint(arrPoints(i), arrWeights(i))
+    Call objStream.WriteLine("      @COORDINATES {" & strTemp & "}")
+  Next    
+
+  ' Write end POINT_DEFINITION
+  Call objStream.WriteLine("    }")
+  
+  ' Write start KNOT_SEQUENCE_DEFINITION
+  Call objStream.WriteLine("    @KNOT_SEQUENCE_DEFINITION {")
+  
+  ' Write KNOT_SEQUENCE
+  Call objStream.WriteLine("      @KNOT_SEQUENCE {")
+  arrKnots = Rhino.CurveKnots(strCurve)
+  strTemp = ""
+  For i = 0 To UBound(arrKnots)
+    strTemp = strTemp & FormatNumber(arrKnots(i), 16)
+    If i = UBound(arrKnots) Then
+      strTemp = strTemp & "}"
+      Call objStream.WriteLine("       " & strTemp)
+    Else
+      strTemp = strTemp & ", "
+      If (i + 1) Mod 6 = 0 Then
+        Call objStream.WriteLine("       " & strTemp)
+        strTemp = ""
+      End If        
+    End If
+  Next
+  
+  ' Write end KNOT_SEQUENCE_DEFINITION
+  Call objStream.WriteLine("    }")
+  
+  ' Write end CURVE_NAME
+  Call objStream.WriteLine("  }")
+
+  ' Write end CURVE_DEFINITION
+  Call objStream.WriteLine("}")
+  
+  ' Close the file
+  objStream.Close
+  
+  ' Done
+  Call Rhino.Print(strFileName & " written successfully.")
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Utility function to format a control point string
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FormatControlPoint(arrPoint, dblWeight)
+  Dim strPoint
+  strPoint = FormatNumber(arrPoint(0), 16) & ", "
+  strPoint = strPoint & FormatNumber(arrPoint(1), 16) & ", "
+  strPoint = strPoint & FormatNumber(arrPoint(2), 16) & ", "
+  strPoint = strPoint & FormatNumber(dblWeight, 16)
+  FormatControlPoint = strPoint
+End Function

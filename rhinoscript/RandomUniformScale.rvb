@@ -1,0 +1,38 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RandomUniformScale.rvb -- February 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Should work with Rhino 4.0 and Rhino 5.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Randomize   
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Randomly scales an object uniformly
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RandomUniformScale
+  
+  Const SMIN = 0.8
+  Const SMAX = 1.2
+
+  Dim arrObjects, strObject, arrBox, arrOrigin, arrScale(2)
+  
+  arrObjects = Rhino.GetObjects("Select objects for random uniform scaling",,True)
+  If IsNull(arrObjects) Then Exit Sub
+
+  Call Rhino.EnableRedraw(False)
+      
+  For Each strObject In arrObjects
+    arrScale(0) = Rnd * (SMAX - SMIN) + SMIN
+    arrScale(1) = arrScale(0)
+    arrScale(2) = arrScale(0)
+    arrBox = Rhino.BoundingBox(strObject)
+    arrOrigin = Rhino.PointDivide(Rhino.PointAdd(arrBox(0), arrBox(2)), 2)
+    Call Rhino.ScaleObject(strObject, arrOrigin, arrScale, False)
+  Next
+  
+  Call Rhino.EnableRedraw(True)
+  
+End Sub

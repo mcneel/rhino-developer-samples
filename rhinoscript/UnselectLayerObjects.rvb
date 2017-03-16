@@ -1,0 +1,36 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' UnselectLayerObjects.rvb -- March 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub UnselectLayerObjects
+
+	' Declare local variables
+	Dim arrLayers, strLayer, arrObjects
+  
+	' Make sure were are running Rhino 5.        
+	If (Rhino.ExeVersion < 5) Then
+		Call Rhino.Print("This script requires Rhino 5.0 for greater.")
+		Exit Sub
+	End If
+	
+	' Prompt the user to select some layers
+	arrLayers = Rhino.GetLayers("Select Layers", False)
+	If IsNull(arrLayers) Then Exit Sub
+	
+	Call Rhino.EnableRedraw(False)
+	
+	' Process eachy layer
+	For Each strLayer In arrLayers
+		arrObjects = Rhino.ObjectsByLayer(strLayer)
+		If IsArray(arrObjects) Then
+			Rhino.UnselectObjects(arrObjects)
+		End If
+	Next
+  
+	Call Rhino.EnableRedraw(True)
+  
+End Sub

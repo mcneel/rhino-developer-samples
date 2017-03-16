@@ -1,0 +1,33 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ResetBlock.rvb -- August 2016
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Resets a block instance by modifying its transformation to be
+' translation only. Thus, only position (not rotation or scale)
+' are retained.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ResetBlock
+	
+	Const RH_BLOCK = &h1000
+	Dim arrBlocks, strBlock, arrPoint, arrVector
+	
+	arrBlocks = Rhino.GetObjects("Select block instances to reset", RH_BLOCK, True, True)
+	If IsNull(arrBlocks) Then Exit Sub
+	
+	Call Rhino.EnableRedraw(False)
+	
+	For Each strBlock In arrBlocks
+		arrPoint = Rhino.BlockInstanceInsertPoint(strBlock)
+		arrVector = Rhino.VectorCreate(arrPoint, Array(0, 0, 0))
+		arrXform = Rhino.XformTranslation(arrVector)
+		Call Rhino.BlockInstanceXform(strBlock, arrXform)
+	Next
+	
+	Call Rhino.EnableRedraw(True)
+
+End Sub

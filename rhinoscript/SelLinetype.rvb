@@ -1,0 +1,45 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelLinetype.rvb -- April 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Selects object by linetype
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelLinetype()
+  
+  Dim strLinetype, arrObjects, strObject, intCount
+  
+  strLinetype = Rhino.GetLinetype()
+  If IsNull(strLinetype) Then Exit Sub
+  
+  arrObjects = Rhino.NormalObjects()
+  If IsArray(arrObjects) Then
+    
+  Call Rhino.EnableRedraw(False)
+    
+  intCount = 0
+  For Each strObject In arrObjects
+    If StrComp(Rhino.ObjectLinetype(strObject), strLinetype, vbBinaryCompare) = 0 Then
+      Call Rhino.SelectObject(strObject)
+      intCount = intCount + 1
+    End If
+  Next
+    
+  Call Rhino.EnableRedraw(True)
+  
+  If (intCount = 0) Then
+    Rhino.Print "No objects added to selection."
+  ElseIf (intCount = 1) Then
+    Rhino.Print "1 object added to selection."
+  Else
+    Rhino.Print CStr(intCount) & " objects added to selection."
+  End If
+    
+  End If
+  
+End Sub

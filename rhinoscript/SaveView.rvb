@@ -1,0 +1,55 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SaveView.rvb -- January 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SaveView
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SaveView
+  
+  ' Prompt for the name of the view to save.
+  ' Use the title of the current view as the default name.
+  Dim sName
+  sName = Rhino.StringBox(, Rhino.CurrentView, "Name of view")
+  If IsNull(sName) Then Exit Sub
+   
+  ' Get all of the named views
+  Dim aViews
+    aViews = Rhino.NamedViews
+    If Not IsArray(aViews) Then
+      ' If we got here, then no other named views exist.
+      ' Thus, we will add the named view and exit.
+      Rhino.AddNamedView sName
+    Exit Sub
+  End If
+   
+  ' See if the named view specified by the user matches
+  ' one that has already been saved.
+  Dim sView, bFound
+    bFound = False
+    For Each sView In aViews
+      If (StrComp(sName, sView, 1) = 0) Then
+      ' If we got here, then the named view already exists.
+      bFound = True
+      Exit For
+    End If
+  Next
+   
+  ' If the named view already exists, ask the user what he wants to do.
+  If (bFound = True) Then
+    Dim sMsg
+    sMsg = "A view named " & sName & " already exists." & Chr(13) & Chr(10) & "Do you want to replace it?"
+    If (MsgBox(sMsg, vbYesNo + vbExclamation, "Save View") = vbNo) Then
+      ' If we got here, the user pressed the "Cancel" button.
+      Exit Sub
+    End If
+  End If
+   
+  ' Add the named view
+  Rhino.AddNamedView sName
+  
+End Sub

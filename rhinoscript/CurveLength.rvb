@@ -1,0 +1,34 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CurveLength.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: CurveLength
+' Purpose:    Calculate the length of one or more curves.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CurveLength
+  
+  Dim arrObjects, strObject, dblLength, intCount
+  dblLength = 0.0 : intCount = 0
+  
+  ' Get the curve objects
+  arrObjects = Rhino.GetObjects("Select Objects", 4, True, True)
+  If IsArray(arrObjects) Then
+    Rhino.UnselectObjects arrObjects
+    For Each strObject In arrObjects
+      If Rhino.IsCurve(strObject) Then
+        ' Get the curve length
+        dblLength = dblLength + Rhino.CurveLength(strObject)
+        intCount = intCount + 1
+      End If
+    Next
+    If intCount > 0 Then
+      Rhino.Print "Curves selected: " & CStr(intCount) & ", Total length: " & CStr(dblLength)
+    End If
+  End If
+
+End Sub

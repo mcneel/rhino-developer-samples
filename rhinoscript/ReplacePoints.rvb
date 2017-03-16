@@ -1,0 +1,60 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ReplacePoints.rvb -- June 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Replaces selected points with a block
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ReplacePoints
+  
+  ' Declare local variables
+  Dim arrObjects, strObject, arrPoint
+  Dim arrBlocks, strBlock
+  
+  ' Make sure there are block definitions in the document
+  arrBlocks = Rhino.BlockNames(True)
+  If IsNull(arrBlocks) Then
+    Call Rhino.Print("No block definitions found.")
+    Exit Sub
+  End If
+  
+  ' Prompt the user to select some points
+  arrObjects = Rhino.GetObjects("Select points", 1, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+
+  ' Prompt the user for the name of a block defintion
+  strBlock = Rhino.ListBox(arrBlocks, "Select block definition", "Replace Points")
+  If IsNull(strBlock) Then Exit Sub
+  
+  ' Turn of redrawing (reduces flicker)  
+  Call Rhino.EnableRedraw(False)
+  
+  ' Process all selected points
+  For Each strObject In arrObjects
+
+    ' Get the x,y,z coordinate of the point object
+    arrPoint = Rhino.PointCoordinates(strObject)
+    
+    ' Insert a block at that point location
+    Call Rhino.InsertBlock(strBlock, arrPoint)
+    
+  Next
+
+  ' Optionally, delete the point objects
+  ' Comment out if you don't want to delete
+  Call Rhino.DeleteObjects(arrObjects)
+
+  ' Turn on redrawing  
+  Call Rhino.EnableRedraw(True)
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Drag & drop
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Call Rhino.AddStartupScript(Rhino.LastLoadedScriptFile)
+Call Rhino.AddAlias("ReplacePoints", "_NoEcho _-RunScript (ReplacePoints)")

@@ -1,0 +1,80 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BlockInspector.rvb -- December 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Main subroutine
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BlockInspector
+	Dim strRef, strText
+	strRef = Rhino.GetObject("Select block instance to inspect", &h1000, True)
+	If Not IsNull(strRef) Then
+		Call Rhino.ClearCommandHistory
+		Call DoBlockInspection(strRef, 0)
+		strText = Rhino.CommandHistory
+		Call Rhino.TextOut(strText, "Block Inspector")
+	End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DoBlockInspection (recursive)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DoBlockInspection(strRef, nIndent)
+	Dim strDef, arrObj, strObj, strNode, strPad
+	Dim strType, strLayer
+
+	Call FormatTree(nIndent, strNode, strPad)
+	strType = Rhino.BlockInstanceName(strRef)
+	strLayer = Rhino.ObjectLayer(strRef)
+	Call PrintMessage("{0}{1} BLOCK: {2}, LAYER: {3}", Array(strPad, strNode, strType, strLayer))
+	
+	nIndent = nIndent + 1
+	Call FormatTree(nIndent, strNode, strPad)
+
+	strDef = Rhino.BlockInstanceName(strRef)
+	arrObj = Rhino.BlockObjects(strDef)
+	For Each strObj In arrObj
+		If Rhino.IsBlockInstance(strObj) Then 
+			Call DoBlockInspection(strObj, nIndent + 1)
+		Else
+			strType = Rhino.ObjectDescription(strObj)
+			strLayer = Rhino.ObjectLayer(strObj)
+			Call PrintMessage("{0}{1} OBJECT: {2}, LAYER: {3}", Array(strPad, strNode, strType, strLayer))
+		End If
+	Next
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FormatTree
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub FormatTree(ByVal nIndent, ByRef strNode, ByRef strPad)
+	If (nIndent = 0) Then
+		strNode = ChrW(&H2500)
+		strPad = ""
+	Else
+		strNode = ChrW(&H2514)
+		strPad = String(4 * nIndent, " ")   
+	End If 
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PrintMessage
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PrintMessage(ByVal strMsg, ByVal arrArg)
+	Dim i
+	For i = 0 To UBound(arrArg)
+		strMsg = Replace(strMsg, "{" & CStr(i) & "}", CStr(arrArg(i)))
+	Next
+	Call Rhino.Print(strMsg)
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Drag & drop support
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Rhino.AddStartUpScript Rhino.LastLoadedScriptFile
+Rhino.AddAlias "BlockInspector", "_-RunScript (BlockInspector)"

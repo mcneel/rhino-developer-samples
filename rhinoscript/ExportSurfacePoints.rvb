@@ -1,0 +1,55 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportSurfacePoints.rvb -- May 2004
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub ExportSurfacePoints()
+
+  Const rhObjectSurface = 8
+
+  ' Pick a surface object
+  Dim strSurface
+  strSurface = Rhino.GetObject("Select surface to export control points", rhObjectSurface)
+  If IsNull(strSurface) Then Exit Sub
+
+  ' Get the surface control points
+  Dim arrPoints, arrPt
+  arrPoints = Rhino.SurfacePoints(strSurface)
+  If Not IsArray(arrPoints) Then Exit Sub
+
+  ' Prompt for a filename
+  Dim strFileName, strFilter
+  strFilter = "CSV File (*.csv)|*.csv|All Files (*.*)|*.*||"
+  strFileName = Rhino.SaveFileName("Save Control Points As", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+
+  ' Create a file system object
+  Dim objFSO, objStream
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+  ' Create a new text file
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  ' Write each surface point
+  Dim strPoint
+  For Each arrPt In arrPoints
+    strPoint = Rhino.Pt2Str(arrPt)
+    objStream.WriteLine(strPoint)
+  Next
+
+  ' Close the file stream
+  objStream.Close
+
+  ' Cleanup
+  Set objStream = Nothing
+  Set objFSO = Nothing
+
+End Sub

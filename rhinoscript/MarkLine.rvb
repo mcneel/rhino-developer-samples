@@ -1,0 +1,23 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MarkLine.rvb -- March 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub MarkLine()
+	Dim arrLast
+	Call Rhino.Command("_Line _Pause _Pause")
+	If Rhino.LastCommandResult() = 0 Then
+  	Call Rhino.EnableRedraw(False)
+	  arrLast = Rhino.LastCreatedObjects()
+	  If IsArray(arrLast) Then
+	    Call Rhino.AddPoint(Rhino.CurveStartPoint(arrLast(0)))
+	    Call Rhino.AddPoint(Rhino.CurveMidPoint(arrLast(0)))
+	    Call Rhino.AddPoint(Rhino.CurveEndPoint(arrLast(0)))
+    	Call Rhino.DeleteObjects(arrLast)
+    End If
+	  Call Rhino.EnableRedraw(True)
+	End If
+End Sub

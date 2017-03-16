@@ -1,0 +1,38 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CleanPolyline.rvb -- October 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub CleanPolyline
+  
+  Dim pick, pline, pline_points, closed, bound
+  
+  pick = Rhino.GetObjectEx("Select polyline to clean", 4, True)
+  If IsNull(pick) Then Exit Sub
+  
+  pline = pick(0)
+  If Not Rhino.IsPolyline(pline) Then
+    Call Rhino.Print("Curve is not a polyline.")
+    Exit Sub
+  End If
+
+  Call Rhino.EnableRedraw(False)    
+  
+  pline_points = Rhino.CullDuplicatePoints(Rhino.PolylineVertices(pline))
+  If Rhino.IsCurveClosed(pline) Then
+    bound = UBound(pline_points) + 1
+    ReDim Preserve pline_points(bound)
+    pline_points(bound) = pline_points(0)
+  End If
+  
+  Call Rhino.DeleteObject(pline)
+
+  pline = Rhino.AddPolyline(pline_points)
+  If pick(2) = 0 Then Call Rhino.SelectObject(pline)
+    
+  Call Rhino.EnableRedraw(True)    
+  
+End Sub

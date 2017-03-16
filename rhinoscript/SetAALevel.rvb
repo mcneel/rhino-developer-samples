@@ -1,0 +1,40 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SetAALevel.rvb -- May 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Set viewport anti-aliasing leve
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SetAALevel()
+  
+  Dim arrLevels(4), strLevel, arrViews, strView, strOldView
+  
+  arrLevels(0) = "None"
+  arrLevels(1) = "Low"
+  arrLevels(2) = "Medium"
+  arrLevels(3) = "High"
+  arrLevels(4) = "Highest"
+  
+  'strLevel = Rhino.GetString("Set anti-alias quality", arrLevels(0), arrLevels)
+  strLevel = Rhino.ListBox(arrLevels, "Set anti-alias quality", "Set AA Level")
+  If IsNull(strLevel) Then Exit Sub
+    
+  arrViews = Rhino.ViewNames
+  If Not IsArray(arrViews) Then Exit Sub
+    
+  Call Rhino.EnableRedraw(False)
+  strOldView = Rhino.CurrentView
+  
+  For Each strView In arrViews
+    Call Rhino.CurrentView(strView)
+    Call Rhino.Command("_TestSetAALevel _Level _" & strLevel & " _Enter", 0)
+  Next
+  
+  Call Rhino.CurrentView(strOldView)
+  Call Rhino.EnableRedraw(True)
+
+End Sub  

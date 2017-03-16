@@ -1,0 +1,55 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' IsStackedControlPointsCurve.rvb -- August 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Function IsStackedControlPointsCurve(curve)
+  
+  Const ZERO_TOLERANCE = 1.0e-12
+  Dim cv_array, cv0, cv1, i, dist
+  
+  IsStackedControlPointsCurve = False
+  
+  If Rhino.IsCurve(curve) Then
+    If Rhino.IsNurbsCurve(curve) Then
+      cv_array = Rhino.CurvePoints(curve)
+      cv0 = cv_array(0)
+      For i = 1 To UBound(cv_array)
+        cv1 = cv_array(i)
+        dist = Rhino.Distance(cv0, cv1)
+        If (dist < ZERO_TOLERANCE) Then
+          IsStackedControlPointsCurve = True
+          Exit For
+        Else
+          cv0 = cv1            
+        End If
+      Next   
+    End If
+  End If
+  
+End Function
+  
+Sub TestIsStackedControlPointsCurve
+  
+  Const RH_CURVE = 4
+  Dim curve, rc
+  
+  curve = Rhino.GetObject("Select curve", RH_CURVE, True)
+  If Not IsNull(curve) Then
+    If Rhino.IsNurbsCurve(curve) Then
+      rc = IsStackedControlPointsCurve(curve)
+      If rc = True Then
+        Call Rhino.Print("NURBS curve has stacked control points.")
+      Else
+        Call Rhino.Print("NURBS curve does not have stacked control points.")
+      End If
+    Else
+      Call Rhino.Print("Curve is not a NURBS curve.")
+    End If
+  End If
+
+End Sub

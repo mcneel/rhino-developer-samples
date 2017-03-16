@@ -1,0 +1,38 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RotateViewAngle.rvb -- March 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Public g__Angle
+
+Sub RotateViewAngle
+  
+  Const RH_RIGHT = 0
+  Const RH_LEFT = 1
+  
+  Dim angle
+  
+  If IsNull(g__Angle) Or IsEmpty(g__Angle) Then
+    angle = 1.0
+  ElseIf (g__Angle = 0.0) Then
+    angle = 1.0
+  Else
+    angle = g__Angle
+  End If
+  
+  angle = Rhino.GetReal("Angle to rotate view", angle)
+  If IsNull(angle) Then Exit Sub
+  If (angle = 0) Then Exit Sub
+  
+  If (angle < 0.0) Then
+    Call Rhino.RotateView(, RH_RIGHT, Abs(angle))
+  Else
+    Call Rhino.RotateView(, RH_LEFT, angle)
+  End If
+  
+  g__Angle = angle
+  
+End Sub

@@ -1,0 +1,47 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MultiOrient3Pt.rvb -- February 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub MultiOrient3Pt
+  
+  Dim objects, obj, plane, xform
+  Dim r1, r2, r3, t1, t2, t3
+  
+  objects = Rhino.GetObjects("Select objects to orient",,,True)
+  If IsNull(objects) Then Exit Sub
+  
+  Rhino.UnselectAllObjects  
+  
+  plane = Rhino.ViewCPlane
+  xform = Rhino.XformPlanarProjection(plane)
+  
+  For Each obj In objects
+
+    Rhino.SelectObject obj
+    
+    r1 = Rhino.GetPoint("Reference point 1")
+    If IsNull(r1) Then Exit For
+     
+    r2 = Rhino.GetPoint("Reference point 2", r1)
+    If IsNull(r2) Then Exit For
+    
+    r3 = Rhino.GetPoint("Reference point 3", r1)
+    If IsNull(r3) Then Exit For
+  
+    t1 = Rhino.PointTransform(r1, xform)    
+    t2 = Rhino.PointTransform(r2, xform)    
+    t3 = Rhino.PointTransform(r3, xform)    
+
+    Rhino.OrientObject obj, Array(r1,r2,r3), Array(t1,t2,t3)
+    Rhino.UnselectObject obj
+
+  Next
+  
+  Rhino.UnselectAllObjects  
+  
+End Sub

@@ -1,0 +1,98 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LinearRegression.rvb -- September 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Linear Regression
+'   y(x) = a + bx, for n samples.
+' Parameters:
+'   data - [in]  An array of (x,y) values.
+'   a    - [out] The slope.
+'   b    - [out] The y-axis intersect.
+'   c    - [out] The regression coefficient.
+' Returns:
+'   True if successful, False otherwise.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function LinearRegression(ByVal data, ByRef a, ByRef b, ByRef r)
+  
+  ' Local variables
+  Dim d, x, y, n
+  Dim sumx, sumy, sumx2, sumy2, sumxy, sxx, syy, sxy
+ 
+  ' Initialize variables
+  sumx = 0 : sumy = 0 : sumx2 = 0 : sumy2 = 0 : sumxy = 0
+  n = UBound(data) + 1
+    
+  ' Initialize output
+  a = 0 : b = 0 : r = 0
+  
+  ' Default return value
+  LinearRegression = False
+  
+  ' Must have at least two points
+  If (n < 2) Then Exit Function
+    
+  ' Compute some things we need
+  For Each d In data
+    x = d(0)
+    y = d(1)
+    sumx  = sumx  + x
+    sumy  = sumy  + y
+    sumx2 = sumx2 + (x * x)
+    sumy2 = sumy2 + (y * y)
+    sumxy = sumxy + (x * y)
+  Next
+  
+  sxx = sumx2 - (sumx * sumx / n)
+  syy = sumy2 - (sumy * sumy / n)
+  sxy = sumxy - (sumx * sumy / n)
+  
+  ' Infinite slope (b), non existant intercept (a)
+  If (Abs(sxx) = 0) Then Exit Function
+    
+  ' Compute slope (b) and intercept (a)
+  b = sxy / sxx
+  a = sumy / n - b * sumx / n
+  
+  ' Compute regression coefficient 
+  If (Abs(syy) = 0) Then
+    r = 1
+  Else
+    r = sxy / Sqr(sxx * syy)
+  End If
+    
+  LinearRegression = True
+  
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Tester
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestLinearRegression()
+  
+  Dim data(9), a, b, r
+  
+  data(0) = Array(-0.20707, -0.319029)
+  data(1) = Array(0.706672, 0.0931669)
+  data(2) = Array(1.63739, 2.17286)
+  data(3) = Array(2.03117, 2.76818)
+  data(4) = Array(3.31874, 3.56743)
+  data(5) = Array(5.38201, 4.11772)
+  data(6) = Array(6.79971, 5.52709)
+  data(7) = Array(6.31814, 7.46613)
+  data(8) = Array(8.20829, 8.7654)
+  data(9) = Array(8.53994, 9.58096)
+  
+  If (LinearRegression(data, a, b, r) = True) Then
+    Call Rhino.Print("Slope (b) = " & FormatNumber(b, 3))
+    Call Rhino.Print("Y Intercept (a) = " & FormatNumber(a, 3))
+    Call Rhino.Print("Regression Coefficient = " & FormatNumber(r, 3))
+  End If
+  
+End Sub
+

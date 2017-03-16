@@ -1,0 +1,31 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ReadTextFile.rvb -- January 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: ReadTextFile
+' Purpose:    Reads a text file and dumps it to the command line.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ReadTextFile
+  
+  Const ForReading = 1
+  Dim objFSO, objFile, strFileName, strLine
+  
+  strFileName = Rhino.OpenFileName("Open", "Text Files (*.txt)|*.txt||")
+  If IsNull(strFileName) Then Exit Sub
+    
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  Set objFile = objFSO.OpenTextFile(strFileName, ForReading)
+  
+  While Not objFile.AtEndOfStream
+    strLine = objFile.ReadLine
+    Rhino.Print strLine
+  Wend
+  
+  objFile.Close
+  
+End Sub

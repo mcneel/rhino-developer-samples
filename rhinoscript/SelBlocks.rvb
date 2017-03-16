@@ -1,0 +1,23 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelBlocks.rvb -- March 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub SelBlocks
+  Dim arrBlocks, arrSelect, i
+  arrBlocks = Rhino.BlockNames(True)
+  If IsArray(arrBlocks) Then
+    arrSelect = Rhino.MultiListBox(arrBlocks, "Blocks to select:", "Select Blocks")
+    If IsArray(arrSelect) Then
+      Rhino.EnableRedraw False
+      For i = 0 To UBound(arrSelect)
+        Rhino.SelectObjects Rhino.BlockInstances(arrSelect(i))
+      Next
+      Rhino.EnableRedraw True
+    End If
+  End If
+End Sub

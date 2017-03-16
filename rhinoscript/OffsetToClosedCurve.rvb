@@ -1,0 +1,52 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' OffsetToClosedCurve.rvb -- October 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+' Global variable
+Public g_dblDistance
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' OffsetToClosedCurve
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub OffsetToClosedCurve
+
+  ' Local constant
+  Const rhObjectCurve = 4
+  
+  ' Local variables
+  Dim arrObjects, strObject, dblDistance
+  Dim arrOffset0, arrOffset1, arrCurves(3)
+  
+  ' Get the curve object
+  arrObjects = Rhino.GetObjects("Select open curves to offset", rhObjectCurve, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+
+  ' Get Distance
+  If IsNull(g_dblDistance) Or IsEmpty(g_dblDistance) Then g_dblDistance = 1.0
+  g_dblDistance = Rhino.GetReal("Offset distance", g_dblDistance )
+  If IsNull(g_dblDistance) Then Exit Sub
+
+  Call Rhino.EnableRedraw(False)
+
+  ' Offset each curve      
+  For Each strObject In arrObjects
+    If Not Rhino.IsCurveClosed(strObject) Then
+      arrOffset0 = Rhino.OffsetCurve(strObject, Array(0,0,0), g_dblDistance * 0.5)
+      arrOffset1 = Rhino.OffsetCurve(strObject, Array(0,0,0), -(g_dblDistance * 0.5))
+      Call Rhino.ReverseCurve(arrOffset1(0))
+      arrCurves(0) = arrOffset0(0)
+      arrCurves(2) = arrOffset1(0)
+      arrCurves(1) = Rhino.AddLine(Rhino.CurveEndPoint(arrCurves(0)), Rhino.CurveStartPoint(arrCurves(2)))
+      arrCurves(3) = Rhino.AddLine(Rhino.CurveStartPoint(arrCurves(0)), Rhino.CurveEndPoint(arrCurves(2)))
+      Call Rhino.JoinCurves(arrCurves, True)
+    End If
+  Next
+  
+  Call Rhino.EnableRedraw(True)
+  
+End Sub

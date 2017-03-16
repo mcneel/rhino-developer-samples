@@ -1,0 +1,87 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CheckForWizards.rvb -- October 2008
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Obviously too much free time...
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CheckForWizards
+
+  Dim strObject, strView, arrBox, arrPoint
+  Dim arrCorners, arrOrigin
+  Dim strAgentName, strAgentPath
+  Dim objAgent, objCharacter
+  
+  strObject = Rhino.GetObject("Select object to check", 0, True, True)
+  If IsNull(strObject) Then Exit Sub
+
+  strView = Rhino.CurrentView
+  arrBox = Rhino.BoundingBox(strObject)    
+  arrPoint = Rhino.XFormWorldToScreen(arrBox(2), strView, True)
+  arrCorners = Rhino.ViewNearCorners
+  arrOrigin = Rhino.XFormWorldToScreen(arrCorners(3), strView, True)
+    
+  strAgentName = "Merlin"
+  strAgentPath = "c:\windows\msagent\chars\" & strAgentName & ".acs"
+  Set objAgent = CreateObject("Agent.Control.2")
+  If Not IsObject(objAgent) Then Exit Sub
+  
+  objAgent.Connected = True
+  objAgent.Characters.Load strAgentName, strAgentPath
+  Set objCharacter = objAgent.Characters.Character(strAgentName)
+  
+  objCharacter.MoveTo arrOrigin(0),arrOrigin(1)
+  objCharacter.Show
+  objCharacter.Play "GetAttention"
+  objCharacter.Play "Announce"
+  objCharacter.Speak "Hello, I am the fabulous Rhino geometry checking wizard."
+  objCharacter.Play "LookDown"
+  objCharacter.Speak "I am here to see if your geometry is of questionable quality..."
+  objCharacter.Play "Explain"
+  objCharacter.Speak "..um...geometrically speaking, of course."
+  objCharacter.MoveTo arrPoint(0),arrPoint(1)
+  objCharacter.Play "Uncertain"
+  objCharacter.Play "LookRight"
+  objCharacter.Play "Confused"
+  objCharacter.Think "Hmm....very interesting...not sure I have seen one of these before."
+  objCharacter.Play "Explain"
+  objCharacter.Speak "It looks like Euclidean geometry consisting of points in a plane which are at a constant distance from a fixed point."
+  objCharacter.Play "Alert"
+  objCharacter.Speak "Hey, I don't have a Ph.D in computational geometry, but I did stay at a Holiday Inn Express last night."
+  objCharacter.Play "Pleased"
+  objCharacter.Play "GestureRight"
+  objCharacter.Speak "Let me check this geometry for you."
+  objCharacter.Play "Read"
+  objCharacter.Play "ReadContinued"
+  objCharacter.Speak "...hmm..."
+  objCharacter.Play "ReadReturn"
+  objCharacter.Play "Process"
+  objCharacter.Play "Think"
+  objCharacter.Speak "...I see..."
+  objCharacter.Play "Search"
+  objCharacter.Speak "Well, what do you know."
+  objCharacter.Play "Sad"
+  objCharacter.Speak "Your geometry sucks!"
+  objCharacter.Play "Decline"
+  objCharacter.Speak "I cannot take responsiblity for this, of course."
+  objCharacter.Play "Suggest"
+  objCharacter.Speak "You might try reinstalling all of your software and try it again."
+  objCharacter.Play "RestPose"
+  objCharacter.Play "Surprised"
+  objCharacter.Speak "Sorry, I have to go. I see more geometry that sucks."
+  objCharacter.MoveTo arrOrigin(0),arrOrigin(1)
+  objCharacter.Play "Wave"
+  objCharacter.Play "DoMagic1"
+  objCharacter.Play "DoMagic2"
+  objCharacter.Hide
+  
+  Do While objCharacter.Visible = True
+      Rhino.Sleep 100
+  Loop
+  
+End Sub

@@ -1,0 +1,79 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FindDuplicateStrings.rvb -- July 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Find duplicate strings in an array of strings.
+' Returns an array containing arrays of of indices
+' that match the same string.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FindDuplicateStrings(arrStrings, blnCase)
+  
+  Dim objDict, strKey, objItem, arrItems, arrResults()
+  Dim i, j, nCount
+
+  FindDuplicateStrings = Null
+  
+  Set objDict = CreateObject("Scripting.Dictionary") 
+  If (blnCase = True) Then
+    objDict.CompareMode = vbBinaryCompare
+  Else
+    objDict.CompareMode = vbTextCompare
+  End If
+
+  For i = 0 To UBound(arrStrings)
+    strKey = arrStrings(i)
+    If Not objDict.Exists(strKey) Then
+      objDict.Add strKey, CreateObject("System.Collections.ArrayList")
+    End If      
+    objDict(strKey).Add(i)
+  Next
+  
+  nCount = 0
+  arrItems = objDict.Items
+  For Each objItem In arrItems
+    If (objItem.Count > 1) Then
+      ReDim Preserve arrResults(nCount)    
+      arrResults(nCount) = objItem.ToArray()
+      nCount = nCount + 1
+    End If
+  Next
+  
+  FindDuplicateStrings = arrResults
+  
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Tests the above
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestFindDuplicateStrings
+
+  Dim arrStrings, arrResults, arrItem, nItem, i
+
+  arrStrings = Array("Curve" ,  _
+                     "Surface", _
+                     "Mesh",    _
+                     "Point",   _
+                     "Surface", _
+                     "Curve",   _
+                     "Curve")
+
+  arrResults = FindDuplicateStrings(arrStrings, False)
+  If IsArray(arrResults) Then
+    Call Rhino.Print("Duplicate Sets = " & CStr(UBound(arrResults) + 1))
+    For i = 0 To UBound(arrResults)
+      Call Rhino.Print("Set = " & CStr(i + 1))
+      arrItem = arrResults(i)
+      For Each nItem In arrItem
+        Call Rhino.Print("Item " & CStr(nItem) & " = " & arrStrings(nItem))
+      Next
+    Next
+  End If
+
+End Sub
+
+TestFindDuplicateStrings

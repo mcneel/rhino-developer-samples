@@ -1,0 +1,79 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ImportPointsWithNames.rvb -- September 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: ImportPointsWithNames
+' Purpose:    Import points from a text file.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ImportPointsWithNames
+  
+  Dim strFilter, strFileName
+  strFilter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*||"
+  strFileName = Rhino.OpenFileName("Open Point File", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+
+  Dim objFSO, objFile
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  On Error Resume Next
+  Set objFile = objFSO.OpenTextFile(strFileName, 1)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  Rhino.EnableRedraw False
+      
+  Dim strLine, arrLine, strPoint  
+  Do While objFile.AtEndOfStream <> True
+    strLine = objFile.ReadLine
+    If Not IsNull(strLine) Then
+      arrLine = ParseLine(strLine)
+      If IsArray(arrLine) Then
+        strPoint = Rhino.AddPoint(Array(arrLine(0), arrLine(1), arrLine(2)))
+        Rhino.ObjectName strPoint, arrLine(3)
+      End If
+    End If
+  Loop
+
+  Rhino.EnableRedraw True
+    
+  objFile.Close
+  
+  Set objFile = Nothing
+  Set objFSO = Nothing
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: ParseLine
+' Purpose:    Converts a line of text to an array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ParseLine(strLine)
+
+  Dim arrLine, nBound
+  ParseLine = Null
+
+  If VarType(strLine) = vbString Then
+    strLine = Replace(strLine, Chr(34), "", 1)
+    arrLine = Split(strLine, ",", -1, 1)
+    If IsArray(arrLine) Then
+      nBound = UBound(arrLine)
+      If nBound = 2 Or nBound = 3 Then
+        arrLine(0) = CDbl(arrLine(0))
+        arrLine(1) = CDbl(arrLine(1))
+        arrLine(2) = CDbl(arrLine(2))
+        If nBound = 2 Then
+          ReDim Preserve arrLine(3)
+          arrLine(3) = "none"
+        End If          
+        ParseLine = arrLine
+      End If
+    End If
+  End If
+   
+End Function  

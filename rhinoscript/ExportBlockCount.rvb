@@ -1,0 +1,72 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportBlockCount.rvb -- June 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Exports a count of blocks to Excel
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportBlockCount()
+  
+  Dim arrBlocks, strBlock, strName
+  Dim objCounts, objKey
+  Dim objExcel, objBook, objSheet, nCell
+  
+  ' Get all of the block instances in the document
+  arrBlocks = Rhino.ObjectsByType(4096)
+  If IsNull(arrBlocks) Then
+    Call Rhino.Print("No blocks to export.")
+    Exit Sub
+  End If
+
+  ' Create a dictionary object for counting blocks
+  Set objCounts = CreateObject("Scripting.Dictionary")
+  
+  ' Count the blocks
+  For Each strBlock In arrBlocks
+    strName = Rhino.BlockInstanceName(strBlock)
+    If objCounts.Exists(strName) Then
+      objCounts(strName) = objCounts(strName) + 1
+    Else
+      Call objCounts.Add(strName, 1)
+    End If
+  Next
+  
+  ' Create a Excel object
+  On Error Resume Next
+  Set objExcel = CreateObject("Excel.Application")
+  If Err = 0 Then
+    
+    objExcel.Visible = True
+
+    ' Initialize Excel
+    Set objBook = objExcel.Workbooks.Add
+    Set objSheet = objBook.Worksheets(1)
+ 
+    ' Place titles on sheet
+    nCell = 1
+    objExcel.Cells(nCell, 1).Value = "Block Name"
+    objExcel.Cells(nCell, 2).Value = "Count"
+    objExcel.Cells(nCell, 3).Value = "Description"
+    nCell = nCell + 1
+  
+    ' Write the blocks and counts to the sheet
+    For Each objKey In objCounts
+      objExcel.Cells(nCell, 1).Value = CStr(objKey)
+      objExcel.Cells(nCell, 2).Value = CStr(objCounts(objKey))
+      objExcel.Cells(nCell, 3).Value = Rhino.BlockDescription(objKey)
+     nCell = nCell + 1
+    Next
+  End If    
+
+  ' Print to command line too
+  Call Rhino.Print("Block counts:")
+  For Each objKey In objCounts
+    Call Rhino.Print("  " & CStr(objKey) & " = " & CStr(objCounts(objKey)))
+  Next
+  
+End Sub

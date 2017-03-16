@@ -1,0 +1,64 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportLabelledPoints.rvb -- January 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportLabelledPoints
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportLabelledPoints
+
+  ' Local constants
+  Const FILESPEC = "Points File (*.txt)|*.txt||"
+  Const RH_POINTS = 1
+  
+  ' Local variables
+  Dim arrObjects, arrPoints(), arrOrder, i
+  Dim objFSO, objStream, strFileName, strLine
+
+  ' Get the objects to export
+  arrObjects = Rhino.GetObjects("Select points to label and export", RH_POINTS, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+
+  ' Get the filename to create
+  strFileName = Rhino.SaveFileName("Save As", FILESPEC)
+  If IsNull(strFileName) Then Exit Sub
+    
+  ' Get the coordinates of each selected point
+  ReDim arrPoints(UBound(arrObjects))
+  For i = 0 To UBound(arrObjects)
+    arrPoints(i) = Rhino.PointCoordinates(arrObjects(i))
+  Next
+  
+  ' Sort the points based on their distance from the world origin
+  arrOrder = Rhino.SortPointsByDistance(arrPoints, Array(0,0,0), False)
+  
+  ' Get the file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  On Error Resume Next
+
+  ' Create a new text file
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  ' Process each selected point object
+  For i = 0 To UBound(arrObjects)
+    ' Set its object name
+    Call Rhino.ObjectName(arrObjects(arrOrder(i)), CStr(i))
+    ' Format an output string
+    strLine = CStr(i) & "," & Rhino.Pt2Str(arrPoints(arrOrder(i)))
+    ' Write the string
+    objStream.WriteLine(strLine)
+  Next
+
+  ' Close the file
+  objStream.Close
+
+End Sub

@@ -1,0 +1,90 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Dodecahedron.rvb -- March 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Create a regular Dodecahedron composed of 12 regular pentagons.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Dodecahedron()
+  
+  ' Declare local variables
+  Dim center, phi, a, b
+  Dim v(19), p(11), s(11)
+  
+  ' Prompt for center point
+  center = Rhino.GetPoint("Center of dodecahedron")
+  If IsNull(center) Then Exit Sub
+  
+  ' This will make the script run faster  
+  Call Rhino.EnableRedraw(False)
+  
+  ' A few calculations...
+  phi = (1.0 + Sqr(5.0)) * 0.5
+  a = 1 / phi
+  b = 1 / (phi * phi)
+
+  ' Define the dodecahedron's 20 vertices
+  v(0)  = Rhino.PointAdd(center, Array( 0,  1,  b))
+  v(1)  = Rhino.PointAdd(center, Array( 0,  1, -b))
+  v(2)  = Rhino.PointAdd(center, Array( 0, -1,  b))
+  v(3)  = Rhino.PointAdd(center, Array( 0, -1, -b))
+  v(4)  = Rhino.PointAdd(center, Array( 1,  b,  0))
+  v(5)  = Rhino.PointAdd(center, Array(-1,  b,  0))
+  v(6)  = Rhino.PointAdd(center, Array( 1, -b,  0))
+  v(7)  = Rhino.PointAdd(center, Array(-1, -b,  0))
+  v(8)  = Rhino.PointAdd(center, Array( a,  a,  a))
+  v(9)  = Rhino.PointAdd(center, Array(-a,  a,  a))
+  v(10) = Rhino.PointAdd(center, Array( a,  a, -a))
+  v(11) = Rhino.PointAdd(center, Array(-a,  a, -a))
+  v(12) = Rhino.PointAdd(center, Array( a, -a,  a))
+  v(13) = Rhino.PointAdd(center, Array(-a, -a,  a))
+  v(14) = Rhino.PointAdd(center, Array( a, -a, -a))
+  v(15) = Rhino.PointAdd(center, Array(-a, -a, -a)) 
+  v(16) = Rhino.PointAdd(center, Array( b,  0,  1))
+  v(17) = Rhino.PointAdd(center, Array(-b,  0,  1))
+  v(18) = Rhino.PointAdd(center, Array( b,  0, -1))
+  v(19) = Rhino.PointAdd(center, Array(-b,  0, -1))
+
+  ' Create the dodecahedron's 12 faces
+  p(0)  = Rhino.AddPolyline(Array(v(16), v(17), v( 9), v( 0), v( 8), v(16)))
+  p(1)  = Rhino.AddPolyline(Array(v(17), v(16), v(12), v( 2), v(13), v(17)))
+  p(2)  = Rhino.AddPolyline(Array(v(18), v(19), v(15), v( 3), v(14), v(18)))
+  p(3)  = Rhino.AddPolyline(Array(v(19), v(18), v(10), v( 1), v(11), v(19)))
+  p(4)  = Rhino.AddPolyline(Array(v( 1), v( 0), v( 8), v( 4), v(10), v( 1)))
+  p(5)  = Rhino.AddPolyline(Array(v( 0), v( 1), v(11), v( 5), v( 9), v( 0)))
+  p(6)  = Rhino.AddPolyline(Array(v( 3), v( 2), v(13), v( 7), v(15), v( 3)))
+  p(7)  = Rhino.AddPolyline(Array(v( 2), v( 3), v(14), v( 6), v(12), v( 2)))
+  p(8)  = Rhino.AddPolyline(Array(v( 4), v( 6), v(12), v(16), v( 8), v( 4)))
+  p(9)  = Rhino.AddPolyline(Array(v( 6), v( 4), v(10), v(18), v(14), v( 6)))
+  p(10) = Rhino.AddPolyline(Array(v( 5), v( 7), v(15), v(19), v(11), v( 5)))
+  p(11) = Rhino.AddPolyline(Array(v( 7), v( 5), v( 9), v(17), v(13), v( 7)))
+
+  s(0)  = Rhino.AddPlanarSrf(Array(p(0)))(0)
+  s(1)  = Rhino.AddPlanarSrf(Array(p(1)))(0)
+  s(2)  = Rhino.AddPlanarSrf(Array(p(2)))(0)
+  s(3)  = Rhino.AddPlanarSrf(Array(p(3)))(0)
+  s(4)  = Rhino.AddPlanarSrf(Array(p(4)))(0)
+  s(5)  = Rhino.AddPlanarSrf(Array(p(5)))(0)
+  s(6)  = Rhino.AddPlanarSrf(Array(p(6)))(0)
+  s(7)  = Rhino.AddPlanarSrf(Array(p(7)))(0)
+  s(8)  = Rhino.AddPlanarSrf(Array(p(8)))(0)
+  s(9)  = Rhino.AddPlanarSrf(Array(p(9)))(0)
+  s(10) = Rhino.AddPlanarSrf(Array(p(10)))(0)
+  s(11) = Rhino.AddPlanarSrf(Array(p(11)))(0)
+  
+  ' Join all of the faces
+  Rhino.UnselectAllObjects()
+  Call Rhino.SelectObjects(s)
+  Call Rhino.Command("_Join", False)
+  Call Rhino.DeleteObjects(p)
+  Rhino.UnselectAllObjects()
+ 
+  ' Don't forget to do this
+  Call Rhino.EnableRedraw(True)
+
+End Sub

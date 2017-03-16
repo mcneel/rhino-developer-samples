@@ -1,0 +1,61 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchRender.rvb -- September 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchRender
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BatchRender()
+	Dim sFolder, oFSO, oFolder
+	sFolder = Rhino.BrowseForFolder(, "Select folder to process", "Batch Render")
+	If VarType(sFolder) <> vbString Then Exit Sub
+	Set oFSO = CreateObject("Scripting.FileSystemObject") 
+	Set oFolder = oFSO.GetFolder(sFolder)
+	Call Rhino.Command("_-CheckNewObjects _Check=_No _Enter", 0)
+	Rhino.ClearCommandHistory
+	Call RecurseFolder(oFolder)
+Call Rhino.Print("> Opening new file")
+	Rhino.Command "_-New _None", 0
+Call Rhino.Print("> Done!")
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RecurseFolder
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RecurseFolder(oFolder)
+	Dim oFile, oSubFolder
+Call Rhino.Print("> Processing " & oFolder.Path)
+	For Each oFile In oFolder.Files
+		Call ProcessFile(oFile.Path)
+	Next
+	For Each oSubFolder In oFolder.SubFolders
+		Call RecurseFolder(oSubFolder)
+	Next
+End Sub 
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ProcessFile
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ProcessFile(sFile)
+	Dim sBitmap
+	If (InStr(LCase(sFile), ".3dm") > 0) Then
+		sBitmap = Replace(sFile, ".3dm", ".png", 1, -1, 1)
+		Call Rhino.DocumentModified(False)
+Call Rhino.Print("> Opening " & sFile)
+		Call Rhino.Command("_-Open " & Chr(34) & sFile & Chr(34), 0)
+Call Rhino.Print("> Rendering " & sFile)
+		Call Rhino.Command("_-Render", 0)
+Call Rhino.Print("> Saving " & sBitmap)
+		Call Rhino.Command("_-SaveRenderWindowAs " & Chr(34) & sBitmap & Chr(34), 0)
+		Call Rhino.Command("_-CloseRenderWindow", 0)
+		Call Rhino.DocumentModified(False)
+	End If  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Rhino.AddStartupScript Rhino.LastLoadedScriptFile
+Rhino.AddAlias "BatchRender", "_NoEcho _-RunScript (BatchRender)"

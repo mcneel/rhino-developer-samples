@@ -1,0 +1,65 @@
+<HTML id=RenameLayerDialog style="width: 22em; height: 12em">
+ <HEAD>
+  <TITLE>Rename Layer</TITLE>
+  <SCRIPT LANGUAGE="VBScript">
+<!--
+
+Sub OnInitDialog()
+  Dim sArgs
+  sArgs = window.dialogArguments
+  If Not IsNull(sArgs) Then
+    txtOldName.value = CStr(sArgs)
+  End If
+End Sub
+
+
+Sub OnOk()
+  Dim sResult
+  sResult = txtNewName.value
+  window.returnValue = sResult
+  window.close
+End Sub
+
+
+Sub OnCancel()
+  window.returnValue = ""
+  window.close
+End Sub
+
+-->
+</SCRIPT>
+</HEAD>
+
+ <BODY ONLOAD="OnInitDialog()" STYLE="font-family: Arial, sans-serif">
+  <H3>
+   <FONT FACE="Verdana,Arial,Times New I2">Enter new layer name</FONT></H3>
+  <P>
+   <TABLE CELLPADDING="1" CELLSPACING="2" BORDER="0">
+    <TR>
+     <TD VALIGN=CENTER>
+      <P>
+       <FONT FACE="Verdana,Arial,Times New I2">Old layer name:</FONT></TD>
+     <TD VALIGN=CENTER>
+      <P>
+       <INPUT TYPE=TEXT NAME="txtOldName" SIZE="25" MAXLENGTH="256"></TD>
+    </TR>
+    <TR>
+     <TD VALIGN=CENTER>
+      <P>
+       <FONT FACE="Verdana,Arial,Times New I2">New layer name:</FONT></TD>
+     <TD VALIGN=CENTER>
+      <P>
+       <INPUT TYPE=TEXT NAME="txtNewName" SIZE="25" MAXLENGTH="256"></TD>
+    </TR>
+    <TR>
+     <TD VALIGN=CENTER><DIV ALIGN=RIGHT>
+      <P ALIGN=RIGHT>
+       <INPUT TYPE=SUBMIT VALUE="OK" ID="cmdOK" ONCLICK="OnOk()" STYLE="width: 5em; left; border: thin solid THREEDSHADOW"></TD>
+     <TD VALIGN=CENTER><CENTER>
+      <P ALIGN=CENTER>
+       <INPUT TYPE=SUBMIT VALUE="Cancel" ID="cmdCancel" CLASS="button" ONCLICK="OnCancel()" STYLE="width: 5em; left; border: thin solid THREEDSHADOW"></TD>
+    </TR>
+   </TABLE>
+</P>
+</BODY>
+</HTML>

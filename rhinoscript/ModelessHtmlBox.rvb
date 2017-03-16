@@ -1,0 +1,19 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ModelessHtmlBox.rvb -- March 2008
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0 SR3 or better.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ModelessHtmlBox
+  Dim objRhinoScript
+  On Error Resume Next
+  Set objRhinoScript = Rhino.GetPluginObject("RhinoScript")
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+  Call Rhino.HtmlBox("C:\ModelessHtmlBox.htm", objRhinoScript, "dialogWidth:100px;dialogHeight:230px;center:1;", False)
+End Sub

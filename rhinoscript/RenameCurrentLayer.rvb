@@ -1,0 +1,17 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RenameCurrentLayer.rvb
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0 or better.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub RenameCurrentLayer
+	Dim strLayer, strName
+	strLayer = Rhino.CurrentLayer
+	strName = Rhino.HtmlBox("C:\RenameCurrentLayer.htm", strLayer, "center:1")
+	If Not IsNull(strName) Then
+		Rhino.RenameLayer strLayer, strName
+	End If
+End Sub

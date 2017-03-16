@@ -1,0 +1,60 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MeshSplit.rvb -- May 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DoMeshSplit
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function DoMeshSplit(mesh, cutter)
+
+  ' Declare local variables
+  Dim cmd
+
+  ' Set default return value  
+  DoMeshSplit = Null
+
+  ' For speed, turn of screen redrawing
+  Call Rhino.EnableRedraw(False)
+
+  ' Script the split command
+  cmd = "_MeshSplit _SelID " & mesh & " _Enter _SelID " & cutter & " _Enter"
+  Call Rhino.Command(cmd, 0)
+  
+  ' Don't forget to turn redrawing back on
+  Call Rhino.EnableRedraw(True)
+
+  ' Get the last created object
+  DoMeshSplit = Rhino.LastCreatedObjects
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TestSplitMesh
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestSplitMesh
+
+  ' Declare local variables
+  Dim mesh, cutter, pieces, i
+  
+  ' Pick the mesh to split
+  mesh = Rhino.GetObject("Select mesh to split", 32)
+  If IsNull(mesh) Then Exit Sub
+  
+  ' Pick the cutting brep
+  cutter = Rhino.GetObject("Select cutting object", 8 + 16 + 32)
+  If IsNull(cutter) Then Exit Sub
+  
+  ' Call our special splitter    
+  pieces = DoMeshSplit(mesh, cutter)
+  If IsArray(pieces) Then
+    For i = 0 To UBound(pieces)
+      ' Print the ids of the pieces
+      Call Rhino.Print(pieces(i))
+    Next
+  End If
+
+End Sub

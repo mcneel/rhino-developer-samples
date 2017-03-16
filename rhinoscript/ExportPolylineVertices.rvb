@@ -1,0 +1,52 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportPolylineVertices.rvb -- October 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ExportPolylineVertices
+  
+  ' Prompt the user to specify a file name    
+  Dim strFilter, strFileName
+  strFilter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*||"
+  strFileName = Rhino.SaveFileName("Save Polyline Vertices As", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+  
+  ' Get all objects
+  Dim arrObjects, strObject
+  arrObjects = Rhino.AllObjects
+  If Not IsArray(arrObjects) Then Exit Sub
+    
+  ' Get the file system object
+  Dim objFSO, objStream
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  
+  ' Open a text file to write to
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+    
+  ' Export polyline vertices
+  Dim arrVertices, arrVertex
+  For Each strObject In arrObjects
+    If Rhino.IsPolyline(strObject) Then
+      arrVertices = Rhino.PolylineVertices(strObject)
+      If IsArray(arrVertices) Then
+        objStream.WriteLine strObject
+        For Each arrVertex In arrVertices
+          objStream.WriteLine Rhino.Pt2Str(arrVertex)
+        Next
+      End If
+    End If
+  Next
+  
+  ' Close the file
+  objStream.Close
+
+End Sub

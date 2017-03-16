@@ -1,0 +1,62 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelPlanar.rvb -- June 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelPlanarPolySrf
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelPlanarPolySrf
+	Const rhPolysrf = 16
+	Dim arrObj, strObj
+	arrObj = Rhino.ObjectsByType(rhPolysrf)
+	If IsArray(arrObj) Then
+		Rhino.EnableRedraw vbFalse
+		For Each strObj In arrObj
+			If Rhino.IsPolysurfacePlanar(strObj) Then
+				Rhino.SelectObject strObj
+			End If
+		Next
+		Rhino.EnableRedraw vbTrue
+	End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelPlanarSrf
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelPlanarSrf
+	Const rhSrf = 8
+	Dim arrObj, strObj
+	arrObj = Rhino.ObjectsByType(rhSrf)
+	If IsArray(arrObj) Then
+		Rhino.EnableRedraw vbFalse
+		For Each strObj In arrObj
+			If Rhino.IsSurfacePlanar(strObj) Then
+				Rhino.SelectObject strObj
+			End If
+		Next
+		Rhino.EnableRedraw vbTrue
+	End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelPlanarCrv
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelPlanarCrv
+	Const rhCrv = 4
+	Dim arrObj, strObj
+	arrObj = Rhino.ObjectsByType(rhCrv)
+	If IsArray(arrObj) Then
+		Rhino.EnableRedraw vbFalse
+		For Each strObj In arrObj
+			If Rhino.IsCurvePlanar(strObj) Then
+				Rhino.SelectObject strObj
+			End If
+		Next
+		Rhino.EnableRedraw vbTrue
+	End If
+End Sub

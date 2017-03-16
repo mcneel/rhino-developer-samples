@@ -1,0 +1,90 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ConvertLayersToGrayscale.rvb -- November 2015
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Converts the colors of layers to grayscale
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ConvertLayersToGrayscale()
+ 
+	Dim arrLayers, strLayer, lngColor, nAlgorithm
+	Dim nGray, nRed, nGreen, nBlue
+	Dim arrAlgorithms, strAlgorithm
+	
+	arrAlgorithms = Array("Average", "BT601", "BT709", "Desaturate", "Luminance", "NTSC")
+	strAlgorithm = Rhino.ListBox(arrAlgorithms, "Select a grayscale algorithm", "Layer Color")
+	If IsNull(strAlgorithm) Then Exit Sub
+ 
+	Call Rhino.EnableRedraw(False)
+ 
+	arrLayers = Rhino.LayerNames
+	For Each strLayer In arrLayers
+ 
+		lngColor = Rhino.LayerColor(strLayer)
+		nRed = Rhino.ColorRedValue(lngColor)
+		nGreen = Rhino.ColorGreenValue(lngColor)
+		nBlue = Rhino.ColorBlueValue(lngColor)
+ 
+		If strAlgorithm = "Average" Then
+			nGray = Average(nRed, nGreen, nBlue)
+		ElseIf strAlgorithm = "BT601" Then
+			nGray = BT601(nRed, nGreen, nBlue)
+		ElseIf strAlgorithm = "BT709" Then
+			nGray = BT709(nRed, nGreen, nBlue)
+		ElseIf strAlgorithm = "Desaturate" Then
+			nGray = Desaturate(nRed, nGreen, nBlue)
+		ElseIf strAlgorithm = "Luminance" Then
+			nGray = Luminance(nRed, nGreen, nBlue)
+		Else
+			nGray = NTSC(nRed, nGreen, nBlue)
+		End If	
+		
+		Call Rhino.LayerColor(strlayer, RGB(nGray, nGray, nGray))
+ 
+	Next
+ 
+	Call Rhino.EnableRedraw(True)
+ 
+End Sub
+
+Function Average(nRed, nGreen, nBlue)
+	Dim nGray
+	nGray = (nRed + nGreen + nBlue) / 3
+	Average = CInt(nGray)
+End Function
+
+Function BT601(nRed, nGreen, nBlue)
+	Dim nGray
+	nGray = (nRed * 0.299) + (nGreen * 0.587) + (nBlue * 0.114)
+	BT601 = CInt(nGray)
+End Function
+
+Function BT709(nRed, nGreen, nBlue)
+	Dim nGray
+	nGray = (nRed * 0.2126) + (nGreen * 0.7152) + (nBlue * 0.0722)
+	BT709 = CInt(nGray)
+End Function
+
+Function Desaturate(nRed, nGreen, nBlue)
+	Dim nGray
+	nGray = (Rhino.Max(Array(nRed, nGreen, nBlue)) + Rhino.Min(Array(nRed, nGreen, nBlue))) / 2
+	Desaturate = CInt(nGray)
+End Function
+
+Function Luminance(nRed, nGreen, nBlue)
+	Dim nGray
+	nGray = (nRed * 0.21) + (nGreen * 0.72) + (nBlue * 0.07)
+	Luminance = CInt(nGray)
+End Function
+
+Function NTSC(nRed, nGreen, nBlue)
+	Dim nGray
+	nGray = (nRed * 0.3) + (nGreen * 0.59) + (nBlue * 0.11)
+	NTSC = CInt(nGray)
+End Function
+
+ConvertLayersToGrayscale

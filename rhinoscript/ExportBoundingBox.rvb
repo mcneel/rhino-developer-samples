@@ -1,0 +1,84 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportBoundingBox.rvb -- August 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportBoundingBox
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportBoundingBox
+
+  ' Local constants
+  Const FILESPEC = "Comma-Separated Value File (*.csv)|*.csv||"
+  
+  ' Local variables
+  Dim arrObjects, strObject, strFileName
+  Dim objFSO, objStream, strLine
+  Dim nPrecision
+
+  ' Get the objects to export
+  arrObjects = Rhino.GetObjects("Select objects", 0, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+
+  ' Get the filename to create
+  strFileName = Rhino.SaveFileName("Save As", FILESPEC)
+  If IsNull(strFileName) Then Exit Sub
+
+  ' Get the file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  On Error Resume Next
+
+  ' Create a new text file
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+  
+  ' Used for formatting point strings
+  nPrecision = Rhino.UnitDistanceDisplayPrecision
+
+  ' Process each selected object
+  For Each strObject In arrObjects
+    strLine = FormatBoundingBox(strObject, nPrecision)
+    objStream.WriteLine(strLine)
+  Next
+
+  ' Close the file
+  objStream.Close
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FormatBoundingBox
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FormatBoundingBox(ByVal strObject, ByVal nPrecision)
+  
+  ' Local variables
+  Dim strName, strLayer, arrBox, arrPoint, strLine
+
+  ' Get the object's bounding box
+  arrBox = Rhino.BoundingBox(strObject)
+
+  ' Get the object's user-defined name
+  strName = Rhino.ObjectName(strObject)
+  If IsNull(strName) Then strName = "<none>"
+    
+  ' Get the object's layer
+  strLayer = Rhino.ObjectLayer(strObject)
+  
+  ' Format a delimtied string
+  strLine = strObject & "," & strName & "," & strLayer
+  For Each arrPoint In arrBox
+    strLine = strLine & ","
+    strLine = strLine & Rhino.Pt2Str(arrPoint, nPrecision)
+  Next
+
+  ' Done
+  FormatBoundingBox = strLine
+ 
+End Function 

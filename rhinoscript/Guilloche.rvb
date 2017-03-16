@@ -1,0 +1,50 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Guilloche.rvb -- April 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'
+' http://en.wikipedia.org/wiki/guilloche
+' http://ministryoftype.co.uk/words/article/guilloches/
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Creates a Guilloche pattern
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Guilloche
+
+  Dim r : r = 50
+  Dim s : s = -0.25
+  Dim p : p = 25
+  Dim q : q = 3
+  Dim m : m = 1
+  Dim n : n = 6
+  
+  Dim segs : segs = 3000
+  ReDim pts(segs)
+  
+  Dim period: period = Rhino.PI * 2.0
+  Dim theta : theta = 0
+  Dim i : i = 0
+
+  For i = 0 To segs
+    theta = theta + period / segs
+    pts(i) = PointsOnGuilloche(r, s, p, q, m, n, theta)
+  Next
+
+  Call Rhino.AddInterpCurve(pts)
+
+End Sub
+
+Function PointsOnGuilloche(r, s, p, q, m, n, th)
+  Dim rs   : rs = r + s
+  Dim rp   : rp = r + p
+  Dim rsos : rsos = rs / s
+  Dim mth  : mth = m * th
+  Dim nth  : nth = n * th
+  Dim k    : k = rsos * mth
+  Dim x    : x = rs * Cos(mth) + rp * Cos(k) + q * Cos(nth)
+  Dim y    : y = rs * Sin(mth) - rp * Sin(k) + q * Sin(nth)
+  PointsOnGuilloche = Array(x, y, 0)
+End Function

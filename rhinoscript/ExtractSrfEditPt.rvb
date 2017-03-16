@@ -1,0 +1,23 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExtractSrfEditPt.rvb -- September 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ExtractSrfEditPt
+  Const rhSurface = 8
+  Dim arrSrf, strSrf, arrPts
+  arrSrf = Rhino.GetObjects("Select surfaces for edit point extraction", rhSurface, True, True)
+  If IsArray(arrSrf) Then
+    For Each strSrf In arrSrf
+      arrPts = Rhino.SurfaceEditPoints(strSrf)
+      If IsArray(arrPts) Then
+        Rhino.AddPoints Rhino.CullDuplicatePoints(arrPts)
+      End If
+    Next
+  End If
+End Sub
+ExtractSrfEditPt    

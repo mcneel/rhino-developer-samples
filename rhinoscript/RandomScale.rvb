@@ -1,0 +1,48 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RandomScale.rvb -- February 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Should work with Rhino 4.0 and Rhino 5.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Randomize   
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Randomly scales an object
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RandomScale
+  
+  Const XMIN = 0.8
+  Const XMAX = 1.2
+  Const YMIN = 0.8
+  Const YMAX = 1.2
+  Const ZMIN = 0.8
+  Const ZMAX = 1.2
+
+  Dim arrObjects, strObject, arrBox, arrOrigin, arrScale(2)
+  
+  arrObjects = Rhino.GetObjects("Select objects for random scaling",,True)
+  If IsNull(arrObjects) Then Exit Sub
+
+  Call Rhino.EnableRedraw(False)
+      
+  For Each strObject In arrObjects
+    arrScale(0) = Rnd * (XMAX - XMIN) + XMIN
+    arrScale(1) = Rnd * (YMAX - YMIN) + YMIN
+    arrScale(2) = Rnd * (ZMAX - ZMIN) + ZMIN
+    arrBox = Rhino.BoundingBox(strObject)
+    arrOrigin = Rhino.PointDivide(Rhino.PointAdd(arrBox(0), arrBox(2)), 2)
+    Call Rhino.ScaleObject(strObject, arrOrigin, arrScale, False)
+  Next
+  
+  Call Rhino.EnableRedraw(True)
+  
+End Sub
+
+Rnd * (XMAX - XMIN) + XMIN
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Rhino.AddStartUpScript Rhino.LastLoadedScriptFile
+Rhino.AddAlias "RandomScale", "_-RunScript (RandomScale)"

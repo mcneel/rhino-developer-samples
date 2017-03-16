@@ -1,0 +1,38 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SuperExplodeBlock.rvb -- October 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SuperExplodeBlock
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SuperExplodeBlock
+  Const rhInstanceObject = 4096
+  Dim arrBlocks, strBlock
+  arrBlocks = Rhino.ObjectsByType(rhInstanceObject)
+  If IsArray(arrBlocks) Then
+    For Each strBlock In arrBlocks
+      If Rhino.IsObjectSelectable(strBlock) Then
+        DoInstanceExplosion strBlock
+      End If
+    Next
+  End If
+End Sub
+  
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Recursive exploder
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DoBlockExplosion(strBlock)
+  Dim arrObjects, strObject
+  If Rhino.IsBlockInstance(strBlock) Then
+    arrObjects = Rhino.ExplodeBlockInstance(strBlock)
+    If IsArray(arrObjects) Then
+      For Each strObject In arrObjects
+        DoBlockExplosion strObject
+      Next
+    End If
+  End If
+End Sub

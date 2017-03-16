@@ -1,0 +1,163 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MarkFullyMultipleKnots.rvb -- March 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Adds points at full-multiplicity knot locations on curves.
+' Adds curves at full-multiplicity knot locations on surfaces.
+' Note, a knot value is said to be a full-multiplicity
+' knot if it is duplicated degree many times
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub MarkFullyMultipleKnots()
+  
+  Dim object
+  
+  object = Rhino.GetObject("Select curve or surface", 4 + 8, True)
+  If IsNull(object) Then Exit Sub
+    
+  If Rhino.IsCurve(object) Then
+    Call CurveFullyMultipleKnots(object)
+  Else
+    Call SurfaceFullyMultipleKnots(object)
+  End If    
+  
+End Sub    
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Adds points at full-multiplicity knot locations on curves.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CurveFullyMultipleKnots(curve)
+  
+  Dim degree, knots, knot_index, mult, pt
+  Dim points(), objects
+  
+  If IsNull(curve) Then Exit Sub
+  
+  Call Rhino.EnableRedraw(False)
+  degree = Rhino.CurveDegree(curve)
+  knots = Rhino.CurveKnots(curve)
+  
+  For knot_index = 0 To UBound(knots)
+    mult = KnotMultiplicity(knots, knot_index)
+    If (degree = mult) Then
+      pt = Rhino.EvaluateCurve(curve, knots(knot_index))
+      Call ArrayAdd(points, pt) 
+    End If
+  Next
+  
+  If (IsArrayDim(points) = True) Then
+    objects = Rhino.AddPoints(Rhino.CullDuplicatePoints(points))
+    Call Rhino.SelectObjects(objects)
+  End If
+
+  Call Rhino.EnableRedraw(True)
+  
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Adds curves at full-multiplicity knot locations on surfaces.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SurfaceFullyMultipleKnots(surface)
+  
+  Dim degree, vector, knots, knot_index, mult, dir, t
+  Dim isocurves, objects()
+  
+  If IsNull(surface) Then Exit Sub
+  
+  Call Rhino.EnableRedraw(False)
+  vector = Rhino.SurfaceKnots(surface)
+  
+  For dir = 0 To 1
+    degree = Rhino.SurfaceDegree(surface, dir)
+    knots = Vector(dir)
+    For knot_index = 0 To UBound(knots)
+      mult = KnotMultiplicity(knots, knot_index)
+      If (degree = mult) Then
+        t = knots(knot_index)
+        isocurves = Rhino.ExtractIsoCurve(surface, Array(t,t), 1-dir)
+        Call ArrayAppend(objects, isocurves) 
+      End If
+    Next
+  Next    
+  
+  If (IsArrayDim(objects) = True) Then
+    Call Rhino.SelectObjects(objects)
+  End If
+
+  Call Rhino.EnableRedraw(True)
+  
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Calculates the multiplicity of a knot.    
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function KnotMultiplicity(knots, knot_index)
+  
+  Dim knot_count, mult, index, t
+  
+  index = knot_index
+  knot_count = UBound(knots)
+  
+  If (index < 0 Or index > knot_count) Then
+    KnotMultiplicity = Null
+    Exit Function
+  End If
+  
+  t = knots(index)
+  mult = 1
+  
+  Do While (index < knot_count)
+    If (knots(index + 1) - t) > 1.0e-12 Then Exit Do
+    index = index + 1
+    mult = mult + 1
+  Loop
+  
+  KnotMultiplicity = mult
+    
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Add a new element to the end of an array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayAdd(ByRef arr, ByVal val)
+  Dim ub
+  If IsArray(arr) Then
+    On Error Resume Next
+    ub = UBound(arr)
+    If Err.Number <> 0 Then ub = -1
+    ReDim Preserve arr(ub + 1)
+    arr(UBound(arr)) = val
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Append another array to the end of an array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayAppend(ByRef arr, ByVal arr0)
+  Dim i, ub
+  If IsArray(arr) And IsArray(arr0) Then
+    On Error Resume Next
+    ub = UBound(arr)
+    If Err.Number <> 0 Then ub = -1
+    ReDim Preserve arr(ub + UBound(arr0) + 1)
+    For i = 0 To UBound(arr0)
+      arr(ub + 1 + i) = arr0(i)
+    Next
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Verifies that an array has been "dimmed".
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function IsArrayDim(ByVal arr)
+  IsArrayDim = False
+  If IsArray(arr) Then
+    On Error Resume Next
+    Call UBound(arr)
+    If Err.Number = 0 Then IsArrayDim = True
+  End If
+End Function

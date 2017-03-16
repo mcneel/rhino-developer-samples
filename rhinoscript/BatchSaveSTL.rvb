@@ -1,0 +1,71 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchSaveSTL.rvb -- January 2015
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhinoceros 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Main subroutine
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BatchSaveSTL
+ 
+	Dim sFolder, oFSO, oFolder
+	
+	If (Rhino.ExeVersion < 5) Then
+		Call Rhino.Print("This script requires Rhinoceros 5 or greater.")
+		Exit Sub
+	End If
+ 
+	sFolder = Rhino.BrowseForFolder(, "Select folder to recurse", "Batch Save STL")
+	If IsNull(sFolder) Then Exit Sub
+ 
+	Set oFSO = CreateObject("Scripting.FileSystemObject") 
+	Set oFolder = oFSO.GetFolder(sFolder)
+ 
+	Call RecurseFolder(oFolder)
+ 
+	Call Rhino.DocumentModified(False)
+	Call Rhino.Command("_-New _None", 0)
+	Call Rhino.Print("Done!")
+ 
+End Sub
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RecurseFolder
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RecurseFolder(oFolder)
+ 
+	Dim oFile, oSubFolder
+ 
+	For Each oFile In oFolder.Files
+		Call DoSaveAs(oFile.Path)
+	Next
+ 
+	For Each oSubFolder In oFolder.SubFolders
+		Call RecurseFolder(oSubFolder)
+	Next
+
+End Sub 
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DoSaveAs
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DoSaveAs(sPath)
+ 
+	Dim sCmd, sSave
+ 
+	If InStr(LCase(sPath), ".3dm") > 0 Then
+
+		sSave = LCase(Replace(sPath, ".3dm", ".stl", 1, -1, 1))
+		
+		Call Rhino.DocumentModified(False)
+		Call Rhino.Command("_-Open " & Chr(34) & sPath & Chr(34), 0)
+ 
+		sCmd = "_-Save " & Chr(34) & sSave & Chr(34) & " _Enter _Enter"
+		Call Rhino.Command(sCmd, 1)
+
+	End If
+ 
+End Sub

@@ -1,0 +1,48 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TabX.rvb -- February 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub TabX
+  
+  Dim oLine    
+  oLine = Rhino.GetObject("Select line", 4)
+  If IsNull(oLine) Or Not Rhino.IsLine(oLine) Then Exit Sub
+  
+  Dim nDistance
+  nDistance = Rhino.GetDistance(,,"Tab distance from corner", "Second point")
+  If IsNull(nDistance) Then Exit Sub
+  If Rhino.CurveLength(oLine) < (nDistance*2) Then Exit Sub
+
+  Dim nOffset    
+  nOffset = Rhino.GetDistance(,,"Tab Offset", "Second point")
+  If IsNull(nOffset) Then Exit Sub
+    
+  Rhino.EnableRedraw False    
+
+  Dim pt1 : pt1 = Rhino.CurveStartPoint( oLine )
+  Dim pt6 : pt6 = Rhino.CurveEndPoint( oLine )
+
+  Dim arrAngle: arrAngle = Rhino.Angle( pt1, pt6 )
+  Dim angle : angle = arrAngle(0)
+
+  Dim pt2 : pt2 = Rhino.Polar( pt1, angle, nDistance )
+  Dim pt3 : pt3 = Rhino.Polar( pt2, angle + 90.0, nOffset )
+  Dim pt5 : pt5 = Rhino.Polar( pt6, angle + 180.0, nDistance )
+  Dim pt4 : pt4 = Rhino.Polar( pt5, angle + 90.0, nOffset )
+  
+  Rhino.AddLine pt1, pt2
+  Rhino.AddLine pt2, pt3
+  Rhino.AddLine pt3, pt4
+  Rhino.AddLine pt4, pt5
+  Rhino.AddLine pt5, pt6
+          
+  Rhino.DeleteObject oLine
+  
+  Rhino.EnableRedraw True
+    
+End Sub

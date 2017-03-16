@@ -1,0 +1,93 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DumpRhinoVersions.rvb -- November 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Prints installed Rhino versions.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DumpRhinoVersions
+	Const HKEY_LOCAL_MACHINE = &H80000002
+	Dim oNetwork, sVersion, sOutput, bRhino
+
+	' Set to False if you are running this script outside of Rhino with
+	' either CSCRIPT.EXE or WSCRIPT.EXE.
+	bRhino = True
+	
+	' Dump computer and user information
+	Set oNetwork = CreateObject("WScript.Network")
+	sOutput = oNetwork.ComputerName & "\" & oNetwork.UserName
+	Call Output(sOutput, bRhino)
+	
+	' Dump Rhinoceros 5 64-bit (if possible)
+	If (Is64BitOS) Then
+		sVersion = ReadRegStr(HKEY_LOCAL_MACHINE, "SOFTWARE\McNeel\Rhinoceros\5.0x64\Install", "Version", 64)
+		If Not IsNull(sVersion) Then
+			sOutput = "Rhinoceros 5 64-bit (" & sVersion & ")"
+			Call Output(sOutput, bRhino)
+		End If
+	End If
+
+	' Dump Rhinoceros 5 32-bit
+	sVersion = ReadRegStr(HKEY_LOCAL_MACHINE, "SOFTWARE\McNeel\Rhinoceros\5.0\Install", "Version", 32)
+	If Not IsNull(sVersion) Then
+		sOutput = "Rhinoceros 5 32-bit (" & sVersion & ")"
+		Call Output(sOutput, bRhino)
+	End If
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Determines if the operating system is 64-bit
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function Is64BitOS
+	Const sPath = "winmgmts:root\cimv2:Win32_Processor='cpu0'"
+	Is64BitOS = (GetObject(sPath).AddressWidth = 64)
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Reads a REG_SZ value from the local computer's registry using WMI.
+' Parameters:
+'   RootKey - The registry hive.
+'   Key - The key that contains the desired value.
+'   Value - The value that you want to get.
+'   RegType - The registry bitness: 32 or 64.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ReadRegStr (RootKey, Key, Value, RegType)
+	Dim oCtx, oLocator, oReg, oInParams, oOutParams
+
+	Set oCtx = CreateObject("WbemScripting.SWbemNamedValueSet")
+	oCtx.Add "__ProviderArchitecture", RegType
+
+	Set oLocator = CreateObject("Wbemscripting.SWbemLocator")
+	Set oReg = oLocator.ConnectServer("", "root\default", "", "", , , , oCtx).Get("StdRegProv")
+
+	Set oInParams = oReg.Methods_("GetStringValue").InParameters
+	oInParams.hDefKey = RootKey
+	oInParams.sSubKeyName = Key
+	oInParams.sValueName = Value
+
+	Set oOutParams = oReg.ExecMethod_("GetStringValue", oInParams, , oCtx)
+
+	ReadRegStr = oOutParams.sValue
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Dumps a output string to either Rhino's or Windows command line.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Output(sOutput, bRhino)
+	If Not IsNull(sOutput) Then
+		If (bRhino) Then
+			Call Rhino.Print(sOutput)
+		Else
+			Call WScript.Echo(sOutput)
+		End If
+	End If
+End Sub	

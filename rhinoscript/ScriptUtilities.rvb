@@ -1,0 +1,98 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ScriptUtilities.rvb -- January 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns a Boolean value indicating whether an expression can be evaluated
+' as a string
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function IsString(ByVal str)
+  IsString = False
+  If VarType(str) = vbString Then IsString = True
+End Function
+  
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Surrounds a string with double-quote characters.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function QuoteString(ByVal str)
+  QuoteString = Chr(34) & CStr(str) & Chr(34)
+End Function  
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns a Boolean value indicating whether an array has been dimensioned.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function IsUpperBound(ByVal arr)
+  IsUpperBound = False
+  If IsArray(arr) Then
+    On Error Resume Next
+    UBound arr
+    If Err.Number = 0 Then IsUpperBound = True
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns the number of dimensions to an array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function GetArrayDim(ByRef arrValue)
+  If IsArray(arrValue) Then
+    For i = 1 To 60
+      On Error Resume Next
+      UBound arrValue, i
+      If Err.Number <> 0 Then
+        GetArrayDim = i-1
+        Exit Function
+      End If
+    Next
+    GetArrayDim = i
+  Else
+    GetArrayDim = Null
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' String formatting function.
+' Example:
+'   str = FormatString("Hello, Mr. {0}, today is {1}.", Array("McNeel", Date))
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FormatString(ByVal str, ByVal arr)
+  Dim i
+
+  FormatString = Null
+
+  If VarType(str) <> vbString Then Exit Function
+  If Not IsArray(arr) Then Exit Function
+
+  For i = 0 To UBound(arr)
+    str = Replace(str, "{" & CStr(i) & "}", CStr(arr(i)))
+  Next
+  str = Replace(str, "\n", VbCrLf)
+  str = Replace(str, "\t", vbTab)
+
+  FormatString = str
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Includes, or loads, other RhinoScript files.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Sub Include(strFile)
+  Dim objFSO, objFile, strPath
+  Const ForReading = 1
+  If IsString(strFile) Then
+    strPath = Rhino.FindFile(strFile)
+    If IsString(strPath) Then
+      Set objFSO = CreateObject("Scripting.FileSystemObject")
+      On Error Resume Next
+      Set objFile = objFSO.OpenTextFile(strPath, ForReading)
+      If (Err.Number = 0) Then
+        Call ExecuteGlobal(objFile.ReadAll())
+        objFile.Close
+      Else
+        Call Rhino.Print("Error including " & strPath)
+      End If
+    End If
+  End If
+End Sub

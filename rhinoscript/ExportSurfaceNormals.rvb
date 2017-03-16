@@ -1,0 +1,73 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportSurfaceNormals.rvb -- March 2015
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Simple procedure to output the coordinates of points on a surface and
+' the normal direction of the surface at each point to a comma-separated
+' value file.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportSurfaceNormals
+	
+	' Declare local constants
+	Const RH_PT = 1
+	Const RH_SRF = 8
+	
+	' Declare local variables
+	Dim strSurface, arrPoints, strFile
+	Dim arrStrings, arrCoords, arrParam, arrNormal, strName, i
+	
+	' Select the surface
+	strSurface = Rhino.GetObject("Select surface", RH_SRF)
+	If IsNull(strSurface) Then Exit Sub
+	
+	' Select points on the surface
+	arrPoints = Rhino.GetObjects("Select points on surface", RH_PT)
+	If IsNull(arrPoints) Then Exit Sub
+	
+	' Specify an output file name
+	strFile = Rhino.SaveFileName("Save", "CSV Files (*.csv)|*.csv||")
+	If IsNull(strFile) Then Exit Sub
+
+	' Prepare an array to hold our output strings
+	ReDim arrStrings(UBound(arrPoints))
+	
+	' Loop through each selected point object
+	For i = 0 To UBound(arrPoints)
+		' Get the point object's coordinates
+		arrCoords = Rhino.PointCoordinates(arrPoints(i))
+		' Get the parameter of the point on a surface that is closest to the coordinates
+		arrParam = Rhino.SurfaceClosestPoint(strSurface, arrCoords)
+		' Get the surface normal that the parameter
+		arrNormal = Rhino.SurfaceNormal(strSurface, arrParam)
+		' Get the point object's user-defined name
+		strName = Rhino.ObjectName(arrPoints(i))
+		If IsNull(strName) Then
+			strName = "<none>"
+		End If
+		Rhino.Print strName
+		' Add a delimited string to the output array
+		arrStrings(i) = FormatOutput(strName, arrCoords, arrNormal)
+		Rhino.Print arrStrings(i)
+	Next
+
+	' Write the delimted text file
+	Call Rhino.WriteTextFile(strFile, arrStrings)
+	
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Utility function to format the output string
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FormatOutput(strName, arrCoords, arrNormal)
+	Dim strString
+	strString = strName & ","
+	strString = strString & Rhino.Pt2Str(arrCoords)
+	strString = strString & ","
+	strString = strString & Rhino.Pt2Str(arrNormal)
+	FormatOutput = strString
+End Function

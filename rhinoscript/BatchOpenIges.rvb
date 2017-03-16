@@ -1,0 +1,74 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchOpenIges.rvb -- January 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchProcessFiles
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BatchProcessFiles()
+
+  ' Allow the user to interactively pick a folder
+  Dim sFolder
+  sFolder = Rhino.BrowseForFolder( , "Select folder to process", "Batch Open IGES" )
+  If VarType( sFolder ) <> vbString Then Exit Sub
+
+  ' Create a file system object
+  Dim oFSO
+  Set oFSO = CreateObject( "Scripting.FileSystemObject" ) 
+
+  ' Get a folder object based on the selected folder
+  Dim oFolder
+  Set oFolder = oFSO.GetFolder( sFolder )
+  
+  ' Process the folder
+  RecurseFolder oFolder
+
+  ' Release the objects
+  Set oFolder = Nothing
+  Set oFSO = Nothing
+
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RecurseFolder
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RecurseFolder( oFolder )
+
+  ' Process each file in the folder
+  Dim oFile
+  For Each oFile In oFolder.Files
+    ProcessFile oFile.Path
+  Next
+
+  ' Remark out the following lines if you do not want
+  ' to recursively process the folder
+  
+  ' Process each subfolder in this folder
+  Dim oSubFolder
+  For Each oSubFolder In oFolder.SubFolders
+    RecurseFolder( oSubFolder )
+  Next
+
+End Sub 
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ProcessFile
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ProcessFile( sFile )
+
+  ' Once we have gotten here, we have a valid file name.
+  ' In this case, we are interested in just IGES files.
+  
+  If (InStr(LCase(sFile), ".IGS") > 0) Or (InStr(LCase(sFile), ".IGES") > 0) Then
+    Rhino.Command "_-Open " & Chr(34) & sFile & Chr(34)
+    
+    ' TODO: Add functionality here
+    
+  End If
+
+End Sub

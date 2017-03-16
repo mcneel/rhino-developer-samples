@@ -1,0 +1,68 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MyVolume.rvb -- May 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub MyVolume()
+
+    ' Declare some useful constants
+    Const rhSurface = 8
+    Const rhPolysurface = 16
+    Const rhMesh = 32
+    Const rhInches = 8
+
+    ' Define the type of objects we can pick
+    Dim types
+    types = rhSurface + rhPolysurface + rhMesh
+
+    ' Pick an object
+    Dim object 
+    object = Rhino.GetObject("Select solid or solid mesh for volume calculation", types, True)
+    If (VarType(object) <> vbString) Then Exit Sub
+
+    ' Calculate the object's volume
+    Dim volume
+    If Rhino.IsSurface(object) And Rhino.IsSurfaceClosed(obj) Then
+        volume = Rhino.SurfaceVolume(object)
+    ElseIf Rhino.IsPolysurface(object) And Rhino.IsPolysurfaceClosed(object) Then
+        volume = Rhino.SurfaceVolume(object)
+    ElseIf Rhino.IsMesh(object) And Rhino.IsMeshClosd(object) Then
+        volume = Rhino.MeshVolume(obj)
+    Else
+        ' We should never get here
+        Rhino.Print "Unsupported object type"
+        Exit Sub
+    End If
+
+    ' Verify the volume calculation worked
+    If Not IsArray(volume) Then
+      Rhino.Print "Unable to perform volume calculation."
+      Exit Sub
+    End If
+
+    ' Verify the model's unit system is inches
+    Dim units
+    If (Rhino.UnitSystem = rhInches) Then
+      ' 1 cubic inch = 16.3870641 cubic centimeter
+      volume(0) = volume(0)*16.3870641
+      volume(1) = volume(1)*16.3870641
+      units = "centimeters"
+    Else
+      ' Just repot back in model's unit system
+      units = "units"
+    End If
+
+    ' Print output message
+    Dim msg
+    msg = "Volume = "
+    msg = msg & CStr(volume(0))
+    msg = msg & " (+/- "
+    msg = msg & CStr(volume(1))
+    msg = msg & ") cubic "
+    msg = msg & units
+    Rhino.Print msg
+
+End Sub

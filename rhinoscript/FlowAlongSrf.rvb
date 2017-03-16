@@ -1,0 +1,68 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FlowAlongSrf.rvb -- October 2008
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub TestFlowAlongSrf
+  
+  Dim arrObjects, strBase, strTarget, arrResults
+  
+  arrObjects = Rhino.GetObjects("Select objects to flow along a surface")
+  If IsNull(arrObjects) Then Exit Sub
+    
+  strBase = Rhino.GetObject("Base surface", 8)
+  If IsNull(strBase) Then Exit Sub
+    
+  strTarget = Rhino.GetObject("Target surface", 8)
+  If IsNull(strTarget) Then Exit Sub
+    
+  arrResults = DoFlowAlongSrf(arrObjects, strBase, strTarget)
+  If IsArray(arrResults) Then
+    For i = 0 To UBound(arrResults)
+      Rhino.Print arrResults(i)
+    Next
+  End If
+
+End Sub
+
+Function DoFlowAlongSrf(arrObjects, strBase, strTarget)
+  
+  ' Declare local variables
+  Dim saved, cmd
+
+  ' For speed, turn of screen redrawing
+  Rhino.EnableRedraw False
+
+  ' Save any selected objects
+  saved = Rhino.SelectedObjects
+  
+  ' Unselect all objects
+  Rhino.UnSelectAllObjects
+
+  ' Select the brep
+  Rhino.SelectObjects arrObjects
+  
+ ' Script the split command
+  cmd = "_FlowAlongSrf _SelID " & strBase & " _SelID " & strTarget
+  Rhino.Command cmd, 0
+  
+  ' By preselecting the brep, the results of 
+  ' Split will be selected. So, get the selected 
+  ' objects and return them to the caller.
+  DoFlowAlongSrf = Rhino.SelectedObjects
+  
+  ' Unselect all objects
+  Rhino.UnSelectAllObjects
+
+  ' If any objects were selected before calling
+  ' this function, re-select them
+  If IsArray(saved) Then Rhino.SelectObjects(saved)
+
+  ' Don't forget to turn redrawing back on
+  Rhino.EnableRedraw True
+  
+End Function

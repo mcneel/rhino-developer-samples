@@ -1,0 +1,71 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DivideCurveEquiDistant.rvb -- April 2008
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub DivideCurveEquiDistant
+  
+  Dim crv
+  crv = Rhino.GetObject("Select curve to divide", 4, True)
+  If IsNull(crv) Then Exit Sub
+
+  Dim crv_length
+  crv_length = Rhino.CurveLength(crv)
+  
+  Dim length
+  length = Rhino.GetReal("Curve length is " & CStr(crv_length) & ". Division length", 1.0) 
+  If Not IsNumeric(length) Then Exit Sub
+  
+  If (crv_length < length) Then
+    Rhino.Print "Specified divison length exceeds curve length."
+    Exit Sub
+  End If    
+
+  Rhino.EnableRedraw False  
+
+  Dim dom, t, pt
+  dom = Rhino.CurveDomain(crv)
+  t = dom(0)
+  pt = Rhino.EvaluateCurve(crv, t)
+  Rhino.AddPoint pt
+  
+  Dim bDone: bDone = False
+  While (bDone = False)
+    t = EquiDistantParameter(crv, t, length)
+    If IsNull(t) Then
+      bDone = True
+    Else
+      pt = Rhino.EvaluateCurve(crv, t)
+      Rhino.AddPoint pt
+    End If
+  Wend
+  
+  Rhino.EnableRedraw True
+         
+End Sub
+
+Function EquiDistantParameter(crv, t, length)
+
+  EquiDistantParameter = Null
+  
+  Dim pt : pt = Rhino.EvaluateCurve(crv, t)
+  Dim sphere : sphere = Rhino.AddSphere(pt, length)
+  Dim csx : csx = Rhino.CurveSurfaceIntersection(crv, sphere)
+  
+  Rhino.DeleteObject sphere
+  If Not IsArray(csx) Then Exit Function
+    
+  Dim i
+  For i = 0 To UBound(csx)
+    If csx(i,0) = 1 Then
+      If (csx(i,5) > t) Then
+        EquiDistantParameter = csx(i,5)
+        Exit Function
+      End If
+    End If
+  Next
+  
+End Function  

@@ -1,0 +1,61 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExtractThumbnailImages.rvb -- January 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExtractThumbnailImages
+' Main subroutine for image extraction script.
+' Use the LoadScript command to load this script into memory.
+' Use the RunScript command to run it (after loading)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExtractThumbnailImages  
+  Dim sFolder, oFSO, oFolder
+  sFolder = Rhino.BrowseForFolder(, "Select folder to extact thumbnail images")
+  If VarType(sFolder) = vbString Then
+    Set oFSO = CreateObject("Scripting.FileSystemObject") 
+    Set oFolder = oFSO.GetFolder(sFolder)
+    RecurseFolders oFolder
+    Set oFolder = Nothing
+    Set oFSO = Nothing
+  End If
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RecurseFolders
+' This subrouting does the folder recursion
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RecurseFolders( oFolder )
+  Dim oFile, oSubFolder
+  For Each oFile In oFolder.Files
+    If InStr(LCase(oFile.Path), ".3dm") Then
+      DoExtractImage oFile.Path
+    End If
+  Next
+  ' Remark out the next block of code if you
+  ' do not want to recursively process the folder
+  For Each oSubFolder In oFolder.SubFolders
+    RecurseFolders oSubFolder
+  Next
+
+End Sub 
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DoExtractImage
+' This subroutine does the image extaction.
+' To extract in a different image format, replace the sFormat variable
+' with one of the following strings: bmp, tga, jpg, pcx, png, or tif.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DoExtractImage( sFile )
+  Dim nIndex, sImage, sFormat
+  sFormat = "jpg"
+  nIndex = InStr(LCase(sFile), ".3dm")
+  if( nIndex > 0 ) Then
+    sImage = Left(sFile,nIndex) & sFormat
+    Rhino.ExtractPreviewImage sImage, sFile
+  End If
+End Sub

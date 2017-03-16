@@ -1,0 +1,40 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' OperatingSystemProperties.rvb -- February 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub OperatingSystemProperties
+  Rhino.ClearCommandHistory
+  Rhino.Print
+  Rhino.Print "------------------------------------------------------"
+  Rhino.Print "Operating System Properties"
+  Rhino.Print "------------------------------------------------------"
+  Set dtmConvertedDate = CreateObject("WbemScripting.SWbemDateTime")
+  Set objWMIService = GetObject("winmgmts:" & "{impersonationLevel=impersonate}!\\" & "." & "\root\cimv2")
+  Set colOperatingSystems = objWMIService.ExecQuery ("Select * from Win32_OperatingSystem")
+  For Each objOperatingSystem In colOperatingSystems
+    Rhino.Print "Boot Device: " & objOperatingSystem.BootDevice
+    Rhino.Print "Build Number: " & objOperatingSystem.BuildNumber
+    Rhino.Print "Build Type: " & objOperatingSystem.BuildType
+    Rhino.Print "Caption: " & objOperatingSystem.Caption
+    Rhino.Print "Code Set: " & objOperatingSystem.CodeSet
+    Rhino.Print "Country Code: " & objOperatingSystem.CountryCode
+    Rhino.Print "Debug: " & objOperatingSystem.Debug
+    Rhino.Print "Encryption Level: " & objOperatingSystem.EncryptionLevel
+    dtmConvertedDate.Value = objOperatingSystem.InstallDate
+    dtmInstallDate = dtmConvertedDate.GetVarDate
+    Rhino.Print "Install Date: " & dtmInstallDate 
+    Rhino.Print "Licensed Users: " & objOperatingSystem.NumberOfLicensedUsers
+    Rhino.Print "Organization: " & objOperatingSystem.Organization
+    Rhino.Print "OS Language: " & objOperatingSystem.OSLanguage
+    Rhino.Print "OS Product Suite: " & objOperatingSystem.OSProductSuite
+    Rhino.Print "OS Type: " & objOperatingSystem.OSType
+    Rhino.Print "Primary: " & objOperatingSystem.Primary
+    Rhino.Print "Registered User: " & objOperatingSystem.RegisteredUser
+    Rhino.Print "Serial Number: " & objOperatingSystem.SerialNumber
+    Rhino.Print "Version: " & objOperatingSystem.Version
+  Next
+  Rhino.Command "_CommandHistory" 
+End Sub

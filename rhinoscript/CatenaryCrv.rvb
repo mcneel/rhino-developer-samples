@@ -1,0 +1,59 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CatenaryCrv.rvb -- April 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'
+' Ref: http://mathworld.wolfram.com/Catenary.html
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub CatenaryCrv()
+
+  Dim t0, t1, t, a
+  Dim cnt, x, pt, pts()
+
+  t1 = Rhino.GetReal("Value of X", 1.0, 0.1)
+  If IsNull(t1) Then Exit Sub
+    
+  t0 = -t1
+    
+  a = Rhino.GetReal("Value of A", 1.0, 0.1)
+  If IsNull(a) Then Exit Sub
+
+  cnt = Rhino.GetInteger("Number of sampling points", 50, 3)
+  If IsNull(cnt) Then Exit Sub
+
+  ReDim pts(cnt - 1)
+
+  pt = CalculatePoint(t0, a)
+  pts(0) = pt
+
+  For x = 1 To cnt - 2
+    t = (1.0 - (x / cnt) ) * t0 + (x / cnt) * t1
+    pt = CalculatePoint(t, a)
+    pts(x) = pt
+  Next
+
+  pt = CalculatePoint(t1, a)
+  pts(cnt - 1) = pt
+
+  Rhino.SelectObject Rhino.AddInterpCurveEx(pts)
+
+End Sub
+
+Function CalculatePoint(t, a)
+  Dim arr(2)
+  If IsNumeric(t) Then
+    arr(0) = t
+    arr(1) = a * cosh(t/a)
+    arr(2) = 0
+    CalculatePoint = arr
+  Else
+    CalculatePoint = vbNull
+  End If
+End Function
+
+Function Cosh(x)
+  Cosh = (Exp(x) + Exp(-x)) / 2  
+End Function

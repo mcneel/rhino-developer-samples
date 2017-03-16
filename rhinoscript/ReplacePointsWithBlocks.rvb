@@ -1,0 +1,80 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ReplacePointsWithBlocks.rvb -- May 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Replaces points with blocks
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ReplacePointsWithBlocks
+
+  ' Select points to replace with a block
+  Dim arrObjects
+  arrObjects = Rhino.GetObjects("Select points to replace with a block", 1, vbTrue, vbTrue)
+  If Not IsArray(arrObjects) Then Exit Sub
+
+  ' Get the names of all block definitions in the document    
+  Dim arrBlocks
+  arrBlocks = Rhino.BlockNames(vbTrue)
+  If Not IsArray(arrBlocks) Then
+    Rhino.Print "No block definitions found in the document."
+    Exit Sub
+  End If
+
+  ' Select a block name from a list
+  Dim strBlock
+  strBlock = Rhino.ListBox(arrBlocks, "Select block", "Replace Points")
+  If IsNull(strBlock) Then Exit Sub
+
+  ' Turn off redrawing (faster)
+  Rhino.EnableRedraw vbTrue      
+
+  ' Process each selected point object
+  Dim strObject, arrPoint
+  For Each strObject In arrObjects
+    ' Get the point object's coordinates
+    arrPoint = Rhino.PointCoordinates(strObject)
+    ' Insert the block at that location
+    Rhino.InsertBlock strBlock, arrPoint
+  Next
+
+  ' Delete all of the point objects
+  Rhino.DeleteObjects arrObjects   
+  
+  ' Turn redrawing back on     
+  Rhino.EnableRedraw vbTrue      
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Replaces blocks with points
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ReplaceBlocksWithPoints
+
+  ' Select blocks to replace with points
+  Dim arrObjects
+  arrObjects = Rhino.GetObjects("Select blocks to replace with points", 4096, vbTrue, vbTrue)
+  If Not IsArray(arrObjects) Then Exit Sub
+    
+  ' Turn off redrawing (faster)
+  Rhino.EnableRedraw vbTrue      
+
+  ' Process each selected block object
+  Dim strObject, arrPoint
+  For Each strObject In arrObjects
+    ' Get the block's insertion point
+    arrPoint = Rhino.BlockInstanceInsertPoint(strObject)
+    ' Add a point object at that location
+    Rhino.AddPoint arrPoint
+  Next
+
+  ' Delete all of the block objects
+  Rhino.DeleteObjects arrObjects   
+  
+  ' Turn redrawing back on     
+  Rhino.EnableRedraw vbTrue      
+  
+End Sub

@@ -1,0 +1,82 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ConvertTextToGeometry.rvb -- September 2008
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Convert text objects to geometry
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ConvertTextToGeometry
+  
+  ' Declare local variables
+  Dim obj_list, obj, saved_plane, cmd
+  Dim font, height, plane, style, text, bold, italic
+  
+  ' Select annotation objects
+  obj_list = Rhino.GetObjects("Select text to convert to geometry", 512, True, True)
+  If Not IsArray(obj_list) Then Exit Sub
+
+  ' For speed, turn of screen redrawing
+  Call Rhino.EnableRedraw(False)
+  
+  ' Save the current construction plane
+  saved_plane = Rhino.ViewCPlane()
+  
+  ' Process each selected object
+  For Each obj In obj_list
+  
+    ' Weed out just the text objects
+    If Rhino.IsText(obj) Then
+      
+      ' Acquire the text parameters
+      font = Rhino.TextObjectFont(obj)
+      height = Rhino.TextObjectHeight(obj)
+      plane = Rhino.TextObjectPlane(obj)
+      style = Rhino.TextObjectStyle(obj)
+      text = Rhino.TextObjectText(obj)
+      
+      If (style And 1) Then
+        bold = "_Yes"
+      Else
+        bold = "_No"
+      End If
+
+      If (style And 2) Then
+        italic = "_Yes"
+      Else
+        italic = "_No"
+      End If
+      
+      ' Set the current construction plane
+      Call Rhino.ViewCPlane(, plane)
+      
+      ' Add a new text object (geometry)
+      cmd = "_-TextObject "
+      cmd = cmd & "_GroupOutput=_Yes "
+      cmd = cmd & "_FontName=" & font & " "
+      cmd = cmd & "_Italic=" & italic & " "
+      cmd = cmd & "_Bold=" & bold & " "
+      cmd = cmd & "_Height=" & CStr(height) & " "
+      cmd = cmd & "_Output=_Curves "
+      cmd = cmd & "_AllowOpenCurves=_Yes "
+      cmd = cmd & Chr(34) & text & Chr(34) & " "
+      cmd = cmd & "0"
+      Call Rhino.Command(cmd, 0)
+      
+      ' Delete the original object
+      Call Rhino.DeleteObject(obj)
+      
+    End If
+  Next
+
+  ' Restore the saved construction plane      
+  Call Rhino.ViewCPlane(, saved_plane)
+  
+  ' Enable screen redrawing
+  Call Rhino.EnableRedraw(True)
+  
+End Sub

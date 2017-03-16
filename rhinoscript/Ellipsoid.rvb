@@ -1,0 +1,34 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Ellipsoid.rvb -- June 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Another ellipsoid maker
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Ellipsoid()
+
+  Dim a, b, c
+  Dim origin, xaxis, yaxis
+  Dim plane, xform, obj
+  
+  ' Semi-principal axes 
+  a = 6.0
+  b = 3.0
+  c = 4.0
+  
+  origin = Array(0,0,0) ' world orogin
+  xaxis = Array(1,0,0)  ' world x-axis
+  yaxis = Array(0,1,0)  ' world y-axis
+  plane = Rhino.PlaneFromFrame(origin, xaxis, yaxis)
+  
+  obj = Rhino.AddSphere(plane, 1.0)
+  
+  xform = Rhino.XformScale(plane, a, b, c)
+  Call Rhino.TransformObject(obj, xform)
+
+End Sub

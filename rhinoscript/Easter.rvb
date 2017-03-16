@@ -1,0 +1,30 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Easter.rvb -- October 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Hey, when is the Easter holiday?
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Easter
+  Dim c, n, k, i, j, l, m, d, y, months
+  months = Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+  y = Year(Now)
+  c = y\100
+  n = y-19 * (y\19 )
+  k = (c-17)\25
+  i = c - c\4 - (c-k)\3 + 19 * n + 15
+  i = i - 30 * (i\30)
+  i = i - (i\28 ) * (1 - (i\28) * (29\(i+1)) * ((21-n)\11))
+  j = y + y\4 + i + 2 - c + c\4
+  j = j - 7 * (j\7 )
+  l = i - j
+  m = 3 + (l + 40)\44
+  d = l + 28 - 31 * (m\4)
+  Call MsgBox(months(m-1) & " " & CStr(d) & ", " & CStr(y), vbOKOnly + vbInformation, "Easter")
+End Sub
+

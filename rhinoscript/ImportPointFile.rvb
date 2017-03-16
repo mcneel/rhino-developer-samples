@@ -1,0 +1,43 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ImportPointFile.rvb -- September 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub ImportPointFile()
+
+  Dim sFile
+  sFile = Rhino.OpenFileName("Open", "My Point Data (*.txt)|*.txt||")
+  If IsNull(sFile) Then Exit Sub
+
+  Dim oFSO
+	Set oFSO = CreateObject("Scripting.FileSystemObject")
+	
+	Const ForReading = 1
+  Dim oStream
+	On Error Resume Next
+	Set oStream = oFSO.OpenTextFile(sFile, ForReading)
+	If Err Then
+		MsgBox Err.Description
+		Exit Sub
+	End If
+
+  Dim sLine, aLine, aPoint, sPoint
+	Do While (oStream.AtEndOfStream <> True)
+    sLine = oStream.ReadLine
+    aLine = Split(sLine, ",", -1, 1)
+    If (UBound(aLine) = 3) Then
+      aPoint = Array( CDbl(aLine(0)), CDbl(aLine(1)), CDbl(aLine(2)) )
+      sPoint = Rhino.AddPoint( aPoint )
+      Rhino.ObjectName sPoint, aLine(3)
+      Rhino.AddText aLine(3), aPoint
+    End If
+	Loop
+   
+	oStream.Close
+
+End Sub
+
+ 

@@ -1,0 +1,37 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CreateShortcut.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: CreateShortcut
+' Purpose:    Create a shortcut to the current document.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CreateShortcut()
+
+  Dim objShell, strDesktop, objShellLink, strName, strPath
+  
+  ' Get the document name and path
+  strName = Rhino.DocumentName
+  strPath = Rhino.DocumentPath
+  
+  ' Get the Windows Scripting Host's Shell object
+  Set objShell = CreateObject("WScript.Shell")
+  
+  ' Get the desktop folder
+  strDesktop = objShell.SpecialFolders("Desktop")
+  
+  ' Make a new shortcut
+  Set objShellLink = objShell.CreateShortcut(strDesktop & "\" & strName & ".lnk")
+  objShellLink.TargetPath = strPath & strName
+  objShellLink.WindowStyle = 1
+  objShellLink.IconLocation = Rhino.ExeFolder & "Rhino4.exe, 0"
+  objShellLink.Description = "Shortcut to " & strName
+  objShellLink.WorkingDirectory = strPath
+  objShellLink.Save
+
+End Sub
+

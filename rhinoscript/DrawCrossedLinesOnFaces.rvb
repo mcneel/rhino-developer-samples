@@ -1,0 +1,33 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DrawCrossedLinesOnFaces.rvb -- September 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub DrawCrossedLinesOnFaces()
+  
+  Dim strMesh, arrIndices, intIndex
+  Dim arrFaces, arrVertices, arrFace
+  
+  strMesh = Rhino.GetObject("Select mesh", 32)
+  If IsNull(strMesh) Then Exit Sub
+  
+  arrIndices = Rhino.GetMeshFaces(strMesh, "Select faces to draw on")
+  If IsNull(arrIndices) Then Exit Sub
+
+  arrFaces = Rhino.MeshFaceVertices(strMesh)
+  arrVertices = Rhino.MeshVertices(strMesh)
+    
+  For Each intIndex In arrIndices
+    arrFace = arrFaces(intIndex)
+    ' Test for quad face
+    If arrFace(2) <> arrFace(3) Then
+      Call Rhino.AddLine(arrVertices(arrFace(0)), arrVertices(arrFace(2)))
+      Call Rhino.AddLine(arrVertices(arrFace(1)), arrVertices(arrFace(3)))
+    End If
+  Next
+  
+End Sub

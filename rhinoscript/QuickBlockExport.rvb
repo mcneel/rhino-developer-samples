@@ -1,0 +1,56 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' QuickBlockExport.rvb -- July 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Exports a block (quickly I guess...)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub QuickBlockExport
+  
+  ' Local variables
+  Dim arrObjects, arrSelected, arrCopy
+  Dim arrPoint, strFile
+  
+  ' Select some objects that define the block
+  arrObjects = Rhino.GetObjects("Select objects to define block", 0, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+  
+  ' Pick the block's base point
+  arrPoint = Rhino.GetPoint("Block base point")
+  If IsNull(arrPoint) Then Exit Sub
+
+  ' Turn off screen redrawing so the screen won't flicker    
+  Call Rhino.EnableRedraw(False)    
+
+  ' Copy the block objects to the world origin
+  arrCopy = Rhino.CopyObjects(arrObjects, arrPoint, Array(0,0,0))
+
+  ' Save off pre-selected objects so we can restore them later
+  arrSelected = Rhino.SelectedObjects
+  
+  ' Unselect all objects
+  Rhino.UnselectAllObjects
+  
+  ' Select just the objects we copied
+  Call Rhino.SelectObjects(arrCopy)
+
+  ' Script the export command    
+  Call Rhino.Command("_Export", 0)
+  
+  ' Delete the copied objects
+  Call Rhino.DeleteObjects(arrCopy)
+  
+  ' Re-select the pre-selected objects
+  If IsArray(arrSelected) Then
+    Call Rhino.SelectObjects(arrSelected)
+  End If
+  
+  ' Turn redrawing back on
+  Call Rhino.EnableRedraw(True)    
+  
+End Sub

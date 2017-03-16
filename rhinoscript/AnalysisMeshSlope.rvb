@@ -1,0 +1,62 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' AnalysisMeshSlope.rvb -- February 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' First, download and install the Analysis Tools 
+' plug-in from Rhino Labs:
+' 
+' http://wiki.mcneel.com/labs/labsanalysistools
+' 
+' This plug-in allows you to view meshes that have custom analysis data, such 
+' as slope.
+' 
+' After you have installed this plug-in, drag and drop the attached 
+' RhinoScript on top of Rhino and then run the AnalysisMeshSlope command on 
+' some mesh. If all you have is a surface, then use either the Mesh or 
+' ExtractRenderMesh commands to produce a mesh from your surface. Finally, use 
+' the AnalyzeMesh command to make adjustments to the color scale.
+' 
+' In a nutshell, the AnalysisMeshSlope script calculates the slope (angle) at 
+' each mesh vertex. These angles are then assigned to the mesh as analysis 
+' data. The Analysis Tools plug-in takes the analysis data (angles) and 
+' calculate color values using an algorithm similar to what is presented here:
+' 
+' http://wiki.mcneel.com/developer/scriptsamples/hotcoldcolor
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub AnalysisMeshSlope()
+  
+  Dim objAnalysis, strMesh, arrNormals, arrAngles(), arrDir, i
+
+  On Error Resume Next
+  Set objAnalysis = Rhino.GetPluginObject("Analysis Tools")
+  If Err Then
+    Rhino.Print "Unable to connect to AnalysisTools plug-in."
+    Exit Sub
+  End If
+
+  strMesh = Rhino.GetObject("Select mesh", 32, True)
+  If IsNull(strMesh) Then Exit Sub
+
+  arrNormals = Rhino.MeshVertexNormals(strMesh)    
+  If IsNull(arrNormals) Then
+    Rhino.Print "The strMesh does not have vertex arrNormals."
+    Exit Sub
+  End If
+    
+  arrDir = Array(0,0,1)
+  ReDim arrAngles(UBound(arrNormals))
+  
+  For i = 0 To UBound(arrNormals)
+    arrAngles(i) = Rhino.VectorAngle(arrNormals(i), arrDir)
+  Next
+  
+  Call objAnalysis.AnalysisMeshData(strMesh, arrAngles)
+  
+End Sub
+

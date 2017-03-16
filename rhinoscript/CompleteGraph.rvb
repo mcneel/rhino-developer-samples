@@ -1,0 +1,58 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CompleteGraph.rvb -- April 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'
+' http://en.wikipedia.org/wiki/Complete_graph
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Draw lines between a number of points spaced
+' evenly around the circumference of a circle.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CompleteGraph
+  
+	Dim center, radius, count
+	Dim points, i, j
+  
+	center = Array(0, 0, 0) ' Center of circle
+	radius = 5.0          ' Radius of circle
+	count = 19            ' Points on circle
+  
+	'Call Rhino.EnableRedraw(False)
+  
+	points = PointsOnCircle(center, radius, count)
+	For i = 0 To count - 1
+		For j = i + 1 To count - 1
+			Call Rhino.AddLine(points(i), points(j))
+		Next
+	Next
+
+	'Call Rhino.EnableRedraw(True)
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Calculate points on the circle
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function PointsOnCircle(center, radius, count)
+  
+	Dim alpha, theta, points(), i
+  
+	ReDim points(count-1)
+  
+	alpha = Rhino.PI * 2 / count
+  
+	For i = 0 To count - 1
+		theta = alpha * i
+		points(i) = Array( _
+			center(0) + Cos(theta) * radius, _
+			center(1) + Sin(theta) * radius, _
+			center(2))
+	Next
+  
+	PointsOnCircle = points
+  
+End Function

@@ -1,0 +1,46 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ArraySpheres.rvb -- July 2015
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ArraySpheres
+	
+	Dim spheres(), items, count, dir
+	Dim x, y, z, vx, vy, vz, dx, dy, dz
+
+	Call Rhino.EnableRedraw(False)
+
+	items = 10:	count = 0
+
+	ReDim spheres(items ^ 3 - 1)
+
+	vx = Array(1, 0, 0): vy = Array(0, 1, 0): vz = Array(0, 0, 1)
+	dx = 2:	dy = 2:	dz = 2
+
+	spheres(count) = Rhino.AddSphere(Array(0, 0, 0), 0.5)
+	
+	For z = 0 To items - 1
+		For y = 0 To items - 1
+			For x = 0 To items - 1
+				If Not (x = 0 And y = 0 And z = 0) Then
+					dir = Array( _
+						vx(0) * x + vy(0) * y + vz(0) * z, _
+						vx(1) * x + vy(1) * y + vz(1) * z, _
+						vx(2) * x + vy(2) * y + vz(2) * z)
+					count = count + 1
+					spheres(count) = Rhino.CopyObject(spheres(0), dir)
+				End If
+			Next
+		Next
+	Next
+	
+	' This will force the creation of render meshes
+	Call Rhino.BoundingBox(spheres)
+	
+	Call Rhino.EnableRedraw(True)
+
+End Sub

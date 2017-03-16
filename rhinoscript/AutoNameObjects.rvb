@@ -1,0 +1,32 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' AutoNameObjects.rvb -- August 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub AutoNameObjects
+  
+  Dim arrObjects, strPrefix, nDigits, strName, i
+  
+  arrObjects = Rhino.GetObjects("Select objects to automatically name", 0, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+    
+  strPrefix = Rhino.GetString("Object name prefix")
+  If IsNull(strPrefix) Then Exit Sub
+    
+  nDigits = Len(CStr(UBound(arrObjects) + 1))
+  
+  For i = 0 To UBound(arrObjects)
+    strName = strPrefix & CStr(PadDigits(i+1, nDigits))
+    Call Rhino.ObjectName(arrObjects(i), strName)
+  Next
+    
+End Sub
+    
+Function PadDigits(nValue, nDigits)
+  PadDigits = Right(String(nDigits, "0") & nValue, nDigits) 
+End Function 
+    
+  

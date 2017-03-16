@@ -1,0 +1,97 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Torsion.rvb -- February 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Evaluate the torsion of a curve at a point
+'   crv     - a string that is the curve identifier
+'	  t       - a parameter of the curve within its domain
+'	  Returns - the torsion or Null if it is undefined at this point
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function EvaluateTorsion(crv, t)
+  Dim data, d1xd2, numer, denom
+	data = Rhino.CurveEvaluate(crv, t, 3 )
+	If IsArray(data) And IsArray(data(0)) And IsArray(data(1)) And IsArray(data(2)) And IsArray(data(3)) Then		
+		d1xd2 = VectorCrossProduct(data(1), data(2))
+		numer = VectorDotProduct(d1xd2, data(3))
+		denom = VectorDotProduct(d1xd2, d1xd2)
+		If denom > 0 Then
+			EvaluateTorsion = numer / denom
+		Else
+			EvaluateTorsion = Null
+		End If
+	End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Return the dot product of two 3D vectors
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function VectorDotProduct(v1, v2)
+  VectorDotProduct = Null
+  If Not IsArray(v1) Or (UBound(v1) <> 2) Then Exit Function
+  If Not IsArray(v2) Or (UBound(v2) <> 2) Then Exit Function
+  Dim numer, x1, y1, z1, x2, y2, z2
+  x1 = v1(0) : y1 = v1(1) : z1 = v1(2)
+  x2 = v2(0) : y2 = v2(1) : z2 = v2(2)
+  numer = x1 * x2 + y1 * y2 + z1 * z2
+  VectorDotProduct = numer
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Return the cross product of two 3D vectors
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function VectorCrossProduct(v1, v2)
+  VectorCrossProduct = Null
+  If Not IsArray(v1) Or (UBound(v1) <> 2) Then Exit Function
+  If Not IsArray(v2) Or (UBound(v2) <> 2) Then Exit Function
+  Dim x, y, z
+  x = v1(1) * v2(2) - v1(2) * v2(1)
+  y = v1(2) * v2(0) - v1(0) * v2(2)
+  z = v1(0) * v2(1) - v1(1) * v2(0)
+  VectorCrossProduct = Array(x, y, z)
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Here is the routine that allows you to pick a curve and point.
+' Modify this funcion as you need to fit your needs.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TorsionOnCurve()
+	Dim crv, pt, t, msg, tor
+	crv = Rhino.GetObject("Select curve to evaluate", 4, True)
+	If VarType(crv) <> vbString Then Exit Sub
+	pt = Rhino.GetPointOnCurve(crv, "Point to evaluate")
+	If Not IsArray(pt) Then Exit Sub
+	t = Rhino.CurveClosestPoint(crv, pt)
+	tor = EvaluateTorsion(crv, t)
+	If Not IsNull(tor) Then
+		msg = "Torsion at curve parameter " & CStr(t) & " is " & CStr(tor)
+		MsgBox msg, vbOKOnly
+	End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Here is the routine that allows you to pick a curve and a collection of point objects
+' Modify this funcion as you need to fit your needs.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub EvaluateCurveTorsion()
+	Dim crv, pt_list, pt, pt3d, t, msg, tor
+	crv = Rhino.GetObject("Select curve to evaluate", 4, True)
+	If VarType(crv) <> vbString Then Exit Sub
+	pt_list = Rhino.GetObjects("Select points to evaluate", 1)
+	If Not IsArray(pt_list) Then Exit Sub
+	For Each pt In pt_list
+		pt3d = Rhino.PointCoordinates(pt)
+		t = Rhino.CurveClosestPoint(crv, pt3d)
+		If IsNumeric(t) Then 
+			tor = EvaluateTorsion(crv,t)
+			If Not IsNull(tor) Then
+    		msg = "Torsion at curve parameter " & CStr(t) & " is " & CStr(tor)
+		    Rhino.Print msg
+			End If
+		End If
+	Next
+End Sub

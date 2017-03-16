@@ -1,0 +1,90 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchImport -- July 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Imports 3DM files
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BatchImport()
+
+	Dim sFolder, oFSO, oFolder
+  
+	sFolder = Rhino.BrowseForFolder(, "Select folder to import", "Batch Import")
+	If IsNull(sFolder) Then Exit Sub
+  
+	Set oFSO = CreateObject("Scripting.FileSystemObject") 
+	Set oFolder = oFSO.GetFolder(sFolder)
+  
+	Call Rhino.EnableRedraw(False)
+	Call RecurseFolder(oFSO, oFolder)
+	Call Rhino.Command("_-Purge _Layers=_Yes _Enter", 0)
+	Call Rhino.UnselectAllObjects
+	Call Rhino.ZoomExtents(, True)
+	Call Rhino.EnableRedraw(True)
+
+End Sub
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RecurseFolder
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RecurseFolder(ByRef oFSO, ByRef oFolder)
+
+	Dim oFile, oSubFolder
+  
+	For Each oFile In oFolder.Files
+		If UCase(oFSO.GetExtensionName(oFile.Name)) = "3DM" Then
+			Call ProcessFile(oFSO, oFile)
+		End If
+	Next
+  
+	For Each oSubFolder In oFolder.SubFolders
+		Call RecurseFolder(oFSO, oSubFolder)
+	Next
+
+End Sub 
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ProcessFile
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ProcessFile(ByRef oFSO, ByRef oFile)
+
+	Dim aObjects, sLayer, sLayerId
+	
+	Call Rhino.Command("_-Import " & Chr(34) & oFile.Path & Chr(34) & " _Enter", 0)
+	
+	aObjects = Rhino.LastCreatedObjects()
+	If IsArray(aObjects) Then
+		sLayer = FormatLayerString(oFSO, oFile.Path)
+		sLayerId = Rhino.AddLayer(sLayer)
+		Call Rhino.ObjectLayer(aObjects, sLayerId)
+	End If
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FormatLayerString
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FormatLayerString(ByRef oFSO, ByVal sPath)
+
+	Dim sDrive, sDir, sName, sExt
+
+	Call SplitPath(oFSO, sPath, sDrive, sDir, sName, sExt)
+	FormatLayerString = Replace(sDir & sName, "\", "::")
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SplitPath
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SplitPath(ByRef oFSO, ByVal sPath, ByRef sDrive, ByRef sDir, ByRef sName, ByRef sExt)
+
+	sDrive = oFSO.GetDriveName(sPath)
+	sDir = Mid(oFSO.GetParentFolderName(sPath), Len(sDrive) + 1) & "\"
+	sName = oFSO.GetBaseName(sPath)
+	sExt = "." & oFSO.GetExtensionName(sPath)
+
+End Sub

@@ -1,0 +1,44 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportLayerNames.rvb -- March 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ExportLayerNames
+  
+  ' Declare local variables
+  Dim strFilter, strFileName
+  Dim objFSO, objStream
+  Dim arrLayers, strLayer
+
+  ' Prompt the user for a filename
+  strFilter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*||"
+  strFileName = Rhino.SaveFileName("Save Layer Names As", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+
+  ' Get the file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+  ' Try to create a new text file
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    Call MsgBox(Err.Description)
+    Exit Sub
+  End If
+
+  ' Get all of the layer names
+  arrLayers = Rhino.LayerNames
+  
+  ' Write each layer name to the text file
+  For Each strLayer In arrLayers
+    Call objStream.WriteLine(strLayer)
+  Next
+
+  ' Close the text file file
+  objStream.Close
+
+End Sub

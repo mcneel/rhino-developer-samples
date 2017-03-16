@@ -1,0 +1,43 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SpecialFolder.rvb -- September 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' AllUsersAppDataFolder
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function AllUsersAppDataFolder
+  Const ALL_USERS_APPDATA = &H23&
+  Dim objShell, objFolder, objFolderItem
+  Set objShell = CreateObject("Shell.Application")
+  Set objFolder = objShell.Namespace(ALL_USERS_APPDATA)
+  Set objFolderItem = objFolder.Self
+  AllUsersAppDataFolder = objFolderItem.Path
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LocalUserAppDataFolder
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function LocalUserAppDataFolder
+  Const LOCAL_APPDATA = &H1c&
+  Dim objShell, objFolder, objFolderItem
+  Set objShell = CreateObject("Shell.Application")
+  Set objFolder = objShell.Namespace(LOCAL_APPDATA)
+  Set objFolderItem = objFolder.Self
+  LocalUserAppDataFolder = objFolderItem.Path
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' AppDataFolder
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function AppDataFolder
+  Const APPDATA = &H1a&
+  Dim objShell, objFolder, objFolderItem
+  Set objShell = CreateObject("Shell.Application")
+  Set objFolder = objShell.Namespace(APPDATA)
+  Set objFolderItem = objFolder.Self
+  AppDataFolder = objFolderItem.Path
+End Function

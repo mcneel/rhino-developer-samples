@@ -1,0 +1,23 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CirclePerimeter.rvb -- September 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub CirclePerimeter
+
+  Dim perimeter, center, plane
+
+  perimeter = Rhino.GetReal("Perimeter of circle")
+  If IsNull(perimeter) Then Exit Sub
+  If (perimeter <= 0.0) Then Exit Sub
+
+  center = Rhino.GetPoint("Center of circle")
+  If IsNull(center) Then Exit Sub
+
+  plane = Rhino.MovePlane(Rhino.ViewCPlane, center)
+  Call Rhino.AddCircle(plane, perimeter / (2 * Rhino.PI))
+  
+End Sub

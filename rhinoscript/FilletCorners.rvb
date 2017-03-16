@@ -1,0 +1,64 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FilletCorners.rvb -- July 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Function DoFilletCorners(curves, radius)
+ 
+  ' Declare local variables
+  Dim saved
+  
+  ' Set default return value  
+  DoFilletCorners = Null
+  
+  ' For speed, turn of screen redrawing
+  Call Rhino.EnableRedraw(False)
+  
+  ' Save any selected objects
+  saved = Rhino.SelectedObjects
+  
+  ' Unselect all objects
+  Rhino.UnSelectAllObjects
+  
+  ' Select the object to fillet
+  Call Rhino.SelectObjects(curves)
+  
+  ' Script the command
+  Call Rhino.Command("_-FilletCorners " & CStr(radius) )
+  
+  ' Get the object created by the command
+  DoFilletCorners = Rhino.LastCreatedObjects
+  
+  ' Unselect all objects
+  Rhino.UnSelectAllObjects
+  
+  ' If any objects were selected before calling
+  ' this function, re-select them
+  If IsArray(saved) Then Rhino.SelectObjects(saved)
+  
+  ' Don't forget to turn redrawing back on
+  Call Rhino.EnableRedraw(True)
+ 
+End Function
+   
+Sub TestFilletCorner
+ 
+  Dim curves, radius, results, i
+  
+  curves = Rhino.GetObjects("Select polycurve(s) to fillet", 4)
+  If IsNull(curves) Then Exit Sub
+  
+  radius = Rhino.GetReal("Fillet radius", 1.0, 0.1)
+  If IsNull(radius) Then Exit Sub
+  
+  results = DoFilletCorners(curves, radius)
+  If IsArray(results) Then
+    For i = 0 To UBound(results)
+      Call Rhino.Print(results(i))
+    Next
+  End If
+ 
+ End Sub   

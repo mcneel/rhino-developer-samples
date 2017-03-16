@@ -1,0 +1,60 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DumpRhinoInfo.rvb -- July 2016
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4, 5 and 6.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This subroutine will append information about Rhino to a text file.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DumpRhinoInfo
+	
+	' The location and name of file to create and append.
+	' Modify this path to work on your network
+	Const NetworkPath = "\\pappy\vol3\USR\Dale\RhinoInfo.txt"
+	
+	' Local constants
+	Const ForAppending = 8
+
+	' Local variables
+	Dim objShell, objFSO, objFile
+	Dim strComputer, strVersion, strSerial, strText
+	
+	' Create a Shell object so we can obtain the computer name
+	Set objShell = CreateObject("WScript.Shell")
+	strComputer = objShell.ExpandEnvironmentStrings("%COMPUTERNAME%")
+
+	' Build a string that contains the Rhino version and service release number
+	strVersion = "Rhino " & CStr(Rhino.ExeVersion)
+	strVersion = strVersion & " SR" & CStr(Rhino.ExeServiceRelease)
+	
+	' Get Rhino's license serial number
+	strSerial = Rhino.SerialNumber
+	
+	' Format a delimted string for output
+	strText = strComputer & "," & strVersion & "," & strSerial
+	
+	' Create a File System Object
+	Set objFSO = CreateObject("Scripting.FileSystemObject")
+	
+	' Open a file for appending
+	On Error Resume Next 
+	Set objFile = objFSO.OpenTextFile(NetworkPath, ForAppending, True)
+	If Err.Number = 0 Then 
+		' Write the delimited string and close the file
+		Call objFile.WriteLine(strText) 
+		objFile.Close
+		Call Rhino.Print("Rhino information saved successfully!")		
+	Else 
+		Call Rhino.Print(Err.Description)
+	End If
+		
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This causes the above subroutine to be executed
+' when this file is dragged & dropped on Rhino...
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Call DumpRhinoInfo

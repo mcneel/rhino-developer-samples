@@ -1,0 +1,92 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ParametricEllipse.rvb -- February 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ParametricEllipse
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ParametricEllipse()
+
+  ' Semi major and minor axes
+  Dim a : a = 6.0
+  Dim b : b = 3.0
+  Dim c : c = 4.0
+  
+  ' Domain of ellipse
+  Dim t0 : t0 = 0.0
+  Dim t1 : t1 = 2.0 * Rhino.PI
+  
+  ' Number of parameters to sample
+  Dim n : n = 22
+  
+  ' Array of calculated 3-D point
+  Dim pts()
+  ReDim pts(n)
+  
+  ' Domain of samples
+  Dim u0 : u0 = 0
+  Dim u1 : u1 = UBound(pts)
+
+  ' Calculate ellipse points
+  Dim i, t, x
+  For i = u0 To u1
+    x = NormalizedAt(u0, u1, i)
+    t = ParameterAt(t0, t1, x)
+    pts(i) = PointAt(a, b, t)
+    Rhino.Print Rhino.Pt2Str(pts(x))
+  Next
+
+  ' Add elliptical curve to Rhino
+  Call Rhino.AddInterpCurve(pts, 3, 3)
+  
+  For i = u0 To u1
+    x = NormalizedAt(u0, u1, i)
+    t = ParameterAt(t0, t1, x)
+    pts(i) = PointAt(c, b, t)
+    Rhino.Print Rhino.Pt2Str(pts(x))
+  Next
+
+  ' Add elliptical curve to Rhino
+  Call Rhino.AddInterpCurve(pts, 3, 3)  
+
+End Sub
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PointAt
+' Evaluates an ellipse at a parmeter
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function PointAt(a, b, t)
+  Dim pt(2)
+  pt(0) = a * Cos(t)
+  pt(1) = b * Sin(t)
+  pt(2) = 0.0
+  PointAt = pt
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ParameterAt
+' Converts a normalized parameter to an interval value
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ParameterAt(t0, t1, x)
+  ParameterAt = (1.0 - x) * t0 + x * t1
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' NormalizedAt
+' Converts an interval value to a normalized parameter
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function NormalizedAt(t0, t1, t)
+  Dim x : x = t0
+  If (t0 <> t1) Then
+    If (t = t1) Then
+      x = 1.0
+    Else
+      x = (t - t0)/(t1 - t0)
+    End If
+  End If
+  NormalizedAt = x
+End Function

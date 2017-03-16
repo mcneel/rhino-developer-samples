@@ -1,0 +1,73 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelSmallSrf.rvb -- November 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Public g__dblArea
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Selects surfaces whose area is less than or equal to a user-specified area.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelSmallSrf
+  
+  ' Declare constants
+  Const RH_SRF = 8
+  
+  ' Declare local variables
+  Dim dblArea, minArea, srfArea
+  Dim arrSrfs, strSrf, nCount
+
+  ' The minimum area the user can specify
+  minArea = Rhino.UnitAbsoluteTolerance
+
+  ' Make sure global variable is initialized
+  If IsEmpty(g__dblArea) Then
+    g__dblArea = minArea
+  ElseIf IsNull(g__dblArea) Then
+    g__dblArea = minArea
+  End If
+
+  ' Validate global variable
+  If (g__dblArea < minArea) Then g__dblArea = minArea
+  
+  ' Prompt the user for the surface area
+  dblArea = Rhino.GetReal("Maximum area of surface to select", g__dblArea, minArea)
+  If IsNull(dblArea) Then Exit Sub
+    
+  g__dblArea = dblArea
+  nCount = 0
+  
+  ' The all of the surfaces in the document  
+  arrSrfs = Rhino.ObjectsByType(RH_SRF)
+  If IsArray(arrSrfs) Then
+    Call Rhino.EnableRedraw(False)
+    For Each strSrf In arrSrfs
+      ' We only need to process surfaces that are both
+      ' selectable and not already selected.
+      If Rhino.IsObjectSelectable(strSrf) And Not Rhino.IsObjectSelected(strSrf) Then
+        ' Calculate surface and compare
+        srfArea = Rhino.SurfaceArea(strSrf)
+        If IsArray(srfArea) Then
+          If (srfArea(0) <= g__dblArea) Then
+            Call Rhino.SelectObject(strSrf)
+            nCount = nCount + 1
+          End If
+        End If
+      End If
+    Next
+    Call Rhino.EnableRedraw(True)
+  End If
+  
+  ' Report what happened
+  If (0 = nCount) Then
+    Call Rhino.Print("0 small surfaces selected.")
+  ElseIf (1 = nCount) Then
+    Call Rhino.Print("1 small surface selected.")
+  Else
+    Call Rhino.Print(CStr(nCount) & " small surfaces selected.")
+  End If
+
+End Sub

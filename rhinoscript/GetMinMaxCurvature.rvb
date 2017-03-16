@@ -1,0 +1,74 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GetMinMaxCurvature.rvb -- June 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GetMinMaxCurvature
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub GetMinMaxCurvature
+  
+  Dim strCurve, nSamples
+  Dim arrPoints, arrPt, dblParam, arrKappa, dblRadius
+  Dim minRadius, minParam
+  Dim maxRadius, maxParam
+  
+  strCurve = Rhino.GetObject("Select curve to evaluate", 4, True)
+  If IsNull(strCurve) Then Exit Sub
+    
+  nSamples = Rhino.GetInteger("Number of samples",,10)
+  If IsNull(nSamples) Then Exit Sub
+    
+  arrPoints = Rhino.DivideCurve(strCurve, nSamples)
+  If IsNull(arrPoints) Then Exit Sub
+    
+  minRadius = Null
+  maxRadius = Null
+  
+  For Each arrPt In arrPoints
+    
+    dblParam = Rhino.CurveClosestPoint(strCurve, arrPt)
+    arrKappa = Rhino.CurveCurvature(strCurve, dblParam)
+    
+    If Not IsNull(arrKappa) Then
+      dblRadius = arrKappa(3)
+      
+      If IsNull(minRadius) Then
+        minRadius = dblRadius
+        minParam = dblParam
+      ElseIf dblRadius < minRadius Then
+        minRadius = dblRadius
+        minParam = dblParam
+      End If
+      
+      If IsNull(maxRadius) Then
+        maxRadius = dblRadius
+        maxParam = dblParam
+      ElseIf dblRadius > maxRadius Then
+        maxRadius = dblRadius
+        maxParam = dblParam
+      End If
+      
+    End If
+  Next
+
+  If Not IsNull(minRadius) Then      
+    Call Rhino.AddPoint(Rhino.EvaluateCurve(strCurve, minParam))  
+    Call Rhino.Print("Minimum radius = " & CStr(minRadius))
+    Call Rhino.Print("Minimum parameter = " & CStr(minParam))
+  Else
+    Call Rhino.Print("No minimum radius")    
+  End If
+  
+  If Not IsNull(maxRadius) Then      
+    Call Rhino.AddPoint(Rhino.EvaluateCurve(strCurve, maxParam))  
+    Call Rhino.Print("Maximum radius = " & CStr(maxRadius))
+    Call Rhino.Print("Maximum parameter = " & CStr(maxParam))
+  Else
+    Call Rhino.Print("No maximum radius")    
+  End If
+  
+ End Sub  

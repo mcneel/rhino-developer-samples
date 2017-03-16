@@ -1,0 +1,82 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportPoints.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: ExportPoints
+' Purpose:    Export points and point clouds to a text file.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportPoints
+  
+  Dim arrObjects, strObject, arrPoints, arrPoint, strPoint
+  Dim strFileName, strFilter, objFSO, objStream
+  Dim strPreX, strPreY, strPreZ
+  Dim strPostX, strPostY, strPostZ
+  Dim strDelimiter
+  
+  ' User-definable prefixes
+  strPreX = ""
+  strPreY = ""
+  strPreZ = ""
+  
+  ' User-definable postfixes
+  strPostX = ""
+  strPostY = ""
+  strPostZ = ""
+  
+  ' User-definable delimiter(s)
+  strDelimiter = ","
+  
+  ' User-definable file filters
+  
+  strFilter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*||"
+  ' Get the points to export
+  
+  arrObjects = Rhino.GetObjects("Select points", 3, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+    
+  ' Get the filename to create
+  strFileName = Rhino.SaveFileName("Save Point Coordinates As", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+    
+  ' Get the file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  
+  ' Get a new text file
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+  
+  ' Process point clouds
+  For Each strObject In arrObjects
+    If Rhino.IsPointCloud(strObject) Then
+      arrPoints = Rhino.PointCloudPoints(strObject)
+      If IsArray(arrPoints) Then
+        For Each arrPoint In ArrPoints
+          strPoint = strPreX & CStr(arrPoint(0)) & strPostX & strDelimiter & strPreY & CStr(arrPoint(1)) & strPostY & strDelimiter & strPreZ & CStr(arrPoint(2)) & strPostZ
+          ' Write the coordinate to the file
+          objStream.WriteLine(strPoint)
+        Next
+      End If
+      ' Process point clouds
+      ElseIf Rhino.IsPoint(strObject) Then
+        arrPoint = Rhino.PointCoordinates(strObject)
+        If IsArray(arrPoint) Then
+          strPoint = strPreX & CStr(arrPoint(0)) & strPostX & strDelimiter & strPreY & CStr(arrPoint(1)) & strPostY & strDelimiter & strPreZ & CStr(arrPoint(2)) & strPostZ
+          ' Write the coordinate to the file
+          objStream.WriteLine(strPoint)
+      End If
+    End If
+  Next
+    
+  ' Write the file
+  objStream.Close
+  
+End Sub

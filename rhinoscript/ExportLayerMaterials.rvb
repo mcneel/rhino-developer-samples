@@ -1,0 +1,55 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportLayerMaterials.rvb -- September 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ExportLayerMaterials
+  
+  ' Declare local variables
+  Dim strPath, strFile
+  Dim arrLayers, strLayer, nIndex, strMaterial
+  Dim objFSO, objStream
+
+  ' Get the path to and name of current document
+  strPath = Rhino.DocumentPath & Rhino.DocumentName
+
+  ' Generate a modified path string
+  strFile = Replace(strPath, ".3dm", "_Materials.txt")
+  
+  ' Create a file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+  ' Create a new text file
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFile, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  ' Get names of all layers
+  arrLayers = Rhino.SortStrings(Rhino.LayerNames)
+
+  ' Write each layer to the text file
+  For Each strLayer In arrLayers
+    nIndex = Rhino.LayerMaterialIndex(strLayer)
+    If nIndex >= 0 Then
+      strMaterial = Rhino.MaterialName(nIndex)
+    Else
+      strMaterial = "<default>"
+    End If
+    objStream.WriteLine(strLayer & ", " & strMaterial)
+  Next
+
+  ' Close the file stream
+  objStream.Close
+
+  ' Cleanup
+  Set objStream = Nothing
+  Set objFSO = Nothing  
+    
+End Sub

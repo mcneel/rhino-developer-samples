@@ -1,0 +1,39 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CopyRotate.rvb -- November 2004
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub CopyRotate
+  
+  Dim arrObjects
+  arrObjects = Rhino.GetObjects( "Select objects to copy and rotate", , True, True )
+  If Not IsArray( arrObjects ) Then Exit Sub
+
+  Dim arrFrom
+  arrFrom = Rhino.GetPoint( "Point to copy from" )
+  If Not IsArray( arrFrom ) Then Exit Sub
+
+  Dim arrTo
+  arrTo = Rhino.GetPoint( "Point to copy to", arrFrom )
+  If Not IsArray( arrTo ) Then Exit Sub
+
+  Dim arrCopy
+  arrCopy = Rhino.CopyObjects( arrObjects, arrFrom, arrTo )
+  If Not IsArray( arrCopy ) Then Exit Sub
+  If UBound( arrCopy ) <> UBound( arrObjects ) Then Exit Sub
+
+  Dim arrRef1   
+  arrRef1 = Rhino.GetPoint("First reference point", arrTo)
+  If Not IsArray( arrRef1 ) Then Exit Sub
+
+  Dim dblAngle   
+  dblAngle = Rhino.GetAngle( arrTo, arrRef1, , "Second reference point" )
+  If Not IsNumeric( dblAngle ) Then Exit Sub
+
+  Rhino.RotateObjects arrCopy, arrTo, dblAngle
+
+End Sub

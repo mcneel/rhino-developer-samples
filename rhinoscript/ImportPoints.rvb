@@ -1,0 +1,50 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ImportPoints.rvb -- June 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ImportPoints
+  
+  Dim strFilter, strFileName
+  strFilter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*||"
+  strFileName = Rhino.OpenFileName("Open Point File", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+
+  Dim objFSO, objFile
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+  On Error Resume Next
+  Set objFile = objFSO.OpenTextFile(strFileName, 1)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  Rhino.EnableRedraw False
+
+  Dim strLine, arrSplit, arrPoint  
+  Do While objFile.AtEndOfStream <> True
+    strLine = objFile.ReadLine
+    If Not IsNull(strLine) Then
+			strLine = Replace(strLine, Chr(34), "", 1)
+			arrSplit = Split(strLine, ",")
+			If UBound(arrSplit) = 3 Then
+			  arrPoint = Array(arrSplit(1), arrSplit(2), arrSplit(3)
+				Rhino.AddPoint arrPoint
+				Rhino.AddDot CStr(arrSplit(0), arrPoint
+			End If
+    End If
+  Loop
+
+  Rhino.EnableRedraw True
+    
+  objFile.Close
+  
+  Set objFile = Nothing
+  Set objFSO = Nothing
+
+End Sub

@@ -1,0 +1,69 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CurrentModelInfo.rvb -- March 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine:  CurrentModelInfo
+' Purpose:     Displays information about the currently
+'              loaded Rhino document.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CurrentModelInfo()
+	Dim strName, strPath, strFilespec
+	Dim objFSO, objFile
+	strName = Rhino.DocumentName() 
+	strPath = Rhino.DocumentPath()
+	If IsNull(strName) Or IsNull(strPath) Then
+		Call Rhino.Print("Make sure the current model has been saved to disk.")
+    Exit Sub	  
+	End If
+	strFilespec = strPath & strName
+	Set objFSO = CreateObject("Scripting.FileSystemObject")
+	If (objFSO.FileExists(strFilespec)) Then
+		Set objFile = objFSO.GetFile(strFilespec)
+		PrintFileInformation(objFile)
+	Else
+		Call Rhino.Print("Current model not found. Make sure the model has been saved to disk.")
+	End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine:  PrintFileInformation
+' Purpose:     Displays a file's information.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PrintFileInformation(objFile)
+	Dim str
+	str = "Full Path:  " & objFile.Path & VbCrLf
+	str = str & "File Name:  " & objFile.Name & VbCrLf
+	str = str & "File Type:  " & objFile.Type & VbCrLf
+	str = str & "File Attributes:  " & FileAttributes(objFile) & VbCrLf
+	str = str & "Date Created:  " & objFile.DateCreated & VbCrLf
+	str = str & "Last Date Accessed:  " & objFile.DateLastAccessed & VbCrLf
+	str = str & "Last Date Modified:  " & objFile.DateLastModified & VbCrLf
+	str = str & "File Size (Bytes):  " & objFile.Size & VbCrLf
+	Call Rhino.TextOut(str, "Current Model Information")
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine:  FileAttributes
+' Purpose:     Returns a string containing file attributes.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FileAttributes(objFile)
+	Dim str
+	If objFile.Attributes And 0 Then
+		str = "Normal"
+	Else
+		If objFile.Attributes And 1 Then str = str & "Directory "
+		If objFile.Attributes And 2 Then str = str & "Read-Only "
+		If objFile.Attributes And 4 Then str = str & "Hidden "
+		If objFile.Attributes And 8 Then str = str & "System "
+		If objFile.Attributes And 16 Then str = str & "Volume "
+		If objFile.Attributes And 32 Then str = str & "Archive "
+		If objFile.Attributes And 64 Then str = str & "Alias "
+		If objFile.Attributes And 128 Then str = str & "Compressed "
+	End If
+	FileAttributes = str
+End Function

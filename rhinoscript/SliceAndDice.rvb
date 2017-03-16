@@ -1,0 +1,91 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SliceAndDice.rvb -- April 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SliceAndDice
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SliceAndDice
+  
+  Dim strSolid, arrBox, dblHeight, dblDistance
+  Dim arrPlanes, arrSlices, i
+  
+  strSolid = Rhino.GetObject("Select solid to process", 24)
+  If IsNull(strSolid) Then Exit Sub
+  If Not Rhino.IsObjectSolid(strSolid) Then Exit Sub
+    
+  arrBox = Rhino.BoundingBox(strSolid)
+  dblHeight = Rhino.Distance(arrBox(0), arrBox(4))
+    
+  dblDistance = Rhino.GetReal("Thickness of each slice", 1, 0.001, dblHeight / 2)
+  If IsNull(dblDistance) Then Exit Sub
+    
+  arrPlanes = CreateCuttingPlanes(strSolid, arrBox, dblDistance)  
+  arrSlices = DoBrepSplit(strSolid, arrPlanes)
+  Rhino.DeleteObjects arrPlanes
+  If IsArray(arrSlices) Then
+    For i = 0 To UBound(arrSlices)
+      Rhino.print arrSlices(i)
+    Next
+  End If
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CreateCuttingPlanes
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CreateCuttingPlanes(strSolid, arrBox, dblDistance)
+  
+  Dim strLine0, strLine1, arrPoints0, arrPoints1
+  Dim arrPlanes(), i
+  
+  strLine0 = Rhino.AddLine(arrBox(0), arrBox(4))
+  strLine1 = Rhino.AddLine(arrBox(3), arrBox(7))
+  
+  arrPoints0 = Rhino.DivideCurveLength(strLine0, dblDistance)
+  arrPoints1 = Rhino.DivideCurveLength(strLine1, dblDistance)
+  
+  ReDim arrPlanes(UBound(arrPoints0))
+  For i = 0 To UBound(arrPlanes)
+    arrPlanes(i) = Rhino.AddCutPlane(strSolid, arrPoints0(i), arrPoints1(i), Array(1,0,0))
+  Next
+
+  Call Rhino.DeleteObjects(Array(strLine0, strLine1))
+  
+  CreateCuttingPlanes = arrPlanes
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DoBrepSplit
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function DoBrepSplit(strSolid, arrPlanes)
+  
+  Dim i, strPlanes, strCommand
+
+  Rhino.UnSelectAllObjects()
+  Call Rhino.SelectObject(strSolid)
+
+  strPlanes = ""
+  For i = 0 To UBound(arrPlanes)
+    If i <> 0 And i <> UBound(arrPlanes) Then
+      strPlanes = strPlanes & " _SelId " & arrPlanes(i)
+    End If
+  Next
+  strPlanes = strPlanes & " _Enter"
+
+  strCommand = "_Split " & strPlanes
+  Call Rhino.Command(strCommand, 0)
+
+  DoBrepSplit = Rhino.SelectedObjects()
+
+  Rhino.UnSelectAllObjects()
+
+End Function
+
+    

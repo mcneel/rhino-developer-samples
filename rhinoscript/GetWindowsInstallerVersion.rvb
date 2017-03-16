@@ -1,0 +1,14 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GetWindowsInstallerVersion.rvb -- November 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub GetWindowsInstallerVersion
+  Dim objInstaller
+  Set objInstaller = CreateObject("WindowsInstaller.Installer") 
+  MsgBox "Installer version is: " & objInstaller.Version  
+  Set objInstaller = Nothing
+End Sub

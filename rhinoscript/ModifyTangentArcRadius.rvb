@@ -1,0 +1,64 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ModifyTangentArcRadius.rvb -- January 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ModifyTangentArcRadius
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ModifyTangentArcRadius
+  
+  ' Declare variables
+  Dim old_arc, old_pt, old_rad
+  Dim new_arc, new_pt, new_rad
+  Dim cen, line, ccx
+  Dim old_os, old_mode
+  
+  ' Get the arc to modify
+  old_arc = Rhino.GetObject("Select arc to modify")
+  If IsNull(old_arc) Then Exit Sub
+  If Not Rhino.IsArc(old_arc) Then Exit Sub
+
+  ' Get the tangent point
+  old_os = Rhino.Osnap(True)
+  old_mode = Rhino.OsnapMode(64)
+  old_pt = Rhino.GetPointOnCurve(old_arc, "Tangent location")
+  Call Rhino.Osnap(old_os)
+  Call Rhino.OsnapMode(old_mode)
+  If IsNull(old_pt) Then Exit Sub
+
+  ' Get the new arc radius
+  old_rad = Rhino.ArcRadius(old_arc)    
+  new_rad = Rhino.GetReal("New radius", old_rad)
+  If IsNull(new_rad) Then Exit Sub
+  If (new_rad = old_rad) Then Exit Sub
+  If (new_rad < 0.0) Then Exit Sub
+
+  Call Rhino.EnableRedraw(False)
+
+  ' Add the new arc  
+  new_arc = Rhino.AddArc(Rhino.CurvePlane(old_arc), new_rad, Rhino.ArcAngle(old_arc))
+  Call Rhino.MatchObjectAttributes(new_arc, old_arc)
+  
+  ' Move the new arc to the tangent point
+  cen = Rhino.ArcCenterPoint(old_arc)
+  If (new_rad > old_rad) Then
+    new_pt = Rhino.PointAdd(old_pt, Rhino.VectorCreate(old_pt, cen))
+  Else
+    new_pt = old_pt
+  End If
+  line = Rhino.AddLine(cen, new_pt)
+  ccx = Rhino.CurveCurveIntersection(new_arc, line)
+  Call Rhino.MoveObject(new_arc, ccx(0,1), old_pt)
+  
+  ' Clean up
+  Call DeleteObject(old_arc)
+  Call DeleteObject(line)
+  
+  Call Rhino.EnableRedraw(True)
+
+End Sub

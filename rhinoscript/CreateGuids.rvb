@@ -1,0 +1,130 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CreateGuids.rvb -- June 2016
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Demonstrates how to create various forms of GUIDs. 
+' These values can be used to create unique data entries in a database, 
+' or anywhere else where a unique data field is required.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestCreateGuids
+	Call Rhino.Print(CreateStandardGuid)
+	Call Rhino.Print(CreateTimeGuid)
+	Call Rhino.Print(CreateOffsetGuid)
+	Call Rhino.Print(CreateOffsetGuidEx)
+	Call Rhino.Print(CreateWindowsGuid)
+	Call Rhino.Print(CreateRandomGuid(20))
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This example creates a standard GUID
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CreateStandardGuid()
+	
+	Dim objTypeLib, objRegEx, strGuid
+	
+	' Get a guid from the Scriptlet.TypeLib object
+	Set objTypeLib = CreateObject("Scriptlet.TypeLib")
+	strGuid = objTypeLib.Guid
+
+	' The result is surrounded by curly brackets and 
+	' contains training Null characters. Use RexExp
+	' to find and replace.
+	Set objRegEx = New RegExp
+	objRegEx.Pattern = "\{(.*?)\}"
+	objRegEx.IgnoreCase = True
+	ObjRegEx.Global = True
+	strGuid = objRegEx.Replace(strGuid, "$1")
+	
+	' Return in lower case
+	CreateStandardGuid = LCase(strGuid)
+	
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This example creates a simple 14-character time-based GUID by using the
+' current year, month, day, hour, minute, and seconds. This permits you to
+' sort data based on the GUID.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CreateTimeGuid()
+	Dim str
+	str = Right(String(4, 48) & Year(Now()), 4)
+	str = str & Right(String(4, 48) & Month(Now()), 2)
+	str = str & Right(String(4, 48) & Day(Now()), 2)
+	str = str & Right(String(4, 48) & Hour(Now()), 2)
+	str = str & Right(String(4, 48) & Minute(Now()), 2)
+	str = str & Right(String(4, 48) & Second(Now()), 2)
+	CreateTimeGuid = str
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This example creates a 20-character time-based GUID by using the offset
+' in seconds from 12:00 midnight on January 1, 2000. This permits you to
+' sort data based on the GUID, and can be updated to use any other date
+' as the base.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CreateOffsetGuid()
+	Dim str1, str2
+	str1 = Right(String(15, 48) & CStr(CLng(DateDiff("s", "1/1/2000", Date()))), 15)
+	str2 = Right(String(5, 48) & CStr(CLng(DateDiff("s", "12:00:00 AM", Time()))), 5)
+	CreateOffsetGuid = str1 & str2
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This example, like CreateOffsetGuid, creates a time-based GUID, but it is
+' 25 characters long. This permits you to sort data based on the GUID, but
+' permits much greater uniqueness. This can be updated to use any other date
+' as the base.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CreateOffsetGuidEx()
+	Randomize Timer
+	Dim str1, str2, str3
+	str1 = Right(String(15, 48) & CStr(CLng(DateDiff("s", "1/1/2000", Date()))), 15)
+	str2 = Right(String(5, 48) & CStr(CLng(DateDiff("s", "12:00:00 AM", Time()))), 5)
+	str3 = Right(String(5, 48) & CStr(Int(Rnd(1) * 100000)), 5)
+	CreateOffsetGuidEx = str1 & str2 & str3
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This example creates a Windows-style GUID.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CreateWindowsGuid()
+	Dim strGuid
+	strGuid = CreateGUID(8) & "-"
+	strGuid = strGuid & CreateGUID(4) & "-"
+	strGuid = strGuid & CreateGUID(4) & "-"
+	strGuid = strGuid & CreateGUID(4) & "-"
+	strGuid = strGuid & CreateGUID(12)
+	CreateWindowsGuid = strGuid
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns a string of random, formatted hexadecimal characters.
+' Called by CreateWindowsGuid.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CreateGuid(nLength)
+	Randomize Timer
+	Const strValid = "0123456789abcdef"
+	Dim i, strGuid
+	For i = 1 To nLength
+		strGuid = strGuid & Mid(strValid, Int(Rnd(1) * Len(strValid)) + 1, 1)
+	Next
+	CreateGuid = strGuid
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This example creates a variable-length random GUID.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CreateRandomGuid(nLength)
+	Randomize Timer
+	Const strValid = "0123456789abcdefghijklmnopqrstuvwxyz"
+	Dim i, strGuid
+	For i = 1 To nLength
+		strGuid = strGuid & Mid(strValid, Int(Rnd(1) * Len(strValid)) + 1, 1)
+	Next
+	CreateRandomGuid = strGuid
+End Function

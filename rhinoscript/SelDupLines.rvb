@@ -1,0 +1,164 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelDupLines -- July 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelDupLines
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelDupLines
+	
+	' Local constants
+  Const RH_CURVE = &h4
+	
+	' Local variables
+  Dim arrObjects, arrDuplicates
+	
+	' Select some curve objects
+  arrObjects = Rhino.GetObjects("Select lines", RH_CURVE, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+	
+	' From the selection, get just the line curves  
+  arrObjects = GetLineObjects(arrObjects)
+  If IsNull(arrObjects) Then Exit Sub
+	
+	' Find and select all of the duplicates with some tolerance  
+  arrDuplicates = GetDuplicateLines(arrObjects, Rhino.UnitAbsoluteTolerance)
+  If IsArray(arrDuplicates) Then
+    Call Rhino.SelectObjects(arrDuplicates)
+  End If
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GetLineObjects
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetLineObjects(ByVal arrObjects)
+  
+  ' Local variables
+  Dim objLines, i
+  
+  ' Create an ArrayList object    
+  Set objLines = CreateObject("System.Collections.ArrayList")
+  
+  ' Add the ids of line curves to the ArrayList
+  For i = 0 To UBound(arrObjects)
+    If Rhino.IsLine(arrObjects(i)) Then
+      Call objLines.Add(arrObjects(i))
+    End If
+  Next
+  
+  ' Only return an array if we have at least two line curves
+  ' (we are looking for duplicates...)
+  If objLines.Count >= 2 Then
+    GetLineObjects = objLines.ToArray()
+  Else
+    GetLineObjects = Null
+  End If
+ 
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GetRecordSet
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetDuplicateLines(ByVal arrObjects, ByVal dblTolerance)
+  
+  ' Local constants
+  Const adDouble = 5 
+  Const adBSTR = 8
+ 
+  ' Local variables
+  Dim objRecordSet, objDuplicates, i
+  Dim strId0, arrStartPt0, arrEndPt0
+  Dim strId1, arrStartPt1, arrEndPt1
+  
+  ' Create a RecordSet objects
+  Set objRecordSet = CreateObject("ADODB.Recordset")
+ 
+  ' Define the fields
+  Call objRecordSet.Fields.Append("ID", adBSTR)
+  Call objRecordSet.Fields.Append("X0", adDouble)
+  Call objRecordSet.Fields.Append("Y0", adDouble)
+  Call objRecordSet.Fields.Append("Z0", adDouble)
+  Call objRecordSet.Fields.Append("X1", adDouble)
+  Call objRecordSet.Fields.Append("Y1", adDouble)
+  Call objRecordSet.Fields.Append("Z1", adDouble)
+
+  ' Open the record set
+  objRecordSet.Open
+ 
+  ' Add the id, start point and end point of each line curve
+  ' to the record set
+  For i = 0 To UBound(arrObjects)
+    arrStartPt0 = Rhino.CurveStartPoint(arrObjects(i))
+    arrEndPt0 = Rhino.CurveEndPoint(arrObjects(i))
+    
+    objRecordSet.AddNew 
+    objRecordSet("ID").Value = arrObjects(i)
+    objRecordSet("X0").Value = arrStartPt0(0)
+    objRecordSet("Y0").Value = arrStartPt0(1)
+    objRecordSet("Z0").Value = arrStartPt0(2)
+    objRecordSet("X1").Value = arrEndPt0(0)
+    objRecordSet("Y1").Value = arrEndPt0(1)
+    objRecordSet("Z1").Value = arrEndPt0(2)
+    objRecordSet.Update 
+  Next
+ 
+  ' Sort the record set by start point and then end point
+  objRecordSet.Sort = "X0 ASC, Y0 ASC, Z0 ASC, X1 ASC, Y1 ASC, Z1 ASC"
+
+  ' Create an ArrayList object
+  Set objDuplicates = CreateObject("System.Collections.ArrayList")
+
+  ' Move to the first record in the sorted record list
+  objRecordSet.MoveFirst
+  
+  ' Grab the record's data
+  strId0 = objRecordSet("ID").Value
+  arrStartPt0 = Array(objRecordSet("X0").Value, objRecordSet("Y0").Value, objRecordSet("Z0").Value)
+  arrEndPt0 = Array(objRecordSet("X1").Value, objRecordSet("Y1").Value, objRecordSet("Z1").Value)
+  
+  ' Move to the second record in the sorted record set
+  objRecordSet.MoveNext
+  
+  Do Until objRecordSet.EOF
+
+    ' Grab the record's data
+    strId1 = objRecordSet("ID").Value
+    arrStartPt1 = Array(objRecordSet("X0").Value, objRecordSet("Y0").Value, objRecordSet("Z0").Value)
+    arrEndPt1 = Array(objRecordSet("X1").Value, objRecordSet("Y1").Value, objRecordSet("Z1").Value)
+    
+    ' Compare starting and ending points. If they are within tolerance
+    ' add the ids to the array list
+    If Rhino.Distance(arrStartPt0, arrStartPt1) < dblTolerance And _
+       Rhino.Distance(arrEndPt0, arrEndPt1) < dblTolerance Then
+      If Not objDuplicates.Contains(strId0) Then
+        Call objDuplicates.Add(strId0)
+      End If
+      Call objDuplicates.Add(strId1)
+    Else
+      ' Points match, so make this line curve
+      ' our test curve
+      strId0 = strId1
+      arrStartPt0 = arrStartPt1
+      arrEndPt0 = arrEndPt1
+    End If
+    
+    ' Move to the next record in the sorted record set
+    objRecordSet.MoveNext
+  Loop
+ 
+  ' Close the record set 
+  Call objRecordSet.Close
+ 
+  ' Return the ids of duplicate line curves
+  If objDuplicates.Count > 0 Then
+    GetDuplicateLines = objDuplicates.ToArray()
+  Else
+    GetDuplicateLines = Null
+  End If
+  
+End Function

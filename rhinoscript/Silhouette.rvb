@@ -1,0 +1,67 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Silhouette.rvb -- July 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Function Silhouette(objects)
+ 
+  ' Declare local variables
+  Dim saved
+  
+  ' Set default return value  
+  Silhouette = Null
+  
+  ' For speed, turn of screen redrawing
+  Call Rhino.EnableRedraw(False)
+  
+  ' Save any selected objects
+  saved = Rhino.SelectedObjects
+  
+  ' Unselect all objects
+  Rhino.UnSelectAllObjects
+  
+  ' Select the objects to create the cut plane through
+  Call Rhino.SelectObjects(objects)
+  
+  ' Script the Silhouette command
+  Call Rhino.Command("_-Silhouette", 0)
+  
+  ' By preselecting the breps, the results of 
+  ' Silhouette will be selected. So, get the selected 
+  ' objects and return them to the caller.
+  Silhouette  = Rhino.SelectedObjects
+  
+  ' Unselect all objects
+  Rhino.UnSelectAllObjects
+  
+  ' If any objects were selected before calling
+  ' this function, re-select them
+  If IsArray(saved) Then Rhino.SelectObjects(saved)
+  
+  ' Don't forget to turn redrawing back on
+  Call Rhino.EnableRedraw(True)
+
+End Function
+  
+
+Sub TestSilhouette()
+
+  Const RH_SURFACE = 8
+  Const RH_POLYSRF = 16
+    
+  Dim arrObjects, arrResults, i
+  
+  arrObjects = Rhino.GetObjects("Select surfaces to silhouette", RH_SURFACE + RH_POLYSRF, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+  
+  arrResults = Silhouette(arrObjects)
+  If IsArray(arrResults) Then
+    For i = 0 To UBound(arrResults)
+      Rhino.Print arrResults(i)
+    Next
+  End If
+ 
+End Sub

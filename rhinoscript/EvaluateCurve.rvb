@@ -1,0 +1,35 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' EvaluateCurve.rvb -- December 2003
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub EvaluateCurve()
+	Dim crv, pt, t, der, res, msg, i
+
+	crv = Rhino.GetObject("Select curve to evaluate", 4, True)
+	If (VarType(crv) <> vbString) Then Exit Sub
+
+	pt = Rhino.GetPointOnCurve(crv, "Point to evaluate")
+	If Not IsArray(pt) Then Exit Sub
+
+	der = Rhino.GetInteger("Number of derivatives to evaluate", 1, 1)
+	If Not IsNumeric(der) Then Exit Sub
+
+	t = Rhino.CurveClosestPoint(crv, pt)
+	res = Rhino.CurveEvaluate(crv, t, der)
+	If Not IsArray(res) Then
+		Rhino.Print "Failed to evalute curve."
+		Exit Sub
+	End If
+
+	For i = 0 To UBound(res)
+		msg = msg & CStr(i) & " = " & Rhino.Pt2Str(res(i), 6) & VbCrLf
+	Next
+
+	MsgBox msg, vbOKOnly, "Derivate = " & CStr(der)
+
+End Sub
+	

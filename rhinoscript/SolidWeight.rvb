@@ -1,0 +1,75 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SolidWeight.rvb -- July 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Main subroutine
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SolidWeight
+  
+  ' Declare local constants
+  Const RH_SURFACE =  8
+  Const RH_POLYSRF = 16
+  Const RH_MESH    = 32
+  Const RH_CM      =  3
+  
+  ' Declare local variables
+  Dim strObject, intType
+  Dim arrVolume, dblVolume, strVolume
+  Dim arrElement, strElement
+  Dim dblDensity, dblScale
+  Dim dblWeight, strWeight
+  
+  ' Prompt to select a solid object
+  intType = RH_SURFACE + RH_POLYSRF + RH_MESH
+  strObject = Rhino.GetObject("Select solid surface, polysurface, or mesh", intType, True)
+  If IsNull(strObject) Then Exit Sub
+  If Not Rhino.IsObjectSolid(strObject) Then Exit Sub
+
+  ' Calculate the volume of the selected object
+  dblVolume = Null
+  If Rhino.IsMesh(strObject) Then
+    arrVolume = Rhino.MeshVolume(strObject)
+    If IsArray(arrVolume) Then dblVolume = arrVolume(1)
+  Else
+    arrVolume = Rhino.SurfaceVolume(strObject)
+    If IsArray(arrVolume) Then dblVolume = arrVolume(0)
+  End If
+  
+  ' Verify volume
+  If IsNull(dblVolume) Then
+    Call Rhino.Print("Unable to calculate volume.")
+    Exit Sub
+  End If
+
+  ' Prompt for the element type
+  arrElement = Array("Gold", "Silver", "Platinum", "Palladium", "Copper")
+  strElement = Rhino.ListBox(arrElement, "Select element type:", "Solid Weight")
+  If IsNull(strElement) Then Exit Sub
+
+  ' Density in grams per cubic centimeter
+  Select Case strElement
+    Case "Gold"      dblDensity = 19.3
+    Case "Silver"    dblDensity = 10.5
+    Case "Platinum"  dblDensity = 21.4
+    Case "Palladium" dblDensity = 12.0
+    Case "Copper"    dblDensity =  9.0
+  End Select
+  
+  ' Convert volume to cubic centimeters
+  dblScale = Rhino.UnitScale(RH_CM)
+  dblVolume = dblVolume * (dblScale ^ 3)
+  strVolume = FormatNumber(dblVolume, 3)
+  Call Rhino.Print("Volume = " & strVolume & " cubic centimeters")
+  
+  ' Calculate the weight in grams, where
+  ' Weight = Volume x Density 
+  dblWeight = dblVolume * dblDensity
+  strWeight = FormatNumber(dblWeight, 3)
+  Call Rhino.Print("Volume = " & strWeight & " grams")
+  
+End Sub

@@ -1,0 +1,23 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Dispose.rvb -- April 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Disposes of dictionaries, arrays, and variables
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Dispose(ByRef obj)
+  If IsObject(obj) Then
+    If LCase(TypeName(obj)) = "dictionary" Then
+     obj.RemoveAll ' Remove all key, item pairs 
+    End If
+    Set Obj = Nothing ' Disassociate
+  ElseIf IsArray(obj) Then
+    Erase obj ' Clear the array
+  End If
+  obj = Empty ' Uninitialize
+End Sub

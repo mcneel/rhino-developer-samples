@@ -1,0 +1,31 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FileComments.rvb -- July 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Main Subroutine
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub FileComments
+	
+	Dim strFile, arrInfo, strComments
+	
+	If (Rhino.ExeVersion < 5) Then
+		Call Rhino.Print("This script requires Rhino 5.0 for greater.")
+		Exit Sub
+	End If	
+	
+	strFile = Rhino.OpenFileName("Open", "Rhino Model (*.3dm)|*.3dm||")
+	If IsNull(strFile) Then Exit Sub
+
+	arrInfo = Rhino.DocumentInfo(strFile)
+	If IsNull(arrInfo) Then Exit Sub
+	
+	strComments = strFile & vbCrLf
+	strComments = strComments & arrInfo(3)
+	Call Rhino.TextOut(strComments, "File Comments")
+	
+End Sub

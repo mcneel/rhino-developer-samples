@@ -1,0 +1,45 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PolyCurveSegmentDistances.rvb -- March 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Prints out the distances between curve segments of a polyline.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PolyCurveSegmentDistances
+  
+  Dim sCurve, nBound
+  Dim aStart, aEnd, dDist
+  Dim i, j
+  
+  sCurve = Rhino.GetObject("Select polycurve", 4, True)
+  If IsNull(sCurve) Then Exit Sub
+  
+  If Not Rhino.IsPolyCurve(sCurve) Then 
+    Call Rhino.Print("Selected curve is not a polycurve.")
+    Exit Sub
+  End If
+    
+  nBound = Rhino.PolyCurveCount(sCurve) - 1
+  Call Rhino.Print("Polycurve with " & CStr(nBound+1) & " segments.")
+  
+  For i = 0 To nBound
+    
+    If i = nBound Then
+      j = 0
+    Else
+      j = i + 1
+    End If
+    
+    aEnd = Rhino.CurveEndPoint(sCurve, i)
+    aStart = Rhino.CurveStartPoint(sCurve, j)
+    dDist = Rhino.Distance(aEnd, aStart)
+    Call Rhino.Print("Distance between segments (" & CStr(i) & "," & CStr(j) & ") = " & CStr(dDist))
+    
+  Next
+  
+End Sub

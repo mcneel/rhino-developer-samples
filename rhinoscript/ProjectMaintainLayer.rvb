@@ -1,0 +1,91 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ProjectMaintainLayer.rvb -- July 2004
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ProjectMaintainLayer
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ProjectMaintainLayer
+
+  ' Select curves and points to project
+  Dim arrObjects, strObject
+  arrObjects = Rhino.GetObjects("Select curves and points to project", 5, True, True)
+  If Not IsArray(arrObjects) Then Exit Sub
+
+  ' Select surfaces and polysurfaces to project onto
+  Dim arrSurfaces, strSurface
+  arrSurfaces = Rhino.GetObjects("Select surfaces and polysurfaces to project onto", 24, True, True)
+  If Not IsArray(arrSurfaces) Then Exit Sub
+
+  ' Remember the current layer
+  Dim strLayer
+  strLayer = Rhino.CurrentLayer
+  
+  ' Unselect everything and disable screen redrawing
+  Rhino.UnselectAllObjects
+  Rhino.EnableRedraw False
+
+  Dim arrLast, strLast, strCommand
+  Dim arrResults(), nCount
+  nCount = -1
+
+  ' Process each selected curve and point
+  For Each strObject In arrObjects
+
+    ' Set the current layer to the first curve or point  
+    Rhino.CurrentLayer Rhino.ObjectLayer(strObject)
+    
+    ' Build a command string to run the project command
+    strCommand = "! -_Project _SelID " & strObject & " _Enter"
+    For Each strSurface In arrSurfaces
+      strCommand = strCommand & " _SelID " & strSurface
+    Next
+    strCommand = strCommand & " _Enter"
+
+    ' Run the project command
+    Rhino.Command strCommand, 0
+
+    ' Unselect everything
+    Rhino.UnselectAllObjects
+
+    ' Get all of the objects created by the last command
+    arrLast = Rhino.LastCreatedObjects
+
+    ' If the last command created some objects, add those
+    ' objects to our result list
+    If IsArray(arrLast) Then
+      For Each strLast in arrLast
+        nCount = nCount + 1
+        ReDim Preserve arrResults(nCount)
+        arrResults(nCount) = strLast
+      Next
+    End If
+
+  Next
+
+  ' If there is anything in the result list, select it
+  If GetUBound(arrResults) <> -1 Then Rhino.SelectObjects(arrResults)
+
+  ' Restore the current layer
+  Rhino.CurrentLayer strLayer
+
+  ' Enable screen redrawing
+  Rhino.EnableRedraw True
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Special function to return the bounds of a dynamic array
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function GetUBound(arrValue)
+  GetUBound = -1
+  If IsArray(arrValue) Then
+    On Error Resume Next
+    GetUBound = UBound(arrValue)
+  End If
+End Function

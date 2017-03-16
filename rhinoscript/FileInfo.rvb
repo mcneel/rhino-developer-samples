@@ -1,0 +1,33 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FileInfo.rvb -- June 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub FileInfo
+  
+  Dim objFSO, objFile
+  Dim strFileName, strFileProperties
+  
+  strFileName = Rhino.OpenFileName("Open", "Rhino 3D Models (*.3dm)|*.3dm|All Files (*.*)|*.*||")
+  If IsNull(strFileName) Then Exit Sub
+
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  Set objFile = objFSO.GetFile(strFileName)
+ 
+  ' Display generel file properties
+  strFileProperties = strFileProperties & "File name: " & objFile.Name & VbCrLf
+  strFileProperties = strFileProperties & "File path: " & objFile.Path & VbCrLf
+  strFileProperties = strFileProperties & "Folder placed on drive: " & objFile.Drive & VbCrLf
+  strFileProperties = strFileProperties & "Date created: " & objFile.DateCreated & VbCrLf
+  strFileProperties = strFileProperties & "Date last accessed: " & objFile.DateLastAccessed & VbCrLf
+  strFileProperties = strFileProperties & "Date last modified: " & objFile.DateLastModified & VbCrLf
+  strFileProperties = strFileProperties & "Parent folder: " & objFile.ParentFolder & VbCrLf
+  strFileProperties = strFileProperties & "File size: " & objFile.Size & " bytes" & VbCrLf
+  strFileProperties = strFileProperties & "File type: " & objFile.Type & VbCrLf
+  Call Rhino.TextOut(strFileProperties, "File Info")
+
+End Sub

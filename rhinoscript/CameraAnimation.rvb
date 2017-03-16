@@ -1,0 +1,1601 @@
+'////////////////////////////////////////////////////////////////////////////////
+'//  Animation Functions for Rhinoceros 2.0
+'//  Robert McNeel & Associates
+'//  http://www.rhino3d.com
+'//
+'//  For techincal support, please visit the Rhino newsgroup
+'//  news://news.rhino3d.com/rhino
+
+Option Explicit
+
+'////////////////////////////////////////////////////////////////////////////////
+'//  Global variables used by all scripts
+Public Pi
+Public AnimationCaptureType
+Public HtmlFileName
+Public arrCameraPoints, arrTargetPoints
+Public AnimationFrameCount
+Public AnimationCurrentFrame
+Public sCameraPathID
+Public sTargetPathID
+
+If (VarType(AnimationCurrentFrame) = vbNull) Then AnimationCurrentFrame = 1
+Dim CurrentLocale
+
+Pi = 3.1415926
+
+'//////////////////////////
+'// Initialize times and dates for sun studies
+CurrentLocale = SetLocale("en-us")
+SetLocale(CurrentLocale)
+
+Public idxName
+idxName = 0
+Public idxType
+idxType = 1
+Public idxFrameCount
+idxFrameCount = 2
+Public idxViewportName
+idxViewportName = 3
+Public idxFolderName
+idxFolderName = 4
+Public idxFileExtension
+idxFileExtension = 5
+Public idxFilePrefix
+idxFilePrefix = 6
+Public idxFileSuffix
+idxFileSuffix = 7
+Public idxRenderer
+idxRenderer = 8
+Public idxCaptureType
+idxCaptureType = 9
+Public idxStartTime
+idxStartTime = 10
+Public idxEndTime
+idxEndTime = 11
+Public idxStartDate
+idxStartDate = 12
+Public idxEndDate
+idxEndDate = 13
+Public idxPath1
+idxPath1 = 14
+Public idxPath2
+idxPath2 = 15
+Public idxCameraPoint
+idxCameraPoint = 16
+Public idxTargetPoint
+idxTargetPoint = 17
+Public idxDirection
+idxDirection = 18
+Public idxLatitude
+idxLatitude = 19
+Public idxLongitude
+idxLongitude = 20
+Public idxDaylightSavings
+idxDaylightSavings = 21
+Public idxNorthAdjustmentAngle
+idxNorthAdjustmentAngle = 22
+Public idxSettingsSize
+idxSettingsSize = 23
+
+
+
+Sub SetDocData(strName, strValue)
+	If (VarType(strName) = vbNull) Then
+		Exit Sub
+	ElseIf (VarType(strValue) = vbNull) Then
+		strValue = ""
+	End If
+	Rhino.SetDocumentData "RhinoAnimation", strName, CStr(strValue)
+End Sub
+
+Function GetDocData(strName)
+	GetDocData = Rhino.GetDocumentData("RhinoAnimation", strName)
+	If (VarType(GetDocData) = vbNull Or VarType(GetDocData) = vbEmpty) Then
+		GetDocData = ""
+	End If 
+End Function
+
+Function GetDocNumber(strName, nDefault)
+	GetDocNumber = GetDocData(strName)
+	If(GetDocNumber = "") Then
+		GetDocNumber = nDefault
+	End If
+End Function
+
+Function GetDocStr(strName, sDefault)
+	GetDocStr = GetDocData(strName)
+	If(GetDocStr = "") Then
+		GetDocStr = sDefault
+	End If
+End Function
+
+Function GetDocDate(strName, strDefault)
+	Dim strDate
+	strDate = GetDocData(strName)
+	If (strDate <> "") Then
+		GetDocDate = DateValue(strDate)
+	Else
+		If (strDefault <> "") Then
+			GetDocDate = DateValue(strDefault)
+		Else
+			GetDocDate = Date()
+		End If
+	End If
+End Function
+
+Function GetDocTime(strName, strDefault)
+	Dim strTime
+	strTime = GetDocData(strName)
+	If (strTime <> "") Then
+		GetDocTime = TimeValue(strTime)
+	Else
+		If (strDefault <> "") Then
+			GetDocTime = TimeValue(strDefault)
+		Else
+			GetDocTime = TimeValue(Now())
+		End If
+	End If
+End Function
+
+Sub SetObjData(sObjID, strName, strValue)
+	If (VarType(strName) = vbNull) Then
+		Exit Sub
+	ElseIf (VarType(strValue) = vbNull) Then
+		strValue = ""
+	End If
+	Rhino.SetObjectData sObjID, "RhinoAnimation", strName, CStr(strValue)
+End Sub
+
+Function GetObjData(sObjID, strName)
+	If (sObjID = "") Then 
+		GetObjData = ""
+		Exit Function
+	End If
+
+	GetObjData = Rhino.GetObjectData(sObjID, "RhinoAnimation", strName)
+	If (VarType(GetObjData) = vbNull) Then
+		GetObjData = ""
+	End If
+End Function
+
+Function GetObjInt(sObjID, strName, nDefault)
+	GetObjInt = GetObjData(sObjID, strName)
+	If(GetObjInt = "") Then
+		GetObjInt = nDefault
+	End If
+End Function
+
+Function GetObjStr(sObjID, strName, sDefault)
+	GetObjStr = GetObjData(sObjID, strName)
+	If(GetObjStr = "") Then
+		GetObjStr = sDefault
+	End If
+End Function
+
+Function GetObjDate(sObjID, strName, strDefault)
+	Dim strDate
+	strDate = GetObjData(sObjID, strName)
+	If (strDate <> "") Then
+		GetObjDate = DateValue(strDate)
+	Else
+		If (strDefault <> "") Then
+			GetObjDate = DateValue(strDefault)
+		Else
+			GetObjDate = Date()
+		End If
+	End If
+End Function
+
+Function GetObjTime(sObjID, strName, strDefault)
+	Dim strTime
+	strTime = GetObjData(sObjID, strName)
+	If (strTime <> "") Then
+		GetObjTime = TimeValue(strTime)
+	Else
+		If (strDefault <> "") Then
+			GetObjTime = TimeValue(strDefault)
+		Else
+			GetObjTime = TimeValue(Now())
+		End If
+	End If
+End Function
+
+
+
+Function SetSettings(arrSettings)
+	Dim objID
+	CurrentLocale = SetLocale("en-us")
+
+	If (arrSettings(idxType) = "Path") Then
+		objID = arrSettings(idxPath1)
+		SetObjData objID, "Name", arrSettings(idxName)
+		SetObjData objID, "Type", arrSettings(idxType)
+		SetObjData objID, "FrameCount", arrSettings(idxFrameCount)
+		SetObjData objID, "ViewportName", arrSettings(idxViewportName)
+		SetObjData objID, "FolderName", arrSettings(idxFolderName)
+		SetObjData objID, "CaptureType", arrSettings(idxCaptureType)
+		SetObjData objID, "FileExtension", arrSettings(idxFileExtension)
+		SetObjData objID, "FilePrefix", arrSettings(idxFilePrefix)
+		SetObjData objID, "FileSuffix", arrSettings(idxFileSuffix)
+		SetObjData objID, "Renderer", arrSettings(idxRenderer)
+		SetObjData objID, "StartTime", arrSettings(idxStartTime)
+		SetObjData objID, "EndTime", arrSettings(idxEndTime)
+		SetObjData objID, "StartDate", arrSettings(idxStartDate) 
+		SetObjData objID, "EndDate", arrSettings(idxEndDate)
+		SetObjData objID, "CameraPathID", arrSettings(idxPath1)
+		SetObjData objID, "TargetPathID", arrSettings(idxPath2)
+		SetDocData "LastAnimation", "Path"
+		SetDocData "CameraPathID", objID
+	ElseIf (arrSettings(idxType) = "Turntable") Then
+		SetDocData "TurntableAnimationName", arrSettings(idxName)
+		SetDocData "Type", arrSettings(idxType)
+		SetDocData "TurntableAnimationFrameCount", arrSettings(idxFrameCount)
+		SetDocData "TurntableAnimationViewportName", arrSettings(idxViewportName)
+		SetDocData "TurntableAnimationFolderName", arrSettings(idxFolderName)
+		SetDocData "TurntableAnimationFileExtension", arrSettings(idxFileExtension)
+		SetDocData "TurntableAnimationFilePrefix", arrSettings(idxFilePrefix)
+		SetDocData "TurntableAnimationFileSuffix", arrSettings(idxFileSuffix)
+		SetDocData "TurntableAnimationCaptureType", arrSettings(idxCaptureType)
+		SetDocData "TurntableAnimationRenderer", arrSettings(idxRenderer)
+		SetDocData "TurntableAnimationStartTime", arrSettings(idxStartTime)
+		SetDocData "TurntableAnimationEndTime", arrSettings(idxEndTime)
+		SetDocData "TurntableAnimationStartDate", arrSettings(idxStartDate) 
+		SetDocData "TurntableAnimationEndDate", arrSettings(idxEndDate)
+		SetDocData "TurntableAnimationCameraX", arrSettings(idxCameraPoint)(0)
+		SetDocData "TurntableAnimationCameraY", arrSettings(idxCameraPoint)(1)
+		SetDocData "TurntableAnimationCameraZ", arrSettings(idxCameraPoint)(2)
+		SetDocData "TurntableAnimationTargetX", arrSettings(idxTargetPoint)(0)
+		SetDocData "TurntableAnimationTargetY", arrSettings(idxTargetPoint)(1)
+		SetDocData "TurntableAnimationTargetZ", arrSettings(idxTargetPoint)(2)
+		SetDocData "LastAnimation", "Turntable"
+		SetDocData "TurntableAnimationDirection", arrSettings(idxDirection)
+	ElseIf (arrSettings(idxType) = "FlyThrough") Then
+		objID = arrSettings(idxPath1)
+		SetObjData objID, "Name", arrSettings(idxName)
+		SetObjData objID, "Type", arrSettings(idxType)
+		SetObjData objID, "FrameCount", arrSettings(idxFrameCount)
+		SetObjData objID, "ViewportName", arrSettings(idxViewportName)
+		SetObjData objID, "FolderName", arrSettings(idxFolderName)
+		SetObjData objID, "CaptureType", arrSettings(idxCaptureType)
+		SetObjData objID, "FileExtension", arrSettings(idxFileExtension)
+		SetObjData objID, "FilePrefix", arrSettings(idxFilePrefix)
+		SetObjData objID, "FileSuffix", arrSettings(idxFileSuffix)
+		SetObjData objID, "Renderer", arrSettings(idxRenderer)
+		SetObjData objID, "StartTime", arrSettings(idxStartTime)
+		SetObjData objID, "EndTime", arrSettings(idxEndTime)
+		SetObjData objID, "StartDate", arrSettings(idxStartDate) 
+		SetObjData objID, "EndDate", arrSettings(idxEndDate)
+		SetObjData objID, "FlyThroughPathID", arrSettings(idxPath1)
+		SetDocData "LastAnimation", "FlyThrough"
+		SetDocData "FlyThroughPathID", objID
+	ElseIf (arrSettings(idxType) = "OneDaySunStudy") Then
+		SetDocData "OneDaySunStudyName", arrSettings(idxName)
+		SetDocData "Type", arrSettings(idxType)
+		SetDocData "OneDaySunStudyFrameCount", arrSettings(idxFrameCount)
+		SetDocData "OneDaySunStudyViewportName", arrSettings(idxViewportName)
+		SetDocData "OneDaySunStudyFolderName", arrSettings(idxFolderName)
+		SetDocData "OneDaySunStudyFileExtension", arrSettings(idxFileExtension)
+		SetDocData "OneDaySunStudyFilePrefix", arrSettings(idxFilePrefix)
+		SetDocData "OneDaySunStudyFileSuffix", arrSettings(idxFileSuffix)
+		SetDocData "OneDaySunStudyRenderer", arrSettings(idxRenderer)
+		SetDocData "OneDaySunStudyStartTime", arrSettings(idxStartTime)
+		SetDocData "OneDaySunStudyEndTime", arrSettings(idxEndTime)
+		SetDocData "OneDaySunStudyStartDate", arrSettings(idxStartDate)
+		SetDocData "OneDaySunStudyEndDate", arrSettings(idxEndDate)
+		SetDocData "OneDaySunStudyDaylightSavings", arrSettings(idxDaylightSavings)
+		SetDocData "OneDaySunStudyLatitude", arrSettings(idxLatitude)
+		SetDocData "OneDaySunStudyLongitude", arrSettings(idxLongitude)
+		SetDocData "LastAnimation", "OneDaySunStudy"
+		SetDocData "CaptureType", arrSettings(idxCaptureType)
+		SetDocData "NorthAdjustment", arrSettings(idxNorthAdjustmentAngle)
+	ElseIf (arrSettings(idxType) = "SeasonalSunStudy") Then
+		SetDocData "SeasonalSunStudyName", arrSettings(idxName)
+		SetDocData "Type", arrSettings(idxType)
+		SetDocData "SeasonalSunStudyFrameCount", arrSettings(idxFrameCount)
+		SetDocData "SeasonalSunStudyViewportName", arrSettings(idxViewportName)
+		SetDocData "SeasonalSunStudyFolderName", arrSettings(idxFolderName)
+		SetDocData "SeasonalSunStudyFileExtension", arrSettings(idxFileExtension)
+		SetDocData "SeasonalSunStudyFilePrefix", arrSettings(idxFilePrefix)
+		SetDocData "SeasonalSunStudyFileSuffix", arrSettings(idxFileSuffix)
+		SetDocData "SeasonalSunStudyRenderer", arrSettings(idxRenderer)
+		SetDocData "SeasonalSunStudyStartTime", arrSettings(idxStartTime)
+		SetDocData "SeasonalSunStudyEndTime", arrSettings(idxEndTime)
+		SetDocData "SeasonalSunStudyStartDate", arrSettings(idxStartDate) 
+		SetDocData "SeasonalSunStudyEndDate", arrSettings(idxEndDate)
+		SetDocData "SeasonalSunStudyDaylightSavings", arrSettings(idxDaylightSavings)
+		SetDocData "SeasonalSunStudyLatitude", arrSettings(idxLatitude)
+		SetDocData "SeasonalSunStudyLongitude", arrSettings(idxLongitude)
+		SetDocData "LastAnimation", "SeasonalSunStudy"
+		SetDocData "CaptureType", arrSettings(idxCaptureType)
+		SetDocData "NorthAdjustment", arrSettings(idxNorthAdjustmentAngle)
+	End If
+
+	SetLocale(CurrentLocale)
+End Function
+
+Function GetSettings(strAnimationType)
+	Dim arrSettings()
+	ReDim arrSettings(idxSettingsSize)
+	Dim objID, tmpTime, tmpDate
+	Dim CameraPt(3), TargetPt(3)
+
+	If (strAnimationType = "Path") Then
+		SetDocData "LastAnimation", "Path"
+	ElseIf (strAnimationType = "Turntable") Then
+		SetDocData "LastAnimation", "Turntable"
+	ElseIf (strAnimationType = "FlyThrough") Then
+		SetDocData "LastAnimation", "FlyThrough"
+	ElseIf (strAnimationType = "OneDaySunStudy") Then
+		SetDocData "LastAnimation", "OneDaySunStudy"
+	ElseIf (strAnimationType = "SeasonalSunStudy") Then
+		SetDocData "LastAnimation", "SeasonalSunStudy"
+	Else
+		'msgbox("cElse")
+		'    arrSettings(idxFileExtension) = GetObjStr(objID, "FileExtension", ".png")
+		'    arrSettings(idxViewportName) = GetObjStr(objID, "ViewportName", "Perspective")
+		'    arrSettings(idxFilePrefix) = GetObjStr(objID, "FilePrefix", "")
+	End If
+
+	If (GetDocData("LastAnimation") = "Path") Then
+		objID = GetDocData("CameraPathID")
+		arrSettings(idxName) = GetObjData(objID, "Name")
+		arrSettings(idxType) = "Path"
+		arrSettings(idxFrameCount) = GetObjInt(objID, "FrameCount", 100)
+		arrSettings(idxViewportName) = GetObjStr(objID, "ViewportName", Rhino.CurrentView())
+		arrSettings(idxFolderName) = GetObjStr(objID, "FolderName", "C:\")
+		arrSettings(idxFileExtension) = GetObjStr(objID, "FileExtension", ".png")
+		If (arrSettings(idxFileExtension) = ".gif") Then arrSettings(idxFileExtension) = ".jpg"
+		arrSettings(idxCaptureType) = GetObjStr(objID, "CaptureType", "Wireframe")
+		arrSettings(idxFilePrefix) = GetObjStr(objID, "FilePrefix", "")
+		arrSettings(idxFileSuffix) = GetObjStr(objID, "FileSuffix", "")
+		arrSettings(idxRenderer) = GetObjStr(objID, "Renderer", "Rhinoceros")
+		arrSettings(idxStartTime) = GetObjTime(objID, "StartTime", "")
+		arrSettings(idxEndTime) = GetObjTime(objID, "EndTime", "")
+		arrSettings(idxStartDate) = GetObjDate(objID, "StartDate", "") 
+		arrSettings(idxEndDate) = GetObjDate(objID, "EndDate", "")
+		arrSettings(idxPath1) = objID
+		arrSettings(idxPath2) = GetObjStr(objID, "TargetPathID", "")
+	ElseIf (GetDocData("LastAnimation") = "Turntable") Then
+		arrSettings(idxName) = GetDocData("TurntableAnimationName")
+		arrSettings(idxType) = "Turntable"
+		arrSettings(idxFrameCount) = GetDocNumber("TurntableAnimationFrameCount", 100)
+		arrSettings(idxViewportName) = GetDocStr("TurntableAnimationViewportName", Rhino.CurrentView())
+		arrSettings(idxFolderName) = GetDocStr("TurntableAnimationFolderName", "C:\")
+		arrSettings(idxFileExtension) = GetDocStr("TurntableAnimationFileExtension", ".png")
+		If (arrSettings(idxFileExtension) = ".gif") Then arrSettings(idxFileExtension) = ".jpg"
+		arrSettings(idxFilePrefix) = GetDocStr("TurntableAnimationFilePrefix", "")
+		arrSettings(idxFileSuffix) = GetDocStr("TurntableAnimationFileSuffix", "")
+		arrSettings(idxCaptureType) = GetDocStr("TurntableAnimationCaptureType", "Wireframe")
+		arrSettings(idxRenderer) = GetDocStr("TurntableAnimationRenderer", "Rhinoceros")
+		arrSettings(idxStartTime) = GetDocTime("TurntableAnimationStartTime", "")
+		arrSettings(idxEndTime) = GetDocTime("TurntableAnimationEndTime", "")
+		arrSettings(idxStartDate) = GetDocDate("TurntableAnimationStartDate", "") 
+		arrSettings(idxEndDate) = GetDocDate("TurntableAnimationEndDate", "")
+		arrSettings(idxDirection) = GetDocStr("TurntableAnimationDirection", "Clockwise")
+		CameraPt(0) = GetDocData("TurntableAnimationCameraX")
+		CameraPt(1) = GetDocData("TurntableAnimationCameraY")
+		CameraPt(2) = GetDocData("TurntableAnimationCameraZ")
+		TargetPt(0) = GetDocData("TurntableAnimationTargetX")
+		TargetPt(1) = GetDocData("TurntableAnimationTargetY")
+		TargetPt(2) = GetDocData("TurntableAnimationTargetZ")
+		arrSettings(idxCameraPoint) = CameraPt
+		arrSettings(idxTargetPoint) = TargetPt
+		arrSettings(idxPath1) = ""
+		arrSettings(idxPath2) = ""
+	ElseIf (GetDocData("LastAnimation") = "FlyThrough") Then
+		objID = GetDocData("FlyThroughPathID")
+		arrSettings(idxName) = GetObjData(objID, "Name")
+		arrSettings(idxType) = "FlyThrough"
+		arrSettings(idxFrameCount) = GetObjInt(objID, "FrameCount", 100)
+		arrSettings(idxViewportName) = GetObjStr(objID, "ViewportName", Rhino.CurrentView())
+		arrSettings(idxFolderName) = GetObjStr(objID, "FolderName", "C:\")
+		arrSettings(idxFileExtension) = GetObjStr(objID, "FileExtension", ".png")
+		arrSettings(idxCaptureType) = GetObjStr(objID, "CaptureType", "Wireframe")
+		If (arrSettings(idxFileExtension) = ".gif") Then arrSettings(idxFileExtension) = ".jpg"
+		arrSettings(idxFilePrefix) = GetObjStr(objID, "FilePrefix", "")
+		arrSettings(idxFileSuffix) = GetObjStr(objID, "FileSuffix", "")
+		arrSettings(idxRenderer) = GetObjStr(objID, "Renderer", "Rhinoceros")
+		arrSettings(idxStartTime) = GetObjTime(objID, "StartTime", "")
+		arrSettings(idxEndTime) = GetObjTime(objID, "EndTime", "")
+		arrSettings(idxStartDate) = GetObjDate(objID, "StartDate", "") 
+		arrSettings(idxEndDate) = GetObjDate(objID, "EndDate", "")
+		arrSettings(idxPath1) = objID
+		arrSettings(idxPath2) = ""
+	ElseIf (GetDocData("LastAnimation") = "OneDaySunStudy") Then
+		arrSettings(idxName) = GetDocData("OneDaySunStudyName")
+		arrSettings(idxType) = "OneDaySunStudy"
+		arrSettings(idxFrameCount) = GetDocNumber("OneDaySunStudyFrameCount", 60)
+		arrSettings(idxViewportName) = GetDocStr("OneDaySunStudyViewportName", Rhino.CurrentView())
+		arrSettings(idxFolderName) = GetDocStr("OneDaySunStudyFolderName", "C:\")
+		arrSettings(idxFileExtension) = GetDocStr("OneDaySunStudyFileExtension", ".png")
+		If (arrSettings(idxFileExtension) = ".gif") Then arrSettings(idxFileExtension) = ".jpg"
+		arrSettings(idxFilePrefix) = GetDocStr("OneDaySunStudyFilePrefix", "")
+		arrSettings(idxFileSuffix) = GetDocStr("OneDaySunStudyFileSuffix", "")
+		arrSettings(idxRenderer) = GetDocStr("OneDaySunStudyRenderer", "Rhino Render")
+		arrSettings(idxCaptureType) = GetDocStr("CaptureType", "Wireframe")
+		arrSettings(idxLatitude) = GetDocNumber("OneDaySunStudyLatitude", 47.55943)
+		arrSettings(idxLongitude) = GetDocNumber("OneDaySunStudyLongitude", 122.32325)
+		arrSettings(idxDaylightSavings) = GetDocStr("OneDaySunStudyDaylightSavings", "No")
+
+		CurrentLocale = SetLocale("en-us")
+		tmpTime = TimeValue("6:00am")
+		SetLocale(CurrentLocale)
+		arrSettings(idxStartTime) = GetDocTime("OneDaySunStudyStartTime", CStr(tmpTime))
+    
+		CurrentLocale = SetLocale("en-us")
+		tmpTime = TimeValue("10:00pm")
+		SetLocale(CurrentLocale)
+		arrSettings(idxEndTime) = GetDocTime("OneDaySunStudyEndTime", tmpTime)
+
+		CurrentLocale = SetLocale("en-us")
+		tmpDate = DateValue("1-Jan")
+		SetLocale(CurrentLocale)
+		arrSettings(idxStartDate) = GetDocDate("OneDaySunStudyStartDate", tmpDate)
+    
+		arrSettings(idxEndDate) = GetDocDate("OneDaySunStudyEndDate", "")
+		arrSettings(idxNorthAdjustmentAngle) = GetDocNumber("NorthAdjustment", 0)
+		arrSettings(idxPath1) = ""
+		arrSettings(idxPath2) = ""
+	ElseIf (GetDocData("LastAnimation") = "SeasonalSunStudy") Then
+		arrSettings(idxName) = GetDocData("SeasonalSunStudyName")
+		arrSettings(idxType) = "SeasonalSunStudy"
+		arrSettings(idxFrameCount) = GetDocNumber("SeasonalSunStudyFrameCount", 30)
+		arrSettings(idxViewportName) = GetDocStr("SeasonalSunStudyViewportName", Rhino.CurrentView())
+		arrSettings(idxFolderName) = GetDocStr("SeasonalSunStudyFolderName", "C:\")
+		arrSettings(idxFileExtension) = GetDocStr("SeasonalSunStudyFileExtension", ".png")
+		If (arrSettings(idxFileExtension) = ".gif") Then arrSettings(idxFileExtension) = ".jpg"
+		arrSettings(idxFilePrefix) = GetDocStr("SeasonalSunStudyFilePrefix", "")
+		arrSettings(idxFileSuffix) = GetDocStr("SeasonalSunStudyFileSuffix", "")
+		arrSettings(idxRenderer) = GetDocStr("SeasonalSunStudyRenderer", "Rhinoceros")
+		arrSettings(idxCaptureType) = GetDocStr("CaptureType", "Wireframe")
+		arrSettings(idxLatitude) = GetDocNumber("SeasonalSunStudyLatitude", 47.55943)
+		arrSettings(idxLongitude) = GetDocNumber("SeasonalSunStudyLongitude", 122.32325)
+		arrSettings(idxDaylightSavings) = GetDocStr("SeasonalSunStudyDaylightSavings", "No")
+
+		CurrentLocale = SetLocale("en-us")
+		tmpTime = TimeValue("12:00pm")
+		SetLocale(CurrentLocale)
+		arrSettings(idxStartTime) = GetDocTime("SeasonalSunStudyStartTime", tmpTime)
+
+		arrSettings(idxEndTime) = GetDocTime("SeasonalSunStudyEndTime", "")
+
+		CurrentLocale = SetLocale("en-us")
+		tmpDate = DateValue("1-Jan")
+		SetLocale(CurrentLocale)
+		arrSettings(idxStartDate) = GetDocDate("SeasonalSunStudyStartDate", tmpDate) 
+
+		CurrentLocale = SetLocale("en-us")
+		tmpDate = DateValue("1-Dec")
+		SetLocale(CurrentLocale)
+		arrSettings(idxEndDate) = GetDocDate("SeasonalSunStudyEndDate", tmpDate)
+
+		arrSettings(idxNorthAdjustmentAngle) = GetDocNumber("NorthAdjustment", 0)
+		arrSettings(idxPath1) = ""
+		arrSettings(idxPath2) = ""
+	End If
+
+	GetSettings = arrSettings
+End Function
+
+'////////////////////////////////////////////////////////////////////////////////
+'//  Animation Setup routines
+Sub AnimationOptions(bRenderedOnly)
+	Dim LeftChar
+	Dim OldAnimationCaptureType
+	Dim OldAnimationFileExtension
+	Dim OldAnimationViewportName
+	Dim ViewportPoint
+	Dim Settings, AnimationFileExtension, AnimationFilePrefix,AnimationFileSuffix, AnimationViewportName
+
+	Settings = GetSettings("")
+
+	If (Settings(idxFileExtension) = "") Then Settings(idxFileExtension) = "png"
+	AnimationFileExtension = Rhino.GetString("File type", CStr(Settings(idxFileExtension)), Array("jpg", "bmp", "png", "tga"))
+	If VarType(AnimationFileExtension) = vbNull Then Exit Sub
+	AnimationFileExtension = Replace(AnimationFileExtension, ".", "")
+	LeftChar = Left(LCase(AnimationFileExtension), 1)
+	If (LeftChar = "j") Then
+		Settings(idxFileExtension) = ".jpg"
+	ElseIf (LeftChar = "b") Then
+		Settings(idxFileExtension) = ".bmp"
+	ElseIf (LeftChar = "p") Then
+		Settings(idxFileExtension) = ".png"
+	ElseIf (LeftChar = "t") Then
+		Settings(idxFileExtension) = ".tga"
+	End If
+
+	If (bRenderedOnly) Then
+		If (Settings(idxCaptureType) = "" Or Settings(idxCaptureType) = "Wireframe" Or Settings(idxCaptureType) = "Shaded" Or Settings(idxCaptureType) = "Ghosted" Or Settings(idxCaptureType) = "Xray") Then Settings(idxCaptureType) = "Rendered"
+		AnimationCaptureType = Rhino.GetString("Frame capture method", CStr(Settings(idxCaptureType)), Array("Rendered", "RenderPreview", "RenderFull"))
+		If VarType(AnimationCaptureType) = vbNull Then Exit Sub
+		Else
+			If (Settings(idxCaptureType) = "") Then Settings(idxCaptureType) = "Wireframe"
+		AnimationCaptureType = Rhino.GetString("Frame capture method", CStr(Settings(idxCaptureType)), Array("Wireframe", "Shaded", "Ghosted", "Xray", "Rendered", "RenderPreview", "RenderFull"))
+		If VarType(AnimationCaptureType) = vbNull Then Exit Sub
+	End If
+
+	AnimationCaptureType = LCase(AnimationCaptureType)
+	If (AnimationCaptureType = "wireframe") Then
+		Settings(idxCaptureType) = "Wireframe"
+	ElseIf (AnimationCaptureType = "shaded") Then
+		Settings(idxCaptureType) = "Shaded"
+	ElseIf (AnimationCaptureType = "ghosted") Then
+		Settings(idxCaptureType) = "Ghosted"
+	ElseIf (AnimationCaptureType = "xray") Then
+		Settings(idxCaptureType) = "Xray"
+	ElseIf (AnimationCaptureType = "rendered") Then
+		Settings(idxCaptureType) = "Rendered"
+	ElseIf (AnimationCaptureType = "renderpreview") Then
+		Settings(idxCaptureType) = "RenderPreview"
+	ElseIf (AnimationCaptureType = "renderfull") Then
+		Settings(idxCaptureType) = "RenderFull"
+	End If
+
+	If (Settings(idxViewportName) = "") Then Settings(idxViewportName) = Rhino.CurrentView()
+	AnimationViewportName = Rhino.GetString("Viewport name to render", CStr(Settings(idxViewportName)))
+	If VarType(AnimationViewportName) = vbNull Then Exit Sub
+	If (Len(AnimationViewportName) > 0) Then
+		Settings(idxViewportName) = AnimationViewportName
+	End If
+
+	AnimationFilePrefix = Rhino.GetString("Animation sequence name", CStr(Settings(idxFilePrefix)), Array("None"))
+	If VarType(AnimationFilePrefix) = vbNull Then
+		'    msgbox("sequence is null")
+		'    Exit Sub
+	End If
+	If (AnimationFilePrefix = "None") Then
+		Settings(idxFilePrefix) = ""
+	ElseIf (Len(AnimationFilePrefix) = 0) Then
+		' Don't do anything
+	ElseIf (AnimationFilePrefix = " ") Then
+		Settings(idxFilePrefix) = ""
+	Else
+		Settings(idxFilePrefix) = AnimationFilePrefix
+	End If
+	SetSettings(Settings)
+End Sub
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Move viewport camera and target to points specified
+Sub SetCameraTarget(CameraPt, TargetPt)
+	Dim Settings
+	Settings = GetSettings("")
+	Rhino.ViewCameraTarget Settings(idxViewportName), Array(CameraPt(0), CameraPt(1), CameraPt(2)), Array(TargetPt(0), TargetPt(1), TargetPt(2))
+End Sub
+
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Capture the current frame using capture method
+'// specified in AnimationCaptureType
+'// Frame is saved to file on disk.
+Function RenderFrame(nFrameNumber)
+	Dim sFileName, Settings, AnimationCaptureType
+
+	Settings = GetSettings("")
+	AnimationCaptureType = Settings(idxCaptureType)
+	Rhino.Print(AnimationCaptureType)
+
+
+	Rhino.Command("_SetActiveViewport " & Settings(idxViewportName))
+	sFileName = Settings(idxFolderName)
+	If (Settings(idxFilePrefix) <> "") Then
+		sFileName = sFileName & Settings(idxFilePrefix) & " " 
+	End If
+
+	sFileName = sFileName & FourDigit(nFrameNumber)
+  
+	If (Settings(idxFileSuffix) <> "") Then
+		sFileName = sFileName & " " & Settings(idxFileSuffix)
+	End If
+	sFileName = sFileName & Settings(idxFileExtension)
+
+	If (AnimationCaptureType = "Wireframe") Then
+		Rhino.Command("_WireframeViewport -_ScreenCaptureToFile """ & sFileName & """")
+
+	ElseIf (AnimationCaptureType = "Shaded") Then
+		Rhino.Command("_ShadedViewport -_ScreenCaptureToFile """ & sFileName & """")
+
+	ElseIf (AnimationCaptureType = "Ghosted") Then
+		Rhino.Command("_GhostedViewport -_ScreenCaptureToFile """ & sFileName & """")
+
+	ElseIf (AnimationCaptureType = "Xray") Then
+		Rhino.Command("_XrayViewport -_ScreenCaptureToFile """ & sFileName & """")
+
+	ElseIf (AnimationCaptureType = "Rendered") Then
+		Rhino.Command("_RenderedViewport -_ScreenCaptureToFile """ & sFileName & """")
+
+	ElseIf (AnimationCaptureType = "RenderPreview") Then
+		Rhino.Command("_RenderPreview")
+		Rhino.Command("-_SaveRenderWindowAs """ & sFileName & """")
+		Rhino.Command("_CloseRenderWindow")
+
+	ElseIf (AnimationCaptureType = "RenderFull") Then
+		Rhino.Command("_Render")
+		Rhino.Command("-_SaveRenderWindowAs """ & sFileName & """")
+		Rhino.Command("_CloseRenderWindow")
+	End If
+
+	RenderFrame = sFileName
+End Function
+
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Create a four-digit number with leading zeros
+'// This makes the frames sort properly in Windows Explorer
+Function FourDigit(num)
+	FourDigit = "0000" & num
+	FourDigit = Right(FourDigit, 4)
+End Function
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Create a two-digit number with leading zeros
+'// This makes the frames sort properly in Windows Explorer
+Function TwoDigit(num)
+	TwoDigit = "0000" & num
+	TwoDigit = Right(TwoDigit, 2)
+End Function
+
+Function GetFileNameFromPath(sPath)
+	Dim index
+	index = InStrRev(sPath, "\")
+	GetFileNameFromPath = Mid(sPath, index + 1)
+End Function
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Move camera and target to frame number specified
+Function GoToFrame(nFrameNumber)
+	Dim CameraPt(3), TargetPt(3)
+
+	Dim Settings
+	Settings = GetSettings("")
+	If (Settings(idxType) = "SeasonalSunStudy") Then
+		SeasonalSunStudyGotoFrame(nFrameNumber)
+	ElseIf (Settings(idxType) = "OneDaySunStudy") Then
+		OneDaySunStudyGotoFrame(nFrameNumber)
+	Else
+		If (nFrameNumber > UBound(arrCameraPoints, 2) - 1) Then nFrameNumber = UBound(arrCameraPoints, 2) - 1
+		If (nFrameNumber > UBound(arrTargetPoints, 2) - 1) Then nFrameNumber = UBound(arrTargetPoints, 2) - 1
+
+		If (Rhino.IsPoint(HandleNull(sCameraPathID))) Then
+			CameraPt(0) = arrCameraPoints(0, 0)
+			CameraPt(1) = arrCameraPoints(1, 0)
+			CameraPt(2) = arrCameraPoints(2, 0)
+		Else
+			CameraPt(0) = arrCameraPoints(0, nFrameNumber)
+			CameraPt(1) = arrCameraPoints(1, nFrameNumber)
+			CameraPt(2) = arrCameraPoints(2, nFrameNumber)
+		End If
+
+		If (Rhino.IsPoint(HandleNull(sTargetPathID))) Then
+			TargetPt(0) = arrTargetPoints(0, 0)
+			TargetPt(1) = arrTargetPoints(1, 0)
+			TargetPt(2) = arrTargetPoints(2, 0)
+		Else
+			TargetPt(0) = arrTargetPoints(0, nFrameNumber)
+			TargetPt(1) = arrTargetPoints(1, nFrameNumber)
+			TargetPt(2) = arrTargetPoints(2, nFrameNumber)
+		End If
+
+		SetCameraTarget CameraPt, TargetPt
+	End If
+
+End Function
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Move camera and targe to the first frame of the animation
+Function AnimationFirstFrame()
+	If (AnimationFrameCount = 1) Then
+		MessageBox("You must run an animation before moving between animation frames.")
+		Exit Function
+	End If
+ 
+	AnimationCurrentFrame = 0
+	GoToFrame(AnimationCurrentFrame)
+End Function
+
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Move camera and targe to the previous frame of the animation
+Function AnimationPreviousFrame()
+	If (AnimationFrameCount = 1) Then
+		MessageBox("You must run an animation before moving between animation frames.")
+		Exit Function
+	End If
+ 
+	AnimationCurrentFrame = AnimationCurrentFrame - 1
+	If (AnimationCurrentFrame < 0) Then
+		AnimationCurrentFrame = AnimationFrameCount - 1
+	End If
+
+	GoToFrame(AnimationCurrentFrame)
+End Function
+
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Move camera and targe to the next frame of the animation
+Function AnimationNextFrame()
+	If (AnimationFrameCount = 1) Then
+		MessageBox("You must run an animation before moving between animation frames.")
+		Exit Function
+	End If
+ 
+	AnimationCurrentFrame = AnimationCurrentFrame + 1
+	If (AnimationCurrentFrame > AnimationFrameCount - 1) Then
+		AnimationCurrentFrame = 0
+	End If
+
+	GoToFrame(AnimationCurrentFrame)
+End Function
+
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Move camera and targe to the last frame of the animation
+Function AnimationLastFrame()
+	If (AnimationFrameCount = 1) Then
+		MessageBox("You must run an animation before moving between animation frames.")
+		Exit Function
+	End If
+ 
+	AnimationCurrentFrame = AnimationFrameCount - 1
+	GoToFrame(AnimationCurrentFrame)
+End Function
+
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Move camera and targe to the specified frame of the animation
+Function AnimationGoToFrame()
+	Dim AnimationPreviousFrame
+ 
+	AnimationPreviousFrame = AnimationCurrentFrame
+	AnimationCurrentFrame = Rhino.GetInteger("Frame to go to", CInt(AnimationCurrentFrame))
+	If VarType(AnimationCurrentFrame) = vbNull Then
+		AnimationCurrentFrame = AnimationPreviousFrame
+		Exit Function
+	End If
+	If (AnimationCurrentFrame > AnimationFrameCount - 1) Then
+		MessageBox("Frame " & AnimationFrameCount & " is the last frame. Viewing frame " & AnimationFrameCount & ".")
+		AnimationCurrentFrame = AnimationFrameCount
+	End If
+	If (AnimationCurrentFrame < 0) Then
+		MessageBox("Frame 0 is the first frame. Viewing frame 0.")
+		AnimationCurrentFrame = 0
+	End If
+	GoToFrame(AnimationCurrentFrame)
+End Function
+
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Render and capture current frame
+Function AnimationCaptureFrame()
+	RenderFrame(AnimationCurrentFrame)
+End Function
+
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Rerun the last animation
+Function RerunAnimation()
+	For AnimationCurrentFrame = 0 To AnimationFrameCount
+		GoToFrame(AnimationCurrentFrame)
+		If (AnimationRenderFrames = "No") Then
+		Else
+			RenderFrame AnimationCurrentFrame
+		End If
+	Next
+End Function
+
+Function HandleNull(ob)
+	If (VarType(ob) = vbNull Or VarType(ob) = 0) Then
+		HandleNull = ""
+	Else
+		HandleNull = ob
+	End If
+End Function
+
+Function GetFileNameFromPath(sPath)
+	Dim index
+	index = InStrRev(sPath, "\")
+	GetFileNameFromPath = Mid(sPath, index + 1)
+End Function
+
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Write HTML file that shows animation frames
+Sub WriteHtmlAnimationFile (sFileName, sPageTitle, sImageList, nImageCount, nMillisecondsBetweenFrames, bShowDate)
+	Dim fso, fOut, fIn, sTemplatePath
+	Dim nSlashPosition
+
+	sTemplatePath = Rhino.ExeFolder
+
+	'  sTemplatePath = Left(sTemplatePath, Len(sTemplatePath) -1)
+	'  nSlashPosition = InStrRev(sTemplatePath, "\")
+	'  sTemplatePath = Left(sTemplatePath, nSlashPosition)
+	sTemplatePath = sTemplatePath & "AnimationTemplate.htm"
+
+	sFileName = Replace(sFileName, "\\", "\")
+  
+	Set fso = CreateObject("Scripting.FileSystemObject")
+	Set fOut = fso.CreateTextFile(sFileName, True)
+	Set fIn = fso.OpenTextFile(sTemplatePath, 1)
+
+	While (fIn.AtEndOfStream <> True)
+		Dim sLine
+		sLine = fIn.ReadLine
+		sLine = Replace(sLine, "%TITLE%", sPageTitle)
+		sLine = Replace(sLine, "%IMAGE_LIST%", sImageList)
+		sLine = Replace(sLine, "%IMAGE_COUNT%", nImageCount)
+		sLine = Replace(sLine, "%FRAME_DELAY%", nMillisecondsBetweenFrames)
+		sLine = Replace(sLine, "%SHOW_DATE%", bShowDate)
+		fOut.WriteLine(sLine)
+	Wend
+
+	fOut.Close
+	fIn.Close
+End Sub
+
+
+Function MyDivideCurve(sID, nPts)
+	Dim ArrPts()
+	Dim Pt(3)
+	Dim i
+	Dim div
+
+	ReDim ArrPts(3, nPts)
+	div = Rhino.DivideCurve(sID, nPts)
+  
+	If Rhino.IsCurveClosed(sID) Then
+      
+		For i = 0 To nPts - 1
+			ArrPts(0, i) = div(i)(0)
+			ArrPts(1, i) = div(i)(1)
+			ArrPts(2, i) = div(i)(2)
+		Next
+		arrpts(0, nPts) = div(0)(0)
+		arrpts(1, nPts) = div(0)(1)
+		arrpts(2, nPts) = div(0)(2)
+
+	Else
+    
+		For i = 0 To nPts
+			ArrPts(0, i) = div(i)(0)
+			ArrPts(1, i) = div(i)(1)
+			ArrPts(2, i) = div(i)(2)
+		Next
+
+	End If
+
+	MyDivideCurve = ArrPts
+End Function
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Turntable Animation functions
+Sub TurntableAnimation()
+	Dim nCameraPt, nTargetPt, SavedAnimationFrameCount
+	Dim Settings, Count, strPrompt, Direction
+	Dim nCameraTarget
+
+	Settings = GetSettings("Turntable")
+
+	Rhino.Command("_SetActiveViewport " & Settings(idxViewportName))
+	nCameraTarget = Rhino.ViewCameraTarget(Settings(idxViewportName))
+	nCameraPt = nCameraTarget(0)
+	nTargetPt = nCameraTarget(1)
+
+	Count = Rhino.GetInteger("Number of frames", CInt(Settings(idxFrameCount)))
+	If VarType(Count) = vbNull Then Exit Sub
+	Settings(idxFrameCount) = Count
+
+	strPrompt = "Direction (Clockwise AntiClockwise)"
+	If (Settings(idxDirection) <> "") Then
+		strPrompt = strPrompt & " <" & Settings(idxDirection) & ">"
+	End If 
+	Direction = Rhino.GetString(strPrompt)
+	If (VarType(Direction) = vbNull) Then
+	Else
+		If (Left(Direction, 1) = "a" Or Left(Direction, 1) = "A") Then
+			Settings(idxDirection) = "AntiClockwise"
+		Else
+			Settings(idxDirection) = "Clockwise"
+		End If
+	End If
+
+	Settings(idxCameraPoint) = nCameraPt
+	Settings(idxTargetPoint) = nTargetPt
+	SetSettings(Settings)
+
+	AnimationOptions(0)
+End Sub
+
+
+Function TurntableAnimationRun(bRecord)
+	Dim Cx, Cy, Cz, Tx, Ty, Tz
+	Dim nRadius, nA, dA, A, i, sFileName, Index
+	Dim sImageList
+	Dim ptCamera(3), ptTarget(3)
+	Dim origCamera, origTarget
+	Dim nStart, nEnd, nDirection
+	Dim Settings
+
+	Settings = GetSettings("Turntable")
+  
+	sImageList = ""
+  
+	Cx = CDbl(Settings(idxCameraPoint)(0))
+	Cy = CDbl(Settings(idxCameraPoint)(1))
+	Cz = CDbl(Settings(idxCameraPoint)(2))
+	Tx = CDbl(Settings(idxTargetPoint)(0))
+	Ty = CDbl(Settings(idxTargetPoint)(1))
+	Tz = CDbl(Settings(idxTargetPoint)(2))
+
+	nRadius = Sqr((Cx - Tx) ^ 2 + (Cy - Ty) ^ 2)
+	If (Cx = Tx) Then
+		If (Cy < Ty) Then
+			nA = -Pi / 2
+		Else
+			nA = Pi / 2
+		End If
+	Else
+		nA = Atn((Cy - Ty) / (Cx - Tx))
+		If ( Cx < Tx ) Then
+			nA = nA + Pi
+		End If 
+	End If
+  
+	dA = 2 * Pi / Settings(idxFrameCount)
+	ReDim arrCameraPoints(3, Settings(idxFrameCount))
+	ReDim arrTargetPoints(3, Settings(idxFrameCount))
+
+	If (Settings(idxDirection) = "Clockwise") Then
+		nStart = 0
+		nEnd = Settings(idxFrameCount) - 1
+		nDirection = 1
+	Else
+		nStart = Settings(idxFrameCount) - 1
+		nEnd = 0
+		nDirection = -1
+	End If
+
+	AnimationFrameCount = Settings(idxFrameCount)
+  
+	For AnimationCurrentFrame = nStart To nEnd Step nDirection
+		A = AnimationCurrentFrame * dA + nA
+
+		arrCameraPoints(0, AnimationCurrentFrame) = Tx + nRadius * Cos(A)
+		arrCameraPoints(1, AnimationCurrentFrame) = Ty + nRadius * Sin(A)
+		arrCameraPoints(2, AnimationCurrentFrame) = Cz
+		arrTargetPoints(0, AnimationCurrentFrame) = Tx
+		arrTargetPoints(1, AnimationCurrentFrame) = Ty
+		arrTargetPoints(2, AnimationCurrentFrame) = Tz
+
+		GoToFrame(AnimationCurrentFrame)
+
+		If (bRecord > 0) Then
+			sFileName = RenderFrame(AnimationCurrentFrame)
+			sImageList = sImageList & VbCrLf & "Images[" & AnimationCurrentFrame & "].src = "
+			sImageList = sImageList & """" & GetFileNameFromPath(sFileName) & """"
+		End If
+	Next
+
+
+	If (bRecord > 0) Then
+		If (Settings(idxFilePrefix) <> "") Then
+			HtmlFileName = Settings(idxFolderName) & "\" & Settings(idxFilePrefix) & " animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, Settings(idxFilePrefix) & ": Turntable Animation", sImageList, Settings(idxFrameCount), 75, 0)
+		Else
+			HtmlFileName = Settings(idxFolderName) & "\animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, "Turntable Animation", sImageList, Settings(idxFrameCount), 75, 0)
+		End If
+	End If
+End Function
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Path animation functions
+Sub PathAnimation
+	Dim Index
+	Dim sCameraPathName, sGetObjectPrompt
+	Dim CameraPt(3), TargetPt(3)
+	Dim sCameraPathID, sTargetPathID, nFrames
+	Dim Settings
+
+	Settings = GetSettings("Path")
+
+	If (Settings(idxPath1) <> "") Then
+		sGetObjectPrompt = "Select camera path curve or point (Press Enter to use previously used curve)"
+	Else
+		sGetObjectPrompt = "Select camera path curve or point"
+	End If
+	sCameraPathID = Rhino.GetObject(sGetObjectPrompt, 5)
+	If VarType(sCameraPathID) = vbNull Then
+		If Settings(idxPath1) <> "" Then
+			sCameraPathID = Settings(idxPath1)
+		Else
+			Exit Sub
+		End If
+	End If
+	If (Rhino.IsCurve(sCameraPathID) Or Rhino.IsPoint(sCameraPathID)) Then
+	Else
+		Rhino.Print("Camera path must be a curve or point")
+		Exit Sub
+	End If
+	Settings(idxPath1) = sCameraPathID
+
+	If (Settings(idxPath2) <> "") Then
+		sGetObjectPrompt = "Select target path curve or point (Press Enter to use previously used curve)"
+	Else
+		sGetObjectPrompt = "Select target path curve or point"
+	End If
+	sTargetPathID = Rhino.GetObject(sGetObjectPrompt, 5)
+	If VarType(sTargetPathID) = vbNull Then
+		If Settings(idxPath2) <> "" Then
+			sTargetPathID = Settings(idxPath2)
+		Else
+			Exit Sub
+		End If
+	End If
+	If (Rhino.IsCurve(sTargetPathID) Or Rhino.IsPoint(sTargetPathID)) Then
+	Else
+		Rhino.Print("Target path must be a curve or point")
+		Exit Sub
+	End If
+	Settings(idxPath2) = sTargetPathID
+
+	nFrames = Rhino.GetInteger("Number of frames", CInt(Settings(idxFrameCount)))
+	If VarType(nFrames) = vbNull Then Exit Sub
+	Settings(idxFrameCount) = nFrames
+  
+	SetSettings(Settings)
+
+	AnimationOptions(0)
+End Sub
+
+Sub PathAnimationRun (nStartFrame, nEndFrame, bRecord)
+	Dim sFileName, sImageList, Index
+	Dim Settings, pt
+
+	Settings = GetSettings("Path")
+	ReDim arrCameraPoints(3, Settings(idxFrameCount))
+	ReDim arrTargetPoints(3, Settings(idxFrameCount))
+  
+	If (Rhino.IsPoint(Settings(idxPath1))) Then
+		pt = Rhino.PointCoordinates(Settings(idxPath1))
+		For Index = 0 To Settings(idxFrameCount)
+			arrCameraPoints(0, Index) = pt(0)
+			arrCameraPoints(1, Index) = pt(1)
+			arrCameraPoints(2, Index) = pt(2)
+		Next
+	Else
+		arrCameraPoints = MyDivideCurve(Settings(idxPath1), CInt(Settings(idxFrameCount)))
+	End If
+
+	If (Rhino.IsPoint(Settings(idxPath2))) Then
+		pt = Rhino.PointCoordinates(Settings(idxPath2))
+		For Index = 0 To Settings(idxFrameCount)
+			arrTargetPoints(0, Index) = pt(0)
+			arrTargetPoints(1, Index) = pt(1)
+			arrTargetPoints(2, Index) = pt(2)
+		Next
+	Else
+		arrTargetPoints = MyDivideCurve(Settings(idxPath2), CInt(Settings(idxFrameCount)))
+	End If
+
+  
+	If (bRecord > -1) Then
+		Rhino.Command("! SetRedrawOff")
+		Rhino.Command("! Hide SelID " & Settings(idxPath1) & " Enter")
+		Rhino.Command("! Hide SelID " & Settings(idxPath2) & " Enter")
+		Rhino.Command("! SetRedrawOn")
+		AnimationFrameCount = Settings(idxFrameCount)
+
+		For AnimationCurrentFrame = nStartFrame To nEndFrame
+			GoToFrame(AnimationCurrentFrame)
+			If (bRecord > 0) Then
+				sFileName = RenderFrame(AnimationCurrentFrame)
+				sImageList = sImageList & VbCrLf & "Images[" & AnimationCurrentFrame - nStartFrame & "].src = "
+				sImageList = sImageList & """" & GetFileNameFromPath(sFileName) & """"
+			End If
+		Next
+		Rhino.Command("! SetRedrawOff")
+		Rhino.Command("! ShowSelected SelID " & Settings(idxPath1) & " Enter")
+		Rhino.Command("! ShowSelected SelID " & Settings(idxPath2) & " Enter")
+		Rhino.Command("! SetRedrawOn")
+	End If
+
+	If (bRecord > 0) Then
+		If (Settings(idxFilePrefix) <> "") Then
+			HtmlFileName = Settings(idxFolderName) & "\" & Settings(idxFilePrefix) & " animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, Settings(idxFilePrefix) & ": Path Animation", sImageList, Settings(idxFrameCount), 75, 0)
+		Else
+			HtmlFileName = Settings(idxFolderName) & "\animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, "Path Animation", sImageList, Settings(idxFrameCount), 75, 0)
+		End If
+	End If
+End Sub
+
+'////////////////////////////////////////////////////////////////////////////////
+'// Fly-through animation functions
+Sub FlyThroughAnimation
+	Dim sPathID
+	Dim Index
+	Dim sFileName, sImageList, HtmlFileName
+	Dim CameraPt(3), TargetPt(3)
+	Dim sGetObjectPrompt
+	Dim Settings
+
+	Settings = GetSettings("FlyThrough")
+
+	If (Settings(idxPath1) <> "") Then
+		sGetObjectPrompt = "Select path curve for camera and target (Press Enter to use previous curve)"
+	Else
+		sGetObjectPrompt = "Select path curve for camera and target"
+	End If
+
+	sPathID = Rhino.GetObject(sGetObjectPrompt, 5)
+	If VarType(sPathID) = vbNull Then
+		If Settings(idxPath1) <> "" Then
+			sPathID = Settings(idxPath1)
+		Else
+			Exit Sub
+		End If
+	End If 
+	If (Rhino.IsCurve(sPathID)) Then
+	Else
+		Rhino.Print("Fly-through path must be a curve")
+		Exit Sub
+	End If
+	Settings(idxPath1) = sPathID
+	Settings(idxPath2) = sPathID
+  
+  
+	Settings(idxFrameCount) = Rhino.GetInteger("Number of frames", CInt(Settings(idxFrameCount)))
+	If VarType(Settings(idxFrameCount)) = vbNull Then Exit Sub
+
+	SetSettings(Settings)
+  
+	AnimationOptions(0)
+End Sub
+
+Sub FlyThroughAnimationRun(sPathID, bRecord)
+	Dim Index, sFileName, sImageList
+	Dim Settings
+
+	Settings = GetSettings("FlyThrough")
+
+	arrCameraPoints = MyDivideCurve(sPathID, Settings(idxFrameCount) + 1)
+	arrTargetPoints = arrCameraPoints
+	For Index = 0 To Settings(idxFrameCount)
+		arrTargetPoints(0, Index) = arrCameraPoints(0, Index + 1)
+		arrTargetPoints(1, Index) = arrCameraPoints(1, Index + 1)
+		arrTargetPoints(2, Index) = arrCameraPoints(2, Index + 1)
+	Next
+
+	AnimationFrameCount = Settings(idxFrameCount)
+
+	If (bRecord > -1) Then
+		Rhino.Command("! SetRedrawOff")
+		Rhino.Command("! Hide SelID " & sPathID & " Enter")
+		Rhino.Command("! SetRedrawOn")
+		For AnimationCurrentFrame = 0 To AnimationFrameCount - 1
+			GoToFrame(AnimationCurrentFrame)
+			If (bRecord > 0) Then
+				sFileName = RenderFrame(AnimationCurrentFrame)
+				sImageList = sImageList & VbCrLf & "Images[" & AnimationCurrentFrame & "].src = "
+				sImageList = sImageList & """" & GetFileNameFromPath(sFileName) & """"
+			End If
+		Next
+		Rhino.Command("! SetRedrawOff")
+		Rhino.Command("! ShowSelected SelID " & sPathID & " Enter")
+		Rhino.Command("! SetRedrawOn")
+	End If
+
+	If (bRecord > 0) Then
+		If (Settings(idxFilePrefix) <> "") Then
+			HtmlFileName = Settings(idxFolderName) & "\" & Settings(idxFilePrefix) & " animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, Settings(idxFilePrefix) & ": Fly-Through Animation", sImageList, Settings(idxFrameCount), 75, 0)
+		Else
+			HtmlFileName = Settings(idxFolderName) & "\animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, "Fly-Through Animation", sImageList, Settings(idxFrameCount), 75, 0)
+		End If
+	End If
+End Sub
+
+Sub SeasonalSunStudy
+	Dim day_of_year, hr, min, nFrameNumber, sFileName, sImageList, bRecord, Settings, tmp, current_frame, frame_time
+	day_of_year = DatePart("y", Now)
+	' day_of_year = 180
+	min = 0
+	nFrameNumber = 0
+	Settings = GetSettings("SeasonalSunStudy")
+
+	AnimationOptions(1)
+
+	tmp = Rhino.GetReal("Latitude of animation location", CDbl(Settings(idxLatitude)), -90, 90)
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxLatitude) = CDbl(tmp)
+
+	tmp = Rhino.GetReal("Longitude of animation location", CDbl(Settings(idxLongitude)), 0, 360)
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxLongitude) = CDbl(tmp)
+
+	tmp = Rhino.GetReal("North angle (clockwise from Y axis)", CDbl(Settings(idxNorthAdjustmentAngle)), -360, 360)
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxNorthAdjustmentAngle) = CDbl(tmp)
+
+	tmp = Rhino.GetString("Start date for animation", CStr(Settings(idxStartDate)))
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxStartDate) = CDate(tmp)
+  
+	tmp = Rhino.GetString("End date for animation", CStr(Settings(idxEndDate)))
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxEndDate) = CDate(tmp)
+  
+	tmp = Rhino.GetString("Time for animation", CStr(Settings(idxStartTime)))
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxStartTime) = CDate(tmp)
+	Settings(idxEndTime) = CDate(tmp)
+  
+	tmp = Rhino.GetInteger("Days between frames", CInt(Settings(idxFrameCount)))
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxFrameCount) = tmp
+
+	tmp = Rhino.GetString("Use daylight savings time?", CStr(Settings(idxDaylightSavings)), Array("Yes", "No"))
+	If VarType(tmp) = vbNull Then Exit Sub
+	If (Left(LCase(tmp), 1) = "y") Then
+		Settings(idxDaylightSavings) = "Yes"
+	Else
+		Settings(idxDaylightSavings) = "No"
+	End If
+
+	SetSettings(Settings)
+End Sub
+
+Sub SeasonalSunStudyRun(bRecord)
+	Dim day_of_year, hr, min, nFrameNumber, sFileName, sImageList, Settings, tmp, frame_time
+	Dim StartDateTime, EndDateTime, OldAnimationFilePrefix, OldAnimationFileSuffix
+	Dim days_per_frame
+
+	Settings = GetSettings("SeasonalSunStudy")
+	days_per_frame = Settings(idxFrameCount)
+	Rhino.Command("_SetActiveViewport " & Settings(idxViewportName))
+	Rhino.Command("_RenderedViewport")
+
+	OldAnimationFilePrefix = Settings(idxFilePrefix)
+	OldAnimationFileSuffix = Settings(idxFileSuffix)
+
+	StartDateTime = Settings(idxStartTime) + Settings(idxStartDate)
+	EndDateTime = Settings(idxStartTime) + Settings(idxEndDate)
+
+	AnimationFrameCount = CInt(DateDiff("d", StartDateTime, EndDateTime) / days_per_frame) + 1
+	nFrameNumber = 1
+	For AnimationCurrentFrame = 0 To AnimationFrameCount - 1
+		frame_time = SeasonalSunStudyGotoFrame(AnimationCurrentFrame)
+		If (bRecord > 0) Then
+			Settings(idxFileSuffix) = " (" & TwoDigit(DatePart("m", frame_time)) & TwoDigit(DatePart("d", frame_time)) & ", " & TwoDigit(DatePart("h", frame_time)) & TwoDigit(DatePart("n", frame_time)) & ")"
+			SetSettings(Settings)
+			sFileName = RenderFrame(nFrameNumber)
+			sImageList = sImageList & VbCrLf & "Images[" & nFrameNumber & "].src = "
+			sImageList = sImageList & """" & GetFileNameFromPath(sFileName) & """"
+		End If
+		nFrameNumber = nFrameNumber + 1
+	Next
+
+	If (bRecord > 0) Then
+		If (Settings(idxFilePrefix) <> "") Then
+			HtmlFileName = Settings(idxFolderName) & "\" & Settings(idxFilePrefix) & " animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, Settings(idxFilePrefix) & ": Seasonal Sun Study Animation", sImageList, nFrameNumber, 75, 1)
+		Else
+			HtmlFileName = Settings(idxFolderName) & "\animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, "Seasonal Sun Study Animation", sImageList, nFrameNumber, 75, 1)
+		End If
+	End If
+
+	'Settings(idxFilePrefix) = OldAnimationFilePrefix
+	'Settings(idxFileSuffix) = OldAnimationFileSuffix
+	'SaveSettings(Settings)
+
+End Sub
+
+Function SeasonalSunStudyGotoFrame(nFrameNumber)
+	Dim Settings, days_per_frame, frame_count, StartDateTime, EndDateTime
+	Settings = GetSettings("SeasonalSunStudy")
+
+	Rhino.Command("_SetActiveViewport " & Settings(idxViewportName))
+	Rhino.Command("_RenderedViewport")
+
+	days_per_frame = Settings(idxFrameCount)
+	StartDateTime = Settings(idxStartTime) + Settings(idxStartDate)
+	EndDateTime = Settings(idxEndTime) + Settings(idxEndDate)
+	frame_count = DateDiff("d", StartDateTime, EndDateTime) / days_per_frame
+
+	SeasonalSunStudyGotoFrame = GetFrameDateTime(Settings(idxStartDate), Settings(idxStartTime), Settings(idxEndDate), Settings(idxEndTime), nFrameNumber / (frame_count))
+	PlaceSun SeasonalSunStudyGotoFrame
+End Function
+
+
+Function OneDaySunStudyGotoFrame(nFrameNumber)
+	Dim Settings, minutes_per_frame, StartDateTime, EndDateTime
+	Settings = GetSettings("OneDaySunStudy")
+	minutes_per_frame = Settings(idxFrameCount)
+	StartDateTime = Settings(idxStartTime) + Settings(idxStartDate)
+	EndDateTime = Settings(idxEndTime) + Settings(idxEndDate)
+
+	OneDaySunStudyGotoFrame = GetFrameDateTime(Settings(idxStartDate), Settings(idxStartTime), Settings(idxEndDate), Settings(idxEndTime), nFrameNumber / (AnimationFrameCount - 1))
+	PlaceSun OneDaySunStudyGotoFrame
+End Function
+
+
+Sub OneDaySunStudyRun(bRecord)
+	Dim day_of_year, hr, min, nFrameNumber, sFileName, sImageList, Settings, tmp, frame_time
+	Dim StartDateTime, EndDateTime, OldAnimationFilePrefix, OldAnimationFileSuffix
+	Dim minutes_per_frame
+
+	Settings = GetSettings("OneDaySunStudy")
+	minutes_per_frame = Settings(idxFrameCount)
+	Rhino.Command("_SetActiveViewport " & Settings(idxViewportName))
+	Rhino.Command("_RenderedViewport")
+
+	OldAnimationFilePrefix = Settings(idxFilePrefix)
+	OldAnimationFileSuffix = Settings(idxFileSuffix)
+
+	StartDateTime = Settings(idxStartTime) + Settings(idxStartDate)
+	EndDateTime = Settings(idxEndTime) + Settings(idxStartDate)
+
+	AnimationFrameCount = CInt(DateDiff("n", StartDateTime, EndDateTime) / minutes_per_frame) + 1
+
+	nFrameNumber = 0
+	For AnimationCurrentFrame = 0 To AnimationFrameCount - 1
+		frame_time = OneDaySunStudyGotoFrame(AnimationCurrentFrame)
+		If (bRecord > 0) Then
+			Settings(idxFileSuffix) = " (" & TwoDigit(DatePart("m", frame_time)) & TwoDigit(DatePart("d", frame_time)) & ", " & TwoDigit(DatePart("h", frame_time)) & TwoDigit(DatePart("n", frame_time)) & ")"
+			SetSettings(Settings)
+			sFileName = RenderFrame(nFrameNumber)
+			sImageList = sImageList & VbCrLf & "Images[" & nFrameNumber & "].src = "
+			sImageList = sImageList & """" & GetFileNameFromPath(sFileName) & """"
+		End If
+		nFrameNumber = nFrameNumber + 1
+	Next
+
+	If (bRecord > 0) Then
+		If (Settings(idxFilePrefix) <> "") Then
+			HtmlFileName = Settings(idxFolderName) & "\" & Settings(idxFilePrefix) & " animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, Settings(idxFilePrefix) & ": One-Day Sun Study Animation", sImageList, nFrameNumber, 75, 1)
+		Else
+			HtmlFileName = Settings(idxFolderName) & "\animation.htm"
+			Call WriteHtmlAnimationFile(HtmlFileName, "One-Day Sun Study Animation", sImageList, nFrameNumber, 75, 1)
+		End If
+	End If
+
+	'Settings(idxFilePrefix) = OldAnimationFilePrefix
+	'Settings(idxFileSuffix) = OldAnimationFileSuffix
+	'SaveSettings(Settings)
+End Sub
+
+Sub OneDaySunStudy
+	Dim latitude, longitude, day_of_year, hr, min, nFrameNumber, sFileName, sImageList, bRecord, Settings, tmp, current_frame, frame_time
+	latitude = 47.55943
+	longitude = 122.32325
+	day_of_year = DatePart("y", Now)
+	' day_of_year = 180
+	min = 0
+	nFrameNumber = 0
+	Settings = GetSettings("OneDaySunStudy")
+
+	tmp = Rhino.GetReal("Latitude of animation location", CDbl(Settings(idxLatitude)), -90, 90)
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxLatitude) = CDbl(tmp)
+
+	tmp = Rhino.GetReal("Longitude of animation location", CDbl(Settings(idxLongitude)), 0, 360)
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxLongitude) = CDbl(tmp)
+
+	tmp = Rhino.GetReal("North angle (clockwise from Y axis)", CDbl(Settings(idxNorthAdjustmentAngle)), -360, 360)
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxNorthAdjustmentAngle) = CDbl(tmp)
+
+	tmp = Rhino.GetString("Start Time", CStr(Settings(idxStartTime)))
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxStartTime) = CDate(tmp)
+  
+	tmp = Rhino.GetString("End Time", CStr(Settings(idxEndTime)))
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxEndTime) = CDate(tmp)
+    
+	tmp = Rhino.GetString("Date for animation", CStr(Settings(idxStartDate)))
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxStartDate) = CDate(tmp)
+	Settings(idxEndDate) = CDate(tmp)
+  
+	tmp = Rhino.GetInteger("Minutes between frames", CInt(Settings(idxFrameCount)))
+	If VarType(tmp) = vbNull Then Exit Sub
+	Settings(idxFrameCount) = tmp
+
+	tmp = Rhino.GetString("Use daylight savings time?", CStr(Settings(idxDaylightSavings)), Array("Yes", "No"))
+	If VarType(tmp) = vbNull Then Exit Sub
+	If (Left(LCase(tmp), 1) = "y") Then
+		Settings(idxDaylightSavings) = "Yes"
+	Else
+		Settings(idxDaylightSavings) = "No"
+	End If
+
+	SetSettings(Settings)
+  
+	AnimationOptions(1)
+
+End Sub
+
+Function GetFrameDateTime(StartDate, StartTime, EndDate, EndTime, PercentComplete)
+	Dim StartDateTime, EndDateTime, DeltaDateTime
+	StartDateTime = StartDate + StartTime
+	EndDateTime = EndDate + EndTime
+	DeltaDateTime = DateDiff("s", StartDateTime, EndDateTime)
+	GetFrameDateTime = DateAdd("s", DeltaDateTime * PercentComplete, StartDateTime)
+End Function
+
+Sub PlaceSun(datetime)
+	Dim azi, elev, zen, day_of_year, hr, min, sec, suntime, north
+	Dim Settings
+	Settings = GetSettings("")
+
+	If (Settings(idxDaylightSavings) = "Yes") Then
+		suntime = DateAdd("h", -1, datetime)
+	Else
+		suntime = datetime
+	End If
+	day_of_year = DatePart("y", suntime)
+	hr = DatePart("h", suntime)
+	min = DatePart("n", suntime)
+	sec = DatePart("s", suntime)
+
+	' Azimuth is clockwise from north.
+	' Take into account the North adjustment setting
+	' North angle is measured clocwise from y-axis
+	north = Settings(idxNorthAdjustmentAngle)
+	azi = 270 - (north + Azimuth(day_of_year, hr, min, sec, Settings(idxLongitude), Settings(idxLatitude), CInt(Settings(idxLongitude) * 24 / 360)) * 180 / Pi)
+
+	' Zenith is measured down from vertical
+	zen = Zenith(day_of_year, hr, min, sec, Settings(idxLongitude), Settings(idxLatitude), CInt(Settings(idxLongitude) * 24 / 360)) * 180 / Pi
+
+	' Elevation is measured up from horizon
+	elev = 90 - zen
+
+	' Rhino.Print("Hour = " & hr & ":" & min & ", Azimuth = " & azi & ", Elevation = " & elev)
+	Rhino.Print("Frame date and time: " & datetime)
+	If (elev < 0) Then
+		Rhino.Command("NoEcho _SetRedrawOff _SelNone _SelName RhinoSunStudyAnimationSunLight _Delete _SpotLight 0,0,120000 1 0,0,119999 _SelLast -_Properties _Object _Name RhinoSunStudyAnimationSunLight _Enter _Enter _SelNone _SetRedrawOn Echo")
+	Else 
+		Rhino.Command("NoEcho _SetRedrawOff _SelNone _SelName RhinoSunStudyAnimationSunLight _Delete _DirectionalLight 0 @w1<" & azi & "<" & elev & " _SelLast -_Properties _Object _Name RhinoSunStudyAnimationSunLight _Enter _Enter _SelNone _SetRedrawOn Echo")
+	End If
+End Sub
+
+Function Zenith(day_of_year, hr, Minute, Second, longitude, latitude, timezone)
+	Dim Decl, hr_angle, lat_rad, cosZenith
+
+	lat_rad = latitude * Pi / 180
+	'  Rhino.Print("Latitude = " & lat_rad & " (" & latitude & " deg)")
+
+	Decl = Declination(day_of_year, hr)
+	hr_angle = HourAngle(day_of_year, hr, Minute, Second, longitude, timezone)
+	cosZenith = Sin(lat_rad) * Sin(Decl) + Cos(lat_rad) * Cos(Decl) * Cos(hr_angle)
+	Zenith = Arccos(cosZenith)
+	'  Rhino.Print("cos(Zenith) = " & cosZenith)
+	'  msgbox("decl = " & decl & vbCrLf & "hr_angle = " & hr_angle & vbCrLf & "Zenith = " & Zenith)
+
+End Function
+
+Function Azimuth(day_of_year, hr, Minute, Second, longitude, latitude, timezone)
+	Dim Decl, zen, lat_rad, totalmin
+
+	lat_rad = latitude * Pi / 180
+	Decl = Declination(day_of_year, hr)
+	zen = Zenith(day_of_year, hr, Minute, Second, longitude, latitude, timezone)
+	totalmin = hr * 60 + Minute
+	If (totalmin > 12 * 60) Then
+		Azimuth = Pi - Arccos(-(Sin(lat_rad) * Cos(zen) - Sin(Decl)) / (Cos(lat_rad) * Sin(zen)))
+	Else
+		Azimuth = Pi + Arccos(-(Sin(lat_rad) * Cos(zen) - Sin(Decl)) / (Cos(lat_rad) * Sin(zen)))
+	End If
+End Function
+
+Function Declination(Day, hr)
+	Dim gam
+	gam = Gamma(Day, hr)
+	Declination = 0.006918 - 0.39912 * Cos(gam) + 0.070257 * Sin(gam) - 0.006758 * Cos(2 * gam) + 0.000907 * Sin(2 * gam) - 0.002697 * Cos(3 * gam) + 0.00148 * Sin(3 * gam)
+End Function
+
+Function HourAngle(Day, hr, min, sec, longitude, timezone)
+	Dim gam, eqtime, time_offset, tst
+
+	gam = Gamma(Day, hr)
+	eqtime = 229.18 * (0.000075 + 0.001868 * Cos(gam) - 0.032077 * Sin(gam) - 0.014615 * Cos(2 * gam) - 0.040849 * Sin(2 * gam))
+	time_offset = eqtime - 4 * longitude + 60 * timezone
+	tst = hr * 60 + min + sec / 60 + time_offset
+	HourAngle = ((tst / 4) - 180) * (Pi / 180)
+End Function
+
+Function Gamma(day_of_year, hr)
+	Gamma = (2 * Pi / 365) * (day_of_year - 1 + (hr - 12) / 24)
+End Function
+
+Function Arccos(x)
+	Arccos = Atn(-x / Sqr(-x * x + 1)) + 2 * Atn(1)
+End Function
+
+Function PreviewAnimation
+	RunAnimation 0
+End Function
+
+Function RunAnimation(bRecord)
+	Dim nCameraPt(3)
+	Dim nTargetPt(3)
+	Dim nOldCameraPt
+	Dim nOldTargetPt
+	Dim Settings, oldPrefix, AnimationFolderName
+	Dim nCameraTarget
+
+	Settings = GetSettings("")
+	Settings(idxViewportName) = Rhino.CurrentView()
+	nCameraTarget = Rhino.ViewCameraTarget(Settings(idxViewportName))
+	nOldCameraPt = nCameraTarget(0)
+	nOldTargetPt = nCameraTarget(1)
+
+	RunAnimation = 1
+
+	If (GetDocData("LastAnimation") = "") Then
+		MessageBox "You have not setup an animation yet." & VbCrLf & VbCrLf & "Please setup an animation before previewing it.", 0, "Flamingo Animation"
+		Exit Function
+	End If
+
+	If (bRecord > 0) Then
+		AnimationFolderName = BrowseForFolder(CStr(Settings(idxFolderName)), "Output folder for animation frames")
+		If VarType(AnimationFolderName) = vbNull Then
+			RunAnimation = 0
+			Exit Function
+		End If
+		Settings(idxFolderName) = AnimationFolderName
+	End If
+
+	SetSettings(Settings)
+
+	If (GetDocData("LastAnimation") = "Path") Then
+		PathAnimationRun 0, Settings(idxFrameCount) - 1, bRecord
+	ElseIf (GetDocData("LastAnimation") = "Turntable") Then
+		TurntableAnimationRun bRecord
+	ElseIf (GetDocData("LastAnimation") = "FlyThrough") Then
+		FlyThroughAnimationRun GetDocData("FlyThroughPathID"), bRecord
+	ElseIf (GetDocData("LastAnimation") = "OneDaySunStudy") Then
+		OneDaySunStudyRun(bRecord)
+	ElseIf (GetDocData("LastAnimation") = "SeasonalSunStudy") Then
+		SeasonalSunStudyRun(bRecord)
+	Else
+		MessageBox "You have not setup an animation yet." & VbCrLf & VbCrLf & "Please setup an animation before previewing it.", 0, "Flamingo Animation"
+	End If
+
+	SetSettings(Settings)
+
+	' Put the view back where it was before running the animation.
+	SetCameraTarget nOldCameraPt, nOldTargetPt
+End Function
+
+Sub RecordAnimation
+	Dim OldAnimationCaptureType, rc, Settings
+	Settings = GetSettings("")
+	OldAnimationCaptureType = AnimationCaptureType
+	AnimationCaptureType = "FullRender"
+	rc = RunAnimation(2)
+	AnimationCaptureType = OldAnimationCapturetype
+
+
+	If (rc = 1) Then
+		If (Settings(idxFileExtension) = ".png" Or Settings(idxFileExtension) = ".jpg") Then
+			Rhino.Command("! Run """ & HtmlFileName & """")
+		End If
+	End If
+End Sub
+
+Public Function Include (strScriptName)
+	Dim oFS, oFile
+	Set oFS = CreateObject("Scripting.FileSystemObject")
+	Set oFile = oFS.OpenTextFile(strScriptName)
+	ExecuteGlobal oFile.ReadAll()
+	oFile.Close
+	Include = vbNull
+End Function

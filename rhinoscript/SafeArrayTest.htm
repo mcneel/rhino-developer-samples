@@ -1,0 +1,20 @@
+<HTML>
+<HEAD>
+  <TITLE>SafeArrayTest</TITLE>
+</HEAD>
+<BODY STYLE="font-family: Arial, sans-serif">
+  <SCRIPT LANGUAGE="VBScript">  
+    Dim args
+    args = window.dialogArguments
+    If IsArray(args) Then
+      document.write("<b>Array contents:</b>")
+      For i = 0 to UBound(args)
+        document.Write("<br>" & CStr(args(i)))
+      Next
+    Else
+      MsgBox "Error obtaining array from RhinoScript"
+      window.close
+    End If
+  </SCRIPT>
+</BODY>
+</HTML>

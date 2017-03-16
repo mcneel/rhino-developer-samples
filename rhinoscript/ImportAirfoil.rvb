@@ -1,0 +1,100 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ImportAirfoil.rvb -- February 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0 and 5.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Imports airfoil shapes from Selig x-y formatted data files.
+' For more information, visit the UIUC Airfoil Data Site at
+' http://www.ae.illinois.edu/m-selig/ads.html
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ImportAirfoil
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ImportAirfoil
+  
+  ' Local constants
+  Const ForReading = 1
+  
+  ' Local variables
+  Dim objFSO, objFile
+  Dim strFileName, strAirfoil, strLine, strCurve
+  Dim arrPt, arrPoints(), nCount
+
+  ' Prompt for an airfoil data file
+  strFileName = Rhino.OpenFileName("Open", "Selig Airfoil Data (*.dat)|*.dat||")
+  If IsNull(strFileName) Then Exit Sub
+
+  ' Create a file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+  ' Open the data file for reading
+  On Error Resume Next
+  Set objFile = objFSO.OpenTextFile(strFileName, ForReading)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If  
+  
+  ' Read the name of the airfoil
+  strAirfoil = objFile.ReadLine
+
+  ' Read through the file looking for point coordinates
+  nCount = 0 
+  Do While objFile.AtEndOfStream <> True
+    strLine = objFile.ReadLine
+    ' Convert the string to a point
+    arrPt = PointFromString(strLine)
+    If IsArray(arrPt) Then
+      ReDim Preserve arrPoints(nCount)
+      arrPoints(nCount) = arrPt
+      nCount = nCount + 1
+    End If
+  Loop
+
+  ' Some of the airfoils listed do not close at the trailing edge,
+  ' i.e. the trailing edge has a finite thickness as designed. So
+  ' do not try to create a closed curve...
+  
+  ' Add the named interpolated curve
+  If IsArray(arrPoints) Then
+    'strCurve = Rhino.AddPolyline(arrPoints)
+    strCurve = Rhino.AddInterpCurveEx(arrPoints)
+    Call Rhino.ObjectName(strCurve, strAirfoil)
+    Call Rhino.ZoomExtents(, True)
+  End If
+
+  ' Close the file and release objects
+  objFile.Close
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PointFromString
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''  
+Function PointFromString(ByVal strLine)
+  
+  ' Local variables
+  Dim arrTokens, arrPoint, x, z
+  
+  ' Default return value
+  PointFromString = Null
+  
+  ' Parse string
+  If VarType(strLine) = vbString Then
+    strLine = Trim(strLine)
+    arrTokens = Rhino.StrTok(strLine, " ")
+    If IsArray(arrTokens) And UBound(arrTokens) = 1 Then
+      x = CDbl(arrTokens(0))
+      z = CDbl(arrTokens(1))
+      arrPoint = Array(x, 0.0, z)
+      PointFromString = arrPoint
+    End If
+  End If 
+  
+End Function

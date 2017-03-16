@@ -1,0 +1,27 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SetViewDisplayModes.rvb -- June 2015
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Sets the display mode of all standard views
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SetViewDisplayModes
+	
+	Dim strMode, strMessage, strTitle
+	Dim arrViews, strView
+	
+	strMessage = "Select a display mode:"
+	strTitle = "Set Display Mode"
+	strMode = Rhino.ListBox(Rhino.ViewDisplayModes, strMessage, strTitle)
+	If Not IsNull(strMode) Then
+		arrViews = Rhino.ViewNames(0)
+		For Each strView In arrViews
+			Call Rhino.ViewDisplayModeEx(strView, strMode)
+		Next
+	End If
+
+End Sub

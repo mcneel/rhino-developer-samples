@@ -1,0 +1,112 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ArrayList.rvb -- September 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Appends another array to the end of the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayAppend(ByRef arr, ByVal arr0)
+  Dim i, list
+  If IsArray(arr) Then
+    Set list = CreateObject("System.Collections.ArrayList")
+    For i = 0 To UBound(arr)
+      Call list.Add(arr(i))
+    Next
+    For i = 0 To UBound(arr0)
+      Call list.Add(arr0(i))
+    Next
+    arr = list.ToArray()    
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Inserts a new element at a given position in the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayInsert(ByRef arr, ByVal pos, ByVal val)
+  Dim i, list
+  If IsArray(arr) Then
+    Set list = CreateObject("System.Collections.ArrayList")
+    For i = 0 To UBound(arr)
+      Call list.Add(arr(i))
+    Next
+    Call list.Insert(pos, val)
+    arr = list.ToArray()    
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Inserts a new element at a given position in the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayRemoveAt(ByRef arr, ByVal pos)
+  Dim i, list
+  If IsArray(arr) Then
+    Set list = CreateObject("System.Collections.ArrayList")
+    For i = 0 To UBound(arr)
+      Call list.Add(arr(i))
+    Next
+    Call list.RemoveAt(pos)
+    arr = list.ToArray()    
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Removes duplicate items from the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayCull(ByRef arr)
+  Dim i, list, tmp
+  If IsArray(arr) Then
+    Set list = CreateObject("System.Collections.ArrayList")
+    For i = 0 To UBound(arr)
+      If Not list.Contains(arr(i)) Then
+        Call list.Add(arr(i))
+      End If
+    Next
+    arr = list.ToArray()    
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Sorts the elements in the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArraySort(ByRef arr)
+  Dim i, list
+  If IsArray(arr) Then
+    Set list = CreateObject("System.Collections.ArrayList")
+    For i = 0 To UBound(arr)
+      Call list.Add(arr(i))
+    Next
+    Call list.Sort()
+    arr = list.ToArray()
+  End If    
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Reverse the order of the elements in the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayReverse(ByRef arr)
+  Dim i, list
+  If IsArray(arr) Then
+    Set list = CreateObject("System.Collections.ArrayList")
+    For i = 0 To UBound(arr)
+      Call list.Add(arr(i))
+    Next
+    Call list.Reverse()
+    arr = list.ToArray()
+  End If    
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Dumps the array to the Rhino command window.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayDump(ByVal arr)
+  Dim i
+  If IsArray(arr) Then
+    For i = 0 To UBound(arr)
+      Call Rhino.Print("Item(" & CStr(i) & ") = " & CStr(arr(i)))
+    Next
+  End If
+End Sub

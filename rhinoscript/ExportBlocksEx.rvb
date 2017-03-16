@@ -1,0 +1,61 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportBlocksEx.rvb -- February 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ExportBlocksEx
+  
+  ' Local constants
+  Const METERS = 4
+  
+  ' Local variables
+  Dim strPath, strName, nOldUnits
+  Dim arrBlocks, strBlock, strInsert, strFile
+  
+  ' Get the current file's path and name
+	strPath = Rhino.DocumentPath
+	strName = Rhino.DocumentName
+	If IsNull(strPath) Or IsNull(strName) Then
+		Call Rhino.Print("Please save your model before running this script.")
+		Exit Sub
+	End If
+  
+  ' Get the names of the block definitions
+  arrBlocks = Rhino.BlockNames
+  If IsNull(arrBlocks) Then
+    Call Rhino.Print("No block definitions to export.")
+    Exit Sub
+  End If
+  
+  ' We want to export in meters, so change unit system
+  ' and scale the geometry, if necessary
+  nOldUnits = Rhino.UnitSystem
+  If (nOldUnits <> METERS) Then
+    Call Rhino.UnitSystem(METERS, True)
+    Rhino.Redraw
+  End If   
+
+  ' Export each block    
+  For Each strBlock In arrBlocks
+    strInsert = Chr(34) & strBlock & Chr(34)
+    strFile = Chr(34) & strPath & strBlock & ".igs" & Chr(34)
+  	Call Rhino.Command("_SelNone", 0)
+    Call Rhino.Command("_-Insert " & strInsert & " _Block 0 _Enter _Enter", 0)
+    Call Rhino.Command("_SelLast", 0)
+    Call Rhino.Command("_Explode", 0)
+  	Call Rhino.Command("_-Export " & strFile & " _Enter", 0)
+  	Call Rhino.Command("_Delete", 0)
+  	Call Rhino.Command("_SelNone", 0)
+  Next
+
+  ' Reset the unit system and scale the geometry, if necessary
+  If (Rhino.UnitSystem <> nOldUnits) Then
+    Call Rhino.UnitSystem(nOldUnits, True)
+    Rhino.Redraw
+  End If
+  
+End Sub

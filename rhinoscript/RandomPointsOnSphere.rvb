@@ -1,0 +1,39 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RandomPointsOnSphere.rvb -- December 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Randomize
+
+Sub RandomPointsOnSphere
+	
+	Dim r, n, i
+	
+	r = Rhino.GetReal("Radius", 1.0, 1.0)
+	If IsNull(r) Then Exit Sub
+	
+	n = Rhino.GetInteger("Number of points", 10, 1)
+	If IsNull(n) Then Exit Sub
+	
+	Call Rhino.EnableRedraw(False)
+	For i = 0 To n - 1
+		Rhino.AddPoint(RandomSphereSurface(r))
+	Next
+	Call Rhino.EnableRedraw(True)
+	
+End Sub
+
+Function RandomSphereSurface(r)
+	Dim TWOPI, phi, theta, x, y, z
+	TWOPI = 2.0 * Rhino.PI
+	phi = TWOPI * Rnd
+	theta = 2.0 * Rhino.Asin(Sqr(Rnd))
+	x = r * Sin(theta)
+	y = x * Sin(phi)
+	x = x * Cos(phi)
+	z = r * Cos(theta)
+	RandomSphereSurface = Array(x, y, z)
+End Function

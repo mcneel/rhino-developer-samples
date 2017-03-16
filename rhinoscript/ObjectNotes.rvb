@@ -1,0 +1,45 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ObjectNotes.rvb -- May 2015
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Const STR_NOTES = "Notes"
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Adds notes to an object
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SetObjectNotes
+  
+	Dim strObject, strOldNotes, strNewNotes
+  
+	strObject = Rhino.GetObject("Select object", 0, True)
+	If IsNull(strObject) Then Exit Sub
+
+	strOldNotes = Rhino.GetUserText(strObject, STR_NOTES, False)
+	If IsNull(strOldNotes) Then strOldNotes = ""
+	
+	strNewNotes = Rhino.EditBox(strOldNotes, "Edit object notes", "Object Notes")
+	If Not IsNull(strNewNotes) Then
+		Call Rhino.SetUserText(strObject, STR_NOTES, strNewNotes, False)
+	End If
+	
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Deletes notes from objects
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DeleteObjectNotes
+	
+	Dim arrObjects, strObject
+	
+	arrObjects = Rhino.GetObjects("Select objects", 0, True, True)
+	If IsArray(arrObjects) Then
+		For Each strObject In arrObjects
+			Call Rhino.SetUserText(strObject, STR_NOTES,, False)
+		Next
+	End If
+	
+End Sub

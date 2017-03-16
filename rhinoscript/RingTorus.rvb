@@ -1,0 +1,77 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RingTorus.rvb -- January 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: RingTorus1
+' Purpose:    Creates a torus from an inner and outer diameter.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RingTorus1()
+  
+  ' Get the center point of the ring
+  Dim arrPoint
+  arrPoint = Rhino.GetPoint ("Center of ring")
+  If Not IsArray(arrPoint) Then Exit Sub
+    
+  ' Get the inner diameter of the ring
+  Dim dblInner
+  dblInner = Rhino.GetReal ("Inner diameter of ring")
+  If IsNull(dblInner) Then Exit Sub
+    
+  ' Get the outer diameter of the ring
+  Dim dblOuter
+  dblOuter = dblInner
+  
+  While (dblOuter <= dblInner)
+    dblOuter = Rhino.GetReal ("Outer diameter of ring")
+    If IsNull(dblOuter) Then Exit Sub
+    If (dblOuter <= dblInner) Then
+      Rhino.Print "Outer diameter must be greater than inner diameter"
+    End If
+  Wend
+  
+  ' Calculate values and add the torus
+  Dim dblFirst, dblSecond
+  dblFirst = dblOuter - ((dblOuter - dblInner) / 2)
+  dblSecond = (dblOuter - dblInner) /2
+  Rhino.AddTorus arrPoint, dblFirst / 2, dblSecond / 2
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: RingTorus2
+' Purpose:    Creates a torus from an inner and tube diameter.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RingTorus2()
+  
+  ' Get the center point of the ring
+  Dim arrPoint, strPoint
+  arrPoint = Rhino.GetPoint ("Center of ring")
+  If Not IsArray(arrPoint) Then Exit Sub
+    
+  ' Get the inner diameter of the ring
+  Dim dblInner
+  dblInner = Rhino.GetReal ("Inner diameter of ring")
+  If IsNull(dblInner) Then Exit Sub
+    
+  ' Get the diameter of the tube
+  Dim dblTube
+  dblTube = dblInner
+  While (dblTube >= dblInner)
+    dblTube = Rhino.GetReal ("Tube diameter of ring")
+    If IsNull(dblTube) Then Exit Sub
+    If (dblTube >= dblInner) Then
+      Rhino.Print "Tube diameter must be less than inner diameter"
+    End If
+  Wend
+
+  ' Calculate values and add the torus
+  dblInner = (dblInner + dblTube) / 2
+  dblTube = dblTube / 2
+  Rhino.AddTorus arrPoint, dblInner, dblTube
+  
+End Sub

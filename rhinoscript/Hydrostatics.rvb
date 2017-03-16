@@ -1,0 +1,77 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Hydrostatics.rvb -- February 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Function DoHydrostatics(objs)
+  Dim saved, cmd, txt
+  
+  DoHydrostatics = Null
+  
+  Call Rhino.EnableRedraw(False)
+
+  saved = Rhino.SelectedObjects
+  Rhino.UnSelectAllObjects
+  Call Rhino.SelectObjects(objs)
+  
+  Call Rhino.ClipboardText("")
+  
+  cmd = "_-Hydrostatics " & " _Enter _Clipboard"
+  Call Rhino.Command(cmd, 0)
+  
+  txt = Rhino.ClipboardText
+  MsgBox txt
+  
+  Rhino.UnSelectAllObjects
+  If IsArray(saved) Then Rhino.SelectObjects(saved)
+  
+  Call Rhino.EnableRedraw(True)
+ 
+  DoHydrostatics = ParseClipboard(txt)
+ 
+End Function
+  
+Function ParseClipboard(txt)
+  Dim arr, str, subarr, i, rc(6)
+
+  ParseClipboard = Null
+  
+  arr = Split(txt, vbLf, -1, 0)
+  If IsArray(arr) Then
+    For i = 0 To 6
+      subarr = Split(arr(i), "=")
+      str = Trim(subarr(1))
+      Select Case i
+        Case 0 rc(i) = CDbl(str)         'Volume Displacement
+        Case 1 rc(i) = Rhino.Str2Pt(str) 'Center of Buoyancy
+        Case 2 rc(i) = CDbl(str)         'Wetted Surface Area
+        Case 3 rc(i) = CDbl(str)         'Waterline Length
+        Case 4 rc(i) = CDbl(str)         'Maximum Waterline Beam
+        Case 5 rc(i) = CDbl(str)         'Water Plane Area
+        Case 6 rc(i) = Rhino.Str2Pt(str) 'Center of Floatation
+      End Select      
+    Next
+    ParseClipboard = rc  
+  End If    
+
+End Function
+
+Sub TestHydrostatics
+  Dim arr, rc
+  arr = Rhino.GetObjects("Select surfaces or polysurfaces", 8 + 16)
+  If IsArray(arr) Then
+    rc = DoHydrostatics(arr)
+    If IsArray(rc) Then
+      Call Rhino.Print("Volume Displacement = " & CStr(rc(0)))
+      Call Rhino.Print("Center of Buoyancy = " & Rhino.Pt2Str(rc(1)))
+      Call Rhino.Print("Wetted Surface Area = " & CStr(rc(2)))
+      Call Rhino.Print("Waterline Length = " & CStr(rc(3)))
+      Call Rhino.Print("Maximum Waterline Beam = " & CStr(rc(4)))
+      Call Rhino.Print("Water Plane Area = " & CStr(rc(5)))
+      Call Rhino.Print("Center of Floatation = " & Rhino.Pt2Str(rc(6)))
+    End If
+  End If
+End Sub

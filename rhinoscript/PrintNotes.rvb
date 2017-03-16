@@ -1,0 +1,56 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PrintNotes.rvb -- April 2004
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Sends notes to default printer
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PrintNotes()
+
+  ' Get the notes, if any
+  Dim sNotes
+  sNotes = Rhino.Notes
+  If sNotes = vbNull Then Exit Sub
+
+  ' Replace all carriage returns with carriage return-linefeed 
+  ' combinations so the notes print properly
+  sNotes = Replace(sNotes, vbCr, vbCrLf)
+  
+  ' Get the file system object
+  Dim oFileSystem
+  Set oFileSystem = CreateObject("Scripting.FileSystemObject")
+
+  ' Get the temporary file folder
+  Dim oTempFolder
+  Const TemporaryFolder = 2
+  Set oTempFolder = oFileSystem.GetSpecialFolder(TemporaryFolder)
+
+  ' Generate a temporary file name
+  Dim sTempName
+  sTempName = oFileSystem.GetTempName
+
+  ' Create a text stream
+  Dim oTextStream
+  Set oTextStream = oTempFolder.CreateTextFile(sTempName)
+
+  ' Write the notes to the text stream
+  oTextStream.Write sNotes
+
+  ' Close the text stream
+  oTextStream.Close
+
+  ' Build a path to the new temporary file
+  Dim sPath
+  sPath = oTempFolder.Path & "\" & sTempName
+
+  ' Spool the temporary file to the current printer  
+  Rhino.SpoolToPrinter sPath, Rhino.CurrentPrinter
+
+  ' Delete the temporary file
+  oFileSystem.DeleteFile sPath
+
+End Sub

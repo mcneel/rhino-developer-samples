@@ -1,0 +1,140 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportLeicaPTS.rvb -- May 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Export point clouds to a Leica PTS formatted text file.
+'
+' The PTS format is an ASCII Space or Tab delimited file that has the
+' following format:
+'
+'   <number of points>
+'   <x> <y> <z> <intensity>
+'   <x> <y> <z> <intensity>
+'   ...
+'
+' Intenity:
+'   Either a short int in the range (-4096, 4095) or a float (with a decimal point) 
+'   in the range(0.0, 1.0). If your file has no intensity values, set it to 0.0.
+'   Note, Rhino does not support point clouds with intensities.
+'
+' Color & Normals:
+'   These are optional. The following line formats are allowed:
+'
+'   x y z i r g b
+'   x y z i nx ny nz
+'   x y z i r g b nx ny nz
+'
+'   r g b is a color where each element is an integer in the range 0...255
+'   nx, ny, nz are a normal are floats (with a decimal point)
+'
+' Note: the following fields are mandatory: 
+'   x, y, z, i
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportLeicaPTS
+  
+	' Local variables
+	Dim arrObjects, strObject
+	Dim arrPoints, arrColors, intColor
+	Dim strFileName, objFSO, objStream
+	Dim i, strLine
+	
+	' Select point clouds to export
+	arrObjects = Rhino.GetObjects("Select point clouds to export", 2, True, True)
+	If IsNull(arrObjects) Then Exit Sub
+    
+	' Get the name of the file to save
+	strFileName = Rhino.SaveFileName("Save As", "Leica PTS (*.pts)|*.pts||")
+	If IsNull(strFileName) Then Exit Sub
+    
+	' Get the file system object
+	Set objFSO = CreateObject("Scripting.FileSystemObject")
+  
+	' Get a new text file
+	On Error Resume Next
+	Set objStream = objFSO.CreateTextFile(strFileName, True)
+	If Err Then
+		MsgBox Err.Description
+		Exit Sub
+	End If
+  
+	' Process each point cloud
+	For Each strObject In arrObjects
+		If Rhino.IsPointCloud(strObject) Then
+			arrPoints = Rhino.PointCloudPoints(strObject)
+			If IsArray(arrPoints) Then
+				strLine = UBound(arrPoints) + 1
+				Call objStream.WriteLine(strLine)
+				arrColors = Rhino.PointCloudPointColors(strObject)
+				For i = 0 To UBound(arrPoints)
+					If IsArray(arrColors) Then
+						intColor = arrColors(i)
+					Else
+						intColor = -1
+					End If
+					strLine = FormatLeicaPoint(arrPoints(i), intColor)
+					Call objStream.WriteLine(strLine)
+					'Call Rhino.Print(strLine)
+				Next
+			End If
+		End If
+	Next
+    
+	' Close the file
+	objStream.Close
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns the Red value from an RGB color value
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FormatLeicaPoint(arrPoint, intColor)
+	Dim strLine
+	strLine = CStr(arrPoint(0))
+	strLine = strLine & " " & CStr(arrPoint(1))
+	strLine = strLine & " " & CStr(arrPoint(2))
+	strLine = strLine & " " & CStr(0.0)
+	If (intColor >= 0) Then
+		strLine = strLine & " " & CStr(GetRValue(intColor))
+		strLine = strLine & " " & CStr(GetGValue(intColor))
+		strLine = strLine & " " & CStr(GetBValue(intColor))
+	End If
+	FormatLeicaPoint = strLine
+End Function
+	
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns the Red value from an RGB color value
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetRValue(val)
+	If val > -1 And val < 16777216 Then
+		GetRValue = val \ 256 ^ 0 And 255
+	Else
+		GetRValue = -1
+	End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns the Green value from an RGB color value
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetGValue(val)
+	If val > -1 And val < 16777216 Then
+		GetGValue = val \ 256 ^ 1 And 255
+	Else
+		GetGValue = -1
+	End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns the Blue value from an RGB color value
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetBValue(val)
+	If val > -1 And val < 16777216 Then
+		GetBValue = val \ 256 ^ 2 And 255
+	Else
+		GetBValue = -1
+	End If
+End Function

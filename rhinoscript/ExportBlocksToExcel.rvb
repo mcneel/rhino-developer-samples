@@ -1,0 +1,64 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportBlocksToExcel.rvb -- February 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ExportBlocksToExcel
+
+  Const rhBlock = 4096
+
+  Dim arrBlocks
+  arrBlocks = Rhino.ObjectsByType(rhBlock)
+  If Not IsArray(arrBlocks) Then 
+    Rhino.Print "No blocks found to export."
+    Exit Sub
+  End If
+
+  Dim objXL
+  Set objXL = CreateObject("Excel.Application")
+
+  objXL.Visible = True
+  objXL.WorkBooks.Add
+
+  objXL.Columns(1).ColumnWidth = 40
+  objXL.Columns(2).ColumnWidth = 40
+  objXL.Columns(3).ColumnWidth = 40
+  objXL.Columns(5).ColumnWidth = 40
+  objXL.Columns(5).ColumnWidth = 40
+
+  objXL.Cells(1, 1).Value = "Name"
+  objXL.Cells(1, 2).Value = "Description"
+  objXL.Cells(1, 3).Value = "URL Tag"
+  objXL.Cells(1, 4).Value = "URL"
+  objXL.Cells(1, 5).Value = "Point"
+
+  objXL.Range("A1:E1").Select
+  objXL.Selection.Font.Bold = True
+  objXL.Selection.Interior.ColorIndex = 1
+  objXL.Selection.Interior.Pattern = 1 'xlSolid
+  objXL.Selection.Font.ColorIndex = 2
+
+  Dim intIndex
+  intIndex = 2
+
+  Dim strBlock, strName
+  For Each strBlock In arrBlocks
+    strName = Rhino.BlockInstanceName(strBlock)
+    objXL.Cells(intIndex, 1).Value = strName
+    objXL.Cells(intIndex, 2).Value = Rhino.BlockDescription(strName)
+    objXL.Cells(intIndex, 3).Value = Rhino.BlockURLTag(strName)
+    objXL.Cells(intIndex, 4).Value = Rhino.BlockURL(strName)
+    objXL.Cells(intIndex, 5).Value = Rhino.Pt2Str(Rhino.BlockInstanceInsertPoint(strBlock))
+    intIndex = intIndex + 1 
+  Next
+
+  objXL.UserControl = True
+
+End Sub
+
+' Run the darn thing...
+ExportBlocksToExcel

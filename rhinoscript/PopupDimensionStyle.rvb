@@ -1,0 +1,41 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PopupDimensionStyle.rvb -- June 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub PopupDimensionStyle
+
+  Dim arrStyles, arrModes(), strStyle, i, ub
+
+  strStyle = Rhino.CurrentDimStyle
+  arrStyles = Rhino.DimStyleNames(True)
+
+  ub = UBound(arrStyles)
+  ReDim Preserve arrStyles(ub+2)
+  arrStyles(ub + 1) = ""
+  arrStyles(ub + 2) = "Dimension Styles..."
+  
+  ReDim arrModes(UBound(arrStyles))
+
+  For i = 0 To UBound(arrStyles)
+    If StrComp(arrStyles(i), strStyle, 1) = 0 Then
+      arrModes(i) = 2
+    Else
+      arrModes(i) = 0
+    End If
+  Next  
+
+  i = Rhino.PopupMenu(arrStyles, arrModes)
+  If (i >= 0) Then 
+    If (i > ub) Then
+      Call Rhino.Command("_-DocumentPropertiesPage _Dimensions", 0)
+    Else
+      Rhino.CurrentDimStyle(arrStyles(i))
+    End If
+  End If
+
+End Sub

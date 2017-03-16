@@ -1,0 +1,47 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExtractMeshWires.rvb -- August 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExtractMeshWires
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExtractMeshWires
+  
+  Const RH_MESH = 32
+  Dim arrMeshes, strMesh
+  Dim arrVertices, arrFaces, arrFace
+  Dim arrTri(3), arrQuad(4)
+  
+  arrMeshes = Rhino.GetObjects("Select meshes for wire extraction", RH_MESH, True)
+  If IsNull(arrMeshes) Then Exit Sub
+
+  Call Rhino.EnableRedraw(False)
+      
+  For Each strMesh In arrMeshes
+    arrVertices = Rhino.MeshVertices(strMesh)
+    arrFaces = Rhino.MeshFaceVertices(strMesh)
+    For Each arrFace In arrFaces
+      If arrFace(2) = arrFace(3) Then
+        arrTri(0) = arrVertices(arrFace(0))
+        arrTri(1) = arrVertices(arrFace(1))
+        arrTri(2) = arrVertices(arrFace(2))
+        arrTri(3) = arrTri(0)
+        Call Rhino.AddPolyline(arrTri)
+      Else
+        arrQuad(0) = arrVertices(arrFace(0))
+        arrQuad(1) = arrVertices(arrFace(1))
+        arrQuad(2) = arrVertices(arrFace(2))
+        arrQuad(3) = arrVertices(arrFace(3))
+        arrQuad(4) = arrQuad(0)
+        Call Rhino.AddPolyline(arrQuad)
+      End If
+    Next
+  Next
+
+  Call Rhino.EnableRedraw(True)
+  
+End Sub

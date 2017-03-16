@@ -1,0 +1,80 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GardenPath.rvb -- March 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RhinoScript equivalent to AutoLISP's garden path tutorial.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub GardenPath
+  
+  ' Acquire information for the garden path
+  sp = Rhino.GetPoint( "Start point of path" )
+  ep = Rhino.GetPoint( "End point of path", sp )
+  hwidth = Rhino.GetDistance( sp, , "Half width of path" )
+  trad = Rhino.GetDistance( sp, 1.0, "Radius of tiles" )
+  tspac = Rhino.GetDistance( sp, 1.0, "Distance between tiles" )
+  
+  ' Calculate angles
+  temp = Rhino.Angle( sp, ep )
+  pangle = temp(0)
+  plength = Rhino.Distance( sp, ep )
+  width = hwidth * 2
+  angp90 = pangle + 90.0
+  angm90 = pangle - 90.0
+  
+  ' To increase speed, disable redrawing
+  Rhino.EnableRedraw False
+
+  ' Draw the outline of the path
+  ReDim pline(4)
+  pline(0) = Rhino.Polar( sp, angm90, hwidth )
+  pline(1) = Rhino.Polar( pline(0), pangle, plength )
+  pline(2) = Rhino.Polar( pline(1), angp90, width )
+  pline(3) = Rhino.Polar( pline(2), pangle + 180.0, plength )
+  pline(4) = pline(0)
+  Rhino.AddPolyline pline
+  
+  ' Draw the rows of tiles
+  plane = Rhino.WorldXYPlane
+  pdist = trad + tspac
+  off = 0.0
+  
+  While (pdist <= plength - trad)
+    
+    ' Place one row of tiles given distance along path
+    ' and possibly offset it
+    pfirst = Rhino.Polar( sp, pangle, pdist )
+    pctile = Rhino.Polar( pfirst, angp90, off )
+    pltile = pctile
+    
+    While (Rhino.Distance(pfirst, pltile) < hwidth - trad)
+      plane = Rhino.MovePlane( plane, pltile )
+      Rhino.AddCircle plane, trad
+      pltile = Rhino.Polar( pltile, angp90, tspac + trad + trad )
+    Wend
+    
+    pltile = Rhino.Polar( pctile, angm90, tspac + trad + trad )
+    
+    While (Rhino.Distance(pfirst, pltile) < hwidth - trad)
+      plane = Rhino.MovePlane( plane, pltile )
+      Rhino.AddCircle plane, trad
+      pltile = Rhino.Polar( pltile, angm90, tspac + trad + trad )
+    Wend
+    
+    pdist = pdist + ((tspac + trad + trad) * Sin(Rhino.ToRadians(60)))
+    
+    If (off = 0.0) Then
+      off = (tspac + trad + trad) * Cos(Rhino.ToRadians(60))
+    Else
+      off = 0.0
+    End If
+    
+  Wend
+  
+  ' Don't forget to enable redrawing
+  Rhino.EnableRedraw True
+  
+End Sub  

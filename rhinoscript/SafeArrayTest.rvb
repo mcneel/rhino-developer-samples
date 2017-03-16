@@ -1,0 +1,45 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SafeArrayTest.rvb
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0 or better.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+' Test with an array returned by RhinoScript
+Sub SafeArrayTest1
+	Dim arr
+	arr = Rhino.LayerNames
+	Call Rhino.HtmlBox("C:\SafeArrayTest.htm", arr, "center:1")
+End Sub
+
+' Test with a static array
+Sub SafeArrayTest2
+	Dim arr(4)
+	arr(0) = "Static0"
+	arr(1) = "Static1"
+	arr(2) = "Static2"
+	arr(3) = "Static3"
+	arr(4) = "Static4"
+	Call Rhino.HtmlBox("C:\SafeArrayTest.htm", arr, "center:1")
+End Sub
+
+' Test with a dynamic array
+Sub SafeArrayTest3
+	Dim arr()
+	ReDim arr(4)
+	arr(0) = "Dynamic0"
+	arr(1) = "Dynamic1"
+	arr(2) = "Dynamic2"
+	arr(3) = "Dynamic3"
+	arr(4) = "Dynamic4"
+	Call Rhino.HtmlBox("C:\SafeArrayTest.htm", arr, "center:1")
+End Sub
+
+' Test with an array created with Array
+Sub SafeArrayTest4
+	Dim arr
+	arr = Array("Array0", "Array1", "Array2", "Array3", "Array4")
+	Call Rhino.HtmlBox("C:\SafeArrayTest.htm", arr, "center:1")
+End Sub

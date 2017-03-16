@@ -1,0 +1,24 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelClippingPlanes.rvb -- February 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Selects clipping planes
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelClippingPlanes
+  Dim objs, obj
+  objs = Rhino.NormalObjects
+  If IsArray(objs) Then
+    Rhino.EnableRedraw False
+    For Each obj In objs
+      If Rhino.IsClippingPlane(obj) Then
+        Rhino.SelectObject obj
+      End If
+    Next
+    Rhino.EnableRedraw True
+  End If
+End Sub

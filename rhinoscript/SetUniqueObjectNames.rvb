@@ -1,0 +1,29 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SetUniqueObjectNames.rvb -- June 2016
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Synchronizes the user-definable name of all objects 
+' with their unique ID (or UUID).
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SetUniqueObjectNames
+	' Declare local variables
+	Dim arrObjectIds, strObjectId
+	' Get a list of all objects in document
+	arrObjectIds = Rhino.AllObjects
+	' Process each object
+	For Each strObjectId In arrObjectIds
+		' Set it's name to it's id
+		Call Rhino.ObjectName(strObjectId, strObjectId)
+	Next
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Drag & drop support
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Call Rhino.AddStartupScript(Rhino.LastLoadedScriptFile)
+Call Rhino.AddAlias("SetUniqueObjectNames", "_NoEcho _-RunScript (SetUniqueObjectNames)")

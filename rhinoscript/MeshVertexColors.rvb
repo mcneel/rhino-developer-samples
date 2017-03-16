@@ -1,0 +1,28 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MeshVertexColors.rvb -- March 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Randomize
+
+Sub TestMeshVertexColors()
+
+  Const rhObjectMesh = 32  
+  Dim arrMeshes, strMesh, arrColors(), i
+
+  arrMeshes = Rhino.GetObjects("Select meshs to add random vertex colors", rhObjectMesh)
+  If IsNull(arrMeshes) Then Exit Sub
+
+  For Each strMesh In arrMeshes
+    ReDim arrColors(Rhino.MeshVertexCount(strMesh)-1)
+    For i = 0 To UBound(arrColors)
+      ' Cook up a random RGB color value
+      arrColors(i) = RGB(Int(255*Rnd), Int(255*Rnd), Int(255*Rnd))
+    Next
+    Call Rhino.MeshVertexColors(strMesh, arrColors)
+  Next
+
+End Sub

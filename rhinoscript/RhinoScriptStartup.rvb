@@ -1,0 +1,84 @@
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RhinoScriptStartup.rvb -- September 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0 and 5.0.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit 
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Demand loads and runs a script.
+' Parameters:
+'   subroutine [in] - The name of the script subroutine to run.
+'   filename   [in] - The name of the file were the subroutine
+'                     is located.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DemandRun(ByVal subroutine, ByVal filename)
+  Dim macro
+  macro = "_-LoadScript " & filename
+  If Not Rhino.IsProcedure(subroutine) Then
+    Call Rhino.Command(macro, 0)
+  End If
+  Call Execute(subroutine)
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Registers command aliases that run macros that utilize the
+'   DemandRun subroutine defined above.
+' Parameters:
+'   alias      [in] - The name of the command alias to register.
+'   subroutine [in] - The name of the script subroutine the the
+'                     alias will run.
+'   filename   [in] - The name of the file were the subroutine
+'                     is located.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DemandRegister(ByVal alias, ByVal subroutine, ByVal filename)
+  Dim macro, qsub, qfile
+  qsub = Chr(34) & CStr(subroutine) & Chr(34)
+  qfile = Chr(34) & CStr(filename) & Chr(34)
+  macro = "_-NoEcho _-RunScript (DemandRun " & qsub & ", "  & qfile & ")"
+  Call Rhino.AddAlias(alias, macro)
+End Sub  
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Includes, or loads, other RhinoScript files
+' Parameters:
+'   strFilename - The name of the script file to include.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Include(ByVal strFilename)
+  Dim objFSO, objFile
+  strFilename = Rhino.FindFile(strFilename)
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  Set objFile = objFSO.OpenTextFile(strFilename)
+  ExecuteGlobal objFile.ReadAll
+  objFile.Close
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' In the following section below, specify the paths you want
+' Rhino to search for your script files.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Call Rhino.AddSearchPath("C:\Users\Dale\Desktop\RhinoScript", 0)
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' In the following section below, load any utility script files
+' that might be used by other scripts.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Call Include("RhinoScriptUtilities.rvb")
+'Call Include("RhinoScriptArrayUtilities.rvb")
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' In the following section below, register the aliases that you
+' want to create and the scripts that you want them to run.
+' Example:
+'   Call DemandRegister(<alias>, <subroutine>, <filename>)
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Call DemandRegister("SelLayerObjects", "SelLayerObjects", "SelLayerObjects.rvb")
+'Call DemandRegister("RandomizeLayerColors", "RandomizeLayerColors", "RandomizeLayerColors.rvb")

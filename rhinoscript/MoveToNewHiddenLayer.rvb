@@ -1,0 +1,30 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MoveToNewHiddenLayer.rvb -- June 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub MoveToNewHiddenLayer()
+
+	Dim arrObjects, strLayer, blnLayer
+	
+	arrObjects = Rhino.GetObjects("Select objects to move to new hidden layer", 0, True, True)
+	If IsNull(arrObjects) Then Exit Sub
+	
+	blnLayer = False
+	While (blnLayer = False)
+		strLayer = Rhino.GetString("Name of new layer to create")
+		If IsNull(strLayer) Then Exit Sub
+		strLayer = Rhino.AddLayer(strLayer, 0, False, False)
+		If Not IsNull(strLayer) Then
+			blnLayer = True
+		Else
+			Call Rhino.Print("Layer name was invalid or layer already exists.")
+		End If
+	Wend
+	
+	Call Rhino.ObjectLayer(arrObjects, strLayer)
+	
+End Sub

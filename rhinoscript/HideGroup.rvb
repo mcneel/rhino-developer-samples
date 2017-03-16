@@ -1,0 +1,51 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' HideGroup.rvb -- March 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' HideGroup
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub HideGroup
+  Dim strName, arrObjects, strObject
+  strName = Rhino.GetString("Name of group to hide")
+  If Not IsNull(strName) Then
+    arrObjects = Rhino.GetObjects("Select objects to hide")
+    If IsArray(arrObjects) Then
+      Rhino.EnableRedraw False
+      For Each strObject In arrObjects
+        Rhino.SetObjectData strObject, "HIDEGROUP", "NAME", strName
+        Rhino.HideObject strObject
+      Next
+      Rhino.EnableRedraw True
+    End If
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ShowGroup
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ShowGroup
+  Dim strName, arrObjects, strObject, strValue
+  strName = Rhino.GetString("Name of group to show")
+  If Not IsNull(strName) Then
+    arrObjects = Rhino.AllObjects
+    If IsArray(arrObjects) Then
+      Rhino.EnableRedraw False
+      For Each strObject In arrObjects
+        strValue = Rhino.GetObjectData(strObject, "HIDEGROUP", "NAME")
+        If Not IsNull(strValue) Then
+          If (StrComp(strValue, strName, 0) = 0) Then
+            Rhino.DeleteObjectData strObject, "HIDEGROUP"
+            Rhino.ShowObject strObject
+          End If
+        End If
+      Next
+      Rhino.EnableRedraw True
+    End If
+  End If
+End Sub

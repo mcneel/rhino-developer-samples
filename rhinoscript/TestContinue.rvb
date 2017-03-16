@@ -1,0 +1,36 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TestContinue.rvb -- May 2013, Dale Fugier.
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' http://wiki.mcneel.com/developer/scriptsamples/vbcontinue
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestContinue
+  
+  Dim arrTests, arrTest
+  
+  arrTests = Array( _
+        Array(1) _
+      , Array(1,2,3 ) _
+      , Array(1,2) _
+      , Array(1) _
+      , Array(1,2,3) _
+      )
+      
+  For Each arrTest In arrTests
+     Call Rhino.Print("Process: {" & Join(arrTest, ", ") & "}")
+     Do While True ' Continue trick
+       Call Rhino.Print(" Process: " & arrTest(0))
+       If 0 = UBound(arrTest) Then Exit Do ' Continue
+       Call Rhino.Print(" Process: " & arrTest(1))
+       If 1 = UBound(arrTest) Then Exit Do ' Continue
+       Call Rhino.Print(" Process: " & arrTest(2))
+       Exit Do
+     Loop
+  Next
+
+End Sub

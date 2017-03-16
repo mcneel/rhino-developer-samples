@@ -1,0 +1,32 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SineWaveSrf.rvb -- May 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Creates a funky sine wave surface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SineWaveSrf
+
+	Const U_PTS = 25
+	Const V_PTS = 25
+  
+	Dim points(), u, v, idx
+
+	ReDim points(U_PTS * V_PTS - 1)
+	idx = 0
+
+	For u = 0 To U_PTS - 1
+		For v = 0 To V_PTS - 1
+			points(idx) = Array(u, v, Sin(u) + Sin(v))
+			idx = idx + 1
+		Next
+	Next
+
+	Call Rhino.AddSrfControlPtGrid(Array(U_PTS, V_PTS), points)
+  
+End Sub

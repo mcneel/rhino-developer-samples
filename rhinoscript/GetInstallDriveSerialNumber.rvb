@@ -1,0 +1,15 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GetInstallDriveSerialNumber.rvb -- February 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub GetInstallDriveSerialNumber()
+  Dim oFSO, oDrive, xSerial
+  Set oFSO = CreateObject("Scripting.FileSystemObject")
+  Set oDrive = oFSO.GetDrive(oFSO.GetDriveName(Rhino.InstallFolder()))
+  xSerial = Hex(oDrive.SerialNumber)
+  MsgBox Left(xSerial,4) & "-" & Right(xSerial,4)
+End Sub

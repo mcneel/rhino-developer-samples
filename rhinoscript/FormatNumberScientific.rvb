@@ -1,0 +1,34 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FormatNumberScientific.rvb -- April 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns a number formatted in scientific notation.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FormatNumberScientific(ByVal floVal)
+  Dim floAbsVal, intSgnVal, intScale, floScaled
+  floAbsVal = Abs(floVal)
+  If floAbsVal <> 0 And (floAbsVal > 1e9 Or floAbsVal < 1e-3) Then
+    intSgnVal = Sgn(floVal)
+    intScale = Int(Log(floAbsVal) / Log(10))
+    floScaled = floAbsVal / (10 ^ intScale)
+    FormatNumberScientific = CStr(intSgnVal * floScaled) & "e" & CStr(intScale)
+  Else
+    FormatNumberScientific = CStr(floVal)
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns a point or vector formatted in scientific notation.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FormatPointScientific(ByVal arrPt)
+  Dim strX, strY, strZ
+  strX = FormatSci(arrPt(0))
+  strY = FormatSci(arrPt(1))
+  strZ = FormatSci(arrPt(2))
+  FormatPointScientific = strX & "," & strY & "," & strZ
+End Function

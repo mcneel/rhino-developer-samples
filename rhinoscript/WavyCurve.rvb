@@ -1,0 +1,30 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' WavyCurve.rvb -- April 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub WavyCurve
+  
+  Dim curve, count, index, point
+  
+  curve = Rhino.GetObject("Select curve to wave", 4)
+  If IsNull(curve) Then Exit Sub
+  
+  Call Rhino.EnableRedraw(False)  
+  Call Rhino.EnableObjectGrips(curve)
+  
+  count = Rhino.ObjectGripCount(curve)
+  For i = 0 To count - 1 Step 2
+    index = Rhino.NextObjectGrip(curve, i)
+    point = Rhino.ObjectGripLocation(curve, index)
+    point = Rhino.PointAdd(point, Array(0,0,1))
+    Call Rhino.ObjectGripLocation(curve, index, point)
+  Next
+
+  Call Rhino.EnableObjectGrips(curve, False)
+  Call Rhino.EnableRedraw(True)  
+  
+End Sub

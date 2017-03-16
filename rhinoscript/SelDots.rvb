@@ -1,0 +1,31 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelDots.rvb -- December 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub SelDots
+  Dim arrDots, strDot, nCount
+  nCount = 0
+  arrDots = Rhino.ObjectsByType(8192)
+  If IsArray(arrDots) Then
+    Call Rhino.EnableRedraw(False)
+    For Each strDot In arrDots
+      If Rhino.IsObjectSelectable(strDot) Then
+        If Not Rhino.IsObjectSelected(strDot) Then
+          Call Rhino.SelectObject(strDot)
+          nCount = nCount + 1
+        End If
+      End If
+    Next
+    Call Rhino.EnableRedraw(True)
+  End If
+  If 1 = nCount Then
+    Call Rhino.Print("1 text dot added to selection.")
+  Else
+    Call Rhino.Print(CStr(nCount) & " text dots added to selection.")
+  End If
+End Sub

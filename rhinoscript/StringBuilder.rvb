@@ -1,0 +1,97 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' StringBuilder.rvb -- July 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Kind-of-a-clone of .NET's StringBuilder class
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Class StringBuilder
+     
+  Private m_objList
+  
+  '--------------------------------------------------------------------------
+  ' Initialize 
+  '--------------------------------------------------------------------------
+  Private Sub Class_Initialize()
+    Set m_objList = CreateObject("System.Collections.ArrayList")
+  End Sub
+  
+  '--------------------------------------------------------------------------
+  ' Appends a copy of the specified value.
+  '   Ex:
+  '     Set sb = New StringBuilder
+  '     Call sb.Append("Hello")
+  '     Call sb.Append(24)
+  '     Call sb.Append(3.14159)
+  '     Call sb.Append(Date)
+  '     Call Rhino.Print(sb.ToString)
+  '--------------------------------------------------------------------------
+  Public Sub Append(ByVal varValue)
+    Call m_objList.Add(CStr(varValue))
+  End Sub
+  
+  '--------------------------------------------------------------------------
+  ' Appends the string returned by processing a composite format string, 
+  ' which contains zero or more format items, to this instance. 
+  ' Each format item is replaced by the string representation of a 
+  ' corresponding object argument.
+  '   Ex:
+  '     Set sb = New StringBuilder
+  '     Call sb.AppendFormat("Hello, Mr. {0}, today is {1}.", Array("McNeel", Date))
+  '     Call Rhino.Print(sb.ToString)
+  '--------------------------------------------------------------------------
+  Public Sub AppendFormat(ByVal strValue, ByVal arrParameters)
+    Dim i
+    If IsString(strValue) And IsArray(arrParameters) Then
+      For i = 0 To UBound(arrParameters)
+        strValue = Replace(strValue, "{" & CStr(i) & "}", CStr(arrParameters(i)))
+      Next
+      strValue = Replace(strValue, "\n", VbCrLf)
+      strValue = Replace(strValue, "\t", vbTab)
+      Call Append(strValue)
+    End If
+  End Sub  
+   
+  '--------------------------------------------------------------------------
+  ' Inserts a copy of the specified value at a location.
+  '   Ex:
+  '     Set sb = New StringBuilder
+  '     Call sb.Append("Hello")
+  '     Call sb.Append(24)
+  '     Call sb.Insert(1, 3.14159)
+  '     Call Rhino.Print(sb.ToString)
+  '--------------------------------------------------------------------------
+  Public Sub Insert(ByVal nIndex, ByVal varValue)
+    If IsNumeric(nIndex) Then
+      If CInt(nIndex) < 0 Then Index = 0
+      Call m_objList.Insert(nIndex, CStr(varValue))
+    End If
+  End Sub
+  
+  '--------------------------------------------------------------------------
+  ' Converts the value of this instance to a string. 
+  '--------------------------------------------------------------------------
+  Public Function ToString()
+    ToString = Join(m_objList.ToArray(), "")
+  End Function
+   
+  '--------------------------------------------------------------------------
+  ' Removes all characters from this instance.
+  '--------------------------------------------------------------------------
+  Public Sub Clear()
+    m_objList.Clear()
+  End Sub
+     
+  '--------------------------------------------------------------------------
+  ' Verifies a variable is a string.
+  '--------------------------------------------------------------------------
+  Private Function IsString(ByVal varValue)
+    IsString = False
+    If VarType(varValue) = vbString Then IsString = True
+  End Function    
+     
+End Class

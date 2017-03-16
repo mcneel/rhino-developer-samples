@@ -1,0 +1,115 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ChordLengthGizmo.rvb -- May 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub ChordLengthGizmo
+  
+  ' Get first curve
+  Dim crv1: crv1 = SelectOpenCurve("First curve")
+  If IsNull(crv1) Then Exit Sub
+
+  ' Get second curve    
+  Dim crv2: crv2 = SelectOpenCurve("Second curve")
+  If IsNull(crv2) Then Exit Sub
+   
+  ' Bail if same curve
+  If crv1 = crv2 Then Exit Sub
+    
+  Rhino.UnselectAllObjects
+
+  ' Get chord length
+  Dim length: length = Rhino.GetReal("Chord length") 
+  If Not IsNumeric(length) Then Exit Sub
+
+  ' Validate length    
+  If Rhino.CurveLength(crv1) < length Or Rhino.CurveLength(crv2) < length Then
+    Rhino.Print "Specified chord length exceeds curve length."
+    Exit Sub
+  End If    
+
+  ' Reverse one of the curves if necessary    
+  If Rhino.CurveDirectionsMatch(crv1, crv2) = False Then
+    Rhino.ReverseCurve crv1
+  End If
+
+  ' Get parameter of starting points of curves
+  Dim dom1: dom1 = Rhino.CurveDomain(crv1)
+  Dim dom2: dom2 = Rhino.CurveDomain(crv2)
+  Dim t1: t1 = dom1(0)
+  Dim t2: t2 = dom2(0)
+  
+  ' Add first line
+  Rhino.EnableRedraw False  
+  Dim curves()
+  Dim pt1: pt1 = Rhino.EvaluateCurve(crv1, t1)
+  Dim pt2: pt2 = Rhino.EvaluateCurve(crv2, t2)
+  Dim cnt: cnt = 0
+  ReDim Preserve curves(cnt)
+  curves(cnt) = Rhino.AddLine(pt1, pt2)
+  
+  ' Loop until finished
+  Dim bDone: bDone = False
+  While (bDone = False)
+    t1 = ChordLengthParameter(crv1, t1, length)
+    t2 = ChordLengthParameter(crv2, t2, length)
+    If IsNull(t1) Or IsNull(t2) Then
+      bDone = True
+    Else
+      pt1 = Rhino.EvaluateCurve(crv1, t1)
+      pt2 = Rhino.EvaluateCurve(crv2, t2)
+      cnt = cnt + 1
+      ReDim Preserve curves(cnt)
+      curves(cnt) = Rhino.AddLine(pt1, pt2)
+    End If
+  Wend
+  
+  If UBound(curves) > 0 Then
+    Dim i, arr(1)
+    For i = 0 To UBound(curves) - 1
+      arr(0) = curves(i)
+      arr(1) = curves(i+1)
+      Rhino.AddLoftSrf arr,,,3
+    Next
+  End If
+  
+  Rhino.EnableRedraw True
+         
+End Sub
+
+Function ChordLengthParameter(crv, t, l)
+  ' Default return value
+  ChordLengthParameter = Null
+  
+  ' Determine chord by intersecting a circle
+  ' with the curve
+  Dim pt: pt = Rhino.EvaluateCurve(crv, t)
+  Dim cir: cir = Rhino.AddCircle(pt, l)
+  Dim ccx: ccx = Rhino.CurveCurveIntersection(crv, cir)
+  Rhino.DeleteObject cir
+  If Not IsArray(ccx) Then Exit Function
+  
+  ' Find the largest parameter
+  Dim i
+  For i = 0 To UBound(ccx)
+    If ccx(i,0) = 1 Then
+      If ccx(i,5) > t Then
+        ChordLengthParameter = ccx(i,5)
+        Exit Function
+      End If
+    End If
+  Next
+  
+End Function  
+  
+Function SelectOpenCurve(strPrompt)
+  Dim crv: crv = Rhino.GetObject(strPrompt, 4)
+  If IsNull(crv) Or Rhino.IsCurveClosed(crv) Then
+    SelectOpenCurve = Null
+  Else
+    SelectOpenCurve = crv
+  End If
+End Function

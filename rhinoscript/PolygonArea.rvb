@@ -1,0 +1,88 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PolygonArea.rvb -- June 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Calculates the area of a closed, planar polygon
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function PolygonArea(ByVal polygon, ByRef area, ByRef normal)
+  
+	Dim result, bounds, dir, length
+	Dim a, b, c, d, i
+  
+	area = 0
+	normal = Array(0, 0, 0)
+	bounds = UBound(polygon)
+
+	If (2 < bounds) Then 
+		result = True
+	Else
+		result = False
+	End If
+  
+	If (3 = bounds) Then ' Triangle
+		a = polygon(0)
+		b = polygon(1)
+		c = polygon(2)
+		dir = Rhino.VectorCreate(b, a)
+		normal = Rhino.VectorCrossProduct(dir, Rhino.VectorSubtract(c, a))
+	ElseIf (4 = bounds) Then ' Quadrilateral
+		a = polygon(0)
+		b = polygon(1)
+		c = polygon(2)
+		d = polygon(3)
+		normal(0) = (c(1) - a(1)) * (d(2) - b(2)) + (c(2) - a(2)) * (b(1) - d(1))
+		normal(1) = (c(2) - a(2)) * (d(0) - b(0)) + (c(0) - a(0)) * (b(2) - d(2))
+		normal(2) = (c(0) - a(0)) * (d(1) - b(1)) + (c(1) - a(1)) * (b(0) - d(0))
+	ElseIf (4 < bounds) Then ' Polygon
+		b = polygon(bounds - 2)
+		c = polygon(bounds - 1)
+		For i = 0 To bounds - 1
+			a = b
+			b = c
+			c = polygon(i)
+			normal(0) = normal(0) + b(1) * (c(2) - a(2))
+			normal(1) = normal(1) + b(2) * (c(0) - a(0))
+			normal(2) = normal(2) + b(0) * (c(1) - a(1))
+		Next
+	End If
+  
+	If (True = result) Then
+		length = Rhino.VectorLength(normal)
+		If (length < 1.0e-12) Then result = False
+		If (True = result) Then
+			normal = Rhino.VectorDivide(normal, length)
+			area = 0.5 * length
+		End If
+	End If
+  
+	PolygonArea = result
+  
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Tests the above calculation
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestPolygonArea
+  
+	Dim curve, result
+	Dim polygon, area, normal
+  
+	curve = Rhino.GetObject("Select closed planar polyline", 4, True)
+	If IsNull(curve) Then Exit Sub
+	If Not Rhino.IsCurveClosed(curve) Then Exit Sub
+	If Not Rhino.IsCurvePlanar(curve) Then Exit Sub
+	If Not Rhino.IsPolyline(curve) Then Exit Sub
+  
+	polygon = Rhino.PolylineVertices(curve)
+	result = PolygonArea(polygon, area, normal)
+	If (True = result) Then
+		Call Rhino.Print("Area = " & CStr(area))
+		Call Rhino.Print("Normal = " & Rhino.Pt2Str(normal))
+	End If
+
+End Sub    

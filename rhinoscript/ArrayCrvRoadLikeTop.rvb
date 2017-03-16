@@ -1,0 +1,91 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ArrayCrvRoadLikeTop.rvb -- February 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Simulate the ArrayCrv command with the Roadlike option,
+' assuming the World-Top viewport was selected.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayCrvRoadLikeTop
+  
+  Dim strObject, strRail, nCopies, i
+  Dim arrParameters, arrTangent, arrWorldZaxis
+  Dim arrOrigin, arrXaxis, arrYaxis, arrZaxis
+  Dim arrPlanes, arrTransform
+  Dim strVector
+  
+  arrWorldZaxis = Array(0,0,1)
+  
+  strObject = Rhino.GetObject("Select object to array")
+  If IsNull(strObject) Then Exit Sub
+    
+  strRail = Rhino.GetObject("Select path curve")
+  If IsNull(strObject) Then Exit Sub
+
+  ' nCopies = Rhino.GetInteger("Number of copies", 2, 2)
+  ' If IsNull(nCopies) Then Exit Sub
+  nCopies = 10
+    
+  arrParameters = Rhino.DivideCurve(strRail, nCopies, False, False)
+  If IsNull(arrParameters) Then Exit Sub
+
+  ReDim arrPlanes(UBound(arrParameters))    
+  For i = 0 To UBound(arrParameters)
+
+    ' Compute planar rail sweep frames from rail derivative
+    ' (i.e. tangent) and plane normal
+    
+    ' Calculate origin
+    arrOrigin = Rhino.EvaluateCurve(strRail, arrParameters(i))
+
+    ' Calcualte tangent, which becomes z-axis for other calculations
+    arrTangent = Rhino.CurveTangent(strRail, arrParameters(i))
+    arrZaxis = Rhino.VectorUnitize(arrTangent)
+
+    ' Calculate x-axis    
+    arrXaxis = Rhino.VectorCrossProduct(arrWorldZaxis, arrZaxis)
+    arrXaxis = Rhino.VectorUnitize(arrXaxis)
+
+    ' Calculate y-axis    
+    arrYaxis = Rhino.VectorCrossProduct(arrZaxis, arrXaxis)
+    arrYaxis = Rhino.VectorUnitize(arrYaxis)
+    
+    arrPlanes(i) = Rhino.PlaneFromFrame(arrOrigin, arrXaxis, arrYaxis)
+    
+    ' Optional...
+    Call AddVectors(arrOrigin, arrXaxis, arrYaxis, arrZaxis)
+  Next
+
+  For i = 1 To UBound(arrPlanes)
+    arrTransform = Rhino.XformRotation(arrPlanes(0), arrPlanes(i))
+    Call Rhino.TransformObject(strObject, arrTransform, True)
+  Next
+  
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Utility subroutine for drawing vectors
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub AddVectors(arrOrigin, arrXaxis, arrYaxis, arrZaxis)
+  
+  Dim strVector 
+
+  strVector = Rhino.AddLine(arrOrigin, Rhino.PointAdd(arrOrigin, arrXaxis))
+  Call Rhino.CurveArrows(strVector, 2)
+  Call Rhino.ObjectColor(strVector, RGB(255,0,0))
+
+  strVector = Rhino.AddLine(arrOrigin, Rhino.PointAdd(arrOrigin, arrYaxis))
+  Call Rhino.CurveArrows(strVector, 2)
+  Call Rhino.ObjectColor(strVector, RGB(0,255,0))
+
+  strVector = Rhino.AddLine(arrOrigin, Rhino.PointAdd(arrOrigin, arrZaxis))
+  Call Rhino.CurveArrows(strVector, 2)
+  Call Rhino.ObjectColor(strVector, RGB(0,0,255))
+  
+End Sub

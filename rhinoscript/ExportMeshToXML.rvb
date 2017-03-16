@@ -1,0 +1,78 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportMeshToXML.rvb -- October 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ExportMeshToXML
+  
+  ' Local variables
+  Dim strObject, strName, strFilename, i
+  Dim arrVertices, arrVertex, arrFaces, arrFace
+  Dim xmlDoc, objIntro, objRoot, objRecord, objNode
+  
+  ' Select a mesh to export
+  strObject = Rhino.GetObject("Select mesh", 32)
+  If IsNull(strObject) Then Exit Sub
+  
+  ' Specify a filename  
+  strFilename = Rhino.SaveFileName("Save as XML", "XML Files (*.xml)|*.xml||")
+  If IsNull(strFilename) Then Exit Sub
+  
+  ' Get vertices and faces from mesh
+  arrVertices = Rhino.MeshVertices(strObject)
+  arrFaces = Rhino.MeshFaceVertices(strObject)
+
+  ' Get other stuff
+  strName = Rhino.ObjectName(strObject)
+  If IsNull(strName) Then strName = "Mesh"
+
+  ' Create the Microsoft.XMLDOM object
+  Set xmlDoc = CreateObject("Microsoft.XMLDOM")  
+  
+  ' Set the processing instructions
+  Set objIntro = xmlDoc.CreateProcessingInstruction("xml", "version='1.0'")  
+  Call xmlDoc.AppendChild(objIntro)
+  
+  ' Create the root element
+  Set objRoot = xmlDoc.CreateElement(strName)  
+  Call xmlDoc.AppendChild(objRoot)
+
+  ' Add the vertices element to the root element
+  Set objRecord = xmlDoc.CreateElement("Vertices")
+  Call objRecord.SetAttribute("Count", CStr(UBound(arrVertices)+1))
+  Call objRoot.AppendChild(objRecord)
+  
+  ' Add each vertex as an element to the vertices element
+  For i = 0 To UBound(arrVertices)
+    arrVertex = arrVertices(i)
+    Set objNode = xmlDoc.CreateElement("Vertex" & CStr(i))  
+    Call objNode.SetAttribute("X", CStr(arrVertex(0)))
+    Call objNode.SetAttribute("Y", CStr(arrVertex(1)))
+    Call objNode.SetAttribute("Z", CStr(arrVertex(2)))
+    Call objRecord.AppendChild(objNode)
+  Next
+
+  ' Add the faces element to the root element
+  Set objRecord = xmlDoc.CreateElement("Faces")
+  Call objRecord.SetAttribute("Count", CStr(UBound(arrFaces)+1))
+  Call objRoot.AppendChild(objRecord)
+
+  ' Add each face as an element to the faces element
+  For i = 0 To UBound(arrFaces)
+    arrFace = arrFaces(i)
+    Set objNode = xmlDoc.CreateElement("Face" & CStr(i))  
+    Call objNode.SetAttribute("A", CStr(arrFace(0)))
+    Call objNode.SetAttribute("B", CStr(arrFace(1)))
+    Call objNode.SetAttribute("C", CStr(arrFace(2)))
+    Call objNode.SetAttribute("D", CStr(arrFace(3)))
+    Call objRecord.AppendChild(objNode)
+  Next
+
+  ' Save the xml document
+  Call xmlDoc.Save("C:\users\dale\desktop\mesh.xml")
+
+End Sub

@@ -1,0 +1,45 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' QuadraticSolver.rvb -- September 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' QuadraticSolver
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function QuadraticSolver(a, b, c)
+  Dim d, s0, s1
+  d = b * b - 4 * a * c
+  If d < 0 Then
+    ' No real solution
+    QuadraticSolver = Null
+  Else
+    s0 = (-b - Sqr(d)) / (2 * a)
+    s1 = (-b + Sqr(d)) / (2 * a)
+    If Abs(s0) < Abs(s1) Then s0 = s1
+    s1 = c / (a * s0)
+    QuadraticSolver = Array(s0,s1)
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Tester
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestQuadraticSolver
+
+  Dim rc  
+  rc = QuadraticSolver(2, 5, -12)
+  If IsArray(rc) Then
+    Rhino.Print rc(0) & ", " & rc(1)
+  End If
+  
+  rc = QuadraticSolver(1, -10000000.0000001, 1)
+  If IsArray(rc) Then
+    Rhino.Print rc(0) & ", " & rc(1)
+  End If
+  
+End Sub
+
+TestQuadraticSolver

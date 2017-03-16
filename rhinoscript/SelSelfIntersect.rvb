@@ -1,0 +1,25 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelSelfIntersect.rvb -- June 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Selects curve that self-intersect
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelSelfIntersect
+  Dim objs, obj, ccx
+  objs = Rhino.ObjectsByType(4)
+  If IsArray(objs) Then
+    Rhino.EnableRedraw False
+    For Each obj In objs
+      ccx = Rhino.CurveCurveIntersection(obj, obj)
+      If IsArray(ccx) Then
+        Rhino.SelectObject obj
+      End If
+    Next
+    Rhino.EnableRedraw True
+  End If
+End Sub

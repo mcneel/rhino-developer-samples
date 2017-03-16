@@ -1,0 +1,42 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FilletCurve.rvb -- September 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub FilletCurve()
+  
+  Dim pick0, pick1, spt, ept
+  Dim crv0, crv1, pt0, pt1
+  
+  pick0 = Rhino.GetCurveObject("Select first curve to fillet")
+  pick1 = Rhino.GetCurveObject("Select second curve to fillet")
+  
+  crv0 = pick0(0)
+  crv1 = pick1(0)
+  
+  pt0 = Rhino.EvaluateCurve(crv0, pick0(4))
+  pt1 = Rhino.EvaluateCurve(crv1, pick1(4))
+  
+  spt = Rhino.CurveStartPoint(crv0)
+  ept = Rhino.CurveEndPoint(crv0)
+  If Rhino.Distance(pt0, spt) < Rhino.Distance(pt0, ept) Then
+    pt0 = spt
+  Else
+    pt0 = ept
+  End If
+  
+  spt = Rhino.CurveStartPoint(crv1)
+  ept = Rhino.CurveEndPoint(crv1)
+  If Rhino.Distance(pt1, spt) < Rhino.Distance(pt1, ept) Then
+    pt1 = spt
+  Else
+    pt1 = ept
+  End If
+  
+  Call Rhino.AddFilletCurve(crv0, crv1, 0.7, pt0, pt1)
+  
+End Sub
+

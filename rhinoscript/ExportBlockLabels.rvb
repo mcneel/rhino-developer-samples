@@ -1,0 +1,105 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportBlockLabels.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportBlockLabels
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportBlockLabels
+  
+	' Local constants
+	Const RhBlock = 4096
+
+	' Local variables
+	Dim arrBlocks, strBlock, strName, arrObjects, strObject
+	Dim strDim, strValue, strUserText
+	Dim strFilter, strFileName, strLine
+	Dim objFSO, objStream
+  
+	' Select some dimensions
+	arrBlocks = Rhino.GetObjects("Select blocks with user-defined dimension labels for export", RhBlock, True, True)
+	If IsNull(arrBlocks) Then Exit Sub
+
+	' Define a file filter
+	strFilter = "Comma-Delimited File (*.csv)|*.csv||"
+
+	' Get the name of the file to create
+	strFileName = Rhino.SaveFileName("Export", strFilter)
+	If IsNull(strFileName) Then Exit Sub
+
+	' Create a file system object
+	Set objFSO = CreateObject("Scripting.FileSystemObject")
+  
+	' Try creating the file, overwrite if needed
+	On Error Resume Next
+	Set objStream = objFSO.CreateTextFile(strFileName, True, True)
+	If Err Then
+		MsgBox Err.Description
+		Exit Sub
+	End If
+
+	' Process each selected dimension
+	For Each strBlock In arrBlocks
+    strDim = Null
+		If Rhino.IsBlockInstance(strBlock) Then
+		  strName = Rhino.BlockInstanceName(strBlock)
+		  arrObjects = Rhino.BlockObjects(strName)
+		  If IsArray(arrObjects) Then
+		    For Each strObject In arrObjects
+		      If Rhino.IsDimension(strObject) Then
+  		      strDim = strObject
+  		      Exit For
+  		    End If
+        Next
+      End If		    
+
+	    If Not IsNull(strDim) Then  
+  			' Build a comma-delimited string to write
+  			strUserText = Rhino.DimensionUserText(strDim)
+  			strUserText = ParseDimensionUserText(strUserText)
+  			strValue = CStr(Rhino.DimensionValue(strDim))
+  			strLine = strUserText & "," & strValue
+  			' Write to file
+  			objStream.WriteLine(strLine)
+		  End If
+		End If
+	Next
+
+	' Close the file
+	objStream.Close
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description
+'   Utility function to remove "<>" prefix from string.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ParseDimensionUserText(strDim)
+
+	' Local variables
+	Dim nPos, nLen, objRegExp
+  
+	' Validate string
+	If IsNull(strDim) Then
+		strDim = "<Empty>"
+	Else
+		' Remove "<>" block
+		Set objRegExp = New RegExp
+		objRegExp.Pattern = "<[^>]*>"
+		objRegExp.Global = True
+		strDim = objRegExp.Replace(strDim, "")
+		strDim = Trim(strDim)
+	End If
+  
+	' One final validation
+	If Len(strDim) = 0 Then
+		strDim = "<Empty>"
+	End If
+  
+	ParseDimensionUserText = strDim
+
+End Function

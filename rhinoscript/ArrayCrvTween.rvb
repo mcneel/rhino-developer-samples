@@ -1,0 +1,119 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ArrayCrvTween.rvb -- October 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhinoceros 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+' Public variable for "sticky" number of items
+Public g_nItems
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' "Tweens" two curves along a path curve
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayCrvTween()
+	
+	' Declare local variables
+	Dim strCurve0, strCurve1, strPath, nItems
+	Dim arrParams, arrFrame, arrTangent, arrOrigin
+	Dim arrPlane0, arrPlane1, arrCenter
+	Dim arrMove, arrRotate, arrXform
+	Dim arrTweens, strTween, i
+	
+	' Hey, only Rhinoceros 5...
+	If (Rhino.ExeVersion < 5) Then
+		Call Rhino.Print("This script requires Rhinoceros 5 or greater.")
+		Exit Sub
+	End If
+	
+	' Select the start curve to "tween"
+	strCurve0 = Rhino.GetObject("Select start curve", 4)
+	If IsNull(strCurve0) Then Exit Sub
+	
+	' Select the end curve to "tween"
+	strCurve1 = Rhino.GetObject("Select end curve", 4)
+	If IsNull(strCurve1) Then Exit Sub
+	
+	' Select the path curve to array along
+	strPath = Rhino.GetObject("Select an open path curve", 4)
+	If IsNull(strPath) Then Exit Sub
+	If Rhino.IsCurveClosed(strPath) Then Exit Sub
+	
+	' Get the number of items to array
+	If IsEmpty(g_nItems) Or IsNull(g_nItems) Then g_nItems = 3
+	nItems = g_nItems
+	nItems = Rhino.GetInteger("Number of items", nItems, 3)
+	If IsNull(nItems) Then Exit Sub
+	g_nItems = nItems
+	
+	Call Rhino.EnableRedraw(False)
+	
+	' Get parameters on path curve
+	arrParams = Rhino.DivideCurve(strPath, nItems - 1, False, False)
+	If IsNull(arrParams) Then
+		Call Rhino.EnableRedraw(True)
+		Exit Sub		
+	End If
+	
+	' Creates curves between input curves.
+	' If you don't like the shape, check the RhinoScript
+	' help file for additional match methods.
+	arrTweens = Rhino.TweenCurve(strCurve0, strCurve1, nItems - 2, 1)
+	If IsNull(arrTweens) Then
+		Call Rhino.EnableRedraw(True)
+		Exit Sub		
+	End If
+	
+	' ArrayCrv is really just a glorified Rotate command.
+	' Calculate starting plane of rotation
+	arrFrame = Rhino.CurvePerpFrame(strPath, arrParams(0))
+	arrTangent = Rhino.CurveTangent(strPath, arrParams(0))
+	arrPlane0 = Rhino.PlaneFromFrame(arrFrame(0), arrTangent, arrFrame(2))
+	arrOrigin = arrFrame(0)
+	
+	' Process parameters, ignoring starting and ending
+	For i = 1 To UBound(arrParams) - 1
+		strTween = arrTweens(i - 1)
+		' Translation to origin
+		arrCenter = BoundingBoxCenter(strTween)
+		arrMove = Rhino.XformTranslation(Rhino.VectorCreate(arrOrigin, arrCenter))
+		' Calculate starting plane of rotation
+		arrFrame = Rhino.CurvePerpFrame(strPath, arrParams(i))
+		arrTangent = Rhino.CurveTangent(strPath, arrParams(i))
+		arrPlane1 = Rhino.PlaneFromFrame(arrFrame(0), arrTangent, arrFrame(2))
+		' Rotation
+		arrRotate = Rhino.XformRotation(arrPlane0, arrPlane1)
+		' Final orientation
+		arrXform = Rhino.XformMultiply(arrRotate, arrMove)
+		' Do the transformation
+		Call Rhino.TransformObjects(strTween, arrXform, False)
+	Next
+	
+	Call Rhino.EnableRedraw(True)
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns the center point of an object's bounding box
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function BoundingBoxCenter(strObject)
+
+	' Declare local variables
+	Dim arrBox, arrMin, arrMax, arrCenter
+	
+	' Calculate bounding box of object
+	arrBox = Rhino.BoundingBox(strObject)
+	
+	' Calculate center point
+	arrMin = arrBox(0)
+	arrMax = arrBox(6)
+	arrCenter = Array( _
+		0.5 * (arrMax(0) + arrMin(0)), _
+		0.5 * (arrMax(1) + arrMin(1)), _
+		0.5 * (arrMax(2) + arrMin(2))_
+		)
+	
+	BoundingBoxCenter = arrCenter
+	
+End Function

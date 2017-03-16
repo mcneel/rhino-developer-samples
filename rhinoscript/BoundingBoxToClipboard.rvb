@@ -1,0 +1,45 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BoundingBoxToClipboard.rvb -- September 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub BoundingBoxToClipboard()
+  
+  ' Declare local variables
+  Dim arrObjects, arrBox, arrDim(2)
+  Dim strMin, strMax, strDim, strResults
+  
+  ' Pick some objects
+  arrObjects = Rhino.GetObjects("Select objects for bounding box calculation", 0, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+    
+  ' Calculate the bounding box  
+  arrBox = Rhino.BoundingBox(arrObjects)
+  If IsNull(arrBox) Then
+    Call Rhino.Print("Error calculating bounding box.")
+    Exit Sub
+  End If
+  
+  ' Minimum point is arrBox(0) point
+  strMin = "Min = " & Rhino.Pt2Str(arrBox(0))
+  ' Maximum point is arrBox(6) point
+  strMax = "Max = " & Rhino.Pt2Str(arrBox(6))
+  
+  ' Calculate dimensions of bounding box
+  arrDim(0) = Rhino.Distance(arrBox(0), arrBox(1))
+  arrDim(1) = Rhino.Distance(arrBox(0), arrBox(3))
+  arrDim(2) = Rhino.Distance(arrBox(0), arrBox(4))
+  strDim = "Dimensions = " & Rhino.Pt2Str(arrDim)
+  
+  ' Build big string
+  strResults = strMin & VbCrLf & strMax & VbCrLf & strDim
+  
+  ' Print results to command line
+  Call Rhino.Print(strResults)
+  ' Copy results to Windows Clipboard
+  Call Rhino.ClipboardText(strResults)
+  
+End Sub

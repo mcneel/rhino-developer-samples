@@ -1,0 +1,222 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TestAnalysisTools.rvb -- May 2009, Dale Fugier.
+' This RhinoScipt file documents the RhinoScript callable function
+' included in AnalysisTools.rhp.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function:
+'   IsAnalysisMesh
+' Description:
+'   Verifies that a mesh object is an analysis mesh.
+' Parameters:
+'   strMesh  - Required, String. The identifier of the object test.
+' Returns:
+'   Boolean  - True if an analysis mesh, False otherwise.
+'   Null     - On error;
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestIsAnalysisMesh()
+  
+  Const rhMesh = 32
+  Dim objAnalysis, strMesh
+  
+  On Error Resume Next
+  Set objAnalysis = Rhino.GetPluginObject("Analysis Tools")
+  If Err Then
+    Rhino.Print "Unable to connect to AnalysisTools plug-in."
+    Exit Sub
+  End If
+  
+  strMesh = Rhino.GetObject("Select mesh", rhMesh, True)
+  If IsNull(strMesh) Then Exit Sub
+    
+  If objAnalysis.IsAnalysisMesh(strMesh) Then
+    Rhino.Print "Mesh is an analysis mesh."
+  Else
+    Rhino.Print "Mesh is not an analysis mesh."
+  End If
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function:
+'   AddAnalysisMesh
+' Description:
+'   Adds a new analysis mesh.
+' Parameters:
+'   arrVertices - Required. Array.  An array of 3-D points defining the
+'                 vertices of the mesh.
+'   arrFaces    - Required, Array. An array containing arrays of four
+'                 numbers that define the vertex indices for each face of
+'                 the mesh. If the third and forth vertex indices of a face
+'                 are identical, a triangular face will be created. Otherwise
+'                 a quad face will be created.
+'   arrData     - Required, Array. An array of analysis data (numbers).
+'                 Note, For every mesh vertex, there must be corresponding
+'                 analysis data. 
+' Returns:
+'   String      - The identifier of the new object if successful.
+'   Null        - If not successful, or on error.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestAddAnalysisMesh()
+  
+  Dim objAnalysis, arrVertices(8), arrFaces(7), arrData(8)
+  
+  On Error Resume Next
+  Set objAnalysis = Rhino.GetPluginObject("Analysis Tools")
+  If Err Then
+    Rhino.Print "Unable to connect to AnalysisTools plug-in."
+    Exit Sub
+  End If  
+  
+  arrVertices(0) = Array(0.0, 0.0, 0.0)
+  arrVertices(1) = Array(5.0, 0.0, 0.0)
+  arrVertices(2) = Array(10.0, 0.0, 0.0)
+  arrVertices(3) = Array(0.0, 5.0, 0.0)
+  arrVertices(4) = Array(5.0, 5.0, 0.0)
+  arrVertices(5) = Array(10.0, 5.0, 0.0)
+  arrVertices(6) = Array(0.0, 10.0, 0.0)
+  arrVertices(7) = Array(5.0, 10.0, 0.0)
+  arrVertices(8) = Array(10.0, 10.0, 0.0)
+
+  arrFaces(0) = Array(0,1,4,4)
+  arrFaces(1) = Array(2,4,1,1)
+  arrFaces(2) = Array(0,4,3,3)
+  arrFaces(3) = Array(2,5,4,4)
+  arrFaces(4) = Array(3,4,6,6)
+  arrFaces(5) = Array(5,8,4,4)
+  arrFaces(6) = Array(6,4,7,7)
+  arrFaces(7) = Array(8,7,4,4)
+  
+  arrData(0) = 0.0
+  arrData(1) = 5.0
+  arrData(2) = 10.0
+  arrData(3) = 0.0
+  arrData(4) = 5.0
+  arrData(5) = 10.0
+  arrData(6) = 0.0
+  arrData(7) = 5.0
+  arrData(8) = 10.0
+  
+  objAnalysis.AddAnalysisMesh arrVertices, arrFaces, arrData
+ 
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function:
+'   AnalysisMeshData
+' Description:
+'   Returns or modifies the data associated with an analysis mesh.
+'   Note, if the specified mesh is not an analysis mesh, it will be
+'   converted to an analysis mesh.
+' Parameters:
+'   strMesh  - Required, String. The identifier of an existing analysis mesh.
+'   arrData  - Optional, Array. An array of analysis data (numbers).
+'              Note, For every mesh vertex, there must be corresponding
+'              analysis data. 
+' Returns:
+'   Array    - If arrData is not specified, then the current analysis data.
+'   Array    - If arrData is specified, then the previous analysis data.
+'   Null     - On error;
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestAnalysisMeshData()
+  
+  Const rhMesh = 32
+  Dim objAnalysis, strMesh, arrVertices, arrData(), i
+  
+  On Error Resume Next
+  Set objAnalysis = Rhino.GetPluginObject("Analysis Tools")
+  If Err Then
+    Rhino.Print "Unable to connect to AnalysisTools plug-in."
+    Exit Sub
+  End If
+  
+  strMesh = Rhino.GetObject("Select mesh", rhMesh, True)
+  If IsNull(strMesh) Then Exit Sub
+    
+  arrVertices = Rhino.MeshVertices(strMesh)
+  ReDim arrData(UBound(arrVertices))
+  For i = 0 To UBound(arrVertices)
+    arrData(i) = arrVertices(i)(2)
+  Next
+  
+  objAnalysis.AnalysisMeshData strMesh, arrData
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function:
+'   AnalysisMeshDataRange
+' Description:
+'   Returns the min/max data range.
+' Parameters:
+'   strMesh  - Required, String. The identifier of an existing analysis mesh.
+' Returns:
+'   Array    - The min/max data range.
+'   Null     - On error;
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestAnalysisMeshDataRange()
+  
+  Const rhMesh = 32
+  Dim objAnalysis, strMesh, arrRange
+  
+  On Error Resume Next
+  Set objAnalysis = Rhino.GetPluginObject("Analysis Tools")
+  If Err Then
+    Rhino.Print "Unable to connect to AnalysisTools plug-in."
+    Exit Sub
+  End If
+  
+  strMesh = Rhino.GetObject("Select mesh", rhMesh, True)
+  If IsNull(strMesh) Then Exit Sub
+    
+  If objAnalysis.IsAnalysisMesh(strMesh) Then
+    arrRange = objAnalysis.AnalysisMeshDataRange(strMesh)
+    Rhino.Print "Analysis parameter varies from " & CStr(arrRange(0)) & " to " & CStr(arrRange(1)) & "."
+  Else
+    Rhino.Print "Mesh is not an analysis mesh."
+  End If
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function:
+'   AnalysisMeshDisplayRange
+' Description:
+'   Returns or modifies an analysis meshes min/max display range.
+' Parameters:
+'   strMesh  - Required, String. The identifier of an existing analysis mesh.
+'   arrRange - Optional, Array. An array of two numbers that identify the
+'              new min/max display range.
+' Returns:
+'   Array    - If arrRange is not specified, then the current min/max display range.
+'   Array    - If arrRange is specified, then the previous min/max display range.
+'   Null     - On error;
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestAnalysisMeshDisplayRange()
+  
+  Const rhMesh = 32
+  Dim objAnalysis, strMesh, arrRange
+  
+  On Error Resume Next
+  Set objAnalysis = Rhino.GetPluginObject("Analysis Tools")
+  If Err Then
+    Rhino.Print "Unable to connect to AnalysisTools plug-in."
+    Exit Sub
+  End If
+  
+  strMesh = Rhino.GetObject("Select mesh", rhMesh, Truu)
+  If IsNull(strMesh) Then Exit Sub
+    
+  If objAnalysis.IsAnalysisMesh(strMesh) Then
+    arrRange = objAnalysis.AnalysisMeshDisplayRange(strMesh)
+    Rhino.Print "Analysis display parameter varies from " & CStr(arrRange(0)) & " to " & CStr(arrRange(1)) & "."
+    ' Reset
+    objAnalysis.AnalysisMeshDisplayRange strmesh, objAnalysis.AnalysisMeshDataRange(strMesh)
+  Else
+    Rhino.Print "Mesh is not an analysis mesh."
+  End If
+  
+End Sub

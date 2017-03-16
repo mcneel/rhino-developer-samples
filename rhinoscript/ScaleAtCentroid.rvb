@@ -1,0 +1,26 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ScaleAtCentroid.rvb -- January 2005
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ScaleAtCentroid
+  Dim arrObjects, dblScale, arrOrigin, arrFirst, arrScnd
+  arrObjects = Rhino.GetObjects("Select objects to scale", 24, True, True)
+  If IsArray(arrObjects) Then
+    dblScale = Rhino.RealBox("Set scale factor", 1, "Scale factor")
+    If IsNumeric(dblScale) Then
+      Rhino.EnableRedraw False
+      For Each strObject In arrObjects
+        arrResult = Rhino.SurfaceAreaCentroid(strObject)
+        If IsArray(arrResult) Then
+          Rhino.ScaleObject strObject, arrResult(0), dblScale, dblScale, dblScale
+        End If
+      Next
+      Rhino.EnableRedraw True
+    End If
+  End If
+End Sub

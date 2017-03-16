@@ -1,0 +1,29 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelGroups.rvb -- June 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Selects grouped objects
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelGroups
+  Dim arrGroups, arrSelect, strGroup
+  arrGroups = Rhino.GroupNames
+  If Not IsNull(arrGroups) Then
+    arrSelect = Rhino.MultiListBox(arrGroups, "Object groups to select")
+    If IsArray(arrSelect) Then
+      Call Rhino.EnableRedraw(False)
+      For Each strGroup In arrSelect
+        Call Rhino.ObjectsByGroup(strGroup, True)
+      Next
+      Call Rhino.EnableRedraw(True)
+    End If
+  End If
+End Sub
+
+
+    

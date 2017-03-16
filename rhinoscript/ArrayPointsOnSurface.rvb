@@ -1,0 +1,48 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ArrayPointsOnSurface.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: ArrayPointsOnSurface
+' Purpose:    Creates an array of points on a surface.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayPointsOnSurface
+
+  Dim strObject, nRows, nColumns
+  Dim U, V, i, j, arrParam(1), arrPoint
+  
+  ' Get the surface object
+  strObject = Rhino.GetObject("Select surface", 8)
+  If IsNull(strObject) Then Exit Sub
+  
+  ' Get the number of rows
+  nRows = Rhino.GetInteger("Number of rows", 2, 2)
+  If IsNull(nRows) Then Exit Sub
+  nRows = nRows - 1
+  
+  ' Get the number of columns
+  nColumns = Rhino.GetInteger("Number of columns", 2, 2)
+  If IsNull(nColumns) Then Exit Sub
+  nColumns = nColumns - 1
+  
+  ' Get the domain of the surface
+  U = Rhino.SurfaceDomain(strObject, 0)
+  V = Rhino.SurfaceDomain(strObject, 1)
+  If Not IsArray(U) Or Not IsArray(V) Then Exit Sub
+  
+  ' Add the points
+  For i = 0 To nRows
+    arrParam(0) = U(0) + (((U(1) - U(0)) / nRows) * i)
+    For j = 0 To nColumns
+      arrParam(1) = V(0) + (((V(1) - V(0)) / nColumns) * j)
+      arrPoint = Rhino.EvaluateSurface(strObject, arrParam)
+      If IsArray(arrPoint) Then Rhino.AddPoint arrPoint
+    Next
+  Next
+
+End Sub
+

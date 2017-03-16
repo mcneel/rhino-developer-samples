@@ -1,0 +1,93 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchAudit3dm.rvb -- January 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchAudit3dm
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BatchAudit3dm
+  
+	' Declare local variables
+	Dim sFolder, oFSO, oFolder
+	Dim strTitle, nRecurse, blnCheck
+	
+	strTitle = "Batch Audit 3DM"
+
+	' Make sure were are running Rhino 5.        
+	If (Rhino.ExeVersion < 5) Then
+		Call Rhino.Print("This script requires Rhino 5.0 for greater.")
+		Exit Sub
+	End If
+
+	' Browse to a folder you want to  process
+	sFolder = Rhino.WorkingFolder
+	sFolder = Rhino.BrowseForFolder(sFolder, "Select folder to process", strTitle)
+	If IsNull(sFolder) Then Exit Sub
+	
+	' Should we recurse through subfolders?
+	nRecurse = Rhino.MessageBox("You want to process each subfolder in this folder?", 35, strTitle)
+	If nRecurse = vbCancel Then Exit Sub
+
+	' Create file system and folder objects
+	Set oFSO = CreateObject("Scripting.FileSystemObject") 
+	Set oFolder = oFSO.GetFolder(sFolder)
+
+	' Turn off bad object error checking
+	blnCheck = Rhino.CheckNewObjects(False)
+
+	' Call our worker procedure
+	Call DoAudit(oFSO, oFolder, nRecurse)
+
+	' Clean up and finish
+	Call Rhino.CheckNewObjects(blnCheck)
+	Call Rhino.DocumentModified(False)
+	Call Rhino.Command("_-New _None", 0)
+	Call Rhino.Print("Done!")  
+
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DoAudit
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DoAudit(oFSO, oFolder, nRecurse)
+
+	' Declare local variables
+	Dim oFile, strOpen, strSave, oSubFolder
+  
+	' Process each file in the folder
+	For Each oFile In oFolder.Files
+		' Process only 3dm files
+		If LCase(oFSO.GetExtensionName(oFile.Path)) = "3dm" Then
+			strOpen = LCase(oFile.Path)
+			strSave = LCase(Replace(strOpen, ".3dm", "_audit.txt", 1, -1, 1))
+			' Here we go...
+			Call Rhino.DocumentModified(False)
+			' Audit the file
+			Call Rhino.Command("_-Audit3dmFile " & DoubleQuote(strOpen) & " _File " & DoubleQuote(strSave))
+		End If
+	Next
+
+	If nRecurse = vbYes Then
+		For Each oSubFolder In oFolder.SubFolders
+			Call DoAudit(oFSO, oSubFolder, nRecurse)
+		Next
+	End If
+
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DoubleQuote
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function DoubleQuote(str)
+	DoubleQuote = Chr(34) & str & Chr(34)	
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Drag & drop support
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Call Rhino.AddStartupScript(Rhino.LastLoadedScriptFile)
+Call Rhino.AddAlias("BatchAudit3dm", "_NoEcho _-RunScript (BatchAudit3dm)")

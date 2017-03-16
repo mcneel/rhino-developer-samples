@@ -1,0 +1,74 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BaseballSeam.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0 and Rhino 5.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Baseball
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BaseballSeam()
+
+	Dim a : a = 0.4
+	Dim n : n = 40
+  
+	Dim t0 : t0 = 0.0
+	Dim t1 : t1 = 4.0 * Rhino.PI
+  
+	Dim pts()
+	ReDim pts(n)
+  
+	Dim u0 : u0 = 0
+	Dim u1 : u1 = UBound(pts)
+
+	Dim i, t, x
+	For i = u0 To u1
+		x = NormalizedAt(u0, u1, i)
+		t = ParameterAt(t0, t1, x)
+		pts(i) = PointAt(a, t)
+		Rhino.Print Rhino.Pt2Str(pts(x))
+	Next
+
+	Call Rhino.AddInterpCurve(pts, 3, 3)
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PointAt
+' Evaluates an ellipse at a parmeter
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function PointAt(a, t)
+	Dim p, pt(2)
+	p = Rhino.PI
+	pt(0) = Sin(p / 2 - (p / 2 - a) * Cos(t)) * Cos(t / 2 + a * Sin(2 * t))
+	pt(1) = Sin(p / 2 - (p / 2 - a) * Cos(t)) * Sin(t / 2 + a * Sin(2 * t))
+	pt(2) = Cos(p / 2 - (p / 2 - a) * Cos(t))
+	PointAt = pt
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ParameterAt
+' Converts a normalized parameter to an interval value
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ParameterAt(t0, t1, x)
+	ParameterAt = (1.0 - x) * t0 + x * t1
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' NormalizedAt
+' Converts an interval value to a normalized parameter
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function NormalizedAt(t0, t1, t)
+	Dim x : x = t0
+	If (t0 <> t1) Then
+		If (t = t1) Then
+			x = 1.0
+		Else
+			x = (t - t0) / (t1 - t0)
+		End If
+	End If
+	NormalizedAt = x
+End Function

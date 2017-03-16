@@ -1,0 +1,71 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LoftExample.rvb -- Julyn 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub LoftExample()
+  
+  ' Declare local variables
+  Dim origin, magnitude, offset, nudge, i
+  Dim corner, box0, box1, rect0, rect1, rect, curves(3)
+  
+  ' Initialize local variables
+  origin = Array(0,0,0)
+  magnitude = Array(1,1,1)
+  offset = Array(5,0,0)
+  nudge = 0.1
+
+  ' Create the first box
+  corner = Rhino.PointAdd(origin, magnitude)
+  box0 = Rhino.PointArrayBoundingBox(Array(origin, corner))
+  Call Rhino.AddBox(box0)
+
+  ' Offset the origin
+  origin = Rhino.PointAdd(origin, offset)
+  
+  ' Create the second box  
+  corner = Rhino.PointAdd(origin, magnitude)
+  box1 = Rhino.PointArrayBoundingBox(Array(origin, corner))
+  Call Rhino.AddBox(box1)
+  
+  ' Compute box0 rectangle
+  rect0 = Array(box0(1), box0(2), box0(6), box0(5))
+  'Call Rhino.AddPoints(rect0)
+  
+  ' Compute box1 rectangle
+  rect1 = Array(box1(0), box1(3), box1(7), box1(4))
+  'Call Rhino.AddPoints(rect1)
+  
+  ' Compute mid rectangle
+  rect = Array( _
+      Rhino.PointDivide(Rhino.PointAdd(rect0(0), rect1(0)), 2), _
+      Rhino.PointDivide(Rhino.PointAdd(rect0(1), rect1(1)), 2), _
+      Rhino.PointDivide(Rhino.PointAdd(rect0(2), rect1(2)), 2), _
+      Rhino.PointDivide(Rhino.PointAdd(rect0(3), rect1(3)), 2)  )
+      
+  ' Shrink the mid rectangle a bit...
+  rect(0)(1) = rect(0)(1) + nudge
+  rect(0)(2) = rect(0)(2) + nudge
+  rect(1)(1) = rect(1)(1) - nudge
+  rect(1)(2) = rect(1)(2) + nudge
+  rect(2)(1) = rect(2)(1) - nudge
+  rect(2)(2) = rect(2)(2) - nudge
+  rect(3)(1) = rect(3)(1) + nudge
+  rect(3)(2) = rect(3)(2) - nudge
+  'Call Rhino.AddPoints(rect)  
+
+  ' Create curves through the rectangles for lofting
+  For i = 0 To 3
+    curves(i) = Rhino.AddInterpCurve(Array(rect0(i), rect(i), rect1(i)))
+  Next          
+
+  ' Loft a surface though the curves
+  Call Rhino.AddLoftSrf(curves, , , 2, 0, , True)
+  
+  ' Curve are not longer needed, so delete 'em
+  Call Rhino.DeleteObjects(curves)
+               
+End Sub

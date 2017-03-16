@@ -1,0 +1,42 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelMirroredBlocks.rvb -- October 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Selects mirrored block instances, 
+' included those with non-uniform scales.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelMirroredBlocks
+  
+  Const RH_BLOCK = 4096
+  Dim arrBlocks, strBlock, arrXform, nCount
+  
+  nCount = 0
+  arrBlocks = Rhino.ObjectsByType(RH_BLOCK)
+  If IsArray(arrBlocks) Then
+    Call Rhino.EnableRedraw(False)
+    For Each strBlock In arrBlocks
+      arrXform = Rhino.BlockInstanceXform(strBlock)
+      If IsArray(arrXform) Then
+        If (Rhino.XformDeterminant(arrXform) < 0) Then
+          Call Rhino.SelectObject(strBlock)
+          nCount = nCount + 1
+        End If
+      End If
+    Next
+    Call Rhino.EnableRedraw(True)
+  End If
+  
+  If nCount = 0 Then
+    Rhino.Print "No block instances added to selection."
+  ElseIf nCount = 1 Then
+    Rhino.Print "1 block instance added to selection."
+  Else
+    Rhino.Print CStr(nCount) & " block instances added to selection."
+  End If
+  
+End Sub

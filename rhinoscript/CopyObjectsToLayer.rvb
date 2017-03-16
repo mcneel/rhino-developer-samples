@@ -1,0 +1,53 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CopyObjectsToLayer.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: CopyObjectsToLayer
+' Purpose:    Copy selected objects to a different layer.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CopyObjectsToLayer
+
+  Dim arrObjects, arrLayers, strLayer, arrNew, strNew
+  
+  ' Get the objects to copy
+  arrObjects = Rhino.GetObjects("Select objects")
+  If IsArray(arrObjects) Then
+  
+  ' Make sure select objects are unselected
+  Rhino.UnselectObjects arrObjects
+  
+  ' Get all layer names
+  arrLayers = Rhino.LayerNames
+  If IsArray(arrLayers) Then
+    
+    ' Get the destination layer
+    arrLayers = Rhino.Sort(arrLayers)
+    strLayer = Rhino.ComboListBox(arrLayers, "Destination Layer " & "<" & Rhino.CurrentLayer & ">")
+    If Not IsNull(strLayer) Then
+      
+      ' Add the new layer if necessary
+      If Not Rhino.IsLayer(strLayer) Then Rhino.AddLayer(strLayer)
+  
+        ' Copy the objects
+        arrNew = Rhino.CopyObjects(arrObjects)
+        If IsArray(arrNew) Then
+          For Each strNew In arrNew
+            ' Set the layer of the copied objects
+            Rhino.ObjectLayer strNew, strLayer
+          Next
+        End If
+  
+        ' Select the newly copied objects
+        Rhino.SelectObjects arrNew
+        
+      End If
+    End If
+  End If
+
+End Sub
+

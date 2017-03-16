@@ -1,0 +1,37 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelectBlockByDescription.rvb -- July 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub SelectBlockByDescription()
+	
+	Dim arrInstances, strInstance
+	Dim strDescription, strName, strInstDesc
+	
+	arrInstances = Rhino.ObjectsByType(&h1000)
+	If IsNull(arrInstances) Then
+		Call Rhino.Print("No block instances found.")
+		Exit Sub
+	End If
+	
+	strDescription = Rhino.GetString("Block description")
+	If IsNull(strDescription) Then Exit Sub
+	
+	Call Rhino.EnableRedraw(False)
+	
+	For Each strInstance In arrInstances
+		strName = Rhino.BlockInstanceName(strInstance)
+		strInstDesc = Rhino.BlockDescription(strName)
+		If Not IsNull(strInstDesc) Then
+			If (InStr(1, strInstDesc, strDescription, 1) > 0) Then
+				Call Rhino.SelectObject(strInstance)
+			End If
+		End If
+	Next
+	
+	Call Rhino.EnableRedraw(True)
+
+End Sub

@@ -1,0 +1,93 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' IsBox.rvb -- July 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0 and 5.0
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Test to determine if a polysurface is a box
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function IsBox(obj)
+  
+  ' Locals
+  Dim objects, bPlanar, i
+  Dim vol0, vol1
+  Dim view, du, dv, plane, cplane, bbox
+ 
+  ' Default
+  IsBox = False
+  
+  ' Bail if not a polysurface
+  If Not Rhino.IsPolysurface(obj) Then Exit Function
+  
+  Call Rhino.EnableRedraw(False)
+  
+  ' Explode the polysurface
+  objects = Rhino.ExplodePolysurfaces(obj)
+  If IsArray(objects) Then
+    
+    ' Boxes have 6 surface
+    If UBound(objects) = 5 Then
+      
+      ' Boxes have 6 planar surfaces
+      bPlanar = True    
+      For i = 0 To UBound(objects)
+        If Rhino.IsSurfacePlanar(objects(i)) = False Then
+          bPlanar = False
+          Exit For
+        End If        
+      Next
+  
+      ' Volumes should be the same (within tolerance)
+      If (bPlanar = True) Then
+        
+        ' Calculate the volume of the polysurface
+        vol0 = Rhino.SurfaceVolume(obj)
+        
+        ' Calculate the volume of the bounding box
+        ' of the exploded surfaces
+        du = Rhino.SurfaceDomain(objects(0), 0)
+        dv = Rhino.SurfaceDomain(objects(0), 1)
+        plane = Rhino.SurfaceFrame(objects(0), Array(du(0),dv(0)))
+        view = Rhino.CurrentView()
+        cplane = Rhino.ViewCPlane(view, plane)
+        bbox = Rhino.BoundingBox(objects, view)
+        Call Rhino.ViewCPlane(view, cplane) ' Restore
+        vol1 = Rhino.Distance(bbox(0),bbox(1)) * _
+               Rhino.Distance(bbox(0),bbox(3)) * _
+               Rhino.Distance(bbox(0),bbox(4))
+        
+        ' Compare volumes
+        If (Abs(vol0(0)-vol1) < Rhino.UnitAbsoluteTolerance) Then
+          IsBox = True
+        End If
+      
+      End If
+      
+    End If     
+      
+    Call Rhino.DeleteObjects(objects)
+  
+  End If
+  
+  Call Rhino.EnableRedraw(True)
+  
+End Function
+  
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Test the above...
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestIsBox()
+  Dim obj
+  obj = Rhino.GetObject("Select polysurface", 16, True) 
+  If Not IsNull(obj) Then
+    If Isbox(obj) Then
+      Call Rhino.Print("The object is a box.")
+    Else
+      Call Rhino.Print("The object is not a box")
+    End If
+  End If
+End Sub

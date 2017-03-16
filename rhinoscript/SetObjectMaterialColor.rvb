@@ -1,0 +1,34 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SetObjectMaterialColor.rvb -- March 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub SetObjectMaterialColor()
+  
+  Dim arrObjects, strObject, lngColor, intIndex
+  
+  arrObjects = Rhino.GetObjects("Select objects to set render color", 8+16+32, True, True)
+  If IsNull(arrObjects) Then Exit Sub
+  
+  lngColor = Rhino.GetColor()
+  If IsNull(lngColor) Then Exit Sub
+
+  Call Rhino.EnableRedraw(False)
+      
+  For Each strObject In arrObjects
+    intIndex = Rhino.ObjectMaterialIndex(strObject)
+    If (intIndex < 0) Then
+      intIndex = Rhino.AddMaterialToObject(strObject)
+    End If
+    If (intIndex >= 0) Then
+      Call Rhino.MaterialColor(intIndex, lngColor)
+    End If
+  Next
+
+  Call Rhino.EnableRedraw(True)
+  
+End Sub

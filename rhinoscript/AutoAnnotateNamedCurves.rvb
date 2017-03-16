@@ -1,0 +1,36 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' AutoAnnotateNamedCurves.rvb -- March 2015
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub AutoAnnotateNamedCurves
+	
+	Dim arrCurves, strCurve, strName
+	Dim arrPt3d, arrPt2d, arrPlane, arrX, arrY, arrZ
+	
+	arrCurves = Rhino.GetObjects("Select named curves to annotate", 4, True, True)
+	If IsNull(arrCurves) Then Exit Sub
+	
+	Call Rhino.EnableRedraw(False)
+	
+	arrPlane = Rhino.ViewCPlane
+	arrZ = arrPlane(3)
+	
+	For Each strCurve In arrCurves
+		strName = Rhino.ObjectName(strCurve)
+		If Not IsNull(strName) Then
+			arrPt3d = Rhino.CurveMidPoint(strCurve)
+			arrPt2d = Rhino.CurveClosestPoint(strCurve, arrPt3d)
+			arrX = Rhino.CurveTangent(strCurve, arrPt2d)
+			arrY = Rhino.VectorCrossProduct(arrZ, arrX)
+			arrPlane = Rhino.PlaneFromFrame(arrPt3d, arrX, arrY)
+			Call Rhino.AddText(strName, arrPlane)
+		End If
+	Next
+	
+	Call Rhino.EnableRedraw(True)
+
+End Sub

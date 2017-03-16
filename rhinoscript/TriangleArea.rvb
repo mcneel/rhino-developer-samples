@@ -1,0 +1,25 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TriangleArea.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Calculates the area of a triangle using the Heron formula.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function TriangleArea(pt0, pt1, pt2)
+  Dim a, b, c, s, rc
+  a = Rhino.Distance(pt0, pt1)  
+  b = Rhino.Distance(pt1, pt2)  
+  c = Rhino.Distance(pt2, pt0)  
+  s = (a + b + c) / 2.0
+  rc = s * (s - a) * (s - b) * (s - c)
+  If (rc <= 0) Then
+    TriangleArea = 0
+  Else
+    TriangleArea = Sqr(rc)
+  End If
+End Function

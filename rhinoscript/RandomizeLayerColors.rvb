@@ -1,0 +1,21 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RandomizeLayerColors.rvb -- May 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Call Randomize
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Randomizes the colors of all layers in the document.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RandomizeLayerColors()
+  Dim arrLayers, strLayer
+  arrLayers = Rhino.LayerNames
+  For Each strLayer In arrLayers
+    Call Rhino.LayerColor(strLayer, Int(16777216 * Rnd))
+  Next
+End Sub

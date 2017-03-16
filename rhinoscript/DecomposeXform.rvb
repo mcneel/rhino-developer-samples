@@ -1,0 +1,102 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DecomposeXform.rvb -- May 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'
+' Note well:
+' The Rhino SDK does not contain functions that will decompose a
+' transformation matrix into it's individual components (e.g. scale, 
+' rotation, translation). If you Google the topic, you will probably 
+' find lots if information on the subject. Just keep in mind that there
+' is no perfect solution for this, as you will find in your research.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Function DecomposeXformTranslation(arrXform)
+  Dim arrVector(2)
+  arrVector(0) = arrXform(0,3)
+  arrVector(1) = arrXform(1,3)
+  arrVector(2) = arrXform(2,3)
+  DecomposeXformTranslation = arrVector
+End Function
+
+Function DecomposeXformShear(arrXform)
+  Dim arrVector(2)
+  arrVector(0) = arrXform(3,0)
+  arrVector(1) = arrXform(3,1)
+  arrVector(2) = arrXform(3,2)
+  DecomposeXformShear = arrVector
+End Function
+
+Function DecomposeXformScale(arrXform)
+  Dim arrScale(2)
+  arrScale(0) = Sqr(arrXform(0,0)^2 + arrXform(0,1)^2 + arrXform(0,2)^2)
+  arrScale(1) = Sqr(arrXform(1,0)^2 + arrXform(1,1)^2 + arrXform(1,2)^2)
+  arrScale(2) = Sqr(arrXform(2,0)^2 + arrXform(2,1)^2 + arrXform(2,2)^2)
+  DecomposeXformScale = arrScale
+End Function
+
+Function DecomposeXformRotation(arrXform)
+  Dim arrRotate(2)
+  arrRotate(0) = Rhino.ATan2(-arrXform(2,1), arrXform(2,2))
+  arrRotate(1) = Rhino.ASin(arrXform(2,0))
+  arrRotate(2) = Rhino.ATan2(arrXform(1,0), arrXform(0,0))
+  DecomposeXformRotation = arrRotate
+End Function
+
+Function DecomposeXformEuler(arrXform)
+  Dim arrRotate(2)
+  If arrXform(0,0) = 1.0 Then
+    arrRotate(0) = Rhino.ATan2(arrXform(0,2), arrXform(2,3))
+    arrRotate(1) = 0
+    arrRotate(2) = 0
+  ElseIf arrXform(0,0) = -1.0 Then    
+    arrRotate(0) = Rhino.ATan2(arrXform(0,2), arrXform(2,3))
+    arrRotate(1) = 0
+    arrRotate(2) = 0
+  Else    
+    arrRotate(0) = Rhino.ATan2(-arrXform(2,0), arrXform(0,0))
+    arrRotate(1) = Rhino.ASin(arrXform(1,0))
+    arrRotate(2) = Rhino.ATan2(-arrXform(1,2), arrXform(1,1))
+  End If
+  DecomposeXformEuler = arrRotate
+End Function
+
+Sub Tester
+  Dim strBlock, arrXform, arrResult
+  strBlock = Rhino.GetObject("Select block", 4096)
+  If Not IsNull(strBlock) Then
+    arrXform = Rhino.BlockInstanceXform(strBlock)
+    If IsArray(arrXform) Then
+      
+      arrResult = DecomposeXformTranslation(arrXform)
+      If IsArray(arrResult) Then Call Rhino.Print("Translation = " & Rhino.Pt2Str(arrResult))
+        
+      arrResult = DecomposeXformShear(arrXform)
+      If IsArray(arrResult) Then Call Rhino.Print("Shear = " & Rhino.Pt2Str(arrResult))
+        
+      arrResult = DecomposeXformScale(arrXform)
+      If IsArray(arrResult) Then Call Rhino.Print("Scale = " & Rhino.Pt2Str(arrResult))
+
+      arrResult = DecomposeXformRotation(arrXform)
+      If IsArray(arrResult) Then
+        arrResult(0) = Rhino.ToDegrees(arrResult(0))
+        arrResult(1) = Rhino.ToDegrees(arrResult(1))
+        arrResult(2) = Rhino.ToDegrees(arrResult(2))
+        Call Rhino.Print("Rotation = " & Rhino.Pt2Str(arrResult))
+      End If
+
+      arrResult = DecomposeXformEuler(arrXform)
+      If IsArray(arrResult) Then
+        arrResult(0) = Rhino.ToDegrees(arrResult(0))
+        arrResult(1) = Rhino.ToDegrees(arrResult(1))
+        arrResult(2) = Rhino.ToDegrees(arrResult(2))
+        Call Rhino.Print("Euler = " & Rhino.Pt2Str(arrResult))
+      End If
+
+    End If
+  End If
+End Sub
+ 
+Call Tester

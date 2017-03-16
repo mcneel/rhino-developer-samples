@@ -1,0 +1,59 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' OffsetCrvBoth.rvb -- October 2008
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub OffsetCrvBoth
+  
+  Const rhObjectCurve = 4
+  Dim strCurve
+  strCurve = Rhino.GetObject("Select curve to offset", rhObjectCurve, True)
+  If VarType(strCurve) = vbNull Then Exit Sub
+
+  Dim arrPoint
+  arrPoint = Rhino.GetPointOnCurve(strCurve, "Point on curve")
+  If Not IsArray(arrPoint) Then Exit Sub
+
+  Dim dblDistance
+  dblDistance = GetDefaultDistance()
+  dblDistance = Rhino.GetReal("Offset distance", dblDistance, 0.0 )
+  If Not IsNumeric(dblDistance) Or (dblDistance <= 0.0) Then Exit Sub
+  SaveDefaultDistance dblDistance
+  
+  Dim arrPt1, arrPt2
+  arrPt1 = Array(0.0, 1.0, 0.0)
+  arrPt2 = Array(0.0, -1.0, 0.0)
+
+  Rhino.EnableRedraw vbFalse
+  Rhino.Command "_CPlane _Origin " & Rhino.Pt2Str(arrPoint)
+  Rhino.SelectObject strCurve
+  Rhino.Command "_Offset _Distance "& dblDistance & " " & Rhino.Pt2Str(arrPt1), vbFalse
+  Rhino.SelectObject strCurve
+  Rhino.Command "_Offset _Distance "& dblDistance & " " & Rhino.Pt2Str(arrPt2), vbFalse
+  Rhino.Command "_CPlane _Previous", vbFalse
+  Rhino.UnselectAllObjects
+  Rhino.EnableRedraw vbTrue
+
+End Sub
+
+Function GetDefaultDistance
+  Dim objShell, strFile, strDistance
+  Set objShell = CreateObject("WScript.Shell")
+  strFile = objShell.SpecialFolders("MyDocuments") & "\RhinoScript.ini"
+  strDistance = Rhino.GetSettings( strFile, "OffsetCrvBoth", "Distance")
+  If IsNull(strDistance) Then
+    GetDefaultDistance = 1.0
+  Else
+    GetDefaultDistance = CDbl(strDistance)
+  End If
+End Function
+
+Sub SaveDefaultDistance(dblDistance)
+  Dim objShell, strFile
+  Set objShell = CreateObject("WScript.Shell")
+  strFile = objShell.SpecialFolders("MyDocuments") & "\RhinoScript.ini"
+  Rhino.SaveSettings strFile, "OffsetCrvBoth", "Distance", CStr(dblDistance)
+End Sub

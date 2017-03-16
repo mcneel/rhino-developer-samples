@@ -1,0 +1,86 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ObjectColor.rvb -- February 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Randomize
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Sets the color of an object
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SetObjectColor
+  
+  Dim objects, color
+  
+  objects = Rhino.GetObjects("Select objects to change colors", 0, True, True)
+  If IsNull(objects) Then Exit Sub
+
+  color = Rhino.GetColor
+  If IsNull(color) Then Exit Sub
+    
+  Rhino.ObjectColor objects, color
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Randomly sets the color of an object
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SetObjectColorRandom
+  
+  Dim objects, red, green, blue, i
+  
+  objects = Rhino.GetObjects("Select objects for randomly color change", 0, True, True)
+  If IsNull(objects) Then Exit Sub
+
+  Rhino.EnableRedraw False
+  For i = 0 To UBound(objects)
+    red = Int(255 * Rnd)
+    green = Int(255 * Rnd)
+    blue = Int(255 * Rnd)  
+    Rhino.ObjectColor objects(i), RGB(red, green, blue)
+  Next
+  Rhino.EnableRedraw True
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Gradiently sets the color of an object
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SetObjectColorGraded
+  
+  Dim objects, color0, color1, color, i, bound
+  Dim red, red0, red1
+  Dim green, green0, green1
+  Dim blue, blue0, blue1, percent
+  
+  objects = Rhino.GetObjects("Select objects for gradient color change", 0, True, True)
+  If IsNull(objects) Then Exit Sub
+
+  color0 = Rhino.GetColor
+  If IsNull(color0) Then Exit Sub
+    
+  color1 = Rhino.GetColor
+  If IsNull(color1) Then Exit Sub
+
+  red0 = color0 And &HFF
+  red1 = color1 And &HFF
+  green0 = (color0 \ &H100) And &HFF
+  green1 = (color1 \ &H100) And &HFF
+  blue0 = (color0 \ &H10000) And &HFF
+  blue1 = (color1 \ &H10000) And &HFF
+  bound = UBound(objects)
+  
+  Rhino.EnableRedraw False
+  For i = 0 To bound
+    percent = i/bound
+    red = red0 + Int(percent * (red1 - red0))
+    green = green0 + Int(percent * (green1 - green0))
+    blue = blue0 + Int(percent * (blue1 - blue0))    
+    Rhino.ObjectColor objects(i), RGB(red, green, blue)
+  Next
+  Rhino.EnableRedraw True
+  
+End Sub

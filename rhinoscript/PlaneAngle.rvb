@@ -1,0 +1,103 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PlaneAngle.rvb -- December 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Test subroutine for GetPlaneAngle function (below)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestPlaneAngle
+  
+  Dim arrPlane, arrBasePt, arrRefPt1, arrRefPt2
+
+  arrPlane = Rhino.WorldXYPlane
+  arrBasePt = Array(0,0,0)
+  arrRefPt1 = Rhino.GetPoint("First angle point", arrBasePt)
+  arrRefPt2 = Rhino.GetPoint("Second angle point", arrBasePt)
+  Call Rhino.Print(GetPlaneAngle(arrPlane, arrBasePt, arrRefPt1, arrRefPt2))
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Calculates the angle between two points that lie on a given plane. 
+' Parameters:
+'   arrPlane  - The plane on which the points lie
+'   arrBasePt - The base point
+'   arrRefPt1 - The first reference point
+'   arrRefPt2 - The second reference point
+' Returns:
+'   The angle, in degrees, if successful.
+'   Null if not successful
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetPlaneAngle(ByVal arrPlane, ByVal arrBasePt, ByVal arrRefPt1, ByVal arrRefPt2)
+  
+  ' Local variables
+  Dim arrVector, arrZeroVector
+  Dim dblDot, dblRadians
+  Dim arrYPlane, dblDist
+  
+  ' Default return value
+  GetPlaneAngle = Null
+  
+  ' Make sure the points are on the plane
+  arrBasePt = Rhino.PlaneClosestPoint(arrPlane, arrBasePt)
+  arrRefPt1 = Rhino.PlaneClosestPoint(arrPlane, arrRefPt1)
+  arrRefPt2 = Rhino.PlaneClosestPoint(arrPlane, arrRefPt2)
+  
+  ' Make sure base and reference points are not equal
+  If Rhino.PointCompare(arrBasePt, arrRefPt1) Then Exit Function
+  If Rhino.PointCompare(arrBasePt, arrRefPt2) Then Exit Function
+
+  ' Calculate angle between vectors
+  arrVector = Rhino.VectorUnitize(Rhino.VectorCreate(arrRefPt2, arrBasePt))
+  arrZeroVector = Rhino.VectorUnitize(Rhino.VectorCreate(arrRefPt1, arrBasePt))
+  dblDot = Rhino.VectorDotProduct(arrZeroVector, arrVector)
+
+  ' Force the dot product of the two input vectors to 
+  ' fall within the domain for inverse cosine, which 
+  ' is -1 <= x <= 1. This will prevent runtime 
+  ' "domain error" math exceptions.
+  If (dblDot < -1.0) Then
+    dblDot = -1.0
+  ElseIf (dblDot > 1.0) Then
+    dblDot = 1.0
+  End If
+  
+  dblRadians = Rhino.ACos(dblDot)
+  
+  ' Calculate a new y-axis based on the plane's zaxis and our zero vector
+  arrVector = Rhino.VectorUnitize(Rhino.VectorCrossProduct(arrPlane(3), arrZeroVector))
+  
+  ' Calculate a new y-axis plane
+  arrYPlane = Rhino.PlaneFromNormal(arrBasePt, arrVector)
+  
+  ' Figure out which side of this plane that arrRefPt2 is on
+  dblDist = GetPlaneEquationValueAt(Rhino.PlaneEquation(arrYPlane), arrRefPt2)
+  If (dblDist < 0.0) Then
+    dblRadians = (Rhino.PI * 2.0) - dblRadians
+  End If
+
+  GetPlaneAngle = Rhino.ToDegrees(dblRadians)
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Description:
+'   Evaluates a plane equation at a point
+' Parameters:
+'   arrPlaneEq - The plane equation
+'   arrPoint   - The test point
+' Returns:
+'    E.x*P.x + E.y*P.y + E.z*P.z + E.d;
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetPlaneEquationValueAt(ByVal arrPlaneEq, ByVal arrPoint)
+  Dim x, y, z
+  x = arrPlaneEq(0) * arrPoint(0)
+  y = arrPlaneEq(1) * arrPoint(1)
+  z = arrPlaneEq(2) * arrPoint(2)
+  GetPlaneEquationValueAt = x + y + z + arrPlaneEq(3)
+End Function  

@@ -1,0 +1,59 @@
+﻿''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DivideCurveDashed.rvb -- October 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0 and 5.0.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit 
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Divides a curve into "dashed" segments
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DivideCurveDashed
+  
+  Dim curve, slength, dlength
+  Dim i, length, pt, t, dom, results
+  
+  curve = Rhino.GetObject("Select curve to divide", 4, True)
+  If IsNull(curve) Then Exit Sub
+  
+  slength = Rhino.GetReal("Segment length", 1.0)
+  If IsNull(slength) Then Exit Sub
+  If (slength <= 0) Then Exit Sub  
+    
+  dlength = Rhino.GetReal("Dash length", 1.0)
+  If IsNull(dlength) Then Exit Sub
+  If (dlength <= 0) Then Exit Sub
+
+  Call Rhino.EnableRedraw(False)
+  i = 0
+    
+  Do
+    
+    If (i Mod 2 = 0) Then
+      length = slength
+    Else
+      length = dlength
+    End If
+    
+    pt = Rhino.CurveArcLengthPoint(curve, length)
+    If IsNull(pt) Then Exit Do
+      
+    t = Rhino.CurveClosestPoint(curve, pt)
+    
+    If (i Mod 2 = 0) Then
+      results = Rhino.SplitCurve(curve, t, True)
+      curve = results(1)
+    Else
+      dom = Rhino.CurveDomain(curve)
+      curve = Rhino.TrimCurve(curve, Array(t, dom(1)), True)
+    End If
+    
+    i = i + 1
+
+  Loop While True    
+ 
+  Call Rhino.EnableRedraw(True)
+  
+End Sub

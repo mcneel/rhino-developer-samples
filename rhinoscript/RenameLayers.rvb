@@ -1,0 +1,42 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RenameLayers.rvb -- Marcy 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub RenameLayers
+
+  ' Local variables
+  Dim arrLayers, strName, nBound, i
+
+  ' Select one or more layers
+  arrLayers = Rhino.GetLayers()
+
+  If IsArray(arrLayers) Then
+
+    ' Turning of redraw will prevent the layer panel from flickering
+    Call Rhino.EnableRedraw(False)
+
+    ' Determine the bounds of the array
+    nBound = UBound(arrLayers)
+
+    ' Look up layer ids
+    For i = 0 To nBound
+      arrLayers(i) = Rhino.LayerId(arrLayers(i))
+    Next
+
+    ' Rename layers
+    For i = 0 To nBound
+      strName = Rhino.LayerName(arrLayers(i), false)
+      Call Rhino.RenameLayer(arrLayers(i), "Test-" & strName)
+    Next
+
+    ' Turn on redraw
+    Call Rhino.EnableRedraw(True)
+
+  End If
+
+End Sub

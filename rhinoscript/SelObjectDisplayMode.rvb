@@ -1,0 +1,35 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelObjectDisplayMode.rvb -- March 2015
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub SelObjectDisplayMode
+
+	Dim arrModes, strMode
+	Dim arrObjects, strObject, strObjMode
+	
+	arrModes = Rhino.ViewDisplayModes(True, True)
+	strMode = Rhino.ListBox(arrModes, "Object display mode to select:", "Display Modes")
+	If IsNull(strMode) Then Exit Sub
+	
+	Call Rhino.EnableRedraw(False)
+	
+	arrObjects = Rhino.NormalObjects(True)
+	For Each strObject In arrObjects
+		strObjMode = Rhino.ObjectDisplayMode(strObject)
+		If Not IsNull(strObjMode) Then
+			strObjMode = Rhino.ViewDisplayModeName(strObjMode)
+			If Not IsNull(strObjMode) Then
+				If 0 = StrComp(strObjMode, strMode, 1) Then
+					Call Rhino.SelectObject(strObject)
+				End If
+			End If
+		End If
+	Next
+	
+	Call Rhino.EnableRedraw(True)
+	
+End Sub

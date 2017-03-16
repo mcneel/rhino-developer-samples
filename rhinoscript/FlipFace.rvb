@@ -1,0 +1,65 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FlipFace.rvb -- September 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TestFlipFace
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestFlipFace()
+  
+  Dim tri, quad, i
+  tri = Array(0,1,2,2)
+  quad = Array(0,1,2,3)
+  
+  Rhino.ClearCommandHistory
+  
+  Call PrintFace("Triangle before flip", tri)
+  Call FlipFace(tri)
+  Call PrintFace("Triangle after flip", tri)
+  Call FlipFace(tri)
+  Call PrintFace("Triangle reset", tri)
+  
+  Call PrintFace("Quad before flip", quad)
+  Call FlipFace(quad)
+  Call PrintFace("Quad after flip", quad)
+  Call FlipFace(quad)
+  Call PrintFace("Quad reset", quad)
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FlipFace
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub FlipFace(ByRef face)
+  Dim i
+  If face(2) = face(3) Then
+    i = face(1)
+    face(1) = face(2)
+    face(2) = i
+    face(3) = i
+  Else
+    i = face(1)
+    face(1) = face(3)
+    face(3) = i
+  End If
+End Sub  
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PrintFace
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PrintFace(ByVal text, ByVal face)
+  Dim str, i
+  str = text & " = "
+  For i = 0 To UBound(face)
+    str = str & CStr(face(i))
+    If i <> UBound(face) Then
+      str = str & ","
+    End If
+  Next
+  Call Rhino.Print(str)
+End Sub

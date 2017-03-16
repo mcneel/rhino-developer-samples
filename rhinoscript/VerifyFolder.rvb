@@ -1,0 +1,57 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' VerifyFolder.rvb -- March 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TestVerifyFolder
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestVerifyFolder
+  
+  ' Local variables
+  Dim objShell, strFolder
+  
+  ' Create a shell object
+  Set objShell = CreateObject("WScript.Shell")
+  
+  ' Build a folder string
+  strFolder = objShell.SpecialFolders("MyDocuments")
+  strFolder = strFolder & "\MyFolder"
+  
+  ' Verify the folder
+  Call VerifyFolder(strFolder)
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' VerifyFolder
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Sub VerifyFolder(strFolder) 
+  
+  ' Local variables
+  Dim objFSO, nPos  
+  
+  ' Create a file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject") 
+  
+  ' If the folder already exists, just return
+  If objFSO.FolderExists(strFolder) Then Exit Sub
+    
+  ' Create the folder structure  
+  If Right(strFolder, 1) <> "\" Then strFolder = strFolder & "\" 
+  If Left(strFolder, 2) = "\\" Then 
+    nPos = InStr(3, strFolder, "\") 
+  Else 
+    nPos = 3 
+  End If 
+  Do While nPos > 0 
+    nPos = InStr(nPos + 1, strFolder, "\") 
+    If Not objFSO.FolderExists(Left(strFolder, nPos)) And nPos > 0 Then 
+      Call objFSO.CreateFolder(Left(strFolder, nPos))
+    End If 
+  Loop 
+
+End Sub

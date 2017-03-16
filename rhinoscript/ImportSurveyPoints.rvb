@@ -1,0 +1,76 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ImportSurveyPoints.rvb -- August 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Imports survey point data in a format specified by 
+' Jason R. Skiera, PE of Vector Scientific, Inc.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ImportSurveyPoints()
+  
+  ' Declare local variables
+  Dim strFile, arrData, i
+  Dim arrLayers, arrColors, dblOffset, arrPlane
+  Dim arrPoint, strObject
+  
+  ' The name of survey data file
+  strFile = Rhino.OpenFileName("Open", "Survey Data (*.txt)|*.txt||")
+  If IsNull(strFile) Then Exit Sub
+
+  ' Read survey data from file
+  arrData = Rhino.ReadDelimitedFile(strFile)
+  If IsNull(arrData) Then
+    Call MsgBox("Unable to read survey data file.", vbOK + vbCritical)
+    Exit Sub
+  End If
+  
+  ' Disable redraw (for speed)
+  Call Rhino.EnableRedraw(False)  
+    
+  ' Initialize local variables  
+  arrLayers = Array("Point", "PtNumber", "PtCoordinate", "PtName")
+  arrColors = Array(RGB(255,0,0), RGB(125,38,205), RGB(0,0,255), RGB(0, 127,0))
+  dblOffset = 1.25
+  arrPlane = Rhino.WorldXYPlane
+  
+  ' Add the layers, if necessary
+  For i = 0 To UBound(arrLayers)
+    If Not Rhino.IsLayer(arrLayers(i)) Then
+      Call Rhino.AddLayer(arrLayers(i), arrColors(i))
+    End If
+  Next
+
+  ' Add the survey data      
+  For i = 0 To UBound(arrData)
+    
+    ' Add the point coordinate
+    arrPoint = Array(arrData(i,1), arrData(i,2), arrData(i,3))
+    strObject = Rhino.AddPoint(arrPoint)
+    Call Rhino.ObjectLayer(strObject, arrLayers(0))
+    
+    ' Add the point number
+    arrPlane = Rhino.MovePlane(arrPlane, Array(arrPoint(0), arrPoint(1)+dblOffset, arrPoint(2)))
+    strObject = Rhino.AddText(arrData(i,0), arrPlane)
+    Call Rhino.ObjectLayer(strObject, arrLayers(1))
+
+   ' Add the point coordinate text
+    arrPlane = Rhino.MovePlane(arrPlane, arrPoint)
+    strObject = Rhino.AddText(Rhino.Pt2Str(arrPoint), arrPlane)
+    Call Rhino.ObjectLayer(strObject, arrLayers(2))
+     
+    ' Add the point name
+    arrPlane = Rhino.MovePlane(arrPlane, Array(arrPoint(0), arrPoint(1)-dblOffset, arrPoint(2)))
+    strObject = Rhino.AddText(arrData(i,0), arrPlane)
+    Call Rhino.ObjectLayer(strObject, arrLayers(3))
+
+  Next
+  
+  ' Enable redraw
+  Call Rhino.EnableRedraw(True)  
+
+End Sub

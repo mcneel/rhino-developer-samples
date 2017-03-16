@@ -1,0 +1,28 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelGripOwner.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Searches a model to see if any curve or surface grips are are selected.
+' If so, it turns the grips off, selects the owning curve or surface, and
+' then zooms to the selected objects.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SelGripOwner
+  Dim arr, str
+  arr = Rhino.ObjectsByType(12)
+  If IsArray(arr) Then
+    Call Rhino.EnableRedraw(False)
+    For Each str In arr
+      If Rhino.ObjectGripsSelected(str) Then
+        Call Rhino.EnableObjectGrips(str, vbFalse)
+        Call Rhino.SelectObject(str)
+      End If
+    Next
+    Call Rhino.EnableRedraw(True)
+    Call Rhino.ZoomSelected(,True)
+  End If
+End Sub  

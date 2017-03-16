@@ -1,0 +1,86 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ImportCurveFromExcel.rvb -- January 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine:  ImportCurveFromExcel
+' Purpose:     Create an interpolated curve from 3-D point coordinates read
+'              from a Microsoft Excel spreadsheet.
+'
+'              The spreadsheet must contain x-coordinate values in column A,
+'              Y-coordinate values in column B, and Z-coordinate values in
+'              column C beginning in row 1.  There is no limit on the number
+'              of 3-D points (rows) that can be processed.
+'
+'              Load the script file using the LoadScript command.
+'              Run the subroutine using the RunScript command.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ImportCurveFromExcel
+  
+  ' Declare variables and constants
+  Const xlDown = -4121
+  Dim sFileName, aPoints(), x, y, z
+  Dim oExcel, oSheet, nRow, nRowCount
+  
+  ' Get the name of the file to import
+  sFileName = Rhino.OpenFileName("Select File","Excel Files (*.xls)|*.xls||")
+  If IsNull(sFileName) Then Exit Sub
+    
+  ' Launch Excel and open the specified file
+  Set oExcel = CreateObject("Excel.Application")
+  oExcel.Workbooks.Open(sFileName)
+  
+  ' Get the active worksheet
+  Set oSheet = oExcel.ActiveSheet
+  
+  ' Count the number of rows that need to be processed
+  nRowCount = oSheet.Range("a1", oSheet.Range("a1").End(xlDown)).Rows.Count
+  If (nRowCount = 0 ) Then
+    Rhino.Print "No data range found in file."
+    Exit Sub
+  ElseIf (nRowCount < 2 ) Then
+    Rhino.Print "Not enough points to create curve."
+    Exit Sub
+  End If
+    
+  ' Re-dimension the resulting array of points accordingly
+  ReDim aPoints(nRowCount-1)
+  
+  ' Process all rows
+  Rhino.Print "Importing data..."
+  
+  For nRow = 1 To nRowCount
+    ' Read the values from columns A, B, and C
+    x = oSheet.Cells(nRow, 1).Value
+    y = oSheet.Cells(nRow, 2).Value
+    z = oSheet.Cells(nRow, 3).Value
+    ' If the values are all numeric, create an array from the
+    ' values and add it to the array of points
+    If IsNumeric(x) And IsNumeric(y) And IsNumeric(z) Then
+      aPoints(nRow-1) = Array(x,y,z)
+    Else
+      oExcel.Quit
+      Set oSheet = Nothing
+      Set oExcel = Nothing
+      Rhino.Print "Non-numeric data found in row " & CStr(nRow) & "."
+      Exit Sub
+    End If
+  Next
+    
+  ' Close Excel and disassociate object variables
+  oExcel.Quit
+  Set oSheet = Nothing
+  Set oExcel = Nothing
+  
+  ' If at least two points were read in, create the curve
+  If (UBound(aPoints) > 0) Then
+    Rhino.AddInterpCurve aPoints
+    Rhino.Command "_Zoom _All _Extents"
+    Rhino.Print "Curve from " & CStr(nRowCount-1) & " points created."
+  End If
+  
+End Sub

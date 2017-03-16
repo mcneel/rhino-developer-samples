@@ -1,0 +1,175 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CenterMark.rvb -- October 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhinoceros 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Draws a center mark
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CenterMark
+  
+	' Local constants
+	Const RH_CRV = &h4
+  
+	' Local variables
+	Dim strCurve, arrPlane, blnIsCircle, dblSize
+	Dim arrCenter, arrDir, arrStart, arrEnd
+	Dim arrLines(1)
+
+	' Hey, only Rhinoceros 5...
+	If (Rhino.ExeVersion < 5) Then
+		Call Rhino.Print("This script requires Rhinoceros 5 or greater.")
+		Exit Sub
+	End If
+  
+	' Select a circle
+	strCurve = Rhino.GetObject("Select an arc or circle to add center mark", RH_CRV)
+	If IsNull(strCurve) Then Exit Sub
+  
+	' Is it really a circle?  
+	If Rhino.IsCircle(strCurve) Then
+		blnIsCircle = True
+	ElseIf Rhino.IsArc(strCurve) Then
+		blnIsCircle = False
+	Else
+		Call Rhino.Print("Curve is not an arc or circle.")
+		Exit Sub
+	End If
+  
+	' Is the circle planar to the active construction plane?
+	arrPlane = Rhino.ViewCPlane
+	If Not Rhino.IsCurveInPlane(strCurve, arrPlane) Then
+		Call Rhino.Print("Curve does not lie on the active construction plane.")
+		Exit Sub
+	End If
+	
+	Call Rhino.EnableRedraw(False)
+  
+	' Get the center mark size of the current dimension style 
+	dblSize = Rhino.DimStyleCentermarkSize(Rhino.CurrentDimStyle)
+  
+	' Get the center point of the circle
+	If blnIsCircle Then
+		arrCenter = Rhino.CircleCenterPoint(strCurve)
+	Else
+		arrCenter = Rhino.ArcCenterPoint(strCurve)
+	End If
+
+	' Create a center mark line in the x-axis direction
+	arrDir = Rhino.VectorScale(arrPlane(1), dblSize)
+	arrStart = Rhino.PointSubtract(arrCenter, arrDir)
+	arrEnd = Rhino.PointAdd(arrCenter, arrDir)
+	arrLines(0) = Rhino.AddLine(arrStart, arrEnd)
+
+	' Create a center mark line in the y-axis direction
+	arrDir = Rhino.VectorScale(arrPlane(2), dblSize)
+	arrStart = Rhino.PointSubtract(arrCenter, arrDir)
+	arrEnd = Rhino.PointAdd(arrCenter, arrDir)
+	arrLines(1) = Rhino.AddLine(arrStart, arrEnd)
+	
+	Call Rhino.AddObjectsToGroup(arrLines, Rhino.AddGroup)
+	Call Rhino.EnableRedraw(True)
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Draws a center line
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CenterLine
+  
+	' Local constants
+	Const RH_CRV = &h4
+  
+	' Local variables
+	Dim strCurve, arrPlane, blnIsCircle, dblSize
+	Dim arrCenter, dblRadius, arrDir, arrStart, arrEnd
+	Dim arrLines(5)
+
+	' Hey, only Rhinoceros 5...
+	If (Rhino.ExeVersion < 5) Then
+		Call Rhino.Print("This script requires Rhinoceros 5 or greater.")
+		Exit Sub
+	End If
+  
+	' Select a circle
+	strCurve = Rhino.GetObject("Select an arc or circle to add center mark", RH_CRV)
+	If IsNull(strCurve) Then Exit Sub
+  
+	' Is it really a circle?  
+	If Rhino.IsCircle(strCurve) Then
+		blnIsCircle = True
+	ElseIf Rhino.IsArc(strCurve) Then
+		blnIsCircle = False
+	Else
+		Call Rhino.Print("Curve is not an arc or circle.")
+		Exit Sub
+	End If
+  
+	' Is the circle planar to the active construction plane?
+	arrPlane = Rhino.ViewCPlane
+	If Not Rhino.IsCurveInPlane(strCurve, arrPlane) Then
+		Call Rhino.Print("Curve does not lie on the active construction plane.")
+		Exit Sub
+	End If
+	
+	Call Rhino.EnableRedraw(False)
+  
+	' Get the center mark size of the current dimension style 
+	dblSize = Rhino.DimStyleCentermarkSize(Rhino.CurrentDimStyle)
+  
+	' Get the center point of the circle
+	If blnIsCircle Then
+		arrCenter = Rhino.CircleCenterPoint(strCurve)
+		dblRadius = Rhino.CircleRadius(strCurve)
+	Else
+		arrCenter = Rhino.ArcCenterPoint(strCurve)
+		dblRadius = Rhino.ArcRadius(strCurve)
+	End If		
+  
+	' Create center mark line in the x-axis direction
+	arrDir = Rhino.VectorScale(arrPlane(1), dblSize)
+	arrStart = Rhino.PointSubtract(arrCenter, arrDir)
+	arrEnd = Rhino.PointAdd(arrCenter, arrDir)
+	arrLines(0) = Rhino.AddLine(arrStart, arrEnd)
+	
+	' Create first extension line in the x-axis direction
+	arrDir = Rhino.VectorScale(arrPlane(1), dblRadius + dblSize)
+	arrStart = Rhino.PointSubtract(arrCenter, arrDir)
+	arrDir = Rhino.VectorScale(arrPlane(1), dblSize + dblSize)
+	arrEnd = Rhino.PointSubtract(arrCenter, arrDir)
+	arrLines(1) = Rhino.AddLine(arrStart, arrEnd)
+	
+	' Create second extension line in the x-axis direction
+	arrDir = Rhino.VectorScale(arrPlane(1), dblSize + dblSize)
+	arrStart = Rhino.PointAdd(arrCenter, arrDir)
+	arrDir = Rhino.VectorScale(arrPlane(1), dblRadius + dblSize)
+	arrEnd = Rhino.PointAdd(arrCenter, arrDir)
+	arrLines(2) = Rhino.AddLine(arrStart, arrEnd)
+
+	' Create center mark line in the y-axis direction
+	arrDir = Rhino.VectorScale(arrPlane(2), dblSize)
+	arrStart = Rhino.PointSubtract(arrCenter, arrDir)
+	arrEnd = Rhino.PointAdd(arrCenter, arrDir)
+	arrLines(3) = Rhino.AddLine(arrStart, arrEnd)
+	
+	' Create first extension line in the y-axis direction
+	arrDir = Rhino.VectorScale(arrPlane(2), dblRadius + dblSize)
+	arrStart = Rhino.PointSubtract(arrCenter, arrDir)
+	arrDir = Rhino.VectorScale(arrPlane(2), dblSize + dblSize)
+	arrEnd = Rhino.PointSubtract(arrCenter, arrDir)
+	arrLines(4) = Rhino.AddLine(arrStart, arrEnd)
+	
+	' Create second extension line in the y-axis direction
+	arrDir = Rhino.VectorScale(arrPlane(2), dblSize + dblSize)
+	arrStart = Rhino.PointAdd(arrCenter, arrDir)
+	arrDir = Rhino.VectorScale(arrPlane(2), dblRadius + dblSize)
+	arrEnd = Rhino.PointAdd(arrCenter, arrDir)
+	arrLines(5) = Rhino.AddLine(arrStart, arrEnd)
+	
+	Call Rhino.AddObjectsToGroup(arrLines, Rhino.AddGroup)
+	Call Rhino.EnableRedraw(True)
+  
+End Sub

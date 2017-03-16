@@ -1,0 +1,37 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Interpolate.rvb -- September 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LinearInterpolate
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function LinearInterpolate(ByVal a, ByVal b, ByVal n)
+  LinearInterpolate = ( a * (1.0 - n) + b * n )
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CosineInterpolate
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CosineInterpolate(ByVal a, ByVal b, ByVal n)
+  Dim n2
+  n2 = ( 1.0 - Cos(n * Rhino.PI) ) / 2
+  CosineInterpolate = ( a * (1.0 - n2) + b * n2 )
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CubicInterpolate
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CubicInterpolate(ByVal a, ByVal b, ByVal c, ByVal d, ByVal n)
+  Dim a0, a1, a2, a3, n2
+  n2 = n * n
+  a0 = d - c - a + b
+  a1 = a - b - a0
+  a2 = c - a
+  a3 = b
+  CubicInterpolate = (a0 * n * n2 + a1 * n2 + a2 * n + a3)
+End Function

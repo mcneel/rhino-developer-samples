@@ -1,0 +1,57 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' FormatMessage.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function:    FormatMessage
+' Purpose:     Slot-based string formatting function.
+' Example:
+'   Dim str
+'   str = FormatMessage ("Hello, Mr. %1%, today is %2%.", Array("McNeel", Date))
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function FormatMessage(strMessage, arrArguments)
+  Dim strResult, i
+  strResult = strMessage
+  For i = 0 To UBound(arrArguments)
+    strResult = Replace(strResult, "%" & CStr(i+1) & "%", CStr(arrArguments(i)))
+  Next
+  strResult = Replace(strResult, "\n", VbCrLf)
+  strResult = Replace(strResult, "\t", vbTab)
+  FormatMessage = strResult
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function:    Printf
+' Purpose:     Works like the printf-function in C/C++.
+' Arguments:   A string with format characters, and an array to expand.
+'              The format characters are always "%x", independent of the type.
+' Example:
+'   Dim str
+'   str = Printf("Hello, Mr. %x, today is %x.", Array("McNeel", Date))
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function Printf(strMessage, arrArguments)
+  Dim strResult, intPosition, i
+  strResult = ""
+  intPosition = 0
+  For i = 1 To Len(strMessage)
+    If Mid(strMessage, i, 1) = "%" Then
+      If i < Len(strMessage) Then
+        If Mid(strMessage, i + 1, 1) = "%" Then
+          strResult = strResult & "%"
+          i = i + 1
+        ElseIf Mid(strMessage, i + 1, 1) = "x" Then
+          strResult = strResult & CStr(arrArguments(intPosition))
+          intPosition = intPosition + 1
+          i = i + 1
+        End If
+      End If
+    Else
+      strResult = strResult & Mid(strMessage, i, 1)
+    End If
+  Next
+  Printf = strResult
+End Function

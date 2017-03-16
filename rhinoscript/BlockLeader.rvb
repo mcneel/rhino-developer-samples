@@ -1,0 +1,48 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BlockLeader.rvb -- May 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Create a "block" leader
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BlockLeader
+  
+	Const RH_BLOCK = 4096
+  
+	Dim arrBlock, arrPoints
+	Dim strName, strPrompt
+  
+	arrBlock = Rhino.GetObjectEx("Select block instance", RH_BLOCK)
+	If IsNull(arrBlock) Then Exit Sub
+    
+	strPrompt = "Next point of leader. Press Enter when done"
+	arrPoints = Rhino.GetPoints(True, True, strPrompt, strPrompt, , arrBlock(3))
+	If IsNull(arrPoints) Then Exit Sub
+
+	Call ArrayInsert(arrPoints, 0, arrBlock(3))
+	strName = Rhino.BlockInstanceName(arrBlock(0))
+	Call Rhino.AddLeader(arrPoints, , strName)    
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Insert a new element at a given position in an array
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayInsert(ByRef arr, ByVal pos, ByVal val)
+	Dim i
+	If IsArray(arr) Then
+		If pos > UBound(arr) Then
+			Call ArrayAdd(arr, val)
+		ElseIf pos >= 0 Then
+			ReDim Preserve arr(UBound(arr) + 1)
+			For i = UBound(arr) To pos + 1 Step -1
+				arr(i) = arr(i - 1)
+			Next
+			arr(pos) = val
+		End If
+	End If
+End Sub

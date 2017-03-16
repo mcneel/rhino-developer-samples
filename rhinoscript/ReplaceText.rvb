@@ -1,0 +1,64 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ReplaceText.rvb -- August 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Replaces text
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ReplaceText
+  
+  Const RH_ANNOTATION = 512
+  
+  Dim arrObjects, strObject
+  Dim strOldText, strNewText, strFind, strReplace 
+  Dim strTitle, nCompare, nCount
+  
+  strTitle = "Replace Text"
+  nCount = 0
+  
+  arrObjects = Rhino.ObjectsByType(RH_ANNOTATION)
+  If IsNull(arrObjects) Then
+    Call Rhino.Print("No text objects found.")
+    Exit Sub
+  End If
+    
+  strFind = Rhino.StringBox("Text string to find:",,strTitle)
+  If IsNull(strFind) Then Exit Sub
+ 
+  strReplace = Rhino.StringBox("Text string to replace with:",,strTitle)
+  If IsNull(strReplace) Then Exit Sub
+    
+  nCompare = MsgBox("Perform case-sensitive replacement?", vbYesNoCancel+vbQuestion, strTitle)
+  If (nCompare = vbYes) Then
+    nCompare = vbBinaryCompare
+  ElseIf (nCompare = vbNo) Then
+    nCompare = vbTextCompare
+  Else
+    Exit Sub
+  End If
+
+  If (StrComp(strFind, strReplace, nCompare) = 0) Then Exit Sub
+
+  Call Rhino.EnableRedraw(False)
+      
+  For Each strObject In arrObjects
+    If Rhino.IsText(strObject) Then
+      strOldText = Rhino.TextObjectText(strObject)
+      strNewText = Replace(strOldText, strFind, strReplace, 1, -1, nCompare)
+      If (StrComp(strOldText, strNewText, nCompare) <> 0) Then
+        Call Rhino.TextObjectText(strObject, strNewText)
+        nCount = nCount + 1
+      End If
+    End If
+  Next    
+
+  Call Rhino.EnableRedraw(True)
+  
+  Call Rhino.Print(CStr(nCount) & " text object(s) modified.")
+  
+End Sub

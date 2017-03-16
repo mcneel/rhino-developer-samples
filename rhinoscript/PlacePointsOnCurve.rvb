@@ -1,0 +1,42 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PlacePointsOnCurve.rvb -- December 2004
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub PlacePointsOnCurve
+
+  ' Declare local variables
+  Dim strCurve, dblLength, arrPoints
+
+  ' Have the user pick the target curve
+  strCurve = Rhino.GetObject("Select curve", 4 )
+  If IsNull(strCurve) Then Exit Sub
+
+  ' Loop until the user is finished
+  Do
+    ' Prompt the user for the length from the start
+    ' of the curve to place a point
+    dblLength = Rhino.GetReal("Length from start of curve")
+
+    ' If the user presses eiher Esc or Enter, exit the loop
+    If IsNull(dblLength) Then Exit Do
+
+    ' Make sure the specified length is greater than zero
+    If (dblLength > 0.0) Then
+
+      ' Divide the curve into segments of "dblLength"
+      arrPoints = Rhino.DivideCurveLength(strCurve, dblLength)
+
+      ' The first point returned by DivideCurveLength is ways
+      ' the starting point of the curve, so we'll add the second
+      ' point. Note, the array of points in zero-based.
+      If IsArray(arrPoints) Then Rhino.AddPoint arrPoints(1)
+    End If
+
+  Loop Until IsNull(dblLength)
+
+End Sub

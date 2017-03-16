@@ -1,0 +1,70 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchRemovePlugInData5.rvb -- September 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchRemovePlugInData
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BatchRemovePlugInData
+	
+	If (Rhino.ExeVersion < 5) Then
+		Call Rhino.Print("This script requires Rhino 5.0 for greater.")
+		Exit Sub
+	End If
+
+	Dim sFolder : sFolder = Rhino.WorkingFolder
+	sFolder = Rhino.BrowseForFolder(sFolder, "Select folder to process", "Batch Remove Plug-in Data")
+	If IsNull(sFolder) Then Exit Sub
+
+	Dim oFSO : Set oFSO = CreateObject("Scripting.FileSystemObject") 
+	Dim oFolder : Set oFolder = oFSO.GetFolder(sFolder)
+  
+	Call RemovePlugInData(oFSO, oFolder)
+  
+	Call Rhino.DocumentModified(False)
+	Call Rhino.Command("_-New _None", 0)
+  
+	Call Rhino.Print("Done!")  
+
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RemovePlugInData
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RemovePlugInData(oFSO, oFolder)
+
+	Dim oFile, strOpen, arrInfo, strVer
+	For Each oFile In oFolder.Files
+		If LCase(oFSO.GetExtensionName(oFile.Path)) = "3dm" Then
+			strOpen = LCase(oFile.Path)
+			arrInfo = Rhino.DocumentInfo(strOpen)
+			If IsArray(arrInfo) Then
+				If arrInfo(1) = 2 Then
+					strVer = "_Version=2"
+				ElseIf arrInfo(1) = 3 Then
+					strVer = "_Version=3"
+				ElseIf arrInfo(1) = 4 Then
+					strVer = "_Version=4"
+				Else
+					strVer = "_Version=5"
+				End If
+				Call Rhino.DocumentModified(False)
+				Call Rhino.Command("_-Open " & Chr(34) & strOpen & Chr(34))
+				Call Rhino.Command("_-Save " & strVer & " _SavePlugInData=_No _Enter")
+			End If
+		End If
+	Next
+
+	' *** NOTE ***
+	' Comment the following out if you do 
+	' not want to recurse this folder.
+	Dim oSubFolder
+	For Each oSubFolder In oFolder.SubFolders
+		Call RemovePlugInData(oFSO, oSubFolder)
+	Next
+
+End Sub

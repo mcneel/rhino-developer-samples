@@ -1,0 +1,38 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExplodePolyCurve.rvb -- November 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ExplodePolyCurve
+  
+  Dim curve, i, seg, seg_count
+  Dim point, bound, curve_t()
+  
+  curve = Rhino.GetObject("Select polycurve to explode", 4, True)
+  If IsNull(curve) Then Exit Sub
+  If Not  Rhino.IsPolyCurve(curve) Then Exit Sub
+
+  seg_count = Rhino.PolyCurveCount(curve)
+
+  If Rhino.IsCurveClosed(curve) Then
+    seg = 0
+  Else
+    seg = 1
+  End If
+  
+  bound = 0
+  
+  For i = seg To seg_count - 1
+    point = Rhino.CurveStartPoint(curve, i)
+    ReDim Preserve curve_t(bound)
+    curve_t(bound) = Rhino.CurveClosestPoint(curve, point)
+    bound = bound + 1
+  Next
+  
+  Call Rhino.SplitCurve(curve, curve_t, True)
+  
+End Sub

@@ -1,0 +1,108 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PointCloudPointColors.rvb -- May 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+' Public (global) dictionary object
+Public g__PointColors
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Saves the point colors of a point cloud, and then resets the
+' point cloud so it will display with standard layer or object colors.
+'
+' ** CRITICAL** THIS SUBROUTINE REMOVES POINTS COLORS FROM POINT CLOUDS.
+' If you use this subroutine on a point cloud, then make sure to use the
+' RestorePointCloudPointColors subroutine before saving your document.
+' Otherwise the point colors will be lost.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SavePointCloudPointColors
+	
+	' Local constant
+	Const RH_CLOUD = 2
+	
+	' Local variables
+	Dim strCloud, arrColors
+	
+	' Verify our global dictionary exists
+	If (VerifyPointCloudDictionary = False) Then
+		Call Rhino.Print("Error in SavePointCloudPointColors script.")
+		Exit Sub
+	End If
+	
+	' Pick a point cloud
+	strCloud = Rhino.GetObject("Select point cloud to save point colors", RH_CLOUD, True)
+	If IsNull(strCloud) Then Exit Sub
+
+	' Get the point cloud's point colors and save them to the global dictionary
+	If Rhino.IsPointCloud(strCloud) Then
+		arrColors = Rhino.PointCloudPointColors(strCloud)
+		If IsArray(arrColors) Then
+			If g__PointColors.Exists(strCloud) Then
+				g__PointColors.Item(strCloud) = arrColors
+			Else
+				Call g__PointColors.Add(strCloud, arrColors)
+			End If
+			' Reset the point cloud's point colors
+			Call Rhino.PointCloudPointColors(strCloud, Null)
+			Call Rhino.Print("Point colors saved. Run RestorePointCloudPointColors to restore.")
+		Else
+			Call Rhino.Print("Point cloud does not have point colors.")
+		End If
+	End If	  
+	  
+End Sub
+	
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Restores the point colors of a point cloud previously saved with 
+' the SavePointCloudPointColors subroutine.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RestorePointCloudPointColors
+	
+	' Local constant
+	Const RH_CLOUD = 2
+	
+	' Local variables
+	Dim strCloud, arrColors
+	
+	' Verify our global dictionary exists
+	If (VerifyPointCloudDictionary = False) Then
+		Call Rhino.Print("Error in RestorePointCloudPointColors script.")
+		Exit Sub
+	End If
+	
+	' Pick a point cloud
+	strCloud = Rhino.GetObject("Select point cloud to restore point colors", RH_CLOUD, True)
+	If IsNull(strCloud) Then Exit Sub
+	  
+	' Get the point cloud's point colors from the global dictionary, and
+	' put them back on the point cloud
+	If Rhino.IsPointCloud(strCloud) Then
+		If g__PointColors.Exists(strCloud) Then
+			arrColors = g__PointColors.Item(strCloud)
+			If IsArray(arrColors) Then
+				Call Rhino.PointCloudPointColors(strCloud, arrColors)
+				g__PointColors.Remove(strCloud)
+			End If
+		Else
+			Call Rhino.Print("No saved point colors found for this point cloud.")
+		End If
+	End If	
+	
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Verifies that the global dictionary has been created.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function VerifyPointCloudDictionary
+	If Not IsObject(g__PointColors) Then
+		Set g__PointColors = CreateObject("Scripting.Dictionary")
+	End If
+	If IsObject(g__PointColors) Then
+		VerifyPointCloudDictionary = True
+	Else
+		VerifyPointCloudDictionary = False
+	End If
+End Function  

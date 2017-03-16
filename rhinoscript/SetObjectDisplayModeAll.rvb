@@ -1,0 +1,44 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SetObjectDisplayModeAll.rvb -- July 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub SetObjectDisplayModeAll()
+
+	Dim arrObjects, strObject
+	Dim arrModes, strMode, strModeId, strDefault
+	Dim arrViews, strView
+	
+	arrObjects = Rhino.GetObjects("Select objects to set their display mode", 0, True, True)
+	If IsNull(arrObjects) Then Exit Sub
+	
+	arrModes = Rhino.ViewDisplayModes(True, True)
+	
+	strDefault = "UseView"
+	ReDim Preserve arrModes(UBound(arrModes) + 1)
+	arrModes(UBound(arrModes)) = strDefault
+
+	strMode = Rhino.ListBox(arrModes, "Choose attributes for selected objects", "Set Object Display Mode", strDefault)
+	If IsNull(strMode) Then Exit Sub
+	
+	strModeId = Rhino.ViewDisplayModeId(strMode)
+	arrViews = Rhino.ViewNames(False, 0)
+	
+	Call Rhino.EnableRedraw(False)
+	
+	For Each strObject In arrObjects
+		For Each strView In arrViews
+			If IsNull(strModeId) Then
+				Call Rhino.RemoveObjectDisplayMode(strObject, strView)
+			Else
+				Call Rhino.AddObjectDisplayMode(strObject, strModeId, strView)
+			End If
+		Next
+	Next
+	
+	Call Rhino.EnableRedraw(True)
+		
+End Sub

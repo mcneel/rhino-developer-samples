@@ -1,0 +1,242 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ArrayUtilities.rvb -- January 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Verifies that the array has been dimmed.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function IsArrayDim(ByVal arr)
+  IsArrayDim = False
+  If IsArray(arr) Then
+    On Error Resume Next
+    Call UBound(arr)
+    If Err.Number = 0 Then IsArrayDim = True
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Safely returns the upper bounds of an array
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function SafeUBound(ByVal arr)
+  Dim ub
+  SafeUBound = Null
+  If IsArray(arr) Then
+    On Error Resume Next
+    ub = UBound(arr)
+    If Err.Number = 0 Then
+      SafeUBound = ub
+    Else
+      SafeUBound = -1
+    End If
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns the number of dimensions to an array
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Public Function GetArrayDim(ByVal arr)
+  Dim i
+  If IsArray(arr) Then
+    For i = 1 To 60
+      On Error Resume Next
+      Call UBound(arr, i)
+      If Err.Number <> 0 Then
+        GetArrayDim = i - 1
+        Exit Function
+      End If
+    Next
+    GetArrayDim = i
+  Else
+    GetArrayDim = Null
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Adds a new element to the end of the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayAdd(ByRef arr, ByVal val)
+  Dim ub
+  If IsArray(arr) Then
+    On Error Resume Next
+    ub = UBound(arr)
+    If Err.Number <> 0 Then ub = -1
+    ReDim Preserve arr(ub + 1)
+    arr(UBound(arr)) = val
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Appends another array to the end of the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayAppend(ByRef arr, ByVal arr0)
+  Dim i, ub
+  If IsArray(arr) And IsArray(arr0) Then
+    On Error Resume Next
+    ub = UBound(arr)
+    If Err.Number <> 0 Then ub = -1
+    ReDim Preserve arr(ub + UBound(arr0) + 1)
+    For i = 0 To UBound(arr0)
+      arr(ub + 1 + i) = arr0(i)
+    Next
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Inserts a new element at a given position in the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayInsert(ByRef arr, ByVal pos, ByVal val)
+  Dim i
+  If IsArray(arr) Then
+    If pos > UBound(arr) Then
+      Call ArrayAdd(arr, val)
+    ElseIf pos >= 0 Then
+      ReDim Preserve arr(UBound(arr) + 1)
+      For i = UBound(arr) To pos + 1 Step -1
+        arr(i) = arr(i - 1)
+      Next
+      arr(pos) = val
+    End If
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Removes an element from the end of the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayRemove(ByRef arr)
+  If IsArray(arr) Then
+    If UBound(arr) > -1 Then
+      ReDim Preserve arr(UBound(arr) - 1)
+    End If
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Removes an element at a given position from the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayRemoveAt(ByRef arr, ByVal pos)
+  Dim i
+  If IsArray(arr) Then
+    If pos >= 0 And pos <= UBound(arr) Then
+      For i = pos To UBound(arr) - 1
+        arr(i) = arr(i + 1)
+      Next
+      ReDim Preserve arr(UBound(arr) - 1)
+    End If
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Removes all instances of a value from the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayRemoveVal(ByRef arr, ByVal val)
+  Dim i, j
+  If IsArray(arr) Then
+    i = 0 : j = -1
+    For i = 0 To UBound(arr)
+      If arr(i) <> val Then
+        j = j + 1
+        arr(j) = arr(i)
+      End If
+    Next
+  ReDim Preserve Array(j)
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Removes duplicate items from the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayCull(ByRef arr)
+  Dim i, dict
+  If IsArray(arr) Then
+    Set dict = CreateObject("Scripting.Dictionary")
+    For i = 0 To UBound(arr)
+      If Not dict.Exists(arr(i)) Then
+        Call dict.Add(arr(i), arr(i))
+      End If
+    Next
+    arr = dict.Items
+  End If 
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Purges null elements from an array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayPurge(ByRef arr)
+  Dim i, j
+  If IsArray(arr) Then
+    i = 0
+    j = -1
+    For i = 0 To UBound(arr)
+      If Not IsNull(arr(i)) Then
+        j = j + 1
+        arr(j) = arr(i)
+      End If
+    Next
+    ReDim Preserve Array(j)
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Find the first occurance of a value in an array
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ArraySearch(ByRef arr, ByVal val)
+  Dim i
+  ArraySearch = -1
+  If IsArray(arr) Then
+    For i = 0 To UBound(arr)
+      If arr(i) = val Then
+        ArraySearch = i
+        Exit Function
+      End If
+    Next
+  End If
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Sorts the elements in the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArraySort(ByRef arr)
+  Dim i, j, tmp
+  If IsArray(arr) Then
+    For i = UBound(arrShort) - 1 To 0 Step -1
+      For j = 0 To i
+        If arr(j) > arr(j + 1) Then
+          tmp = arr(j + 1)
+          arr(j + 1) = arr(j)
+          arr(j) = tmp
+        End If
+      Next
+    Next
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Reverse the order of the elements in the array.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayReverse(ByRef arr)
+  Dim i, ub, ub2, tmp
+  ub = UBound(arr)
+  ub2 = Int(ub / 2)
+  For i = 0 To ub2
+    tmp = arr(i)
+    arr(i) = arr(ub - i)
+    arr(ub - i) = tmp
+  Next
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Dumps the array to the Rhino command window.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ArrayDump(ByVal arr)
+  Dim i
+  If IsArray(arr) Then
+    For i = 0 To UBound(arr)
+      Call Rhino.Print("Item(" & CStr(i) & ") = " & CStr(arr(i)))
+    Next
+  End If
+End Sub

@@ -1,0 +1,95 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RandomDistribution.rvb -- October 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Create N points on a sphere aproximately equi-distant from each other
+' Basically, N points are randomly placed on the sphere and then moved
+' around until then moved around until the minimal distance between the
+' closed two points is minimaized.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RandomDistribution()
+  
+  Dim i, j, n, minp1, minp2
+  Dim counter, countmax
+  Dim r, d, x, y, z, mind, maxd
+  Dim p(), p1, p2
+  
+  n = 100
+  r = 10.0
+  counter = 0
+  countmax = 100
+
+  Randomize
+  
+  ReDim p(n)
+  For i = 0 To n
+    x = (Rand Mod 1000) - 500
+    y = (Rand Mod 1000) - 500
+    z = (Rand Mod 1000) - 500
+    p(i) = Normalize(Array(x,y,z), r)
+  Next
+
+  While (counter < countmax)
+    minp1 = 0
+    minp2 = 1
+    mind = Distance(p(minp1), p(minp2))
+    maxd = mind
+    For i = 0 To n
+      j = i + 1
+      While (j <= n)
+        d = Distance(p(i) ,p(j))
+        If (d < mind) Then
+          mind = d
+          minp1 = i
+          minp2 = j
+        End If
+        If (d > maxd) Then maxd = d
+        j = j + 1
+      Wend
+    Next
+
+    p1 = p(minp1)
+    p2 = p(minp2)
+    p(minp2)(0) = p1(0) + 1.01 * (p2(0) - p1(0))
+    p(minp2)(1) = p1(1) + 1.01 * (p2(1) - p1(1))
+    p(minp2)(2) = p1(2) + 1.01 * (p2(2) - p1(2))
+    p(minp1)(0) = p1(0) - 0.01 * (p2(0) - p1(0))
+    p(minp1)(1) = p1(1) - 0.01 * (p2(1) - p1(1))
+    p(minp1)(2) = p1(2) - 0.01 * (p2(2) - p1(2))
+    p(minp1) = Normalize(p(minp1), r)
+    p(minp2) = Normalize(p(minp2), r)
+    
+    counter = counter + 1
+        
+  Wend
+    
+  Call Rhino.AddPoints(p)
+  
+End Sub
+
+
+Function Normalize(p, r)
+  Dim l, n(2)
+  l = r / Sqr(p(0)*p(0) + p(1)*p(1) + p(2)*p(2))
+  n(0) = p(0) * l
+  n(1) = p(1) * l
+  n(2) = p(2) * l
+  Normalize = n
+End Function
+
+Function Distance(p1, p2)
+  Dim p(2)
+  p(0) = p1(0) - p2(0)
+  p(1) = p1(1) - p2(1)
+  p(2) = p1(2) - p2(2)
+  Distance = Sqr(p(0)*p(0) + p(1)*p(1) +p(2)*p(2))
+End Function
+
+Function Rand()
+  Rand = Int(32768 * Rnd)
+End Function

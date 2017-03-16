@@ -1,0 +1,54 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GetYCoordinate.rvb -- September 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub GetYCoordinate
+  
+  ' Declare local variables
+  Dim crv, box, x, p0, p1, line, ccx, i
+
+  ' Select a curve object and make sure it is planar
+  ' Note, this code assumes the curve is planar with
+  ' the world x-y plane.  
+  crv = Rhino.GetObject("Select planar curve", 4, True)
+  If IsNull(crv) Then Exit Sub
+  If Rhino.IsCurvePlanar(crv) = False Then Exit Sub
+
+  ' Get the curve's bounding box    
+  box = Rhino.BoundingBox(crv)
+
+  ' Prompt for an x-axis coordinate value.
+  x = Rhino.GetReal("X-coordinate to evaluate", , box(0)(0), box(2)(0))
+  If IsNull(x) Then Exit Sub
+  
+  ' Hide our dirty work...
+  Call Rhino.EnableRedraw(False)
+  
+  ' Create a line curve that intesects the curve
+  ' along the y-axis
+  p0 = Array(x, box(0)(1), 0)
+  p1 = Array(x, box(2)(1), 0)
+  line = Rhino.AddLine(p0, p1)
+  
+  ' Calculate the intesection between the two curves
+  ccx = Rhino.CurveCurveIntersection(crv, line)
+  Call Rhino.DeleteObject(line)
+  
+  ' If one or more intersections were found, 
+  ' print the results
+  If IsArray(ccx) Then
+    For i = 0 To UBound(ccx)
+      Rhino.Print "Point(" & CStr(i) & ") = " & Rhino.Pt2Str(ccx(i,1))
+    Next
+  End If
+  
+  ' Make sure to turn redrawing back on
+  Call Rhino.EnableRedraw(True)
+  
+End Sub    
+  

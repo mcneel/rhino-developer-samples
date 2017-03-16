@@ -1,0 +1,82 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' StoreArray.rvb -- July 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' StoreArray
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function StoreArray(section, entry, arr)
+  
+  ' Declare local variables
+  Dim i, data
+  
+  ' Default return value
+  StoreArray = False
+
+  ' Create and store delimited string  
+  If IsArray(arr) Then
+    str = ""
+    For i = 0 To UBound(arr)
+      If (i > 0) Then data = data & ","
+      data = data & CStr(VarType(arr(i))) & "," & CStr(arr(i))
+    Next
+    Call Rhino.SetDocumentData(section, entry, data)
+    StoreArray = True
+  End If
+    
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RetrieveArray
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function RetrieveArray(section, entry)
+
+  ' Declare local variables
+  Dim i, j, data, temp, arr()
+
+  ' Default return value
+  RetrieveArray = Null
+  
+  ' Retrieve and parse data
+  data = Rhino.GetDocumentData(section, entry)
+  If Not IsNull(data) Then
+    temp = Split(data, ",")
+    If IsArray(temp) Then
+      ReDim arr(((UBound(temp)+1)/2)- 1)
+      j = 0
+      For i = 0 To UBound(temp) Step 2
+        Select Case temp(i)
+          Case 2    arr(j) = CInt(temp(i+1)) ' vbInteger
+          Case 3    arr(j) = CLng(temp(i+1)) ' vbLong
+          Case 4    arr(j) = CSng(temp(i+1)) ' vbSingle
+          Case 5    arr(j) = CDbl(temp(i+1)) ' vbDouble
+          Case 8    arr(j) = CStr(temp(i+1)) ' vbString
+          Case Else arr(j) = Null
+        End Select
+        j = j + 1
+      Next
+    End If
+    RetrieveArray = arr
+  End If
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Tester
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Tester
+  Dim arr, str
+  Call StoreArray("MyApp", "MyArray", Array(1, 2.345, "three"))
+  arr = RetrieveArray("MyApp", "MyArray")
+  If IsArray(arr) Then
+    For Each str In arr
+      Call Rhino.Print(CStr(str))
+    Next
+  End If
+End Sub
+

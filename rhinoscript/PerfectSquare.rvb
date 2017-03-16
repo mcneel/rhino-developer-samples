@@ -1,0 +1,40 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PerfectSquare.rvb -- June 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' In mathematics, a perfect square is an integer that is the square of an
+' integer; in other words, it is the product of some integer with itself.
+' For example, 9 is a perfect square, since it can be written as 3x3. 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function IsPerfectSquare(n)
+
+  Dim h, t
+  
+  IsPerfectSquare = False ' default return value
+  
+  h = n And &HF ' last hexidecimal "digit"
+  If (h > 9) Then Exit Function ' return immediately in 6 cases out of 16
+
+  If (h <> 2 And h <> 3 And h <> 5 And h <> 6 And h <> 7 And h <> 8) Then
+    t = Int(Rhino.Floor(Sqr(n)+0.5))
+    If (t*t = n) Then IsPerfectSquare = True
+  End If
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Test the above
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestPerfectSquare
+  Dim i
+  For i = 0 To 60^2
+    If IsPerfectSquare(i) Then
+      Call Rhino.Print(CStr(i) & "^2 = " & CStr(i^2))
+    End If
+  Next  
+End Sub

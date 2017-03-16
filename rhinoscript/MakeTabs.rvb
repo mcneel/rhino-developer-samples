@@ -1,0 +1,53 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MakeTabs.rvb -- November 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub MakeTabs
+  
+  ' Local constants
+  Const dblDiameter = 0.0625 ' 1/16
+  
+  ' Local variables
+  Dim strCurve, arrSegments, strSegment
+  Dim arrDomain, dblLength, arrPoint, dblParameter
+  
+  ' Select a curve object
+  strCurve = Rhino.GetObject("Select closed, planar curve", 4)
+  
+  ' Validate selection
+  If IsNull(strCurve) Then Exit Sub
+  ' Validate closed polyline
+  If Not Rhino.IsCurveClosed(strCurve) Then Exit Sub
+  ' Validate planar polyline
+  If Not Rhino.IsCurvePlanar(strCurve) Then Exit Sub
+  ' Validate curve type
+  If Not Rhino.IsPolyline(strCurve) And Not Rhino.IsPolyCurve(strCurve) Then Exit Sub
+  
+  ' Explode the curve
+  arrSegments = Rhino.ExplodeCurves(strCurve, True)
+  
+  ' Process each segment
+  For Each strSegment In arrSegments
+    
+    arrDomain = Rhino.CurveDomain(strSegment)
+    
+    ' Determine the length of each "sub" line if you were to 
+    ' remove a dblDiameter-sized tab from the middle
+    dblLength = (Rhino.CurveLength(strSegment) - dblDiameter) * 0.5
+    
+    ' Add the first "sub" curve
+    arrPoint = Rhino.CurveArcLengthPoint(strSegment, dblLength, True)
+    dblParameter = Rhino.CurveClosestPoint(strSegment, arrPoint)
+    Call Rhino.TrimCurve(strSegment, Array(arrDomain(0), dblParameter), False)
+    
+    ' Add the second "sub" curve
+    arrPoint = Rhino.CurveArcLengthPoint(strSegment, dblLength, False)
+    dblParameter = Rhino.CurveClosestPoint(strSegment, arrPoint)
+    Call Rhino.TrimCurve(strSegment, Array(dblParameter, arrDomain(1)), True)
+  Next
+ 
+End Sub

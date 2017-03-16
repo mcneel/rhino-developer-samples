@@ -1,0 +1,102 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportCustomSTL.rvb -- November 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' The one and only ExportCustomSTL procedure
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportCustomSTL
+  
+  ' Declare local variables
+  Dim arrMeshes, strMesh
+  Dim strFileName, objFSO, objStream
+  Dim arrVertices, arrFaces, arrFace, arrNormals, arrNormal
+  Dim i, j
+  
+  ' Pick some meshes to export
+  arrMeshes = Rhino.GetObjects("Select solid meshes to export", 32, True, True)
+  If IsNull(arrMeshes) Then Exit Sub
+
+  ' Make sure solid meshes are selected
+  For i = 0 To UBound(arrMeshes)
+    strMesh = arrMeshes(i)
+    If Rhino.IsMeshClosed(strMesh) = False Then
+      Rhino.Print "At least one of the selected meshes is not closed. Export canceled."
+      Exit Sub
+    End If
+  Next      
+  
+  ' Get the name of the file to create 
+  strFileName = Rhino.SaveFileName("Export STL", "STL File (*.stl)|*.stl||")
+  If IsNull(strFileName) Then Exit Sub
+
+  ' Get the file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+  ' Create a new text file
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  Call Rhino.EnableRedraw(False)
+
+  ' Write the meshes out
+  For i = 0 To UBound(arrMeshes)
+    strMesh = arrMeshes(i)
+    
+    ' Since STL facets are all triangles, check to see if we
+    ' need to temporarily convert the mesh to all triangles
+    ' for exporting 
+    If Rhino.MeshQuadCount(strMesh) > 0 Then
+      strMesh = Rhino.CopyObject(strMesh)
+      Rhino.MeshQuadsToTriangles(strMesh)
+      arrVertices = Rhino.MeshVertices(strMesh)
+      arrFaces = Rhino.MeshFaceVertices(strMesh)
+      arrNormals = Rhino.MeshFaceNormals(strMesh)
+      Call Rhino.DeleteObject(strMesh)
+    Else    
+      arrVertices = Rhino.MeshVertices(strMesh)
+      arrFaces = Rhino.MeshFaceVertices(strMesh)
+      arrNormals = Rhino.MeshFaceNormals(strMesh)
+    End If
+    
+    ' Write out the mesh
+    Call objStream.WriteLine("solid OBJECT")
+    For j = 0 To UBound(arrFaces)
+      arrFace = arrFaces(j)
+      arrNormal = arrNormals(j)
+      Call objStream.WriteLine("  facet normal " & FormatPoint(arrNormal))
+      Call objStream.WriteLine("    outer loop")
+      Call objStream.WriteLine("      vertex " & FormatPoint(arrVertices(arrFace(0))))
+      Call objStream.WriteLine("      vertex " & FormatPoint(arrVertices(arrFace(1))))
+      Call objStream.WriteLine("      vertex " & FormatPoint(arrVertices(arrFace(2))))
+      Call objStream.WriteLine("    endloop")
+      Call objStream.WriteLine("  endfacet")
+    Next
+    Call objStream.WriteLine("endsolid OBJECT")
+    
+  Next
+  
+  ' Close the file
+  objStream.Close
+
+  Call Rhino.EnableRedraw(True)
+
+End Sub
+
+' Returns a formatted point string
+Function FormatPoint(arrPoint)
+  Dim x, y, z
+  x = FormatNumber(arrPoint(0), 7)
+  y = FormatNumber(arrPoint(1), 7)
+  z = FormatNumber(arrPoint(2), 7)
+  FormatPoint = x & " " & y & " " & z
+End Function

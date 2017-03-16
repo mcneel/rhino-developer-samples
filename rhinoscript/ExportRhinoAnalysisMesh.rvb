@@ -1,0 +1,76 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExportRhinoAnalysisMesh.rvb -- May 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Exports mesh objects in the "Rhino Analysis Mesh" format...
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ExportRhinoAnalysisMesh()
+  
+  ' Declare constant
+  Const rhMesh = 32
+  
+  ' Declare variables
+  Dim strObject, strFilter, strFileName
+  Dim objFSO, objStream, i
+  Dim arrVertices, strVertex, strAnalysis
+  Dim arrFaces, arrFace, strFace
+  
+  ' Select mesh object to export
+  strObject = Rhino.GetObject("Select mesh to export", rhMesh, True, True) 
+  If IsNull(strObject) Then Exit Sub
+
+  ' Prompt the user to specify a file name    
+  strFilter = "Rhino Analysis Mesh Files (*.ram)|*.ram||"
+  strFileName = Rhino.SaveFileName("Save As", strFilter)
+  If IsNull(strFileName) Then Exit Sub
+  
+  ' Get the file system object
+  Set objFSO = CreateObject("Scripting.FileSystemObject")
+  
+  ' Open a text file to write to
+  On Error Resume Next
+  Set objStream = objFSO.CreateTextFile(strFileName, True)
+  If Err Then
+    MsgBox Err.Description
+    Exit Sub
+  End If
+
+  ' Get mesh info    
+  arrVertices = Rhino.MeshVertices(strObject)
+  arrFaces = Rhino.MeshFaceVertices(strObject)
+  
+  ' Write mesh counts
+  objStream.WriteLine "vertexcount=" & CStr(UBound(arrVertices) + 1)
+  objStream.WriteLine "facecount=" & CStr(UBound(arrFaces) + 1)
+      
+  ' Write mesh vertices plus analysis field
+  For i = 0 To UBound(arrVertices)
+    strVertex = Rhino.Pt2Str(arrVertices(i), 16)
+    strAnalysis = CStr(arrVertices(i)(2)) ' fancy part...
+    objStream.WriteLine "vertex=(" & strVertex & ") analysisvalue(" & strAnalysis & ")"
+  Next
+
+  ' Write mesh faces
+  For Each arrFace In arrFaces
+    strFace = ""
+    For i = 0 To UBound(arrFace)
+      strFace = strFace & CStr(arrFace(i))
+      If i <> UBound(arrFace) Then strFace = strFace & ","
+    Next
+    objStream.WriteLine "face=(" & strFace & ")"
+  Next
+    
+  ' Close the file
+  objStream.Close
+  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Rhino.AddStartupScript Rhino.LastLoadedScriptFile
+Rhino.AddAlias "ExportRhinoAnalysisMesh", "_NoEcho _-RunScript (ExportRhinoAnalysisMesh)"

@@ -1,0 +1,35 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LayerRename.rvb -- November 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub LayerRename()
+	
+	Dim strFind, strReplace
+	Dim arrLayers, strLayer, strName
+	
+	If Rhino.ExeVersion <> 5 Then
+		Call Rhino.Print("This RhinoScript requires Rhino 5.0.")
+		Exit Sub
+	End If
+	
+	strFind = Rhino.StringBox("String to find")
+	If IsNull(strFind) Then Exit Sub
+
+	strReplace = Rhino.StringBox("Replace with")
+	If IsNull(strReplace) Then Exit Sub
+	
+	arrLayers = Rhino.LayerIds
+	For Each strLayer In arrLayers
+		strName = Rhino.LayerName(strLayer, False)
+		If InStr(strName, strFind) > 0 Then
+			strName = Replace(strName, strFind, strReplace)
+			strName = Trim(strName) 
+			Call Rhino.RenameLayer(strLayer, strName)
+		End If
+	Next
+End Sub

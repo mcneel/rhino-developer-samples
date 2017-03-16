@@ -1,0 +1,58 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchProcessFiles.rvb -- February 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchProcessFiles
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BatchProcessFiles()
+
+  Dim sFolder, oFSO, oFolder
+
+  ' Allow the user to interactively pick a folder
+  sFolder = Rhino.BrowseForFolder(, "Select folder to process", "Batch Process Files")
+  If VarType(sFolder) <> vbString Then Exit Sub
+
+  ' Create a file system object
+  Set oFSO = CreateObject("Scripting.FileSystemObject") 
+
+  ' Get a folder object based on the selected folder
+  Set oFolder = oFSO.GetFolder(sFolder)
+  
+  ' Process the folder
+  Call RecurseFolder(oFolder)
+
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RecurseFolder
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RecurseFolder(oFolder)
+
+  Dim oFile, oSubFolder
+
+  ' Process each file in the folder
+  For Each oFile In oFolder.Files
+    Call ProcessFile(oFile.Path)
+  Next
+
+  ' Process each subfolder in this folder
+  'For Each oSubFolder In oFolder.SubFolders
+  '  Call RecurseFolder(oSubFolder)
+  'Next
+
+End Sub 
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ProcessFile
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub ProcessFile(sFile)
+
+  ' TODO: Add functionality here
+  Call Rhino.Print(sFile)
+
+End Sub

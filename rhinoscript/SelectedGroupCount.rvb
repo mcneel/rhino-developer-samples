@@ -1,0 +1,39 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SelectedGroupCount.rvb -- January 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub SelectedGroupCount
+
+  Dim arrObjects, objDictionary
+  Dim strGroup, nCount, i
+  
+  arrObjects = Rhino.GetObjects("Select objects for group report", 0, True, True)
+  If IsNull(arrObjects) Then
+    Rhino.Print("No objects selected.")
+    Exit Sub
+  End If
+  
+  Set objDictionary = CreateObject("Scripting.Dictionary")
+  
+  For i = 0 To UBound(arrObjects)
+    strGroup = Rhino.ObjectTopGroup(arrObjects(i))
+    If Not IsNull(strGroup) Then
+      If Not objDictionary.Exists(strGroup) Then
+        Call objDictionary.Add(strGroup, True)
+      End If
+    End If
+  Next
+
+  nCount = objDictionary.Count
+  If (nCount = 0) Then
+    Call Rhino.Print("No groups found in selection.")
+  Else
+    Call Rhino.Print("Selection contains " & CStr(nCount) & " object groups.")
+  End If 
+  
+End Sub

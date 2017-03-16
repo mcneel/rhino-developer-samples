@@ -1,0 +1,32 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ConvertDotsToText -- August 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub ConvertDotsToText
+
+  Const RH_DOT = &h2000
+
+  Dim arrDots, strDot
+  Dim arrPt, strText
+
+  arrDots = Rhino.GetObjects("Select text dots", RH_DOT, True, True )
+  If Not IsArray(arrDots) Then Exit Sub
+  
+  Call Rhino.EnableRedraw(False)
+  
+  For Each strDot In arrDots
+   If Rhino.IsTextDot(strDot) Then
+     strText = Rhino.TextDotText(strDot)
+     arrPt = Rhino.TextDotPoint(strDot)
+     Call Rhino.AddText(strText, arrPt)
+     Call Rhino.DeleteObject(strDot)
+   End If
+  Next
+  
+  Call Rhino.EnableRedraw(True)
+  
+End Sub

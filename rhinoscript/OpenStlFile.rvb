@@ -1,0 +1,36 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' OpenStlFile.rvb -- May 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub OpenStlFile()
+
+  ' Local variable declarations
+  Dim strFile
+  
+  ' Let the user pick a 3dm file. If the return value is null,
+  ' then the user picked the "Cancel" button...
+  strFile = Rhino.OpenFileName("Open", "Stereolithography Files (*.stl)|*.stl||")
+  If IsNull(strFile) Then Exit Sub
+  
+  ' To keep Rhino from displaying the dreaded
+  ' "Save changes to <filename>" dialog, we can fool it
+  ' into thinking that the document was never modified
+  ' by doing the following. Note carefully, any changes
+  ' to current document that have been saved will be lost.
+  Call Rhino.DocumentModified(False)
+  
+  ' If the picked a file that has a space character in its name,
+  ' or resides in a folder that has a space character, then we
+  ' need to surround the file string in double-quotes so Rhino's
+  ' command line parser will interpret the string correctly.
+  strFile = Chr(34) & strFile & Chr(34)
+  
+  ' Now we can simply script Rhino's Open command to open the file.
+  Call Rhino.Command("_-Open " & strFile, 0)
+
+End Sub

@@ -1,0 +1,36 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RoundedPolyline.rvb -- July 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Public g__RoundedPolyline_Radius
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Main procedure
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RoundedPolyline
+  
+  Dim dblRadius, arrLast
+  
+  If IsEmpty(g__RoundedPolyline_Radius) Then
+    g__RoundedPolyline_Radius = 1.0
+  End If
+  
+  dblRadius = Rhino.GetReal("Polyline corner radius", g__RoundedPolyline_Radius, Rhino.UnitAbsoluteTolerance)
+  If IsNull(dblRadius) Then Exit Sub
+    
+  Call Rhino.Command("_Polyline", 0)
+  If (Rhino.LastCommandResult() = 0) Then
+    arrLast = Rhino.LastCreatedObjects()
+    If IsArray(arrLast) Then
+      Call Rhino.SelectObject(arrLast(0))
+      Call Rhino.Command("_FilletCorners " & CStr(dblRadius), 0)
+      Call Rhino.UnselectAllObjects
+      g__RoundedPolyline_Radius = dblRadius
+    End If
+  End If
+
+End Sub

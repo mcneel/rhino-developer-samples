@@ -1,0 +1,39 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ExtrudeCurveNormal.rvb -- January 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub ExtrudeCurveNormal
+  
+  ' Local variables
+  Dim crv, dist
+  Dim plane, zaxis, delta, target
+  
+  ' Get curve to extrude
+  crv = Rhino.GetObject("Select curve to extrude", 4, True)
+  If IsNull(crv) Then Exit Sub
+
+  ' Get extrusion distance    
+  dist = Rhino.GetReal("Extrusion distance", 1, 0.01)
+  If IsNull(dist) Then Exit Sub
+
+  ' Get current view's construction plane    
+  plane = Rhino.ViewCPlane()
+  ' Plane origin
+  origin = plane(0)
+  ' Plane normal
+  zaxis = plane(3)
+  ' Scale the normal vector by user's distance
+  delta = Rhino.VectorScale(zaxis, dist)
+  ' Calculate target point
+  target = Rhino.PointAdd(origin, delta)
+
+  ' Do the extrusion
+  Call Rhino.ExtrudeCurveStraight(crv, origin, target)
+
+End Sub
+

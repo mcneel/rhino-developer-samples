@@ -1,0 +1,50 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SaveSpecial.rvb -- February 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Backs up a file before saving
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SaveSpecial()
+
+  ' Constant declarations  
+  Const SPECIAL_FOLDER = "Old"
+  
+  ' Local variables
+  Dim strPath, strName, strFile, strFolder, objFSO
+  
+  ' Get the current document's path and name
+  strPath = Rhino.DocumentPath
+  strName = Rhino.DocumentName
+  
+  ' If the results are strings, then the document has been saved
+  If VarType(strPath) = vbString And VarType(strName) = vbString Then
+    
+    ' Build file and folder strings
+    strFile = strPath & strName
+    strFolder = strPath & SPECIAL_FOLDER
+    
+    ' Create a file system object
+    Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+    ' Verify the file exists
+    If (objFSO.FileExists(strFile)) Then
+      'Verify the special folder exists
+      If Not objFSO.FolderExists(strFolder) Then
+        ' Create the special folder
+        Call objFSO.CreateFolder(strFolder)
+      End If
+      ' Copy the file into the special folder
+      Call objFSO.CopyFile(strFile, strFolder & "\", True)
+    End If
+    
+  End If
+  
+  ' Save the document
+  Call Rhino.Command("_Save", 0)
+  
+End Sub

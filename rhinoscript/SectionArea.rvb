@@ -1,0 +1,97 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SectionArea.rvb -- July 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub SectionArea
+  
+  ' Prompt the user for the number of samples
+  samples = 8
+  samples = Rhino.GetInteger("Number of samples", samples, 2)
+  If IsNull(samples) Then Exit Sub
+
+  ' Prompt the user for the 'from' point
+  pt0 = Rhino.GetPoint("Point to move from")
+  If IsNull(pt0) Then Exit Sub
+
+  ' Prompt the user for the 'to' point
+  pt1 = Rhino.GetPoint("Point to move to", pt0)
+  If IsNull(pt1) Then Exit Sub
+
+  ' Prompt the user for the object to cut
+  obj = Rhino.GetObject("Select closed volume to cut", 8)
+  If IsNull(obj) Then Exit Sub
+
+  ' Redim arrays
+  Dim graph_points()
+  ReDim graph_points( samples )
+  
+  ' Try to speed things up a bit
+  Rhino.EnableRedraw False
+
+  ' Add layers
+  Rhino.AddLayer "sections", RGB(240, 20, 20)
+  Rhino.AddLayer "cumulative area", RGB(20, 200, 20)
+
+  ' Set the sections layer current  
+  Rhino.CurrentLayer("sections")
+  
+  ' Create a vector from the two input points
+  v = Rhino.VectorCreate(pt1, pt0)
+  ' Get the length of the vector
+  length = Rhino.VectorLength(v)
+  ' Unitize the vector
+  v = Rhino.VectorUnitize(v)
+  ' Calculate the size of each interval
+  interval = length / samples
+  
+  ' Repeat sample + 1 times
+  For i = 0 To samples
+    
+    ' Plane origin
+    origin = pt0
+    ' Create plane from origin and vector
+    plane = Rhino.PlaneFromNormal(origin, v)
+    
+    ' If i > 0, then move the plane along the defined axis
+    If( i > 0 ) Then
+      scale_v = Rhino.VectorScale(v, i*interval)
+      origin = Rhino.PointAdd(pt0, scale_v)
+      plane = Rhino.MovePlane(plane, origin)
+    End If
+    
+    ' Add a point at the plane's origin
+    Rhino.AddPoint origin
+    
+    ' Create section curves through the object
+    sections = Rhino.AddSrfSectionCrvs(obj, plane)
+
+    ' If there was more then one section curve
+    ' try to union the curves together  
+    If (UBound(sections) > 0) Then
+      sections = Rhino.CurveBooleanUnion(sections)
+    End If
+    
+    ' Calculate the area of the section curves
+    area = Rhino.CurveArea(sections)
+    
+    ' Build a graphing point based on the plane's 
+    ' origin, and the cumulative curve area
+    graph_points(i) = Array(origin(0), area(0), 0)
+   
+  Next    
+
+  ' Draw our graph
+  Rhino.CurrentLayer("cumulative area")
+  Rhino.AddInterpCurve graph_points
+  Rhino.AddPoints graph_points
+
+  ' Turn screen redrawing back on
+  Rhino.EnableRedraw True
+
+End Sub
+

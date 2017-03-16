@@ -1,0 +1,35 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' UserText.rvb -- December 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub UserText()
+	
+	Dim strObject, arrKeys, arrValues(), arrResults, i
+	
+	strObject = Rhino.GetObject("Select object with user text", 0, True)
+	If IsNull(strObject) Then Exit Sub
+	
+	arrKeys = Rhino.GetUserText(strObject,, False)
+	If IsNull(arrKeys) Then
+		Call Rhino.Print("Object has no user text.")
+		Exit Sub
+	End If
+	
+	arrKeys = Rhino.SortStrings(arrKeys)
+	ReDim arrValues(UBound(arrKeys))
+	For i = 0 To UBound(arrKeys)
+		arrValues(i) = Rhino.GetUserText(strObject, arrKeys(i), False)
+	Next
+	
+	arrResults = Rhino.PropertyListBox(arrKeys, arrValues, "Object user text to edit:", "User Text")
+	If IsArray(arrResults) Then
+		For i = 0 To UBound(arrKeys)
+			Call Rhino.SetUserText(strObject, arrKeys(i), arrResults(i), False)
+		Next
+	End If
+
+End Sub

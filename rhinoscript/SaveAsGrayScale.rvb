@@ -1,0 +1,85 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SaveAsGrayScale.rvb -- September 2016
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Temporarily sets layer colors to their grayscale equivalent and then
+' runs the SaveAs command. Color are reset when the command finishes.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SaveAsGrayScale
+	
+	' Declare local variables
+	Dim arrLayers, strLayer, lngColor, lngGray
+	Dim objDictionary
+
+	' Create a dictionary to store the old colors
+	Set objDictionary = CreateObject("Scripting.Dictionary")
+	
+	' Get all of the layers
+	arrLayers = Rhino.LayerIds
+	
+	' Turning off redraw will make modifying colors
+	' a bit quicker....
+	Call Rhino.EnableRedraw(False)
+	
+	' Process each layer
+	For Each strLayer In arrLayers
+		' Get the layer's color
+		lngColor = Rhino.LayerColor(strLayer)
+		' Add the layer/color to the dictionary
+		Call objDictionary.Add(strLayer, lngColor)
+		' Convert the color to grayscale
+		lngGray = ToGrayscale(lngColor)
+		' Modify the layer color
+		Call Rhino.LayerColor(strLayer, lngGray)
+	Next
+
+	Call Rhino.EnableRedraw(True)
+	
+	' Script the SaveAs command
+	Call Rhino.Command("_SaveAs", True)
+	
+	Call Rhino.EnableRedraw(False)
+
+	' Reset the layer colors
+	For Each strLayer In arrLayers
+		' Get the layer's color from the dictionary
+		lngColor = objDictionary(strLayer)
+		' Modify the layer color
+		Call Rhino.LayerColor(strLayer, lngColor)
+	Next
+	
+	Call Rhino.EnableRedraw(True)
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Converts an RGB color to gray scale
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ToGrayscale(lngColor)
+
+	' Declare local variables
+	Dim nGray, nRed, nGreen, nBlue
+
+	' Get the color's red-green-blue components
+	nRed = Rhino.ColorRedValue(lngColor)
+	nGreen = Rhino.ColorGreenValue(lngColor)
+	nBlue = Rhino.ColorBlueValue(lngColor)
+
+	' Calculate the grayscale based on the NTSC color gamut
+	nGray = CByte(nRed * 0.30) + CByte(nGreen * 0.59) + CByte(nBlue * 0.11)
+
+	' Modify the layer's color
+	ToGrayscale = RGB(nGray, nGray, nGray)
+
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Drag & drop support
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Call Rhino.AddStartupScript(Rhino.LastLoadedScriptFile)
+Call Rhino.AddAlias("SaveAsGrayScale", "_NoEcho _-RunScript (SaveAsGrayScale)")

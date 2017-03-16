@@ -1,0 +1,91 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LegoBrickMaker.rvb -- December 2011
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub LegoBrickMaker
+  
+  Const bx = 8.0
+  Const by = 8.0
+  Const bz = 3.2
+  Const nd = 4.8
+  Const nz = 1.8
+  
+  Dim a, b, c, dir
+  dir = "C:\Users\Dale\Desktop\Legos"
+  
+  a = Rhino.GetInteger("Length (x)", 1, 1)
+  If IsNull(a) Then Exit Sub
+    
+  b = Rhino.GetInteger("Width (y)", 1, 1)
+  If IsNull(b) Then Exit Sub
+
+  c = Rhino.GetInteger("Height (z)", 1, 1)
+  If IsNull(c) Then Exit Sub
+
+  Dim box(7), obj(), idx, i, j, pl, x, y, z
+  box(0) = Array(   0,    0,    0)
+  box(1) = Array(bx*a,    0,    0)
+  box(2) = Array(bx*a, by*b,    0)  
+  box(3) = Array(   0, by*b,    0)  
+  box(4) = Array(   0,    0, bz*c)
+  box(5) = Array(bx*a,    0, bz*c)
+  box(6) = Array(bx*a, by*b, bz*c)  
+  box(7) = Array(   0, by*b, bz*c)  
+  
+  ReDim obj(a*b)
+  idx = 0
+  obj(idx) = Rhino.AddBox(box)
+  idx = idx + 1
+  
+  For i = 0 To a-1
+    For j = 0 To b-1
+      x = (bx / 2) + (bx * i)
+      y = (by / 2) + (by * j)
+      z = (bz * c)
+      pl = Rhino.MovePlane(Rhino.WorldXYPlane, Array(x,y,z-1))
+      obj(idx) = Rhino.AddCylinder(pl, nz+1, nd/2, True)
+      idx = idx + 1
+    Next
+  Next
+
+  Dim prt      
+  prt = Rhino.BooleanUnion(obj, True)(0)
+  Call Rhino.ObjectColorSource(prt, 3)
+  Call Rhino.ObjectMaterialSource(prt, 3)
+  Call Rhino.ZoomExtents(,True)
+  Call Rhino.CurrentView("Perspective")
+  
+  Dim name, cmd
+  name = "Brick" & CStr(a) &"x"& CStr(b) &"x"& CStr(c)
+  cmd = "_-Export " & dir & "\" & name
+  Call VerifyFolder(dir)
+  Call Rhino.SelectObject(prt)
+  Call Rhino.Command(cmd)
+  Call Rhino.DeleteObject(prt)
+  
+End Sub
+
+Sub VerifyFolder(strFolder) 
+
+  Dim objFSO, nPos  
+  Set objFSO = CreateObject("Scripting.FileSystemObject") 
+  If objFSO.FolderExists(strFolder) Then Exit Sub
+    
+  If Right(strFolder, 1) <> "\" Then strFolder = strFolder & "\" 
+  If Left(strFolder, 2) = "\\" Then 
+    nPos = InStr(3, strFolder, "\") 
+  Else 
+    nPos = 3 
+  End If 
+  Do While nPos > 0 
+    nPos = InStr(nPos + 1, strFolder, "\") 
+    If Not objFSO.FolderExists(Left(strFolder, nPos)) And nPos > 0 Then 
+      Call objFSO.CreateFolder(Left(strFolder, nPos))
+    End If 
+  Loop 
+
+End Sub

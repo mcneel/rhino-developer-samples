@@ -1,0 +1,26 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CPlaneTangent.rvb -- July 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub CPlaneTangent
+  
+  Const rhCrv = 4
+  Dim crv : crv = Rhino.GetObject("Select curve", rhCrv)
+  If IsNull(crv) Then Exit Sub
+    
+  Dim pt : pt = Rhino.GetPointOnCurve(crv, "Point on curve")
+  If Not IsArray(pt) Then Exit Sub
+    
+  Dim t : t = Rhino.CurveClosestPoint(crv, pt)
+  If IsNull(t) Then Exit Sub
+
+  Dim plane : plane = Rhino.CurvePerpFrame(crv, t)
+  Dim cplane : cplane = Rhino.PlaneFromFrame(plane(0), plane(3),  plane(1))
+  Rhino.ViewCPlane Rhino.CurrentView, cplane
+
+End Sub

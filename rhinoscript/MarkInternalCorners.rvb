@@ -1,0 +1,32 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MarkInternalCorners.rvb -- June 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub MarkInternalCorners
+  
+  Dim curve, plane, pline, bounds, i, dir, point
+  
+  curve = Rhino.GetObject("Select closed planar polyline", 4, True)
+  If IsNull(curve) Then Exit Sub
+  If Not Rhino.IsCurveClosed(curve) Then Exit Sub
+  If Not Rhino.IsCurvePlanar(curve) Then Exit Sub
+  If Not Rhino.IsPolyline(curve) Then Exit Sub
+  
+  plane = Rhino.CurvePlane(curve)
+  pline = Rhino.PolylineVertices(curve)
+  bounds = UBound(pline)
+  For i = 0 To bounds - 1
+    dir = Rhino.VectorCreate(pline(i+1), pline(i))
+    dir = Rhino.VectorUnitize(dir)
+    dir = Rhino.VectorScale(dir, 2 * Rhino.UnitAbsoluteTolerance)
+    point = Rhino.PointAdd(pline(i+1), dir)
+    If (1 = Rhino.PointInPlanarClosedCurve(point, curve, plane)) Then
+      Call Rhino.AddPoint(pline(i+1))
+    End If
+  Next
+  
+End Sub

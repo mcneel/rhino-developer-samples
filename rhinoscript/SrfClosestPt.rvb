@@ -1,0 +1,57 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SrfClosestPt.rvb -- May 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhinoceros 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub SrfClosestPt
+  
+	Const RH_SRF = 8
+	
+	Dim intType, strSource, strTarget
+	Dim arrMP, strMesh, arrVertices, arrVertex
+	Dim arrUV, arrSrfPt, dblSrfDist
+	Dim dblDistance, arrSourcePt, arrTargetPt
+	
+	intType = RH_SRF
+	
+	strTarget = Rhino.GetObject("Select target surface for closest point", intType, True)
+	If IsNull(strTarget) Then Exit Sub
+
+	strSource = Rhino.GetObject("Select source surface", intType, False)
+	If IsNull(strSource) Then Exit Sub
+	
+	Call Rhino.EnableRedraw(False)
+	
+	arrMP = Rhino.MeshParameters(4)
+	strMesh = Rhino.MeshObjects(strSource, -1, arrMP)
+	If IsNull(strMesh) Then Exit Sub
+	
+	dblDistance = -1
+	arrVertices = Rhino.MeshVertices(strMesh)
+	For Each arrVertex In arrVertices
+		arrUV = Rhino.SurfaceClosestPoint(strTarget, arrVertex)
+		If IsArray(arrUV) Then
+			arrSrfPt = Rhino.EvaluateSurface(strTarget, arrUV)
+			dblSrfDist = Rhino.Distance(arrVertex, arrSrfPt)
+			If (dblDistance < 0) Or (dblSrfDist < dblDistance) Then
+				dblDistance = dblSrfDist
+				arrTargetPt = arrSrfPt
+				arrSourcePt = arrVertex
+			End If
+		End If
+	Next
+	
+	If (dblDistance > 0) Then
+		Call Rhino.AddPoint(arrSourcePt)
+		Call Rhino.AddPoint(arrTargetPt)
+		Call Rhino.AddLine(arrSourcePt, arrTargetPt)
+		Call Rhino.Print("Closest distance: " & CStr(dblDistance))
+	End If 	
+
+	Call Rhino.DeleteObject(strMesh)
+	Call Rhino.EnableRedraw(True)
+    
+End Sub

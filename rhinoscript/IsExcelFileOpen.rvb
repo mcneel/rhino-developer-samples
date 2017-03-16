@@ -1,0 +1,20 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' IsExcelFileOpen.rvb -- February 2004
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Function IsExcelFileOpen(sNameOfExcelFile)
+  IsExcelFileOpen = False
+  Dim oExcel, oWorkbook
+  Set oExcel = CreateObject("Excel.Application")
+  Set oWorkbook = oExcel.Workbooks.Open(sNameOfExcelFile)
+  If oWorkbook.ReadOnly Then
+    IsExcelFileOpen = True
+  End If
+  oExcel.Quit
+  Set oWorkbook = Nothing
+  Set oExcel = Nothing
+End Function

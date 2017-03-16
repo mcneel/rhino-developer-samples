@@ -1,0 +1,27 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' MultiCrvSeam.rvb -- February 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Option Explicit
+
+Sub MultiCrvSeam()
+  
+  Dim arrCurves, strCurve
+  
+  arrCurves = Rhino.GetObjects("Select closed curves for seam adjustment", 4, True)
+  If IsNull(arrCurves) Then Exit Sub
+  
+  Rhino.UnselectAllObjects
+  
+  For Each strCurve In arrCurves
+    If Rhino.IsCurveClosed(strCurve) Then
+      Call Rhino.SelectObject(strCurve)
+      Call Rhino.Command("_-CrvSeam")
+      Call Rhino.UnselectObject(strCurve)
+    End If
+  Next
+  
+End Sub

@@ -1,0 +1,60 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PolarZonohedron.rvb -- March 2014
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4 and 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Algorithm shamelessly "borrowed" from Rob Bell.
+' http://www.zomebuilder.com/collections/frontpage
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub PolarZonohedron
+  
+  Dim frequency, pitch, length
+  Dim vector, points(3), i, j, p_rotate, f_rotate, face, angle
+  
+  frequency = 8
+  pitch = Atn(Sqr(2)/2)
+  length = 12
+  
+  ' Begin by setting points(0) to the world origin
+  points(0) = Array(0,0,0)
+
+  ' Tilt pitch vector up the world xz plane
+  vector = Array(Cos(pitch), 0, Sin(pitch))
+  vector = Rhino.VectorScale(vector, length)
+
+  Call Rhino.EnableRedraw(False)
+  
+  ' Using the origin as the initial generator we iterate thru each zone of the 
+  ' zonohedron our first task is to define the four points of the base rhomb for
+  ' this zone at the end the points(3} becomes our new origin for the rhomb of
+  ' the next zone
+  For i = 1 To frequency - 1
+    
+    angle = Rhino.ToDegrees(i * 2 * Rhino.PI / frequency)
+    p_rotate = Rhino.XformRotation(angle, Array(0,0,1), points(0))
+    points(1) = Rhino.PointAdd(points(0), vector)
+    points(3) = Rhino.PointTransform(points(1), p_rotate)
+    points(2) = Rhino.PointAdd(points(3), vector)
+   
+    ' We now have the 4 points which make this zone's base rhomb,
+    ' so we rotate around the origin frequency times making a star pattern
+    ' of faces.
+    For j = 0 To frequency - 1
+      angle = Rhino.ToDegrees(j * 2 * Rhino.PI / frequency)
+      f_rotate = Rhino.XformRotation(angle, Array(0,0,1), Array(0,0,0))     
+      face = Rhino.AddSrfPt(Rhino.PointArrayTransform(points, f_rotate))
+    Next
+    
+    ' Set the origin for the rhomb of the next zone
+    points(0) = points(3)
+    
+  Next
+  
+  Call Rhino.EnableRedraw(True)
+  
+End Sub
+

@@ -1,0 +1,45 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ListAcadSchemes.rvb -- February 2010
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GetAcadExportSchemes
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function GetAcadExportSchemes
+
+  Const HKEY_CURRENT_USER = &H80000001
+  
+  Dim objReg, strComputer, strKey, arrSubKeys
+  strComputer = "."
+  strKey = "Software\McNeel\Rhinoceros\4.0\Scheme: Default\Plug-ins\39a88493-9e97-4f15-bd62-ad25896a2632\Settings"
+
+  On Error Resume Next   
+  Set objReg = GetObject("winmgmts:{impersonationLevel=impersonate}!\\" & strComputer & "\root\default:StdRegProv")
+  If Err.Number = 0 Then
+    Call objReg.EnumKey(HKEY_CURRENT_USER, strKey, arrSubKeys)
+  End If
+  
+  If IsArray(arrSubKeys) Then
+    GetAcadExportSchemes = arrSubKeys
+  Else
+    GetAcadExportSchemes = Null
+  End If
+  
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TestListAcadSchemes
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TestListAcadSchemes
+  Dim arrSubKeys, strSubKey
+  arrSubKeys = GetAcadExportSchemes()
+  If IsArray(arrSubKeys) Then
+    For Each strSubKey In arrSubKeys
+      Call Rhino.Print(strSubKey)
+    Next
+  End If  
+End Sub

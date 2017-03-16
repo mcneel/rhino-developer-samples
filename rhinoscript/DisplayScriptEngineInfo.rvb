@@ -1,0 +1,15 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DisplayScriptEngineInfo.rvb -- November 2009
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub DisplayScriptEngineInfo
+   Dim s
+   s = ScriptEngine & " Version "
+   s = s & ScriptEngineMajorVersion & "."
+   s = s & ScriptEngineMinorVersion & "."
+   s = s & ScriptEngineBuildVersion 
+   MsgBox s, vbOKOnly, "Script Version"
+End Sub

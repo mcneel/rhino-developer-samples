@@ -1,0 +1,130 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' BatchSaveSmall.rvb -- October 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhinoceros 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Main subroutine
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub BatchSaveSmall()
+ 
+	Dim sFolder, oFSO, oFolder
+	
+	' Hey, only Rhinoceros 5...
+	If (Rhino.ExeVersion < 5) Then
+		Call Rhino.Print("This script requires Rhinoceros 5 or greater.")
+		Exit Sub
+	End If
+ 
+	' Pick a folder
+	sFolder = Rhino.BrowseForFolder(, "Select folder to recurse", "Batch SaveSmall")
+	If IsNull(sFolder) Then Exit Sub
+ 
+	' Get the folder from the file system
+	Set oFSO = CreateObject("Scripting.FileSystemObject") 
+	Set oFolder = oFSO.GetFolder(sFolder)
+ 
+	' Do the recursive small saving...
+	Call RecurseSaveSmall(oFolder)
+ 
+	' Clean up
+	Call Rhino.DocumentModified(False)
+	Call Rhino.Command("_-New _None", 0)
+	Call Rhino.Print("Done!")
+ 
+End Sub
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' RecurseSaveSmall
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub RecurseSaveSmall(oFolder)
+ 
+	Dim oFile, oSubFolder, dModified
+ 
+	For Each oFile In oFolder.Files
+		' Save file modified date
+		dModified = oFile.DateLastModified
+		' Do the "save small"
+		Call DoSaveSmall(oFile.Path, dModified)
+	Next
+ 
+	' If you do not want to recurse folders,
+	' just comment the following lines.
+	For Each oSubFolder In oFolder.SubFolders
+		Call RecurseSaveSmall(oSubFolder)
+	Next
+
+End Sub 
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DoSaveSmall
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DoSaveSmall(sPath, dModified)
+ 
+	Dim aViews, sView, aInfo, sVer, sCmd
+ 
+	If InStr(LCase(sPath), ".3dm") > 0 Then
+
+		' Find the file version
+		sVer = "5"
+		aInfo = Rhino.DocumentInfo(sPath)
+		If IsArray(aInfo) Then
+			Select Case aInfo(1)
+				Case 3  sVer = "3"
+				Case 30 sVer = "3"
+				Case 4  sVer = "4"
+				Case 40 sVer = "4"
+				Case 5  sVer = "5"
+				Case 50 sVer = "5"
+			End Select
+		End If
+		
+		Rhino.Print aInfo(1)
+		Rhino.Print sVer
+		
+		' Open the file
+		Call Rhino.DocumentModified(False)
+		Call Rhino.Command("_-Open " & Chr(34) & sPath & Chr(34), 0)
+ 
+		' Set all of the viewports to wireframe before saving
+		aViews = Rhino.ViewNames
+		For Each sView In aViews
+			Call Rhino.ViewDisplayMode(sView, 0)
+		Next
+ 
+		' Save it
+		sCmd = "_-SaveSmall _Version=" & sVer
+		sCmd = sCmd & " _SaveSmall=_Yes _GeometryOnly=_No _SaveTextures=_No _SavePlugInData=_No _Enter"
+		Call Rhino.Command(sCmd, 1)
+		
+		' Clear the undo stack
+		Call Rhino.Command("_-ClearUndo", 0)
+		
+		' Reset file modified date
+		Call TouchDateModified(sPath, dModified)
+		
+	End If
+ 
+End Sub
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' TouchDateModified
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub TouchDateModified(sPath, dModified)
+ 
+	Dim oShell, oFolder, oFile
+	Dim sDir, sFile, nPos
+ 
+	nPos = InStrRev(sPath, "\")
+	sDir = Left(sPath, nPos)
+	sFile = Mid(sPath, nPos + 1)
+ 
+	Set oShell = CreateObject("Shell.Application")
+	Set oFolder = oShell.NameSpace(sDir)
+	Set oFile = oFolder.ParseName(sFile)
+	oFile.ModifyDate = dModified
+ 
+End Sub

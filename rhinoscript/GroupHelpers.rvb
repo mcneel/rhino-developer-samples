@@ -1,0 +1,45 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' GroupHelpers.rvb -- May 2012
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' I'd like to select a group(s) that possibly have nested groups in 
+' them and completely remove grouping from everything leaving ungrouped 
+' geometry.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub UngroupObjects
+  Dim arrObjects, strObject, arrGroups
+  arrObjects = Rhino.GetObjects("Select objects to ungroup", ,True, True)
+  If IsArray(arrObjects) Then
+    For Each strObject In arrObjects
+      arrGroups = Rhino.ObjectGroups(strObject)
+      If IsArray(arrGroups) Then
+        Call Rhino.RemoveObjectFromAllGroups(strObject)
+      End If
+    Next
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' The second would take a selected group with possible nested groups and 
+' flatten them into one top level group.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub FlattenGroupedObjects
+  Dim arrObjects, strObject, strGroup, arrGroups
+  arrObjects = Rhino.GetObjects("Select objects to ungroup", ,True, True)
+  If IsArray(arrObjects) Then
+    strGroup = Rhino.AddGroup
+    For Each strObject In arrObjects
+      arrGroups = Rhino.ObjectGroups(strObject)
+      If IsArray(arrGroups) Then
+        Call Rhino.RemoveObjectFromAllGroups(strObject)
+        Call Rhino.AddObjectToGroup(strObject, strGroup)
+      End If
+    Next
+  End If
+End Sub
+        

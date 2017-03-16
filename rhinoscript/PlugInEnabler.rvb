@@ -1,0 +1,54 @@
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' PlugInEnabler.rvb -- July 2013
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Sub DisableNonMcNeelPlugIns()
+
+	Dim arrPlugIns, strPlugIn, arrInfo
+	Dim strMsg, nCount
+	
+	arrPlugIns = Rhino.PlugInIds(0, 0)
+	nCount = 0
+	For Each strPlugIn In arrPlugIns
+		arrInfo = Rhino.PlugInInfo(strPlugIn)
+		If arrInfo(18) = False Then
+			Call Rhino.EnablePlugIn(strPlugIn, False)
+			nCount = nCount + 1
+		End If
+	Next
+
+	strMsg = CStr(nCount) & " plug-ins that do not ship with Rhino disabled." & VbCrLf
+	strMsg = strMsg & "You may need to restart Rhino for these changes to take effect."
+	Call MsgBox(strMsg, vbOKOnly + vbExclamation, "Rhino")
+	
+End Sub
+
+Sub EnableNonMcNeelPlugIns()
+
+	Dim arrPlugIns, strPlugIn, arrInfo
+	Dim strMsg, nCount
+	
+	arrPlugIns = Rhino.PlugInIds(0, 0)
+	nCount = 0
+	For Each strPlugIn In arrPlugIns
+		arrInfo = Rhino.PlugInInfo(strPlugIn)
+		If arrInfo(18) = False Then
+			Call Rhino.EnablePlugIn(strPlugIn, True)
+			nCount = nCount + 1
+		End If
+	Next
+
+	strMsg = CStr(nCount) & " plug-ins that do not ship with Rhino enabled." & VbCrLf
+	strMsg = strMsg & "You may need to restart Rhino for these changes to take effect."
+	Call MsgBox(strMsg, vbOKOnly + vbExclamation, "Rhino")
+	
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Rhino.AddStartupScript Rhino.LastLoadedScriptFile
+Call Rhino.AddAlias("DisableNonMcNeelPlugIns", "_NoEcho _-RunScript (DisableNonMcNeelPlugIns)")
+Call Rhino.AddAlias("EnableNonMcNeelPlugIns", "_NoEcho _-RunScript (EnableNonMcNeelPlugIns)")

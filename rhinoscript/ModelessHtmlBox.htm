@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Select</title>
+    <script language="VBScript">
+      <!--
+        Dim g_RhinoScript
+        Sub OnInitDialog()
+          window.returnValue = Null
+          Dim args
+          Set args = window.dialogArguments
+          If IsObject(args) Then
+            Set g_RhinoScript = args
+          Else
+            MsgBox "Error obtaining RhinoScript object"
+            window.close
+          End If
+        End Sub
+
+        Sub OnAll()
+	        g_RhinoScript.ObjectsByType 0, True
+        End Sub
+
+        Sub OnPoints()
+	        g_RhinoScript.ObjectsByType 1, True
+        End Sub
+        
+        Sub OnPointClouds()
+	        g_RhinoScript.ObjectsByType 2, True
+        End Sub
+        
+        Sub OnCurves()
+	        g_RhinoScript.ObjectsByType 4, True
+        End Sub
+
+        Sub OnSurfaces()
+	        g_RhinoScript.ObjectsByType 8, True
+        End Sub
+
+        Sub OnPolysrfs()
+	        g_RhinoScript.ObjectsByType 16, True
+        End Sub
+
+        Sub OnMeshes()
+	        g_RhinoScript.ObjectsByType 32, True
+        End Sub
+
+        Sub OnNone()
+	        g_RhinoScript.UnselectAllObjects
+        End Sub
+      -->
+    </script>
+  </head>
+  
+  <body onload="OnInitDialog()" style="style="width: 100; height: 230; font-family: Arial, sans-serif">
+    <table cellpadding="1" cellspacing="1" border="0" >
+      <tr>
+        <td>
+          <input type="button" name="btnAll" value="All" onclick="OnAll()" style="width: 90; border: thin solid THREEDSHADOW">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" name="btnPoints" value="Points" onclick="OnPoints()" style="width: 90; border: thin solid THREEDSHADOW">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" name="btnPointclouds"  value="Pointclouds" onclick="OnPointClouds()" style="width: 90; border: thin solid THREEDSHADOW">
+         </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" name="btnCurves"  value="Curves" onclick="OnCurves()" style="width: 90; border: thin solid THREEDSHADOW">
+         </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" name="btnSurfaces"  value="Surfaces" onclick="OnSurfaces()" style="width: 90; border: thin solid THREEDSHADOW">
+         </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" name="btnPolysurfaces"  value="Polysurfaces" onclick="OnPolysrfs()" style="width: 90; border: thin solid THREEDSHADOW">
+         </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" name="btnMeshes"  value="Meshes" onclick="OnMeshes()" style="width: 90; border: thin solid THREEDSHADOW">
+         </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" name="btnNone"  value="None" onclick="OnNone()" style="width: 90; border: thin solid THREEDSHADOW">
+         </td>
+      </tr>
+    </table>
+  </body>
+</html>

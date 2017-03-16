@@ -1,0 +1,67 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' DrawParametricCurve.rvb -- February 2007
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 4.0.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Subroutine: DrawParametricCurve
+' Purpose:    Create a interpolated curve based on a parametric equation.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub DrawParametricCurve()
+  Dim t0, t1, t, intCount, x, arrPoint, arrPoints()
+  Dim a, b
+  a = 6
+  b = 3
+
+  ' Get the minimum parameter
+  t0 = Rhino.GetReal("Minimum t value", 0.0)
+  If IsNull(t0) Then Exit Sub
+
+  ' Get the maximum parameter
+  t1 = Rhino.GetReal("Maximum t value", 1.0)
+  If IsNull(t1) Then Exit Sub
+
+  ' Get the number of sampling points to interpolate through
+  intCount = Rhino.GetInteger("Number of points", 50, 2)
+  If IsNull(intCount) Then Exit Sub
+
+  ' Get the first point
+  ReDim arrPoints(intCount - 1)
+  arrPoint = CalculatePoint(t0, a, b)
+  arrPoints(0) = arrPoint
+
+  ' Get the rest of the points
+  For x = 1 To intCount - 2
+    t = (1.0 - (x / intCount) ) * t0 + (x / intCount) * t1
+    arrPoint = CalculatePoint(t, a, b)
+    arrPoints(x) = arrPoint
+  Next
+
+  ' Get the last point
+  arrPoint = CalculatePoint(t1, a, b)
+  arrPoints(intCount - 1) = arrPoint
+
+  ' Add the curve
+
+  Rhino.AddInterpCurve arrPoints
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function:   CalculatePoint
+' Purpose:    Customizable function that solves a parametric equation.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function CalculatePoint(t)
+  Dim arrPoint(2)
+  If IsNumeric(t) Then
+    arrPoint(0) = (4 * (1 - t) + 1 * t) * Sin(3 * 6.2832 * t)
+    arrPoint(1) = (4 * (1 - t) + 1 * t) * Cos(3 * 6.2832 * t)
+    arrPoint(2) = 5 * t
+    CalculatePoint = arrPoint
+  Else
+    CalculatePoint = Null
+  End If
+End Function
