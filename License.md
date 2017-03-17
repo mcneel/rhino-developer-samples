@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2017 Robert McNeel & Associates.
+Copyright (c) 2017 Robert McNeel & Associates.  Rhinoceros is a registered trademark of Robert McNeel & Associates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
