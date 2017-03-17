@@ -1,6 +1,7 @@
 ################################################################################
-# SampleDumpInstanceDefinition.py -- December 2015
-# Copyright (c) Robert McNeel & Associates
+# SampleDumpInstanceDefinition.py
+# MIT License - Copyright (c) 2017 Robert McNeel & Associates.
+# See License.md in the root of this repository for details.
 ################################################################################
 import Rhino
 import System

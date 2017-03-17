@@ -1,6 +1,7 @@
 ################################################################################
-# SampleFibonacciSphere.py -- December 2014
-# Copyright (c) Robert McNeel & Associates
+# SampleFibonacciSphere.py
+# MIT License - Copyright (c) 2017 Robert McNeel & Associates.
+# See License.md in the root of this repository for details.
 ################################################################################
 import rhinoscriptsyntax as rs
 import math, random

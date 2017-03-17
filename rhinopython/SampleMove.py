@@ -1,6 +1,7 @@
 ################################################################################
-# SampleMove.py -- September 2014
-# Copyright (c) Robert McNeel & Associates
+# SampleMove.py
+# MIT License - Copyright (c) 2017 Robert McNeel & Associates.
+# See License.md in the root of this repository for details.
 ################################################################################
 from Rhino import *
 from Rhino.Commands import *

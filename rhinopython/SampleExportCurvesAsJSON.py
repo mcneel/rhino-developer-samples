@@ -1,6 +1,7 @@
 ################################################################################
-# SampleExportCurvesAsJSON.py -- March 2017
-# Copyright (c) Robert McNeel & Associates
+# SampleExportCurvesAsJSON.py
+# MIT License - Copyright (c) 2017 Robert McNeel & Associates.
+# See License.md in the root of this repository for details.
 ################################################################################
 import rhinoscriptsyntax as rs
 import json
