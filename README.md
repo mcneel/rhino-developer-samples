@@ -1,6 +1,6 @@
 # Rhino Developer Samples
 
-![Rhino Developer Logo](https://github.com/mcneel/developer-rhino3d-com/blob/master/images/dev-logo-rhino-small.png)  ![Grasshopper Developer Logo](https://github.com/mcneel/developer-rhino3d-com/blob/master/images/dev-logo-grasshopper-small.png)  ![openNURBS Developer Logo](https://github.com/mcneel/developer-rhino3d-com/blob/master/images/dev-logo-opennurbs-small.png)
+<img align="left" src="https://github.com/mcneel/developer-rhino3d-com/blob/master/images/dev-logo-rhino-small.png">
 
 This repository contains all the sample developer code for programming in the Rhino and Grasshopper ecosystem.
 
