@@ -1,32 +1,25 @@
-RhinoScript Samples
-=========================
-![Rhino](https://lh6.googleusercontent.com/-pQtuyrwmcmg/TYtWECHGYNI/AAAAAAAAA7Y/rphjSmq1cuo/s200/Rhino_logo_wire.jpg)
+# RhinoScript Samples
 
-Running Samples
---------------------
-To run the RhinoScript Samples, you are going to need:
+<img align="left" src="https://github.com/mcneel/developer-rhino3d-com/blob/master/images/rhinoscript-logo.png" width="113">
 
-* Rhino 5.0  - (http://www.rhino3d.com)
-* Rhino 4.0  - (http://www.rhino3d.com)
+This folder contains all the sample scripts for RhinoScript, the VBScript-based scripting language for Rhino for Windows.
 
-Getting Help
--------
-* RhinoScript Wiki (http://wiki.mcneel.com/developer/rhinoscript)
-* Scripting Support on Discourse - (http://discourse.mcneel.com/category/scripting)
-* E-mail Rhino Developer Support - (devsupport@mcneel.com)
+Much like the Rhino Developer website, the version of Rhino that these samples are compatible with are determined by which branch of this repository one is viewing:
 
-Legal Stuff
------------
-Copyright © 2013 Robert McNeel & Associates. All Rights Reserved.
+- The `master` branch corresponds to the current, stable, shipping version of Rhino.
+- The `wip` branch corresponds to the version of Rhino currently in active development.
+- Older versions of Rhino will be archived into version-specific branches (for example: `5`).
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
-Software.
+## Running Samples
 
-THIS SOFTWARE IS PROVIDED "AS IS" WITHOUT EXPRESS OR IMPLIED WARRANTY. ALL IMPLIED
-WARRANTIES OF FITNESS FOR ANY PARTICULAR PURPOSE AND OF MERCHANTABILITY ARE HEREBY
-DISCLAIMED.
+To run the RhinoScript samples, you are going to need:
 
-Rhinoceros is a registered trademark of Robert McNeel & Associates.
+* [Rhino 5 for Windows](http://www.rhino3d.com/download)
+
+## Getting Help
+
+There are a number of great places to get help with RhinoScript:
+
+* [RhinoScript Guides](http://developer.rhino3d.com/guides/rhinoscript/)
+* [Scripting Support on Discourse](http://discourse.mcneel.com/category/scripting)
+* E-mail Rhino Developer Support at: devsupport@mcneel.com
