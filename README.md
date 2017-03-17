@@ -1,6 +1,6 @@
 # Rhino Developer Samples
 
-![Rhino Developer Logo](http://developer.rhino3d.com/images/apple-touch-icon-180x180-precomposed.png)
+<img align="left" src="https://github.com/mcneel/developer-rhino3d-com/blob/master/images/dev-logo-rhino-small.png">
 
 This repository contains all the sample developer code for programming in the Rhino and Grasshopper ecosystem.
 
