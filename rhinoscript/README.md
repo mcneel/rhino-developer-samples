@@ -1,5 +1,3 @@
-# RhinoScript Samples
-
 <img align="left" src="https://github.com/mcneel/developer-rhino3d-com/blob/master/images/rhinoscript-logo.png" width="400">
 
 This folder contains all the sample scripts for RhinoScript, the VBScript-based scripting language for Rhino for Windows.
