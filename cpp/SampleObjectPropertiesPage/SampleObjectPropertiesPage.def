@@ -1,0 +1,6 @@
+; SampleObjectPropertiesPage.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleObjectPropertiesPage"
+
+EXPORTS
+    ; Explicit exports can go here

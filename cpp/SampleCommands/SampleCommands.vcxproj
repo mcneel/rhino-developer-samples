@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="PseudoDebug|Win32">
+      <Configuration>PseudoDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="PseudoDebug|x64">
+      <Configuration>PseudoDebug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{ADEF6CCD-A6C8-4612-A1A2-4A2F3B287385}</ProjectGuid>
+    <RootNamespace>SampleCommands</RootNamespace>
+    <Keyword>MFCDLLProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <PlatformToolset>v100</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetExt>.rhp</TargetExt>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetExt>.rhp</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|Win32'">
+    <TargetExt>.rhp</TargetExt>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetExt>.rhp</TargetExt>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetExt>.rhp</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|x64'">
+    <TargetExt>.rhp</TargetExt>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>.\SampleCommands.def</ModuleDefinitionFile>
+    </Link>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>.\SampleCommands.def</ModuleDefinitionFile>
+    </Link>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>.\SampleCommands.def</ModuleDefinitionFile>
+    </Link>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>Disabled</Optimization>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;RHINO_DEBUG_PLUGIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <ModuleDefinitionFile>.\SampleCommands.def</ModuleDefinitionFile>
+    </Link>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>.\SampleCommands.def</ModuleDefinitionFile>
+    </Link>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>Disabled</Optimization>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;NDEBUG;_USRDLL;RHINO_DEBUG_PLUGIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <OpenMPSupport>true</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <ModuleDefinitionFile>.\SampleCommands.def</ModuleDefinitionFile>
+    </Link>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cmdSample2View.cpp" />
+    <ClCompile Include="cmdSampleAddCage.cpp" />
+    <ClCompile Include="cmdSampleAddGroup.cpp" />
+    <ClCompile Include="cmdSampleAddLayout.cpp" />
+    <ClCompile Include="cmdSampleAddNurbsCircle.cpp" />
+    <ClCompile Include="cmdSampleAddSearchPath.cpp" />
+    <ClCompile Include="cmdSampleAdjacentBrepFace.cpp" />
+    <ClCompile Include="cmdSampleAnnotateCurveEndPoints.cpp" />
+    <ClCompile Include="cmdSampleAutomateGrasshopper.cpp" />
+    <ClCompile Include="cmdSampleBackgroundBitmap.cpp" />
+    <ClCompile Include="cmdSampleBend.cpp" />
+    <ClCompile Include="cmdSampleBlendCurve.cpp" />
+    <ClCompile Include="cmdSampleBooleanDifference.cpp" />
+    <ClCompile Include="cmdSampleBooleanUnion.cpp" />
+    <ClCompile Include="cmdSampleBoundingBox.cpp" />
+    <ClCompile Include="cmdSampleBrepBoxWithMesh.cpp" />
+    <ClCompile Include="cmdSampleCageEdit.cpp" />
+    <ClCompile Include="cmdSampleCaptureFrameBuffer.cpp" />
+    <ClCompile Include="cmdSampleCircle.cpp" />
+    <ClCompile Include="cmdSampleClassifyCurve.cpp" />
+    <ClCompile Include="cmdSampleClosestAxisPoint.cpp" />
+    <ClCompile Include="cmdSampleCone.cpp" />
+    <ClCompile Include="cmdSampleConvertQuadsToTriangles.cpp" />
+    <ClCompile Include="cmdSampleCurvature.cpp" />
+    <ClCompile Include="cmdSampleCurveAreaCentroid.cpp" />
+    <ClCompile Include="cmdSampleCurveLinetype.cpp" />
+    <ClCompile Include="cmdSampleCurveTorsion.cpp" />
+    <ClCompile Include="cmdSampleCustomMeshObjects.cpp" />
+    <ClCompile Include="cmdSampleCustomRenderMesh.cpp" />
+    <ClCompile Include="cmdSampleCustomViewCapture.cpp" />
+    <ClCompile Include="cmdSampleCylinder.cpp" />
+    <ClCompile Include="cmdSampleDimAngular.cpp" />
+    <ClCompile Include="cmdSampleDimAngular2.cpp" />
+    <ClCompile Include="cmdSampleDimAngular3.cpp" />
+    <ClCompile Include="cmdSampleDimensionHelpers.cpp" />
+    <ClCompile Include="cmdSampleDimLinear.cpp" />
+    <ClCompile Include="cmdSampleDimLinear2.cpp" />
+    <ClCompile Include="cmdSampleDimLinearOverride.cpp" />
+    <ClCompile Include="cmdSampleDimRadius.cpp" />
+    <ClCompile Include="cmdSampleDimStyleTextHeight.cpp" />
+    <ClCompile Include="cmdSampleDimTextHeight.cpp" />
+    <ClCompile Include="cmdSampleDisplayPrecision.cpp" />
+    <ClCompile Include="cmdSampleDrawString.cpp" />
+    <ClCompile Include="cmdSampleDumpBlockTree.cpp" />
+    <ClCompile Include="cmdSampleDumpMaterialUserData.cpp" />
+    <ClCompile Include="cmdSampleDumpModelObjectIds.cpp" />
+    <ClCompile Include="cmdSampleDumpObjectDisplayModes.cpp" />
+    <ClCompile Include="cmdSampleDupBorder.cpp" />
+    <ClCompile Include="cmdSampleDupMeshBorder.cpp" />
+    <ClCompile Include="cmdSampleElevation.cpp" />
+    <ClCompile Include="cmdSampleEnumFonts.cpp" />
+    <ClCompile Include="cmdSampleEvaluateCurve.cpp" />
+    <ClCompile Include="cmdSampleExplodeBrep.cpp" />
+    <ClCompile Include="cmdSampleExplodePointCloud.cpp" />
+    <ClCompile Include="cmdSampleExportDisplayMode.cpp" />
+    <ClCompile Include="cmdSampleExportRenderMeshes.cpp" />
+    <ClCompile Include="cmdSampleExtendLines.cpp" />
+    <ClCompile Include="cmdSampleExtractCurves.cpp" />
+    <ClCompile Include="cmdSampleExtractEdgeCurves.cpp" />
+    <ClCompile Include="cmdSampleExtractFaceMesh.cpp" />
+    <ClCompile Include="cmdSampleExtractIsoCurve.cpp" />
+    <ClCompile Include="cmdSampleExtrudeTapered.cpp" />
+    <ClCompile Include="cmdSampleExtrusionBox.cpp" />
+    <ClCompile Include="cmdSampleFaceWithHole.cpp" />
+    <ClCompile Include="cmdSampleFindCrvsOnSrf.cpp" />
+    <ClCompile Include="cmdSampleGetFaceTriangles.cpp" />
+    <ClCompile Include="cmdSampleGetPointOnMesh.cpp" />
+    <ClCompile Include="cmdSampleGoldenRectangle.cpp" />
+    <ClCompile Include="cmdSampleGradeLine.cpp" />
+    <ClCompile Include="cmdSampleGumball.cpp" />
+    <ClCompile Include="cmdSampleHatch.cpp" />
+    <ClCompile Include="cmdSampleIdleProcessor.cpp" />
+    <ClCompile Include="cmdSampleImportEarthAnchor.cpp" />
+    <ClCompile Include="cmdSampleImportMeshes.cpp" />
+    <ClCompile Include="cmdSampleInsert.cpp" />
+    <ClCompile Include="cmdSampleIntepCrvOnSrf.cpp" />
+    <ClCompile Include="cmdSampleInterpCurve.cpp" />
+    <ClCompile Include="cmdSampleIntersectCrv.cpp" />
+    <ClCompile Include="cmdSampleIntersetCrvSrf.cpp" />
+    <ClCompile Include="cmdSampleJoinSrf.cpp" />
+    <ClCompile Include="cmdSampleLastCreatedObjects.cpp" />
+    <ClCompile Include="cmdSampleLeader.cpp" />
+    <ClCompile Include="cmdSampleLine.cpp" />
+    <ClCompile Include="cmdSampleLineMeshIntersect.cpp" />
+    <ClCompile Include="cmdSampleLockProjection.cpp" />
+    <ClCompile Include="cmdSampleLoft.cpp" />
+    <ClCompile Include="cmdSampleMakeBlock.cpp" />
+    <ClCompile Include="cmdSampleMemoryBuffer.cpp" />
+    <ClCompile Include="cmdSampleMeshBooleanIntersection.cpp" />
+    <ClCompile Include="cmdSampleMeshBoundary.cpp" />
+    <ClCompile Include="cmdSampleMeshDir.cpp" />
+    <ClCompile Include="cmdSampleMeshLine.cpp" />
+    <ClCompile Include="cmdSampleMeshOutline.cpp" />
+    <ClCompile Include="cmdSampleMeshPolysrf.cpp" />
+    <ClCompile Include="cmdSampleMeshVertexLocation.cpp" />
+    <ClCompile Include="cmdSampleMeshVolume.cpp" />
+    <ClCompile Include="cmdSampleMirror.cpp" />
+    <ClCompile Include="cmdSampleModifyBumpIntensity.cpp" />
+    <ClCompile Include="cmdSampleMove.cpp" />
+    <ClCompile Include="cmdSampleMoveCPlane.cpp" />
+    <ClCompile Include="cmdSampleMoveGrips.cpp" />
+    <ClCompile Include="cmdSampleNewFloatingViewport.cpp" />
+    <ClCompile Include="cmdSampleNurbsCircle.cpp" />
+    <ClCompile Include="cmdSampleOffsetCurve.cpp" />
+    <ClCompile Include="cmdSampleOpenIges.cpp" />
+    <ClCompile Include="cmdSampleOrientOnCrv.cpp" />
+    <ClCompile Include="cmdSampleOrientOnMesh.cpp" />
+    <ClCompile Include="cmdSampleOrientOnSrf.cpp" />
+    <ClCompile Include="cmdSamplePan.cpp" />
+    <ClCompile Include="cmdSamplePatch.cpp" />
+    <ClCompile Include="cmdSamplePhantomObject.cpp" />
+    <ClCompile Include="cmdSamplePickColor.cpp" />
+    <ClCompile Include="cmdSamplePickTextDot.cpp" />
+    <ClCompile Include="cmdSamplePipe.cpp" />
+    <ClCompile Include="cmdSamplePlaceCameraTarget.cpp" />
+    <ClCompile Include="cmdSamplePlanarFaceLoops.cpp" />
+    <ClCompile Include="cmdSamplePointOnFace.cpp" />
+    <ClCompile Include="cmdSamplePointsDeviation.cpp" />
+    <ClCompile Include="cmdSamplePolyline.cpp" />
+    <ClCompile Include="cmdSamplePrePostSelect.cpp" />
+    <ClCompile Include="cmdSamplePrintGripLocations.cpp" />
+    <ClCompile Include="cmdSamplePrintMaterialTextures.cpp" />
+    <ClCompile Include="cmdSamplePtFromCrvStart.cpp" />
+    <ClCompile Include="cmdSamplePurgeGroups.cpp" />
+    <ClCompile Include="cmdSampleQueryDiameterDimension.cpp" />
+    <ClCompile Include="cmdSampleRayShooter.cpp" />
+    <ClCompile Include="cmdSampleReduceMesh.cpp">
+      <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|x64'">true</OpenMPSupport>
+    </ClCompile>
+    <ClCompile Include="cmdSampleReduceMesh2.cpp" />
+    <ClCompile Include="cmdSampleRotateCenter.cpp" />
+    <ClCompile Include="cmdSampleRotateView.cpp" />
+    <ClCompile Include="cmdSampleSave3DS.cpp" />
+    <ClCompile Include="cmdSampleScripter.cpp" />
+    <ClCompile Include="cmdSampleSection.cpp" />
+    <ClCompile Include="cmdSampleSelectByName.cpp" />
+    <ClCompile Include="cmdSampleSelectPolylineSegment.cpp" />
+    <ClCompile Include="cmdSampleSelectRegion.cpp" />
+    <ClCompile Include="cmdSampleSelFilter.cpp" />
+    <ClCompile Include="cmdSampleSetObjectDisplayMode.cpp" />
+    <ClCompile Include="cmdSampleShortPath.cpp" />
+    <ClCompile Include="cmdSampleSphere.cpp" />
+    <ClCompile Include="cmdSampleSplitBrep.cpp" />
+    <ClCompile Include="cmdSampleSplitCurve.cpp" />
+    <ClCompile Include="cmdSampleSplitSurface.cpp" />
+    <ClCompile Include="cmdSampleSporph.cpp" />
+    <ClCompile Include="cmdSampleSrfPtGrid.cpp" />
+    <ClCompile Include="cmdSampleSubCrvLength.cpp" />
+    <ClCompile Include="cmdSampleSurfaceArea.cpp" />
+    <ClCompile Include="cmdSampleSurfaceNormal.cpp" />
+    <ClCompile Include="cmdSampleSurfacePoints.cpp" />
+    <ClCompile Include="cmdSampleSwapHatch.cpp" />
+    <ClCompile Include="cmdSampleSweep2Point.cpp" />
+    <ClCompile Include="cmdSampleSyncRenderColors.cpp" />
+    <ClCompile Include="cmdSampleTexture.cpp" />
+    <ClCompile Include="cmdSampleToggleLayer.cpp" />
+    <ClCompile Include="cmdSampleTriangulatePolygon.cpp" />
+    <ClCompile Include="cmdSampleTrimmedPlane.cpp" />
+    <ClCompile Include="cmdSampleTruncatedCone.cpp" />
+    <ClCompile Include="cmdSampleTwistedCube.cpp" />
+    <ClCompile Include="cmdSampleUnrollSurface.cpp" />
+    <ClCompile Include="cmdSampleUserStrings.cpp" />
+    <ClCompile Include="cmdSampleUserText.cpp" />
+    <ClCompile Include="cmdSampleUVMesh.cpp" />
+    <ClCompile Include="cmdSampleViewCaptureToFile.cpp" />
+    <ClCompile Include="cmdSampleViewLock.cpp" />
+    <ClCompile Include="cmdSampleVolume.cpp" />
+    <ClCompile Include="cmdSampleZoomWindow.cpp" />
+    <ClCompile Include="cmdSampleSelectVisibleMeshFaces.cpp" />
+    <ClCompile Include="SampleCommandsApp.cpp" />
+    <ClCompile Include="SampleCommandsPlugIn.cpp" />
+    <ClCompile Include="cmdSampleDumpEdgeCurves.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='PseudoDebug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SampleCommandsApp.h" />
+    <ClInclude Include="SampleCommandsPlugIn.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\SampleCommands.rc2" />
+    <None Include="SampleCommands.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SampleCommands.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

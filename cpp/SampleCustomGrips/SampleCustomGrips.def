@@ -1,0 +1,6 @@
+; SampleCustomGrips.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleCustomGrips"
+
+EXPORTS
+    ; Explicit exports can go here

@@ -1,0 +1,6 @@
+; SampleObjectEventWatcher.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleObjectEventWatcher"
+
+EXPORTS
+    ; Explicit exports can go here

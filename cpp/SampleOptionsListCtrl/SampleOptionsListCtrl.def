@@ -1,0 +1,6 @@
+; SampleOptionsListCtrl.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleOptionsListCtrl"
+
+EXPORTS
+    ; Explicit exports can go here

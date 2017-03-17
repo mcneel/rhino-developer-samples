@@ -1,0 +1,6 @@
+; SampleColorPicker.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleColorPicker"
+
+EXPORTS
+    ; Explicit exports can go here

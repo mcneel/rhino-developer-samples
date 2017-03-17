@@ -1,0 +1,6 @@
+; SampleDocumentUserData.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleDocumentUserData"
+
+EXPORTS
+    ; Explicit exports can go here

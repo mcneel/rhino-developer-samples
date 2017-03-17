@@ -1,0 +1,6 @@
+; SampleObjectManager.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleObjectManager"
+
+EXPORTS
+    ; Explicit exports can go here

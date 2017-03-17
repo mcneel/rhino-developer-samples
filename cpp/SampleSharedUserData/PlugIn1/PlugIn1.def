@@ -1,0 +1,6 @@
+; PlugIn1.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "PlugIn1"
+
+EXPORTS
+    ; Explicit exports can go here

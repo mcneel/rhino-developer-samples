@@ -1,0 +1,33 @@
+/////////////////////////////////////////////////////////////////////////////
+// SampleRhino.idl : type library source for SampleRhino.rhp
+// This file will be processed by the MIDL compiler to produce the
+// type library (SampleRhino.tlb).
+
+[ uuid(9BD0F7A2-D4BC-4D0C-9917-8A9BE74A6F18), 
+  version(1.0),
+  helpstring("SampleRhinoObject 1.0 Type Library")
+]
+
+library SampleRhino
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+  //  Primary dispatch interface for SampleRhinoObject
+	[ uuid(8A843D40-7CB2-4567-BC70-F7743FA5BBCE) ]
+	dispinterface ISampleRhinoObject
+	{
+		properties:
+		methods:
+      [id(1), helpstring("Hello")] BSTR Hello(void);
+      [id(2), helpstring("Add")] DOUBLE Add(DOUBLE a, DOUBLE b);
+      [id(3), helpstring("Command")] SHORT Command(BSTR bstrScript, SHORT nEchoMode);
+  };
+
+	//  Class information for SampleRhinoObject
+	[ uuid(45D92A15-BCEE-4B59-AD61-FFEEDB1B8AE9) ]
+	coclass SampleRhinoObject
+	{
+		[default] dispinterface ISampleRhinoObject;
+	};
+};

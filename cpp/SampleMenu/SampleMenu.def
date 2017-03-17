@@ -1,0 +1,6 @@
+; SampleMenu.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleMenu"
+
+EXPORTS
+    ; Explicit exports can go here

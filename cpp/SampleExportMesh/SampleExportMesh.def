@@ -1,0 +1,6 @@
+; SampleExportMesh.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleExportMesh"
+
+EXPORTS
+    ; Explicit exports can go here

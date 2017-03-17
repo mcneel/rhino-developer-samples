@@ -1,0 +1,6 @@
+; PlugInCoreLib.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "PlugInCoreLib"
+
+EXPORTS
+    ; Explicit exports can go here

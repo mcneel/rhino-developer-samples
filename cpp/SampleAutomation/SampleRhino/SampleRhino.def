@@ -1,0 +1,10 @@
+; SampleRhino.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleRhino"
+
+EXPORTS
+    ; Explicit exports can go here
+	DllCanUnloadNow     PRIVATE
+	DllGetClassObject   PRIVATE
+	DllRegisterServer   PRIVATE
+	DllUnregisterServer PRIVATE

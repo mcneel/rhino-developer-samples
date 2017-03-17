@@ -1,0 +1,6 @@
+; BlockWalk.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "BlockWalk"
+
+EXPORTS
+    ; Explicit exports can go here

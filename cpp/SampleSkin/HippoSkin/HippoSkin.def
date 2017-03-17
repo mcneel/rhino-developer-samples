@@ -1,0 +1,6 @@
+; HippoSkin.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "HippoSkin"
+
+EXPORTS
+    ; Explicit exports can go here

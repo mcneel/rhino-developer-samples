@@ -1,0 +1,6 @@
+; SampleHelloRhino.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "SampleHelloRhino"
+
+EXPORTS
+    ; Explicit exports can go here
