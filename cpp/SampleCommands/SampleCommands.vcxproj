@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugRhino|x64">
+      <Configuration>DebugRhino</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cmdSample2View.cpp" />
+    <ClCompile Include="cmdSampleAddCage.cpp" />
+    <ClCompile Include="cmdSampleAddGroup.cpp" />
+    <ClCompile Include="cmdSampleAddLayout.cpp" />
+    <ClCompile Include="cmdSampleAddNurbsCircle.cpp" />
+    <ClCompile Include="cmdSampleAddSearchPath.cpp" />
+    <ClCompile Include="cmdSampleAdjacentBrepFace.cpp" />
+    <ClCompile Include="cmdSampleAnalysisMode.cpp" />
+    <ClCompile Include="cmdSampleAnnotateCurveEndPoints.cpp" />
+    <ClCompile Include="cmdSampleAttributeUserData.cpp" />
+    <ClCompile Include="cmdSampleAutomateGrasshopper.cpp" />
+    <ClCompile Include="cmdSampleBend.cpp" />
+    <ClCompile Include="cmdSampleBlendCurve.cpp" />
+    <ClCompile Include="cmdSampleBooleanDifference.cpp" />
+    <ClCompile Include="cmdSampleBooleanUnion.cpp" />
+    <ClCompile Include="cmdSampleBoundingBox.cpp" />
+    <ClCompile Include="cmdSampleBoundingBoxAll.cpp" />
+    <ClCompile Include="cmdSampleBrepBoxWithMesh.cpp" />
+    <ClCompile Include="cmdSampleBrepFaceUserData.cpp" />
+    <ClCompile Include="cmdSampleCageEdit.cpp" />
+    <ClCompile Include="cmdSampleCameraTracker.cpp" />
+    <ClCompile Include="cmdSampleCaptureFrameBuffer.cpp" />
+    <ClCompile Include="cmdSampleCircle.cpp" />
+    <ClCompile Include="cmdSampleClassifyCurve.cpp" />
+    <ClCompile Include="cmdSampleClosestAxisPoint.cpp" />
+    <ClCompile Include="cmdSampleColorPicker.cpp" />
+    <ClCompile Include="cmdSampleCone.cpp" />
+    <ClCompile Include="cmdSampleConvertQuadsToTriangles.cpp" />
+    <ClCompile Include="cmdSampleCurvature.cpp" />
+    <ClCompile Include="cmdSampleCurveAreaCentroid.cpp" />
+    <ClCompile Include="cmdSampleCurveLinetype.cpp" />
+    <ClCompile Include="cmdSampleCurveTorsion.cpp" />
+    <ClCompile Include="cmdSampleCustomGrips.cpp" />
+    <ClCompile Include="cmdSampleCustomMeshObjects.cpp" />
+    <ClCompile Include="cmdSampleCustomRenderMesh.cpp" />
+    <ClCompile Include="cmdSampleCylinder.cpp" />
+    <ClCompile Include="cmdSampleDimStyleTextHeight.cpp" />
+    <ClCompile Include="cmdSampleDimTextHeight.cpp" />
+    <ClCompile Include="cmdSampleDisableAllClippingPlanes.cpp" />
+    <ClCompile Include="cmdSampleDisplayPrecision.cpp" />
+    <ClCompile Include="cmdSampleDocumentUserData.cpp" />
+    <ClCompile Include="cmdSampleDrawArrowhead.cpp" />
+    <ClCompile Include="cmdSampleDrawBitmap.cpp" />
+    <ClCompile Include="cmdSampleDrawColorMesh.cpp" />
+    <ClCompile Include="cmdSampleDrawString.cpp" />
+    <ClCompile Include="cmdSampleDrawWireframeMesh.cpp" />
+    <ClCompile Include="cmdSampleDumpBlockTree.cpp" />
+    <ClCompile Include="cmdSampleDumpEdgeCurves.cpp" />
+    <ClCompile Include="cmdSampleDumpMaterialUserData.cpp" />
+    <ClCompile Include="cmdSampleDumpModelObjectIds.cpp" />
+    <ClCompile Include="cmdSampleDupBorder.cpp" />
+    <ClCompile Include="cmdSampleDupMeshBorder.cpp" />
+    <ClCompile Include="cmdSampleElevation.cpp" />
+    <ClCompile Include="cmdSampleEnableAllClippingPlanes.cpp" />
+    <ClCompile Include="cmdSampleEnumFonts.cpp" />
+    <ClCompile Include="cmdSampleEscapeKey.cpp" />
+    <ClCompile Include="cmdSampleEvaluateCurve.cpp" />
+    <ClCompile Include="cmdSampleExplodeBrep.cpp" />
+    <ClCompile Include="cmdSampleExplodePointCloud.cpp" />
+    <ClCompile Include="cmdSampleExportDisplayMode.cpp" />
+    <ClCompile Include="cmdSampleExportRenderMeshes.cpp" />
+    <ClCompile Include="cmdSampleExtendLines.cpp" />
+    <ClCompile Include="cmdSampleExtractCurves.cpp" />
+    <ClCompile Include="cmdSampleExtractEdgeCurves.cpp" />
+    <ClCompile Include="cmdSampleExtractFaceMesh.cpp" />
+    <ClCompile Include="cmdSampleExtractIsoCurve.cpp" />
+    <ClCompile Include="cmdSampleExtrudeTapered.cpp" />
+    <ClCompile Include="cmdSampleExtrusionBox.cpp" />
+    <ClCompile Include="cmdSampleFaceWithHole.cpp" />
+    <ClCompile Include="cmdSampleFalseColor.cpp" />
+    <ClCompile Include="cmdSampleFindCrvOnSrf.cpp" />
+    <ClCompile Include="cmdSampleFindCrvsOnSrf.cpp" />
+    <ClCompile Include="cmdSampleGetFaceTriangles.cpp" />
+    <ClCompile Include="cmdSampleGetPointOnMesh.cpp" />
+    <ClCompile Include="cmdSampleGoldenRectangle.cpp" />
+    <ClCompile Include="cmdSampleGradeLine.cpp" />
+    <ClCompile Include="cmdSampleGrayscale.cpp" />
+    <ClCompile Include="cmdSampleGuilloche.cpp" />
+    <ClCompile Include="cmdSampleGumball.cpp" />
+    <ClCompile Include="cmdSampleHatch.cpp" />
+    <ClCompile Include="cmdSampleHelloRhino.cpp" />
+    <ClCompile Include="cmdSampleHideObjectsOnLayer.cpp" />
+    <ClCompile Include="cmdSampleHightlightCurve.cpp" />
+    <ClCompile Include="cmdSampleHistory.cpp" />
+    <ClCompile Include="cmdSampleHistoryDivide.cpp" />
+    <ClCompile Include="cmdSampleIdleProcessor.cpp" />
+    <ClCompile Include="cmdSampleImportEarthAnchor.cpp" />
+    <ClCompile Include="cmdSampleImportMeshes.cpp" />
+    <ClCompile Include="cmdSampleInsert.cpp" />
+    <ClCompile Include="cmdSampleIntepCrvOnSrf.cpp" />
+    <ClCompile Include="cmdSampleInterpCurve.cpp" />
+    <ClCompile Include="cmdSampleIntersectCrv.cpp" />
+    <ClCompile Include="cmdSampleIntersetCrvSrf.cpp" />
+    <ClCompile Include="cmdSampleJoinSrf.cpp" />
+    <ClCompile Include="cmdSampleLastCreatedObjects.cpp" />
+    <ClCompile Include="cmdSampleLeader.cpp" />
+    <ClCompile Include="cmdSampleLine.cpp" />
+    <ClCompile Include="cmdSampleLineMeshIntersect.cpp" />
+    <ClCompile Include="cmdSampleLockProjection.cpp" />
+    <ClCompile Include="cmdSampleLoft.cpp" />
+    <ClCompile Include="cmdSampleMakeBlock.cpp" />
+    <ClCompile Include="cmdSampleMemoryBuffer.cpp" />
+    <ClCompile Include="cmdSampleMeshBooleanIntersection.cpp" />
+    <ClCompile Include="cmdSampleMeshBoundary.cpp" />
+    <ClCompile Include="cmdSampleMeshDir.cpp" />
+    <ClCompile Include="cmdSampleMeshFaceColor.cpp" />
+    <ClCompile Include="cmdSampleMeshFacePicker.cpp" />
+    <ClCompile Include="cmdSampleMeshLine.cpp" />
+    <ClCompile Include="cmdSampleMeshOutline.cpp" />
+    <ClCompile Include="cmdSampleMeshPolysrf.cpp" />
+    <ClCompile Include="cmdSampleMeshVertexLocation.cpp" />
+    <ClCompile Include="cmdSampleMeshVolume.cpp" />
+    <ClCompile Include="cmdSampleMirror.cpp" />
+    <ClCompile Include="cmdSampleModifyBumpIntensity.cpp" />
+    <ClCompile Include="cmdSampleMouseCallback.cpp" />
+    <ClCompile Include="cmdSampleMove.cpp" />
+    <ClCompile Include="cmdSampleMoveCPlane.cpp" />
+    <ClCompile Include="cmdSampleMoveGrips.cpp" />
+    <ClCompile Include="cmdSampleNewFloatingViewport.cpp" />
+    <ClCompile Include="cmdSampleNurbsCircle.cpp" />
+    <ClCompile Include="cmdSampleNurbsCurveLength.cpp" />
+    <ClCompile Include="cmdSampleNurbsSquare.cpp" />
+    <ClCompile Include="cmdSampleObjectCursor.cpp" />
+    <ClCompile Include="cmdSampleObjectEventWatcher.cpp" />
+    <ClCompile Include="cmdSampleObjectPlotWeight.cpp" />
+    <ClCompile Include="cmdSampleObjectUserData.cpp" />
+    <ClCompile Include="cmdSampleOffsetCurve.cpp" />
+    <ClCompile Include="cmdSampleOpenIges.cpp" />
+    <ClCompile Include="cmdSampleOrientOnCrv.cpp" />
+    <ClCompile Include="cmdSampleOrientOnMesh.cpp" />
+    <ClCompile Include="cmdSampleOrientOnSrf.cpp" />
+    <ClCompile Include="cmdSamplePan.cpp" />
+    <ClCompile Include="cmdSamplePatch.cpp" />
+    <ClCompile Include="cmdSamplePerspectiveColors.cpp" />
+    <ClCompile Include="cmdSamplePhantomObject.cpp" />
+    <ClCompile Include="cmdSamplePickColor.cpp" />
+    <ClCompile Include="cmdSamplePickTextDot.cpp" />
+    <ClCompile Include="cmdSamplePipe.cpp" />
+    <ClCompile Include="cmdSamplePlaceCameraTarget.cpp" />
+    <ClCompile Include="cmdSamplePlanarFaceLoops.cpp" />
+    <ClCompile Include="cmdSamplePointCursor.cpp" />
+    <ClCompile Include="cmdSamplePointOnFace.cpp" />
+    <ClCompile Include="cmdSamplePointsDeviation.cpp" />
+    <ClCompile Include="cmdSamplePolyline.cpp" />
+    <ClCompile Include="cmdSamplePrePostSelect.cpp" />
+    <ClCompile Include="cmdSamplePrintGripLocations.cpp" />
+    <ClCompile Include="cmdSamplePrintMaterialTextures.cpp" />
+    <ClCompile Include="cmdSamplePtFromCrvStart.cpp" />
+    <ClCompile Include="cmdSamplePullCurveToMesh.cpp" />
+    <ClCompile Include="cmdSamplePurgeGroups.cpp" />
+    <ClCompile Include="cmdSampleQueryDiameterDimension.cpp" />
+    <ClCompile Include="cmdSampleRayShooter.cpp" />
+    <ClCompile Include="cmdSampleReduceMesh.cpp" />
+    <ClCompile Include="cmdSampleResetLayers.cpp" />
+    <ClCompile Include="cmdSampleRotate.cpp" />
+    <ClCompile Include="cmdSampleRotateCenter.cpp" />
+    <ClCompile Include="cmdSampleRotateView.cpp" />
+    <ClCompile Include="cmdSampleSave3DS.cpp" />
+    <ClCompile Include="cmdSampleScripter.cpp" />
+    <ClCompile Include="cmdSampleSection.cpp" />
+    <ClCompile Include="cmdSampleSelectByName.cpp" />
+    <ClCompile Include="cmdSampleSelectPolylineSegment.cpp" />
+    <ClCompile Include="cmdSampleSelectRegion.cpp" />
+    <ClCompile Include="cmdSampleSelectVisibleMeshFaces.cpp" />
+    <ClCompile Include="cmdSampleSelFilter.cpp" />
+    <ClCompile Include="cmdSampleShortPath.cpp" />
+    <ClCompile Include="cmdSampleShowMyStuff.cpp" />
+    <ClCompile Include="cmdSampleSphere.cpp" />
+    <ClCompile Include="cmdSampleSplitBrep.cpp" />
+    <ClCompile Include="cmdSampleSplitCurve.cpp" />
+    <ClCompile Include="cmdSampleSplitSurface.cpp" />
+    <ClCompile Include="cmdSampleSporph.cpp" />
+    <ClCompile Include="cmdSampleSrfPtGrid.cpp" />
+    <ClCompile Include="cmdSampleSubCrvLength.cpp" />
+    <ClCompile Include="cmdSampleSurfaceArea.cpp" />
+    <ClCompile Include="cmdSampleSurfaceNormal.cpp" />
+    <ClCompile Include="cmdSampleSurfacePoints.cpp" />
+    <ClCompile Include="cmdSampleSwapHatch.cpp" />
+    <ClCompile Include="cmdSampleSweep2Point.cpp" />
+    <ClCompile Include="cmdSampleSyncRenderColors.cpp" />
+    <ClCompile Include="cmdSampleSyncViews.cpp" />
+    <ClCompile Include="cmdSampleTexture.cpp" />
+    <ClCompile Include="cmdSampleTextureMapping.cpp" />
+    <ClCompile Include="cmdSampleToggleLayer.cpp" />
+    <ClCompile Include="cmdSampleTriangulatePolygon.cpp" />
+    <ClCompile Include="cmdSampleTrimmedPlane.cpp" />
+    <ClCompile Include="cmdSampleTruncatedCone.cpp" />
+    <ClCompile Include="cmdSampleTwistedCube.cpp" />
+    <ClCompile Include="cmdSampleUnrollSurface.cpp" />
+    <ClCompile Include="cmdSampleUserStrings.cpp" />
+    <ClCompile Include="cmdSampleUserText.cpp" />
+    <ClCompile Include="cmdSampleUVMesh.cpp" />
+    <ClCompile Include="cmdSampleViewCaptureToFile.cpp" />
+    <ClCompile Include="cmdSampleViewLock.cpp" />
+    <ClCompile Include="cmdSampleViewportDecoration.cpp" />
+    <ClCompile Include="cmdSampleVolume.cpp" />
+    <ClCompile Include="cmdSampleZoomWindow.cpp" />
+    <ClCompile Include="SampleAttributeUserData.cpp" />
+    <ClCompile Include="SampleClippingPlaneUserData.cpp" />
+    <ClCompile Include="SampleCommandsApp.cpp" />
+    <ClCompile Include="SampleCommandsEventWatcher.cpp" />
+    <ClCompile Include="SampleCommandsPlugIn.cpp" />
+    <ClCompile Include="SampleDrawCallback.cpp" />
+    <ClCompile Include="SampleObjectUserData.cpp" />
+    <ClCompile Include="SampleRectangleObject.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SampleAttributeUserData.h" />
+    <ClInclude Include="SampleClippingPlaneUserData.h" />
+    <ClInclude Include="SampleCommandsApp.h" />
+    <ClInclude Include="SampleCommandsEventWatcher.h" />
+    <ClInclude Include="SampleCommandsPlugIn.h" />
+    <ClInclude Include="SampleDrawCallback.h" />
+    <ClInclude Include="SampleObjectUserData.h" />
+    <ClInclude Include="SampleRectangleObject.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\SampleCommands.rc2" />
+    <None Include="res\SampleCursor.cur" />
+    <None Include="SampleCommands.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SampleCommands.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleBitmap.bmp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>MFCDLLProj</Keyword>
+    <ProjectGuid>{2AE01DAD-D283-4ADA-861C-6F0B2BFAF11C}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <RhinoSdkPath>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\McNeel\Rhinoceros\SDK\6.0', 'InstallPath', null, RegistryView.Registry64))</RhinoSdkPath>
+  </PropertyGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

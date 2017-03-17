@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugRhino|x64">
+      <Configuration>DebugRhino</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cmdPickObjects.cpp" />
+    <ClCompile Include="cmdSampleAnimator.cpp" />
+    <ClCompile Include="cmdSampleBlockView.cpp" />
+    <ClCompile Include="cmdSampleBlockWalk.cpp" />
+    <ClCompile Include="cmdSampleCirclePreview.cpp" />
+    <ClCompile Include="cmdSampleDockbar.cpp" />
+    <ClCompile Include="cmdSampleMenu.cpp" />
+    <ClCompile Include="cmdSampleMenuToggle.cpp" />
+    <ClCompile Include="cmdSampleModalDialog.cpp" />
+    <ClCompile Include="cmdSampleModelessDialog.cpp" />
+    <ClCompile Include="cmdSampleObjectManager.cpp" />
+    <ClCompile Include="cmdSampleOptionsDialog.cpp" />
+    <ClCompile Include="cmdSampleOptionsListCtrl.cpp" />
+    <ClCompile Include="cmdSampleScrollTabbedDockBar.cpp" />
+    <ClCompile Include="cmdSampleSelectFiles.cpp" />
+    <ClCompile Include="cmdSampleTabbedDockBar.cpp" />
+    <ClCompile Include="cmdSampleThumbnailPreview.cpp" />
+    <ClCompile Include="SampleAnimatorDialog.cpp" />
+    <ClCompile Include="SampleBlockViewDialog.cpp" />
+    <ClCompile Include="SampleBlockWalkDialog.cpp" />
+    <ClCompile Include="SampleCirclePreviewDialog.cpp" />
+    <ClCompile Include="SampleDialogScrollHelper.cpp" />
+    <ClCompile Include="SampleDocumentPropertiesPage.cpp" />
+    <ClCompile Include="SampleLayerContextMenuExtension.cpp" />
+    <ClCompile Include="SampleModalDialog.cpp" />
+    <ClCompile Include="SampleModelessDialog.cpp" />
+    <ClCompile Include="SampleObjectManagerDialog.cpp" />
+    <ClCompile Include="SampleObjectPropertiesPageDialog.cpp" />
+    <ClCompile Include="SampleOptionsListCtrlDlg.cpp" />
+    <ClCompile Include="SampleOptionsListCtrlPageDialog.cpp" />
+    <ClCompile Include="SampleOptionsPage.cpp" />
+    <ClCompile Include="SamplePickObjectsDialog.cpp" />
+    <ClCompile Include="SampleRhinoDockbar.cpp" />
+    <ClCompile Include="SampleRhinoDockbarDialog.cpp" />
+    <ClCompile Include="SampleScrollTabbedDockBarDialog.cpp" />
+    <ClCompile Include="SampleTabbedDockBarDialog.cpp" />
+    <ClCompile Include="SampleThumbnailPreviewDialog.cpp" />
+    <ClCompile Include="SampleThumbnailPreviewStatic.cpp" />
+    <ClCompile Include="SampleUserInterfaceApp.cpp" />
+    <ClCompile Include="SampleUserInterfacePlugIn.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SampleAnimatorDialog.h" />
+    <ClInclude Include="SampleBlockViewDialog.h" />
+    <ClInclude Include="SampleBlockWalkDialog.h" />
+    <ClInclude Include="SampleCirclePreviewDialog.h" />
+    <ClInclude Include="SampleDialogScrollHelper.h" />
+    <ClInclude Include="SampleDocumentPropertiesPage.h" />
+    <ClInclude Include="SampleLayerContextMenuExtension.h" />
+    <ClInclude Include="SampleModalDialog.h" />
+    <ClInclude Include="SampleModelessDialog.h" />
+    <ClInclude Include="SampleObjectManagerDialog.h" />
+    <ClInclude Include="SampleObjectPropertiesPageDialog.h" />
+    <ClInclude Include="SampleOptionsListCtrlDlg.h" />
+    <ClInclude Include="SampleOptionsListCtrlPageDialog.h" />
+    <ClInclude Include="SampleOptionsPage.h" />
+    <ClInclude Include="SamplePickObjectsDialog.h" />
+    <ClInclude Include="SampleRhinoDockbar.h" />
+    <ClInclude Include="SampleRhinoDockbarDialog.h" />
+    <ClInclude Include="SampleScrollTabbedDockBarDialog.h" />
+    <ClInclude Include="SampleTabbedDockBarDialog.h" />
+    <ClInclude Include="SampleThumbnailPreviewDialog.h" />
+    <ClInclude Include="SampleThumbnailPreviewStatic.h" />
+    <ClInclude Include="SampleUserInterfaceApp.h" />
+    <ClInclude Include="SampleUserInterfacePlugIn.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\SampleUserInterface.rc2" />
+    <None Include="SampleUserInterface.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SampleUserInterface.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleObjectManager.ico" />
+    <Image Include="res\SampleObjectPropertiesPage.ico" />
+    <Image Include="res\SampleOptionsListCtrl.ico" />
+    <Image Include="res\SampleScrollTabbedDockBar.ico" />
+    <Image Include="res\SampleTabbedDockBar.ico" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>MFCDLLProj</Keyword>
+    <ProjectGuid>{0FD7F8DB-DCE7-4273-9858-B90DF4FF40EF}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <RhinoSdkPath>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\McNeel\Rhinoceros\SDK\6.0', 'InstallPath', null, RegistryView.Registry64))</RhinoSdkPath>
+  </PropertyGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugRhino|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

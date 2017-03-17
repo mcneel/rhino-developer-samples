@@ -1,0 +1,30 @@
+// SampleAutomation.idl : type library source for SampleAutomation.dll
+// This file will be processed by the MIDL compiler to produce the
+// type library (SampleAutomation.tlb).
+
+#include "olectl.h"
+[uuid(441AB19B-F8DF-45C4-8331-E4CC160EAA89), version(1.0)]
+library SampleAutomation
+{
+  importlib("stdole32.tlb");
+  importlib("stdole2.tlb");
+  //  Primary dispatch interface for SampleScriptObject
+
+  [uuid(52D524B4-C92F-412E-AAD4-56B879EBAF68)]
+  dispinterface ISampleScriptObject
+  {
+    properties:
+    methods:
+      [id(1), helpstring("Hello")] BSTR Hello(void);
+      [id(2), helpstring("Add")] DOUBLE Add(DOUBLE a, DOUBLE b);
+      [id(3), helpstring("Command")] SHORT Command(BSTR bstrScript, SHORT nEchoMode);
+  };
+
+  //  Class information for SampleScriptObject
+
+  [uuid(A07925F3-9F52-4712-81E1-3B38D3C9C75D)]
+  coclass SampleScriptObject
+  {
+    [default] dispinterface ISampleScriptObject;
+  };
+};

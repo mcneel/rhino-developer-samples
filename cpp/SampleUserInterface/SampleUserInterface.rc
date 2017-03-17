@@ -1,0 +1,513 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#include ""res\\SampleUserInterface.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""      // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "00000409"
+        BEGIN
+            VALUE "CompanyName", "Robert McNeel & Associates"
+            VALUE "FileDescription", "SampleUserInterface"
+            VALUE "FileVersion", "1.0.0.0"
+            VALUE "InternalName", "SampleUserInterface.rhp"
+            VALUE "LegalCopyright", "Copyright © 2016, Robert McNeel & Associates"
+            VALUE "OriginalFilename", "SampleUserInterface.rhp"
+            VALUE "ProductName", "SampleUserInterface"
+            VALUE "ProductVersion", "1.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1033
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PICKOBJECTS_DIALOG DIALOGEX 0, 0, 195, 80
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "Pick Objects"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,39,59,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,105,59,50,14
+    PUSHBUTTON      "Pick objects",IDC_PICK,7,20,50,14
+    LTEXT           "0 objects picked.",IDC_MESSAGE,7,7,121,8
+END
+
+IDD_OPTIONS_DIALOG DIALOGEX 0, 0, 303, 204
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Sample"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Sample Options:",IDC_STATIC,7,7,53,8
+    CONTROL         "",IDC_FRAME,"Static",SS_BLACKFRAME,7,18,289,157
+    DEFPUSHBUTTON   "OK",IDOK,93,183,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,159,183,50,14
+END
+
+IDD_MODELESS_DIALOG DIALOGEX 0, 0, 163, 58
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW
+CAPTION "Modeless Sample"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Point 1:",IDC_STATIC,7,12,26,8
+    EDITTEXT        IDC_EDIT1,41,7,85,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Pick",IDC_BUTTON1,128,7,28,14
+    LTEXT           "Point 2:",IDC_STATIC,7,26,26,8
+    EDITTEXT        IDC_EDIT2,41,22,85,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Pick",IDC_BUTTON2,128,22,28,14
+    LTEXT           "Point 3:",IDC_STATIC,7,40,26,8
+    EDITTEXT        IDC_EDIT3,41,37,85,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Pick",IDC_BUTTON3,128,37,28,14
+END
+
+IDD_MODAL_DIALOG DIALOGEX 0, 0, 316, 183
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,259,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,259,25,50,14
+    CTEXT           "TODO: Place dialog controls here.",IDC_STATIC,7,87,302,8
+END
+
+IDD_CIRCLEPREVIEW_DIALOG DIALOGEX 0, 0, 170, 94
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add Circle"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Center point (x,y,z)",IDC_SEP1,7,7,156,8
+    EDITTEXT        IDC_CENTER_X,13,18,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CENTER_Y,54,18,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CENTER_Z,95,18,40,14,ES_AUTOHSCROLL
+    LTEXT           "Radius in drawing units",IDC_SEP2,7,35,156,8
+    EDITTEXT        IDC_RADIUS,13,45,40,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,9,73,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,61,73,50,14
+    PUSHBUTTON      "Preview",IDC_PREVIEW,113,73,50,14
+END
+
+IDD_BLOCKVIEW_DIALOG DIALOGEX 0, 0, 154, 184
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_THICKFRAME
+CAPTION "Block View"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_LISTBOX,7,7,140,57,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,52,163,50,14
+    CONTROL         "",IDC_PREVIEW,"Static",SS_OWNERDRAW | SS_NOTIFY | WS_BORDER,7,67,140,93
+END
+
+IDD_ANIMATOR_DIALOG DIALOGEX 0, 0, 230, 54
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Animator"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,57,33,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,123,33,50,14
+    CONTROL         "Slider1",IDC_SLIDER,"msctls_trackbar32",TBS_AUTOTICKS | TBS_TOP | WS_TABSTOP,7,7,216,21
+END
+
+IDD_BLOCKWALK_DIALOG DIALOGEX 0, 0, 313, 182
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Block Walk"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Select block to preview:",IDC_STATIC,7,7,97,8
+    CONTROL         "",IDC_BLOCK_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_HSCROLL | WS_TABSTOP,7,18,148,132
+    CONTROL         "",IDC_BLOCK_PREVIEW,"Static",SS_OWNERDRAW | SS_NOTIFY | WS_BORDER,158,18,148,100
+    DEFPUSHBUTTON   "Close",IDOK,131,161,50,14
+    COMBOBOX        IDC_COMBO_VIEW,158,121,148,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMBO_DISPLAY,158,137,148,30,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_THUMBNAIL_DIALOG DIALOGEX 0, 0, 215, 151
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_THICKFRAME
+CAPTION "Thumbnail Preview"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,81,130,50,14
+    CONTROL         "",IDC_PREVIEW_STATIC,"Static",SS_OWNERDRAW,7,24,201,104,WS_EX_STATICEDGE
+    EDITTEXT        IDC_PREVIEW_EDIT,7,7,184,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "...",IDC_PREVIEW_BUTTON,192,7,16,14
+END
+
+IDD_DOCKBAR_DIALOG DIALOGEX 0, 0, 200, 220
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Click Me!",IDC_CLICKME_BUTTON,7,7,186,14
+END
+
+IDD_SCROLL_DOCKBAR_DIALOG DIALOGEX 0, 0, 200, 521
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VSCROLL | WS_HSCROLL | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Click Me!",IDC_BUTTON1,7,7,175,14
+    PUSHBUTTON      "Click Me Too!",IDC_BUTTON2,7,490,175,14
+END
+
+IDD_DOCPROPS_PAGE DIALOGEX 0, 0, 261, 260
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Sample Document Properties",IDC_SEP1,6,6,246,8
+    PUSHBUTTON      "Pick me!",IDC_BUTTON1,12,16,50,14
+END
+
+IDD_OPTIONS_PAGE DIALOGEX 0, 0, 261, 260
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Sample Rhino Options",IDC_SEP1,6,6,246,8
+    PUSHBUTTON      "Pick me!",IDC_BUTTON1,12,16,50,14
+END
+
+IDD_OBJPROPS_DIALOG DIALOGEX 0, 0, 200, 100
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Hyperlink",IDC_S_HYPERLINK,2,7,191,8
+    EDITTEXT        IDC_E_HYPERLINK,7,17,186,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Go...",IDC_B_HYPERLINK,7,32,50,14
+END
+
+IDD_RHINO_DOCKBAR_DIALOG DIALOGEX 0, 0, 316, 182
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VSCROLL | WS_HSCROLL | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Hello",IDC_BUTTON1,7,7,50,14
+    PUSHBUTTON      "Hello",IDC_BUTTON2,7,151,50,14
+END
+
+IDD_OBJECT_MANAGER_DIALOG DIALOGEX 0, 0, 186, 233
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_LISTBOX,7,18,172,208,LBS_SORT | LBS_NOINTEGRALHEIGHT | LBS_EXTENDEDSEL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "0 objects selected",IDC_LABEL,7,7,172,8
+END
+
+IDD_LISTCTRL_DIALOG DIALOGEX 0, 0, 221, 170
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_PICKOBJECTS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 188
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 73
+    END
+
+    IDD_OPTIONS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 296
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 196
+    END
+
+    IDD_MODELESS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 156
+        VERTGUIDE, 41
+        VERTGUIDE, 126
+        VERTGUIDE, 128
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 51
+    END
+
+    IDD_MODAL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_CIRCLEPREVIEW_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        VERTGUIDE, 13
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_BLOCKVIEW_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 147
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 177
+    END
+
+    IDD_ANIMATOR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 223
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 47
+    END
+
+    IDD_BLOCKWALK_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 175
+        HORZGUIDE, 18
+    END
+
+    IDD_THUMBNAIL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 208
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_DOCKBAR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 193
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 213
+    END
+
+    IDD_SCROLL_DOCKBAR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 182
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 504
+    END
+
+    IDD_DOCPROPS_PAGE, DIALOG
+    BEGIN
+        RIGHTMARGIN, 260
+        VERTGUIDE, 6
+        VERTGUIDE, 12
+        VERTGUIDE, 252
+        HORZGUIDE, 6
+    END
+
+    IDD_OPTIONS_PAGE, DIALOG
+    BEGIN
+        RIGHTMARGIN, 260
+        VERTGUIDE, 6
+        VERTGUIDE, 12
+        VERTGUIDE, 252
+        HORZGUIDE, 6
+    END
+
+    IDD_OBJPROPS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 193
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 93
+    END
+
+    IDD_RHINO_DOCKBAR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 298
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 165
+    END
+
+    IDD_OBJECT_MANAGER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 226
+    END
+
+    IDD_LISTCTRL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 214
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 163
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_DOCKBAR_ICON        ICON                    "res\\SampleTabbedDockBar.ico"
+
+IDI_SCROLL_DOCKBAR_ICON ICON                    "res\\SampleScrollTabbedDockBar.ico"
+
+IDI_OBJPROPS_ICON       ICON                    "res\\SampleObjectPropertiesPage.ico"
+
+IDI_OBJECT_MANAGER_ICON ICON                    "res\\SampleObjectManager.ico"
+
+IDI_LISTCTRL_ICON       ICON                    "res\\SampleOptionsListCtrl.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_SAMPLE_MENU MENU
+BEGIN
+    POPUP "SampleMenu"
+    BEGIN
+        MENUITEM "Sample Menu Command 1",       ID_SAMPLEMENU_SAMPLEMENUCOMMAND1
+        MENUITEM "Sample Menu Command 2",       ID_SAMPLEMENU_SAMPLEMENUCOMMAND2
+        POPUP "More"
+        BEGIN
+            MENUITEM "Sample Menu Command 3",       ID_MORE_SAMPLEMENUCOMMAND3
+            MENUITEM "Sample Menu Command 4",       ID_MORE_SAMPLEMENUCOMMAND4
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Script Mode",                 ID_SAMPLEMENU_SCRIPTMODE
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_OPTIONS_PAGE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DOCPROPS_PAGE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#include "res\SampleUserInterface.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"      // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
