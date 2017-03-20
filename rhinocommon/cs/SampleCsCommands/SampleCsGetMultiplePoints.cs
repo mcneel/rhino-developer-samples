@@ -1,64 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Rhino;
+using Rhino.ApplicationSettings;
 using Rhino.Commands;
+using Rhino.Display;
 using Rhino.Geometry;
+using Rhino.Input;
+using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
   #region SampleCsGetMultiplePointsConduit
 
   /// <summary>
-  /// SampleCsGetMultiplePointsConduit
+  /// SampleCsGetMultiplePointsConduit conduit
   /// </summary>
-  public class SampleCsGetMultiplePointsConduit : Rhino.Display.DisplayConduit
+  public class SampleCsGetMultiplePointsConduit : DisplayConduit
   {
-    private List<Rhino.Geometry.Point3d> _points;
+    private readonly List<Point3d> m_points;
+    private readonly System.Drawing.Color m_color;
 
     public SampleCsGetMultiplePointsConduit()
     {
-      _points = new List<Rhino.Geometry.Point3d>();
+      m_points = new List<Point3d>();
+      m_color = AppearanceSettings.DefaultObjectColor;
     }
 
-    public void AddPoint(Rhino.Geometry.Point3d point)
+    public void AddPoint(Point3d point)
     {
-      _points.Add(point);
+      m_points.Add(point);
     }
 
     public void RemoveLastPoint()
     {
-      int pointCount = _points.Count;
-      if (pointCount > 0)
-        _points.RemoveAt(pointCount - 1);
+      var point_count = m_points.Count;
+      if (point_count > 0)
+        m_points.RemoveAt(point_count - 1);
     }
 
-    public List<Rhino.Geometry.Point3d> Points
+    public List<Point3d> Points
     {
-      get { return _points; }
+      get { return m_points; }
     }
 
     public int PointCount
     {
-      get { return _points.Count; }
+      get { return m_points.Count; }
     }
 
-    protected override void CalculateBoundingBox(Rhino.Display.CalculateBoundingBoxEventArgs e)
+    protected override void CalculateBoundingBox(CalculateBoundingBoxEventArgs e)
     {
-      var bbox = e.BoundingBox;
-      foreach (Point3d pt in _points)
-        bbox.Union(pt);
+      var bbox = new BoundingBox(m_points);
       e.IncludeBoundingBox(bbox);
     }
 
-    protected override void DrawOverlay(Rhino.Display.DrawEventArgs e)
+    protected override void DrawOverlay(DrawEventArgs e)
     {
-      System.Drawing.Color color = Rhino.ApplicationSettings.AppearanceSettings.DefaultObjectColor;
-      for (int i = 0; i < _points.Count; i++)
-        e.Display.DrawPoint(_points[i], color);
+      e.Display.DrawPoints(m_points, PointStyle.ControlPoint, 3, m_color);
     }
   }
 
   #endregion
+
 
   #region SampleCsGetMultiplePoints
 
@@ -68,10 +70,6 @@ namespace SampleCsCommands
   [System.Runtime.InteropServices.Guid("6c4b530a-78ec-44cf-be47-59fa92b08ad0")]
   public class SampleCsGetMultiplePoints : Command
   {
-    public SampleCsGetMultiplePoints()
-    {
-    }
-
     public override string EnglishName
     {
       get { return "SampleCsGetMultiplePoints"; }
@@ -79,47 +77,46 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      SampleCsGetMultiplePointsConduit conduit = new SampleCsGetMultiplePointsConduit();
-      conduit.Enabled = true;
+      var conduit = new SampleCsGetMultiplePointsConduit { Enabled = true };
 
-      Rhino.Commands.Result rc = Result.Nothing;
+      Result rc;
 
-      Rhino.Input.Custom.GetPoint gp = new Rhino.Input.Custom.GetPoint();
+      var gp = new GetPoint();
       while (true)
       {
         if (0 == conduit.PointCount)
         {
           gp.SetCommandPrompt("Location of point object.");
           gp.AcceptNothing(false);
-          gp.ClearCommandOptions();
+          gp.AcceptUndo(false);
         }
         else
         {
           gp.SetCommandPrompt("Location of point object. Press Enter when done");
           gp.AcceptNothing(true);
-          gp.AddOption("Undo");
+          gp.AcceptUndo(true);
         }
 
-        Rhino.Input.GetResult res = gp.Get();
+        var res = gp.Get();
 
-        if (res == Rhino.Input.GetResult.Point)
+        if (res == GetResult.Point)
         {
           conduit.AddPoint(gp.Point());
           doc.Views.Redraw();
         }
-        else if (res == Rhino.Input.GetResult.Option)
+        else if (res == GetResult.Undo)
         {
           conduit.RemoveLastPoint();
           doc.Views.Redraw();
         }
-        else if (res == Rhino.Input.GetResult.Nothing)
+        else if (res == GetResult.Nothing)
         {
-          rc = Rhino.Commands.Result.Success;
+          rc = Result.Success;
           break;
         }
         else
         {
-          rc = Rhino.Commands.Result.Cancel;
+          rc = Result.Cancel;
           break;
         }
       }
@@ -129,7 +126,7 @@ namespace SampleCsCommands
 
       conduit.Enabled = false;
       doc.Views.Redraw();
-      
+
       return rc;
     }
   }

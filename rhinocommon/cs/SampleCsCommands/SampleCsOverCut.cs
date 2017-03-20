@@ -323,6 +323,60 @@ namespace SampleCsCommands
 
       return circles;
     }
+
+    /// <summary>
+    /// Finds the concave corner points in a closed, planar polyline curve.
+    /// </summary>
+    /// <param name="curve">The polyline curve.</param>
+    /// <param name="tolerance">The tolerance required to determine if the curve is planar.
+    /// When in doubt, use the document's model absolute tolerance.</param>
+    /// <returns>The concave points if successful.</returns>
+    private static Point3d[] FindConcaveCornerPoints(Curve curve, double tolerance)
+    {
+      var rc = new Point3d[0];
+
+      // Make sure we have a curve and it's closed.
+      if (null == curve || !curve.IsClosed)
+        return rc;
+
+      // Make sure the curve is planar, within our tolerance.
+      Plane plane;
+      if (!curve.TryGetPlane(out plane, tolerance))
+        return rc;
+
+      // Make sure the curve is a polyline.
+      Polyline polyline;
+      if (!curve.TryGetPolyline(out polyline) || null == polyline)
+        return rc;
+
+      // For closed polylines, the first and last points are identical.
+      // So we can remove the last one.
+      polyline.RemoveAt(polyline.Count - 1);
+
+      // Find the concave corner points...
+      var points = new List<Point3d>();
+      for (var current = 0; current < polyline.Count; current++)
+      {
+        var prev = current == 0 ? polyline.Count - 1 : current - 1;
+        var next = current == polyline.Count - 1 ? 0 : current + 1;
+
+        var dir0 = polyline[current] - polyline[prev];
+        dir0.Unitize();
+
+        var dir1 = polyline[next] - polyline[current];
+        dir1.Unitize();
+
+        var dir2 = Vector3d.CrossProduct(dir0, dir1);
+        dir2.Unitize();
+
+        var dot = dir2 * plane.Normal; // dot product
+        if (dot < 0.0)
+          points.Add(polyline[current]);
+      }
+
+      return points.ToArray();
+    }
+
   }
 
 

@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
     <Compile Include="SampleCsFairCurves.cs" />
+    <Compile Include="SampleCsImportBlockFromFile.cs" />
     <Compile Include="SampleCsLayerOff.cs" />
     <Compile Include="SampleCsAddNurbsCircle.cs" />
     <Compile Include="SampleCsAddRdkMaterials.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="SampleCsPointCloudPoints.cs" />
     <Compile Include="SampleCsPointOnMesh.cs" />
     <Compile Include="SampleCsPrintViewList.cs" />
+    <Compile Include="SampleCsProjectCurvesToBrep.cs" />
     <Compile Include="SampleCsProjectPointToMesh.cs" />
     <Compile Include="SampleCsRenderBackground.cs" />
     <Compile Include="SampleCsRestoreLayerState.cs" />
@@ -171,6 +173,7 @@
     <Compile Include="SampleCsUnisolate.cs" />
     <Compile Include="SampleCsSetUserText.cs" />
     <Compile Include="SampleCsViewSize.cs" />
+    <Compile Include="SampleCsZebraAnalysis.cs" />
     <Compile Include="SampleCsZoom.cs" />
   </ItemGroup>
   <ItemGroup>
