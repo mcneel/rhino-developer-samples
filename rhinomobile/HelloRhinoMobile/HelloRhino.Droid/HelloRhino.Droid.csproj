@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B7FAECAD-244D-4AFE-871D-F73142FC86CA}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AssemblyName>HelloRhino.Droid</AssemblyName>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <RootNamespace>HelloRhino.Droid</RootNamespace>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG; OPENNURBS_SDK; MONO_BUILD; __ANDROID__; MOBILE_BUILD</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <ConsolePause>false</ConsolePause>
+    <DefineConstants>OPENNURBS_SDK; MONO_BUILD; __ANDROID__; MOBILE_BUILD</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="OpenTK-1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Resource.designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="HelloRhinoActivity.cs" />
+    <Compile Include="App.cs" />
+    <Compile Include="HelloRhinoView.cs" />
+    <Compile Include="OrbitDollyGestureDetector.cs" />
+    <Compile Include="ZoomScaleListener.cs" />
+    <Compile Include="HelloRhinoAndroidRenderer.cs" />
+    <Compile Include="DoubleTapListener.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\Main.axml" />
+    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\drawable\Icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\warning.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Models\" />
+    <Folder Include="Assets\Shaders\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Shaders\FullscreenQuad.fsh" />
+    <AndroidAsset Include="Assets\Shaders\FullscreenQuad.vsh" />
+    <AndroidAsset Include="Assets\Shaders\GradientQuad.fsh" />
+    <AndroidAsset Include="Assets\Shaders\GradientQuad.vsh" />
+    <AndroidAsset Include="Assets\Shaders\PerPixelLighting.fsh" />
+    <AndroidAsset Include="Assets\Shaders\PerPixelLighting.vsh" />
+    <AndroidAsset Include="Assets\Shaders\PerVertexLighting.fsh" />
+    <AndroidAsset Include="Assets\Shaders\PerVertexLighting.vsh" />
+    <AndroidAsset Include="Assets\Shaders\template.fsh" />
+    <AndroidAsset Include="Assets\Shaders\template.vsh" />
+    <AndroidAsset Include="Assets\Models\Rhino Logo.3dm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\RhinoMobile\RhinoMobile.Droid.csproj">
+      <Project>{FAC9FBF7-BEEE-40B5-A3E3-9D88DB56D32A}</Project>
+      <Name>RhinoMobile.Droid</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
