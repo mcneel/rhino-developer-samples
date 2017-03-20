@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug32</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C1498326-89AB-48B0-A148-290C169CAA68}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SampleCsCommands</RootNamespace>
+    <AssemblyName>SampleCsCommands</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="RhinoCommon">
+      <HintPath>C:\Program Files\Rhinoceros 5 (64-bit)\System\RhinoCommon.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SampleCsExtrudeMeshFace.cs" />
+    <Compile Include="SampleCsFairCurves.cs" />
+    <Compile Include="SampleCsLayerOff.cs" />
+    <Compile Include="SampleCsAddNurbsCircle.cs" />
+    <Compile Include="SampleCsAddRdkMaterials.cs" />
+    <Compile Include="SampleCsAddTextDot.cs" />
+    <Compile Include="SampleCsAppearanceColors.cs" />
+    <Compile Include="SampleCsBooleanDifference2.cs" />
+    <Compile Include="SampleCsBooleanDifference3.cs" />
+    <Compile Include="SampleCsBoundingBox.cs" />
+    <Compile Include="SampleCsCircleRadius.cs" />
+    <Compile Include="SampleCsCurveDiscontinuity.cs" />
+    <Compile Include="SampleCsCurvePoints.cs" />
+    <Compile Include="SampleCsCylinderTest.cs" />
+    <Compile Include="SampleCsDrawRightAlignedText.cs" />
+    <Compile Include="SampleCsDumpBlockTree.cs" />
+    <Compile Include="SampleCsEditPolyline.cs" />
+    <Compile Include="SampleCsEmbedTextFile.cs" />
+    <Compile Include="SampleCsExtrusion.cs" />
+    <Compile Include="SampleCsFaceWithHole.cs" />
+    <Compile Include="SampleCsGetDirection.cs" />
+    <Compile Include="SampleCsGroup.cs" />
+    <Compile Include="SampleCsIntersectCurveLine.cs" />
+    <Compile Include="SampleCsIntersectCurves.cs" />
+    <Compile Include="SampleCsIntersectCurveSelf.cs" />
+    <Compile Include="SampleCsIntersectionMeshPolyline.cs" />
+    <Compile Include="SampleCsInvertSelected.cs" />
+    <Compile Include="SampleCsLastCreatedObjects.cs" />
+    <Compile Include="SampleCsLayerPathName.cs" />
+    <Compile Include="SampleCsMeshBox.cs" />
+    <Compile Include="SampleCsMove.cs" />
+    <Compile Include="SampleCsNurbsCircle.cs" />
+    <Compile Include="SampleCsAddNurbsCurve.cs" />
+    <Compile Include="SampleCsAddNurbsSurface.cs" />
+    <Compile Include="SampleCsArray.cs" />
+    <Compile Include="SampleCsAutomateGrasshopper.cs" />
+    <Compile Include="SampleCsBlock.cs" />
+    <Compile Include="SampleCsBooleanDifference.cs" />
+    <Compile Include="SampleCsBoxMorph.cs" />
+    <Compile Include="SampleCsCircleOfLines.cs" />
+    <Compile Include="SampleCsClassifyCurve.cs" />
+    <Compile Include="SampleCsColorfulMeshBox.cs" />
+    <Compile Include="SampleCsCommandLineOptions.cs" />
+    <Compile Include="SampleCsCommandsCommand.cs" />
+    <Compile Include="SampleCsCommandsPlugIn.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleCsContourMesh.cs" />
+    <Compile Include="SampleCsCurveSeam.cs" />
+    <Compile Include="SampleCsCurveGetter.cs" />
+    <Compile Include="SampleCsCustomLine.cs" />
+    <Compile Include="SampleCsCustomRenderMeshSettings.cs" />
+    <Compile Include="SampleCsCurveDirection.cs" />
+    <Compile Include="SampleCsDeleteMeshFace.cs" />
+    <Compile Include="SampleCsDeleteSubCurve.cs" />
+    <Compile Include="SampleCsDrawDistance.cs" />
+    <Compile Include="SampleCsDrawMesh.cs" />
+    <Compile Include="SampleCsDrawText.cs" />
+    <Compile Include="SampleCsDrawViewportLogo.cs" />
+    <Compile Include="SampleCsDuplicateBorder.cs" />
+    <Compile Include="SampleCsDuplicateMeshBorder.cs" />
+    <Compile Include="SampleCsEscapeKey.cs" />
+    <Compile Include="SampleCsEscapeKey2.cs" />
+    <Compile Include="SampleCsExplodeBlock.cs" />
+    <Compile Include="SampleCsExplodeHatch.cs" />
+    <Compile Include="SampleCsExtractPreview.cs" />
+    <Compile Include="SampleCsFilletSrf.cs" />
+    <Compile Include="SampleCsGetMultiplePoints.cs" />
+    <Compile Include="SampleCsGetPoint.cs" />
+    <Compile Include="SampleCsGetPointOnBreps.cs" />
+    <Compile Include="SampleCsHistory.cs" />
+    <Compile Include="SampleCsHistoryDivide.cs" />
+    <Compile Include="SampleCsImportNamedViews.cs" />
+    <Compile Include="SampleCsIntersectCircles.cs" />
+    <Compile Include="SampleCsIsolate.cs" />
+    <Compile Include="SampleCsMeshBrep.cs" />
+    <Compile Include="SampleCsMeshOutline.cs" />
+    <Compile Include="SampleCsModifySphereRadius.cs" />
+    <Compile Include="SampleCsNamedPlaneSurface.cs" />
+    <Compile Include="SampleCsOpen3dm.cs" />
+    <Compile Include="SampleCsOpenDwg.cs" />
+    <Compile Include="SampleCsOrientOnMesh.cs" />
+    <Compile Include="SampleCsOrientPerpendicularToCurve.cs" />
+    <Compile Include="SampleCsOverCut.cs" />
+    <Compile Include="SampleCsPersistentSettings.cs" />
+    <Compile Include="SampleCsPickHole.cs" />
+    <Compile Include="SampleCsPictureFrame.cs" />
+    <Compile Include="SampleCsPlanarClosedCurveRelationship.cs" />
+    <Compile Include="SampleCsPlanarFaceLoops.cs" />
+    <Compile Include="SampleCsPointCloudPoints.cs" />
+    <Compile Include="SampleCsPointOnMesh.cs" />
+    <Compile Include="SampleCsPrintViewList.cs" />
+    <Compile Include="SampleCsProjectPointToMesh.cs" />
+    <Compile Include="SampleCsRenderBackground.cs" />
+    <Compile Include="SampleCsRestoreLayerState.cs" />
+    <Compile Include="SampleCsRestoreNamedView.cs" />
+    <Compile Include="SampleCsRotate.cs" />
+    <Compile Include="SampleCsSaveAs.cs" />
+    <Compile Include="SampleCsScriptedSweep2.cs" />
+    <Compile Include="SampleCsSelectLayerObjects.cs" />
+    <Compile Include="SampleCsSerializeClass.cs" />
+    <Compile Include="SampleCsSetCameraTarget.cs" />
+    <Compile Include="SampleCsSetDisplayMode.cs" />
+    <Compile Include="SampleCsSetDocumentUserText.cs" />
+    <Compile Include="SampleCsSetPoint.cs" />
+    <Compile Include="SampleCsShadedBrep.cs" />
+    <Compile Include="SampleCsShadedView.cs" />
+    <Compile Include="SampleCsSineWaveLoft.cs" />
+    <Compile Include="SampleCsSmash.cs" />
+    <Compile Include="SampleCsSmooth.cs" />
+    <Compile Include="SampleCsSpiral.cs" />
+    <Compile Include="SampleCsSplitCurve.cs" />
+    <Compile Include="SampleCsStackedControlPointsCurve.cs" />
+    <Compile Include="SampleCsSubCurve.cs" />
+    <Compile Include="SampleCsCurveEditPoints.cs" />
+    <Compile Include="SampleCsExplodePolyCurve.cs" />
+    <Compile Include="SampleCsSweep1.cs" />
+    <Compile Include="SampleCsTestPlanarCurveContainment.cs" />
+    <Compile Include="SampleCsText.cs" />
+    <Compile Include="SampleCsTrimmedPlane.cs" />
+    <Compile Include="SampleCsTrimSurface.cs" />
+    <Compile Include="SampleCsUnisolate.cs" />
+    <Compile Include="SampleCsSetUserText.cs" />
+    <Compile Include="SampleCsViewSize.cs" />
+    <Compile Include="SampleCsZoom.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)$(ProjectName).rhp"
+Erase "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <FallbackCulture>en-US</FallbackCulture>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartProgram>C:\Program Files\Rhinoceros 5.0 (64-bit)\System\Rhino.exe</StartProgram>
+    <StartArguments>
+    </StartArguments>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
+</Project>
