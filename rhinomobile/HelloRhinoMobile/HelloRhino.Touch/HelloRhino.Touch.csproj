@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProjectGuid>{FA17C6A3-C67A-4F17-90A3-0423B02007B5}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>HelloRhino.Touch</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>HelloRhinoTouch</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG; OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+    <DefineConstants>OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchDebug>true</MtouchDebug>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+    <IpaPackageName>
+    </IpaPackageName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <ConsolePause>false</ConsolePause>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+    <DefineConstants>OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <BuildIpa>true</BuildIpa>
+    <ConsolePause>false</ConsolePause>
+    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+    <DefineConstants>OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <ConsolePause>false</ConsolePause>
+    <CodesignProvision>Automatic:AppStore</CodesignProvision>
+    <MtouchI18n>
+    </MtouchI18n>
+    <MtouchArch>ARMv7</MtouchArch>
+    <DefineConstants>OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="OpenTK-1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\Models\" />
+    <Folder Include="Shaders\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AppDelegate.cs" />
+    <Compile Include="OrbitDollyGestureRecognizer.cs" />
+    <Compile Include="HelloRhinoViewController.cs" />
+    <Compile Include="App.cs" />
+    <Compile Include="HelloRhinoViewController.designer.cs">
+      <DependentUpon>HelloRhinoViewController.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Models\Rhino Logo.3dm" />
+    <BundleResource Include="Shaders\FullscreenQuad.fsh" />
+    <BundleResource Include="Shaders\FullscreenQuad.vsh" />
+    <BundleResource Include="Shaders\GradientQuad.fsh" />
+    <BundleResource Include="Shaders\GradientQuad.vsh" />
+    <BundleResource Include="Shaders\PerPixelLighting.fsh" />
+    <BundleResource Include="Shaders\PerPixelLighting.vsh" />
+    <BundleResource Include="Shaders\PerVertexLighting.fsh" />
+    <BundleResource Include="Shaders\PerVertexLighting.vsh" />
+    <BundleResource Include="Shaders\template.fsh" />
+    <BundleResource Include="Shaders\template.vsh" />
+    <BundleResource Include="Resources\Default-568h%402x.png" />
+    <BundleResource Include="Resources\Icon29.png" />
+    <BundleResource Include="Resources\Icon29%402x.png" />
+    <BundleResource Include="Resources\Icon40.png" />
+    <BundleResource Include="Resources\Icon40%402x.png" />
+    <BundleResource Include="Resources\Icon50.png" />
+    <BundleResource Include="Resources\Icon50%402x.png" />
+    <BundleResource Include="Resources\Icon57.png" />
+    <BundleResource Include="Resources\Icon57%402x.png" />
+    <BundleResource Include="Resources\Icon60.png" />
+    <BundleResource Include="Resources\Icon60%402x.png" />
+    <BundleResource Include="Resources\Icon72.png" />
+    <BundleResource Include="Resources\Icon72%402x.png" />
+    <BundleResource Include="Resources\Icon76.png" />
+    <BundleResource Include="Resources\Icon76%402x.png" />
+    <BundleResource Include="Resources\warning32.png" />
+    <BundleResource Include="Resources\warning32%402x.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <ItemGroup>
+    <InterfaceDefinition Include="HelloRhinoViewController_iPhone.xib" />
+    <InterfaceDefinition Include="HelloRhinoViewController_iPad.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\RhinoMobile\RhinoMobile.Touch.csproj">
+      <Project>{022F5A8C-7A17-46D0-BCAD-EBB83305B20C}</Project>
+      <Name>RhinoMobile.Touch</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

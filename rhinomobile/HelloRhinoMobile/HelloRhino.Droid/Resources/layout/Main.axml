@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <HelloRhino.Droid.HelloRhinoView
+        android:id="@+id/hellorhinoview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+    <RelativeLayout
+        android:id="@+id/relLayout1"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#ff000000">
+        <ProgressBar
+            android:id="@+id/ProgressBar01"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
+        <ImageView
+            android:src="@drawable/warning"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="7dp"
+            android:id="@+id/imageView1" />
+        <TextView
+            android:layout_below="@id/ProgressBar01"
+            android:text="@string/initializing_model"
+            android:id="@+id/txtText"
+            android:paddingTop="30px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="15dp" />
+        <Button
+            android:layout_below="@id/txtText"
+            android:text="Cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancelButton" />
+    </RelativeLayout>
+</FrameLayout>
