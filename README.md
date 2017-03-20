@@ -34,7 +34,11 @@ The samples in this repository are organized by folders that correspond to the d
 
 ## Building Samples
 
-TODO: More info coming soon
+TODO: More info about building coming soon.
+
+**Why are the sample projects prefixed with the word Sample?**
+
+We gave each sample project a unique name in order to avoid command name collisions when these samples are run in Rhino.  The word Sample is prefixed to distinguish it from developer "Test" commands that sometimes used to test out new functionality in Rhino.  Since it is possible - and probable - that samples might be built, run, and tested in multiple languages, so we opted for a language code (C/C++ samples omit this simply because they came first), before the name of the sample.
 
 ## Testing
 
