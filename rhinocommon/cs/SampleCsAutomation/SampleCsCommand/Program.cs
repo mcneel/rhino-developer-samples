@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Linq;
-using System.Text;
 using System.Threading;
 
-namespace SampleCommand
+namespace SampleCsCommand
 {
   class Program
   {
@@ -17,6 +13,7 @@ namespace SampleCommand
       {
         // string rhinoId = "Rhino5.Application";
         string rhinoId = "Rhino5x64.Application";
+        //string rhinoId = "Rhino5x64.Interface";
         System.Type type = System.Type.GetTypeFromProgID(rhinoId);
         rhino = System.Activator.CreateInstance(type);
       }
@@ -33,32 +30,36 @@ namespace SampleCommand
       // Wait until Rhino is initialized before calling into it
       const int bail_milliseconds = 15 * 1000;
       int time_waiting = 0;
-      while( 0 == rhino.IsInitialized() )
+      while (0 == rhino.IsInitialized())
       {
-        Thread.Sleep( 100 );
+        Thread.Sleep(100);
         time_waiting += 100;
-        if( time_waiting > bail_milliseconds )
+        if (time_waiting > bail_milliseconds)
         {
           Console.WriteLine("Rhino initialization failed");
           return;
         }
       }
 
-      // SampleRhinoCommand is a hidden command in the SampleRhino plug-in
+      rhino.Visible = 1;
+
+      // SampleCsRhinoCommand is a hidden command in the SampleCsRhino plug-in
       // that basically does nothing. By running this do-nothing command,
-      // we can make sure the SampleRhino plug-in is loaded before trying
+      // we can make sure the SampleCsRhino plug-in is loaded before trying
       // to get it's scripting object.
-      rhino.RunScript("_-SampleRhinoCommand", 0);
+      rhino.RunScript("_-SampleCsRhinoCommand", 0);
 
       // Try getting the SampleRhino plug-in's scripting object
       dynamic plugin = null;
       try
       {
-        string pluginId = "593f9f2c-811e-46ad-8277-720cc2b386a6";
+        // Guid is from SampleCsRhino assembly
+        string pluginId = "78d66fe1-1b04-4314-981c-5f260ad9c556";
         plugin = rhino.GetPlugInObject(pluginId, pluginId);
       }
       catch
       {
+        // ignored
       }
 
       if (null == plugin)

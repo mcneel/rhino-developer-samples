@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Rhino;
 
-namespace SampleRhino
+namespace SampleCsRhino
 {
   [System.Runtime.InteropServices.ComVisible(true)]
-  public class SampleRhinoObject
+  public class SampleCsRhinoObject
   {
     /// <summary>
     /// Return a sample integer
@@ -40,10 +37,7 @@ namespace SampleRhino
     /// </summary>
     public object GetPoint()
     {
-      ArrayList pt = new ArrayList(3);
-      pt.Add(2.0);
-      pt.Add(1.0);
-      pt.Add(0.0);
+      var pt = new ArrayList(3) {2.0, 1.0, 0.0};
       return pt.ToArray();
     }
 
@@ -52,30 +46,18 @@ namespace SampleRhino
     /// </summary>
     public object GetPoints()
     {
-      ArrayList pts = new ArrayList();
+      var pts = new ArrayList();
 
-      ArrayList p0 = new ArrayList();
-      p0.Add(0.0);
-      p0.Add(0.0);
-      p0.Add(0.0);
+      var p0 = new ArrayList {0.0, 0.0, 0.0};
       pts.Add(p0.ToArray());
 
-      ArrayList p1 = new ArrayList();
-      p1.Add(10.0);
-      p1.Add(0.0);
-      p1.Add(0.0);
+      var p1 = new ArrayList {10.0, 0.0, 0.0};
       pts.Add(p1.ToArray());
 
-      ArrayList p2 = new ArrayList();
-      p2.Add(10.0);
-      p2.Add(10.0);
-      p2.Add(0.0);
+      var p2 = new ArrayList {10.0, 10.0, 0.0};
       pts.Add(p2.ToArray());
 
-      ArrayList p3 = new ArrayList();
-      p3.Add(0.0);
-      p3.Add(10.0);
-      p3.Add(0.0);
+      var p3 = new ArrayList {0.0, 10.0, 0.0};
       pts.Add(p3.ToArray());
 
       return pts.ToArray();
@@ -86,17 +68,17 @@ namespace SampleRhino
     /// </summary>
     public object AddPoint(object pointObj)
     {
-      Rhino.Geometry.Point3d point = new Rhino.Geometry.Point3d();
-      if (SampleRhinoHelpers.ConvertToPoint3d(pointObj, ref point))
+      var point = new Rhino.Geometry.Point3d();
+      if (SampleCsRhinoHelpers.ConvertToPoint3d(pointObj, ref point))
       {
-        Rhino.RhinoDoc doc = Rhino.RhinoDoc.ActiveDoc;
+        var doc = Rhino.RhinoDoc.ActiveDoc;
         if (null != doc)
         {
-          System.Guid objectId = doc.Objects.AddPoint(point);
-          if (!objectId.Equals(System.Guid.Empty))
+          var object_id = doc.Objects.AddPoint(point);
+          if (!object_id.Equals(System.Guid.Empty))
           {
             doc.Views.Redraw();
-            return objectId.ToString();
+            return object_id.ToString();
           }
         }
       }
@@ -108,27 +90,37 @@ namespace SampleRhino
     /// </summary>
     public object AddPoints(object pointsObj)
     {
-      List<Rhino.Geometry.Point3d> points = new List<Rhino.Geometry.Point3d>();
-      if (SampleRhinoHelpers.ConvertToPoint3dList(pointsObj, ref points))
+      var points = new List<Rhino.Geometry.Point3d>();
+      if (SampleCsRhinoHelpers.ConvertToPoint3dList(pointsObj, ref points))
       {
-        Rhino.RhinoDoc doc = Rhino.RhinoDoc.ActiveDoc;
+        var doc = Rhino.RhinoDoc.ActiveDoc;
         if (null != doc)
         {
-          ArrayList objectIds = new ArrayList();
-          for (int i = 0; i < points.Count(); i++)
+          var object_ids = new ArrayList();
+          for (var i = 0; i < points.Count(); i++)
           {
-            System.Guid objectId = doc.Objects.AddPoint(points[i]);
-            if (!objectId.Equals(System.Guid.Empty))
-              objectIds.Add(objectId.ToString());
+            var object_id = doc.Objects.AddPoint(points[i]);
+            if (!object_id.Equals(System.Guid.Empty))
+              object_ids.Add(object_id.ToString());
           }
-          if (objectIds.Count > 0)
+          if (object_ids.Count > 0)
           {
             doc.Views.Redraw();
-            return objectIds.ToArray();
+            return object_ids.ToArray();
           }
         }
       }
       return null;
+    }
+
+    /// <summary>
+    /// Runs a Rhino command script
+    /// </summary>
+    public bool RunScript(string script, bool echo)
+    {
+      script = script.TrimStart('!');
+      var rc = Rhino.RhinoApp.RunScript(script, echo);
+      return rc;
     }
   }
 }
