@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsTest1", "SampleCsSh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsTest2", "SampleCsSharedData\SampleCsTest2\SampleCsTest2.csproj", "{999F7EDD-BF42-4085-9D8F-5F5866C7712E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsSkin", "SampleCsSkin\SampleCsSkin.csproj", "{4E0FCE1B-4577-4F25-86FC-2F1526D2C7CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{999F7EDD-BF42-4085-9D8F-5F5866C7712E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{999F7EDD-BF42-4085-9D8F-5F5866C7712E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{999F7EDD-BF42-4085-9D8F-5F5866C7712E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E0FCE1B-4577-4F25-86FC-2F1526D2C7CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E0FCE1B-4577-4F25-86FC-2F1526D2C7CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E0FCE1B-4577-4F25-86FC-2F1526D2C7CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E0FCE1B-4577-4F25-86FC-2F1526D2C7CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
