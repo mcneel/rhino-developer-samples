@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsCommands", "SampleC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsEventWatcher", "SampleCsEventWatcher\SampleCsEventWatcher.csproj", "{C46E6928-A0E4-46D7-9382-350AF2BD1AB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsWinForms", "SampleCsWinForms\SampleCsWinForms.csproj", "{AF28BFFB-93EC-4B7F-B61B-21E08AD1EB4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{C46E6928-A0E4-46D7-9382-350AF2BD1AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C46E6928-A0E4-46D7-9382-350AF2BD1AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C46E6928-A0E4-46D7-9382-350AF2BD1AB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF28BFFB-93EC-4B7F-B61B-21E08AD1EB4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF28BFFB-93EC-4B7F-B61B-21E08AD1EB4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF28BFFB-93EC-4B7F-B61B-21E08AD1EB4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF28BFFB-93EC-4B7F-B61B-21E08AD1EB4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
