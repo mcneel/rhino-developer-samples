@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
     <Compile Include="SampleCsFairCurves.cs" />
+    <Compile Include="SampleCsGumballCylinder.cs" />
     <Compile Include="SampleCsImportBlockFromFile.cs" />
     <Compile Include="SampleCsLayerOff.cs" />
     <Compile Include="SampleCsAddNurbsCircle.cs" />
