@@ -46,11 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\SampleCsFibonacciCommand.cs" />
     <Compile Include="Commands\SampleCsModelessTabFormCommand.cs" />
     <Compile Include="Commands\SampleCsModalFormCommand.cs" />
     <Compile Include="Commands\SampleCsModelessFormCommand.cs" />
     <Compile Include="Commands\SampleCsPanelCommand.cs" />
     <Compile Include="Commands\SampleCsSemiModalFormCommand.cs" />
+    <Compile Include="Forms\SampleCsFibonacciForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SampleCsFibonacciForm.designer.cs">
+      <DependentUpon>SampleCsFibonacciForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SampleCsModelessTabFix.cs" />
     <Compile Include="Forms\SampleCsModelessTabForm.cs">
       <SubType>Form</SubType>
@@ -100,6 +107,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\SampleCsFibonacciForm.resx">
+      <DependentUpon>SampleCsFibonacciForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SampleCsModelessTabForm.resx">
       <DependentUpon>SampleCsModelessTabForm.cs</DependentUpon>
     </EmbeddedResource>
