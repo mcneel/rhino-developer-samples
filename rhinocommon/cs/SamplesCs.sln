@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsEventWatcher", "Sam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsWinForms", "SampleCsWinForms\SampleCsWinForms.csproj", "{AF28BFFB-93EC-4B7F-B61B-21E08AD1EB4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsRectangleGrips", "SampleCsRectangleGrips\SampleCsRectangleGrips.csproj", "{F1CEC411-A11C-4C7B-9EDC-4615262EFA7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{AF28BFFB-93EC-4B7F-B61B-21E08AD1EB4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF28BFFB-93EC-4B7F-B61B-21E08AD1EB4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF28BFFB-93EC-4B7F-B61B-21E08AD1EB4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1CEC411-A11C-4C7B-9EDC-4615262EFA7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1CEC411-A11C-4C7B-9EDC-4615262EFA7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1CEC411-A11C-4C7B-9EDC-4615262EFA7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1CEC411-A11C-4C7B-9EDC-4615262EFA7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
