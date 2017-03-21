@@ -46,10 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\SampleCsModelessTabFormCommand.cs" />
     <Compile Include="Commands\SampleCsModalFormCommand.cs" />
     <Compile Include="Commands\SampleCsModelessFormCommand.cs" />
     <Compile Include="Commands\SampleCsPanelCommand.cs" />
     <Compile Include="Commands\SampleCsSemiModalFormCommand.cs" />
+    <Compile Include="Forms\SampleCsModelessTabFix.cs" />
+    <Compile Include="Forms\SampleCsModelessTabForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SampleCsModelessTabForm.designer.cs">
+      <DependentUpon>SampleCsModelessTabForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SampleCsDocPropertiesPage.cs" />
     <Compile Include="Forms\SampleCsDocPropertiesUserControl.cs">
       <SubType>UserControl</SubType>
@@ -82,6 +90,7 @@
     <Compile Include="Forms\SampleCsPanelUserControl.designer.cs">
       <DependentUpon>SampleCsPanelUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinHooks.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -91,6 +100,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\SampleCsModelessTabForm.resx">
+      <DependentUpon>SampleCsModelessTabForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Panel.ico" />
   </ItemGroup>
   <ItemGroup>

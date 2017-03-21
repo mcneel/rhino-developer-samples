@@ -11,9 +11,8 @@
 using System;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using WinHooks;
 
-namespace Rhino.UI
+namespace SampleCsWinForms.Forms
 {
   /// <summary>
   /// Simple class that use the WH_GETMESSAGE hook to capture the keystroke
@@ -104,9 +103,9 @@ namespace Rhino.UI
       public const int WM_NULL = 0;
       public const int WM_KEYFIRST = 0x0100;
       public const int WM_KEYLAST = 0x0109;
-
       public const int PM_REMOVE = 0x0001;
     }
+
     /// <summary>
     /// Windows imports
     /// </summary>
@@ -127,6 +126,7 @@ namespace Rhino.UI
         int x;
         int y;
       }
+
       /// <summary>
       /// See: http://support.microsoft.com/kb/71450 
       /// </summary>

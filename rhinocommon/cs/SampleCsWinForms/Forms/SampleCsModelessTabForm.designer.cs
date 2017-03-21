@@ -1,6 +1,6 @@
-﻿namespace ModelessFormTabProblem
+﻿namespace SampleCsWinForms.Forms
 {
-  partial class Form1
+  partial class SampleCsModelessTabForm
   {
     /// <summary>
     /// Required designer variable.
@@ -78,7 +78,7 @@
       this.textBox6.Size = new System.Drawing.Size(260, 20);
       this.textBox6.TabIndex = 5;
       // 
-      // Form1
+      // ModelessForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -89,8 +89,8 @@
       this.Controls.Add(this.textBox3);
       this.Controls.Add(this.textBox2);
       this.Controls.Add(this.textBox1);
-      this.Name = "Form1";
-      this.Text = "Form1";
+      this.Name = "ModelessForm";
+      this.Text = "ModelessForm";
       this.ResumeLayout(false);
       this.PerformLayout();
 

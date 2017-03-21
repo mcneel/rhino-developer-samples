@@ -18,7 +18,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace WinHooks
+namespace SampleCsWinForms
 {
   #region Class HookEventArgs
   class HookEventArgs : EventArgs

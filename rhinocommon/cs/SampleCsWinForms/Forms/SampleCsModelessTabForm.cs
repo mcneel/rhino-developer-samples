@@ -1,18 +1,18 @@
 ﻿using System.Windows.Forms;
-using Rhino.UI;
 
-namespace ModelessFormTabProblem
+namespace SampleCsWinForms.Forms
 {
-  public partial class Form1 : Form
+  public partial class SampleCsModelessTabForm : Form
   {
-    public Form1()
+    public SampleCsModelessTabForm()
     {
       InitializeComponent();
+
       // Create an instance of the ModelessTabFix class passing this Form to the constructor
-      m_TabFix = new ModelessTabFix(this);
+      m_tab_fix = new ModelessTabFix(this);
     }
 
     // Class to handle the message hooking and forwarding
-    private ModelessTabFix m_TabFix;
+    private ModelessTabFix m_tab_fix;
   }
 }
