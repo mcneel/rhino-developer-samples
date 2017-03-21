@@ -44,5 +44,15 @@ namespace SampleCsWinForms
       var sample_page = new SampleCsDocPropertiesPage(doc);
       pages.Add(sample_page);
     }
+
+    protected override void ObjectPropertiesPages(List<ObjectPropertiesPage> pages)
+    {
+      if (null != pages)
+      {
+        var sample_page = new SampleCsObjectPropertiesPage();
+        pages.Add(sample_page);
+      }
+    }
+
   }
 }

@@ -84,6 +84,13 @@
     <Compile Include="Forms\SampleCsModelessForm.Designer.cs">
       <DependentUpon>SampleCsModelessForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SampleCsObjectPropertiesPage.cs" />
+    <Compile Include="Forms\SampleCsObjectPropertiesUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SampleCsObjectPropertiesUserControl.designer.cs">
+      <DependentUpon>SampleCsObjectPropertiesUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SampleCsOptionsPage.cs" />
     <Compile Include="Forms\SampleCsOptionsUserControl.cs">
       <SubType>UserControl</SubType>
@@ -113,6 +120,9 @@
     <EmbeddedResource Include="Forms\SampleCsModelessTabForm.resx">
       <DependentUpon>SampleCsModelessTabForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SampleCsObjectPropertiesUserControl.resx">
+      <DependentUpon>SampleCsObjectPropertiesUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Panel.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +145,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Property.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
