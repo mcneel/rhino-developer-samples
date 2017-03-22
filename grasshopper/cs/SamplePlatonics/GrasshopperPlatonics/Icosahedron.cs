@@ -1,0 +1,43 @@
+﻿using System;
+
+namespace GrasshopperPlatonics
+{
+  /// <summary>
+  /// The one and only Icosahedron component
+  /// </summary>
+  public class Icosahedron : PlatonicComponentBase
+  {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    public Icosahedron()
+      : base("Icosahedron", "U22", "Platonic solid with 20 faces", "Platonics")
+    {
+    }
+
+    /// <summary>
+    /// Returns a consistent ID for this object type. Every object must supply a
+    /// unique and unchanging ID that is used to identify objects of the same type.
+    /// </summary>
+    public override Guid ComponentGuid
+    {
+      get { return new Guid("864A9E15-F8AD-4F99-91EC-EF66BEB0AF46"); }
+    }
+
+    /// <summary>
+    /// Returns the platonic object
+    /// </summary>
+    public override PlatonicsCommon.PlatonicBase Geometry()
+    {
+      return new PlatonicsCommon.Icosahedron();
+    }
+
+    /// <summary>
+    /// Returns the component's icon
+    /// </summary>
+    protected override System.Drawing.Bitmap Icon 
+    {
+      get { return GrasshopperPlatonics.Properties.Resources.Icosahedron; } 
+    }
+  }
+}

@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RhinoPlatonics", "RhinoPlatonics\RhinoPlatonics.csproj", "{02685289-9015-4C83-90BB-392C399A511E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlatonicsCommon", "PlatonicsCommon\PlatonicsCommon.csproj", "{BA400DB8-8D87-4BDC-B6F4-6A5EFBC5BDBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrasshopperPlatonics", "GrasshopperPlatonics\GrasshopperPlatonics.csproj", "{3B95BD72-AB55-406A-9CB2-FB8428EF2647}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02685289-9015-4C83-90BB-392C399A511E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02685289-9015-4C83-90BB-392C399A511E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02685289-9015-4C83-90BB-392C399A511E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02685289-9015-4C83-90BB-392C399A511E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA400DB8-8D87-4BDC-B6F4-6A5EFBC5BDBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA400DB8-8D87-4BDC-B6F4-6A5EFBC5BDBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA400DB8-8D87-4BDC-B6F4-6A5EFBC5BDBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA400DB8-8D87-4BDC-B6F4-6A5EFBC5BDBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B95BD72-AB55-406A-9CB2-FB8428EF2647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B95BD72-AB55-406A-9CB2-FB8428EF2647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B95BD72-AB55-406A-9CB2-FB8428EF2647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B95BD72-AB55-406A-9CB2-FB8428EF2647}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
