@@ -1,9 +1,7 @@
+SampleCsEventWatcher
+====================
 
-SampleCsSharedData
-==================
-
-Sample C# RhinoCommon plug-in that demonstrates how to share plug-in data between multiple plug-ins.
-
+Sample C# RhinoCommon plug-in that demonstrates how to use event watchers.
 
 Building Sample
 --------------------
@@ -11,7 +9,6 @@ To build the sample, you are going to need:
 
 * Rhinoceros 5 (http://www.rhino3d.com)
 * Microsoft Visual C# 2010
-
 
 Legal Stuff
 -----------

@@ -1,8 +1,8 @@
 
-SampleCsSharedData
-==================
+SampleCsWinForms
+================
 
-Sample C# RhinoCommon plug-in that demonstrates how to share plug-in data between multiple plug-ins.
+Sample C# RhinoCommon plug-in that demonstrates various user interface elements using WinForms.
 
 
 Building Sample
