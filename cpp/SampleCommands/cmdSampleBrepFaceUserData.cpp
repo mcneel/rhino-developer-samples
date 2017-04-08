@@ -198,7 +198,7 @@ CRhinoCommand::result CCommandSampleGetBrepFaceUserData::RunCommand(const CRhino
 
   ON_wString pointstr;
   RhinoFormatPoint(ud->m_point, pointstr);
-  RhinoApp().Print(L"point = %s, string = %s\n", pointstr, ud->m_string);
+  RhinoApp().Print(L"point = %s, string = %s\n", (const wchar_t*)pointstr, (const wchar_t*)ud->m_string);
 
   return CRhinoCommand::success;
 }

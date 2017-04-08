@@ -84,7 +84,7 @@ CRhinoCommand::result CCommandSampleCurvature::RunCommand(const CRhinoCommandCon
 
   ON_wString wRadius;
   RhinoFormatNumber(circle.Radius(), wRadius);
-  RhinoApp().Print(L"Radius of curvature: %s.\n", wRadius);
+  RhinoApp().Print(L"Radius of curvature: %s.\n", (const wchar_t*)wRadius);
 
   return CRhinoCommand::success;
 }

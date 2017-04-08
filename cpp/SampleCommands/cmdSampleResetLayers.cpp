@@ -39,10 +39,10 @@ CRhinoCommand::result CCommandSampleResetLayers::RunCommand(const CRhinoCommandC
 
     // If a layer is visible, the sublayer flag should be true
     if (layer.IsVisible() && !layer.PersistentVisibility())
-      RhinoApp().Print(L"%s visible but not persistent visible\n", layer.Name());
+      RhinoApp().Print(L"%s visible but not persistent visible\n", (const wchar_t*)layer.Name());
 
     if (!layer.IsLocked() && layer.PersistentLocking())
-      RhinoApp().Print(L"%s not locked but persistent locked\n", layer.Name());
+      RhinoApp().Print(L"%s not locked but persistent locked\n", (const wchar_t*)layer.Name());
 
     ON_Layer on_layer(layer);
     on_layer.SetVisible(true);

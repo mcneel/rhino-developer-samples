@@ -97,7 +97,7 @@ CRhinoCommand::result CCommandSampleGetPointOnMesh::RunCommand(const CRhinoComma
 
         ON_wString normal_str;
         RhinoFormatPoint(normal, normal_str);
-        RhinoApp().Print(L"Added line normal to face %d, with % as normal direction.\n", point.m_ci.m_index, normal_str);
+        RhinoApp().Print(L"Added line normal to face %d, with %s as normal direction.\n", point.m_ci.m_index, (const wchar_t*)normal_str);
       }
     }
   }

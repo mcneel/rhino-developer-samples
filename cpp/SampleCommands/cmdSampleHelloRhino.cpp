@@ -71,7 +71,7 @@ CRhinoCommand::result CCommandSampleHelloRhino::RunCommand(const CRhinoCommandCo
   if (context.IsInteractive())
     RhinoMessageBox(str, SampleCommandsPlugIn().PlugInName(), MB_OK);
   else
-    RhinoApp().Print(L"%s\n", str);
+    RhinoApp().Print(L"%s\n", (const wchar_t*)str);
 
   // TODO: Return one of the following values:
   //   CRhinoCommand::success:  The command worked.

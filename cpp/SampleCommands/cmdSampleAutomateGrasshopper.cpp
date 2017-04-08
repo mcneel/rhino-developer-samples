@@ -159,7 +159,7 @@ CRhinoCommand::result CCommandSampleAutomateGrasshopper::RunCommand(const CRhino
 
   if (!CRhinoFileUtilities::FileExists(filename))
   {
-    RhinoApp().Print(L"File \"%s\" not found.\n", filename);
+    RhinoApp().Print(L"File \"%s\" not found.\n", (const wchar_t*)filename);
     return CRhinoCommand::failure;
   }
 
@@ -176,7 +176,7 @@ CRhinoCommand::result CCommandSampleAutomateGrasshopper::RunCommand(const CRhino
     // Invoke the "OpenDocument" method
     COleVariant vaResult;
     COleVariant vaFileName(filename);
-    HRESULT hr = OLEMethod(DISPATCH_METHOD, &vaResult, lpDispatch, L"OpenDocument", 1, vaFileName);
+    HRESULT hr = OLEMethod(DISPATCH_METHOD, &vaResult, lpDispatch, L"OpenDocument", 1, vaFileName.Detach());
 
     // Interpret results
     if (SUCCEEDED(hr))

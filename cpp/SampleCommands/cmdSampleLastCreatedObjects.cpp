@@ -147,7 +147,7 @@ CRhinoCommand::result CCommandSampleLastCreatedObjects::RunCommand(const CRhinoC
         // Print the object's id to the command line
         ON_wString str;
         ON_UuidToString(obj->ModelObjectId(), str);
-        RhinoApp().Print(L"%d - %s\n", i, str);
+        RhinoApp().Print(L"%d - %s\n", i, (const wchar_t*)str);
       }
     }
   }

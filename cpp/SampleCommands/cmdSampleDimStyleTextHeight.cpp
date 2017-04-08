@@ -34,7 +34,7 @@ CRhinoCommand::result CCommandSampleDimStyleTextHeight::RunCommand(const CRhinoC
   const CRhinoDimStyle& dimstyle = context.m_doc.m_dimstyle_table.CurrentDimStyle();
 
   ON_wString prompt;
-  prompt.Format(L"New text height for \"%s\" dimension style", dimstyle.Name());
+  prompt.Format(L"New text height for \"%s\" dimension style", (const wchar_t*)dimstyle.Name());
 
   // Prompt for a new text height value
   CRhinoGetNumber gn;

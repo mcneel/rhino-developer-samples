@@ -125,7 +125,7 @@ CRhinoCommand::result CCommandSampleObjectUserDataGet::RunCommand(const CRhinoCo
   {
     ON_wString pointstr;
     RhinoFormatPoint(point, pointstr);
-    RhinoApp().Print(L"point = %s, string = %s\n", pointstr, string);
+    RhinoApp().Print(L"point = %s, string = %s\n", (const wchar_t*)pointstr, (const wchar_t*)string);
   }
   else
   {

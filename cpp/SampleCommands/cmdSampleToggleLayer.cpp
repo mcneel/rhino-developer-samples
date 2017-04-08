@@ -45,7 +45,7 @@ CRhinoCommand::result CCommandSampleToggleLayer::RunCommand(const CRhinoCommandC
   int layer_index = layer_table.FindLayerFromFullPathName(layer_name, -1);
   if (layer_index < 0)
   {
-    RhinoApp().Print(L"The \"%s\" layer was not found.\n", layer_name);
+    RhinoApp().Print(L"The \"%s\" layer was not found.\n", (const wchar_t*)layer_name);
     return CRhinoCommand::nothing;
   }
 

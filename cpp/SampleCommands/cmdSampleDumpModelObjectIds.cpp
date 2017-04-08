@@ -43,7 +43,7 @@ CRhinoCommand::result CCommandSampleDumpModelObjectIds::RunCommand(const CRhinoC
       const CRhinoLayer& layer = layer_table[i];
       if (layer.IsVisible() && !layer.IsDeleted() && !layer.IsReference())
       {
-        RhinoApp().Print(L"  %s:\n", layer.Name());
+        RhinoApp().Print(L"  %s:\n", (const wchar_t*)layer.Name());
 
         ON_SimpleArray<CRhinoObject*> object_list;
         int object_count = context.m_doc.LookupObject(layer, object_list);
@@ -56,7 +56,7 @@ CRhinoCommand::result CCommandSampleDumpModelObjectIds::RunCommand(const CRhinoC
             {
               ON_wString model_id;
               ON_UuidToString(object->ModelObjectId(), model_id);
-              RhinoApp().Print(L"    %d: %s\n", j, model_id);
+              RhinoApp().Print(L"    %d: %s\n", j, (const wchar_t*)model_id);
             }
           }
         }
@@ -76,7 +76,7 @@ CRhinoCommand::result CCommandSampleDumpModelObjectIds::RunCommand(const CRhinoC
     {
       ON_wString model_id;
       ON_UuidToString(object->ModelObjectId(), model_id);
-      RhinoApp().Print(L"    %d: %s\n", count++, model_id);
+      RhinoApp().Print(L"    %d: %s\n", count++, (const wchar_t*)model_id);
     }
   }
 

@@ -93,7 +93,7 @@ CRhinoCommand::result CCommandSampleElevation::RunCommand(const CRhinoCommandCon
   bool rc = RhinoCurveBrepIntersect(line, *brep, context.m_doc.AbsoluteTolerance(), curves, points);
   if (false == rc || 0 == points.Count())
   {
-    RhinoApp().Print(L"No maximum surface Z coordinate at %s,%s found.\n", sx, sy);
+    RhinoApp().Print(L"No maximum surface Z coordinate at %s,%s found.\n", (const wchar_t*)sx, (const wchar_t*)sy);
     return CRhinoCommand::nothing;
   }
 
@@ -110,7 +110,7 @@ CRhinoCommand::result CCommandSampleElevation::RunCommand(const CRhinoCommandCon
 
   // Print results
   RhinoFormatNumber(pt.z, sz);
-  RhinoApp().Print(L"Maximum surface Z coordinate at %s,%s is %s.\n", sx, sy, sz);
+  RhinoApp().Print(L"Maximum surface Z coordinate at %s,%s is %s.\n", (const wchar_t*)sx, (const wchar_t*)sy, (const wchar_t*)sz);
 
   // Optional, add a point object
   context.m_doc.AddPointObject(pt);

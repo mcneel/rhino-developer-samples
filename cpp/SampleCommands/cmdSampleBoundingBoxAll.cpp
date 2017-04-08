@@ -57,9 +57,9 @@ CRhinoCommand::result CCommandSampleBoundingBoxAll::RunCommand(const CRhinoComma
   RhinoFormatNumber(dir.z, doc_units, display_units, dimz, true);
 
   RhinoApp().Print(L"World coordinates:\n");
-  RhinoApp().Print(L"min = %s\n", str0);
-  RhinoApp().Print(L"max = %s\n", str1);
-  RhinoApp().Print(L"dimensions = %s, %s, %s\n", dimx, dimy, dimz);
+  RhinoApp().Print(L"min = %s\n", (const wchar_t*)str0);
+  RhinoApp().Print(L"max = %s\n", (const wchar_t*)str1);
+  RhinoApp().Print(L"dimensions = %s, %s, %s\n", (const wchar_t*)dimx, (const wchar_t*)dimy, (const wchar_t*)dimz);
 
   return CRhinoCommand::success;
 }

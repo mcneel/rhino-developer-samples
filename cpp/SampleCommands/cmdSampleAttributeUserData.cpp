@@ -124,7 +124,7 @@ CRhinoCommand::result CCommandSampleAttributeUserDataGet::RunCommand(const CRhin
   if (ud)
   {
     // Print data members
-    RhinoApp().Print(L"String = %s\n", ud->m_my_string);
+    RhinoApp().Print(L"String = %s\n", (const wchar_t*)ud->m_my_string);
     RhinoApp().Print(L"Point = %f,%f,%f\n", ud->m_my_point.x, ud->m_my_point.y, ud->m_my_point.z);
   }
   else
