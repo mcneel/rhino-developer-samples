@@ -25,7 +25,7 @@ def SampleEtoViewCaptureDialog():
         bitmap = view.CaptureToBitmap()
         
         # Convert the System.Drawing.Bitmap to an Eto.Drawing.Bitmap
-        # which is required for an image view control
+        # which is required for an Eto image view control
         stream = System.IO.MemoryStream()
         format = System.Drawing.Imaging.ImageFormat.Png
         System.Drawing.Bitmap.Save(bitmap, stream, format)
@@ -34,7 +34,7 @@ def SampleEtoViewCaptureDialog():
         stream.Dispose()
         
         # Update the text label
-        label.Text = "Captured view: {}".format(view.ActiveViewport.Name)
+        label.Text = 'Captured view: {}'.format(view.ActiveViewport.Name)
 
         # Disable the default button
         dialog.DefaultButton.Enabled = False
@@ -45,7 +45,7 @@ def SampleEtoViewCaptureDialog():
     
     # Create an Eto dialog
     dialog = Dialog[bool]()
-    dialog.Title = "SampleEtoViewCaptureDialog"
+    dialog.Title = 'SampleEtoViewCaptureDialog'
     dialog.Padding = Padding(10)
     
     # Create a text label
@@ -57,11 +57,11 @@ def SampleEtoViewCaptureDialog():
     image_view.Image = None
     
     # Create the default button
-    dialog.DefaultButton = Button(Text = "Capture")
+    dialog.DefaultButton = Button(Text = 'Capture')
     dialog.DefaultButton.Click += OnCaptureButtonClick
     
     # Create the abort button
-    dialog.AbortButton = Button(Text = "Close")
+    dialog.AbortButton = Button(Text = 'Close')
     dialog.AbortButton.Click += OnCloseButtonClick
     
     # Create a table layout for the buttons
@@ -78,6 +78,7 @@ def SampleEtoViewCaptureDialog():
     content_layout.Spacing = Size(5, 5)
     content_layout.Rows.Add(label)
     content_layout.Rows.Add(image_view)
+    content_layout.Rows.Add(None) # spacer
     content_layout.Rows.Add(button_layout)
     
     # Set the dialog content
