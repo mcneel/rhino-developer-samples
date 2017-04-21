@@ -25,6 +25,8 @@ END_MESSAGE_MAP()
 
 BOOL CSampleOptionsPage::OnInitDialog()
 {
+  m_Resize.Add(IDC_SEP1, CRhinoUiDialogItemResizer::resize_lockwidth);
+
   CRhinoOptionsDialogPage::OnInitDialog();
 
   return TRUE;
