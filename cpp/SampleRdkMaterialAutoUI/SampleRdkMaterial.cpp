@@ -15,7 +15,7 @@ UUID CSampleRdkMaterial::PlugInId(void) const
 
 DWORD CSampleRdkMaterial::BitFlags(void) const
 {
-	return (__super::BitFlags() | bfFields | bfDynamicFields) & ~bfTextureSummary;
+  return (__super::BitFlags() & ~bfTextureSummary) | bfFields | bfModalEditing;
 }
 
 CSampleRdkMaterial::~CSampleRdkMaterial()

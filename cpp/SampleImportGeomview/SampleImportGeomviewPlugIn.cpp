@@ -275,7 +275,7 @@ BOOL CSampleImportGeomviewPlugIn::ReadOffFile(const wchar_t* filename, CRhinoDoc
     {
       ON_3fPoint center(0, 0, 0);
       for (j = 0; j < ngon; j++)
-        center += mesh.m_V[vert[j]];
+        center = center + mesh.m_V[vert[j]];
       center *= (float)(1.0 / ngon);
       mesh.SetVertex(++vind, center);
 

@@ -178,9 +178,9 @@ BOOL CRhinoGetTranslationPoint::CalculateTransform(CRhinoViewport& vp, const ON_
   UNREFERENCED_PARAMETER(vp);
   ON_3dVector dir = pt - m_basepoint;
   if (dir.IsTiny())
-    xform.Identity();
+    m_xform = ON_Xform::IdentityTransformation;
   else
-    xform.Translation(dir);
+    xform.TranslationTransformation(dir);
   return xform.IsValid() ? TRUE : FALSE;
 }
 

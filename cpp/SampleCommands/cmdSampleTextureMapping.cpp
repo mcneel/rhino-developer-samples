@@ -99,7 +99,7 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
 
   // Add some tiling
   ON_Xform uvw_scale;
-  uvw_scale.Scale(0.1, 0.1, 0.1);
+  uvw_scale.DiagonalTransformation(0.1, 0.1, 0.1);
   mappingNew.m_uvw = uvw_scale;
 
   // Set the texture mapping on an object

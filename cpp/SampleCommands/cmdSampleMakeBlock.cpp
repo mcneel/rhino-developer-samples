@@ -93,7 +93,7 @@ CRhinoCommand::result CCommandSampleMakeBlock::RunCommand(const CRhinoCommandCon
   }
 
   ON_Xform xform;
-  xform.Translation(ON_origin - base_point);
+  xform.TranslationTransformation(ON_origin - base_point);
 
   // Duplicate all of the selected objects and add them
   // to the document as instance definition objects

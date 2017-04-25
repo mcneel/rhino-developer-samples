@@ -59,7 +59,7 @@ CRhinoCommand::result CCommandSampleMoveGrips::RunCommand(const CRhinoCommandCon
   ON_3dPoint to = gp.Point();
 
   ON_Xform xform;
-  xform.Translation(to - from);
+  xform.TranslationTransformation(to - from);
   if (xform.IsValid())
   {
     // Transform the grip objects

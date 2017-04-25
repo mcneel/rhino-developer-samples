@@ -24,7 +24,7 @@ public:
 
 CGetBlockInsertPoint::CGetBlockInsertPoint()
 {
-  m_xform.Identity();
+  m_xform = ON_Xform::IdentityTransformation;
   m_draw = false;
 }
 
@@ -36,7 +36,7 @@ bool CGetBlockInsertPoint::CalculateTransform(CRhinoViewport& vp, const ON_3dPoi
 {
   UNREFERENCED_PARAMETER(vp);
   ON_3dVector v = pt - BasePoint();
-  xform.Translation(v);
+  xform.TranslationTransformation(v);
   return true;
 }
 
@@ -44,7 +44,7 @@ void CGetBlockInsertPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_
 {
   m_draw = CalculateTransform(vp, pt, m_xform);
   if (!m_draw)
-    m_xform.Identity();
+    m_xform = ON_Xform::IdentityTransformation;
   CRhinoGetPoint::OnMouseMove(vp, flags, pt, p);
 }
 

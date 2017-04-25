@@ -122,7 +122,7 @@ ON_MappingTag CZAnalysisVAM::MappingTag() const
   // Since the false colors that are shown will change if
   // the mesh is transformed, we have to initialize the
   // transformation.
-  mt.m_mesh_xform.Identity();
+  mt.m_mesh_xform = ON_Xform::IdentityTransformation;
 
   // This is the analysis mode id passed to the 
   // CRhinoVisualAnalysisMode constructor. Use the
