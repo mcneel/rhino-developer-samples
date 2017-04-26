@@ -309,6 +309,7 @@
     <ClCompile Include="cmdSampleClosestAxisPoint.cpp" />
     <ClCompile Include="cmdSampleCone.cpp" />
     <ClCompile Include="cmdSampleConvertQuadsToTriangles.cpp" />
+    <ClCompile Include="cmdSampleCPlaneObject.cpp" />
     <ClCompile Include="cmdSampleCurvature.cpp" />
     <ClCompile Include="cmdSampleCurveAreaCentroid.cpp" />
     <ClCompile Include="cmdSampleCurveLinetype.cpp" />
