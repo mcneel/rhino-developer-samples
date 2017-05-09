@@ -13,7 +13,7 @@ namespace PluginCommunicationOne
 			// due to the plug-in ID not being correct at this time.
 			// It is set only after the constructor has completed properly.
 		}
-		public override PlugInLoadTime LoadTime => PlugInLoadTime.AtStartup;
+		public override PlugInLoadTime LoadTime => PlugInLoadTime.WhenNeeded;
 		protected override LoadReturnCode OnLoad(ref string errorMessage)
 		{
 			Settings.SetInteger("SomeSetting", 0);
