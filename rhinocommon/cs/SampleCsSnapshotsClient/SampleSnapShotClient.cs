@@ -90,9 +90,11 @@ namespace SampleCsSnapshotsClient
       Rhino.Collections.ArchivableDictionary userdata = archive.ReadDictionary();
 
       string name = "";
-      if(userdata.TryGetString("ObjName", out name))
-        doc_object.Name = name;
-      
+      if (userdata.TryGetString("ObjName", out name))
+      {
+        doc_object.Attributes.Name = name;
+        doc_object.CommitChanges();
+      }
       return !archive.ReadErrorOccured;
     }
 
