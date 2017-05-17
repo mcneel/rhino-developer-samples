@@ -19,7 +19,7 @@ namespace SampleRdkMaterialAutoUI
 
     public SampleRdkMaterial()
     {
-
+      InitializeFields();
     }
 
     protected override void OnAddUserInterfaceSections()
