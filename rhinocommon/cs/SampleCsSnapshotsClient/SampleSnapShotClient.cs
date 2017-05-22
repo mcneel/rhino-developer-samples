@@ -6,7 +6,7 @@ using Rhino.Geometry;
 
 namespace SampleCsSnapshotsClient
 {
-  class SampleSnapShotClient : Rhino.Render.SnapShotsClient
+  class SampleSnapShotClient : Rhino.DocObjects.SnapShots.SnapShotsClient
   {
 
     public SampleSnapShotClient()
@@ -36,7 +36,7 @@ namespace SampleCsSnapshotsClient
 
     public override string Category()
     {
-      return Rhino.Render.SnapShotsClient.RenderingCategory();
+      return Rhino.DocObjects.SnapShots.SnapShotsClient.RenderingCategory();
     }
 
     public override Guid ClientId()
@@ -113,6 +113,11 @@ namespace SampleCsSnapshotsClient
       archive.WriteDictionary(userdata);
 
       return !archive.WriteErrorOccured;
+    }
+
+    public override void SnapshotRestored(RhinoDoc doc)
+    {
+
     }
 
     public override bool SupportsAnimation()

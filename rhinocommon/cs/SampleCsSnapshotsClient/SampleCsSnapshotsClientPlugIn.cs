@@ -15,7 +15,7 @@
     {
       Instance = this;
       SampleSnapShotClient snapshots_client = new SampleSnapShotClient();
-      Rhino.Render.SnapShotsClient.RegisterSnapShotClient(snapshots_client);
+      Rhino.DocObjects.SnapShots.SnapShotsClient.RegisterSnapShotClient(snapshots_client);
     }
 
     ///<summary>Gets the only instance of the SampleCsSnapshotsClientPlugIn plug-in.</summary>
