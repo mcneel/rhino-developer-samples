@@ -78,18 +78,18 @@ CSampleMarkerUserData& CSampleMarkerUserData::operator=(const CSampleMarkerUserD
   return *this;
 }
 
-BOOL CSampleMarkerUserData::GetDescription(ON_wString& description)
+bool CSampleMarkerUserData::GetDescription(ON_wString& description)
 {
   description = L"Sample Marker User Data";
   return true;
 }
 
-BOOL CSampleMarkerUserData::Archive() const
+bool CSampleMarkerUserData::Archive() const
 {
   return TRUE;
 }
 
-BOOL CSampleMarkerUserData::Write(ON_BinaryArchive& binary_archive) const
+bool CSampleMarkerUserData::Write(ON_BinaryArchive& binary_archive) const
 {
   int minor_version = 0;
   bool rc = binary_archive.BeginWrite3dmChunk(TCODE_ANONYMOUS_CHUNK, 1, minor_version);
@@ -136,7 +136,7 @@ BOOL CSampleMarkerUserData::Write(ON_BinaryArchive& binary_archive) const
   return rc;
 }
 
-BOOL CSampleMarkerUserData::Read(ON_BinaryArchive& binary_archive)
+bool CSampleMarkerUserData::Read(ON_BinaryArchive& binary_archive)
 {
   int major_version = 0;
   int minor_version = 0;

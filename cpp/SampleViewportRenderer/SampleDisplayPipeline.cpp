@@ -2,7 +2,7 @@
 #include "SampleDisplayPipeline.h"
 #include "SampleViewportRendererPlugIn.h"
 
-IMPLEMENT_DYNAMIC_PIPELINE(CSampleDisplayPipeline, CRhinoDisplayPipeline, L"SampleViewportRenderer", L"64BAFCF4-FC30-43C2-969F-50FCFB160029", true, true);
+IMPLEMENT_DYNAMIC_PIPELINE(CSampleDisplayPipeline, CRhinoDisplayPipeline, L"SampleViewportRenderer", "64BAFCF4-FC30-43C2-969F-50FCFB160029", true, true);
 
 CSampleDisplayPipeline::CSampleDisplayPipeline()
 {

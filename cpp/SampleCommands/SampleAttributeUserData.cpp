@@ -65,20 +65,20 @@ CSampleAttributeUserData& CSampleAttributeUserData::operator=(const CSampleAttri
   return *this;
 }
 
-BOOL CSampleAttributeUserData::GetDescription(ON_wString& description)
+bool CSampleAttributeUserData::GetDescription(ON_wString& description)
 {
   description = L"Sample Attribute User Data";
   return true;
 }
 
-BOOL CSampleAttributeUserData::Archive() const
+bool CSampleAttributeUserData::Archive() const
 {
   // If false is returned, nothing will be saved in
   // 3dm archives.
   return true;
 }
 
-BOOL CSampleAttributeUserData::Write(
+bool CSampleAttributeUserData::Write(
   ON_BinaryArchive& binary_archive
 ) const
 {
@@ -134,7 +134,7 @@ BOOL CSampleAttributeUserData::Write(
   return rc;
 }
 
-BOOL CSampleAttributeUserData::Read(
+bool CSampleAttributeUserData::Read(
   ON_BinaryArchive& binary_archive
 )
 {

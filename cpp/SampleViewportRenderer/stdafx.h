@@ -10,6 +10,7 @@
 
 // This plug-in is Rhino 6 ready
 #define RHINO_V6_READY
+#define RHINO_SDK_MFC
 
 // Plug-ins must use the release version of MFC used by Rhino.
 // Plug-ins that require debugging information need to be built with

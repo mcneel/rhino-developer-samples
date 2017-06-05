@@ -156,13 +156,13 @@ BOOL CSampleViewportRendererPlugIn::OnLoadPlugIn()
       // Set it's guid, name and pipeline class
       pDisplayAttrsMgrListDesc->m_pAttrs->SetUuid(DisplayModeID());
       pDisplayAttrsMgrListDesc->m_pAttrs->SetName(PlugInName());
-      pDisplayAttrsMgrListDesc->m_pAttrs->SetPipeline(RUNTIME_CLASS(CSampleDisplayPipeline));
+      pDisplayAttrsMgrListDesc->m_pAttrs->SetPipeline(&ON_CLASS_RTTI(CSampleDisplayPipeline));
     }
   }
   else
   {
     pDisplayAttrsMgrListDesc->m_pAttrs->SetName(PlugInName());
-    pDisplayAttrsMgrListDesc->m_pAttrs->SetPipeline(RUNTIME_CLASS(CSampleDisplayPipeline));
+    pDisplayAttrsMgrListDesc->m_pAttrs->SetPipeline(&ON_CLASS_RTTI(CSampleDisplayPipeline));
   }
 
   // Start the renderer

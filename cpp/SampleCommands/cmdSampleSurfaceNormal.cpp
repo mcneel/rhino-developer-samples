@@ -14,7 +14,7 @@ public:
   bool CalculateSurfaceNormal(const ON_3dPoint& pt);
 
   // CRhinoGetPoint overrides
-  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* pt2d);
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* pt2d);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt);
 
   ON_3dVector SurfaceNormal() const;
@@ -54,7 +54,7 @@ bool CGetSurfaceNormal::CalculateSurfaceNormal(const ON_3dPoint& pt)
   return rc;
 }
 
-void CGetSurfaceNormal::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* pt2d)
+void CGetSurfaceNormal::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* pt2d)
 {
   m_bDraw = CalculateSurfaceNormal(pt);
 

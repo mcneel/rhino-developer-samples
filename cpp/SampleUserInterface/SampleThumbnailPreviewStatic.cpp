@@ -65,7 +65,8 @@ void CSampleThumbnailPreviewStatic::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     CDC dc;
     if (dc.Attach(lpDrawItemStruct->hDC))
     {
-      m_dib.Stretch(&dc, lpDrawItemStruct->rcItem);
+      ON_4iRect rect(lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, lpDrawItemStruct->rcItem.right, lpDrawItemStruct->rcItem.bottom);
+      m_dib.Stretch(dc.m_hDC, rect);
       dc.Detach();
     }
   }

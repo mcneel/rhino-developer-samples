@@ -20,7 +20,7 @@ public:
 
   void SetSwap(bool bSwap);
 
-  void OnMouseMove(CRhinoViewport& vp, UINT nFlags, const ON_3dPoint& pt, const CPoint* p);
+  void OnMouseMove(CRhinoViewport& vp, UINT nFlags, const ON_3dPoint& pt, const ON_2iPoint* p);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt);
 
   void CalcCorners(CRhinoViewport& vp, const ON_3dPoint& point);
@@ -91,7 +91,7 @@ void CGetGoldenRectangle::DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoin
   CRhinoGetPoint::DynamicDraw(dp, pt);
 }
 
-void CGetGoldenRectangle::OnMouseMove(CRhinoViewport& vp, UINT nFlags, const ON_3dPoint& pt, const CPoint* p)
+void CGetGoldenRectangle::OnMouseMove(CRhinoViewport& vp, UINT nFlags, const ON_3dPoint& pt, const ON_2iPoint* p)
 {
   CalcCorners(vp, pt);
   CRhinoGetPoint::OnMouseMove(vp, nFlags, pt, p);

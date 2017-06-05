@@ -30,13 +30,9 @@ static class CCommandSampleViewCaptureToFile theSampleViewCaptureToFileCommand;
 
 CRhinoCommand::result CCommandSampleViewCaptureToFile::RunCommand(const CRhinoCommandContext& context)
 {
-  CWnd* pMainWnd = CWnd::FromHandle(RhinoApp().MainWnd());
-  if (0 == pMainWnd)
-    return CRhinoCommand::failure;
-
   CRhinoGetFileDialog gf;
   gf.SetScriptMode(context.IsInteractive() ? FALSE : TRUE);
-  BOOL rc = gf.DisplayFileDialog(CRhinoGetFileDialog::save_bitmap_dialog, 0, pMainWnd);
+  BOOL rc = gf.DisplayFileDialog(CRhinoGetFileDialog::save_bitmap_dialog, 0, RhinoApp().MainWnd());
   if (!rc)
     return CRhinoCommand::cancel;
 
@@ -48,7 +44,7 @@ CRhinoCommand::result CCommandSampleViewCaptureToFile::RunCommand(const CRhinoCo
   CRhinoView* view = RhinoApp().ActiveView();
   if (view)
   {
-    CRect rect;
+    ON_4iRect rect;
     view->GetClientRect(rect);
 
     CRhinoDib dib;

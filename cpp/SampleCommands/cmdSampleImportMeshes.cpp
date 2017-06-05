@@ -28,13 +28,9 @@ static class CCommandSampleImportMeshes theSampleImportMeshesCommand;
 
 CRhinoCommand::result CCommandSampleImportMeshes::RunCommand(const CRhinoCommandContext& context)
 {
-  CWnd* pMainWnd = CWnd::FromHandle(RhinoApp().MainWnd());
-  if (0 == pMainWnd)
-    return CRhinoCommand::failure;
-
   CRhinoGetFileDialog gf;
   gf.SetScriptMode(context.IsInteractive() ? FALSE : TRUE);
-  BOOL rc = gf.DisplayFileDialog(CRhinoGetFileDialog::open_rhino_3dm_file_dialog, 0, pMainWnd);
+  BOOL rc = gf.DisplayFileDialog(CRhinoGetFileDialog::open_rhino_3dm_file_dialog, 0, RhinoApp().MainWnd());
   if (!rc)
     return CRhinoCommand::cancel;
 

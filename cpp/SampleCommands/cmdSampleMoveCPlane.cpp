@@ -12,7 +12,7 @@ public:
   CSampleMoveCPlanePoint(const ON_3dmConstructionPlane& cplane);
   ~CSampleMoveCPlanePoint() = default;
 
-  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* pt2d) override;
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* pt2d) override;
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt) override;
 
 private:
@@ -27,7 +27,7 @@ CSampleMoveCPlanePoint::CSampleMoveCPlanePoint(const ON_3dmConstructionPlane& cp
   m_axis_color = app_settings.LockedObjectColor();
 }
 
-void CSampleMoveCPlanePoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* pt2d)
+void CSampleMoveCPlanePoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* pt2d)
 {
   m_cplane.m_plane.CreateFromFrame(pt, m_cplane.m_plane.xaxis, m_cplane.m_plane.yaxis);
   CRhinoGetPoint::OnMouseMove(vp, flags, pt, pt2d);

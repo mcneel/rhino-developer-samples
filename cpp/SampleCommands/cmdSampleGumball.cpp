@@ -13,8 +13,8 @@ public:
 
   CRhinoGet::result MoveGumball();
 
-  void OnMouseDown(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* p);
-  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* p);
+  void OnMouseDown(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* p);
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* p);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt);
 
   BOOL CalculateTransform(CRhinoViewport& vp, const ON_3dPoint& pt, ON_Xform& xform);
@@ -44,7 +44,7 @@ BOOL CSampleGumballGetXform::CalculateTransform(CRhinoViewport& vp, const ON_3dP
   return xform.IsValid() ? TRUE : FALSE;
 }
 
-void CSampleGumballGetXform::OnMouseDown(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* p)
+void CSampleGumballGetXform::OnMouseDown(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* p)
 {
   UNREFERENCED_PARAMETER(flags);
   UNREFERENCED_PARAMETER(pt);
@@ -65,7 +65,7 @@ void CSampleGumballGetXform::OnMouseDown(CRhinoViewport& vp, UINT flags, const O
   }
 }
 
-void CSampleGumballGetXform::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* p)
+void CSampleGumballGetXform::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* p)
 {
   if (0 == p || 0 == m_dc || m_dc->m_pick_result.m_gumball_mode == gb_mode_nothing)
     return;

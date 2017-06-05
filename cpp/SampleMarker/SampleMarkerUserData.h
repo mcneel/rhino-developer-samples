@@ -17,16 +17,16 @@ public:
   static ON_UUID PlugInId();
 
   // Virtual ON_UserData::GetDescription() override
-	BOOL GetDescription(ON_wString& description);
+  bool GetDescription(ON_wString& description);
 
   // Virtual virtual ON_UserData::Archive() override
-  BOOL Archive() const; 
+  bool Archive() const;
 
   // Virtual virtual ON_UserData::Read() override
-	BOOL Read(ON_BinaryArchive& archive);
+  bool Read(ON_BinaryArchive& archive);
 
   // Virtual virtual ON_UserData::Write() override
-	BOOL Write(ON_BinaryArchive& archive) const;
+  bool Write(ON_BinaryArchive& archive) const;
 
 public:
   // Helper functions

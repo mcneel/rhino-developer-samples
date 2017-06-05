@@ -114,7 +114,7 @@ bool CSampleViewportDecorationConduit::ExecConduit(CRhinoDisplayPipeline& dp, UI
     // Determine rect of text string
     const bool bMiddle = false;
     const int height = 12;
-    CRect rect;
+    ON_4iRect rect;
     dp.MeasureString(rect, str, ON_2dPoint(0, 0), bMiddle, height, m_default_font_face);
 
     // Use the screen port to determine text location

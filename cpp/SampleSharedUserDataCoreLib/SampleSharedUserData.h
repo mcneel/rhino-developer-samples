@@ -34,16 +34,16 @@ public:
   static ON_UUID PlugInId();
 
   // override virtual ON_UserData::GetDescription()
-  BOOL GetDescription(ON_wString& description);
+  bool GetDescription(ON_wString& description);
 
   // override virtual ON_UserData::Archive()
-  BOOL Archive() const;
+  bool Archive() const;
 
   // override virtual ON_UserData::Read()
-  BOOL Read(ON_BinaryArchive& archive);
+  bool Read(ON_BinaryArchive& archive);
 
   // override virtual ON_UserData::Write()
-  BOOL Write(ON_BinaryArchive& archive) const;
+  bool Write(ON_BinaryArchive& archive) const;
 
 public:
   ON_3dPoint m_point;

@@ -15,7 +15,7 @@ public:
   bool CalculateGradePoint(CRhinoViewport& vp, const ON_3dPoint& pt);
   ON_3dPoint GradePoint() const;
 
-  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* p2d);
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* p2d);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt);
 
 private:
@@ -58,7 +58,7 @@ ON_3dPoint CRhinoGradeLinePoint::GradePoint() const
   return m_grade_pt;
 }
 
-void CRhinoGradeLinePoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* p2d)
+void CRhinoGradeLinePoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* p2d)
 {
   m_draw = CalculateGradePoint(vp, pt);
   CRhinoGetPoint::OnMouseMove(vp, flags, pt, p2d);

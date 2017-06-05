@@ -84,20 +84,20 @@ CSampleObjectUserData& CSampleObjectUserData::operator=(const CSampleObjectUserD
   return *this;
 }
 
-BOOL CSampleObjectUserData::GetDescription(ON_wString& description)
+bool CSampleObjectUserData::GetDescription(ON_wString& description)
 {
   description = L"Sample Object User Data";
   return true;
 }
 
-BOOL CSampleObjectUserData::Archive() const
+bool CSampleObjectUserData::Archive() const
 {
   // If false is returned, nothing will be saved in
   // 3dm archives.
   return true;
 }
 
-BOOL CSampleObjectUserData::Write(ON_BinaryArchive& binary_archive) const
+bool CSampleObjectUserData::Write(ON_BinaryArchive& binary_archive) const
 {
   int minor_version = 0;
   bool rc = binary_archive.BeginWrite3dmChunk(TCODE_ANONYMOUS_CHUNK, 1, minor_version);
@@ -147,7 +147,7 @@ BOOL CSampleObjectUserData::Write(ON_BinaryArchive& binary_archive) const
   return rc;
 }
 
-BOOL CSampleObjectUserData::Read(ON_BinaryArchive& binary_archive)
+bool CSampleObjectUserData::Read(ON_BinaryArchive& binary_archive)
 {
   int major_version = 0;
   int minor_version = 0;

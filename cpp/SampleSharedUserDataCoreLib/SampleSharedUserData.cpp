@@ -84,20 +84,20 @@ CSampleSharedUserData& CSampleSharedUserData::operator=(const CSampleSharedUserD
   return *this;
 }
 
-BOOL CSampleSharedUserData::GetDescription(ON_wString& description)
+bool CSampleSharedUserData::GetDescription(ON_wString& description)
 {
   description = L"CSampleSharedUserData";
   return true;
 }
 
-BOOL CSampleSharedUserData::Archive() const
+bool CSampleSharedUserData::Archive() const
 {
   // If false is returned, nothing will be saved in
   // 3dm archives.
   return true;
 }
 
-BOOL CSampleSharedUserData::Write(ON_BinaryArchive& binary_archive) const
+bool CSampleSharedUserData::Write(ON_BinaryArchive& binary_archive) const
 {
   int minor_version = 0;
   bool rc = binary_archive.BeginWrite3dmChunk(TCODE_ANONYMOUS_CHUNK, 1, minor_version);
@@ -147,7 +147,7 @@ BOOL CSampleSharedUserData::Write(ON_BinaryArchive& binary_archive) const
   return rc;
 }
 
-BOOL CSampleSharedUserData::Read(ON_BinaryArchive& binary_archive)
+bool CSampleSharedUserData::Read(ON_BinaryArchive& binary_archive)
 {
   int major_version = 0;
   int minor_version = 0;

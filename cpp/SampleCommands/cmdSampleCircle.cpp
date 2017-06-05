@@ -15,7 +15,7 @@ public:
 
   bool CalculateCircle(CRhinoViewport& vp, const ON_3dPoint& pt);
 
-  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* pt2d);
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* pt2d);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt);
 
   const ON_Circle& Circle() const;
@@ -50,7 +50,7 @@ bool CGetCircleRadiusPoint::CalculateCircle(CRhinoViewport& vp, const ON_3dPoint
   return m_circle.IsValid() ? true : false;
 }
 
-void CGetCircleRadiusPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* pt2d)
+void CGetCircleRadiusPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* pt2d)
 {
   m_draw_circle = CalculateCircle(vp, pt);
 

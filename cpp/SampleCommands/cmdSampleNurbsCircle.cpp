@@ -33,7 +33,7 @@ CRhinoCommand::result CCommandSampleNurbsCircle::RunCommand(const CRhinoCommandC
   // Adds a degree = 2 NURBS circle
 
   int dimension = 3;
-  ON_BOOL32 bIsRational = TRUE;
+  bool bIsRational = true;
   int degree = 2;
   int cv_count = 7;
   int knot_count = cv_count + degree - 1;

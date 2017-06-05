@@ -86,7 +86,7 @@ void CSampleSyncViewsConduit::NotifyConduit(EConduitNotifiers notify, CRhinoDisp
     CRhinoView* pView = View();
     if (m_pView1 && (pActiveView == m_pView1) && (pView == m_pView1))
     {
-      m_hWnd1 = m_pView1->m_hWnd;
+      m_hWnd1 = m_pView1->GetSafeHwnd();
       {
         SyncVP(m_pView1, m_pView2);
         m_bDirty1 = true;
@@ -95,7 +95,7 @@ void CSampleSyncViewsConduit::NotifyConduit(EConduitNotifiers notify, CRhinoDisp
     }
     else if (m_pView2 && (pActiveView == m_pView2) && (pView == m_pView2))
     {
-      m_hWnd2 = m_pView2->m_hWnd;
+      m_hWnd2 = m_pView2->GetSafeHwnd();
       {
         SyncVP(m_pView2, m_pView1);
 
@@ -111,14 +111,14 @@ void CSampleSyncViewsConduit::NotifyConduit(EConduitNotifiers notify, CRhinoDisp
     if (m_bDirty1 && !m_bDirty2)
     {
       m_bDirty1 = false;
-      CClientDC dc(m_pView2);
+      CClientDC dc(CWnd::FromHandle(m_pView2->GetSafeHwnd()));
       if (m_pView2->DisplayPipeline()->DrawFrameBuffer(*m_pView2->DisplayAttributes(), m_pView1->Viewport().VP(), true, true))
         m_pView2->DisplayPipeline()->ShowFrameBuffer(dc.GetSafeHdc());
     }
     else if (!m_bDirty1 && m_bDirty2)
     {
       m_bDirty2 = false;
-      CClientDC dc(m_pView1);
+      CClientDC dc(CWnd::FromHandle(m_pView1->GetSafeHwnd()));
       if (m_pView1->DisplayPipeline()->DrawFrameBuffer(*m_pView1->DisplayAttributes(), m_pView1->Viewport().VP(), true, true))
         m_pView1->DisplayPipeline()->ShowFrameBuffer(dc.GetSafeHdc());
     }
@@ -207,8 +207,8 @@ CRhinoCommand::result CCommandSampleSyncViews::RunCommand(const CRhinoCommandCon
 
     m_conduit.m_pView1 = pPrimaryView;
     m_conduit.m_pView2 = pSecondaryView;
-    m_conduit.m_hWnd1 = m_conduit.m_pView1->m_hWnd;
-    m_conduit.m_hWnd2 = m_conduit.m_pView2->m_hWnd;
+    m_conduit.m_hWnd1 = m_conduit.m_pView1->GetSafeHwnd();
+    m_conduit.m_hWnd2 = m_conduit.m_pView2->GetSafeHwnd();
 
     SyncVP(pPrimaryView, pSecondaryView);
 

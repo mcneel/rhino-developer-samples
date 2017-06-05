@@ -13,7 +13,7 @@ public:
   ~CGetBlockInsertPoint();
 
   bool CalculateTransform(CRhinoViewport& vp, const ON_3dPoint& pt, ON_Xform& xform);
-  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* p);
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* p);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt);
 
 public:
@@ -40,7 +40,7 @@ bool CGetBlockInsertPoint::CalculateTransform(CRhinoViewport& vp, const ON_3dPoi
   return true;
 }
 
-void CGetBlockInsertPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const CPoint* p)
+void CGetBlockInsertPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* p)
 {
   m_draw = CalculateTransform(vp, pt, m_xform);
   if (!m_draw)

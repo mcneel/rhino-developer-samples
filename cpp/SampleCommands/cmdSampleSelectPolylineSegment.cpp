@@ -15,7 +15,7 @@ public:
 
   bool CalculatePolylineSegment(const ON_3dPoint& pt, int& index0, int& index1);
 
-  void OnMouseMove(CRhinoViewport& vp, const ON_3dPoint& pt, const CPoint* point);
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* point);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt);
 
 public:
@@ -66,10 +66,10 @@ bool CRhGetPolylineSegment::CalculatePolylineSegment(const ON_3dPoint& pt, int& 
   return false;
 }
 
-void CRhGetPolylineSegment::OnMouseMove(CRhinoViewport& vp, const ON_3dPoint& pt, const CPoint* point)
+void CRhGetPolylineSegment::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& pt, const ON_2iPoint* point)
 {
   m_draw = CalculatePolylineSegment(pt, m_index0, m_index1);
-  CRhinoGetPoint::OnMouseMove(vp, pt, point);
+  CRhinoGetPoint::OnMouseMove(vp, flags, pt, point);
 }
 
 void CRhGetPolylineSegment::DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt)

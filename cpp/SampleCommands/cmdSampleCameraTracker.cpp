@@ -49,7 +49,7 @@ void CCameraTrackingConduit::CreateHUD(const CRhinoDisplayPipeline* dp)
 {
   if (dp != NULL)
   {
-    CSize fs = dp->GetFrameSize();
+    ON_2iSize fs = dp->GetFrameSize();
     m_HUD.CreateDib(fs.cx, fs.cy, 32, true);
   }
 }
@@ -63,7 +63,7 @@ bool CCameraTrackingConduit::BuildHUD(void)
   {
     // Our HUD is both a bitmap and a GDI device context,
     // so we can use GDI routines to draw to it (ie. Text operations)
-    CDC*  pDC = m_HUD;
+    CDC* pDC = CDC::FromHandle(m_HUD);
 
     // Fill entire HUD with transparent color...we only want what we're about
     // to write into the HUD to show up...everything else is transparent so that

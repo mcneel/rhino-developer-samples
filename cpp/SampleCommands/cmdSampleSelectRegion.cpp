@@ -15,7 +15,7 @@ Returns:
 static int RhRegionSelectPointCloudPoints(
   CRhinoView* view,
   const ON_PointCloud& cloud,
-  ON_SimpleArray<CPoint>& points2d,
+  ON_SimpleArray<ON_2iPoint>& points2d,
   ON_SimpleArray<int>& indices
 )
 {
@@ -24,8 +24,12 @@ static int RhRegionSelectPointCloudPoints(
 
   const int index_count = indices.Count();
 
+  ON_SimpleArray<CPoint> tmp(points2d.Count());
+  for (int i = 0; i < points2d.Count(); i++)
+    tmp.Append(CPoint((int)points2d[i].x, (int)points2d[i].y));
+
   CRgn rgn;
-  if (rgn.CreatePolygonRgn(points2d.Array(), points2d.Count(), WINDING))
+  if (rgn.CreatePolygonRgn(tmp.Array(), tmp.Count(), WINDING))
   {
     ON_Xform w2s;
     view->ActiveViewport().VP().GetXform(ON::world_cs, ON::screen_cs, w2s);
@@ -60,21 +64,21 @@ Returns:
 static int RhWindowsSelectPointCloudPoints(
   CRhinoView* view,
   const ON_PointCloud& cloud,
-  CRect rect2d,
+  ON_4iRect rect2d,
   ON_SimpleArray<int>& indices
 )
 {
   if (0 == view)
     return 0;
 
-  ON_SimpleArray<CPoint> points2d;
+  ON_SimpleArray<ON_2iPoint> points2d;
   points2d.SetCapacity(5);
   points2d.SetCount(5);
 
-  points2d[0] = CPoint(rect2d.left, rect2d.top);
-  points2d[1] = CPoint(rect2d.left, rect2d.bottom);
-  points2d[2] = CPoint(rect2d.right, rect2d.bottom);
-  points2d[3] = CPoint(rect2d.right, rect2d.top);
+  points2d[0] = ON_2iPoint(rect2d.left, rect2d.top);
+  points2d[1] = ON_2iPoint(rect2d.left, rect2d.bottom);
+  points2d[2] = ON_2iPoint(rect2d.right, rect2d.bottom);
+  points2d[3] = ON_2iPoint(rect2d.right, rect2d.top);
   points2d[4] = points2d[0];
 
   return RhRegionSelectPointCloudPoints(view, cloud, points2d, indices);
@@ -93,17 +97,17 @@ public:
 
   CRhinoGet::result GetPoints();
 
-  void OnMouseDown(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const CPoint* pt);
-  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const CPoint* pt);
+  void OnMouseDown(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const ON_2iPoint* pt);
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const ON_2iPoint* pt);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& point);
 
-  bool PointIsValid(const CPoint& pt);
+  bool PointIsValid(const ON_2iPoint& pt);
 
 public:
   ON_UUID m_viewport_id;
-  ON_SimpleArray<CPoint> m_points;
-  CPoint m_prev_point;
-  CPoint m_temp_point;
+  ON_SimpleArray<ON_2iPoint> m_points;
+  ON_2iPoint m_prev_point;
+  ON_2iPoint m_temp_point;
   int m_point_spacing;
 };
 
@@ -111,8 +115,8 @@ CRhGetRegionPoints::CRhGetRegionPoints()
 {
   m_viewport_id = ON_nil_uuid;
   m_points.SetCapacity(2048);
-  m_prev_point = CPoint(-1, -1);
-  m_temp_point = CPoint(-1, -1);
+  m_prev_point = ON_2iPoint(-1, -1);
+  m_temp_point = ON_2iPoint(-1, -1);
   m_point_spacing = 3; // pixels
 }
 
@@ -123,7 +127,7 @@ CRhinoGet::result CRhGetRegionPoints::GetPoints()
 
   m_points.Reserve(2048);
   m_points.SetCount(0);
-  m_prev_point = CPoint(-1, -1);
+  m_prev_point = ON_2iPoint(-1, -1);
 
   AcceptNothing();
   ConstrainToTargetPlane();
@@ -133,13 +137,13 @@ CRhinoGet::result CRhGetRegionPoints::GetPoints()
 
   for (;;)
   {
-    m_temp_point = CPoint(-1, -1);
+    m_temp_point = ON_2iPoint(-1, -1);
 
     rc = GetPoint(0, true);
 
     if (rc == CRhinoGet::point)
     {
-      CPoint pt = Point2d();
+      ON_2iPoint pt = Point2d();
       if (PointIsValid(pt))
       {
         m_prev_point = pt;
@@ -163,7 +167,7 @@ CRhinoGet::result CRhGetRegionPoints::GetPoints()
   return rc;
 }
 
-void CRhGetRegionPoints::OnMouseDown(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const CPoint* pt)
+void CRhGetRegionPoints::OnMouseDown(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const ON_2iPoint* pt)
 {
   if (pt && m_points.Count() == 0)
   {
@@ -179,7 +183,7 @@ void CRhGetRegionPoints::OnMouseDown(CRhinoViewport& vp, UINT flags, const ON_3d
   CRhinoGetPoint::OnMouseDown(vp, flags, point, pt);
 }
 
-void CRhGetRegionPoints::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const CPoint* pt)
+void CRhGetRegionPoints::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const ON_2iPoint* pt)
 {
   if (pt && m_points.Count() > 0)
   {
@@ -218,7 +222,7 @@ void CRhGetRegionPoints::DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint
         for (i = 0; i < point_count - 1; i++)
           dp.Draw2dLine(m_points[i].x, m_points[i].y, m_points[i + 1].x, m_points[i + 1].y, color, 1, style, true);
 
-        if (m_temp_point != CPoint(-1, -1))
+        if (m_temp_point != ON_2iPoint(-1, -1))
         {
           dp.Draw2dLine(m_points[point_count - 1].x, m_points[point_count - 1].y, m_temp_point.x, m_temp_point.y, color, 1, style, true);
           if (point_count > 1)
@@ -233,9 +237,9 @@ void CRhGetRegionPoints::DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint
   CRhinoGetPoint::DynamicDraw(dp, point);
 }
 
-bool CRhGetRegionPoints::PointIsValid(const CPoint& pt)
+bool CRhGetRegionPoints::PointIsValid(const ON_2iPoint& pt)
 {
-  if (pt != CPoint(-1, -1))
+  if (pt != ON_2iPoint(-1, -1))
   {
     if (abs(m_prev_point.x - pt.x) >= m_point_spacing || abs(m_prev_point.y - pt.y) >= m_point_spacing)
       return true;

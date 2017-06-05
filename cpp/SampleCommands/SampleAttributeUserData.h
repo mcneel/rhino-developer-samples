@@ -33,18 +33,18 @@ public:
   CSampleAttributeUserData& operator=(const CSampleAttributeUserData& src);
 
   // override virtual ON_UserData::GetDescription()
-  BOOL GetDescription(ON_wString& description);
+  bool GetDescription(ON_wString& description);
 
   // override virtual ON_UserData::Archive()
-  BOOL Archive() const;
+  bool Archive() const;
 
   // override virtual ON_UserData::Write()
-  BOOL Write(
+  bool Write(
     ON_BinaryArchive& binary_archive
   ) const;
 
   // override virtual ON_UserData::Read()
-  BOOL Read(
+  bool Read(
     ON_BinaryArchive& binary_archive
   );
 

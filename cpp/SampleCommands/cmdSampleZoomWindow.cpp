@@ -25,7 +25,7 @@ public:
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:
-  bool DollyWindow(const CRhinoViewport& vport, CRect rect, ON_3dPoint& target_point, ON_Viewport& view_out);
+  bool DollyWindow(const CRhinoViewport& vport, ON_4iRect rect, ON_3dPoint& target_point, ON_Viewport& view_out);
 
 };
 
@@ -62,7 +62,7 @@ CRhinoCommand::result CCommandSampleZoomRotateWindow::RunCommand(const CRhinoCom
   }
 
   ON_3dPoint target_point = vport.Target();
-  CRect pick_rect = gp.Rectangle2d();
+  ON_4iRect pick_rect = gp.Rectangle2d();
   ON_Viewport vp_out;
 
   if (DollyWindow(vport, pick_rect, target_point, vp_out))
@@ -76,7 +76,7 @@ CRhinoCommand::result CCommandSampleZoomRotateWindow::RunCommand(const CRhinoCom
   return CRhinoCommand::success;
 }
 
-bool CCommandSampleZoomRotateWindow::DollyWindow(const CRhinoViewport& vport, CRect pick_rect, ON_3dPoint& target_point, ON_Viewport& vp_out)
+bool CCommandSampleZoomRotateWindow::DollyWindow(const CRhinoViewport& vport, ON_4iRect pick_rect, ON_3dPoint& target_point, ON_Viewport& vp_out)
 {
   const ON_Viewport& vp_in = vport.VP();
   vp_out = vp_in;
@@ -96,11 +96,11 @@ bool CCommandSampleZoomRotateWindow::DollyWindow(const CRhinoViewport& vport, CR
   ON_3dVector cam_z = vp_in.CameraZ();
 
   // capture Depth Buffer
-  CRect screen_rect(sleft, stop, sright, sbottom);
+  ON_4iRect screen_rect(sleft, stop, sright, sbottom);
 
   // user-specified rectangle
-  CRect zoom_rect;
-  zoom_rect.IntersectRect(&pick_rect, screen_rect);
+  ON_4iRect zoom_rect;
+  zoom_rect.IntersectRect(pick_rect, screen_rect);
 
   CRhinoZBuffer zbuffer(vport);
   zbuffer.ShowIsocurves(true);

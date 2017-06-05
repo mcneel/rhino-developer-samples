@@ -44,18 +44,18 @@ CSampleClippingPlaneUserData& CSampleClippingPlaneUserData::operator=(const CSam
   return *this;
 }
 
-BOOL CSampleClippingPlaneUserData::GetDescription(ON_wString& description)
+bool CSampleClippingPlaneUserData::GetDescription(ON_wString& description)
 {
   description = L"Clipping Plane User Data";
   return true;
 }
 
-BOOL CSampleClippingPlaneUserData::Archive() const
+bool CSampleClippingPlaneUserData::Archive() const
 {
   return true;
 }
 
-BOOL CSampleClippingPlaneUserData::Write(ON_BinaryArchive& binary_archive) const
+bool CSampleClippingPlaneUserData::Write(ON_BinaryArchive& binary_archive) const
 {
   int minor_version = 0;
   bool rc = binary_archive.BeginWrite3dmChunk(TCODE_ANONYMOUS_CHUNK, 1, minor_version);
@@ -82,7 +82,7 @@ BOOL CSampleClippingPlaneUserData::Write(ON_BinaryArchive& binary_archive) const
   return rc;
 }
 
-BOOL CSampleClippingPlaneUserData::Read(ON_BinaryArchive& binary_archive)
+bool CSampleClippingPlaneUserData::Read(ON_BinaryArchive& binary_archive)
 {
   int major_version = 0;
   int minor_version = 0;

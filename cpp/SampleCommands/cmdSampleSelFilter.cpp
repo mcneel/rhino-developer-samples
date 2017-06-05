@@ -67,7 +67,7 @@ CRhinoCommand::result CCommandSampleSelFilter::RunCommand(const CRhinoCommandCon
     return CRhinoCommand::cancel;
   }
 
-  CRect pick_rect = gp.Rectangle2d();
+  ON_4iRect pick_rect = gp.Rectangle2d();
   CRhinoView* view = gp.View();
   if (0 == view)
     return CRhinoCommand::failure;
@@ -83,7 +83,7 @@ CRhinoCommand::result CCommandSampleSelFilter::RunCommand(const CRhinoCommandCon
   if (view->Viewport().SetClippingRegionTransformation(pick_rect, pick_context.m_pick_region))
   {
     pick_context.UpdateClippingPlanes();
-    POINT screen_point = pick_rect.BottomRight();
+    ON_2iPoint screen_point = pick_rect.BottomRight();
     view->ActiveViewport().VP().GetFrustumLine(screen_point.x, screen_point.y, pick_context.m_pick_line);
 
     CRhinoObjRefArray pick_list;

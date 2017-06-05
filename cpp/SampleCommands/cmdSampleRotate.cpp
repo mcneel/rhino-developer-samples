@@ -12,7 +12,7 @@ public:
   CGetAngleFirstPoint(const ON_Plane& plane);
 
   // CRhinoGetPoint overrides
-  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const CPoint* view_wnd_point);
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const ON_2iPoint* view_wnd_point);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& point);
 
 protected:
@@ -32,7 +32,7 @@ CGetAngleFirstPoint::CGetAngleFirstPoint(const ON_Plane& plane)
   DrawLineFromPoint(plane.origin, true);
 }
 
-void CGetAngleFirstPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const CPoint* view_wnd_point)
+void CGetAngleFirstPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const ON_2iPoint* view_wnd_point)
 {
   ON_3dPoint base_point = BasePoint();
   m__draw = m__circle.Create(m_base_plane, base_point, point.DistanceTo(base_point));
@@ -56,7 +56,7 @@ public:
   CGetAngleSecondPoint(const ON_Plane& plane, const ON_3dPoint& refpt);
 
   // CRhinoGetPoint overrides
-  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const CPoint* view_wnd_point);
+  void OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const ON_2iPoint* view_wnd_point);
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& point);
 
   double Angle() const;
@@ -84,7 +84,7 @@ CGetAngleSecondPoint::CGetAngleSecondPoint(const ON_Plane& plane, const ON_3dPoi
   DrawLineFromPoint(plane.origin, true);
 }
 
-void CGetAngleSecondPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const CPoint* view_wnd_point)
+void CGetAngleSecondPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_3dPoint& point, const ON_2iPoint* view_wnd_point)
 {
   int quadrant = m_quadrant;
   int dir = m_dir;

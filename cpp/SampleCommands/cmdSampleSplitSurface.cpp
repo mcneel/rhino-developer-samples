@@ -8,7 +8,7 @@
 
 #pragma region SampleSplitSurface command
 
-static ON_BOOL32 SampleSurfaceSplitter(
+static bool SampleSurfaceSplitter(
   const ON_Surface* srf,
   const ON_3dPoint& pt,
   bool bUDir,
