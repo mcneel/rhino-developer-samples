@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsUserData", "SampleC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsWpf", "SampleCsWpf\SampleCsWpf.csproj", "{098AF3EE-CF77-4FEF-859B-B3BC22C7336A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsMobilePlane", "SampleCsMobilePlane\SampleCsMobilePlane.csproj", "{AD3E3FE2-C1B3-45CB-8723-AC3788810E4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +91,10 @@ Global
 		{098AF3EE-CF77-4FEF-859B-B3BC22C7336A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{098AF3EE-CF77-4FEF-859B-B3BC22C7336A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{098AF3EE-CF77-4FEF-859B-B3BC22C7336A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD3E3FE2-C1B3-45CB-8723-AC3788810E4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD3E3FE2-C1B3-45CB-8723-AC3788810E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD3E3FE2-C1B3-45CB-8723-AC3788810E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD3E3FE2-C1B3-45CB-8723-AC3788810E4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
