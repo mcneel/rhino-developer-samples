@@ -66,7 +66,7 @@ namespace SampleCsCommands
       for (i = 0; i < nurbs_surface.Points.CountU; i++)
       {
         for (j = 0; j < nurbs_surface.Points.CountV; j++)
-          nurbs_surface.Points.SetControlPoint(i, j, cv[i, j]);
+          nurbs_surface.Points.SetPoint(i, j, cv[i, j]);
       }
 
       var rc = Result.Failure;

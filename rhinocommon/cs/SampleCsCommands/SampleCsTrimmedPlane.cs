@@ -212,10 +212,10 @@ namespace SampleCsCommands
         );
 
       // Corner CVs in counter clockwise order starting in the south west
-      nurb.Points.SetControlPoint(0, 0, sw);
-      nurb.Points.SetControlPoint(1, 0, se);
-      nurb.Points.SetControlPoint(1, 1, ne);
-      nurb.Points.SetControlPoint(0, 1, nw);
+      nurb.Points.SetPoint(0, 0, sw);
+      nurb.Points.SetPoint(1, 0, se);
+      nurb.Points.SetPoint(1, 1, ne);
+      nurb.Points.SetPoint(0, 1, nw);
 
       // "u" knots
       nurb.KnotsU[0] = 0.0;
