@@ -108,7 +108,7 @@ namespace SampleRdkMaterialAutoUI
         // Bool fields
         if (type == typeof(BoolField))
         {
-          string key = field.Key;
+          string key = field.Name;
           string prompt = field.Prompt;
           bool bool_value = false;
           renderContent.Fields.TryGetValue(key, out bool_value);
