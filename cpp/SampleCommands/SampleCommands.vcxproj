@@ -454,6 +454,7 @@
     <ClCompile Include="cmdSampleViewCaptureToFile.cpp" />
     <ClCompile Include="cmdSampleViewLock.cpp" />
     <ClCompile Include="cmdSampleVolume.cpp" />
+    <ClCompile Include="cmdSampleZoomExtents.cpp" />
     <ClCompile Include="cmdSampleZoomWindow.cpp" />
     <ClCompile Include="cmdSampleSelectVisibleMeshFaces.cpp" />
     <ClCompile Include="SampleCommandsApp.cpp" />
