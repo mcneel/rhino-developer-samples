@@ -21,15 +21,15 @@ namespace SampleCsUserData.Commands
       if (rc != Result.Success || null == objref)
         return rc;
 
-      RhinoObject obj = objref.Object();
+      var obj = objref.Object();
       if (null == obj)
         return Result.Failure;
 
-      var ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
-      if (null != ud)
-        RhinoApp.WriteLine("{0} = {1}", ud.Description, ud.Notes);
+      var userdata = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
+      if (null != userdata)
+        RhinoApp.WriteLine("{0} = {1}", userdata.Description, userdata.Notes);
       else
-        RhinoApp.WriteLine("User data not found.");
+        RhinoApp.WriteLine("SampleCsUserData not found.");
 
       return Result.Success;
     }

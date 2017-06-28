@@ -26,17 +26,28 @@ namespace SampleCsUserData.Commands
       if (null == obj)
         return Result.Failure;
 
-      var ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
-      if (null != ud)
+      var userdata = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
+      if (null == userdata)
       {
-        var gs = new GetString();
-        gs.SetCommandPrompt("Modify object notes");
-        gs.GetLiteralString();
-        if (gs.CommandResult() != Result.Success)
-          return gs.CommandResult();
-
-        ud.Notes = gs.StringResult();
+        RhinoApp.WriteLine("SampleCsUserData not found.");
+        return Result.Nothing;
       }
+
+      var gs = new GetString();
+      gs.SetCommandPrompt("Modify object notes");
+      gs.GetLiteralString();
+      if (gs.CommandResult() != Result.Success)
+        return gs.CommandResult();
+
+      // To support undo, make a copy of the attributes
+      // instead of modifying the attributes directly.
+      var new_attributes = obj.Attributes.Duplicate();
+      userdata = new_attributes.UserData.Find(typeof (SampleCsUserDataObject)) as SampleCsUserDataObject;
+      if (null == userdata)
+        return Result.Failure;
+
+      userdata.Notes = gs.StringResult();
+      doc.Objects.ModifyAttributes(obj, new_attributes, true);
 
       return Result.Success;
     }

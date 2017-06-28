@@ -25,9 +25,22 @@ namespace SampleCsUserData.Commands
       if (null == obj)
         return Result.Failure;
 
-      var ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
-      if (null != ud)
-        obj.Attributes.UserData.Remove(ud);
+      var userdata = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
+      if (null == userdata)
+      {
+        RhinoApp.WriteLine("SampleCsUserData not found.");
+        return Result.Nothing;
+      }
+
+      // To support undo, make a copy of the attributes
+      // instead of modifying the attributes directly.
+      var new_attributes = obj.Attributes.Duplicate();
+      userdata = new_attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
+      if (null == userdata)
+        return Result.Failure;
+
+      new_attributes.UserData.Remove(userdata);
+      doc.Objects.ModifyAttributes(obj, new_attributes, true);
 
       return Result.Success;
     }

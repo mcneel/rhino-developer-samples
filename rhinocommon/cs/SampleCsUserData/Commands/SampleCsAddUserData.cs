@@ -26,26 +26,29 @@ namespace SampleCsUserData.Commands
       if (null == obj)
         return Result.Failure;
 
-      var ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
-      if (null == ud)
+      var userdata = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
+      if (null != userdata)
       {
-        var gs = new GetString();
-        gs.SetCommandPrompt("Object notes");
-        gs.GetLiteralString();
-        if (gs.CommandResult() != Result.Success)
-          return gs.CommandResult();
-
-        ud = new SampleCsUserDataObject 
-        {
-          Notes = gs.StringResult()
-        };
-
-        obj.Attributes.UserData.Add(ud);
+        RhinoApp.WriteLine("{0} = {1}", userdata.Description, userdata.Notes);
+        return Result.Nothing;
       }
-      else
+
+      var gs = new GetString();
+      gs.SetCommandPrompt("Object notes");
+      gs.GetLiteralString();
+      if (gs.CommandResult() != Result.Success)
+        return gs.CommandResult();
+
+      userdata = new SampleCsUserDataObject 
       {
-        RhinoApp.WriteLine("{0} = {1}", ud.Description, ud.Notes);
-      }
+        Notes = gs.StringResult()
+      };
+
+      // To support undo, make a copy of the attributes
+      // instead of modifying the attributes directly.
+      var new_attributes = obj.Attributes.Duplicate();
+      new_attributes.UserData.Add(userdata);
+      doc.Objects.ModifyAttributes(obj, new_attributes, true);
 
       return Result.Success;
     }
