@@ -26,7 +26,7 @@ namespace SampleCsCommands
       var sn_start = RhinoObject.NextRuntimeSerialNumber;
 
       // 2.) Script the Rhino command here using Rhino.RhinoApp.RunScript.
-      // http://developer.rhino3d.com/guides/rhinocommon/run_rhino_command_from_plugin/
+      // http://developer.rhino3d.com/guides/rhinocommon/run-rhino-command-from-plugin/
 
       // 3.) Get the runtime serial number that will be assigned to the
       // next Rhino Object that is created.
