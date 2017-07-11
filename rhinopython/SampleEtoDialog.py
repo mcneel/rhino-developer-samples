@@ -3,22 +3,30 @@
 # MIT License - Copyright (c) 2017 Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
-import clr
-clr.AddReference("Eto")
-clr.AddReference("Rhino.UI")
-
 from Rhino.UI import *
 from Eto.Forms import *
 from Eto.Drawing import *
 
-obj = Dialog()
-obj.Title = "Sample Eto Dialog"
-obj.ClientSize = Size(200, 200)
-obj.Padding = Padding(5)
-obj.Resizable = False
+################################################################################
+# Sample dialog
+################################################################################
+def TestSampleEtoDialog():
+    dialog = Dialog()
+    dialog.Title = "Sample Eto Dialog"
+    dialog.ClientSize = Size(200, 200)
+    dialog.Padding = Padding(5)
+    dialog.Resizable = False
 
-label = Label()
-label.Text = "Hello Rhino.Python!"
-obj.Content = label
+    label = Label()
+    label.Text = "Hello Rhino.Python!"
+    dialog.Content = label
 
-obj.ShowModal(RhinoEtoApp.MainWindow)
+    dialog.ShowModal(RhinoEtoApp.MainWindow)
+    
+################################################################################
+# Check to see if this file is being executed as the "main" python
+# script instead of being used as a module by some other python script
+# This allows us to use the module which ever way we want.
+################################################################################
+if __name__ == "__main__":
+    TestSampleEtoDialog()    

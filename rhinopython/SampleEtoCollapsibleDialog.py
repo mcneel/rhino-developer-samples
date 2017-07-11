@@ -7,8 +7,6 @@ import scriptcontext
 import rhinoscriptsyntax as rs
 import clr
 import sys
-clr.AddReference("Eto")
-clr.AddReference("Rhino.UI")
 
 from Rhino.UI import *
 from Eto.Forms import Form, Dialog, Label, TextBox, StackLayout, Orientation, Button, HorizontalAlignment, VerticalAlignment, TextAlignment, NumericUpDown, MessageBox, DropDown, CheckBox, TableLayout, StackLayoutItem, DynamicLayout, Control, Panel, Form
