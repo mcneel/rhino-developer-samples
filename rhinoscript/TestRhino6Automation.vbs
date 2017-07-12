@@ -1,5 +1,5 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' TestRhino5Automation.rvb -- July 2016, Dale Fugier.
+' TestRhino6Automation.rvb -- July 2016, Dale Fugier.
 ' If this code works, it was written by Dale Fugier.
 ' If not, I don't know who wrote it.
 ' Works with Rhinoceros 6.
