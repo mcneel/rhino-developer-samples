@@ -11,9 +11,9 @@
 class CCommandSampleLockProjection : public CRhinoCommand
 {
 public:
-  CCommandSampleLockProjection() {}
-  ~CCommandSampleLockProjection() {}
-  UUID CommandUUID()
+  CCommandSampleLockProjection() = default;
+  ~CCommandSampleLockProjection() = default;
+  UUID CommandUUID() override
   {
     // {ECC5468-EBAC-43F9-93D3-4387C93C3653}
     static const GUID SampleLockProjectionCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleLockProjectionCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleLockProjection"; }
-  const wchar_t* LocalCommandName() const { return L"SampleLockProjection"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

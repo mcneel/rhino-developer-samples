@@ -9,9 +9,9 @@
 class CCommandSamplePickColor : public CRhinoCommand
 {
 public:
-  CCommandSamplePickColor() {}
-  ~CCommandSamplePickColor() {}
-  UUID CommandUUID()
+  CCommandSamplePickColor() = default;
+  ~CCommandSamplePickColor() = default;
+  UUID CommandUUID() override
   {
     // {1E2F414B-80BC-4801-8581-127B87742426}
     static const GUID SamplePickColorCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SamplePickColorCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePickColor"; }
-  const wchar_t* LocalCommandName() { return L"SamplePickColor"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

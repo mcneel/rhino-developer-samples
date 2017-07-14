@@ -332,9 +332,9 @@ static ON_Brep* MakeTrimmedPlane( ON_TextLog& error_log )
 class CCommandSampleTrimmedPlane : public CRhinoCommand
 {
 public:
-  CCommandSampleTrimmedPlane() {}
-  ~CCommandSampleTrimmedPlane() {}
-  UUID CommandUUID()
+  CCommandSampleTrimmedPlane() = default;
+  ~CCommandSampleTrimmedPlane() = default;
+  UUID CommandUUID() override
   {
     // {A74D1534-29D7-4B14-A9FD-B3C679839D74}
     static const GUID SampleTrimmedPlaneCommand_UUID =
@@ -342,7 +342,6 @@ public:
     return SampleTrimmedPlaneCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleTrimmedPlane"; }
-  const wchar_t* LocalCommandName() { return L"SampleTrimmedPlane"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

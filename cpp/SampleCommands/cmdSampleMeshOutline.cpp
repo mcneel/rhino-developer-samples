@@ -11,9 +11,9 @@
 class CCommandSampleMeshOutline : public CRhinoCommand
 {
 public:
-  CCommandSampleMeshOutline() {}
-  ~CCommandSampleMeshOutline() {}
-  UUID CommandUUID()
+  CCommandSampleMeshOutline() = default;
+  ~CCommandSampleMeshOutline() = default;
+  UUID CommandUUID() override
   {
     // {18B2C13C-D652-4263-9F75-74BE31F35EAC}
     static const GUID SampleMeshOutlineCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleMeshOutlineCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMeshOutline"; }
-  const wchar_t* LocalCommandName() const { return L"SampleMeshOutline"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

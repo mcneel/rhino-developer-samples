@@ -11,9 +11,9 @@
 class CCommandSampleAddSearchPath : public CRhinoCommand
 {
 public:
-  CCommandSampleAddSearchPath() {}
-  ~CCommandSampleAddSearchPath() {}
-  UUID CommandUUID()
+  CCommandSampleAddSearchPath() = default;
+  ~CCommandSampleAddSearchPath() = default;
+  UUID CommandUUID() override
   {
     // {DE0F201C-6D7D-4F7E-8B02-1A704EB84306}
     static const GUID SampleAddSearchPathCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleAddSearchPathCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleAddSearchPath"; }
-  const wchar_t* LocalCommandName() const { return L"SampleAddSearchPath"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

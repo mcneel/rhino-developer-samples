@@ -12,9 +12,9 @@
 class CCommandSampleEnableAllClippingPlanes : public CRhinoCommand
 {
 public:
-  CCommandSampleEnableAllClippingPlanes() {}
-  ~CCommandSampleEnableAllClippingPlanes() {}
-  UUID CommandUUID()
+  CCommandSampleEnableAllClippingPlanes() = default;
+  ~CCommandSampleEnableAllClippingPlanes() = default;
+  UUID CommandUUID() override
   {
     // {A8A4E5B7-8D0-49E3-933E-1DA58132FB56}
     static const GUID SampleEnableAllClippingPlanesCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleEnableAllClippingPlanesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleEnableAllClippingPlanes"; }
-  const wchar_t* LocalCommandName() const { return L"SampleEnableAllClippingPlanes"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

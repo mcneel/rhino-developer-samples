@@ -9,9 +9,9 @@
 class CCommandSampleCurvature : public CRhinoCommand
 {
 public:
-  CCommandSampleCurvature() {}
-  ~CCommandSampleCurvature() {}
-  UUID CommandUUID()
+  CCommandSampleCurvature() = default;
+  ~CCommandSampleCurvature() = default;
+  UUID CommandUUID() override
   {
     // {DBB19D32-AF24-40A1-BE43-A14D7E08413A}
     static const GUID SampleCurvatureCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleCurvatureCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCurvature"; }
-  const wchar_t* LocalCommandName() { return L"SampleCurvature"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

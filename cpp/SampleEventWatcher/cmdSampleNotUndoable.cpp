@@ -13,8 +13,8 @@ class CCommandSampleNotUndoable : public CRhinoCommand
 {
 public:
   CCommandSampleNotUndoable();
-  ~CCommandSampleNotUndoable() {}
-  UUID CommandUUID()
+  ~CCommandSampleNotUndoable() = default;
+  UUID CommandUUID() override
   {
     // {E9E5A33A-46C2-448A-9945-6C76DDD6DDE0}
     static const GUID SampleNotUndoableCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleNotUndoableCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleNotUndoable"; }
-  const wchar_t* LocalCommandName() const { return L"SampleNotUndoable"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

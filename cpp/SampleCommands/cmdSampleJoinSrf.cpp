@@ -9,9 +9,9 @@
 class CCommandSampleJoinSrf : public CRhinoCommand
 {
 public:
-  CCommandSampleJoinSrf() {}
-  ~CCommandSampleJoinSrf() {}
-  UUID CommandUUID()
+  CCommandSampleJoinSrf() = default;
+  ~CCommandSampleJoinSrf() = default;
+  UUID CommandUUID() override
   {
     // {AB907EC4-6070-40F6-A76B-623F2902158C}
     static const GUID SampleJoinSrfCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleJoinSrfCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleJoinSrf"; }
-  const wchar_t* LocalCommandName() { return L"SampleJoinSrf"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -11,9 +11,9 @@
 class CCommandSampleGetPointOnMesh : public CRhinoCommand
 {
 public:
-  CCommandSampleGetPointOnMesh() {}
-  ~CCommandSampleGetPointOnMesh() {}
-  UUID CommandUUID()
+  CCommandSampleGetPointOnMesh() = default;
+  ~CCommandSampleGetPointOnMesh() = default;
+  UUID CommandUUID() override
   {
     // {1DCF993-BDEF-4152-8DA0-7437AA74CED8}
     static const GUID SampleGetPointOnMeshCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleGetPointOnMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGetPointOnMesh"; }
-  const wchar_t* LocalCommandName() const { return L"SampleGetPointOnMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,7 +9,7 @@
 class CDrawStringGetPoint : public CRhinoGetPoint
 {
 public:
-  CDrawStringGetPoint() {}
+  CDrawStringGetPoint() = default;
   void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt);
 };
 
@@ -47,9 +47,9 @@ void CDrawStringGetPoint::DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoin
 class CCommandSampleDrawString : public CRhinoCommand
 {
 public:
-  CCommandSampleDrawString() {}
-  ~CCommandSampleDrawString() {}
-  UUID CommandUUID()
+  CCommandSampleDrawString() = default;
+  ~CCommandSampleDrawString() = default;
+  UUID CommandUUID() override
   {
     // {72E436CE-A0E0-4D46-855B-1E767B5B045E}
     static const GUID SampleDrawStringCommand_UUID =
@@ -57,7 +57,6 @@ public:
     return SampleDrawStringCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDrawString"; }
-  const wchar_t* LocalCommandName() { return L"SampleDrawString"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,9 +9,9 @@
 class CCommandSampleSetUserText : public CRhinoCommand
 {
 public:
-  CCommandSampleSetUserText() {}
-  ~CCommandSampleSetUserText() {}
-  UUID CommandUUID()
+  CCommandSampleSetUserText() = default;
+  ~CCommandSampleSetUserText() = default;
+  UUID CommandUUID() override
   {
     // {EBBF656E-CE46-4CD3-ABD9-9CA008FEFBD8}
     static const GUID SampleSetUserTextCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleSetUserTextCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSetUserText"; }
-  const wchar_t* LocalCommandName() { return L"SampleSetUserText"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -119,9 +118,9 @@ CRhinoCommand::result CCommandSampleSetUserText::RunCommand(const CRhinoCommandC
 class CCommandSampleGetUserText : public CRhinoCommand
 {
 public:
-  CCommandSampleGetUserText() {}
-  ~CCommandSampleGetUserText() {}
-  UUID CommandUUID()
+  CCommandSampleGetUserText() = default;
+  ~CCommandSampleGetUserText() = default;
+  UUID CommandUUID() override
   {
     // {DE95D543-BF3B-42D1-B147-94BA19C9484D}
     static const GUID SampleGetUserTextCommand_UUID =
@@ -129,7 +128,6 @@ public:
     return SampleGetUserTextCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGetUserText"; }
-  const wchar_t* LocalCommandName() { return L"SampleGetUserText"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -207,9 +205,9 @@ CRhinoCommand::result CCommandSampleGetUserText::RunCommand(const CRhinoCommandC
 class CCommandSampleSetDocumentUserText : public CRhinoCommand
 {
 public:
-  CCommandSampleSetDocumentUserText() {}
-  ~CCommandSampleSetDocumentUserText() {}
-  UUID CommandUUID()
+  CCommandSampleSetDocumentUserText() = default;
+  ~CCommandSampleSetDocumentUserText() = default;
+  UUID CommandUUID() override
   {
     // {587DE9DF-11E4-41B5-B98C-06817DAC1BFB}
     static const GUID SampleSetDocumentUserTextCommand_UUID =
@@ -217,7 +215,6 @@ public:
     return SampleSetDocumentUserTextCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSetDocumentUserText"; }
-  const wchar_t* LocalCommandName() { return L"SampleSetDocumentUserText"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -261,9 +258,9 @@ CRhinoCommand::result CCommandSampleSetDocumentUserText::RunCommand(const CRhino
 class CCommandSampleGetDocumentUserText : public CRhinoCommand
 {
 public:
-  CCommandSampleGetDocumentUserText() {}
-  ~CCommandSampleGetDocumentUserText() {}
-  UUID CommandUUID()
+  CCommandSampleGetDocumentUserText() = default;
+  ~CCommandSampleGetDocumentUserText() = default;
+  UUID CommandUUID() override
   {
     // {BFE6A00C-EBA7-474C-A9D3-BF7EAE6901F5}
     static const GUID SampleGetDocumentUserTextCommand_UUID =
@@ -271,7 +268,6 @@ public:
     return SampleGetDocumentUserTextCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGetDocumentUserText"; }
-  const wchar_t* LocalCommandName() { return L"SampleGetDocumentUserText"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

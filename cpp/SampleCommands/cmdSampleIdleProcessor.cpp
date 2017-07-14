@@ -46,9 +46,9 @@ void CSampleIdleEventWatcher::Notify(const class CRhinoIsIdle::CParameters& para
 class CCommandSampleIdleProcessor : public CRhinoCommand
 {
 public:
-  CCommandSampleIdleProcessor() {}
-  ~CCommandSampleIdleProcessor() {}
-  UUID CommandUUID()
+  CCommandSampleIdleProcessor() = default;
+  ~CCommandSampleIdleProcessor() = default;
+  UUID CommandUUID() override
   {
     // {C2FF9FE9-51B6-4CA2-8509-CE6CEF256940}
     static const GUID SampleIdleProcessorCommand_UUID =
@@ -56,7 +56,6 @@ public:
     return SampleIdleProcessorCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleIdleProcessor"; }
-  const wchar_t* LocalCommandName() const { return L"SampleIdleProcessor"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

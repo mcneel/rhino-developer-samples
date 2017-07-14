@@ -13,9 +13,9 @@
 class CCommandSampleOpenIges : public CRhinoScriptCommand
 {
 public:
-  CCommandSampleOpenIges() {}
-  ~CCommandSampleOpenIges() {}
-  UUID CommandUUID()
+  CCommandSampleOpenIges() = default;
+  ~CCommandSampleOpenIges() = default;
+  UUID CommandUUID() override
   {
     // {BE07E174-656C-44E2-80EA-17048A601BF1}
     static const GUID SampleOpenIgesCommand_UUID =
@@ -23,7 +23,6 @@ public:
     return SampleOpenIgesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleOpenIges"; }
-  const wchar_t* LocalCommandName() const { return L"SampleOpenIges"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

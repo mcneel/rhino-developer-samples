@@ -12,9 +12,9 @@
 class CCommandSampleMenuToggle : public CRhinoCommand
 {
 public:
-  CCommandSampleMenuToggle() {}
-  ~CCommandSampleMenuToggle() {}
-  UUID CommandUUID()
+  CCommandSampleMenuToggle() = default;
+  ~CCommandSampleMenuToggle() = default;
+  UUID CommandUUID() override
   {
     // {F065C992-5B0E-484A-BA61-098E5A414974}
     static const GUID SampleMenuToggleCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleMenuToggleCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMenuToggle"; }
-  const wchar_t* LocalCommandName() const { return L"SampleMenuToggle"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

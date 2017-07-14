@@ -31,9 +31,9 @@ bool CGetTextDotObject::CustomGeometryFilter(const CRhinoObject* object, const O
 class CCommandSamplePickTextDot : public CRhinoCommand
 {
 public:
-  CCommandSamplePickTextDot() {}
-  ~CCommandSamplePickTextDot() {}
-  UUID CommandUUID()
+  CCommandSamplePickTextDot() = default;
+  ~CCommandSamplePickTextDot() = default;
+  UUID CommandUUID() override
   {
     // {24FFE2B4-E176-4D41-BCB0-B4E8E7C25D48}
     static const GUID SamplePickTextDotCommand_UUID =
@@ -41,7 +41,6 @@ public:
     return SamplePickTextDotCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePickTextDot"; }
-  const wchar_t* LocalCommandName() { return L"SamplePickTextDot"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

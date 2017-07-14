@@ -597,9 +597,9 @@ static ON_Brep* MakeTwistedCube( ON_TextLog& error_log )
 class CCommandcmdSampleTwistedCube : public CRhinoCommand
 {
 public:
-  CCommandcmdSampleTwistedCube() {}
-  ~CCommandcmdSampleTwistedCube() {}
-  UUID CommandUUID()
+  CCommandcmdSampleTwistedCube() = default;
+  ~CCommandcmdSampleTwistedCube() = default;
+  UUID CommandUUID() override
   {
     // {AFD8D548-8B70-437F-9BF2-F1F51AD4B231}
     static const GUID cmdSampleTwistedCubeCommand_UUID =
@@ -607,7 +607,6 @@ public:
     return cmdSampleTwistedCubeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"cmdSampleTwistedCube"; }
-  const wchar_t* LocalCommandName() { return L"cmdSampleTwistedCube"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

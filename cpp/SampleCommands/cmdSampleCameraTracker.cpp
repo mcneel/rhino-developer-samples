@@ -239,18 +239,17 @@ void CCameraTrackingConduit::StopTracking()
 class CCommandSampleCameraTracker : public CRhinoCommand
 {
 public:
-  CCommandSampleCameraTracker() {}
-  ~CCommandSampleCameraTracker() {}
-  UUID CommandUUID()
+  CCommandSampleCameraTracker() = default;
+  ~CCommandSampleCameraTracker() = default;
+  UUID CommandUUID() override
   {
     // {3D16E807-F816-4C86-92A2-C7B40C883E03}
     static const GUID SampleCameraTrackerCommand_UUID =
     { 0x3D16E807, 0xF816, 0x4C86, { 0x92, 0xA2, 0xC7, 0xB4, 0x0C, 0x88, 0x3E, 0x03 } };
     return SampleCameraTrackerCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCameraTracker"; }
-  const wchar_t* LocalCommandName() { return L"SampleCameraTracker"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCameraTracker"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext&) override;
 
 public:
   CCameraTrackingConduit  m_Conduit;

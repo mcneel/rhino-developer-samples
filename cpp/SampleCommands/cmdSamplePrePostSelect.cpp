@@ -10,8 +10,8 @@ class CCommandSamplePrePostSelect : public CRhinoCommand
 {
 public:
   CCommandSamplePrePostSelect();
-  ~CCommandSamplePrePostSelect() {}
-  UUID CommandUUID()
+  ~CCommandSamplePrePostSelect() = default;
+  UUID CommandUUID() override
   {
     // {1A9E21B0-6E2-440E-A397-9D4BCD87320E}
     static const GUID SamplePrePostSelectCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SamplePrePostSelectCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePrePostSelect"; }
-  const wchar_t* LocalCommandName() { return L"SamplePrePostSelect"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

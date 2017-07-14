@@ -63,9 +63,9 @@ bool CSampleShowMyStuffConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT nAct
 class CCommandSampleShowMyStuff : public CRhinoCommand
 {
 public:
-  CCommandSampleShowMyStuff() {}
-  ~CCommandSampleShowMyStuff() {}
-  UUID CommandUUID()
+  CCommandSampleShowMyStuff() = default;
+  ~CCommandSampleShowMyStuff() = default;
+  UUID CommandUUID() override
   {
     // {AAF0F89A-EDF2-444C-8454-594D4D15DE49}
     static const GUID SampleShowMyStuffCommand_UUID =
@@ -73,7 +73,6 @@ public:
     return SampleShowMyStuffCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleShowMyStuff"; }
-  const wchar_t* LocalCommandName() { return L"SampleShowMyStuff"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

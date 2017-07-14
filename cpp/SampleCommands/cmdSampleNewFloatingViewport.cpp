@@ -11,9 +11,9 @@
 class CCommandSampleNewFloatingViewport : public CRhinoCommand
 {
 public:
-  CCommandSampleNewFloatingViewport() {}
-  ~CCommandSampleNewFloatingViewport() {}
-  UUID CommandUUID()
+  CCommandSampleNewFloatingViewport() = default;
+  ~CCommandSampleNewFloatingViewport() = default;
+  UUID CommandUUID() override
   {
     // {55850077-8755-4054-AA92-6A925889A2A3}
     static const GUID SampleNewFloatingViewportCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleNewFloatingViewportCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleNewFloatingViewport"; }
-  const wchar_t* LocalCommandName() const { return L"SampleNewFloatingViewport"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

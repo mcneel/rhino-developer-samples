@@ -11,9 +11,9 @@
 class CCommandSampleViewLock : public CRhinoCommand
 {
 public:
-  CCommandSampleViewLock() {}
-  ~CCommandSampleViewLock() {}
-  UUID CommandUUID()
+  CCommandSampleViewLock() = default;
+  ~CCommandSampleViewLock() = default;
+  UUID CommandUUID() override
   {
     // {5D0E88BC-558A-4F86-B220-BBBCD9CC531D}
     static const GUID SampleViewLockCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleViewLockCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleViewLock"; }
-  const wchar_t* LocalCommandName() { return L"SampleViewLock"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -66,9 +65,9 @@ CRhinoCommand::result CCommandSampleViewLock::RunCommand(const CRhinoCommandCont
 class CCommandSampleViewUnlock : public CRhinoCommand
 {
 public:
-  CCommandSampleViewUnlock() {}
-  ~CCommandSampleViewUnlock() {}
-  UUID CommandUUID()
+  CCommandSampleViewUnlock() = default;
+  ~CCommandSampleViewUnlock() = default;
+  UUID CommandUUID() override
   {
     // {DC9D98BC-7CE2-47D7-846F-E39595D787D2}
     static const GUID SampleViewUnlockCommand_UUID =
@@ -76,7 +75,6 @@ public:
     return SampleViewUnlockCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleViewUnlock"; }
-  const wchar_t* LocalCommandName() { return L"SampleViewUnlock"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

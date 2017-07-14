@@ -510,9 +510,9 @@ static ON_Brep* MakeBrepFace( ON_TextLog& error_log )
 class CCommandSampleFaceWithHole : public CRhinoCommand
 {
 public:
-  CCommandSampleFaceWithHole() {}
-  ~CCommandSampleFaceWithHole() {}
-  UUID CommandUUID()
+  CCommandSampleFaceWithHole() = default;
+  ~CCommandSampleFaceWithHole() = default;
+  UUID CommandUUID() override
   {
     // {547C8FAF-6A01-4B80-BBF2-CB4D33D0E2D6}
     static const GUID SampleFaceWithHoleCommand_UUID =
@@ -520,7 +520,6 @@ public:
     return SampleFaceWithHoleCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleFaceWithHole"; }
-  const wchar_t* LocalCommandName() { return L"SampleFaceWithHole"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

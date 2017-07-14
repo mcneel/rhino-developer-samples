@@ -11,9 +11,9 @@
 class CCommandSampleExplodePointCloud : public CRhinoCommand
 {
 public:
-  CCommandSampleExplodePointCloud() {}
-  ~CCommandSampleExplodePointCloud() {}
-  UUID CommandUUID()
+  CCommandSampleExplodePointCloud() = default;
+  ~CCommandSampleExplodePointCloud() = default;
+  UUID CommandUUID() override
   {
     // {C11373EE-8093-4EDB-89E3-B4418A512FD7}
     static const GUID SampleExplodePointCloudCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleExplodePointCloudCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExplodePointCloud"; }
-  const wchar_t* LocalCommandName() const { return L"SampleExplodePointCloud"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

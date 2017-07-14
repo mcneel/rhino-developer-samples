@@ -24,9 +24,9 @@ public:
 class CCommandSampleObjectUserDataAdd : public CRhinoCommand
 {
 public:
-  CCommandSampleObjectUserDataAdd() {}
-  ~CCommandSampleObjectUserDataAdd() {}
-  UUID CommandUUID()
+  CCommandSampleObjectUserDataAdd() = default;
+  ~CCommandSampleObjectUserDataAdd() = default;
+  UUID CommandUUID() override
   {
     // {4F98D5D-FCB-4E96-91A8-1925D140D114}
     static const GUID SampleObjectUserDataAddCommand_UUID =
@@ -34,7 +34,6 @@ public:
     return SampleObjectUserDataAddCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleObjectUserDataAdd"; }
-  const wchar_t* LocalCommandName() { return L"SampleObjectUserDataAdd"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -86,9 +85,9 @@ CRhinoCommand::result CCommandSampleObjectUserDataAdd::RunCommand(const CRhinoCo
 class CCommandSampleObjectUserDataGet : public CRhinoCommand
 {
 public:
-  CCommandSampleObjectUserDataGet() {}
-  ~CCommandSampleObjectUserDataGet() {}
-  UUID CommandUUID()
+  CCommandSampleObjectUserDataGet() = default;
+  ~CCommandSampleObjectUserDataGet() = default;
+  UUID CommandUUID() override
   {
     // {91DC4B69-DD98-4560-8E79-28422FAFD525}
     static const GUID SampleObjectUserDataGetCommand_UUID =
@@ -96,7 +95,6 @@ public:
     return SampleObjectUserDataGetCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleObjectUserDataGet"; }
-  const wchar_t* LocalCommandName() { return L"SampleObjectUserDataGet"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -150,9 +148,9 @@ CRhinoCommand::result CCommandSampleObjectUserDataGet::RunCommand(const CRhinoCo
 class CCommandSampleObjectUserDataRemove : public CRhinoCommand
 {
 public:
-  CCommandSampleObjectUserDataRemove() {}
-  ~CCommandSampleObjectUserDataRemove() {}
-  UUID CommandUUID()
+  CCommandSampleObjectUserDataRemove() = default;
+  ~CCommandSampleObjectUserDataRemove() = default;
+  UUID CommandUUID() override
   {
     // {247E307B-DDB8-4E31-910F-3C4EC94B2089}
     static const GUID SampleObjectUserDataRemoveCommand_UUID =
@@ -160,7 +158,6 @@ public:
     return SampleObjectUserDataRemoveCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleObjectUserDataRemove"; }
-  const wchar_t* LocalCommandName() { return L"SampleObjectUserDataRemove"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

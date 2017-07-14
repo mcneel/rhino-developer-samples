@@ -9,9 +9,9 @@
 class CCommandSampleHistoryDivide : public CRhinoCommand
 {
 public:
-  CCommandSampleHistoryDivide() {}
-  ~CCommandSampleHistoryDivide() {}
-  UUID CommandUUID()
+  CCommandSampleHistoryDivide() = default;
+  ~CCommandSampleHistoryDivide() = default;
+  UUID CommandUUID() override
   {
     // {C4EDB0D9-EF45-4B08-B0EE-5A5479938272}
     static const GUID SampleHistoryDivideCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleHistoryDivideCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleHistoryDivide"; }
-  const wchar_t* LocalCommandName() { return L"SampleHistoryDivide"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
   //Rhino calls the virtual ReplayHistory functions to

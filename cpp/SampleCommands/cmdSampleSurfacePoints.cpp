@@ -9,9 +9,9 @@
 class CCommandSampleSurfacePoints : public CRhinoCommand
 {
 public:
-  CCommandSampleSurfacePoints() {}
-  ~CCommandSampleSurfacePoints() {}
-  UUID CommandUUID()
+  CCommandSampleSurfacePoints() = default;
+  ~CCommandSampleSurfacePoints() = default;
+  UUID CommandUUID() override
   {
     // {1166B5D9-91EB-4393-B816-A62C8818DD13}
     static const GUID SampleSurfacePointsCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleSurfacePointsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSurfacePoints"; }
-  const wchar_t* LocalCommandName() { return L"SampleSurfacePoints"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

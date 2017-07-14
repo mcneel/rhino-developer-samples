@@ -12,9 +12,9 @@
 class CCommandSampleScrollTabbedDockBar : public CRhinoCommand
 {
 public:
-  CCommandSampleScrollTabbedDockBar() {}
-  ~CCommandSampleScrollTabbedDockBar() {}
-  UUID CommandUUID()
+  CCommandSampleScrollTabbedDockBar() = default;
+  ~CCommandSampleScrollTabbedDockBar() = default;
+  UUID CommandUUID() override
   {
     // {CC486971-C2F5-4365-9FA6-70A89DDB0A27}
     static const GUID SampleScrollTabbedDockBarCommand_UUID =
@@ -22,9 +22,9 @@ public:
     return SampleScrollTabbedDockBarCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleScrollTabbedDockBar"; }
-  const wchar_t* LocalCommandName() const { return L"SampleScrollTabbedDockBar"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
+
 static class CCommandSampleScrollTabbedDockBar theSampleScrollTabbedDockBarCommand;
 
 CRhinoCommand::result CCommandSampleScrollTabbedDockBar::RunCommand(const CRhinoCommandContext& context)

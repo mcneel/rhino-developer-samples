@@ -12,9 +12,9 @@
 class CCommandSampleAutomation : public CRhinoCommand
 {
 public:
-  CCommandSampleAutomation() {}
-  ~CCommandSampleAutomation() {}
-  UUID CommandUUID()
+  CCommandSampleAutomation() = default;
+  ~CCommandSampleAutomation() = default;
+  UUID CommandUUID() override
   {
     // {18EB7E00-B3CD-4501-85D2-AFCC62BB07E3}
     static const GUID SampleAutomationCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleAutomationCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleAutomation"; }
-  const wchar_t* LocalCommandName() const { return L"SampleAutomation"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -11,9 +11,9 @@
 class CCommandSampleZoomRotateWindow : public CRhinoCommand
 {
 public:
-  CCommandSampleZoomRotateWindow() {}
-  ~CCommandSampleZoomRotateWindow() {}
-  UUID CommandUUID()
+  CCommandSampleZoomRotateWindow() = default;
+  ~CCommandSampleZoomRotateWindow() = default;
+  UUID CommandUUID() override
   {
     // {BEDC408D-2585-4975-AA18-3ED78CD27DD1}
     static const GUID SampleZoomRotateWindowCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleZoomRotateWindowCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleZoomWindow"; }
-  const wchar_t* LocalCommandName() const { return L"SampleZoomWindow"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

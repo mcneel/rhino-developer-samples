@@ -12,8 +12,8 @@ class CCommandSamplePipe : public CRhinoCommand
 {
 public:
   CCommandSamplePipe() { m_radius = 1.0; }
-  ~CCommandSamplePipe() {}
-  UUID CommandUUID()
+  ~CCommandSamplePipe() = default;
+  UUID CommandUUID() override
   {
     // {3A97346-F02D-4783-A55C-7D69BD8029DC}
     static const GUID SamplePipeCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SamplePipeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePipe"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePipe"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

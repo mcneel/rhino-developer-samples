@@ -9,9 +9,9 @@
 class CCommandSampleMakeBlock : public CRhinoCommand
 {
 public:
-  CCommandSampleMakeBlock() {}
-  ~CCommandSampleMakeBlock() {}
-  UUID CommandUUID()
+  CCommandSampleMakeBlock() = default;
+  ~CCommandSampleMakeBlock() = default;
+  UUID CommandUUID() override
   {
     // {75BDE8D5-A2EE-4EB8-8439-005E0DA9E982}
     static const GUID SampleMakeBlockCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleMakeBlockCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMakeBlock"; }
-  const wchar_t* LocalCommandName() { return L"SampleMakeBlock"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

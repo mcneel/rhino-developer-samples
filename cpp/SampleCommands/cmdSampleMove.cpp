@@ -9,8 +9,8 @@
 class CRhinoGetTranslationPoint : public CRhinoGetXform
 {
 public:
-  CRhinoGetTranslationPoint() {}
-  ~CRhinoGetTranslationPoint() {}
+  CRhinoGetTranslationPoint() = default;
+  ~CRhinoGetTranslationPoint() = default;
   BOOL CalculateTransform(CRhinoViewport& vp, const ON_3dPoint& pt, ON_Xform& xform);
 };
 
@@ -31,9 +31,9 @@ BOOL CRhinoGetTranslationPoint::CalculateTransform(CRhinoViewport& vp, const ON_
 class CCommandSampleMove : public CRhinoCommand
 {
 public:
-  CCommandSampleMove() {}
-  ~CCommandSampleMove() {}
-  UUID CommandUUID()
+  CCommandSampleMove() = default;
+  ~CCommandSampleMove() = default;
+  UUID CommandUUID() override
   {
     // {B36D0E5E-5A57-4440-99D0-A96F63022064}
     static const GUID SampleMoveCommand_UUID =
@@ -41,7 +41,6 @@ public:
     return SampleMoveCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMove"; }
-  const wchar_t* LocalCommandName() { return L"SampleMove"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

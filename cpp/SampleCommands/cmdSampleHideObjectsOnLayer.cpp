@@ -11,9 +11,9 @@
 class CCommandSampleHideObjectsOnLayer : public CRhinoCommand
 {
 public:
-  CCommandSampleHideObjectsOnLayer() {}
-  ~CCommandSampleHideObjectsOnLayer() {}
-  UUID CommandUUID()
+  CCommandSampleHideObjectsOnLayer() = default;
+  ~CCommandSampleHideObjectsOnLayer() = default;
+  UUID CommandUUID() override
   {
     // {4326C435-2835-4C0D-BDE9-2C80D632E113}
     static const GUID SampleHideObjectsOnLayerCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleHideObjectsOnLayerCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleHideObjectsOnLayer"; }
-  const wchar_t* LocalCommandName() const { return L"SampleHideObjectsOnLayer"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

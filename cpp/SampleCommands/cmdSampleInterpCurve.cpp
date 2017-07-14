@@ -9,9 +9,9 @@
 class CCommandSampleInterpCurve : public CRhinoCommand
 {
 public:
-  CCommandSampleInterpCurve() {}
-  ~CCommandSampleInterpCurve() {}
-  UUID CommandUUID()
+  CCommandSampleInterpCurve() = default;
+  ~CCommandSampleInterpCurve() = default;
+  UUID CommandUUID() override
   {
     // {C3805C7F-E30F-4B00-A8EA-94BAC2B4F1B8}
     static const GUID SampleInterpCurveCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleInterpCurveCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleInterpCurve"; }
-  const wchar_t* LocalCommandName() { return L"SampleInterpCurve"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

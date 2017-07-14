@@ -12,9 +12,9 @@
 class CCommandSampleBrepFaceUserData : public CRhinoCommand
 {
 public:
-  CCommandSampleBrepFaceUserData() {}
-  ~CCommandSampleBrepFaceUserData() {}
-  UUID CommandUUID()
+  CCommandSampleBrepFaceUserData() = default;
+  ~CCommandSampleBrepFaceUserData() = default;
+  UUID CommandUUID() override
   {
     // {A16EC009-E898-4775-A379-5024D51E5B3E}
     static const GUID SampleBrepFaceUserDataCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleBrepFaceUserDataCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleBrepFaceUserData"; }
-  const wchar_t* LocalCommandName() const { return L"SampleBrepFaceUserData"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -143,9 +142,9 @@ CRhinoCommand::result CCommandSampleBrepFaceUserData::RunCommand(const CRhinoCom
 class CCommandSampleGetBrepFaceUserData : public CRhinoCommand
 {
 public:
-  CCommandSampleGetBrepFaceUserData() {}
-  ~CCommandSampleGetBrepFaceUserData() {}
-  UUID CommandUUID()
+  CCommandSampleGetBrepFaceUserData() = default;
+  ~CCommandSampleGetBrepFaceUserData() = default;
+  UUID CommandUUID() override
   {
     // {5B941346-E07F-4E03-85BD-3515853AA4EE}
     static const GUID SampleGetBrepFaceUserDataCommand_UUID =
@@ -153,7 +152,6 @@ public:
     return SampleGetBrepFaceUserDataCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGetBrepFaceUserData"; }
-  const wchar_t* LocalCommandName() const { return L"SampleGetBrepFaceUserData"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

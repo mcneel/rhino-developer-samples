@@ -11,9 +11,9 @@
 class CCommandSampleCirclePreview : public CRhinoCommand
 {
 public:
-  CCommandSampleCirclePreview() {}
-  ~CCommandSampleCirclePreview() {}
-  UUID CommandUUID()
+  CCommandSampleCirclePreview() = default;
+  ~CCommandSampleCirclePreview() = default;
+  UUID CommandUUID() override
   {
     // {6A65EEE7-1E50-46D7-834D-2D8108AEA73E}
     static const GUID SampleCirclePreviewCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleCirclePreviewCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCirclePreview"; }
-  const wchar_t* LocalCommandName() { return L"SampleCirclePreview"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,9 +9,9 @@
 class CCommandSampleSwapHatch : public CRhinoCommand
 {
 public:
-  CCommandSampleSwapHatch() {}
-  ~CCommandSampleSwapHatch() {}
-  UUID CommandUUID()
+  CCommandSampleSwapHatch() = default;
+  ~CCommandSampleSwapHatch() = default;
+  UUID CommandUUID() override
   {
     // {2C4D0F6F-C9B-46AF-8CF6-DF1E3506B25D}
     static const GUID SampleSwapHatchCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleSwapHatchCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSwapHatch"; }
-  const wchar_t* LocalCommandName() { return L"SampleSwapHatch"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

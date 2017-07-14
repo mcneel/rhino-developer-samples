@@ -8,9 +8,9 @@
 class CCommandSamplePointsDeviation : public CRhinoCommand
 {
 public:
-  CCommandSamplePointsDeviation() {}
-  ~CCommandSamplePointsDeviation() {}
-  UUID CommandUUID()
+  CCommandSamplePointsDeviation() = default;
+  ~CCommandSamplePointsDeviation() = default;
+  UUID CommandUUID() override
   {
     // {416B1B0A-5413-4704-BBF2-397859B6B0C2}
     static const GUID SamplePointsDeviationCommand_UUID =
@@ -18,7 +18,6 @@ public:
     return SamplePointsDeviationCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"foo_SamplePointsDeviation"; }
-  const wchar_t* LocalCommandName() { return L"foo_SamplePointsDeviation"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

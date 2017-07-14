@@ -16,7 +16,7 @@ class CGetGoldenRectangle : public CRhinoGetPoint
 {
 public:
   CGetGoldenRectangle();
-  ~CGetGoldenRectangle() {}
+  ~CGetGoldenRectangle() = default;
 
   void SetSwap(bool bSwap);
 
@@ -104,8 +104,8 @@ class CCommandSampleGoldenRectangle : public CRhinoCommand
 {
 public:
   CCommandSampleGoldenRectangle() { m_bSwap = false; }
-  ~CCommandSampleGoldenRectangle() {}
-  UUID CommandUUID()
+  ~CCommandSampleGoldenRectangle() = default;
+  UUID CommandUUID() override
   {
     // {8332424B-2371-4B85-9C35-586ED543DAEA}
     static const GUID SampleGoldenRectangleCommand_UUID =
@@ -113,7 +113,6 @@ public:
     return SampleGoldenRectangleCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGoldenRectangle"; }
-  const wchar_t* LocalCommandName() { return L"SampleGoldenRectangle"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

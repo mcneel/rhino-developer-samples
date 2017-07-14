@@ -11,9 +11,9 @@
 class CCommandSampleNurbsCurveLength : public CRhinoCommand
 {
 public:
-  CCommandSampleNurbsCurveLength() {}
-  ~CCommandSampleNurbsCurveLength() {}
-  UUID CommandUUID()
+  CCommandSampleNurbsCurveLength() = default;
+  ~CCommandSampleNurbsCurveLength() = default;
+  UUID CommandUUID() override
   {
     // {758DBFB-FE78-43CF-B20A-EB6E9118D74A}
     static const GUID SampleNurbsCurveLengthCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleNurbsCurveLengthCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleNurbsCurveLength"; }
-  const wchar_t* LocalCommandName() const { return L"SampleNurbsCurveLength"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

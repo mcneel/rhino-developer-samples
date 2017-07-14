@@ -11,9 +11,9 @@
 class CCommandSampleDumpMaterialUserData : public CRhinoCommand
 {
 public:
-  CCommandSampleDumpMaterialUserData() {}
-  ~CCommandSampleDumpMaterialUserData() {}
-  UUID CommandUUID()
+  CCommandSampleDumpMaterialUserData() = default;
+  ~CCommandSampleDumpMaterialUserData() = default;
+  UUID CommandUUID() override
   {
     // {F8D47A6-2252-4FE7-BC99-46564E1F751B}
     static const GUID SampleDumpMaterialUserDataCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleDumpMaterialUserDataCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDumpMaterialUserData"; }
-  const wchar_t* LocalCommandName() const { return L"SampleDumpMaterialUserData"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

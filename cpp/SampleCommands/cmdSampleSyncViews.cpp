@@ -150,9 +150,9 @@ bool CSampleSyncViewsConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT nChann
 class CCommandSampleSyncViews : public CRhinoCommand
 {
 public:
-  CCommandSampleSyncViews() {}
-  ~CCommandSampleSyncViews() {}
-  UUID CommandUUID()
+  CCommandSampleSyncViews() = default;
+  ~CCommandSampleSyncViews() = default;
+  UUID CommandUUID() override
   {
     // {84350CBB-24F2-40F6-95B0-C0656F90BCE8}
     static const GUID SampleSyncViewsCommand_UUID =
@@ -160,7 +160,6 @@ public:
     return SampleSyncViewsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSyncViews"; }
-  const wchar_t* LocalCommandName() { return L"SampleSyncViews"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 public:

@@ -114,8 +114,8 @@ class CCommandSampleGrayscale : public CRhinoCommand
 {
 public:
   CCommandSampleGrayscale();
-  ~CCommandSampleGrayscale() {}
-  UUID CommandUUID()
+  ~CCommandSampleGrayscale() = default;
+  UUID CommandUUID() override
   {
     // {EAED35E9-14BC-4D35-B5F8-FB1BBEC390C0}
     static const GUID SampleGrayscaleCommand_UUID =
@@ -123,7 +123,6 @@ public:
     return SampleGrayscaleCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGrayscale"; }
-  const wchar_t* LocalCommandName() { return L"SampleGrayscale"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

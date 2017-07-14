@@ -84,9 +84,9 @@ LRESULT CALLBACK CSampleEscapeKeyHandler::HookProc(int code, WPARAM wParam, LPAR
 class CCommandSampleEscapeKey : public CRhinoCommand
 {
 public:
-  CCommandSampleEscapeKey() {}
-  ~CCommandSampleEscapeKey() {}
-  UUID CommandUUID()
+  CCommandSampleEscapeKey() = default;
+  ~CCommandSampleEscapeKey() = default;
+  UUID CommandUUID() override
   {
     // {55972E8-C866-4432-AD29-515298811890}
     static const GUID SampleEscapeKeyCommand_UUID =
@@ -94,7 +94,6 @@ public:
     return SampleEscapeKeyCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleEscapeKey"; }
-  const wchar_t* LocalCommandName() const { return L"SampleEscapeKey"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -142,9 +141,9 @@ CRhinoCommand::result CCommandSampleEscapeKey::RunCommand(const CRhinoCommandCon
 class CCommandSampleEscapeKeySimple : public CRhinoCommand
 {
 public:
-  CCommandSampleEscapeKeySimple() {}
-  ~CCommandSampleEscapeKeySimple() {}
-  UUID CommandUUID()
+  CCommandSampleEscapeKeySimple() = default;
+  ~CCommandSampleEscapeKeySimple() = default;
+  UUID CommandUUID() override
   {
     // {ECB5023-8915-41D2-BF8F-908F270B4113}
     static const GUID SampleEscapeKeySimpleCommand_UUID =
@@ -152,7 +151,6 @@ public:
     return SampleEscapeKeySimpleCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleEscapeKeySimple"; }
-  const wchar_t* LocalCommandName() const { return L"SampleEscapeKeySimple"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 public:

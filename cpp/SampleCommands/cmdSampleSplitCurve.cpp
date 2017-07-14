@@ -88,8 +88,8 @@ class CCommandSampleSplitCurve : public CRhinoCommand
 {
 public:
   CCommandSampleSplitCurve() { m_seg_count = 2; m_seg_length = 1.0; }
-  ~CCommandSampleSplitCurve() {}
-  UUID CommandUUID()
+  ~CCommandSampleSplitCurve() = default;
+  UUID CommandUUID() override
   {
     // {EB78D283-5B6B-4B66-BBE6-872A623A73AF}
     static const GUID SampleSplitCurveCommand_UUID =
@@ -97,7 +97,6 @@ public:
     return SampleSplitCurveCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSplitCurve"; }
-  const wchar_t* LocalCommandName() { return L"SampleSplitCurve"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

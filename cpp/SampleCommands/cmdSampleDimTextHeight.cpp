@@ -36,7 +36,6 @@ public:
     return SampleDimTextHeightCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleDimTextHeight"; }
-  const wchar_t* LocalCommandName() const override { return L"SampleDimTextHeight"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 };
 

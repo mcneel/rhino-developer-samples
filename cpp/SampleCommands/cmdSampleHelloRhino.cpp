@@ -23,19 +23,19 @@ public:
 
   // CCommandSampleHelloRhino::CCommandSampleHelloRhino()
   // is called exactly once when static theSampleHelloRhinoCommand is created.
-  CCommandSampleHelloRhino() {}
+  CCommandSampleHelloRhino() = default;
 
   // CCommandSampleHelloRhino::~CCommandSampleHelloRhino()
   // is called exactly once when static theSampleHelloRhinoCommand is
   // destroyed.  The destructor should not make any calls to
   // the Rhino SDK.  If your command has persistent settings,
   // then override CRhinoCommand::SaveProfile and CRhinoCommand::LoadProfile.
-  ~CCommandSampleHelloRhino() {}
+  ~CCommandSampleHelloRhino() = default;
 
   // Returns a unique UUID for this command.
   // If you try to use an id that is already being used, then
   // your command will not work.  Use GUIDGEN.EXE to make unique UUID.
-  UUID CommandUUID()
+  UUID CommandUUID() override
   {
     // {41499A46-73BC-4AC9-9F29-D7DBAED0FCDE}
     static const GUID SampleHelloRhinoCommand_UUID =
@@ -45,9 +45,6 @@ public:
 
   // Returns the English command name.
   const wchar_t* EnglishCommandName() { return L"SampleHelloRhino"; }
-
-  // Returns the localized command name.
-  const wchar_t* LocalCommandName() const { return L"SampleHelloRhino"; }
 
   // Rhino calls RunCommand to run the command.
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);

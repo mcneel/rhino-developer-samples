@@ -11,9 +11,9 @@
 class CCommandSampleAddGroup : public CRhinoCommand
 {
 public:
-  CCommandSampleAddGroup() {}
-  ~CCommandSampleAddGroup() {}
-  UUID CommandUUID()
+  CCommandSampleAddGroup() = default; 
+  ~CCommandSampleAddGroup() = default;
+  UUID CommandUUID() override
   {
     // {1DF99446-9652-460D-9FFE-644CF7F38774}
     static const GUID SampleAddGroupCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleAddGroupCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleAddGroup"; }
-  const wchar_t* LocalCommandName() const { return L"SampleAddGroup"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

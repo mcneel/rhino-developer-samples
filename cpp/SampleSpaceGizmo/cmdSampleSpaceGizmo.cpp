@@ -12,9 +12,9 @@
 class CCommandSampleSpaceGizmo : public CRhinoCommand
 {
 public:
-  CCommandSampleSpaceGizmo() {}
-  ~CCommandSampleSpaceGizmo() {}
-  UUID CommandUUID()
+  CCommandSampleSpaceGizmo() = default;
+  ~CCommandSampleSpaceGizmo() = default;
+  UUID CommandUUID() override
   {
     // {DB2A1D6B-A8F3-41EE-ABC7-3AAA70C81F4A}
     static const GUID SampleSpaceGizmoCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleSpaceGizmoCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSpaceGizmo"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSpaceGizmo"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

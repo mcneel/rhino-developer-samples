@@ -9,9 +9,9 @@
 class CCommandSampleDumpBlockTree : public CRhinoCommand
 {
 public:
-  CCommandSampleDumpBlockTree() {}
-  ~CCommandSampleDumpBlockTree() {}
-  UUID CommandUUID()
+  CCommandSampleDumpBlockTree() = default;
+  ~CCommandSampleDumpBlockTree() = default;
+  UUID CommandUUID() override
   {
     // {2FE8CA38-48C7-48F7-8173-663D3A950D72}
     static const GUID SampleDumpBlockTreeCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleDumpBlockTreeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDumpBlockTree"; }
-  const wchar_t* LocalCommandName() { return L"SampleDumpBlockTree"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

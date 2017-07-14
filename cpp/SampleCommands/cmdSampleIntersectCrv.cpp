@@ -9,9 +9,9 @@
 class CCommandSampleIntersectCrv : public CRhinoCommand
 {
 public:
-  CCommandSampleIntersectCrv() {}
-  ~CCommandSampleIntersectCrv() {}
-  UUID CommandUUID()
+  CCommandSampleIntersectCrv() = default;
+  ~CCommandSampleIntersectCrv() = default;
+  UUID CommandUUID() override
   {
     // {AAD79EBF-40AE-4170-9D90-A363B2A3B62A}
     static const GUID SampleIntersectCrvCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleIntersectCrvCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleIntersectCrv"; }
-  const wchar_t* LocalCommandName() { return L"SampleIntersectCrv"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

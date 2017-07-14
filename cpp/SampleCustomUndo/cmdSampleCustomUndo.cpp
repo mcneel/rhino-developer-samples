@@ -11,7 +11,7 @@ class CSampleCustomUndoEventHandler : public CRhinoUndoEventHandler
 {
 public:
   CSampleCustomUndoEventHandler();
-  ~CSampleCustomUndoEventHandler() {}
+  ~CSampleCustomUndoEventHandler() = default;
 
   /*
   Description:
@@ -71,9 +71,9 @@ void CSampleCustomUndoEventHandler::Undo(const CRhinoCommand* cmd, const wchar_t
 class CCommandSampleCustomUndoEarnTen : public CRhinoCommand
 {
 public:
-  CCommandSampleCustomUndoEarnTen() {}
-  ~CCommandSampleCustomUndoEarnTen() {}
-  UUID CommandUUID()
+  CCommandSampleCustomUndoEarnTen() = default;
+  ~CCommandSampleCustomUndoEarnTen() = default;
+  UUID CommandUUID() override
   {
     // {B2A558B6-D81-4FAF-B828-8A6A91DA7018}
     static const GUID SampleCustomUndoEarnTenCommand_UUID =
@@ -81,7 +81,6 @@ public:
     return SampleCustomUndoEarnTenCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCustomUndoEarnTen"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCustomUndoEarnTen"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -125,9 +124,9 @@ CRhinoCommand::result CCommandSampleCustomUndoEarnTen::RunCommand(const CRhinoCo
 class CCommandSampleCustomUndoSpendFive : public CRhinoCommand
 {
 public:
-  CCommandSampleCustomUndoSpendFive() {}
-  ~CCommandSampleCustomUndoSpendFive() {}
-  UUID CommandUUID()
+  CCommandSampleCustomUndoSpendFive() = default;
+  ~CCommandSampleCustomUndoSpendFive() = default;
+  UUID CommandUUID() override
   {
     // {AEB24D28-3A28-483F-B999-0867597E2C55}
     static const GUID SampleCustomUndoSpendFiveCommand_UUID =
@@ -135,7 +134,6 @@ public:
     return SampleCustomUndoSpendFiveCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCustomUndoSpendFive"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCustomUndoSpendFive"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -179,9 +177,9 @@ CRhinoCommand::result CCommandSampleCustomUndoSpendFive::RunCommand(const CRhino
 class CCommandSampleCustomUndo : public CRhinoCommand
 {
 public:
-  CCommandSampleCustomUndo() {}
-  ~CCommandSampleCustomUndo() {}
-  UUID CommandUUID()
+  CCommandSampleCustomUndo() = default;
+  ~CCommandSampleCustomUndo() = default;
+  UUID CommandUUID() override
   {
     // {913C87E9-9FF4-4C7E-A852-8D665F5FA6EC}
     static const GUID SampleCustomUndoCommand_UUID =
@@ -189,7 +187,6 @@ public:
     return SampleCustomUndoCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCustomUndo"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCustomUndo"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

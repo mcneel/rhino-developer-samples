@@ -11,9 +11,9 @@
 class CCommandSampleMeshVertexLocation : public CRhinoCommand
 {
 public:
-  CCommandSampleMeshVertexLocation() {}
-  ~CCommandSampleMeshVertexLocation() {}
-  UUID CommandUUID()
+  CCommandSampleMeshVertexLocation() = default;
+  ~CCommandSampleMeshVertexLocation() = default;
+  UUID CommandUUID() override
   {
     // {D82219DF-58B2-454D-BCB6-3B9095BEB8BB}
     static const GUID SampleMeshVertexLocationCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleMeshVertexLocationCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMeshVertexLocation"; }
-  const wchar_t* LocalCommandName() const { return L"SampleMeshVertexLocation"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

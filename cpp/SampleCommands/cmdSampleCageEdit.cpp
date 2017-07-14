@@ -11,9 +11,9 @@
 class CCommandSampleCageEdit : public CRhinoCommand
 {
 public:
-  CCommandSampleCageEdit() {}
-  ~CCommandSampleCageEdit() {}
-  UUID CommandUUID()
+  CCommandSampleCageEdit() = default;
+  ~CCommandSampleCageEdit() = default;
+  UUID CommandUUID() override
   {
     // {9ACD7C05-7065-4EC8-88A3-F7A6D08C966A}
     static const GUID SampleCageEditCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleCageEditCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCageEdit"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCageEdit"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

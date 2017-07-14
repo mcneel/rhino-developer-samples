@@ -11,9 +11,9 @@
 class CCommandSampleShortPath : public CRhinoCommand
 {
 public:
-  CCommandSampleShortPath() {}
-  ~CCommandSampleShortPath() {}
-  UUID CommandUUID()
+  CCommandSampleShortPath() = default;
+  ~CCommandSampleShortPath() = default;
+  UUID CommandUUID() override
   {
     // {12FF87FF-B55F-4492-B455-412B861FFEC4}
     static const GUID SampleShortPathCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleShortPathCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleShortPath"; }
-  const wchar_t* LocalCommandName() const { return L"SampleShortPath"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

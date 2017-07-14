@@ -11,9 +11,9 @@
 class CCommandSampleDupMeshBorder : public CRhinoCommand
 {
 public:
-  CCommandSampleDupMeshBorder() {}
-  ~CCommandSampleDupMeshBorder() {}
-  UUID CommandUUID()
+  CCommandSampleDupMeshBorder() = default;
+  ~CCommandSampleDupMeshBorder() = default;
+  UUID CommandUUID() override
   {
     // {465B9FB5-542F-4AAF-A540-511217FA81FE}
     static const GUID SampleDupMeshBorderCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleDupMeshBorderCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDupMeshBorder"; }
-  const wchar_t* LocalCommandName() const { return L"SampleDupMeshBorder"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

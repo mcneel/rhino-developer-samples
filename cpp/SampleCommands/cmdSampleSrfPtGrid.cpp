@@ -11,9 +11,9 @@
 class CCommandSampleSrfPtGrid : public CRhinoCommand
 {
 public:
-  CCommandSampleSrfPtGrid() {}
-  ~CCommandSampleSrfPtGrid() {}
-  UUID CommandUUID()
+  CCommandSampleSrfPtGrid() = default;
+  ~CCommandSampleSrfPtGrid() = default;
+  UUID CommandUUID() override
   {
     // {540E45AA-CC50-4724-B78C-94860BBE082A}
     static const GUID SampleSrfPtGridCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleSrfPtGridCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSrfPtGrid"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSrfPtGrid"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

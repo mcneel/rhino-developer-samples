@@ -11,9 +11,9 @@
 class CCommandSampleCurveLinetype : public CRhinoCommand
 {
 public:
-  CCommandSampleCurveLinetype() {}
-  ~CCommandSampleCurveLinetype() {}
-  UUID CommandUUID()
+  CCommandSampleCurveLinetype() = default;
+  ~CCommandSampleCurveLinetype() = default;
+  UUID CommandUUID() override
   {
     // {24668EBF-7D79-45BE-BA4D-81863B306B2F}
     static const GUID SampleCurveLinetypeCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleCurveLinetypeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCurveLinetype"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCurveLinetype"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

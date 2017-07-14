@@ -9,9 +9,9 @@
 class CCommandSampleModifyBumpIntensity : public CRhinoCommand
 {
 public:
-  CCommandSampleModifyBumpIntensity() {}
-  ~CCommandSampleModifyBumpIntensity() {}
-  UUID CommandUUID()
+  CCommandSampleModifyBumpIntensity() = default;
+  ~CCommandSampleModifyBumpIntensity() = default;
+  UUID CommandUUID() override
   {
     // {AEB0DBEB-9904-4367-AB1A-53919D7EA37A}
     static const GUID SampleModifyBumpIntensityCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleModifyBumpIntensityCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleModifyBumpIntensity"; }
-  const wchar_t* LocalCommandName() { return L"SampleModifyBumpIntensity"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

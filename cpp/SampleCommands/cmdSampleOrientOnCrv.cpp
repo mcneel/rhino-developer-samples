@@ -10,7 +10,7 @@ class COrientOnCrvXform : public CRhinoGetXform
 {
 public:
   COrientOnCrvXform();
-  ~COrientOnCrvXform() {}
+  ~COrientOnCrvXform() = default;
 
   void SetPathCurve(const ON_Curve* path_curve) { m_path_curve = path_curve; }
   void SetBasePlane(const ON_Plane& base_plane) { m_base_plane = base_plane; }
@@ -100,9 +100,9 @@ void COrientOnCrvXform::MakeNormalPlane(const ON_3dPoint origin, const ON_3dVect
 class CCommandSampleOrientOnCrv : public CRhinoCommand
 {
 public:
-  CCommandSampleOrientOnCrv() {}
-  ~CCommandSampleOrientOnCrv() {}
-  UUID CommandUUID()
+  CCommandSampleOrientOnCrv() = default;
+  ~CCommandSampleOrientOnCrv() = default;
+  UUID CommandUUID() override
   {
     // {B4DEE780-1D75-4598-9A21-A533FDE3DF38}
     static const GUID SampleOrientOnCrvCommand_UUID =
@@ -110,7 +110,6 @@ public:
     return SampleOrientOnCrvCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleOrientOnCrv"; }
-  const wchar_t* LocalCommandName() { return L"SampleOrientOnCrv"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

@@ -10,8 +10,8 @@ class CCommandSampleUVMesh : public CRhinoCommand
 {
 public:
   CCommandSampleUVMesh() { m_U = 10; m_V = 10; }
-  ~CCommandSampleUVMesh() {}
-  UUID CommandUUID()
+  ~CCommandSampleUVMesh() = default;
+  UUID CommandUUID() override
   {
     // {B2FCE15E-E9E4-41DD-942F-A75D4AF87AD8}
     static const GUID SampleUVMeshCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleUVMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleUVMesh"; }
-  const wchar_t* LocalCommandName() { return L"SampleUVMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

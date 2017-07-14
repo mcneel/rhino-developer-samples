@@ -11,9 +11,9 @@
 class CCommandSampleIntersetCrvSrf : public CRhinoCommand
 {
 public:
-  CCommandSampleIntersetCrvSrf() {}
-  ~CCommandSampleIntersetCrvSrf() {}
-  UUID CommandUUID()
+  CCommandSampleIntersetCrvSrf() = default;
+  ~CCommandSampleIntersetCrvSrf() = default;
+  UUID CommandUUID() override
   {
     // {D76E082D-9105-4EBC-A7EB-24FAC63F5DE5}
     static const GUID SampleIntersetCrvSrfCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleIntersetCrvSrfCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleIntersetCrvSrf"; }
-  const wchar_t* LocalCommandName() const { return L"SampleIntersetCrvSrf"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

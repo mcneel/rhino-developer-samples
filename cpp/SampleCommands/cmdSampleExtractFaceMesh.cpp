@@ -9,9 +9,9 @@
 class CCommandSampleExtractFaceMesh : public CRhinoCommand
 {
 public:
-  CCommandSampleExtractFaceMesh() {}
-  ~CCommandSampleExtractFaceMesh() {}
-  UUID CommandUUID()
+  CCommandSampleExtractFaceMesh() = default;
+  ~CCommandSampleExtractFaceMesh() = default;
+  UUID CommandUUID() override
   {
     // {BEE6EB2A-9AD5-4930-BDF5-0169DC072715}
     static const GUID SampleExtractFaceMeshCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleExtractFaceMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExtractFaceMesh"; }
-  const wchar_t* LocalCommandName() { return L"SampleExtractFaceMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

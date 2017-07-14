@@ -9,9 +9,9 @@
 class CCommandSamplePurgeGroups : public CRhinoCommand
 {
 public:
-  CCommandSamplePurgeGroups() {}
-  ~CCommandSamplePurgeGroups() {}
-  UUID CommandUUID()
+  CCommandSamplePurgeGroups() = default;
+  ~CCommandSamplePurgeGroups() = default;
+  UUID CommandUUID() override
   {
     // {3A9F8B60-7411-4360-A7E0-12FE8CEE660F}
     static const GUID SamplePurgeGroupsCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SamplePurgeGroupsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePurgeGroups"; }
-  const wchar_t* LocalCommandName() { return L"SamplePurgeGroups"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

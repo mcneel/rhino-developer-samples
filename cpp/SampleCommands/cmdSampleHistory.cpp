@@ -30,19 +30,19 @@ public:
 
   // CCommandSampleHistory::CCommandSampleHistory()
   // is called exactly once when static theSampleHistoryCommand is created.
-  CCommandSampleHistory() {}
+  CCommandSampleHistory() = default;
 
   // CCommandSampleHistory::~CCommandSampleHistory()
   // is called exactly once when static theSampleHistoryCommand is
   // destroyed.  The destructor should not make any calls to
   // the Rhino SDK.  If your command has persistent settings,
   // then override CRhinoCommand::SaveProfile and CRhinoCommand::LoadProfile.
-  ~CCommandSampleHistory() {}
+  ~CCommandSampleHistory() = default;
 
   // Returns a unique UUID for this command.
   // If you try to use an id that is already being used, then
   // your command will not work.  Use GUIDGEN.EXE to make unique UUID.
-  UUID CommandUUID()
+  UUID CommandUUID() override
   {
     // {5D78F231-A88E-453F-AC09-0AD37135EB16}
     static const GUID SampleHistoryCommand_UUID =
@@ -52,9 +52,6 @@ public:
 
   // Returns the English command name.
   const wchar_t* EnglishCommandName() { return L"SampleHistory"; }
-
-  // Returns the localized command name.
-  const wchar_t* LocalCommandName() const { return L"SampleHistory"; }
 
   // Rhino calls RunCommand to run the command.
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);

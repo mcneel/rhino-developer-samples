@@ -9,9 +9,9 @@
 class CCommandSampleAddLayout : public CRhinoCommand
 {
 public:
-  CCommandSampleAddLayout() {}
-  ~CCommandSampleAddLayout() {}
-  UUID CommandUUID()
+  CCommandSampleAddLayout() = default;
+  ~CCommandSampleAddLayout() = default;
+  UUID CommandUUID() override
   {
     // {4787C41-F962-4767-BC47-D43B93CF1A1E}
     static const GUID SampleAddLayoutCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleAddLayoutCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleAddLayout"; }
-  const wchar_t* LocalCommandName() { return L"SampleAddLayout"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

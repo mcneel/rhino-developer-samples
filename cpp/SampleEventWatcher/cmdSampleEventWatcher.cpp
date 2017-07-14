@@ -14,8 +14,8 @@ class CCommandSampleEventWatcher : public CRhinoCommand
 {
 public:
   CCommandSampleEventWatcher() { m_watcher.Register(); }
-  ~CCommandSampleEventWatcher() {}
-  UUID CommandUUID()
+  ~CCommandSampleEventWatcher() = default;
+  UUID CommandUUID() override
   {
     // {38BAFDB7-9128-45CD-AF12-5CA15B50C399}
     static const GUID SampleEventWatcherCommand_UUID =
@@ -23,7 +23,6 @@ public:
     return SampleEventWatcherCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleEventWatcher"; }
-  const wchar_t* LocalCommandName() const { return L"SampleEventWatcher"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

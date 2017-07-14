@@ -12,9 +12,9 @@
 class CCommandSampleUndoable : public CRhinoCommand
 {
 public:
-  CCommandSampleUndoable() {}
-  ~CCommandSampleUndoable() {}
-  UUID CommandUUID()
+  CCommandSampleUndoable() = default;
+  ~CCommandSampleUndoable() = default;
+  UUID CommandUUID() override
   {
     // {CF4F6A90-CBF0-4E5D-A9E9-AEF3CC92C2EB}
     static const GUID SampleUndoableCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleUndoableCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleUndoable"; }
-  const wchar_t* LocalCommandName() const { return L"SampleUndoable"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

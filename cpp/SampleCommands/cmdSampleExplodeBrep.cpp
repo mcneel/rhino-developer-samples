@@ -11,9 +11,9 @@
 class CCommandSampleExplodeBrep : public CRhinoCommand
 {
 public:
-  CCommandSampleExplodeBrep() {}
-  ~CCommandSampleExplodeBrep() {}
-  UUID CommandUUID()
+  CCommandSampleExplodeBrep() = default;
+  ~CCommandSampleExplodeBrep() = default;
+  UUID CommandUUID() override
   {
     // {9475C820-1FD7-4B7A-94C5-B39E4A6B646D}
     static const GUID SampleExplodeBrepCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleExplodeBrepCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExplodeBrep"; }
-  const wchar_t* LocalCommandName() const { return L"SampleExplodeBrep"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,9 +9,9 @@
 class CCommandSampleMeshBooleanIntersection : public CRhinoCommand
 {
 public:
-  CCommandSampleMeshBooleanIntersection() {}
-  ~CCommandSampleMeshBooleanIntersection() {}
-  UUID CommandUUID()
+  CCommandSampleMeshBooleanIntersection() = default;
+  ~CCommandSampleMeshBooleanIntersection() = default;
+  UUID CommandUUID() override
   {
     // {2D0CADB1-AAAF-4A5C-AA4B-EA2A5253DA3B}
     static const GUID SampleMeshBooleanIntersectionCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleMeshBooleanIntersectionCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMeshBooleanIntersection"; }
-  const wchar_t* LocalCommandName() { return L"SampleMeshBooleanIntersection"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,9 +9,9 @@
 class CCommandSampleTruncatedCone : public CRhinoCommand
 {
 public:
-  CCommandSampleTruncatedCone() {}
-  ~CCommandSampleTruncatedCone() {}
-  UUID CommandUUID()
+  CCommandSampleTruncatedCone() = default;
+  ~CCommandSampleTruncatedCone() = default;
+  UUID CommandUUID() override
   {
     // {CAC2AB9B-3F44-412D-9D2F-26AA4482B769}
     static const GUID SampleTruncatedConeCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleTruncatedConeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleTruncatedCone"; }
-  const wchar_t* LocalCommandName() { return L"SampleTruncatedCone"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

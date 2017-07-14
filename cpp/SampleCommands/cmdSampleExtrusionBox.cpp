@@ -93,9 +93,9 @@ static ON_Extrusion* MakeExtrusionBox(const ON_3dPoint box_corners[8])
 class CCommandSampleExtrusionBox : public CRhinoCommand
 {
 public:
-  CCommandSampleExtrusionBox() {}
-  ~CCommandSampleExtrusionBox() {}
-  UUID CommandUUID()
+  CCommandSampleExtrusionBox() = default;
+  ~CCommandSampleExtrusionBox() = default;
+  UUID CommandUUID() override
   {
     // {3A130CC8-6C01-4268-BFF8-E9530585CB34}
     static const GUID SampleExtrusionBoxCommand_UUID =
@@ -103,7 +103,6 @@ public:
     return SampleExtrusionBoxCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExtrusionBox"; }
-  const wchar_t* LocalCommandName() const { return L"SampleExtrusionBox"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

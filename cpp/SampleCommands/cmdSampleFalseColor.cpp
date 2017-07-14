@@ -53,9 +53,9 @@ bool CSampleFalseColorConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT nActi
 class CCommandSampleFalseColor : public CRhinoCommand
 {
 public:
-  CCommandSampleFalseColor() {}
-  ~CCommandSampleFalseColor() {}
-  UUID CommandUUID()
+  CCommandSampleFalseColor() = default;
+  ~CCommandSampleFalseColor() = default;
+  UUID CommandUUID() override
   {
     // {226E8751-5805-4E52-B198-3C905EB12679}
     static const GUID SampleFalseColorCommand_UUID =
@@ -63,7 +63,6 @@ public:
     return SampleFalseColorCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleFalseColor"; }
-  const wchar_t* LocalCommandName() { return L"SampleFalseColor"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

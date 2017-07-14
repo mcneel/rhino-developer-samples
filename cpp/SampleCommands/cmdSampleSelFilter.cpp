@@ -10,8 +10,8 @@ class CCommandSampleSelFilter : public CRhinoSelCommand
 {
 public:
   CCommandSampleSelFilter() { m_filter = 0; }
-  ~CCommandSampleSelFilter() {}
-  UUID CommandUUID()
+  ~CCommandSampleSelFilter() = default;
+  UUID CommandUUID() override
   {
     // {7AD25042-A709-49DB-B9B1-11F7C28CB324}
     static const GUID SampleSelFilterCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleSelFilterCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSelFilter"; }
-  const wchar_t* LocalCommandName() { return L"SampleSelFilter"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

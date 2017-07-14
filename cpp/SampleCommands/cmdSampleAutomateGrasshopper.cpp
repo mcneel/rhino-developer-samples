@@ -81,9 +81,9 @@ HRESULT OLEMethod(WORD dwFlag, VARIANT* pvResult, LPDISPATCH lpDispatch, LPOLEST
 class CCommandSampleAutomateGrasshopper : public CRhinoCommand
 {
 public:
-  CCommandSampleAutomateGrasshopper() {}
-  ~CCommandSampleAutomateGrasshopper() {}
-  UUID CommandUUID()
+  CCommandSampleAutomateGrasshopper() = default;
+  ~CCommandSampleAutomateGrasshopper() = default;
+  UUID CommandUUID() override
   {
     // {AAA95B6-8F9E-4F81-9E3E-10F786382C11}
     static const GUID SampleAutomateGrasshopperCommand_UUID =
@@ -91,7 +91,6 @@ public:
     return SampleAutomateGrasshopperCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleAutomateGrasshopper"; }
-  const wchar_t* LocalCommandName() const { return L"SampleAutomateGrasshopper"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

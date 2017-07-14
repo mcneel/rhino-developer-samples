@@ -11,9 +11,9 @@
 class CCommandSampleLineMeshIntersect : public CRhinoCommand
 {
 public:
-  CCommandSampleLineMeshIntersect() {}
-  ~CCommandSampleLineMeshIntersect() {}
-  UUID CommandUUID()
+  CCommandSampleLineMeshIntersect() = default;
+  ~CCommandSampleLineMeshIntersect() = default;
+  UUID CommandUUID() override
   {
     // {6353A345-E93D-4863-B574-185FB17059E2}
     static const GUID SampleLineMeshIntersectCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleLineMeshIntersectCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleLineMeshIntersect"; }
-  const wchar_t* LocalCommandName() const { return L"SampleLineMeshIntersect"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

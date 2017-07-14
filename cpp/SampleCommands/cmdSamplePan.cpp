@@ -11,9 +11,9 @@
 class CCommandSamplePan : public CRhinoCommand
 {
 public:
-  CCommandSamplePan() {}
-  ~CCommandSamplePan() {}
-  UUID CommandUUID()
+  CCommandSamplePan() = default;
+  ~CCommandSamplePan() = default;
+  UUID CommandUUID() override
   {
     // {6BEC143B-7563-4F37-B2F7-B024B06486FD}
     static const GUID SamplePanCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SamplePanCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePan"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePan"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

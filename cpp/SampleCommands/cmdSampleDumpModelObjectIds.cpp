@@ -11,9 +11,9 @@
 class CCommandSampleDumpModelObjectIds : public CRhinoCommand
 {
 public:
-  CCommandSampleDumpModelObjectIds() {}
-  ~CCommandSampleDumpModelObjectIds() {}
-  UUID CommandUUID()
+  CCommandSampleDumpModelObjectIds() = default;
+  ~CCommandSampleDumpModelObjectIds() = default;
+  UUID CommandUUID() override
   {
     // {1169AA23-84A7-43E2-B590-6181DF051CA9}
     static const GUID SampleDumpModelObjectIdsCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleDumpModelObjectIdsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDumpModelObjectIds"; }
-  const wchar_t* LocalCommandName() const { return L"SampleDumpModelObjectIds"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

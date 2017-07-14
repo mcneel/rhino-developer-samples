@@ -6,9 +6,9 @@
 class CRhinoApplication : public COleDispatchDriver
 {
 public:
-  CRhinoApplication() {} // Calls COleDispatchDriver default constructor
-  CRhinoApplication(LPDISPATCH pDispatch) : COleDispatchDriver(pDispatch) {}
-  CRhinoApplication(const CRhinoApplication& dispatchSrc) : COleDispatchDriver(dispatchSrc) {}
+  CRhinoApplication() = default; // Calls COleDispatchDriver default constructor
+  CRhinoApplication(LPDISPATCH pDispatch) : COleDispatchDriver(pDispatch) = default;
+  CRhinoApplication(const CRhinoApplication& dispatchSrc) : COleDispatchDriver(dispatchSrc) = default;
 
   // Attributes
 public:

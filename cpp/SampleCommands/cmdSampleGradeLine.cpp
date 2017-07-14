@@ -81,8 +81,8 @@ class CCommandSampleGradeLine : public CRhinoCommand
 {
 public:
   CCommandSampleGradeLine() { m_grade = 0.0; }
-  ~CCommandSampleGradeLine() {}
-  UUID CommandUUID()
+  ~CCommandSampleGradeLine() = default;
+  UUID CommandUUID() override
   {
     // {857D4AFB-2984-45A9-84F1-57FFA6D5BD00}
     static const GUID SampleGradeLineCommand_UUID =
@@ -90,7 +90,6 @@ public:
     return SampleGradeLineCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGradeLine"; }
-  const wchar_t* LocalCommandName() { return L"SampleGradeLine"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 public:

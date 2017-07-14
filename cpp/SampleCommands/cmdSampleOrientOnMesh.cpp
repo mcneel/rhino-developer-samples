@@ -87,9 +87,9 @@ bool CRhGetMeshPoint::MeshFacePlane(ON_MESH_POINT point, ON_Plane& plane)
 class CCommandSampleOrientOnMesh : public CRhinoCommand
 {
 public:
-  CCommandSampleOrientOnMesh() {}
-  ~CCommandSampleOrientOnMesh() {}
-  UUID CommandUUID()
+  CCommandSampleOrientOnMesh() = default;
+  ~CCommandSampleOrientOnMesh() = default;
+  UUID CommandUUID() override
   {
     // {986D21C4-BC03-4E05-B530-668F7A8EE420}
     static const GUID SampleOrientOnMeshCommand_UUID =
@@ -97,7 +97,6 @@ public:
     return SampleOrientOnMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleOrientOnMesh"; }
-  const wchar_t* LocalCommandName() const { return L"SampleOrientOnMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

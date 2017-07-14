@@ -9,8 +9,8 @@
 class CCommandSample2View : public CRhinoCommand
 {
 public:
-  CCommandSample2View() {}
-  ~CCommandSample2View() {}
+  CCommandSample2View() = default;
+  ~CCommandSample2View() = default;
   UUID CommandUUID() override
   {
     // {541D4662-584-47FC-817D-CE1439767139}
@@ -19,7 +19,6 @@ public:
     return Sample2ViewCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"Sample2View"; }
-  const wchar_t* LocalCommandName() { return L"Sample2View"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&) override;
 };
 

@@ -105,9 +105,9 @@ bool CRhGetPolylineObject::CustomGeometryFilter(const CRhinoObject* object, cons
 class CCommandSampleSelectPolylineSegment : public CRhinoCommand
 {
 public:
-  CCommandSampleSelectPolylineSegment() {}
-  ~CCommandSampleSelectPolylineSegment() {}
-  UUID CommandUUID()
+  CCommandSampleSelectPolylineSegment() = default;
+  ~CCommandSampleSelectPolylineSegment() = default;
+  UUID CommandUUID() override
   {
     // {D03215CF-283A-4D6F-8D25-21D4681ED09F}
     static const GUID SampleSelectPolylineSegmentCommand_UUID =
@@ -115,7 +115,6 @@ public:
     return SampleSelectPolylineSegmentCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSelectPolylineSegment"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSelectPolylineSegment"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

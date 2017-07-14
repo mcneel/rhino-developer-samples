@@ -64,9 +64,9 @@ static CRhinoObject* RhinoSporphObject(
 class CCommandSampleSporph : public CRhinoCommand
 {
 public:
-  CCommandSampleSporph() {}
-  ~CCommandSampleSporph() {}
-  UUID CommandUUID()
+  CCommandSampleSporph() = default;
+  ~CCommandSampleSporph() = default;
+  UUID CommandUUID() override
   {
     // {4FB3E288-EDC0-4B1A-B845-945CE87F6762}
     static const GUID SampleSporphCommand_UUID =
@@ -74,7 +74,6 @@ public:
     return SampleSporphCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSporph"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSporph"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

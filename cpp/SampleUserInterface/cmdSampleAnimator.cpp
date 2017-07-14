@@ -13,8 +13,8 @@ class CCommandSampleAnimator : public CRhinoCommand
 {
 public:
   CCommandSampleAnimator() { m_max_steps = 100; }
-  ~CCommandSampleAnimator() {}
-  UUID CommandUUID()
+  ~CCommandSampleAnimator() = default;
+  UUID CommandUUID() override
   {
     // {C189E68C-E54F-4B17-B6A6-67568A37DCC3}
     static const GUID SampleAnimatorCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleAnimatorCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleAnimator"; }
-  const wchar_t* LocalCommandName() const { return L"SampleAnimator"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

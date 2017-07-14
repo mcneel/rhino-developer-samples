@@ -9,9 +9,9 @@
 class CCommandSampleIntepCrvOnSrf : public CRhinoCommand
 {
 public:
-  CCommandSampleIntepCrvOnSrf() {}
-  ~CCommandSampleIntepCrvOnSrf() {}
-  UUID CommandUUID()
+  CCommandSampleIntepCrvOnSrf() = default;
+  ~CCommandSampleIntepCrvOnSrf() = default;
+  UUID CommandUUID() override
   {
     // {2479F956-852B-4E7D-8437-684C2705777C}
     static const GUID SampleIntepCrvOnSrfCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleIntepCrvOnSrfCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleIntepCrvOnSrf"; }
-  const wchar_t* LocalCommandName() const { return L"SampleIntepCrvOnSrf"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

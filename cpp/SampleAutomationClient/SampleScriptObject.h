@@ -6,9 +6,9 @@
 class CSampleScriptObject : public COleDispatchDriver
 {
 public:
-  CSampleScriptObject() {} // Calls COleDispatchDriver default constructor
-  CSampleScriptObject(LPDISPATCH pDispatch) : COleDispatchDriver(pDispatch) {}
-  CSampleScriptObject(const CSampleScriptObject& dispatchSrc) : COleDispatchDriver(dispatchSrc) {}
+  CSampleScriptObject() = default; // Calls COleDispatchDriver default constructor
+  CSampleScriptObject(LPDISPATCH pDispatch) : COleDispatchDriver(pDispatch) = default;
+  CSampleScriptObject(const CSampleScriptObject& dispatchSrc) : COleDispatchDriver(dispatchSrc) = default;
 
   // Attributes
 public:

@@ -10,8 +10,8 @@ class CCommandSampleConvertQuadsToTriangles : public CRhinoCommand
 {
 public:
   CCommandSampleConvertQuadsToTriangles() { m_delete_input = false; }
-  ~CCommandSampleConvertQuadsToTriangles() {}
-  UUID CommandUUID()
+  ~CCommandSampleConvertQuadsToTriangles() = default;
+  UUID CommandUUID() override
   {
     // {F8B6CAC-6DC8-43F1-8215-ACCD07D004B2}
     static const GUID SampleConvertQuadsToTrianglesCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleConvertQuadsToTrianglesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleConvertQuadsToTriangles"; }
-  const wchar_t* LocalCommandName() { return L"SampleConvertQuadsToTriangles"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

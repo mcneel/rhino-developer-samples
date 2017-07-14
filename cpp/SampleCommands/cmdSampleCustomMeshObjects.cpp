@@ -9,8 +9,8 @@
 class CCustomMeshObjectsUI : public CRhinoMeshObjectsUI
 {
 public:
-  CCustomMeshObjectsUI() {}
-  virtual ~CCustomMeshObjectsUI() {}
+  CCustomMeshObjectsUI() = default;
+  virtual ~CCustomMeshObjectsUI() = default;
 
   // Override of pure virtual CRhinoMeshObjectsUI
   CRhinoCommand::result GetMeshParameters(const ON_SimpleArray<const CRhinoObject*>& objects, ON_MeshParameters& mp)
@@ -30,9 +30,9 @@ public:
 class CCommandSampleCustomMeshObjects : public CRhinoCommand
 {
 public:
-  CCommandSampleCustomMeshObjects() {}
-  ~CCommandSampleCustomMeshObjects() {}
-  UUID CommandUUID()
+  CCommandSampleCustomMeshObjects() = default;
+  ~CCommandSampleCustomMeshObjects() = default;
+  UUID CommandUUID() override
   {
     // {E391201E-D2E8-4CCF-8883-D278D1ED8A68}
     static const GUID SampleCustomMeshObjectsCommand_UUID =
@@ -40,7 +40,6 @@ public:
     return SampleCustomMeshObjectsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCustomMeshObjects"; }
-  const wchar_t* LocalCommandName() { return L"SampleCustomMeshObjects"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

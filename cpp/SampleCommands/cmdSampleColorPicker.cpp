@@ -74,7 +74,7 @@ class CCommandSampleColorPicker : public CRhinoCommand
 public:
   CCommandSampleColorPicker();
   ~CCommandSampleColorPicker();
-  UUID CommandUUID()
+  UUID CommandUUID() override
   {
     // {1D1DA49F-A707-4365-8255-A0176199519F}
     static const GUID SampleColorPickerCommand_UUID =
@@ -82,7 +82,6 @@ public:
     return SampleColorPickerCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleColorPicker"; }
-  const wchar_t* LocalCommandName() const { return L"SampleColorPicker"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context);
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

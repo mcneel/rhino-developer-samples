@@ -11,9 +11,9 @@
 class CCommandSampleAddNurbsCircle : public CRhinoCommand
 {
 public:
-  CCommandSampleAddNurbsCircle() {}
-  ~CCommandSampleAddNurbsCircle() {}
-  UUID CommandUUID()
+  CCommandSampleAddNurbsCircle() = default;
+  ~CCommandSampleAddNurbsCircle() = default;
+  UUID CommandUUID() override
   {
     // {1E4E8E65-B040-4908-A495-E33143984611}
     static const GUID SampleAddNurbsCircleCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleAddNurbsCircleCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleAddNurbsCircle"; }
-  const wchar_t* LocalCommandName() const { return L"SampleAddNurbsCircle"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

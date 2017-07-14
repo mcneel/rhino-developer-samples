@@ -11,9 +11,9 @@
 class CCommandSampleCaptureFrameBuffer : public CRhinoCommand
 {
 public:
-  CCommandSampleCaptureFrameBuffer() {}
-  ~CCommandSampleCaptureFrameBuffer() {}
-  UUID CommandUUID()
+  CCommandSampleCaptureFrameBuffer() = default;
+  ~CCommandSampleCaptureFrameBuffer() = default;
+  UUID CommandUUID() override
   {
     // {22292D24-C175-4CEE-B299-2BC55665014C}
     static const GUID SampleCaptureFrameBufferCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleCaptureFrameBufferCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCaptureFrameBuffer"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCaptureFrameBuffer"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

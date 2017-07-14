@@ -3,8 +3,8 @@
 class CSampleCommandsEventWatcher : public CRhinoEventWatcher
 {
 public:
-  CSampleCommandsEventWatcher() {}
-  ~CSampleCommandsEventWatcher() {}
+  CSampleCommandsEventWatcher() = default;
+  ~CSampleCommandsEventWatcher() = default;
 
   // WARNING: 
   // Never modify the Rhino document in an OnCloseDocument() override.

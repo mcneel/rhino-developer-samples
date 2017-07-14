@@ -9,9 +9,9 @@
 class CCommandSamplePtFromCrvStart : public CRhinoCommand
 {
 public:
-  CCommandSamplePtFromCrvStart() {}
-  ~CCommandSamplePtFromCrvStart() {}
-  UUID CommandUUID()
+  CCommandSamplePtFromCrvStart() = default;
+  ~CCommandSamplePtFromCrvStart() = default;
+  UUID CommandUUID() override
   {
     // {C76DCC59-85F2-4F96-8458-EFEEA06AF693}
     static const GUID SamplePtFromCrvStartCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SamplePtFromCrvStartCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePtFromCrvStart"; }
-  const wchar_t* LocalCommandName() { return L"SamplePtFromCrvStart"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

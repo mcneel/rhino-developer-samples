@@ -32,9 +32,9 @@ bool CGetClosedPlanarCurve::CustomGeometryFilter(const CRhinoObject* obj, const 
 class CCommandSampleCurveAreaCentroid : public CRhinoCommand
 {
 public:
-  CCommandSampleCurveAreaCentroid() {}
-  ~CCommandSampleCurveAreaCentroid() {}
-  UUID CommandUUID()
+  CCommandSampleCurveAreaCentroid() = default;
+  ~CCommandSampleCurveAreaCentroid() = default;
+  UUID CommandUUID() override
   {
     // {5B5B5B5A-C7AB-4B4B-AF6C-2F64D64AC135}
     static const GUID SampleCurveAreaCentroidCommand_UUID =
@@ -42,7 +42,6 @@ public:
     return SampleCurveAreaCentroidCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCurveAreaCentroid"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCurveAreaCentroid"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

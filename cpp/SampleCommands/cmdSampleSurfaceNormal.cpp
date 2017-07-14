@@ -80,9 +80,9 @@ ON_3dVector CGetSurfaceNormal::SurfaceNormal() const
 class CCommandSampleSurfaceNormal : public CRhinoCommand
 {
 public:
-  CCommandSampleSurfaceNormal() {}
-  ~CCommandSampleSurfaceNormal() {}
-  UUID CommandUUID()
+  CCommandSampleSurfaceNormal() = default;
+  ~CCommandSampleSurfaceNormal() = default;
+  UUID CommandUUID() override
   {
     // {83F51E52-10CB-419B-BE7D-39C7DB6EB8C9}
     static const GUID SampleSurfaceNormalCommand_UUID =
@@ -90,7 +90,6 @@ public:
     return SampleSurfaceNormalCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSurfaceNormal"; }
-  const wchar_t* LocalCommandName() { return L"SampleSurfaceNormal"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

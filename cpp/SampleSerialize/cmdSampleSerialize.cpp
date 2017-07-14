@@ -8,9 +8,9 @@
 class CCommandSampleSerialize : public CRhinoCommand
 {
 public:
-  CCommandSampleSerialize() {}
-  ~CCommandSampleSerialize() {}
-  UUID CommandUUID()
+  CCommandSampleSerialize() = default;
+  ~CCommandSampleSerialize() = default;
+  UUID CommandUUID() override
   {
     // {FB954414-900E-434C-B584-BB0FD252F2F0}
     static const GUID SampleSerializeCommand_UUID =
@@ -18,7 +18,6 @@ public:
     return SampleSerializeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSerialize"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSerialize"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 static class CCommandSampleSerialize theSampleSerializeCommand;
@@ -72,9 +71,9 @@ CRhinoCommand::result CCommandSampleSerialize::RunCommand(const CRhinoCommandCon
 class CCommandSampleUnserialize : public CRhinoCommand
 {
 public:
-  CCommandSampleUnserialize() {}
-  ~CCommandSampleUnserialize() {}
-  UUID CommandUUID()
+  CCommandSampleUnserialize() = default;
+  ~CCommandSampleUnserialize() = default;
+  UUID CommandUUID() override
   {
     // {A5836FF-CFAA-43BC-93AB-CEDD8E25BF31}
     static const GUID SampleUnserializeCommand_UUID =
@@ -82,7 +81,6 @@ public:
     return SampleUnserializeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleUnserialize"; }
-  const wchar_t* LocalCommandName() const { return L"SampleUnserialize"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

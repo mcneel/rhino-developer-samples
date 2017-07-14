@@ -88,9 +88,9 @@ double NodePoint::DefaultRadius()
 class CCommandSampleBooleanUnion : public CRhinoCommand
 {
 public:
-  CCommandSampleBooleanUnion() {}
-  ~CCommandSampleBooleanUnion() {}
-  UUID CommandUUID()
+  CCommandSampleBooleanUnion() = default;
+  ~CCommandSampleBooleanUnion() = default;
+  UUID CommandUUID() override
   {
     // {B2B511E9-BDC-4484-98F4-5F4805A77F55}
     static const GUID SampleBooleanUnionCommand_UUID =
@@ -98,7 +98,6 @@ public:
     return SampleBooleanUnionCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleBooleanUnion"; }
-  const wchar_t* LocalCommandName() const { return L"SampleBooleanUnion"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

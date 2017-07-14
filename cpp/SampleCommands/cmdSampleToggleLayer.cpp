@@ -11,9 +11,9 @@
 class CCommandSampleToggleLayer : public CRhinoCommand
 {
 public:
-  CCommandSampleToggleLayer() {}
-  ~CCommandSampleToggleLayer() {}
-  UUID CommandUUID()
+  CCommandSampleToggleLayer() = default;
+  ~CCommandSampleToggleLayer() = default;
+  UUID CommandUUID() override
   {
     // {72EAC2EB-E568-4C91-A1F4-3EA3DC71E537}
     static const GUID SampleToggleLayerCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleToggleLayerCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleToggleLayer"; }
-  const wchar_t* LocalCommandName() const { return L"SampleToggleLayer"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,9 +9,9 @@
 class CCommandSampleEvaluateCurve : public CRhinoCommand
 {
 public:
-  CCommandSampleEvaluateCurve() {}
-  ~CCommandSampleEvaluateCurve() {}
-  UUID CommandUUID()
+  CCommandSampleEvaluateCurve() = default;
+  ~CCommandSampleEvaluateCurve() = default;
+  UUID CommandUUID() override
   {
     // {8D70F1E8-BEED-48E9-AF0D-5E63B9855EE4}
     static const GUID SampleEvaluateCurveCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleEvaluateCurveCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleEvaluateCurve"; }
-  const wchar_t* LocalCommandName() { return L"SampleEvaluateCurve"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

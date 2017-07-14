@@ -26,9 +26,9 @@ public:
 class CCommandSampleExtendLines : public CRhinoCommand
 {
 public:
-  CCommandSampleExtendLines() {}
-  ~CCommandSampleExtendLines() {}
-  UUID CommandUUID()
+  CCommandSampleExtendLines() = default;
+  ~CCommandSampleExtendLines() = default;
+  UUID CommandUUID() override
   {
     // {7CFC7B7D-D26E-4244-AE51-93289307AA07}
     static const GUID SampleExtendLinesCommand_UUID =
@@ -36,7 +36,6 @@ public:
     return SampleExtendLinesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExtendLines"; }
-  const wchar_t* LocalCommandName() const { return L"SampleExtendLines"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

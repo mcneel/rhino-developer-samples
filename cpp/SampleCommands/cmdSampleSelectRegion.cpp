@@ -253,9 +253,9 @@ bool CRhGetRegionPoints::PointIsValid(const ON_2iPoint& pt)
 class CCommandSampleRegionPick : public CRhinoCommand
 {
 public:
-  CCommandSampleRegionPick() {}
-  ~CCommandSampleRegionPick() {}
-  UUID CommandUUID()
+  CCommandSampleRegionPick() = default;
+  ~CCommandSampleRegionPick() = default;
+  UUID CommandUUID() override
   {
     // {3F0B7066-2EE3-45DF-989B-0124337F868E}
     static const GUID SampleRegionPickCommand_UUID =
@@ -263,7 +263,6 @@ public:
     return SampleRegionPickCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleRegionPick"; }
-  const wchar_t* LocalCommandName() { return L"SampleRegionPick"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -334,9 +333,9 @@ CRhinoCommand::result CCommandSampleRegionPick::RunCommand(const CRhinoCommandCo
 class CCommandSampleWindowPick : public CRhinoCommand
 {
 public:
-  CCommandSampleWindowPick() {}
-  ~CCommandSampleWindowPick() {}
-  UUID CommandUUID()
+  CCommandSampleWindowPick() = default;
+  ~CCommandSampleWindowPick() = default;
+  UUID CommandUUID() override
   {
     // {9550F589-49BA-4126-B121-FFF91AF59755}
     static const GUID SampleWindowPickCommand_UUID =
@@ -344,7 +343,6 @@ public:
     return SampleWindowPickCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleWindowPick"; }
-  const wchar_t* LocalCommandName() { return L"SampleWindowPick"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -418,9 +416,9 @@ CRhinoCommand::result CCommandSampleWindowPick::RunCommand(const CRhinoCommandCo
 class CCommandSampleRemovePoints : public CRhinoCommand
 {
 public:
-  CCommandSampleRemovePoints() {}
-  ~CCommandSampleRemovePoints() {}
-  UUID CommandUUID()
+  CCommandSampleRemovePoints() = default;
+  ~CCommandSampleRemovePoints() = default;
+  UUID CommandUUID() override
   {
     // {DEED29F0-EDCA-4163-9068-462AD201EDFB}
     static const GUID SampleRemovePointsCommand_UUID =
@@ -428,7 +426,6 @@ public:
     return SampleRemovePointsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleRemovePoints"; }
-  const wchar_t* LocalCommandName() const { return L"SampleRemovePoints"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

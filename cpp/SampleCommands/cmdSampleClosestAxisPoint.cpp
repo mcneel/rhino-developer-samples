@@ -36,9 +36,9 @@ bool CRhGetPlanarCurve::CustomGeometryFilter(const CRhinoObject* object, const O
 class CCommandSampleClosestAxisPoint : public CRhinoCommand
 {
 public:
-  CCommandSampleClosestAxisPoint() {}
-  ~CCommandSampleClosestAxisPoint() {}
-  UUID CommandUUID()
+  CCommandSampleClosestAxisPoint() = default;
+  ~CCommandSampleClosestAxisPoint() = default;
+  UUID CommandUUID() override
   {
     // {3D753554-2B6B-4E08-8EA3-E90856D0F011}
     static const GUID SampleClosestAxisPointCommand_UUID =
@@ -46,7 +46,6 @@ public:
     return SampleClosestAxisPointCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleClosestAxisPoint"; }
-  const wchar_t* LocalCommandName() { return L"SampleClosestAxisPoint"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

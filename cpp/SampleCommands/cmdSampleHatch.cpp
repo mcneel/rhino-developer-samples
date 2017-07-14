@@ -9,9 +9,9 @@
 class CCommandSampleHatch : public CRhinoCommand
 {
 public:
-  CCommandSampleHatch() {}
-  ~CCommandSampleHatch() {}
-  UUID CommandUUID()
+  CCommandSampleHatch() = default;
+  ~CCommandSampleHatch() = default;
+  UUID CommandUUID() override
   {
     // {7825BF2E-8579-4344-B3C3-7B2A8F099956}
     static const GUID SampleHatchCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleHatchCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleHatch"; }
-  const wchar_t* LocalCommandName() { return L"SampleHatch"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

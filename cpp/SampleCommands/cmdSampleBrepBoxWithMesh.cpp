@@ -11,9 +11,9 @@
 class CCommandSampleBrepBoxWithMesh : public CRhinoCommand
 {
 public:
-  CCommandSampleBrepBoxWithMesh() {}
-  ~CCommandSampleBrepBoxWithMesh() {}
-  UUID CommandUUID()
+  CCommandSampleBrepBoxWithMesh() = default;
+  ~CCommandSampleBrepBoxWithMesh() = default;
+  UUID CommandUUID() override
   {
     // {5D3C6B55-1551-4DFF-88AE-FC64A2E8949A}
     static const GUID SampleBrepBoxWithMeshCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleBrepBoxWithMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleBrepBoxWithMesh"; }
-  const wchar_t* LocalCommandName() const { return L"SampleBrepBoxWithMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

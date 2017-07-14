@@ -168,8 +168,8 @@ BOOL CSampleEventWatcherPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 class CRhinoGetTranslationPoint : public CRhinoGetXform
 {
 public:
-  CRhinoGetTranslationPoint() {}
-  ~CRhinoGetTranslationPoint() {}
+  CRhinoGetTranslationPoint() = default;
+  ~CRhinoGetTranslationPoint() = default;
   BOOL CalculateTransform(CRhinoViewport& vp, const ON_3dPoint& pt, ON_Xform& xform);
 };
 

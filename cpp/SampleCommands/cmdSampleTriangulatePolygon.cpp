@@ -9,9 +9,9 @@
 class CCommandSampleTriangulatePolygon : public CRhinoCommand
 {
 public:
-  CCommandSampleTriangulatePolygon() {}
-  ~CCommandSampleTriangulatePolygon() {}
-  UUID CommandUUID()
+  CCommandSampleTriangulatePolygon() = default;
+  ~CCommandSampleTriangulatePolygon() = default;
+  UUID CommandUUID() override
   {
     // {558C0C33-496-42BE-B8B1-D9607AFCEABF}
     static const GUID SampleTriangulatePolygonCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleTriangulatePolygonCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleTriangulatePolygon"; }
-  const wchar_t* LocalCommandName() { return L"SampleTriangulatePolygon"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,8 +9,8 @@
 class CSampleMouseCallback : public CRhinoMouseCallback
 {
 public:
-  CSampleMouseCallback() {}
-  ~CSampleMouseCallback() {}
+  CSampleMouseCallback() = default;
+  ~CSampleMouseCallback() = default;
   BOOL OnMouseDown(CRhinoView&, CRhinoMouseCallback::mouse_button, UINT, CPoint);
   BOOL OnMouseMove(CRhinoView&, UINT, CPoint);
   BOOL OnMouseUp(CRhinoView&, CRhinoMouseCallback::mouse_button, UINT, CPoint);
@@ -52,9 +52,9 @@ BOOL CSampleMouseCallback::OnMouseDblClk(CRhinoView&, CRhinoMouseCallback::mouse
 class CCommandSampleMouseCallback : public CRhinoCommand
 {
 public:
-  CCommandSampleMouseCallback() {}
-  ~CCommandSampleMouseCallback() {}
-  UUID CommandUUID()
+  CCommandSampleMouseCallback() = default;
+  ~CCommandSampleMouseCallback() = default;
+  UUID CommandUUID() override
   {
     // {A1EE82B3-D53-462C-AAD4-61F0DFA47520}
     static const GUID SampleMouseCallbackCommand_UUID =
@@ -62,7 +62,6 @@ public:
     return SampleMouseCallbackCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMouseCallback"; }
-  const wchar_t* LocalCommandName() const { return L"SampleMouseCallback"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

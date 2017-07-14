@@ -11,9 +11,9 @@
 class CCommandSamplePrintGripLocations : public CRhinoCommand
 {
 public:
-  CCommandSamplePrintGripLocations() {}
-  ~CCommandSamplePrintGripLocations() {}
-  UUID CommandUUID()
+  CCommandSamplePrintGripLocations() = default;
+  ~CCommandSamplePrintGripLocations() = default;
+  UUID CommandUUID() override
   {
     // {CE52DCB-9140-4F05-9747-287416F2D992}
     static const GUID SamplePrintGripLocationsCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SamplePrintGripLocationsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePrintGripLocations"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePrintGripLocations"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

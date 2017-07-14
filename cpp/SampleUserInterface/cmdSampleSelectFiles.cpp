@@ -9,9 +9,9 @@
 class CCommandSampleSelectFiles : public CRhinoCommand
 {
 public:
-  CCommandSampleSelectFiles() {}
-  ~CCommandSampleSelectFiles() {}
-  UUID CommandUUID()
+  CCommandSampleSelectFiles() = default;
+  ~CCommandSampleSelectFiles() = default;
+  UUID CommandUUID() override
   {
     // {36E2A92C-2605-45A1-89BA-9F234FDD5D92}
     static const GUID SampleSelectFilesCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleSelectFilesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSelectFiles"; }
-  const wchar_t* LocalCommandName() { return L"SampleSelectFiles"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

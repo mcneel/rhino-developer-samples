@@ -60,9 +60,9 @@ static ON_UUID RhFindDisplayMode(const wchar_t* mode_id)
 class CCommandSampleExportDisplayMode : public CRhinoCommand
 {
 public:
-  CCommandSampleExportDisplayMode() {}
-  ~CCommandSampleExportDisplayMode() {}
-  UUID CommandUUID()
+  CCommandSampleExportDisplayMode() = default;
+  ~CCommandSampleExportDisplayMode() = default;
+  UUID CommandUUID() override
   {
     // {7B62187B-DBD-4CD4-BCAC-23FEC6F174E2}
     static const GUID SampleExportDisplayModeCommand_UUID =
@@ -70,7 +70,6 @@ public:
     return SampleExportDisplayModeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExportDisplayMode"; }
-  const wchar_t* LocalCommandName() const { return L"SampleExportDisplayMode"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -158,9 +157,9 @@ CRhinoCommand::result CCommandSampleExportDisplayMode::RunCommand(const CRhinoCo
 class CCommandImportDisplayMode : public CRhinoCommand
 {
 public:
-  CCommandImportDisplayMode() {}
-  ~CCommandImportDisplayMode() {}
-  UUID CommandUUID()
+  CCommandImportDisplayMode() = default;
+  ~CCommandImportDisplayMode() = default;
+  UUID CommandUUID() override
   {
     // {F04E2C6F-D219-4A20-AA69-D3ABD59A6327}
     static const GUID ImportDisplayModeCommand_UUID =
@@ -168,7 +167,6 @@ public:
     return ImportDisplayModeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"ImportDisplayMode"; }
-  const wchar_t* LocalCommandName() const { return L"ImportDisplayMode"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

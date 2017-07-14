@@ -9,9 +9,9 @@
 class CCommandSampleMeshVolume : public CRhinoCommand
 {
 public:
-  CCommandSampleMeshVolume() {}
-  ~CCommandSampleMeshVolume() {}
-  UUID CommandUUID()
+  CCommandSampleMeshVolume() = default;
+  ~CCommandSampleMeshVolume() = default;
+  UUID CommandUUID() override
   {
     // {A7DB77A2-C4C5-4000-A708-1ED9FFFE110B}
     static const GUID SampleMeshVolumeCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleMeshVolumeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMeshVolume"; }
-  const wchar_t* LocalCommandName() { return L"SampleMeshVolume"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

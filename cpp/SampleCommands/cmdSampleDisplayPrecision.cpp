@@ -9,9 +9,9 @@
 class CCommandSampleDisplayPrecision : public CRhinoCommand
 {
 public:
-  CCommandSampleDisplayPrecision() {}
-  ~CCommandSampleDisplayPrecision() {}
-  UUID CommandUUID()
+  CCommandSampleDisplayPrecision() = default;
+  ~CCommandSampleDisplayPrecision() = default;
+  UUID CommandUUID() override
   {
     // {6E4FEF6B-C6A3-49C9-886D-A1337CE74EFD}
     static const GUID SampleDisplayPrecisionCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleDisplayPrecisionCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDisplayPrecision"; }
-  const wchar_t* LocalCommandName() { return L"SampleDisplayPrecision"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

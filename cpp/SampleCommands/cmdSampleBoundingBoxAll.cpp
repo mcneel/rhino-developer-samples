@@ -11,9 +11,9 @@
 class CCommandSampleBoundingBoxAll : public CRhinoCommand
 {
 public:
-  CCommandSampleBoundingBoxAll() {}
-  ~CCommandSampleBoundingBoxAll() {}
-  UUID CommandUUID()
+  CCommandSampleBoundingBoxAll() = default;
+  ~CCommandSampleBoundingBoxAll() = default;
+  UUID CommandUUID() override
   {
     // {5B3D320B-DD65-4B8B-A95A-96AE9B7B51E7}
     static const GUID SampleBoundingBoxAllCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleBoundingBoxAllCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleBoundingBoxAll"; }
-  const wchar_t* LocalCommandName() const { return L"SampleBoundingBoxAll"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

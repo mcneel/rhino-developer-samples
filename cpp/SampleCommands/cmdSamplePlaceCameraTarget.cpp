@@ -11,9 +11,9 @@
 class CCommandSamplePlaceCameraTarget : public CRhinoCommand
 {
 public:
-  CCommandSamplePlaceCameraTarget() {}
-  ~CCommandSamplePlaceCameraTarget() {}
-  UUID CommandUUID()
+  CCommandSamplePlaceCameraTarget() = default;
+  ~CCommandSamplePlaceCameraTarget() = default;
+  UUID CommandUUID() override
   {
     // {AD9E6A0-A112-4708-8366-D50AEAE17AED}
     static const GUID SamplePlaceCameraTargetCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SamplePlaceCameraTargetCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePlaceCameraTarget"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePlaceCameraTarget"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

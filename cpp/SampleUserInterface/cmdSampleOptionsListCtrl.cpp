@@ -12,9 +12,9 @@
 class CCommandSampleOptionsListCtrl : public CRhinoCommand
 {
 public:
-	CCommandSampleOptionsListCtrl() {}
-  ~CCommandSampleOptionsListCtrl() {}
-  UUID CommandUUID()
+	CCommandSampleOptionsListCtrl() = default;
+  ~CCommandSampleOptionsListCtrl() = default;
+  UUID CommandUUID() override
   {
     // {2539983D-243E-49AE-8558-CDE83DF4485F}
     static const GUID SampleOptionsListCtrlCommand_UUID =
@@ -22,9 +22,9 @@ public:
     return SampleOptionsListCtrlCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleOptionsListCtrl"; }
-	const wchar_t* LocalCommandName() const { return L"SampleOptionsListCtrl"; }
 	CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
+
 static class CCommandSampleOptionsListCtrl theSampleOptionsListCtrlCommand;
 
 CRhinoCommand::result CCommandSampleOptionsListCtrl::RunCommand( const CRhinoCommandContext& context )

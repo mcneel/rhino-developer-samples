@@ -12,9 +12,9 @@
 class CCommandSampleSharedUserData1 : public CRhinoCommand
 {
 public:
-  CCommandSampleSharedUserData1() {}
-  ~CCommandSampleSharedUserData1() {}
-  UUID CommandUUID()
+  CCommandSampleSharedUserData1() = default;
+  ~CCommandSampleSharedUserData1() = default;
+  UUID CommandUUID() override
   {
     // {33339333-D640-4154-A694-BE7CB762DB2F}
     static const GUID SampleSharedUserData1Command_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleSharedUserData1Command_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSharedUserData1"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSharedUserData1"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -11,9 +11,9 @@
 class CCommandSampleSelectByName : public CRhinoCommand
 {
 public:
-  CCommandSampleSelectByName() {}
-  ~CCommandSampleSelectByName() {}
-  UUID CommandUUID()
+  CCommandSampleSelectByName() = default;
+  ~CCommandSampleSelectByName() = default;
+  UUID CommandUUID() override
   {
     // {EDEE31B8-5402-4B82-A68B-105880A61D10}
     static const GUID SampleSelectByNameCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleSelectByNameCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSelectByName"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSelectByName"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

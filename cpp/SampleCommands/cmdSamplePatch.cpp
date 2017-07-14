@@ -44,9 +44,9 @@ CSamplePatchSettings::CSamplePatchSettings()
 class CCommandSamplePatch : public CRhinoCommand
 {
 public:
-  CCommandSamplePatch() {}
-  ~CCommandSamplePatch() {}
-  UUID CommandUUID()
+  CCommandSamplePatch() = default;
+  ~CCommandSamplePatch() = default;
+  UUID CommandUUID() override
   {
     // {90F4BF06-C4EB-417B-9741-4975635E5A8D}
     static const GUID SamplePatchCommand_UUID =
@@ -54,7 +54,6 @@ public:
     return SamplePatchCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePatch"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePatch"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

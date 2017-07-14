@@ -11,9 +11,9 @@
 class CCommandSampleSave3DS : public CRhinoScriptCommand
 {
 public:
-  CCommandSampleSave3DS() {}
-  ~CCommandSampleSave3DS() {}
-  UUID CommandUUID()
+  CCommandSampleSave3DS() = default;
+  ~CCommandSampleSave3DS() = default;
+  UUID CommandUUID() override
   {
     // {4231C990-96FD-44FD-A720-3CFD150809B1}
     static const GUID SampleSave3DSCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleSave3DSCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSave3DS"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSave3DS"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,9 +9,9 @@
 class CCommandSampleAnnotateCurveEndPoints : public CRhinoCommand
 {
 public:
-  CCommandSampleAnnotateCurveEndPoints() {}
-  ~CCommandSampleAnnotateCurveEndPoints() {}
-  UUID CommandUUID()
+  CCommandSampleAnnotateCurveEndPoints() = default;
+  ~CCommandSampleAnnotateCurveEndPoints() = default;
+  UUID CommandUUID() override
   {
     // {DAA00BF1-5763-4498-AD95-C1DFDD04122F}
     static const GUID SampleAnnotateCurveEndPointsCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleAnnotateCurveEndPointsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleAnnotateCurveEndPoints"; }
-  const wchar_t* LocalCommandName() { return L"SampleAnnotateCurveEndPoints"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

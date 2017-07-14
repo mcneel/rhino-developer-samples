@@ -10,8 +10,8 @@ class CCommandSampleRotateCenter : public CRhinoCommand
 {
 public:
   CCommandSampleRotateCenter() { m_angle = 0.0; }
-  ~CCommandSampleRotateCenter() {}
-  UUID CommandUUID()
+  ~CCommandSampleRotateCenter() = default;
+  UUID CommandUUID() override
   {
     // {188044C6-7177-4956-A1A6-FAC9B7AAE436}
     static const GUID SampleRotateCenterCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleRotateCenterCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleRotateCenter"; }
-  const wchar_t* LocalCommandName() { return L"SampleRotateCenter"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

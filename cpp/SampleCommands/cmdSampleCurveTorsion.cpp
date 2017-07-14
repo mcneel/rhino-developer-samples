@@ -27,9 +27,9 @@ double CurveTorsion(const ON_Curve& crv, double t)
 class CCommandSampleCurveTorsion : public CRhinoCommand
 {
 public:
-  CCommandSampleCurveTorsion() {}
-  ~CCommandSampleCurveTorsion() {}
-  UUID CommandUUID()
+  CCommandSampleCurveTorsion() = default;
+  ~CCommandSampleCurveTorsion() = default;
+  UUID CommandUUID() override
   {
     // {70579BBE-CE4F-4500-B95A-7ECD2128CD53}
     static const GUID SampleCurveTorsionCommand_UUID =
@@ -37,7 +37,6 @@ public:
     return SampleCurveTorsionCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCurveTorsion"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCurveTorsion"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

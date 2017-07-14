@@ -11,9 +11,9 @@
 class CCommandSamplePrintMaterialTextures : public CRhinoCommand
 {
 public:
-  CCommandSamplePrintMaterialTextures() {}
-  ~CCommandSamplePrintMaterialTextures() {}
-  UUID CommandUUID()
+  CCommandSamplePrintMaterialTextures() = default;
+  ~CCommandSamplePrintMaterialTextures() = default;
+  UUID CommandUUID() override
   {
     // {515DCFC6-A4F9-42D1-95A0-16FD1923E339}
     static const GUID SamplePrintMaterialTexturesCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SamplePrintMaterialTexturesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePrintMaterialTextures"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePrintMaterialTextures"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

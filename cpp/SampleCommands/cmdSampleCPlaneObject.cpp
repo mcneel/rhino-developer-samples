@@ -11,9 +11,9 @@
 class CCommandSampleCPlaneObject : public CRhinoCommand
 {
 public:
-  CCommandSampleCPlaneObject() {}
-  ~CCommandSampleCPlaneObject() {}
-  UUID CommandUUID()
+  CCommandSampleCPlaneObject() = default;
+  ~CCommandSampleCPlaneObject() = default;
+  UUID CommandUUID() override
   {
     // {ADC35DF0-D159-4C3D-AE04-8A1A6698D1BA}
     static const GUID SampleCPlaneObjectCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleCPlaneObjectCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCPlaneObject"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCPlaneObject"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context);
 };
 

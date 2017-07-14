@@ -11,9 +11,9 @@
 class CCommandSamplePullCurveToMesh : public CRhinoCommand
 {
 public:
-  CCommandSamplePullCurveToMesh() {}
-  ~CCommandSamplePullCurveToMesh() {}
-  UUID CommandUUID()
+  CCommandSamplePullCurveToMesh() = default;
+  ~CCommandSamplePullCurveToMesh() = default;
+  UUID CommandUUID() override
   {
     // {A3C5DF7E-8F4A-46F6-A4A1-588D58741675}
     static const GUID SamplePullCurveToMeshCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SamplePullCurveToMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePullCurveToMesh"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePullCurveToMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -81,9 +81,9 @@ void CGetBlockInsertPoint::DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoi
 class CCommandSampleInsert : public CRhinoCommand
 {
 public:
-  CCommandSampleInsert() {}
-  ~CCommandSampleInsert() {}
-  UUID CommandUUID()
+  CCommandSampleInsert() = default;
+  ~CCommandSampleInsert() = default;
+  UUID CommandUUID() override
   {
     // {CE5EDF1A-7D47-4A5C-9868-7FA6260BA456}
     static const GUID SampleInsertCommand_UUID =
@@ -91,7 +91,6 @@ public:
     return SampleInsertCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleInsert"; }
-  const wchar_t* LocalCommandName() { return L"SampleInsert"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

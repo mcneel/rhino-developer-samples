@@ -12,9 +12,9 @@
 class CCommandSampleViewportRenderer : public CRhinoCommand
 {
 public:
-  CCommandSampleViewportRenderer() {}
-  ~CCommandSampleViewportRenderer() {}
-  UUID CommandUUID()
+  CCommandSampleViewportRenderer() = default;
+  ~CCommandSampleViewportRenderer() = default;
+  UUID CommandUUID() override
   {
     // {12352A6D-4707-4FB2-A953-7EFA6E255216}
     static const GUID SampleViewportRendererCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleViewportRendererCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleViewportRenderer"; }
-  const wchar_t* LocalCommandName() const { return L"SampleViewportRenderer"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

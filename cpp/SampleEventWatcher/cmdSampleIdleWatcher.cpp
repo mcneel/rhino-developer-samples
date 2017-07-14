@@ -45,9 +45,9 @@ void CSampleIdleWatcherIsIdleEventWatcher::Notify(const class CRhinoIsIdle::CPar
 class CCommandSampleIdleWatcher : public CRhinoScriptCommand
 {
 public:
-  CCommandSampleIdleWatcher() {}
-  ~CCommandSampleIdleWatcher() {}
-  UUID CommandUUID()
+  CCommandSampleIdleWatcher() = default;
+  ~CCommandSampleIdleWatcher() = default;
+  UUID CommandUUID() override
   {
     // {9CBA28EF-71B-4B3E-8851-446BDC72DF21}
     static const GUID SampleIdleWatcherCommand_UUID =
@@ -55,7 +55,6 @@ public:
     return SampleIdleWatcherCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleIdleWatcher"; }
-  const wchar_t* LocalCommandName() const { return L"SampleIdleWatcher"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

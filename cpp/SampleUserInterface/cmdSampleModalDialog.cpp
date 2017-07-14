@@ -10,9 +10,9 @@
 class CCommandSampleModalDialog : public CRhinoCommand
 {
 public:
-  CCommandSampleModalDialog() {}
-  ~CCommandSampleModalDialog() {}
-  UUID CommandUUID()
+  CCommandSampleModalDialog() = default;
+  ~CCommandSampleModalDialog() = default;
+  UUID CommandUUID() override
   {
     // {A2DCBCBD-B91B-4FF4-88DF-70D13107F0BF}
     static const GUID SampleModalDialogCommand_UUID =
@@ -20,7 +20,6 @@ public:
     return SampleModalDialogCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleModalDialog"; }
-  const wchar_t* LocalCommandName() { return L"SampleModalDialog"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

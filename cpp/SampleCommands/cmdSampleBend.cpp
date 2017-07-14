@@ -48,9 +48,9 @@ static CRhinoObject* RhinoBendObject(
 class CCommandSampleBend : public CRhinoCommand
 {
 public:
-  CCommandSampleBend() {}
-  ~CCommandSampleBend() {}
-  UUID CommandUUID()
+  CCommandSampleBend() = default;
+  ~CCommandSampleBend() = default;
+  UUID CommandUUID() override
   {
     // {F02D2876-34A4-4522-A34A-E96A6FDE412E}
     static const GUID SampleBendCommand_UUID =
@@ -58,7 +58,6 @@ public:
     return SampleBendCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleBend"; }
-  const wchar_t* LocalCommandName() const { return L"SampleBend"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

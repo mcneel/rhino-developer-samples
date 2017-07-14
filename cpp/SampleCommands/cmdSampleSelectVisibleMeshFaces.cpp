@@ -11,9 +11,9 @@
 class CCommandSampleSelectVisibleMeshFaces : public CRhinoCommand
 {
 public:
-  CCommandSampleSelectVisibleMeshFaces() {}
-  ~CCommandSampleSelectVisibleMeshFaces() {}
-  UUID CommandUUID()
+  CCommandSampleSelectVisibleMeshFaces() = default;
+  ~CCommandSampleSelectVisibleMeshFaces() = default;
+  UUID CommandUUID() override
   {
     // {7BD2E090-17CE-4C88-9A43-931291B13DC3}
     static const GUID SampleSelectVisibleMeshFacesCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleSelectVisibleMeshFacesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSelectVisibleMeshFaces"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSelectVisibleMeshFaces"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

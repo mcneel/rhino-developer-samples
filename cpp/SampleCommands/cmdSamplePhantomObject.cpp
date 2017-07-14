@@ -113,9 +113,9 @@ public:
 class CCommandSamplePhantomObject : public CRhinoCommand
 {
 public:
-  CCommandSamplePhantomObject() {}
-  ~CCommandSamplePhantomObject() {}
-  UUID CommandUUID()
+  CCommandSamplePhantomObject() = default;
+  ~CCommandSamplePhantomObject() = default;
+  UUID CommandUUID() override
   {
     // {73E99022-5A65-4081-BDE9-7C70C4A88706}
     static const GUID SamplePhantomObjectCommand_UUID =
@@ -123,7 +123,6 @@ public:
     return SamplePhantomObjectCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePhantomObject"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePhantomObject"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

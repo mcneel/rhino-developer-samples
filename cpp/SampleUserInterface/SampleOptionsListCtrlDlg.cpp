@@ -2,7 +2,7 @@
 #include "SampleOptionsListCtrlDlg.h"
 
 CSampleOptionsListCtrl::CSampleOptionsListCtrl()
-{}
+= default;
 
 CSampleOptionsListCtrl::~CSampleOptionsListCtrl()
 {

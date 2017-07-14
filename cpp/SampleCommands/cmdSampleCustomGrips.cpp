@@ -12,9 +12,9 @@
 class CCommandSampleCustomGrips : public CRhinoCommand
 {
 public:
-  CCommandSampleCustomGrips() {}
-  ~CCommandSampleCustomGrips() {}
-  UUID CommandUUID()
+  CCommandSampleCustomGrips() = default;
+  ~CCommandSampleCustomGrips() = default;
+  UUID CommandUUID() override
   {
     // {C28CAF32-E5C1-4628-944D-34C47DE267BC}
     static const GUID SampleCustomGripsCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleCustomGripsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCustomGrips"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCustomGrips"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

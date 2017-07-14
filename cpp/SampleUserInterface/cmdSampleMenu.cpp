@@ -10,9 +10,9 @@
 class CCommandSampleMenuCommand1 : public CRhinoCommand
 {
 public:
-  CCommandSampleMenuCommand1() {}
-  ~CCommandSampleMenuCommand1() {}
-  UUID CommandUUID()
+  CCommandSampleMenuCommand1() = default;
+  ~CCommandSampleMenuCommand1() = default;
+  UUID CommandUUID() override
   {
     // {281EE457-82E8-4053-ADDF-685878B87DC5}
     static const GUID SampleMenuCommand1Command_UUID =
@@ -20,7 +20,6 @@ public:
     return SampleMenuCommand1Command_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMenuCommand1"; }
-  const wchar_t* LocalCommandName() { return L"SampleMenuCommand1"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -53,9 +52,9 @@ CRhinoCommand::result CCommandSampleMenuCommand1::RunCommand(const CRhinoCommand
 class CCommandSampleMenuCommand2 : public CRhinoCommand
 {
 public:
-  CCommandSampleMenuCommand2() {}
-  ~CCommandSampleMenuCommand2() {}
-  UUID CommandUUID()
+  CCommandSampleMenuCommand2() = default;
+  ~CCommandSampleMenuCommand2() = default;
+  UUID CommandUUID() override
   {
     // {B96253EF-B140-495E-B127-2D8DA7AECE10}
     static const GUID SampleMenuCommand2Command_UUID =
@@ -63,7 +62,6 @@ public:
     return SampleMenuCommand2Command_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMenuCommand2"; }
-  const wchar_t* LocalCommandName() { return L"SampleMenuCommand2"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -96,9 +94,9 @@ CRhinoCommand::result CCommandSampleMenuCommand2::RunCommand(const CRhinoCommand
 class CCommandSampleMenuCommand3 : public CRhinoCommand
 {
 public:
-  CCommandSampleMenuCommand3() {}
-  ~CCommandSampleMenuCommand3() {}
-  UUID CommandUUID()
+  CCommandSampleMenuCommand3() = default;
+  ~CCommandSampleMenuCommand3() = default;
+  UUID CommandUUID() override
   {
     // {15F1279E-EBCF-44D1-B91A-898FEBDE5A6B}
     static const GUID SampleMenuCommand3Command_UUID =
@@ -106,7 +104,6 @@ public:
     return SampleMenuCommand3Command_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMenuCommand3"; }
-  const wchar_t* LocalCommandName() { return L"SampleMenuCommand3"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -139,9 +136,9 @@ CRhinoCommand::result CCommandSampleMenuCommand3::RunCommand(const CRhinoCommand
 class CCommandSampleMenuCommand4 : public CRhinoCommand
 {
 public:
-  CCommandSampleMenuCommand4() {}
-  ~CCommandSampleMenuCommand4() {}
-  UUID CommandUUID()
+  CCommandSampleMenuCommand4() = default;
+  ~CCommandSampleMenuCommand4() = default;
+  UUID CommandUUID() override
   {
     // {25E02B0B-EEEC-425A-8E5E-52F5382A80B2}
     static const GUID SampleMenuCommand4Command_UUID =
@@ -149,7 +146,6 @@ public:
     return SampleMenuCommand4Command_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMenuCommand4"; }
-  const wchar_t* LocalCommandName() { return L"SampleMenuCommand4"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -37,9 +37,9 @@ static bool SampleSurfaceSplitter(
 class CCommandSampleSplitSurface : public CRhinoCommand
 {
 public:
-  CCommandSampleSplitSurface() {}
-  ~CCommandSampleSplitSurface() {}
-  UUID CommandUUID()
+  CCommandSampleSplitSurface() = default;
+  ~CCommandSampleSplitSurface() = default;
+  UUID CommandUUID() override
   {
     // {7C281BA6-A501-4134-8B1B-DBA5CA3A2E58}
     static const GUID SampleSplitSurfaceCommand_UUID =
@@ -47,7 +47,6 @@ public:
     return SampleSplitSurfaceCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSplitSurface"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSplitSurface"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

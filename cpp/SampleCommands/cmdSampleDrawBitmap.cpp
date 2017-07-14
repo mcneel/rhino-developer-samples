@@ -65,9 +65,9 @@ BOOL CSampleDrawBitmapConduit::LoadBitmap()
 class CCommandSampleDrawBitmap : public CRhinoCommand
 {
 public:
-  CCommandSampleDrawBitmap() {}
-  ~CCommandSampleDrawBitmap() {}
-  UUID CommandUUID()
+  CCommandSampleDrawBitmap() = default;
+  ~CCommandSampleDrawBitmap() = default;
+  UUID CommandUUID() override
   {
     // {2D77453-C7B5-45C3-AB8A-6BFBC7BDB3F7}
     static const GUID SampleDrawBitmapCommand_UUID =
@@ -75,7 +75,6 @@ public:
     return SampleDrawBitmapCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDrawBitmap"; }
-  const wchar_t* LocalCommandName() { return L"SampleDrawBitmap"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

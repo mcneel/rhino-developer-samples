@@ -10,9 +10,9 @@
 class CCommandSampleAttributeUserDataAdd : public CRhinoCommand
 {
 public:
-  CCommandSampleAttributeUserDataAdd() {}
-  ~CCommandSampleAttributeUserDataAdd() {}
-  UUID CommandUUID()
+  CCommandSampleAttributeUserDataAdd() = default;
+  ~CCommandSampleAttributeUserDataAdd() = default;
+  UUID CommandUUID() override
   {
     // {65A1D235-6404-41B5-B561-9038B1F6363C}
     static const GUID SampleAttributeUserDataAddCommand_UUID =
@@ -83,9 +83,9 @@ CRhinoCommand::result CCommandSampleAttributeUserDataAdd::RunCommand(const CRhin
 class CCommandSampleAttributeUserDataGet : public CRhinoCommand
 {
 public:
-  CCommandSampleAttributeUserDataGet() {}
-  ~CCommandSampleAttributeUserDataGet() {}
-  UUID CommandUUID()
+  CCommandSampleAttributeUserDataGet() = default;
+  ~CCommandSampleAttributeUserDataGet() = default;
+  UUID CommandUUID() override
   {
     // {454332B9-9788-4034-8C94-D22718B63E0F}
     static const GUID SampleAttributeUserDataGetCommand_UUID =

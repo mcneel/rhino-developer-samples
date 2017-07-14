@@ -13,9 +13,9 @@
 class CCommandSampleMarker : public CRhinoCommand
 {
 public:
-  CCommandSampleMarker() {}
-  ~CCommandSampleMarker() {}
-  UUID CommandUUID()
+  CCommandSampleMarker() = default;
+  ~CCommandSampleMarker() = default;
+  UUID CommandUUID() override
   {
     // {16A2C043-0235-4BB2-B11E-5A7AA29D65E5}
     static const GUID SampleMarkerCommand_UUID =
@@ -23,7 +23,6 @@ public:
     return SampleMarkerCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMarker"; }
-  const wchar_t* LocalCommandName() const { return L"SampleMarker"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

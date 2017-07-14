@@ -11,9 +11,9 @@
 class CCommandSampleUnrollSurface : public CRhinoCommand
 {
 public:
-  CCommandSampleUnrollSurface() {}
-  ~CCommandSampleUnrollSurface() {}
-  UUID CommandUUID()
+  CCommandSampleUnrollSurface() = default;
+  ~CCommandSampleUnrollSurface() = default;
+  UUID CommandUUID() override
   {
     // {CB7091AA-BDAB-4D26-91D6-FD455981B636}
     static const GUID SampleUnrollSurfaceCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleUnrollSurfaceCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleUnrollSurface"; }
-  const wchar_t* LocalCommandName() const { return L"SampleUnrollSurface"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

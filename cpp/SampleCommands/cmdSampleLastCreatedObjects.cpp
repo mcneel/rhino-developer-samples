@@ -83,9 +83,9 @@ static int RhinoObjectIdsFromRuntimeSerialNumbers(
 class CCommandSampleLastCreatedObjects : public CRhinoScriptCommand
 {
 public:
-  CCommandSampleLastCreatedObjects() {}
-  ~CCommandSampleLastCreatedObjects() {}
-  UUID CommandUUID()
+  CCommandSampleLastCreatedObjects() = default;
+  ~CCommandSampleLastCreatedObjects() = default;
+  UUID CommandUUID() override
   {
     // {EA6611BE-EADA-4C09-8123-234A783334F0}
     static const GUID SampleLastCreatedObjectsCommand_UUID =
@@ -93,7 +93,6 @@ public:
     return SampleLastCreatedObjectsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleLastCreatedObjects"; }
-  const wchar_t* LocalCommandName() const { return L"SampleLastCreatedObjects"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

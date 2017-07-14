@@ -13,9 +13,9 @@
 class CCommandSampleReduceMesh : public CRhinoCommand
 {
 public:
-  CCommandSampleReduceMesh() {}
-  ~CCommandSampleReduceMesh() {}
-  UUID CommandUUID()
+  CCommandSampleReduceMesh() = default;
+  ~CCommandSampleReduceMesh() = default;
+  UUID CommandUUID() override
   {
     // {7A88F21C-32C-46C5-B3EC-09DC82786B0D}
     static const GUID SampleReduceMeshCommand_UUID =
@@ -23,7 +23,6 @@ public:
     return SampleReduceMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleReduceMesh"; }
-  const wchar_t* LocalCommandName() const { return L"SampleReduceMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

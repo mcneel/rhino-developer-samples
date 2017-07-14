@@ -9,9 +9,9 @@
 class CCommandSampleSplitBrep : public CRhinoCommand
 {
 public:
-  CCommandSampleSplitBrep() {}
-  ~CCommandSampleSplitBrep() {}
-  UUID CommandUUID()
+  CCommandSampleSplitBrep() = default;
+  ~CCommandSampleSplitBrep() = default;
+  UUID CommandUUID() override
   {
     // {581D3D84-631A-4283-ACA3-6FEE82C6BB49}
     static const GUID SampleSplitBrepCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleSplitBrepCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSplitBrep"; }
-  const wchar_t* LocalCommandName() { return L"SampleSplitBrep"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

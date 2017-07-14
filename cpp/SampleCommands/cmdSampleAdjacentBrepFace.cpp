@@ -11,9 +11,9 @@
 class CCommandSampleAdjacentBrepFace : public CRhinoCommand
 {
 public:
-  CCommandSampleAdjacentBrepFace() {}
-  ~CCommandSampleAdjacentBrepFace() {}
-  UUID CommandUUID()
+  CCommandSampleAdjacentBrepFace() = default;
+  ~CCommandSampleAdjacentBrepFace() = default;
+  UUID CommandUUID() override
   {
     // {50F82802-80A6-44D9-8225-7002C497C46F}
     static const GUID SampleAdjacentBrepFaceCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleAdjacentBrepFaceCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleAdjacentBrepFace"; }
-  const wchar_t* LocalCommandName() const { return L"SampleAdjacentBrepFace"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

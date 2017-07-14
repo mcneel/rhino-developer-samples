@@ -12,8 +12,8 @@ class CCommandSampleRotateView : public CRhinoCommand
 {
 public:
   CCommandSampleRotateView() { m_direction = 2; m_angle = 1.0; }
-  ~CCommandSampleRotateView() {}
-  UUID CommandUUID()
+  ~CCommandSampleRotateView() = default;
+  UUID CommandUUID() override
   {
     // {272BB8E3-E88F-49D3-A603-7EC78CAFAC43}
     static const GUID SampleRotateViewCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleRotateViewCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleRotateView"; }
-  const wchar_t* LocalCommandName() const { return L"SampleRotateView"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

@@ -11,9 +11,9 @@
 class CCommandSampleImportEarthAnchor : public CRhinoCommand
 {
 public:
-  CCommandSampleImportEarthAnchor() {}
-  ~CCommandSampleImportEarthAnchor() {}
-  UUID CommandUUID()
+  CCommandSampleImportEarthAnchor() = default;
+  ~CCommandSampleImportEarthAnchor() = default;
+  UUID CommandUUID() override
   {
     // {D533B21F-5B7F-4890-BA29-56F8C2217061}
     static const GUID SampleImportEarthAnchorCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleImportEarthAnchorCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleImportEarthAnchor"; }
-  const wchar_t* LocalCommandName() const { return L"SampleImportEarthAnchor"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

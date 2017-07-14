@@ -11,9 +11,9 @@
 class CCommandSampleEnumFonts : public CRhinoCommand
 {
 public:
-  CCommandSampleEnumFonts() {}
-  ~CCommandSampleEnumFonts() {}
-  UUID CommandUUID()
+  CCommandSampleEnumFonts() = default;
+  ~CCommandSampleEnumFonts() = default;
+  UUID CommandUUID() override
   {
     // {AC834561-9FAD-4E15-B75C-57227D5C60A0}
     static const GUID SampleEnumFontsCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleEnumFontsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleEnumFonts"; }
-  const wchar_t* LocalCommandName() const { return L"SampleEnumFonts"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

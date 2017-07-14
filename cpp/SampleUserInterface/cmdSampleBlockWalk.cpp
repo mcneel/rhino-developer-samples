@@ -12,9 +12,9 @@
 class CCommandSampleBlockWalk : public CRhinoCommand
 {
 public:
-  CCommandSampleBlockWalk() {}
-  ~CCommandSampleBlockWalk() {}
-  UUID CommandUUID()
+  CCommandSampleBlockWalk() = default;
+  ~CCommandSampleBlockWalk() = default;
+  UUID CommandUUID() override
   {
     // {9A9B90FB-8C91-4143-90E4-8C0836140809}
     static const GUID SampleBlockWalkCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleBlockWalkCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleBlockWalk"; }
-  const wchar_t* LocalCommandName() const { return L"SampleBlockWalk"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -12,8 +12,8 @@ class CCommandSampleExtractCurves : public CRhinoCommand
 {
 public:
   CCommandSampleExtractCurves();
-  ~CCommandSampleExtractCurves() {}
-  UUID CommandUUID()
+  ~CCommandSampleExtractCurves() = default;
+  UUID CommandUUID() override
   {
     // {D1021FFA-FA7E-4E14-B50C-0F3B68AD2FEC}
     static const GUID SampleExtractCurvesCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleExtractCurvesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExtractCurves"; }
-  const wchar_t* LocalCommandName() const { return L"SampleExtractCurves"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

@@ -12,9 +12,9 @@
 class CCommandSampleThumbnailPreview : public CRhinoCommand
 {
 public:
-  CCommandSampleThumbnailPreview() {}
-  ~CCommandSampleThumbnailPreview() {}
-  UUID CommandUUID()
+  CCommandSampleThumbnailPreview() = default;
+  ~CCommandSampleThumbnailPreview() = default;
+  UUID CommandUUID() override
   {
     // {52C573FE-16F4-4643-80A6-5CB9EDFB8189}
     static const GUID SampleThumbnailPreviewCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleThumbnailPreviewCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleThumbnailPreview"; }
-  const wchar_t* LocalCommandName() const { return L"SampleThumbnailPreview"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

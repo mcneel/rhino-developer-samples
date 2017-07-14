@@ -50,9 +50,9 @@ static int RhGetBrepFaceTriangles(const ON_Brep* brep,
 class CCommandSampleGetFaceTriangles : public CRhinoCommand
 {
 public:
-  CCommandSampleGetFaceTriangles() {}
-  ~CCommandSampleGetFaceTriangles() {}
-  UUID CommandUUID()
+  CCommandSampleGetFaceTriangles() = default;
+  ~CCommandSampleGetFaceTriangles() = default;
+  UUID CommandUUID() override
   {
     // {D1036400-5F8D-4BAE-96E7-AC8666BF0844}
     static const GUID SampleGetFaceTrianglesCommand_UUID =
@@ -60,7 +60,6 @@ public:
     return SampleGetFaceTrianglesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGetFaceTriangles"; }
-  const wchar_t* LocalCommandName() const { return L"SampleGetFaceTriangles"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

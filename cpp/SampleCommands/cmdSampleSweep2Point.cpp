@@ -157,9 +157,9 @@ static bool RhinoSweep2Helper(
 class CCommandSampleSweep2Point : public CRhinoCommand
 {
 public:
-  CCommandSampleSweep2Point() {}
-  ~CCommandSampleSweep2Point() {}
-  UUID CommandUUID()
+  CCommandSampleSweep2Point() = default;
+  ~CCommandSampleSweep2Point() = default;
+  UUID CommandUUID() override
   {
     // {28A4216-C489-41BE-95C4-67B6068C3314}
     static const GUID SampleSweep2PointCommand_UUID =
@@ -167,7 +167,6 @@ public:
     return SampleSweep2PointCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSweep2Point"; }
-  const wchar_t* LocalCommandName() { return L"SampleSweep2Point"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

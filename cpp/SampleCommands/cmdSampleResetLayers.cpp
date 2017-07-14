@@ -11,9 +11,9 @@
 class CCommandSampleResetLayers : public CRhinoCommand
 {
 public:
-  CCommandSampleResetLayers() {}
-  ~CCommandSampleResetLayers() {}
-  UUID CommandUUID()
+  CCommandSampleResetLayers() = default;
+  ~CCommandSampleResetLayers() = default;
+  UUID CommandUUID() override
   {
     // {1FBB2AD5-14A6-423B-8F2D-C975DB99C9B5}
     static const GUID SampleResetLayersCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleResetLayersCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleResetLayers"; }
-  const wchar_t* LocalCommandName() const { return L"SampleResetLayers"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

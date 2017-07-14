@@ -9,9 +9,9 @@
 class CCommandSampleExtractIsoCurve : public CRhinoCommand
 {
 public:
-  CCommandSampleExtractIsoCurve() {}
-  ~CCommandSampleExtractIsoCurve() {}
-  UUID CommandUUID()
+  CCommandSampleExtractIsoCurve() = default;
+  ~CCommandSampleExtractIsoCurve() = default;
+  UUID CommandUUID() override
   {
     // {58D7F9B0-DAA7-4631-BCF7-15DCD109803E}
     static const GUID SampleExtractIsoCurveCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleExtractIsoCurveCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExtractIsoCurve"; }
-  const wchar_t* LocalCommandName() { return L"SampleExtractIsoCurve"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

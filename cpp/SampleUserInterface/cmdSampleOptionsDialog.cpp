@@ -12,9 +12,9 @@
 class CCommandSampleOptionsDialog : public CRhinoCommand
 {
 public:
-  CCommandSampleOptionsDialog() {}
-  ~CCommandSampleOptionsDialog() {}
-  UUID CommandUUID()
+  CCommandSampleOptionsDialog() = default;
+  ~CCommandSampleOptionsDialog() = default;
+  UUID CommandUUID() override
   {
     // {C9704599-3C83-40AE-A4A8-A0A98827B1B6}
     static const GUID SampleOptionsDialogCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleOptionsDialogCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleOptionsDialog"; }
-  const wchar_t* LocalCommandName() const { return L"SampleOptionsDialog"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 static class CCommandSampleOptionsDialog theSampleOptionsDialogCommand;

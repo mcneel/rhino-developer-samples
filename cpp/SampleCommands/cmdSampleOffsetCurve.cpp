@@ -12,8 +12,8 @@ class CCommandSampleOffsetCurve : public CRhinoCommand
 {
 public:
   CCommandSampleOffsetCurve();
-  ~CCommandSampleOffsetCurve() {}
-  UUID CommandUUID()
+  ~CCommandSampleOffsetCurve() = default;
+  UUID CommandUUID() override
   {
     // {55054530-834-456C-BE03-81D6D6EBF475}
     static const GUID SampleOffsetCurveCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleOffsetCurveCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleOffsetCurve"; }
-  const wchar_t* LocalCommandName() const { return L"SampleOffsetCurve"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

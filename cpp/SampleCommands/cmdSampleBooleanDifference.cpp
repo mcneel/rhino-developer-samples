@@ -9,9 +9,9 @@
 class CCommandSampleBooleanDifference : public CRhinoCommand
 {
 public:
-  CCommandSampleBooleanDifference() {}
-  ~CCommandSampleBooleanDifference() {}
-  UUID CommandUUID()
+  CCommandSampleBooleanDifference() = default;
+  ~CCommandSampleBooleanDifference() = default;
+  UUID CommandUUID() override
   {
     // {D3F06EEC-FE99-4591-88FB-A2E1A8BC6EF4}
     static const GUID SampleBooleanDifferenceCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleBooleanDifferenceCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleBooleanDifference"; }
-  const wchar_t* LocalCommandName() const { return L"SampleBooleanDifference"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

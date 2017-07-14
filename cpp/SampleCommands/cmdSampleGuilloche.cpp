@@ -406,9 +406,9 @@ bool CSampleGuillocheConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT nActiv
 class CCommandSampleGuilloche : public CRhinoCommand
 {
 public:
-  CCommandSampleGuilloche() {}
-  ~CCommandSampleGuilloche() {}
-  UUID CommandUUID()
+  CCommandSampleGuilloche() = default;
+  ~CCommandSampleGuilloche() = default;
+  UUID CommandUUID() override
   {
     // {C2B28A4E-D89C-4B57-AFF4-71F15FB0DABA}
     static const GUID SampleGuillocheCommand_UUID =
@@ -416,7 +416,6 @@ public:
     return SampleGuillocheCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGuilloche"; }
-  const wchar_t* LocalCommandName() const { return L"SampleGuilloche"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context);
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

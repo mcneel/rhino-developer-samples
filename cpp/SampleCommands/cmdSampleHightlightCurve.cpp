@@ -45,9 +45,9 @@ bool CSampleHighlightCurveConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT n
 class CCommandSampleHighlightCurve : public CRhinoCommand
 {
 public:
-  CCommandSampleHighlightCurve() {}
-  ~CCommandSampleHighlightCurve() {}
-  UUID CommandUUID()
+  CCommandSampleHighlightCurve() = default;
+  ~CCommandSampleHighlightCurve() = default;
+  UUID CommandUUID() override
   {
     // {56EA3FC7-6AB9-4432-AA0B-B0969F927360}
     static const GUID SampleHighlightCurveCommand_UUID =
@@ -55,7 +55,6 @@ public:
     return SampleHighlightCurveCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleHighlightCurve"; }
-  const wchar_t* LocalCommandName() { return L"SampleHighlightCurve"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

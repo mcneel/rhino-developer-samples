@@ -9,9 +9,9 @@
 class CCommandSampleMeshPolysrf : public CRhinoCommand
 {
 public:
-  CCommandSampleMeshPolysrf() {}
-  ~CCommandSampleMeshPolysrf() {}
-  UUID CommandUUID()
+  CCommandSampleMeshPolysrf() = default;
+  ~CCommandSampleMeshPolysrf() = default;
+  UUID CommandUUID() override
   {
     // {26BD88E9-A372-4011-930E-77F4223E2294}
     static const GUID SampleMeshPolysrfCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleMeshPolysrfCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMeshPolysrf"; }
-  const wchar_t* LocalCommandName() { return L"SampleMeshPolysrf"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

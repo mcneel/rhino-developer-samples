@@ -11,9 +11,9 @@
 class CCommandSampleDimStyleTextHeight : public CRhinoCommand
 {
 public:
-  CCommandSampleDimStyleTextHeight() {}
-  ~CCommandSampleDimStyleTextHeight() {}
-  UUID CommandUUID()
+  CCommandSampleDimStyleTextHeight() = default;
+  ~CCommandSampleDimStyleTextHeight() = default;
+  UUID CommandUUID() override
   {
     // {905F3A7A-518-442A-9637-74D407528DCE}
     static const GUID SampleDimStyleTextHeightCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleDimStyleTextHeightCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDimStyleTextHeight"; }
-  const wchar_t* LocalCommandName() const { return L"SampleDimStyleTextHeight"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

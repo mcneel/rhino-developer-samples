@@ -11,9 +11,9 @@
 class CCommandSampleFindCrvOnSrf : public CRhinoCommand
 {
 public:
-  CCommandSampleFindCrvOnSrf() {}
-  ~CCommandSampleFindCrvOnSrf() {}
-  UUID CommandUUID()
+  CCommandSampleFindCrvOnSrf() = default;
+  ~CCommandSampleFindCrvOnSrf() = default;
+  UUID CommandUUID() override
   {
     // {986B4A56-C2CB-4FCC-ADBB-C68E0BB4C6F1}
     static const GUID SampleFindCrvOnSrfCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleFindCrvOnSrfCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleFindCrvOnSrf"; }
-  const wchar_t* LocalCommandName() const { return L"SampleFindCrvOnSrf"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

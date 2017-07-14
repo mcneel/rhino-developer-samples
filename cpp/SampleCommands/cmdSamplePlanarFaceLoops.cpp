@@ -11,9 +11,9 @@
 class CCommandSamplePlanarFaceLoops : public CRhinoCommand
 {
 public:
-  CCommandSamplePlanarFaceLoops() {}
-  ~CCommandSamplePlanarFaceLoops() {}
-  UUID CommandUUID()
+  CCommandSamplePlanarFaceLoops() = default;
+  ~CCommandSamplePlanarFaceLoops() = default;
+  UUID CommandUUID() override
   {
     // {107498CF-861C-44B6-BE51-1AA2ED622A35}
     static const GUID SamplePlanarFaceLoopsCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SamplePlanarFaceLoopsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePlanarFaceLoops"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePlanarFaceLoops"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

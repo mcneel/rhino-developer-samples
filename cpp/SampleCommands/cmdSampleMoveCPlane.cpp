@@ -55,7 +55,6 @@ public:
     return SampleMoveCPlaneCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleMoveCPlane"; }
-  const wchar_t* LocalCommandName() const override { return L"SampleMoveCPlane"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 };
 

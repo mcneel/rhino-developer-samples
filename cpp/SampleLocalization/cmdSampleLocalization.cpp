@@ -26,19 +26,19 @@ public:
 
   // CCommandSampleLocalization::CCommandSampleLocalization()
   // is called exactly once when static theSampleLocalizationCommand is created.
-	CCommandSampleLocalization() {}
+	CCommandSampleLocalization() = default;
 
   // CCommandSampleLocalization::~CCommandSampleLocalization()
   // is called exactly once when static theSampleLocalizationCommand is
   // destroyed.  The destructor should not make any calls to
   // the Rhino SDK.  If your command has persistent settings,
   // then override CRhinoCommand::SaveProfile and CRhinoCommand::LoadProfile.
-  ~CCommandSampleLocalization() {}
+  ~CCommandSampleLocalization() = default;
 
   // Returns a unique UUID for this command.
   // If you try to use an id that is already being used, then
   // your command will not work.  Use GUIDGEN.EXE to make unique UUID.
-	UUID CommandUUID()
+	UUID CommandUUID() override
 	{
 		// {9163EC4E-CABA-43FC-9554-B569173B0348}
     static const GUID SampleLocalizationCommand_UUID =
@@ -48,9 +48,6 @@ public:
 
   // Returns the English command name.
 	const wchar_t* EnglishCommandName() { return L"SampleLocalization"; }
-
-  // Returns the localized command name.
-	const wchar_t* LocalCommandName() const { return L"SampleLocalization"; }
 
   // Rhino calls RunCommand to run the command.
 	CRhinoCommand::result RunCommand( const CRhinoCommandContext& );

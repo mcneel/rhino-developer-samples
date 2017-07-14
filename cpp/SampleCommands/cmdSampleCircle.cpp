@@ -76,9 +76,9 @@ const ON_Circle& CGetCircleRadiusPoint::Circle() const
 class CCommandSampleCircle : public CRhinoCommand
 {
 public:
-  CCommandSampleCircle() {}
-  ~CCommandSampleCircle() {}
-  UUID CommandUUID()
+  CCommandSampleCircle() = default;
+  ~CCommandSampleCircle() = default;
+  UUID CommandUUID() override
   {
     // {4018B527-BC6E-49EA-B729-4043628802CD}
     static const GUID SampleCircleCommand_UUID =
@@ -86,7 +86,6 @@ public:
     return SampleCircleCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCircle"; }
-  const wchar_t* LocalCommandName() { return L"SampleCircle"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

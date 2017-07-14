@@ -31,9 +31,9 @@ public:
 class CCommandSampleExtrudeTapered : public CRhinoCommand
 {
 public:
-  CCommandSampleExtrudeTapered() {}
-  ~CCommandSampleExtrudeTapered() {}
-  UUID CommandUUID()
+  CCommandSampleExtrudeTapered() = default;
+  ~CCommandSampleExtrudeTapered() = default;
+  UUID CommandUUID() override
   {
     // {36E7E077-F350-4E9A-9660-25A1EBC2F105}
     static const GUID SampleExtrudeTaperedCommand_UUID =
@@ -41,7 +41,6 @@ public:
     return SampleExtrudeTaperedCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExtrudeTapered"; }
-  const wchar_t* LocalCommandName() { return L"SampleExtrudeTapered"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

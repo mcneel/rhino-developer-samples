@@ -12,8 +12,8 @@ class CCommandSampleBoundingBox : public CRhinoCommand
 {
 public:
   CCommandSampleBoundingBox() { m_use_cplane = false; }
-  ~CCommandSampleBoundingBox() {}
-  UUID CommandUUID()
+  ~CCommandSampleBoundingBox() = default;
+  UUID CommandUUID() override
   {
     // {9C68FA5F-413A-40B9-BC49-15AB6685F986}
     static const GUID SampleBoundingBoxCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleBoundingBoxCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleBoundingBox"; }
-  const wchar_t* LocalCommandName() const { return L"SampleBoundingBox"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

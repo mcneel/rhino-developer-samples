@@ -9,9 +9,9 @@
 class CCommandSampleOrientOnSrf : public CRhinoCommand
 {
 public:
-  CCommandSampleOrientOnSrf() {}
-  ~CCommandSampleOrientOnSrf() {}
-  UUID CommandUUID()
+  CCommandSampleOrientOnSrf() = default;
+  ~CCommandSampleOrientOnSrf() = default;
+  UUID CommandUUID() override
   {
     // {855DDA39-6B1-4D53-9A92-2B1ADDC21C98}
     static const GUID SampleOrientOnSrfCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleOrientOnSrfCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleOrientOnSrf"; }
-  const wchar_t* LocalCommandName() { return L"SampleOrientOnSrf"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

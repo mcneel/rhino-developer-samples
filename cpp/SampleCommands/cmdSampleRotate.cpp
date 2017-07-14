@@ -190,9 +190,9 @@ double CGetAngleSecondPoint::Angle() const
 class CCommandSampleRotate : public CRhinoCommand
 {
 public:
-  CCommandSampleRotate() {}
-  ~CCommandSampleRotate() {}
-  UUID CommandUUID()
+  CCommandSampleRotate() = default;
+  ~CCommandSampleRotate() = default;
+  UUID CommandUUID() override
   {
     // {61BC5D27-18B7-4046-B646-DA8CE3A27271}
     static const GUID SampleRotateCommand_UUID =
@@ -200,7 +200,6 @@ public:
     return SampleRotateCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleRotate"; }
-  const wchar_t* LocalCommandName() const { return L"SampleRotate"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -11,9 +11,9 @@
 class CCommandSampleDupBorder : public CRhinoCommand
 {
 public:
-  CCommandSampleDupBorder() {}
-  ~CCommandSampleDupBorder() {}
-  UUID CommandUUID()
+  CCommandSampleDupBorder() = default;
+  ~CCommandSampleDupBorder() = default;
+  UUID CommandUUID() override
   {
     // {1338EF5F-B751-4DAF-95AD-4395A7A1A2F8}
     static const GUID SampleDupBorderCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleDupBorderCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDupBorder"; }
-  const wchar_t* LocalCommandName() const { return L"SampleDupBorder"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

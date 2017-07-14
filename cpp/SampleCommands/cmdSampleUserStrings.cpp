@@ -12,8 +12,8 @@ class CCommandSampleSetUserStrings : public CRhinoCommand
 {
 public:
   CCommandSampleSetUserStrings();
-  ~CCommandSampleSetUserStrings() {}
-  UUID CommandUUID()
+  ~CCommandSampleSetUserStrings() = default;
+  UUID CommandUUID() override
   {
     // {98455B14-BF0D-4DC1-BE9C-BB59723602BC}
     static const GUID SampleSetUserStringsCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleSetUserStringsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSetUserStrings"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSetUserStrings"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:
@@ -204,9 +203,9 @@ ON_wString CCommandSampleSetUserStrings::ToEnglish(const int number)
 class CCommandSampleGetUserStrings : public CRhinoCommand
 {
 public:
-  CCommandSampleGetUserStrings() {}
-  ~CCommandSampleGetUserStrings() {}
-  UUID CommandUUID()
+  CCommandSampleGetUserStrings() = default;
+  ~CCommandSampleGetUserStrings() = default;
+  UUID CommandUUID() override
   {
     // {AC1A1733-27DE-437B-B3F3-A8CB80683BFC}
     static const GUID SampleGetUserStringsCommand_UUID =
@@ -214,7 +213,6 @@ public:
     return SampleGetUserStringsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGetUserStrings"; }
-  const wchar_t* LocalCommandName() const { return L"SampleGetUserStrings"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

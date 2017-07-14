@@ -11,9 +11,9 @@
 class CCommandSampleExportRenderMeshes : public CRhinoCommand
 {
 public:
-  CCommandSampleExportRenderMeshes() {}
-  ~CCommandSampleExportRenderMeshes() {}
-  UUID CommandUUID()
+  CCommandSampleExportRenderMeshes() = default;
+  ~CCommandSampleExportRenderMeshes() = default;
+  UUID CommandUUID() override
   {
     // {5DDA7654-1B65-4664-BFAB-A0E3BD03F62D}
     static const GUID SampleExportRenderMeshesCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleExportRenderMeshesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleExportRenderMeshes"; }
-  const wchar_t* LocalCommandName() const { return L"SampleExportRenderMeshes"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

@@ -10,7 +10,7 @@ class CSampleViewportDecorationEventWatcher : public CRhinoEventWatcher
 {
 public:
   CSampleViewportDecorationEventWatcher();
-  ~CSampleViewportDecorationEventWatcher() {}
+  ~CSampleViewportDecorationEventWatcher() = default;
 
   void SetActiveView(CRhinoView* active_view);
 
@@ -66,7 +66,7 @@ class CSampleViewportDecorationConduit : public CRhinoDisplayConduit
 {
 public:
   CSampleViewportDecorationConduit();
-  ~CSampleViewportDecorationConduit() {}
+  ~CSampleViewportDecorationConduit() = default;
 
   // CRhinoDisplayConduit override
   bool ExecConduit(CRhinoDisplayPipeline& dp, UINT nChannelID, bool& bTerminate);
@@ -155,8 +155,8 @@ class CCommandSampleViewportDecoration : public CRhinoCommand
 {
 public:
   CCommandSampleViewportDecoration();
-  ~CCommandSampleViewportDecoration() {}
-  UUID CommandUUID()
+  ~CCommandSampleViewportDecoration() = default;
+  UUID CommandUUID() override
   {
     // {9A827A94-B266-4D97-BD50-AE388C9E6FB0}
     static const GUID SampleViewportDecorationCommand_UUID =
@@ -164,7 +164,6 @@ public:
     return SampleViewportDecorationCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleViewportDecoration"; }
-  const wchar_t* LocalCommandName() { return L"SampleViewportDecoration"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

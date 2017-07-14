@@ -52,9 +52,9 @@ CRhinoCommand::result CSampleScriptCancelHelper::LastCommandResult() const
 class CCommandSampleScripter : public CRhinoScriptCommand
 {
 public:
-  CCommandSampleScripter() {}
-  ~CCommandSampleScripter() {}
-  UUID CommandUUID()
+  CCommandSampleScripter() = default;
+  ~CCommandSampleScripter() = default;
+  UUID CommandUUID() override
   {
     // {D68FBC91-E0BC-470B-A31A-B3539F70E08E}
     static const GUID SampleScripterCommand_UUID =
@@ -62,7 +62,6 @@ public:
     return SampleScripterCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleScripter"; }
-  const wchar_t* LocalCommandName() const { return L"SampleScripter"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

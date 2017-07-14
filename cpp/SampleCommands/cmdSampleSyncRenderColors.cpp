@@ -9,9 +9,9 @@
 class CCommandSampleSyncRenderColors : public CRhinoCommand
 {
 public:
-  CCommandSampleSyncRenderColors() {}
-  ~CCommandSampleSyncRenderColors() {}
-  UUID CommandUUID()
+  CCommandSampleSyncRenderColors() = default;
+  ~CCommandSampleSyncRenderColors() = default;
+  UUID CommandUUID() override
   {
     // {6CB51310-C634-4DE0-85E0-02C44A8E54B2}
     static const GUID SampleSyncRenderColorsCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleSyncRenderColorsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSyncRenderColors"; }
-  const wchar_t* LocalCommandName() { return L"SampleSyncRenderColors"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

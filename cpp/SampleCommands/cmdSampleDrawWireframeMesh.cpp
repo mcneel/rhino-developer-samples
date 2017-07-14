@@ -56,9 +56,9 @@ bool CSampleDrawWireframeMesh::ExecConduit(CRhinoDisplayPipeline& dp, UINT nChan
 class CCommandSampleDrawWireframeMesh : public CRhinoCommand
 {
 public:
-  CCommandSampleDrawWireframeMesh() {}
-  ~CCommandSampleDrawWireframeMesh() {}
-  UUID CommandUUID()
+  CCommandSampleDrawWireframeMesh() = default;
+  ~CCommandSampleDrawWireframeMesh() = default;
+  UUID CommandUUID() override
   {
     // {6A79E54E-FBDF-4D1D-8D0B-379FD7A228E6}
     static const GUID SampleDrawWireframeMeshCommand_UUID =
@@ -66,7 +66,6 @@ public:
     return SampleDrawWireframeMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDrawWireframeMesh"; }
-  const wchar_t* LocalCommandName() const { return L"SampleDrawWireframeMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

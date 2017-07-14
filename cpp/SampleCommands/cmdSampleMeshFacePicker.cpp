@@ -37,9 +37,9 @@ bool CRhGetMeshFaceRef::CustomGeometryFilter(const CRhinoObject* object, const O
 class CCommandSampleMeshFacePicker : public CRhinoCommand
 {
 public:
-  CCommandSampleMeshFacePicker() {}
-  ~CCommandSampleMeshFacePicker() {}
-  UUID CommandUUID()
+  CCommandSampleMeshFacePicker() = default;
+  ~CCommandSampleMeshFacePicker() = default;
+  UUID CommandUUID() override
   {
     // {D938E82B-90B-4DB7-8E10-55B9C7A8DC73}
     static const GUID SampleMeshFacePickerCommand_UUID =
@@ -47,7 +47,6 @@ public:
     return SampleMeshFacePickerCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMeshFacePicker"; }
-  const wchar_t* LocalCommandName() const { return L"SampleMeshFacePicker"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -102,8 +102,8 @@ class CCommandSamplePerspectiveColors : public CRhinoCommand
 {
 public:
   CCommandSamplePerspectiveColors();
-  ~CCommandSamplePerspectiveColors() {}
-  UUID CommandUUID()
+  ~CCommandSamplePerspectiveColors() = default;
+  UUID CommandUUID() override
   {
     // {68772174-2630-40AE-AFD1-7BD2EC42D56C}
     static const GUID SamplePerspectiveColorsCommand_UUID =
@@ -111,7 +111,6 @@ public:
     return SamplePerspectiveColorsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePerspectiveColors"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePerspectiveColors"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

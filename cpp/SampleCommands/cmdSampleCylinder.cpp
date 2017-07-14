@@ -9,9 +9,9 @@
 class CCommandSampleCylinder : public CRhinoCommand
 {
 public:
-  CCommandSampleCylinder() {}
-  ~CCommandSampleCylinder() {}
-  UUID CommandUUID()
+  CCommandSampleCylinder() = default;
+  ~CCommandSampleCylinder() = default;
+  UUID CommandUUID() override
   {
     // {D5024CAB-8C2A-4F05-BC21-8FD5582C31B1}
     static const GUID SampleCylinderCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleCylinderCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCylinder"; }
-  const wchar_t* LocalCommandName() { return L"SampleCylinder"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

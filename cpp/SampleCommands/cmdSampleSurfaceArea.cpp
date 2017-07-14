@@ -11,9 +11,9 @@
 class CCommandSampleSurfaceArea : public CRhinoCommand
 {
 public:
-  CCommandSampleSurfaceArea() {}
-  ~CCommandSampleSurfaceArea() {}
-  UUID CommandUUID()
+  CCommandSampleSurfaceArea() = default;
+  ~CCommandSampleSurfaceArea() = default;
+  UUID CommandUUID() override
   {
     // {9A978BBA-DDE8-4C87-8A58-8B887442B868}
     static const GUID SampleSurfaceAreaCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleSurfaceAreaCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSurfaceArea"; }
-  const wchar_t* LocalCommandName() const { return L"SampleSurfaceArea"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

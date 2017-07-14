@@ -11,9 +11,9 @@
 class CCommandSampleTextureMapping : public CRhinoCommand
 {
 public:
-  CCommandSampleTextureMapping() {}
-  ~CCommandSampleTextureMapping() {}
-  UUID CommandUUID()
+  CCommandSampleTextureMapping() = default;
+  ~CCommandSampleTextureMapping() = default;
+  UUID CommandUUID() override
   {
     // {614743C0-A387-45FD-8E43-1C207EFDBB08}
     static const GUID SampleTextureMappingCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleTextureMappingCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleTextureMapping"; }
-  const wchar_t* LocalCommandName() const { return L"SampleTextureMapping"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

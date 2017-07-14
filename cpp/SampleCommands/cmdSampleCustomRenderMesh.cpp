@@ -11,9 +11,9 @@
 class CCommandSampleCustomRenderMesh : public CRhinoCommand
 {
 public:
-  CCommandSampleCustomRenderMesh() {}
-  ~CCommandSampleCustomRenderMesh() {}
-  UUID CommandUUID()
+  CCommandSampleCustomRenderMesh() = default;
+  ~CCommandSampleCustomRenderMesh() = default;
+  UUID CommandUUID() override
   {
     // {6BBAFB33-6E7B-43F7-8CE9-DE4CAADFB5BE}
     static const GUID SampleCustomRenderMeshCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleCustomRenderMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleCustomRenderMesh"; }
-  const wchar_t* LocalCommandName() const { return L"SampleCustomRenderMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

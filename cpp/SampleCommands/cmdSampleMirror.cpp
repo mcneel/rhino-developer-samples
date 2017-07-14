@@ -115,9 +115,9 @@ bool CMirror2Xform::CalcCorners(CRhinoViewport& vp, const ON_3dPoint& point, ON_
 class CCommandSampleMirror : public CRhinoTransformCommand
 {
 public:
-  CCommandSampleMirror() {}
-  ~CCommandSampleMirror() {}
-  UUID CommandUUID()
+  CCommandSampleMirror() = default;
+  ~CCommandSampleMirror() = default;
+  UUID CommandUUID() override
   {
     // {DFE87FFC-C771-4EE0-8746-0D17347BDA94}
     static const GUID SampleMirrorCommand_UUID =
@@ -125,7 +125,6 @@ public:
     return SampleMirrorCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMirror"; }
-  const wchar_t* LocalCommandName() const { return L"SampleMirror"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,9 +9,9 @@
 class CCommandSampleSubCrvLength : public CRhinoCommand
 {
 public:
-  CCommandSampleSubCrvLength() {}
-  ~CCommandSampleSubCrvLength() {}
-  UUID CommandUUID()
+  CCommandSampleSubCrvLength() = default;
+  ~CCommandSampleSubCrvLength() = default;
+  UUID CommandUUID() override
   {
     // {CE2E3AA0-7CA9-43EA-BB51-647A9DA9018A}
     static const GUID SampleSubCrvLengthCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleSubCrvLengthCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSubCrvLength"; }
-  const wchar_t* LocalCommandName() { return L"SampleSubCrvLength"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

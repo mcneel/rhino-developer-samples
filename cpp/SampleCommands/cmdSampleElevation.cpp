@@ -9,9 +9,9 @@
 class CCommandSampleElevation : public CRhinoCommand
 {
 public:
-  CCommandSampleElevation() {}
-  ~CCommandSampleElevation() {}
-  UUID CommandUUID()
+  CCommandSampleElevation() = default;
+  ~CCommandSampleElevation() = default;
+  UUID CommandUUID() override
   {
     // {F6E3A8A0-EBAA-4007-BE6E-FAE945470EA5}
     static const GUID SampleElevationCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleElevationCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleElevation"; }
-  const wchar_t* LocalCommandName() { return L"SampleElevation"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

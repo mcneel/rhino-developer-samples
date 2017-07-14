@@ -33,9 +33,9 @@ bool CRhGetDiameterDimensionObject::CustomGeometryFilter(const CRhinoObject* obj
 class CCommandSampleQueryDiameterDimension : public CRhinoCommand
 {
 public:
-  CCommandSampleQueryDiameterDimension() {}
-  ~CCommandSampleQueryDiameterDimension() {}
-  UUID CommandUUID()
+  CCommandSampleQueryDiameterDimension() = default;
+  ~CCommandSampleQueryDiameterDimension() = default;
+  UUID CommandUUID() override
   {
     // {B762C061-2A2-4D51-AB2C-4228EC4B691F}
     static const GUID SampleQueryDiameterDimensionCommand_UUID =
@@ -43,7 +43,6 @@ public:
     return SampleQueryDiameterDimensionCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleQueryDiameterDimension"; }
-  const wchar_t* LocalCommandName() { return L"SampleQueryDiameterDimension"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

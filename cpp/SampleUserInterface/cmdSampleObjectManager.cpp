@@ -12,9 +12,9 @@
 class CCommandSampleObjectManager : public CRhinoCommand
 {
 public:
-  CCommandSampleObjectManager() {}
-  ~CCommandSampleObjectManager() {}
-  UUID CommandUUID()
+  CCommandSampleObjectManager() = default;
+  ~CCommandSampleObjectManager() = default;
+  UUID CommandUUID() override
   {
     // {415ABCAE-E332-466A-B139-2963E81166C1}
     static const GUID SampleObjectManagerCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleObjectManagerCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleObjectManager"; }
-  const wchar_t* LocalCommandName() const { return L"SampleObjectManager"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

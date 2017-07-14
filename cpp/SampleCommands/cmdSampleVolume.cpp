@@ -9,9 +9,9 @@
 class CCommandSampleVolume : public CRhinoCommand
 {
 public:
-  CCommandSampleVolume() {}
-  ~CCommandSampleVolume() {}
-  UUID CommandUUID()
+  CCommandSampleVolume() = default;
+  ~CCommandSampleVolume() = default;
+  UUID CommandUUID() override
   {
     // {2772DB8E-C9ED-487A-9AD8-74EACEB2EF63}
     static const GUID SampleVolumeCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleVolumeCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleVolume"; }
-  const wchar_t* LocalCommandName() { return L"SampleVolume"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

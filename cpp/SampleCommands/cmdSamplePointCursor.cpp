@@ -12,9 +12,9 @@
 class CCommandSamplePointCursor : public CRhinoCommand
 {
 public:
-  CCommandSamplePointCursor() {}
-  ~CCommandSamplePointCursor() {}
-  UUID CommandUUID()
+  CCommandSamplePointCursor() = default;
+  ~CCommandSamplePointCursor() = default;
+  UUID CommandUUID() override
   {
     // {63AA9B30-7EAD-415E-AB07-690530E40746}
     static const GUID SamplePointCursorCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SamplePointCursorCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePointCursor"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePointCursor"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 static class CCommandSamplePointCursor theSamplePointCursorCommand;

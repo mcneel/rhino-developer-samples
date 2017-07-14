@@ -11,9 +11,9 @@
 class CCommandSampleDockbar : public CRhinoCommand
 {
 public:
-  CCommandSampleDockbar() {}
-  ~CCommandSampleDockbar() {}
-  UUID CommandUUID()
+  CCommandSampleDockbar() = default;
+  ~CCommandSampleDockbar() = default;
+  UUID CommandUUID() override
   {
     // {307DFF17-729A-44F5-A324-25489796342D}
     static const GUID SampleDockbarCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleDockbarCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDockbar"; }
-  const wchar_t* LocalCommandName() const { return L"SampleDockbar"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

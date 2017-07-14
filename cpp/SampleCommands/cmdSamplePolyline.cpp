@@ -9,7 +9,7 @@
 class CGetPolylinePoints : public CRhinoGetPoint
 {
 public:
-  CGetPolylinePoints() {}
+  CGetPolylinePoints() = default;
   virtual void DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& pt);
   int GetPoints();
 
@@ -81,9 +81,9 @@ void CGetPolylinePoints::DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint
 class CCommandSamplePolyline : public CRhinoCommand
 {
 public:
-  CCommandSamplePolyline() {}
-  ~CCommandSamplePolyline() {}
-  UUID CommandUUID()
+  CCommandSamplePolyline() = default;
+  ~CCommandSamplePolyline() = default;
+  UUID CommandUUID() override
   {
     // {26FF367F-DF76-4CEF-A540-232D8F0BC825}
     static const GUID SamplePolylineCommand_UUID =
@@ -91,7 +91,6 @@ public:
     return SamplePolylineCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePolyline"; }
-  const wchar_t* LocalCommandName() { return L"SamplePolyline"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

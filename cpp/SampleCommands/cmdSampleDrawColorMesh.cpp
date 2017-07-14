@@ -10,7 +10,7 @@ class CConduitDrawColorMesh : public CRhinoDisplayConduit
 {
 public:
   CConduitDrawColorMesh(const ON_Mesh* pMesh);
-  ~CConduitDrawColorMesh() {}
+  ~CConduitDrawColorMesh() = default;
 
   bool ExecConduit(
     CRhinoDisplayPipeline& dp, // pipeline executing this conduit
@@ -75,9 +75,9 @@ bool CConduitDrawColorMesh::ExecConduit(CRhinoDisplayPipeline& dp, UINT nChannel
 class CCommandSampleDrawColorMesh : public CRhinoCommand
 {
 public:
-  CCommandSampleDrawColorMesh() {}
-  ~CCommandSampleDrawColorMesh() {}
-  UUID CommandUUID()
+  CCommandSampleDrawColorMesh() = default;
+  ~CCommandSampleDrawColorMesh() = default;
+  UUID CommandUUID() override
   {
     // {774D3D87-9CFC-48D1-BEAE-86A607F4360A}
     static const GUID SampleDrawColorMeshCommand_UUID =
@@ -85,7 +85,6 @@ public:
     return SampleDrawColorMeshCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDrawColorMesh"; }
-  const wchar_t* LocalCommandName() { return L"SampleDrawColorMesh"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

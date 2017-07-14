@@ -139,9 +139,9 @@ bool CSampleMeshFaceColorConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT nC
 class CCommandSampleMeshFaceColor : public CRhinoCommand
 {
 public:
-  CCommandSampleMeshFaceColor() {}
-  ~CCommandSampleMeshFaceColor() {}
-  UUID CommandUUID()
+  CCommandSampleMeshFaceColor() = default;
+  ~CCommandSampleMeshFaceColor() = default;
+  UUID CommandUUID() override
   {
     // {6EA9AC1B-A2FE-4F66-B6BC-D316E9326255}
     static const GUID SampleMeshFaceColorCommand_UUID =
@@ -149,7 +149,6 @@ public:
     return SampleMeshFaceColorCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMeshFaceColor"; }
-  const wchar_t* LocalCommandName() { return L"SampleMeshFaceColor"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

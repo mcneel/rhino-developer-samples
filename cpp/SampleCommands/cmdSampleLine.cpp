@@ -9,9 +9,9 @@
 class CCommandSampleLine : public CRhinoCommand
 {
 public:
-  CCommandSampleLine() {}
-  ~CCommandSampleLine() {}
-  UUID CommandUUID()
+  CCommandSampleLine() = default;
+  ~CCommandSampleLine() = default;
+  UUID CommandUUID() override
   {
     // {F4226F9A-132-4D66-AAB1-EE483B80C221}
     static const GUID SampleLineCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleLineCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleLine"; }
-  const wchar_t* LocalCommandName() { return L"SampleLine"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

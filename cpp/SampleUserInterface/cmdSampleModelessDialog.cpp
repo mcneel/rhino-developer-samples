@@ -12,9 +12,9 @@
 class CCommandSampleModelessDialog : public CRhinoCommand
 {
 public:
-  CCommandSampleModelessDialog() {}
-  ~CCommandSampleModelessDialog() {}
-  UUID CommandUUID()
+  CCommandSampleModelessDialog() = default;
+  ~CCommandSampleModelessDialog() = default;
+  UUID CommandUUID() override
   {
     // {5110DE79-8458-4AFE-9EE2-895A77EDF05C}
     static const GUID SampleModelessDialogCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SampleModelessDialogCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleModelessDialog"; }
-  const wchar_t* LocalCommandName() { return L"SampleModelessDialog"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -107,9 +106,9 @@ static CRhinoCommand::result GetDialogPoint(const CRhinoCommandContext&, ON_3dPo
 class CCommandGetPoint1 : public CRhinoTestCommand
 {
 public:
-  CCommandGetPoint1() {}
-  ~CCommandGetPoint1() {}
-  UUID CommandUUID()
+  CCommandGetPoint1() = default;
+  ~CCommandGetPoint1() = default;
+  UUID CommandUUID() override
   {
     // {A3E576E2-7A1F-42F9-8EFE-D0F92B17BAD8}
     static const GUID GetPoint1Command_UUID =
@@ -117,7 +116,6 @@ public:
     return GetPoint1Command_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"GetPoint1"; }
-  const wchar_t* LocalCommandName() { return L"GetPoint1"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -153,9 +151,9 @@ CRhinoCommand::result CCommandGetPoint1::RunCommand(const CRhinoCommandContext& 
 class CCommandGetPoint2 : public CRhinoTestCommand
 {
 public:
-  CCommandGetPoint2() {}
-  ~CCommandGetPoint2() {}
-  UUID CommandUUID()
+  CCommandGetPoint2() = default;
+  ~CCommandGetPoint2() = default;
+  UUID CommandUUID() override
   {
     // {EB82C70C-1A56-41F5-AD76-A2BCEA6770E8}
     static const GUID GetPoint2Command_UUID =
@@ -163,7 +161,6 @@ public:
     return GetPoint2Command_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"GetPoint2"; }
-  const wchar_t* LocalCommandName() { return L"GetPoint2"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -199,9 +196,9 @@ CRhinoCommand::result CCommandGetPoint2::RunCommand(const CRhinoCommandContext& 
 class CCommandGetPoint3 : public CRhinoTestCommand
 {
 public:
-  CCommandGetPoint3() {}
-  ~CCommandGetPoint3() {}
-  UUID CommandUUID()
+  CCommandGetPoint3() = default;
+  ~CCommandGetPoint3() = default;
+  UUID CommandUUID() override
   {
     // {A76695F4-764F-4A0F-81A9-4D126DCD67FF}
     static const GUID GetPoint3Command_UUID =
@@ -209,7 +206,6 @@ public:
     return GetPoint3Command_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"GetPoint3"; }
-  const wchar_t* LocalCommandName() { return L"GetPoint3"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

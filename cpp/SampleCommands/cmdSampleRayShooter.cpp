@@ -9,9 +9,9 @@
 class CCommandSampleRayShooter : public CRhinoCommand
 {
 public:
-  CCommandSampleRayShooter() {}
-  ~CCommandSampleRayShooter() {}
-  UUID CommandUUID()
+  CCommandSampleRayShooter() = default;
+  ~CCommandSampleRayShooter() = default;
+  UUID CommandUUID() override
   {
     // {F5A16944-CBA6-4939-84AD-A48BFB0CEE42}
     static const GUID SampleRayShooterCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleRayShooterCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleRayShooter"; }
-  const wchar_t* LocalCommandName() { return L"SampleRayShooter"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

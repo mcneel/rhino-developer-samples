@@ -135,9 +135,9 @@ static bool write_curves_example(ON_Buffer& buffer, int version, ON_TextLog& err
 class CCommandSampleMemoryBuffer : public CRhinoCommand
 {
 public:
-  CCommandSampleMemoryBuffer() {}
-  ~CCommandSampleMemoryBuffer() {}
-  UUID CommandUUID()
+  CCommandSampleMemoryBuffer() = default;
+  ~CCommandSampleMemoryBuffer() = default;
+  UUID CommandUUID() override
   {
     // {20B46D76-345B-4495-99AB-DFB4B9FE2D33}
     static const GUID SampleMemoryBufferCommand_UUID =
@@ -145,7 +145,6 @@ public:
     return SampleMemoryBufferCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleMemoryBuffer"; }
-  const wchar_t* LocalCommandName() const { return L"SampleMemoryBuffer"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -9,9 +9,9 @@
 class CCommandSampleSphere : public CRhinoCommand
 {
 public:
-  CCommandSampleSphere() {}
-  ~CCommandSampleSphere() {}
-  UUID CommandUUID()
+  CCommandSampleSphere() = default;
+  ~CCommandSampleSphere() = default;
+  UUID CommandUUID() override
   {
     // {9D098DFD-77D6-4025-802D-73F125EB967C}
     static const GUID SampleSphereCommand_UUID =
@@ -19,7 +19,6 @@ public:
     return SampleSphereCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleSphere"; }
-  const wchar_t* LocalCommandName() { return L"SampleSphere"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

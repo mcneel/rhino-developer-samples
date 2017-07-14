@@ -12,9 +12,9 @@
 class CCommandSamplePickObjects : public CRhinoCommand
 {
 public:
-  CCommandSamplePickObjects() {}
-  ~CCommandSamplePickObjects() {}
-  UUID CommandUUID()
+  CCommandSamplePickObjects() = default;
+  ~CCommandSamplePickObjects() = default;
+  UUID CommandUUID() override
   {
     // {C1E761F2-BED6-44CC-8D2D-5AD9EEF2AB81}
     static const GUID SamplePickObjectsCommand_UUID =
@@ -22,7 +22,6 @@ public:
     return SamplePickObjectsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePickObjects"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePickObjects"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

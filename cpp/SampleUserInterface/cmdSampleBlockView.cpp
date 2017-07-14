@@ -10,9 +10,9 @@
 class CCommandSampleBlockView : public CRhinoCommand
 {
 public:
-  CCommandSampleBlockView() {}
-  ~CCommandSampleBlockView() {}
-  UUID CommandUUID()
+  CCommandSampleBlockView() = default;
+  ~CCommandSampleBlockView() = default;
+  UUID CommandUUID() override
   {
     // {8425DD03-A57D-4197-A4D7-F6CC07E9B0F2}
     static const GUID SampleBlockViewCommand_UUID =
@@ -20,7 +20,6 @@ public:
     return SampleBlockViewCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleBlockView"; }
-  const wchar_t* LocalCommandName() { return L"SampleBlockView"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

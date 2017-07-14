@@ -11,9 +11,9 @@
 class CCommandSampleViewCaptureToFile : public CRhinoCommand
 {
 public:
-  CCommandSampleViewCaptureToFile() {}
-  ~CCommandSampleViewCaptureToFile() {}
-  UUID CommandUUID()
+  CCommandSampleViewCaptureToFile() = default;
+  ~CCommandSampleViewCaptureToFile() = default;
+  UUID CommandUUID() override
   {
     // {A3016DC5-FEBC-40C3-A05A-81538658DFE2}
     static const GUID SampleViewCaptureToFileCommand_UUID =
@@ -21,7 +21,6 @@ public:
     return SampleViewCaptureToFileCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleViewCaptureToFile"; }
-  const wchar_t* LocalCommandName() const { return L"SampleViewCaptureToFile"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

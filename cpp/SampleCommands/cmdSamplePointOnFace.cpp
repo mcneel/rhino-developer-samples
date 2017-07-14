@@ -77,9 +77,9 @@ static bool RhFindPointOnFace(const ON_BrepFace* face, ON_3dPoint& point)
 class CCommandSamplePointOnFace : public CRhinoCommand
 {
 public:
-  CCommandSamplePointOnFace() {}
-  ~CCommandSamplePointOnFace() {}
-  UUID CommandUUID()
+  CCommandSamplePointOnFace() = default;
+  ~CCommandSamplePointOnFace() = default;
+  UUID CommandUUID() override
   {
     // {E09AA069-DD6-4FF5-A708-8ACA7EA1482F}
     static const GUID SamplePointOnFaceCommand_UUID =
@@ -87,7 +87,6 @@ public:
     return SamplePointOnFaceCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SamplePointOnFace"; }
-  const wchar_t* LocalCommandName() const { return L"SamplePointOnFace"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

@@ -232,9 +232,9 @@ bool CZAnalysisVAM::ShowIsoCurves() const
 class CCommandZAnalysisOn : public CRhinoCommand
 {
 public:
-  CCommandZAnalysisOn() {}
-  ~CCommandZAnalysisOn() {}
-  UUID CommandUUID()
+  CCommandZAnalysisOn() = default;
+  ~CCommandZAnalysisOn() = default;
+  UUID CommandUUID() override
   {
     // {3557762E-2FA4-4D4C-B867-10D652C50DFE}
     static const GUID ZAnalysisOnCommand_UUID =
@@ -242,7 +242,6 @@ public:
     return ZAnalysisOnCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"ZAnalysisOn"; }
-  const wchar_t* LocalCommandName() { return L"ZAnalysisOn"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
@@ -298,9 +297,9 @@ CRhinoCommand::result CCommandZAnalysisOn::RunCommand(const CRhinoCommandContext
 class CCommandZAnalysisOff : public CRhinoCommand
 {
 public:
-  CCommandZAnalysisOff() {}
-  ~CCommandZAnalysisOff() {}
-  UUID CommandUUID()
+  CCommandZAnalysisOff() = default;
+  ~CCommandZAnalysisOff() = default;
+  UUID CommandUUID() override
   {
     // {C8D86634-F36F-412C-B09C-8B279F4165FC}
     static const GUID ZAnalysisOffCommand_UUID =
@@ -308,7 +307,6 @@ public:
     return ZAnalysisOffCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"ZAnalysisOff"; }
-  const wchar_t* LocalCommandName() { return L"ZAnalysisOff"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 

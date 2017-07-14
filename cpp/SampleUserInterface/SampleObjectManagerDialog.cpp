@@ -385,8 +385,8 @@ class CCommandSampleObjectManagerSelect : public CRhinoSelCommand
 {
 public:
   CCommandSampleObjectManagerSelect();
-  ~CCommandSampleObjectManagerSelect() {}
-  UUID CommandUUID()
+  ~CCommandSampleObjectManagerSelect() = default;
+  UUID CommandUUID() override
   {
     // {6815BA85-F701-4A7F-8D2C-F6251EEB5C5E}
     static const GUID SampleObjectManagerSelectCommand_UUID =
@@ -394,7 +394,6 @@ public:
     return SampleObjectManagerSelectCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleObjectManagerSelect"; }
-  const wchar_t* LocalCommandName() const { return L"SampleObjectManagerSelect"; }
   bool SelFilter(const CRhinoObject* object);
 
   void SetModelObjectId(ON_UUID model_object_id);

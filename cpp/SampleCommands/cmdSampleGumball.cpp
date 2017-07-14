@@ -118,9 +118,9 @@ CRhinoGet::result CSampleGumballGetXform::MoveGumball()
 class CCommandSampleGumball : public CRhinoTransformCommand
 {
 public:
-  CCommandSampleGumball() {}
-  ~CCommandSampleGumball() {}
-  UUID CommandUUID()
+  CCommandSampleGumball() = default;
+  ~CCommandSampleGumball() = default;
+  UUID CommandUUID() override
   {
     // {7C053725-678-48D2-A28B-DB52347079D4}
     static const GUID SampleGumballCommand_UUID =
@@ -128,7 +128,6 @@ public:
     return SampleGumballCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleGumball"; }
-  const wchar_t* LocalCommandName() const { return L"SampleGumball"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 
 private:

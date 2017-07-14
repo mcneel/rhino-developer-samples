@@ -99,9 +99,9 @@ bool CSampleDrawArrowheadConduit::GetArrowHead(ON_2dVector dir, ON_2dPoint tip, 
 class CCommandSampleDrawArrowhead : public CRhinoCommand
 {
 public:
-  CCommandSampleDrawArrowhead() {}
-  ~CCommandSampleDrawArrowhead() {}
-  UUID CommandUUID()
+  CCommandSampleDrawArrowhead() = default;
+  ~CCommandSampleDrawArrowhead() = default;
+  UUID CommandUUID() override
   {
     // {CD687B7C-E24D-4E2C-9C4B-5DC2AA1BC235}
     static const GUID SampleDrawArrowheadCommand_UUID =
@@ -109,7 +109,6 @@ public:
     return SampleDrawArrowheadCommand_UUID;
   }
   const wchar_t* EnglishCommandName() { return L"SampleDrawArrowhead"; }
-  const wchar_t* LocalCommandName() const { return L"SampleDrawArrowhead"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
