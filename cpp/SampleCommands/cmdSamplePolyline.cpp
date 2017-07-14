@@ -90,8 +90,8 @@ public:
     { 0x26FF367F, 0xDF76, 0x4CEF, { 0xA5, 0x40, 0x23, 0x2D, 0x8F, 0x0B, 0xC8, 0x25 } };
     return SamplePolylineCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePolyline"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePolyline"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePolyline object

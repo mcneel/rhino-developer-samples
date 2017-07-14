@@ -39,8 +39,8 @@ public:
     { 0xE391201E, 0xD2E8, 0x4CCF, { 0x88, 0x83, 0xD2, 0x78, 0xD1, 0xED, 0x8A, 0x68 } };
     return SampleCustomMeshObjectsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCustomMeshObjects"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCustomMeshObjects"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCustomMeshObjects object

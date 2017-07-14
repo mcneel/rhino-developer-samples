@@ -84,8 +84,8 @@ public:
     { 0x774D3D87, 0x9CFC, 0x48D1, { 0xBE, 0xAE, 0x86, 0xA6, 0x07, 0xF4, 0x36, 0x0A } };
     return SampleDrawColorMeshCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDrawColorMesh"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDrawColorMesh"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDrawColorMesh object

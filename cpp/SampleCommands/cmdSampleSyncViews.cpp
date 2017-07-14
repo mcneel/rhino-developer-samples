@@ -159,8 +159,8 @@ public:
     { 0x84350CBB, 0x24F2, 0x40F6, { 0x95, 0xB0, 0xC0, 0x65, 0x6F, 0x90, 0xBC, 0xE8 } };
     return SampleSyncViewsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSyncViews"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSyncViews"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 public:
   CSampleSyncViewsConduit m_conduit;

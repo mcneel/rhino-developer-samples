@@ -18,8 +18,8 @@ public:
     { 0x2FE8CA38, 0x48C7, 0x48F7, { 0x81, 0x73, 0x66, 0x3D, 0x3A, 0x95, 0x0D, 0x72 } };
     return SampleDumpBlockTreeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDumpBlockTree"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDumpBlockTree"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   void DumpInstanceDefinition(const CRhinoInstanceDefinition* idef, ON_TextLog& dump, bool bRoot);

@@ -20,8 +20,8 @@ public:
     { 0x9475C820, 0x1FD7, 0x4B7A, { 0x94, 0xC5, 0xB3, 0x9E, 0x4A, 0x6B, 0x64, 0x6D } };
     return SampleExplodeBrepCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleExplodeBrep"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleExplodeBrep"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleExplodeBrep object

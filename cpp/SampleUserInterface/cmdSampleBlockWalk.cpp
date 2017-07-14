@@ -21,8 +21,8 @@ public:
     { 0x9A9B90FB, 0x8C91, 0x4143, { 0x90, 0xE4, 0x8C, 0x8, 0x36, 0x14, 0x8, 0x9 } };
     return SampleBlockWalkCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleBlockWalk"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleBlockWalk"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 static class CCommandSampleBlockWalk theSampleBlockWalkCommand;

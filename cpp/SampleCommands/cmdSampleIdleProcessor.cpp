@@ -55,8 +55,8 @@ public:
     { 0xC2FF9FE9, 0x51B6, 0x4CA2, { 0x85, 0x09, 0xCE, 0x6C, 0xEF, 0x25, 0x69, 0x40 } };
     return SampleIdleProcessorCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleIdleProcessor"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleIdleProcessor"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleIdleProcessor object

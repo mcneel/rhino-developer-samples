@@ -20,8 +20,8 @@ public:
     { 0x614743C0, 0xA387, 0x45FD,{ 0x8E, 0x43, 0x1C, 0x20, 0x7E, 0xFD, 0xBB, 0x08 } };
     return SampleTextureMappingCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleTextureMapping"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleTextureMapping"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleTextureMapping object

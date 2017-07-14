@@ -18,8 +18,8 @@ public:
     { 0x58D7F9B0, 0xDAA7, 0x4631, { 0xBC, 0xF7, 0x15, 0xDC, 0xD1, 0x09, 0x80, 0x3E } };
     return SampleExtractIsoCurveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleExtractIsoCurve"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleExtractIsoCurve"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleExtractIsoCurve object

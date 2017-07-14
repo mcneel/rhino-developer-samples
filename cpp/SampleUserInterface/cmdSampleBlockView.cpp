@@ -19,8 +19,8 @@ public:
     { 0x8425DD03, 0xA57D, 0x4197, { 0xA4, 0xD7, 0xF6, 0xCC, 0x07, 0xE9, 0xB0, 0xF2 } };
     return SampleBlockViewCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleBlockView"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleBlockView"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleBlockView object

@@ -18,8 +18,8 @@ public:
     { 0xDBB19D32, 0xAF24, 0x40A1, { 0xBE, 0x43, 0xA1, 0x4D, 0x7E, 0x08, 0x41, 0x3A } };
     return SampleCurvatureCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCurvature"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCurvature"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCurvature object

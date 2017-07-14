@@ -18,8 +18,8 @@ public:
     { 0x26BD88E9, 0xA372, 0x4011, { 0x93, 0x0E, 0x77, 0xF4, 0x22, 0x3E, 0x22, 0x94 } };
     return SampleMeshPolysrfCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMeshPolysrf"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMeshPolysrf"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMeshPolysrf object

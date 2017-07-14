@@ -18,8 +18,8 @@ public:
     { 0xCAC2AB9B, 0x3F44, 0x412D, { 0x9D, 0x2F, 0x26, 0xAA, 0x44, 0x82, 0xB7, 0x69 } };
     return SampleTruncatedConeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleTruncatedCone"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleTruncatedCone"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleTruncatedCone object

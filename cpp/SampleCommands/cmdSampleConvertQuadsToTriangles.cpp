@@ -18,8 +18,8 @@ public:
     { 0xF8B6CAC, 0x6DC8, 0x43F1, { 0x82, 0x15, 0xAC, 0xCD, 0x07, 0xD0, 0x04, 0xB2 } };
     return SampleConvertQuadsToTrianglesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleConvertQuadsToTriangles"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleConvertQuadsToTriangles"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);
   void SaveProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

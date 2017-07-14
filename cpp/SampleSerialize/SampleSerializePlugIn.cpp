@@ -195,7 +195,7 @@ BOOL CSampleSerializePlugIn::ReadDocument(CRhinoDoc& doc, ON_BinaryArchive& arch
   // data. Or, we might want to merge this document's data with ours. In this example,
   // if Rhino is importing another 3dm file, we will go ahead and read our data, just
   // like we should. But we will just throw it away...
-  BOOL bImporting = options.Mode(CRhinoFileReadOptions::ImportMode) || options.Mode(CRhinoFileReadOptions::ImportReferenceMode);
+  BOOL bImporting = options.Mode(CRhinoFileReadOptions::ModeFlag::ImportMode) || options.Mode(CRhinoFileReadOptions::ModeFlag::ImportReferenceMode);
   if (bImporting)
   {
     CSampleSerializeData data;

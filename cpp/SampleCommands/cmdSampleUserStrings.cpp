@@ -20,8 +20,8 @@ public:
     { 0x98455B14, 0xBF0D, 0x4DC1, { 0xBE, 0x9C, 0xBB, 0x59, 0x72, 0x36, 0x02, 0xBC } };
     return SampleSetUserStringsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSetUserStrings"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSetUserStrings"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   ON_wString ToEnglish(const int number);
@@ -212,8 +212,8 @@ public:
     { 0xAC1A1733, 0x27DE, 0x437B, { 0xB3, 0xF3, 0xA8, 0xCB, 0x80, 0x68, 0x3B, 0xFC } };
     return SampleGetUserStringsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGetUserStrings"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGetUserStrings"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleGetUserStrings object

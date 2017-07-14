@@ -20,8 +20,8 @@ public:
     { 0x4326C435, 0x2835, 0x4C0D,{ 0xBD, 0xE9, 0x2C, 0x80, 0xD6, 0x32, 0xE1, 0x13 } };
     return SampleHideObjectsOnLayerCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleHideObjectsOnLayer"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleHideObjectsOnLayer"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleHideObjectsOnLayer object

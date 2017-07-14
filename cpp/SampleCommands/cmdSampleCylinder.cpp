@@ -18,8 +18,8 @@ public:
     { 0xD5024CAB, 0x8C2A, 0x4F05, { 0xBC, 0x21, 0x8F, 0xD5, 0x58, 0x2C, 0x31, 0xB1 } };
     return SampleCylinderCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCylinder"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCylinder"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCylinder object

@@ -20,8 +20,8 @@ public:
     { 0x540E45AA, 0xCC50, 0x4724, { 0xB7, 0x8C, 0x94, 0x86, 0x0B, 0xBE, 0x08, 0x2A } };
     return SampleSrfPtGridCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSrfPtGrid"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSrfPtGrid"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSrfPtGrid object

@@ -20,8 +20,8 @@ public:
     { 0xD1021FFA, 0xFA7E, 0x4E14, { 0xB5, 0x0C, 0x0F, 0x3B, 0x68, 0xAD, 0x2F, 0xEC } };
     return SampleExtractCurvesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleExtractCurves"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleExtractCurves"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   double m_row_count;

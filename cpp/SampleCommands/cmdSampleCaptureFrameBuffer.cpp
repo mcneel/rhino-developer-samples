@@ -20,8 +20,8 @@ public:
     { 0x22292D24, 0xC175, 0x4CEE, { 0xB2, 0x99, 0x2B, 0xC5, 0x56, 0x65, 0x01, 0x4C } };
     return SampleCaptureFrameBufferCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCaptureFrameBuffer"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCaptureFrameBuffer"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCaptureFrameBuffer object

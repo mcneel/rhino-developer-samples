@@ -18,8 +18,8 @@ public:
     { 0xBEE6EB2A, 0x9AD5, 0x4930, { 0xBD, 0xF5, 0x01, 0x69, 0xDC, 0x07, 0x27, 0x15 } };
     return SampleExtractFaceMeshCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleExtractFaceMesh"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleExtractFaceMesh"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleExtractFaceMesh object

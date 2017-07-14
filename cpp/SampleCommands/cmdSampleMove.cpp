@@ -40,8 +40,8 @@ public:
     { 0xB36D0E5E, 0x5A57, 0x4440, { 0x99, 0xD0, 0xA9, 0x6F, 0x63, 0x02, 0x20, 0x64 } };
     return SampleMoveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMove"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMove"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMove object

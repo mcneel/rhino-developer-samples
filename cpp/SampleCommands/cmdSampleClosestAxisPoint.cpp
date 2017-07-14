@@ -45,8 +45,8 @@ public:
     { 0x3D753554, 0x2B6B, 0x4E08, { 0x8E, 0xA3, 0xE9, 0x08, 0x56, 0xD0, 0xF0, 0x11 } };
     return SampleClosestAxisPointCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleClosestAxisPoint"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleClosestAxisPoint"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleClosestAxisPoint object

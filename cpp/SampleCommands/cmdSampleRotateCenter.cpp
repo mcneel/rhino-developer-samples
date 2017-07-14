@@ -18,8 +18,8 @@ public:
     { 0x188044C6, 0x7177, 0x4956, { 0xA1, 0xA6, 0xFA, 0xC9, 0xB7, 0xAA, 0xE4, 0x36 } };
     return SampleRotateCenterCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleRotateCenter"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleRotateCenter"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   double m_angle;

@@ -22,8 +22,8 @@ public:
     { 0xBE07E174, 0x656C, 0x44E2, { 0x80, 0xEA, 0x17, 0x04, 0x8A, 0x60, 0x1B, 0xF1 } };
     return SampleOpenIgesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleOpenIges"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleOpenIges"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleOpenIges object

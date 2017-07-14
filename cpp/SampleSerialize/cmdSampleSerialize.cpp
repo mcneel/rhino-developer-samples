@@ -17,8 +17,8 @@ public:
     { 0xFB954414, 0x900E, 0x434C,{ 0xB5, 0x84, 0xBB, 0xF, 0xD2, 0x52, 0xF2, 0xF0 } };
     return SampleSerializeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSerialize"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSerialize"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 static class CCommandSampleSerialize theSampleSerializeCommand;
 
@@ -80,8 +80,8 @@ public:
     { 0xA5836FF, 0xCFAA, 0x43BC,{ 0x93, 0xAB, 0xCE, 0xDD, 0x8E, 0x25, 0xBF, 0x31 } };
     return SampleUnserializeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleUnserialize"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleUnserialize"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleUnserialize object

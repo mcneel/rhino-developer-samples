@@ -18,8 +18,8 @@ public:
     { 0x581D3D84, 0x631A, 0x4283, { 0xAC, 0xA3, 0x6F, 0xEE, 0x82, 0xC6, 0xBB, 0x49 } };
     return SampleSplitBrepCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSplitBrep"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSplitBrep"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSplitBrep object

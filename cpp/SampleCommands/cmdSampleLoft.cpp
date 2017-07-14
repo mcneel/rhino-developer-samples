@@ -18,8 +18,8 @@ public:
     { 0xEB83F47, 0xD94A, 0x4F5B, { 0x95, 0xF6, 0x74, 0x3C, 0x4C, 0x1D, 0x83, 0x0B } };
     return SampleLoftCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleLoft"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleLoft"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleLoft object

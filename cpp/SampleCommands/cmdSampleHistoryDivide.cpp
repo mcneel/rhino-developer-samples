@@ -18,8 +18,8 @@ public:
     { 0xC4EDB0D9, 0xEF45, 0x4B08, { 0xB0, 0xEE, 0x5A, 0x54, 0x79, 0x93, 0x82, 0x72 } };
     return SampleHistoryDivideCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleHistoryDivide"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleHistoryDivide"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
   //Rhino calls the virtual ReplayHistory functions to
   //to remake an objects when inputs have changed.  

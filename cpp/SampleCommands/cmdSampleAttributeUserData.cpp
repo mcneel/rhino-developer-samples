@@ -19,8 +19,8 @@ public:
     { 0x65A1D235, 0x6404, 0x41B5, { 0xB5, 0x61, 0x90, 0x38, 0xB1, 0xF6, 0x36, 0x3C } };
     return SampleAttributeUserDataAddCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAttributeUserDataAdd"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAttributeUserDataAdd"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleAttributeUserDataAdd object
@@ -92,8 +92,8 @@ public:
     { 0x454332B9, 0x9788, 0x4034, { 0x8C, 0x94, 0xD2, 0x27, 0x18, 0xB6, 0x3E, 0x0F } };
     return SampleAttributeUserDataGetCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAttributeUserDataGet"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAttributeUserDataGet"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleAttributeUserDataGet object

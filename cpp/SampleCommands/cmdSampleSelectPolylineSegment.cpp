@@ -114,8 +114,8 @@ public:
     { 0xD03215CF, 0x283A, 0x4D6F, { 0x8D, 0x25, 0x21, 0xD4, 0x68, 0x1E, 0xD0, 0x9F } };
     return SampleSelectPolylineSegmentCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSelectPolylineSegment"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSelectPolylineSegment"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSelectPolylineSegment object

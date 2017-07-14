@@ -20,8 +20,8 @@ public:
     { 0x12FF87FF, 0xB55F, 0x4492, { 0xB4, 0x55, 0x41, 0x2B, 0x86, 0x1F, 0xFE, 0xC4 } };
     return SampleShortPathCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleShortPath"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleShortPath"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleShortPath object

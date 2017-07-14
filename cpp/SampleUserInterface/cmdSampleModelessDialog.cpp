@@ -21,8 +21,8 @@ public:
     { 0x5110DE79, 0x8458, 0x4AFE, { 0x9E, 0xE2, 0x89, 0x5A, 0x77, 0xED, 0xF0, 0x5C } };
     return SampleModelessDialogCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleModelessDialog"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleModelessDialog"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleModelessDialog object
@@ -115,8 +115,8 @@ public:
     { 0xA3E576E2, 0x7A1F, 0x42F9, { 0x8E, 0xFE, 0xD0, 0xF9, 0x2B, 0x17, 0xBA, 0xD8 } };
     return GetPoint1Command_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"GetPoint1"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"GetPoint1"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandGetPoint1 object
@@ -160,8 +160,8 @@ public:
     { 0xEB82C70C, 0x1A56, 0x41F5, { 0xAD, 0x76, 0xA2, 0xBC, 0xEA, 0x67, 0x70, 0xE8 } };
     return GetPoint2Command_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"GetPoint2"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"GetPoint2"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandGetPoint2 object
@@ -205,8 +205,8 @@ public:
     { 0xA76695F4, 0x764F, 0x4A0F, { 0x81, 0xA9, 0x4D, 0x12, 0x6D, 0xCD, 0x67, 0xFF } };
     return GetPoint3Command_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"GetPoint3"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"GetPoint3"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandGetPoint3 object

@@ -56,8 +56,8 @@ public:
     { 0x72E436CE, 0xA0E0, 0x4D46, { 0x85, 0x5B, 0x1E, 0x76, 0x7B, 0x5B, 0x04, 0x5E } };
     return SampleDrawStringCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDrawString"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDrawString"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDrawString object

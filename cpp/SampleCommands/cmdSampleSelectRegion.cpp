@@ -262,8 +262,8 @@ public:
     { 0x3F0B7066, 0x2EE3, 0x45DF, { 0x98, 0x9B, 0x01, 0x24, 0x33, 0x7F, 0x86, 0x8E } };
     return SampleRegionPickCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleRegionPick"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleRegionPick"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleRegionPick object
@@ -342,8 +342,8 @@ public:
     { 0x9550F589, 0x49BA, 0x4126, { 0xB1, 0x21, 0xFF, 0xF9, 0x1A, 0xF5, 0x97, 0x55 } };
     return SampleWindowPickCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleWindowPick"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleWindowPick"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleWindowPick object
@@ -425,8 +425,8 @@ public:
     { 0xDEED29F0, 0xEDCA, 0x4163, { 0x90, 0x68, 0x46, 0x2A, 0xD2, 0x01, 0xED, 0xFB } };
     return SampleRemovePointsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleRemovePoints"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleRemovePoints"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleRemovePoints object

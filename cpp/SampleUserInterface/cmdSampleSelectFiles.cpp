@@ -18,8 +18,8 @@ public:
     { 0x36E2A92C, 0x2605, 0x45A1, { 0x89, 0xBA, 0x9F, 0x23, 0x4F, 0xDD, 0x5D, 0x92 } };
     return SampleSelectFilesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSelectFiles"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSelectFiles"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSelectFiles object

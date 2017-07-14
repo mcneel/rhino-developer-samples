@@ -22,8 +22,8 @@ public:
     { 0x16A2C043, 0x235, 0x4BB2, { 0xB1, 0x1E, 0x5A, 0x7A, 0xA2, 0x9D, 0x65, 0xE5 } };
     return SampleMarkerCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMarker"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMarker"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMarker object

@@ -18,8 +18,8 @@ public:
     { 0x2772DB8E, 0xC9ED, 0x487A, { 0x9A, 0xD8, 0x74, 0xEA, 0xCE, 0xB2, 0xEF, 0x63 } };
     return SampleVolumeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleVolume"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleVolume"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleVolume object

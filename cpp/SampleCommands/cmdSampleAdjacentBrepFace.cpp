@@ -20,8 +20,8 @@ public:
     { 0x50F82802, 0x80A6, 0x44D9, { 0x82, 0x25, 0x70, 0x02, 0xC4, 0x97, 0xC4, 0x6F } };
     return SampleAdjacentBrepFaceCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAdjacentBrepFace"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAdjacentBrepFace"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleAdjacentBrepFace object

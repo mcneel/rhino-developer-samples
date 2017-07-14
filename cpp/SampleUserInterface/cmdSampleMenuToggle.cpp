@@ -21,8 +21,8 @@ public:
     { 0xF065C992, 0x5B0E, 0x484A, { 0xBA, 0x61, 0x09, 0x8E, 0x5A, 0x41, 0x49, 0x74 } };
     return SampleMenuToggleCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMenuToggle"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMenuToggle"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMenuToggle object

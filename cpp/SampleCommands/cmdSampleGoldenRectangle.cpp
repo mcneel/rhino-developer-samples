@@ -112,8 +112,8 @@ public:
     { 0x8332424B, 0x2371, 0x4B85, { 0x9C, 0x35, 0x58, 0x6E, 0xD5, 0x43, 0xDA, 0xEA } };
     return SampleGoldenRectangleCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGoldenRectangle"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGoldenRectangle"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   bool m_bSwap;

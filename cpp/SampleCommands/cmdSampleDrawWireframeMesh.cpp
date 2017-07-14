@@ -65,8 +65,8 @@ public:
     { 0x6A79E54E, 0xFBDF, 0x4D1D, { 0x8D, 0x0B, 0x37, 0x9F, 0xD7, 0xA2, 0x28, 0xE6 } };
     return SampleDrawWireframeMeshCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDrawWireframeMesh"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDrawWireframeMesh"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDrawWireframeMesh object

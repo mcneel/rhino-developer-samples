@@ -21,8 +21,8 @@ public:
     { 0x241B6E5D, 0xADEA, 0x4FF0, { 0x90, 0xF6, 0x2C, 0xF1, 0x4B, 0x49, 0xBD, 0xF4 } };
     return SampleTabbedDockBarCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleTabbedDockBar"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleTabbedDockBar"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleTabbedDockBar object.  

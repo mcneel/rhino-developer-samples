@@ -33,8 +33,8 @@ public:
     { 0x4F98D5D, 0xFCB, 0x4E96, { 0x91, 0xA8, 0x19, 0x25, 0xD1, 0x40, 0xD1, 0x14 } };
     return SampleObjectUserDataAddCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleObjectUserDataAdd"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleObjectUserDataAdd"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleObjectUserDataAdd object
@@ -94,8 +94,8 @@ public:
     { 0x91DC4B69, 0xDD98, 0x4560, { 0x8E, 0x79, 0x28, 0x42, 0x2F, 0xAF, 0xD5, 0x25 } };
     return SampleObjectUserDataGetCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleObjectUserDataGet"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleObjectUserDataGet"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleObjectUserDataGet object
@@ -157,8 +157,8 @@ public:
     { 0x247E307B, 0xDDB8, 0x4E31, { 0x91, 0x0F, 0x3C, 0x4E, 0xC9, 0x4B, 0x20, 0x89 } };
     return SampleObjectUserDataRemoveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleObjectUserDataRemove"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleObjectUserDataRemove"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleObjectUserDataRemove object

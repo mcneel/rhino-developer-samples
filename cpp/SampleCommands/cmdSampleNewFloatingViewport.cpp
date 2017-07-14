@@ -20,8 +20,8 @@ public:
     { 0x55850077, 0x8755, 0x4054, { 0xAA, 0x92, 0x6A, 0x92, 0x58, 0x89, 0xA2, 0xA3 } };
     return SampleNewFloatingViewportCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleNewFloatingViewport"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleNewFloatingViewport"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleNewFloatingViewport object

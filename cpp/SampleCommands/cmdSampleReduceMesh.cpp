@@ -22,8 +22,8 @@ public:
     { 0x7A88F21C, 0x32C, 0x46C5, { 0xB3, 0xEC, 0x09, 0xDC, 0x82, 0x78, 0x6B, 0x0D } };
     return SampleReduceMeshCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleReduceMesh"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleReduceMesh"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleReduceMesh object

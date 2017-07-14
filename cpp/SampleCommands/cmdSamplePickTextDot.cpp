@@ -40,8 +40,8 @@ public:
     { 0x24FFE2B4, 0xE176, 0x4D41, { 0xBC, 0xB0, 0xB4, 0xE8, 0xE7, 0xC2, 0x5D, 0x48 } };
     return SamplePickTextDotCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePickTextDot"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePickTextDot"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePickTextDot object

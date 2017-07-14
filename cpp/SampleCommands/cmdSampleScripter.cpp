@@ -61,8 +61,8 @@ public:
     { 0xD68FBC91, 0xE0BC, 0x470B, { 0xA3, 0x1A, 0xB3, 0x53, 0x9F, 0x70, 0xE0, 0x8E } };
     return SampleScripterCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleScripter"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleScripter"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleScripter object

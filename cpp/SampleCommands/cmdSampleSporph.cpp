@@ -73,8 +73,8 @@ public:
     { 0x4FB3E288, 0xEDC0, 0x4B1A, { 0xB8, 0x45, 0x94, 0x5C, 0xE8, 0x7F, 0x67, 0x62 } };
     return SampleSporphCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSporph"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSporph"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSporph object

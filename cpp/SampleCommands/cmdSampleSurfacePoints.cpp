@@ -18,8 +18,8 @@ public:
     { 0x1166B5D9, 0x91EB, 0x4393, { 0xB8, 0x16, 0xA6, 0x2C, 0x88, 0x18, 0xDD, 0x13 } };
     return SampleSurfacePointsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSurfacePoints"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSurfacePoints"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSurfacePoints object

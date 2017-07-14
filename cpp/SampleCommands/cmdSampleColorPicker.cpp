@@ -81,7 +81,7 @@ public:
     { 0x1D1DA49F, 0xA707, 0x4365, { 0x82, 0x55, 0xA0, 0x17, 0x61, 0x99, 0x51, 0x9F } };
     return SampleColorPickerCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleColorPicker"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleColorPicker"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context);
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

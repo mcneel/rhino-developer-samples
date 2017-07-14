@@ -89,8 +89,8 @@ public:
     { 0x857D4AFB, 0x2984, 0x45A9, { 0x84, 0xF1, 0x57, 0xFF, 0xA6, 0xD5, 0xBD, 0x00 } };
     return SampleGradeLineCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGradeLine"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGradeLine"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 public:
   double m_grade;

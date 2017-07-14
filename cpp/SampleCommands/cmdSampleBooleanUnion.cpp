@@ -97,8 +97,8 @@ public:
     { 0xB2B511E9, 0xBDC, 0x4484, { 0x98, 0xF4, 0x5F, 0x48, 0x05, 0xA7, 0x7F, 0x55 } };
     return SampleBooleanUnionCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleBooleanUnion"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleBooleanUnion"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   ON_Brep* CreateNode(const NodePoint& p);

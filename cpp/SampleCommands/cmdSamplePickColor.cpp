@@ -18,8 +18,8 @@ public:
     { 0x1E2F414B, 0x80BC, 0x4801, { 0x85, 0x81, 0x12, 0x7B, 0x87, 0x74, 0x24, 0x26 } };
     return SamplePickColorCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePickColor"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePickColor"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePickColor object

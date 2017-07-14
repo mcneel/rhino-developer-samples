@@ -89,8 +89,8 @@ public:
     { 0x83F51E52, 0x10CB, 0x419B, { 0xBE, 0x7D, 0x39, 0xC7, 0xDB, 0x6E, 0xB8, 0xC9 } };
     return SampleSurfaceNormalCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSurfaceNormal"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSurfaceNormal"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSurfaceNormal object

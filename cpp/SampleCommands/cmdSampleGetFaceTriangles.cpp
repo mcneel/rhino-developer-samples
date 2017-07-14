@@ -59,8 +59,8 @@ public:
     { 0xD1036400, 0x5F8D, 0x4BAE, { 0x96, 0xE7, 0xAC, 0x86, 0x66, 0xBF, 0x08, 0x44 } };
     return SampleGetFaceTrianglesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGetFaceTriangles"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGetFaceTriangles"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleGetFaceTriangles object

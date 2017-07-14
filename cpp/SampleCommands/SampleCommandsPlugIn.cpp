@@ -221,8 +221,8 @@ BOOL CSampleCommandsPlugIn::ReadDocument(CRhinoDoc& doc, ON_BinaryArchive& archi
   // to use it.
 
   BOOL bKeepData = FALSE;
-  BOOL bNewMode = options.Mode(CRhinoFileReadOptions::NewMode);
-  BOOL bOpenMode = options.Mode(CRhinoFileReadOptions::OpenMode);
+  BOOL bNewMode = options.Mode(CRhinoFileReadOptions::ModeFlag::NewMode);
+  BOOL bOpenMode = options.Mode(CRhinoFileReadOptions::ModeFlag::OpenMode);
 
   // If the user is creating a new model, or opening an existing
   // model, we'll want to keep the document data that we read.

@@ -20,8 +20,8 @@ public:
     { 0x5D0E88BC, 0x558A, 0x4F86, { 0xB2, 0x20, 0xBB, 0xBC, 0xD9, 0xCC, 0x53, 0x1D } };
     return SampleViewLockCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleViewLock"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleViewLock"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleViewLock object
@@ -74,8 +74,8 @@ public:
     { 0xDC9D98BC, 0x7CE2, 0x47D7, { 0x84, 0x6F, 0xE3, 0x95, 0x95, 0xD7, 0x87, 0xD2 } };
     return SampleViewUnlockCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleViewUnlock"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleViewUnlock"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleViewUnlock object

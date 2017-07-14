@@ -20,8 +20,8 @@ public:
     { 0x1DF99446, 0x9652, 0x460D, { 0x9F, 0xFE, 0x64, 0x4C, 0xF7, 0xF3, 0x87, 0x74 } };
     return SampleAddGroupCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAddGroup"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAddGroup"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleAddGroup object

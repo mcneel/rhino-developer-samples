@@ -20,8 +20,8 @@ public:
     { 0x24668EBF, 0x7D79, 0x45BE, { 0xBA, 0x4D, 0x81, 0x86, 0x3B, 0x30, 0x6B, 0x2F } };
     return SampleCurveLinetypeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCurveLinetype"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCurveLinetype"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCurveLinetype object

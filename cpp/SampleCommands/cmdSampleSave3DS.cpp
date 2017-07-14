@@ -20,8 +20,8 @@ public:
     { 0x4231C990, 0x96FD, 0x44FD, { 0xA7, 0x20, 0x3C, 0xFD, 0x15, 0x08, 0x09, 0xB1 } };
     return SampleSave3DSCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSave3DS"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSave3DS"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSave3DS object

@@ -20,8 +20,8 @@ public:
     { 0x1FBB2AD5, 0x14A6, 0x423B,{ 0x8F, 0x2D, 0xC9, 0x75, 0xDB, 0x99, 0xC9, 0xB5 } };
     return SampleResetLayersCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleResetLayers"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleResetLayers"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleResetLayers object

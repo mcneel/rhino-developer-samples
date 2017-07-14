@@ -21,8 +21,8 @@ public:
     { 0x52C573FE, 0x16F4, 0x4643, { 0x80, 0xA6, 0x5C, 0xB9, 0xED, 0xFB, 0x81, 0x89 } };
     return SampleThumbnailPreviewCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleThumbnailPreview"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleThumbnailPreview"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleThumbnailPreview object.  

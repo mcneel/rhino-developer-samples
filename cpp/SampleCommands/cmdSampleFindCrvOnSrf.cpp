@@ -20,8 +20,8 @@ public:
     { 0x986B4A56, 0xC2CB, 0x4FCC,{ 0xAD, 0xBB, 0xC6, 0x8E, 0x0B, 0xB4, 0xC6, 0xF1 } };
     return SampleFindCrvOnSrfCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleFindCrvOnSrf"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleFindCrvOnSrf"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   bool IsCurveOnFace(const ON_BrepFace* face, const ON_Curve* crv, double tol, int num_points = 20);

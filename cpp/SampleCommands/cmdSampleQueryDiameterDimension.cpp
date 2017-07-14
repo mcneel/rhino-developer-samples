@@ -42,8 +42,8 @@ public:
     { 0xB762C061, 0x2A2, 0x4D51, { 0xAB, 0x2C, 0x42, 0x28, 0xEC, 0x4B, 0x69, 0x1F } };
     return SampleQueryDiameterDimensionCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleQueryDiameterDimension"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleQueryDiameterDimension"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleQueryDiameterDimension object

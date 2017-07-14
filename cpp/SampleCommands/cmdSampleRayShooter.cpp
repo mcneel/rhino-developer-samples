@@ -18,8 +18,8 @@ public:
     { 0xF5A16944, 0xCBA6, 0x4939, { 0x84, 0xAD, 0xA4, 0x8B, 0xFB, 0x0C, 0xEE, 0x42 } };
     return SampleRayShooterCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleRayShooter"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleRayShooter"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleRayShooter object

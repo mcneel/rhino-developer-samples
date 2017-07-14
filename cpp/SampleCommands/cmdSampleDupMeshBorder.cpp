@@ -20,8 +20,8 @@ public:
     { 0x465B9FB5, 0x542F, 0x4AAF, { 0xA5, 0x40, 0x51, 0x12, 0x17, 0xFA, 0x81, 0xFE } };
     return SampleDupMeshBorderCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDupMeshBorder"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDupMeshBorder"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDupMeshBorder object

@@ -18,8 +18,8 @@ public:
     { 0xA7DB77A2, 0xC4C5, 0x4000, { 0xA7, 0x08, 0x1E, 0xD9, 0xFF, 0xFE, 0x11, 0x0B } };
     return SampleMeshVolumeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMeshVolume"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMeshVolume"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMeshVolume object

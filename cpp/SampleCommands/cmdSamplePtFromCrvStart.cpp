@@ -18,8 +18,8 @@ public:
     { 0xC76DCC59, 0x85F2, 0x4F96, { 0x84, 0x58, 0xEF, 0xEE, 0xA0, 0x6A, 0xF6, 0x93 } };
     return SamplePtFromCrvStartCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePtFromCrvStart"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePtFromCrvStart"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePtFromCrvStart object

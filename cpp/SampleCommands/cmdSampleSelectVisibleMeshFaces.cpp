@@ -20,8 +20,8 @@ public:
     { 0x7BD2E090, 0x17CE, 0x4C88, { 0x9A, 0x43, 0x93, 0x12, 0x91, 0xB1, 0x3D, 0xC3 } };
     return SampleSelectVisibleMeshFacesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSelectVisibleMeshFaces"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSelectVisibleMeshFaces"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSelectVisibleMeshFaces object

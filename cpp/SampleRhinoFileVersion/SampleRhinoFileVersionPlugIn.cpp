@@ -151,27 +151,6 @@ void CSampleRhinoFileVersionPlugIn::OnUnloadPlugIn()
   CRhinoUtilityPlugIn::OnUnloadPlugIn();
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// Online help overrides
-
-BOOL CSampleRhinoFileVersionPlugIn::AddToPlugInHelpMenu() const
-{
-  // Description:
-  //   Return true to have your plug-in name added to the Rhino help menu.
-  //   OnDisplayPlugInHelp will be called when to activate your plug-in help.
-
-  return FALSE;
-}
-
-BOOL CSampleRhinoFileVersionPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
-{
-  // Description:
-  //   Called when the user requests help about your plug-in.
-  //   It should display a standard Windows Help file (.hlp or .chm).
-
-  // TODO: Add support for online help here.
-  return CRhinoUtilityPlugIn::OnDisplayPlugInHelp(hWnd);
-}
 
 CRhinoPlugIn::plugin_load_time CSampleRhinoFileVersionPlugIn::PlugInLoadTime()
 {

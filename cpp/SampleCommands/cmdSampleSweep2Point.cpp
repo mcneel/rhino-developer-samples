@@ -166,8 +166,8 @@ public:
     { 0x28A4216, 0xC489, 0x41BE, { 0x95, 0xC4, 0x67, 0xB6, 0x06, 0x8C, 0x33, 0x14 } };
     return SampleSweep2PointCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSweep2Point"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSweep2Point"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSweep2Point object

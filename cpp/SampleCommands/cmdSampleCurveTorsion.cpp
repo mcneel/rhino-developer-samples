@@ -36,8 +36,8 @@ public:
     { 0x70579BBE, 0xCE4F, 0x4500, { 0xB9, 0x5A, 0x7E, 0xCD, 0x21, 0x28, 0xCD, 0x53 } };
     return SampleCurveTorsionCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCurveTorsion"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCurveTorsion"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCurveTorsion object

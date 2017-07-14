@@ -148,8 +148,8 @@ public:
     { 0x6EA9AC1B, 0xA2FE, 0x4F66, { 0xB6, 0xBC, 0xD3, 0x16, 0xE9, 0x32, 0x62, 0x55 } };
     return SampleMeshFaceColorCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMeshFaceColor"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMeshFaceColor"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMeshFaceColor object

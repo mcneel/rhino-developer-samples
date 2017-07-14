@@ -18,8 +18,8 @@ public:
     { 0x855DDA39, 0x6B1, 0x4D53, { 0x9A, 0x92, 0x2B, 0x1A, 0xDD, 0xC2, 0x1C, 0x98 } };
     return SampleOrientOnSrfCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleOrientOnSrf"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleOrientOnSrf"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleOrientOnSrf object

@@ -46,8 +46,8 @@ public:
     { 0x7C281BA6, 0xA501, 0x4134, { 0x8B, 0x1B, 0xDB, 0xA5, 0xCA, 0x3A, 0x2E, 0x58 } };
     return SampleSplitSurfaceCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSplitSurface"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSplitSurface"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSplitSurface object

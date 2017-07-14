@@ -122,8 +122,8 @@ public:
     { 0xEAED35E9, 0x14BC, 0x4D35, { 0xB5, 0xF8, 0xFB, 0x1B, 0xBE, 0xC3, 0x90, 0xC0 } };
     return SampleGrayscaleCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGrayscale"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGrayscale"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CSampleGrayscaleConduit m_conduit;

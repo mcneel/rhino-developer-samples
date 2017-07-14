@@ -18,8 +18,8 @@ public:
     { 0x2479F956, 0x852B, 0x4E7D, { 0x84, 0x37, 0x68, 0x4C, 0x27, 0x05, 0x77, 0x7C } };
     return SampleIntepCrvOnSrfCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleIntepCrvOnSrf"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleIntepCrvOnSrf"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleIntepCrvOnSrf object

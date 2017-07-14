@@ -41,8 +41,8 @@ public:
     { 0x5B5B5B5A, 0xC7AB, 0x4B4B, { 0xAF, 0x6C, 0x2F, 0x64, 0xD6, 0x4A, 0xC1, 0x35 } };
     return SampleCurveAreaCentroidCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCurveAreaCentroid"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCurveAreaCentroid"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCurveAreaCentroid object

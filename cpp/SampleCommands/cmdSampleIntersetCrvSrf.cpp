@@ -20,8 +20,8 @@ public:
     { 0xD76E082D, 0x9105, 0x4EBC, { 0xA7, 0xEB, 0x24, 0xFA, 0xC6, 0x3F, 0x5D, 0xE5 } };
     return SampleIntersetCrvSrfCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleIntersetCrvSrf"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleIntersetCrvSrf"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleIntersetCrvSrf object

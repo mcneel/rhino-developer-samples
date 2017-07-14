@@ -163,8 +163,8 @@ public:
     { 0x9A827A94, 0xB266, 0x4D97, { 0xBD, 0x50, 0xAE, 0x38, 0x8C, 0x9E, 0x6F, 0xB0 } };
     return SampleViewportDecorationCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleViewportDecoration"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleViewportDecoration"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CSampleViewportDecorationConduit m_conduit;

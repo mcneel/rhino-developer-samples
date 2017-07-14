@@ -20,8 +20,8 @@ public:
     { 0x8AC799E1, 0x353, 0x45FD, { 0x82, 0x92, 0xFA, 0x1B, 0x2E, 0x89, 0x95, 0x57 } };
     return SampleAddCageCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAddCage"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAddCage"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleAddCage object

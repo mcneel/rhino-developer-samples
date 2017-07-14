@@ -20,8 +20,8 @@ public:
     { 0x1DCF993, 0xBDEF, 0x4152, { 0x8D, 0xA0, 0x74, 0x37, 0xAA, 0x74, 0xCE, 0xD8 } };
     return SampleGetPointOnMeshCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGetPointOnMesh"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGetPointOnMesh"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleGetPointOnMesh object

@@ -108,8 +108,8 @@ public:
     { 0xCD687B7C, 0xE24D, 0x4E2C, { 0x9C, 0x4B, 0x5D, 0xC2, 0xAA, 0x1B, 0xC2, 0x35 } };
     return SampleDrawArrowheadCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDrawArrowhead"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDrawArrowhead"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDrawArrowhead object

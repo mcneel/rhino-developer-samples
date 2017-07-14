@@ -20,7 +20,7 @@ public:
     { 0xADC35DF0, 0xD159, 0x4C3D, { 0xAE, 0x04, 0x8A, 0x1A, 0x66, 0x98, 0xD1, 0xBA } };
     return SampleCPlaneObjectCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCPlaneObject"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleCPlaneObject"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context);
 };
 

@@ -21,7 +21,7 @@ public:
     { 0x2539983D, 0x243E, 0x49AE,{ 0x85, 0x58, 0xCD, 0xE8, 0x3D, 0xF4, 0x48, 0x5F } };
     return SampleOptionsListCtrlCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleOptionsListCtrl"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleOptionsListCtrl"; }
 	CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

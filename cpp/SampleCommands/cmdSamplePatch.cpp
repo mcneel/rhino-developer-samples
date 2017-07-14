@@ -53,8 +53,8 @@ public:
     { 0x90F4BF06, 0xC4EB, 0x417B, { 0x97, 0x41, 0x49, 0x75, 0x63, 0x5E, 0x5A, 0x8D } };
     return SamplePatchCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePatch"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePatch"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);
   void SaveProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

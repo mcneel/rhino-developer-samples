@@ -57,8 +57,8 @@ public:
     { 0xF02D2876, 0x34A4, 0x4522, { 0xA3, 0x4A, 0xE9, 0x6A, 0x6F, 0xDE, 0x41, 0x2E } };
     return SampleBendCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleBend"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleBend"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleBend object

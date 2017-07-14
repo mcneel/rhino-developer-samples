@@ -20,8 +20,8 @@ public:
     { 0x5D3C6B55, 0x1551, 0x4DFF, { 0x88, 0xAE, 0xFC, 0x64, 0xA2, 0xE8, 0x94, 0x9A } };
     return SampleBrepBoxWithMeshCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleBrepBoxWithMesh"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleBrepBoxWithMesh"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleBrepBoxWithMesh object

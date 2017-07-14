@@ -18,8 +18,8 @@ public:
     { 0x75BDE8D5, 0xA2EE, 0x4EB8, { 0x84, 0x39, 0x00, 0x5E, 0x0D, 0xA9, 0xE9, 0x82 } };
     return SampleMakeBlockCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMakeBlock"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMakeBlock"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMakeBlock object

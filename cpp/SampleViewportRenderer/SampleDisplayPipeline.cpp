@@ -4,22 +4,17 @@
 
 IMPLEMENT_DYNAMIC_PIPELINE(CSampleDisplayPipeline, CRhinoDisplayPipeline, L"SampleViewportRenderer", "64BAFCF4-FC30-43C2-969F-50FCFB160029", true, true);
 
-CSampleDisplayPipeline::CSampleDisplayPipeline()
-{
-}
-
-CSampleDisplayPipeline::~CSampleDisplayPipeline()
-{
-}
-
-bool CSampleDisplayPipeline::ShowFrameBuffer(CDC* pDestDC)
+bool CSampleDisplayPipeline::ShowFrameBuffer(HDC hDC)
 {
   // Rhino is asking the pipeline to show it's image.
   // So we'll ask for the most recent rendered image and show that.
+  CDC* pDestDC = CDC::FromHandle(hDC);
+  if (nullptr == pDestDC)
+    return false;
 
   // Get the destination - viewports device context - and it's size.
   CWnd* pDestWnd = pDestDC->GetWindow();
-  if (0 == pDestWnd)
+  if (nullptr == pDestWnd)
     return false;
 
   RECT destRect;
@@ -34,7 +29,7 @@ bool CSampleDisplayPipeline::ShowFrameBuffer(CDC* pDestDC)
     return false;
 
   CDC* pSrcDC = *pDib;
-  if (0 != pSrcDC)
+  if (nullptr != pSrcDC)
   {
     const int iSrcWidth = pDib->Width();
     const int iSrcHeight = pDib->Height();

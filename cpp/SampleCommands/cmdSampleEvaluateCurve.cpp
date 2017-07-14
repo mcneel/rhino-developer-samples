@@ -18,8 +18,8 @@ public:
     { 0x8D70F1E8, 0xBEED, 0x48E9, { 0xAF, 0x0D, 0x5E, 0x63, 0xB9, 0x85, 0x5E, 0xE4 } };
     return SampleEvaluateCurveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleEvaluateCurve"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleEvaluateCurve"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleEvaluateCurve object

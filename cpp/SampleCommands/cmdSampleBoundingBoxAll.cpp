@@ -20,8 +20,8 @@ public:
     { 0x5B3D320B, 0xDD65, 0x4B8B,{ 0xA9, 0x5A, 0x96, 0xAE, 0x9B, 0x7B, 0x51, 0xE7 } };
     return SampleBoundingBoxAllCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleBoundingBoxAll"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleBoundingBoxAll"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleBoundingBoxAll object

@@ -21,8 +21,8 @@ public:
     { 0x63AA9B30, 0x7EAD, 0x415E, { 0xAB, 0x7, 0x69, 0x5, 0x30, 0xE4, 0x7, 0x46 } };
     return SamplePointCursorCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePointCursor"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePointCursor"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 static class CCommandSamplePointCursor theSamplePointCursorCommand;
 

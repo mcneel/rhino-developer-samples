@@ -18,8 +18,8 @@ public:
     { 0xCE2E3AA0, 0x7CA9, 0x43EA, { 0xBB, 0x51, 0x64, 0x7A, 0x9D, 0xA9, 0x01, 0x8A } };
     return SampleSubCrvLengthCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSubCrvLength"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSubCrvLength"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSubCrvLength object

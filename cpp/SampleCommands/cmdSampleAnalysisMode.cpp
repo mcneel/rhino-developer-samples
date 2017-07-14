@@ -241,8 +241,8 @@ public:
     { 0x3557762E, 0x2FA4, 0x4D4C, { 0xB8, 0x67, 0x10, 0xD6, 0x52, 0xC5, 0x0D, 0xFE } };
     return ZAnalysisOnCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"ZAnalysisOn"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"ZAnalysisOn"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandZAnalysisOn object
@@ -306,8 +306,8 @@ public:
     { 0xC8D86634, 0xF36F, 0x412C, { 0xB0, 0x9C, 0x8B, 0x27, 0x9F, 0x41, 0x65, 0xFC } };
     return ZAnalysisOffCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"ZAnalysisOff"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"ZAnalysisOff"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandZAnalysisOff object

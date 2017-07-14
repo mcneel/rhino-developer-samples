@@ -20,8 +20,8 @@ public:
     { 0xBEDC408D, 0x2585, 0x4975, { 0xAA, 0x18, 0x3E, 0xD7, 0x8C, 0xD2, 0x7D, 0xD1 } };
     return SampleZoomRotateWindowCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleZoomWindow"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleZoomWindow"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   bool DollyWindow(const CRhinoViewport& vport, ON_4iRect rect, ON_3dPoint& target_point, ON_Viewport& view_out);

@@ -96,8 +96,8 @@ public:
     { 0xEB78D283, 0x5B6B, 0x4B66, { 0xBB, 0xE6, 0x87, 0x2A, 0x62, 0x3A, 0x73, 0xAF } };
     return SampleSplitCurveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSplitCurve"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSplitCurve"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CRhinoCommand::result PickCurveParameters(CRhinoDoc& doc, const ON_Curve& crv, ON_SimpleArray<double>& crv_t);

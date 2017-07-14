@@ -20,8 +20,8 @@ public:
     { 0x272BB8E3, 0xE88F, 0x49D3, { 0xA6, 0x03, 0x7E, 0xC7, 0x8C, 0xAF, 0xAC, 0x43 } };
     return SampleRotateViewCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleRotateView"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleRotateView"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   int m_direction;

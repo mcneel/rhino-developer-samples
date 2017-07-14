@@ -18,8 +18,8 @@ public:
     { 0xAAD79EBF, 0x40AE, 0x4170, { 0x9D, 0x90, 0xA3, 0x63, 0xB2, 0xA3, 0xB6, 0x2A } };
     return SampleIntersectCrvCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleIntersectCrv"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleIntersectCrv"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleIntersectCrv object

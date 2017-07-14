@@ -20,8 +20,8 @@ public:
     { 0x9ACD7C05, 0x7065, 0x4EC8, { 0x88, 0xA3, 0xF7, 0xA6, 0xD0, 0x8C, 0x96, 0x6A } };
     return SampleCageEditCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCageEdit"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCageEdit"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCageEdit object

@@ -20,8 +20,8 @@ public:
     { 0xC11373EE, 0x8093, 0x4EDB, { 0x89, 0xE3, 0xB4, 0x41, 0x8A, 0x51, 0x2F, 0xD7 } };
     return SampleExplodePointCloudCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleExplodePointCloud"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleExplodePointCloud"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleExplodePointCloud object

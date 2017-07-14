@@ -21,8 +21,8 @@ public:
     { 0x23E01DCF, 0xFC76, 0x4930, { 0xA9, 0xBE, 0x54, 0x5A, 0xFF, 0x2A, 0xCE, 0x2B } };
     return SampleDisableAllClippingPlanesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDisableAllClippingPlanes"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDisableAllClippingPlanes"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDisableAllClippingPlanes object

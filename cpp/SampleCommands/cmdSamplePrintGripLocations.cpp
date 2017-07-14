@@ -20,8 +20,8 @@ public:
     { 0xCE52DCB, 0x9140, 0x4F05, { 0x97, 0x47, 0x28, 0x74, 0x16, 0xF2, 0xD9, 0x92 } };
     return SamplePrintGripLocationsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePrintGripLocations"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePrintGripLocations"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePrintGripLocations object

@@ -18,8 +18,8 @@ public:
     { 0xF6E3A8A0, 0xEBAA, 0x4007, { 0xBE, 0x6E, 0xFA, 0xE9, 0x45, 0x47, 0x0E, 0xA5 } };
     return SampleElevationCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleElevation"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleElevation"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleElevation object

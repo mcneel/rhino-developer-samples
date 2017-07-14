@@ -20,8 +20,8 @@ public:
     { 0x55054530, 0x834, 0x456C, { 0xBE, 0x03, 0x81, 0xD6, 0xD6, 0xEB, 0xF4, 0x75 } };
     return SampleOffsetCurveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleOffsetCurve"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleOffsetCurve"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   int m_corner;

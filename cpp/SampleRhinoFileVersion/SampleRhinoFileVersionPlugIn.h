@@ -18,10 +18,6 @@ public:
   BOOL OnLoadPlugIn();
   void OnUnloadPlugIn();
 
-  // Online help overrides
-  BOOL AddToPlugInHelpMenu() const;
-  BOOL OnDisplayPlugInHelp(HWND hWnd) const;
-
   CRhinoPlugIn::plugin_load_time PlugInLoadTime();
 
 private:

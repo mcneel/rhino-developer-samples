@@ -109,8 +109,8 @@ public:
     { 0xB4DEE780, 0x1D75, 0x4598, { 0x9A, 0x21, 0xA5, 0x33, 0xFD, 0xE3, 0xDF, 0x38 } };
     return SampleOrientOnCrvCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleOrientOnCrv"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleOrientOnCrv"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CRhinoCommand::result SelectObjects(CRhinoXformObjectList& object_list);

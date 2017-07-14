@@ -18,8 +18,8 @@ public:
     { 0x7825BF2E, 0x8579, 0x4344, { 0xB3, 0xC3, 0x7B, 0x2A, 0x8F, 0x09, 0x99, 0x56 } };
     return SampleHatchCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleHatch"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleHatch"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleHatch object

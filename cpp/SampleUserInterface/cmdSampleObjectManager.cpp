@@ -21,8 +21,8 @@ public:
     { 0x415ABCAE, 0xE332, 0x466A, { 0xB1, 0x39, 0x29, 0x63, 0xE8, 0x11, 0x66, 0xC1 } };
     return SampleObjectManagerCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleObjectManager"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleObjectManager"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleObjectManager object.  

@@ -102,8 +102,8 @@ public:
     { 0x3A130CC8, 0x6C01, 0x4268, { 0xBF, 0xF8, 0xE9, 0x53, 0x05, 0x85, 0xCB, 0x34 } };
     return SampleExtrusionBoxCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleExtrusionBox"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleExtrusionBox"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleExtrusionBox object

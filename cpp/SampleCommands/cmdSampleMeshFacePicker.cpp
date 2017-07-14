@@ -46,8 +46,8 @@ public:
     { 0xD938E82B, 0x90B, 0x4DB7,{ 0x8E, 0x10, 0x55, 0xB9, 0xC7, 0xA8, 0xDC, 0x73 } };
     return SampleMeshFacePickerCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMeshFacePicker"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMeshFacePicker"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMeshFacePicker object

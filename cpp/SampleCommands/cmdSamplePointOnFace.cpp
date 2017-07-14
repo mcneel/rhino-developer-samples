@@ -86,8 +86,8 @@ public:
     { 0xE09AA069, 0xDD6, 0x4FF5, { 0xA7, 0x08, 0x8A, 0xCA, 0x7E, 0xA1, 0x48, 0x2F } };
     return SamplePointOnFaceCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePointOnFace"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePointOnFace"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePointOnFace object

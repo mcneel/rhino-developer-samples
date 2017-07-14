@@ -18,8 +18,8 @@ public:
     { 0x84BD3AC1, 0xA648, 0x4CF2, { 0x87, 0x5F, 0x17, 0x7E, 0xAB, 0x63, 0x67, 0xD4 } };
     return SampleMeshLineCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMeshLine"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMeshLine"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMeshLine object

@@ -20,8 +20,8 @@ public:
     { 0x107498CF, 0x861C, 0x44B6, { 0xBE, 0x51, 0x1A, 0xA2, 0xED, 0x62, 0x2A, 0x35 } };
     return SamplePlanarFaceLoopsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePlanarFaceLoops"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePlanarFaceLoops"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePlanarFaceLoops object

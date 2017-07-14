@@ -110,8 +110,8 @@ public:
     { 0x68772174, 0x2630, 0x40AE, { 0xAF, 0xD1, 0x7B, 0xD2, 0xEC, 0x42, 0xD5, 0x6C } };
     return SamplePerspectiveColorsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePerspectiveColors"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePerspectiveColors"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CSamplePerspectiveColorsConduit m_conduit;

@@ -18,8 +18,8 @@ public:
     { 0x558C0C33, 0x496, 0x42BE, { 0xB8, 0xB1, 0xD9, 0x60, 0x7A, 0xFC, 0xEA, 0xBF } };
     return SampleTriangulatePolygonCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleTriangulatePolygon"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleTriangulatePolygon"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleTriangulatePolygon object

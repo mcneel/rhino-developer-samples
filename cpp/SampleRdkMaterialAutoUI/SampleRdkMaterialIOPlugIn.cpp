@@ -32,10 +32,11 @@ static const char* szColor    = "Color";
 static const char* szVector2D = "Vector2D";
 static const char* szVector3D = "Vector3D";
 
-const wchar_t* CSampleRdkMaterialIOPlugIn::SupportedKinds(void) const
+CRhRdkContentKindList CSampleRdkMaterialIOPlugIn::SupportedKinds(void) const
 {
-	// This I/O plug-in only supports a single content kind.
-	return RDK_KIND_MATERIAL;
+  CRhRdkContentKindList list;
+  list.Add(CRhRdkContent::Kinds::Material);
+  return list;
 }
 
 UUID CSampleRdkMaterialIOPlugIn::PlugInId(void) const
@@ -254,7 +255,7 @@ CRhRdkVariant CSampleRdkMaterialIOPlugIn::GetValue(char* p) const
 	return vValue;
 }
 
-CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc*, const wchar_t* wszFilename, const wchar_t* /*wszKind*/) const
+CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc*, const wchar_t* wszFilename, CRhRdkContent::Kinds /*kind*/) const
 {
 	// Notes:
 	//

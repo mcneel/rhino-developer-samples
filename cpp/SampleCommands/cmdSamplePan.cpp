@@ -20,8 +20,8 @@ public:
     { 0x6BEC143B, 0x7563, 0x4F37, { 0xB2, 0xF7, 0xB0, 0x24, 0xB0, 0x64, 0x86, 0xFD } };
     return SamplePanCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePan"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePan"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePan object

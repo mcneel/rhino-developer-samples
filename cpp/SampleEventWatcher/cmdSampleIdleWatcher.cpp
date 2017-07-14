@@ -54,8 +54,8 @@ public:
     { 0x9CBA28EF, 0x71B, 0x4B3E, { 0x88, 0x51, 0x44, 0x6B, 0xDC, 0x72, 0xDF, 0x21 } };
     return SampleIdleWatcherCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleIdleWatcher"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleIdleWatcher"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleIdleWatcher object

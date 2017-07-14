@@ -20,8 +20,8 @@ public:
     { 0x1338EF5F, 0xB751, 0x4DAF, { 0x95, 0xAD, 0x43, 0x95, 0xA7, 0xA1, 0xA2, 0xF8 } };
     return SampleDupBorderCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDupBorder"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDupBorder"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDupBorder obj

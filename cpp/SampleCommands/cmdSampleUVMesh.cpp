@@ -18,8 +18,8 @@ public:
     { 0xB2FCE15E, 0xE9E4, 0x41DD, { 0x94, 0x2F, 0xA7, 0x5D, 0x4A, 0xF8, 0x7A, 0xD8 } };
     return SampleUVMeshCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleUVMesh"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleUVMesh"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);
   void SaveProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

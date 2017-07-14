@@ -20,7 +20,7 @@ public:
     { 0xD533B21F, 0x5B7F, 0x4890, { 0xBA, 0x29, 0x56, 0xF8, 0xC2, 0x21, 0x70, 0x61 } };
     return SampleImportEarthAnchorCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleImportEarthAnchor"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleImportEarthAnchor"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

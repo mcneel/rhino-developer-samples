@@ -92,8 +92,8 @@ public:
     { 0xEA6611BE, 0xEADA, 0x4C09, { 0x81, 0x23, 0x23, 0x4A, 0x78, 0x33, 0x34, 0xF0 } };
     return SampleLastCreatedObjectsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleLastCreatedObjects"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleLastCreatedObjects"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleLastCreatedObjects object

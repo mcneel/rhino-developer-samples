@@ -21,8 +21,8 @@ public:
     { 0xCF4F6A90, 0xCBF0, 0x4E5D, { 0xA9, 0xE9, 0xAE, 0xF3, 0xCC, 0x92, 0xC2, 0xEB } };
     return SampleUndoableCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleUndoable"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleUndoable"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleUndoable object

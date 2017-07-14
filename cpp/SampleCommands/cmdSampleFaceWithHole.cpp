@@ -519,7 +519,7 @@ public:
     { 0x547C8FAF, 0x6A01, 0x4B80, { 0xBB, 0xF2, 0xCB, 0x4D, 0x33, 0xD0, 0xE2, 0xD6 } };
     return SampleFaceWithHoleCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleFaceWithHole"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleFaceWithHole"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

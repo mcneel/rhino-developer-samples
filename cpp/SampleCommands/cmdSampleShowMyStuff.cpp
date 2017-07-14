@@ -72,8 +72,8 @@ public:
     { 0xAAF0F89A, 0xEDF2, 0x444C, { 0x84, 0x54, 0x59, 0x4D, 0x4D, 0x15, 0xDE, 0x49 } };
     return SampleShowMyStuffCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleShowMyStuff"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleShowMyStuff"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleShowMyStuff object

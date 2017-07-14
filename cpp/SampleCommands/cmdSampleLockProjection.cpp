@@ -20,8 +20,8 @@ public:
     { 0xECC5468, 0xEBAC, 0x43F9, { 0x93, 0xD3, 0x43, 0x87, 0xC9, 0x3C, 0x36, 0x53 } };
     return SampleLockProjectionCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleLockProjection"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleLockProjection"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleLockProjection object

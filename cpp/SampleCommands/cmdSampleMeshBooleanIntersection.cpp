@@ -18,8 +18,8 @@ public:
     { 0x2D0CADB1, 0xAAAF, 0x4A5C, { 0xAA, 0x4B, 0xEA, 0x2A, 0x52, 0x53, 0xDA, 0x3B } };
     return SampleMeshBooleanIntersectionCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMeshBooleanIntersection"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMeshBooleanIntersection"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMeshBooleanIntersection object

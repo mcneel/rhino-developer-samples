@@ -9,11 +9,11 @@ class CSampleDisplayPipeline : public CRhinoDisplayPipeline
   DECLARE_DYNAMIC_PIPELINE(CSampleDisplayPipeline)
 
 public:
-  CSampleDisplayPipeline();
-  virtual ~CSampleDisplayPipeline();
+  CSampleDisplayPipeline() = default;
+  ~CSampleDisplayPipeline() = default;;
 
   // Override the CRhinoDisplayPipeline::ShowFrameBuffer.
   // This is called when Rhino wants the pipeline to show
   // it's back buffer.
-  virtual bool ShowFrameBuffer(CDC* pDC);
+  virtual bool ShowFrameBuffer(HDC hDC);
 };

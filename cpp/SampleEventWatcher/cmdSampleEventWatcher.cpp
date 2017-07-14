@@ -22,8 +22,8 @@ public:
     { 0x38BAFDB7, 0x9128, 0x45CD, { 0xAF, 0x12, 0x5C, 0xA1, 0x5B, 0x50, 0xC3, 0x99 } };
     return SampleEventWatcherCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleEventWatcher"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleEventWatcher"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CSampleRhinoEventWatcher m_watcher;

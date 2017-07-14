@@ -21,8 +21,8 @@ public:
     { 0x33339333, 0xD640, 0x4154, { 0xA6, 0x94, 0xBE, 0x7C, 0xB7, 0x62, 0xDB, 0x2F } };
     return SampleSharedUserData1Command_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSharedUserData1"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSharedUserData1"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSharedUserData1 object

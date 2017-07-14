@@ -54,8 +54,8 @@ public:
     { 0x56EA3FC7, 0x6AB9, 0x4432, { 0xAA, 0x0B, 0xB0, 0x96, 0x9F, 0x92, 0x73, 0x60 } };
     return SampleHighlightCurveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleHighlightCurve"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleHighlightCurve"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleHighlightCurve object

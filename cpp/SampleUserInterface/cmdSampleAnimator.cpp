@@ -21,8 +21,8 @@ public:
     { 0xC189E68C, 0xE54F, 0x4B17, { 0xB6, 0xA6, 0x67, 0x56, 0x8A, 0x37, 0xDC, 0xC3 } };
     return SampleAnimatorCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAnimator"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAnimator"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   int m_max_steps;

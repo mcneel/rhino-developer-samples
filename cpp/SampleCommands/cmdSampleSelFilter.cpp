@@ -18,8 +18,8 @@ public:
     { 0x7AD25042, 0xA709, 0x49DB, { 0xB9, 0xB1, 0x11, 0xF7, 0xC2, 0x8C, 0xB3, 0x24 } };
     return SampleSelFilterCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSelFilter"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSelFilter"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CRhinoCommand::result GetFilter();

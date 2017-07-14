@@ -18,8 +18,8 @@ public:
     { 0xDAA00BF1, 0x5763, 0x4498, { 0xAD, 0x95, 0xC1, 0xDF, 0xDD, 0x04, 0x12, 0x2F } };
     return SampleAnnotateCurveEndPointsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAnnotateCurveEndPoints"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAnnotateCurveEndPoints"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleAnnotateCurveEndPoints object

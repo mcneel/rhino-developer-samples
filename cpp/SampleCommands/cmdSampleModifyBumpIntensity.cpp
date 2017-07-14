@@ -18,8 +18,8 @@ public:
     { 0xAEB0DBEB, 0x9904, 0x4367, { 0xAB, 0x1A, 0x53, 0x91, 0x9D, 0x7E, 0xA3, 0x7A } };
     return SampleModifyBumpIntensityCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleModifyBumpIntensity"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleModifyBumpIntensity"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleModifyBumpIntensity object

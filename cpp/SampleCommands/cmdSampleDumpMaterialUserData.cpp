@@ -20,8 +20,8 @@ public:
     { 0xF8D47A6, 0x2252, 0x4FE7, { 0xBC, 0x99, 0x46, 0x56, 0x4E, 0x1F, 0x75, 0x1B } };
     return SampleDumpMaterialUserDataCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDumpMaterialUserData"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDumpMaterialUserData"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDumpMaterialUserData object

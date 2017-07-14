@@ -18,8 +18,8 @@ public:
     { 0xD3F06EEC, 0xFE99, 0x4591, { 0x88, 0xFB, 0xA2, 0xE1, 0xA8, 0xBC, 0x6E, 0xF4 } };
     return SampleBooleanDifferenceCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleBooleanDifference"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleBooleanDifference"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleBooleanDifference object

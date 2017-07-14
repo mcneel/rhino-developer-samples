@@ -67,8 +67,8 @@ public:
     { 0xCBC593E5, 0xCBB3, 0x4D5F, { 0xBE, 0x38, 0x17, 0xA4, 0x47, 0xAC, 0x91, 0x32 } };
     return SampleDumpEdgeCurvesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDumpEdgeCurves"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDumpEdgeCurves"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDumpEdgeCurves object

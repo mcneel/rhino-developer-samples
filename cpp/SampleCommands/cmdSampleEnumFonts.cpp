@@ -20,7 +20,7 @@ public:
     { 0xAC834561, 0x9FAD, 0x4E15, { 0xB7, 0x5C, 0x57, 0x22, 0x7D, 0x5C, 0x60, 0xA0 } };
     return SampleEnumFontsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleEnumFonts"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleEnumFonts"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

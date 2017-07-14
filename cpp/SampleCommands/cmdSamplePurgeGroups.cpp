@@ -18,8 +18,8 @@ public:
     { 0x3A9F8B60, 0x7411, 0x4360, { 0xA7, 0xE0, 0x12, 0xFE, 0x8C, 0xEE, 0x66, 0x0F } };
     return SamplePurgeGroupsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePurgeGroups"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePurgeGroups"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePurgeGroups object

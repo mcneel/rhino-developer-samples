@@ -100,8 +100,8 @@ public:
     { 0x910C6743, 0x4D07, 0x4C12, { 0x9B, 0x1, 0x34, 0xD2, 0x3A, 0x64, 0xA5, 0x10 } };
     return SampleObjectEventWatcherCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleObjectEventWatcher"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleObjectEventWatcher"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   // Declare event watcher as member variable

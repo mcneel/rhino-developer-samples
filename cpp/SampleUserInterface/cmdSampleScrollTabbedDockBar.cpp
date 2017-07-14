@@ -21,8 +21,8 @@ public:
     { 0xCC486971, 0xC2F5, 0x4365, { 0x9F, 0xA6, 0x70, 0xA8, 0x9D, 0xDB, 0xA, 0x27 } };
     return SampleScrollTabbedDockBarCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleScrollTabbedDockBar"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleScrollTabbedDockBar"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 static class CCommandSampleScrollTabbedDockBar theSampleScrollTabbedDockBarCommand;

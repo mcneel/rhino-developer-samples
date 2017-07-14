@@ -249,7 +249,7 @@ public:
     return SampleCameraTrackerCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleCameraTracker"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&) override;
+ CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 public:
   CCameraTrackingConduit  m_Conduit;

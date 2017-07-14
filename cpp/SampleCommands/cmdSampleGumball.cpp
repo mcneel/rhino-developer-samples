@@ -127,8 +127,8 @@ public:
     { 0x7C053725, 0x678, 0x48D2, { 0xA2, 0x8B, 0xDB, 0x52, 0x34, 0x70, 0x79, 0xD4 } };
     return SampleGumballCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGumball"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGumball"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   ON_BoundingBox GetBoundingBox(const CRhinoXformObjectList& list);

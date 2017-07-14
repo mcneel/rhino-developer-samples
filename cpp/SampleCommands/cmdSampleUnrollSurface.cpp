@@ -20,8 +20,8 @@ public:
     { 0xCB7091AA, 0xBDAB, 0x4D26, { 0x91, 0xD6, 0xFD, 0x45, 0x59, 0x81, 0xB6, 0x36 } };
     return SampleUnrollSurfaceCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleUnrollSurface"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleUnrollSurface"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   bool ReverseVReversedSurfaces(ON_Brep* pBrep);

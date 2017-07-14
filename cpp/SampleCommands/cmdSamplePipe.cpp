@@ -20,8 +20,8 @@ public:
     { 0x3A97346, 0xF02D, 0x4783, { 0xA5, 0x5C, 0x7D, 0x69, 0xBD, 0x80, 0x29, 0xDC } };
     return SamplePipeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePipe"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePipe"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   double m_radius;

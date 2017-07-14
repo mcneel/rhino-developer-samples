@@ -18,8 +18,8 @@ public:
     { 0xEBBF656E, 0xCE46, 0x4CD3, { 0xAB, 0xD9, 0x9C, 0xA0, 0x08, 0xFE, 0xFB, 0xD8 } };
     return SampleSetUserTextCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSetUserText"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSetUserText"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSetUserText object
@@ -127,8 +127,8 @@ public:
     { 0xDE95D543, 0xBF3B, 0x42D1, { 0xB1, 0x47, 0x94, 0xBA, 0x19, 0xC9, 0x48, 0x4D } };
     return SampleGetUserTextCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGetUserText"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGetUserText"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleGetUserText object
@@ -214,8 +214,8 @@ public:
     { 0x587DE9DF, 0x11E4, 0x41B5, { 0xB9, 0x8C, 0x06, 0x81, 0x7D, 0xAC, 0x1B, 0xFB } };
     return SampleSetDocumentUserTextCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSetDocumentUserText"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSetDocumentUserText"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSetDocumentUserText object
@@ -267,8 +267,8 @@ public:
     { 0xBFE6A00C, 0xEBA7, 0x474C, { 0xA9, 0xD3, 0xBF, 0x7E, 0xAE, 0x69, 0x01, 0xF5 } };
     return SampleGetDocumentUserTextCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGetDocumentUserText"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGetDocumentUserText"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleGetDocumentUserText object

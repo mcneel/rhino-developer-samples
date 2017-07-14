@@ -19,8 +19,8 @@ public:
     { 0x281EE457, 0x82E8, 0x4053, { 0xAD, 0xDF, 0x68, 0x58, 0x78, 0xB8, 0x7D, 0xC5 } };
     return SampleMenuCommand1Command_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMenuCommand1"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMenuCommand1"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMenuCommand1 object
@@ -61,8 +61,8 @@ public:
     { 0xB96253EF, 0xB140, 0x495E, { 0xB1, 0x27, 0x2D, 0x8D, 0xA7, 0xAE, 0xCE, 0x10 } };
     return SampleMenuCommand2Command_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMenuCommand2"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMenuCommand2"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMenuCommand2 object
@@ -103,8 +103,8 @@ public:
     { 0x15F1279E, 0xEBCF, 0x44D1, { 0xB9, 0x1A, 0x89, 0x8F, 0xEB, 0xDE, 0x5A, 0x6B } };
     return SampleMenuCommand3Command_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMenuCommand3"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMenuCommand3"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMenuCommand3 object
@@ -145,8 +145,8 @@ public:
     { 0x25E02B0B, 0xEEEC, 0x425A, { 0x8E, 0x5E, 0x52, 0xF5, 0x38, 0x2A, 0x80, 0xB2 } };
     return SampleMenuCommand4Command_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMenuCommand4"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMenuCommand4"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMenuCommand4 object

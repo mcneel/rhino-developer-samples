@@ -20,8 +20,8 @@ public:
     { 0x5DDA7654, 0x1B65, 0x4664, { 0xBF, 0xAB, 0xA0, 0xE3, 0xBD, 0x03, 0xF6, 0x2D } };
     return SampleExportRenderMeshesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleExportRenderMeshes"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleExportRenderMeshes"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   bool DoExport(CRhinoDoc& doc, const CRhinoObjRef& obj_ref, const ON_Mesh* mesh, const CRhinoMaterial* front_material, const CRhinoMaterial* back_material);

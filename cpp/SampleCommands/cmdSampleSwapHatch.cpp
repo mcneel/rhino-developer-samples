@@ -18,8 +18,8 @@ public:
     { 0x2C4D0F6F, 0xC9B, 0x46AF, { 0x8C, 0xF6, 0xDF, 0x1E, 0x35, 0x06, 0xB2, 0x5D } };
     return SampleSwapHatchCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSwapHatch"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSwapHatch"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSwapHatch object

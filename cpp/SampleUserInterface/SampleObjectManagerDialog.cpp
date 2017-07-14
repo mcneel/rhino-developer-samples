@@ -393,7 +393,7 @@ public:
     { 0x6815BA85, 0xF701, 0x4A7F, { 0x8D, 0x2C, 0xF6, 0x25, 0x1E, 0xEB, 0x5C, 0x5E } };
     return SampleObjectManagerSelectCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleObjectManagerSelect"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleObjectManagerSelect"; }
   bool SelFilter(const CRhinoObject* object);
 
   void SetModelObjectId(ON_UUID model_object_id);

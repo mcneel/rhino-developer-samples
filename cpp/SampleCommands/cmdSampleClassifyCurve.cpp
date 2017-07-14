@@ -18,8 +18,8 @@ public:
     { 0x543D9BCB, 0x33B5, 0x46D2, { 0xB0, 0xD3, 0xF4, 0x93, 0x97, 0x8E, 0xFC, 0x5B } };
     return SampleClassifyCurveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleClassifyCurve"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleClassifyCurve"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   bool IsLine(const ON_Curve* crv);

@@ -80,8 +80,8 @@ public:
     { 0xB2A558B6, 0xD81, 0x4FAF, { 0xB8, 0x28, 0x8A, 0x6A, 0x91, 0xDA, 0x70, 0x18 } };
     return SampleCustomUndoEarnTenCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCustomUndoEarnTen"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCustomUndoEarnTen"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCustomUndoEarnTen object
@@ -133,8 +133,8 @@ public:
     { 0xAEB24D28, 0x3A28, 0x483F, { 0xB9, 0x99, 0x08, 0x67, 0x59, 0x7E, 0x2C, 0x55 } };
     return SampleCustomUndoSpendFiveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCustomUndoSpendFive"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCustomUndoSpendFive"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCustomUndoSpendFive object
@@ -186,8 +186,8 @@ public:
     { 0x913C87E9, 0x9FF4, 0x4C7E, { 0xA8, 0x52, 0x8D, 0x66, 0x5F, 0x5F, 0xA6, 0xEC } };
     return SampleCustomUndoCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCustomUndo"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCustomUndo"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCustomUndo object

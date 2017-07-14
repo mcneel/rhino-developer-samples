@@ -20,8 +20,8 @@ public:
     { 0x905F3A7A, 0x518, 0x442A, { 0x96, 0x37, 0x74, 0xD4, 0x07, 0x52, 0x8D, 0xCE } };
     return SampleDimStyleTextHeightCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDimStyleTextHeight"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDimStyleTextHeight"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDimStyleTextHeight object

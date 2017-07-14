@@ -18,8 +18,8 @@ public:
     { 0x1A9E21B0, 0x6E2, 0x440E, { 0xA3, 0x97, 0x9D, 0x4B, 0xCD, 0x87, 0x32, 0x0E } };
     return SamplePrePostSelectCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePrePostSelect"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePrePostSelect"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   double m_dValue;

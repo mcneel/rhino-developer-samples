@@ -18,8 +18,8 @@ public:
     { 0x4787C41, 0xF962, 0x4767, { 0xBC, 0x47, 0xD4, 0x3B, 0x93, 0xCF, 0x1A, 0x1E } };
     return SampleAddLayoutCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAddLayout"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAddLayout"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CRhinoPageView* CreatePageView(CRhinoDoc& doc, int detail_count, const ON_wString& name, const ON_3dmPageSettings& page_settings);

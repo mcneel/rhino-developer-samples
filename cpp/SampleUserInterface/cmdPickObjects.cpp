@@ -21,8 +21,8 @@ public:
     { 0xC1E761F2, 0xBED6, 0x44CC, { 0x8D, 0x2D, 0x5A, 0xD9, 0xEE, 0xF2, 0xAB, 0x81 } };
     return SamplePickObjectsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePickObjects"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePickObjects"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePickObjects object

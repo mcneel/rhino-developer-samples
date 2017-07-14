@@ -21,8 +21,8 @@ public:
     { 0xC9704599, 0x3C83, 0x40AE, { 0xA4, 0xA8, 0xA0, 0xA9, 0x88, 0x27, 0xB1, 0xB6 } };
     return SampleOptionsDialogCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleOptionsDialog"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleOptionsDialog"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 static class CCommandSampleOptionsDialog theSampleOptionsDialogCommand;
 

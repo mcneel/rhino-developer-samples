@@ -20,8 +20,8 @@ public:
     { 0x9C68FA5F, 0x413A, 0x40B9, { 0xBC, 0x49, 0x15, 0xAB, 0x66, 0x85, 0xF9, 0x86 } };
     return SampleBoundingBoxCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleBoundingBox"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleBoundingBox"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   int ClassifyBoundingBox(ON_3dPoint box_corners[8], ON_3dPoint rect[5], ON_Line& line);

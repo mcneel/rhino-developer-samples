@@ -18,8 +18,8 @@ public:
     { 0xC3805C7F, 0xE30F, 0x4B00, { 0xA8, 0xEA, 0x94, 0xBA, 0xC2, 0xB4, 0xF1, 0xB8 } };
     return SampleInterpCurveCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleInterpCurve"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleInterpCurve"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleInterpCurve object

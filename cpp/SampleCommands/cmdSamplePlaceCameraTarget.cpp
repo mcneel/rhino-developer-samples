@@ -20,8 +20,8 @@ public:
     { 0xAD9E6A0, 0xA112, 0x4708, { 0x83, 0x66, 0xD5, 0x0A, 0xEA, 0xE1, 0x7A, 0xED } };
     return SamplePlaceCameraTargetCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePlaceCameraTarget"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePlaceCameraTarget"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CRhinoGet::result PickCameraTargetPoint(ON_3dPoint& pt, bool bGetCamera);

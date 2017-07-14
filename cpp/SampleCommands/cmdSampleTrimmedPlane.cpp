@@ -341,7 +341,7 @@ public:
     { 0xA74D1534, 0x29D7, 0x4B14, { 0xA9, 0xFD, 0xB3, 0xC6, 0x79, 0x83, 0x9D, 0x74 } };
     return SampleTrimmedPlaneCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleTrimmedPlane"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleTrimmedPlane"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

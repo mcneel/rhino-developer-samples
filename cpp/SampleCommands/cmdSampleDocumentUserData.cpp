@@ -45,10 +45,10 @@ public:
   }
 
   // Returns the English command name.
-  const wchar_t* EnglishCommandName() { return L"SampleDocumentUserData"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleDocumentUserData"; }
 
   // Rhino calls RunCommand to run the command.
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
   enum CommandOptions
   {

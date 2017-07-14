@@ -10,9 +10,9 @@ public:
 	virtual const wchar_t* Description(void) const override { return L"Sample files"; }
 	virtual bool CanLoad(void) const override { return true; }
 	virtual bool CanSave(void) const override { return true; }
-	virtual CRhRdkContent* Load(const CRhinoDoc* pDoc, const wchar_t* wszFilename, const wchar_t* wszKind) const override;
+	virtual CRhRdkContent* Load(const CRhinoDoc* pDoc, const wchar_t* wszFilename, CRhRdkContent::Kinds kind) const override;
 	virtual bool Save(const wchar_t* wszFilename, const CRhRdkContent& content, const IRhRdkPreviewSceneServer* pSceneServer) const override;
-	virtual const wchar_t* SupportedKinds(void) const override;
+	virtual CRhRdkContentKindList SupportedKinds(void) const override;
 	virtual void* EVF(const wchar_t*, void*) override { return nullptr; }
 
 protected:

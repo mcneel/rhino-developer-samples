@@ -199,8 +199,8 @@ public:
     { 0x61BC5D27, 0x18B7, 0x4046,{ 0xB6, 0x46, 0xDA, 0x8C, 0xE3, 0xA2, 0x72, 0x71 } };
     return SampleRotateCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleRotate"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleRotate"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleRotate object

@@ -18,8 +18,8 @@ public:
     { 0x6E4FEF6B, 0xC6A3, 0x49C9, { 0x88, 0x6D, 0xA1, 0x33, 0x7C, 0xE7, 0x4E, 0xFD } };
     return SampleDisplayPrecisionCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDisplayPrecision"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDisplayPrecision"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleDisplayPrecision object

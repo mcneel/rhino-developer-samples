@@ -20,8 +20,8 @@ public:
     { 0x515DCFC6, 0xA4F9, 0x42D1, { 0x95, 0xA0, 0x16, 0xFD, 0x19, 0x23, 0xE3, 0x39 } };
     return SamplePrintMaterialTexturesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePrintMaterialTextures"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePrintMaterialTextures"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePrintMaterialTextures object

@@ -90,8 +90,8 @@ public:
     { 0xCE5EDF1A, 0x7D47, 0x4A5C, { 0x98, 0x68, 0x7F, 0xA6, 0x26, 0x0B, 0xA4, 0x56 } };
     return SampleInsertCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleInsert"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleInsert"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleInsert object

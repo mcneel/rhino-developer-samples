@@ -11,34 +11,32 @@ class CSampleMouseCallback : public CRhinoMouseCallback
 public:
   CSampleMouseCallback() = default;
   ~CSampleMouseCallback() = default;
-  BOOL OnMouseDown(CRhinoView&, CRhinoMouseCallback::mouse_button, UINT, CPoint);
-  BOOL OnMouseMove(CRhinoView&, UINT, CPoint);
-  BOOL OnMouseUp(CRhinoView&, CRhinoMouseCallback::mouse_button, UINT, CPoint);
-  BOOL OnMouseDblClk(CRhinoView&, CRhinoMouseCallback::mouse_button, UINT, CPoint);
+
+  void OnMouseDown(unsigned int viewSerialNumber, mouse_button button, UINT flags, const ON_2iPoint& point, bool defaultHandlerExecuted) override;
+  void OnMouseMove(unsigned int viewSerialNumber, UINT flags, const ON_2iPoint& point, bool defaultHandlerExecuted) override;
+  void OnMouseUp(unsigned int viewSerialNumber, mouse_button button, UINT flags, const ON_2iPoint& point, bool defaultHandlerExecuted) override;
+  virtual BOOL OnMouseDblClk(CRhinoView& view, mouse_button button, UINT flags, const ON_2iPoint& point) override;
 };
 
 // The one and only CSampleMouseCallback object
 static class CSampleMouseCallback theSampleMouseCallback;
 
-BOOL CSampleMouseCallback::OnMouseDown(CRhinoView&, CRhinoMouseCallback::mouse_button, UINT, CPoint)
+void CSampleMouseCallback::OnMouseDown(unsigned int viewSerialNumber, mouse_button button, UINT flags, const ON_2iPoint& point, bool defaultHandlerExecuted)
 {
   TRACE0("CSampleMouseCallback::OnMouseDown\n");
-  return FALSE;
 }
 
-BOOL CSampleMouseCallback::OnMouseMove(CRhinoView&, UINT, CPoint)
+void CSampleMouseCallback::OnMouseMove(unsigned int viewSerialNumber, UINT flags, const ON_2iPoint& point, bool defaultHandlerExecuted)
 {
   TRACE0("CSampleMouseCallback::OnMouseMove\n");
-  return FALSE;
 }
 
-BOOL CSampleMouseCallback::OnMouseUp(CRhinoView&, CRhinoMouseCallback::mouse_button, UINT, CPoint)
+void CSampleMouseCallback::OnMouseUp(unsigned int viewSerialNumber, mouse_button button, UINT flags, const ON_2iPoint& point, bool defaultHandlerExecuted)
 {
   TRACE0("CSampleMouseCallback::OnMouseUp\n");
-  return FALSE;
 }
 
-BOOL CSampleMouseCallback::OnMouseDblClk(CRhinoView&, CRhinoMouseCallback::mouse_button, UINT, CPoint)
+BOOL CSampleMouseCallback::OnMouseDblClk(CRhinoView& view , mouse_button button, UINT flags, const ON_2iPoint& point)
 {
   TRACE0("CSampleMouseCallback::OnMouseDblClk\n");
   return FALSE;
@@ -61,8 +59,8 @@ public:
     { 0xA1EE82B3, 0xD53, 0x462C,{ 0xAA, 0xD4, 0x61, 0xF0, 0xDF, 0xA4, 0x75, 0x20 } };
     return SampleMouseCallbackCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMouseCallback"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMouseCallback"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMouseCallback object

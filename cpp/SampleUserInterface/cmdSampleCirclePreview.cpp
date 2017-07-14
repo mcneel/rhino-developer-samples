@@ -20,8 +20,8 @@ public:
     { 0x6A65EEE7, 0x1E50, 0x46D7, { 0x83, 0x4D, 0x2D, 0x81, 0x08, 0xAE, 0xA7, 0x3E } };
     return SampleCirclePreviewCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleCirclePreview"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleCirclePreview"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleCirclePreview object

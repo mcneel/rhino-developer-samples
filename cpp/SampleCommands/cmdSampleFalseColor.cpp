@@ -62,8 +62,8 @@ public:
     { 0x226E8751, 0x5805, 0x4E52, { 0xB1, 0x98, 0x3C, 0x90, 0x5E, 0xB1, 0x26, 0x79 } };
     return SampleFalseColorCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleFalseColor"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleFalseColor"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   ON_Color FalseColor(double z) const;

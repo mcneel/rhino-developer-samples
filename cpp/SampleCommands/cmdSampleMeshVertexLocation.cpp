@@ -20,8 +20,8 @@ public:
     { 0xD82219DF, 0x58B2, 0x454D, { 0xBC, 0xB6, 0x3B, 0x90, 0x95, 0xBE, 0xB8, 0xBB } };
     return SampleMeshVertexLocationCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMeshVertexLocation"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMeshVertexLocation"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMeshVertexLocation object

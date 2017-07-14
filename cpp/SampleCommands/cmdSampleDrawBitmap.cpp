@@ -74,8 +74,8 @@ public:
     { 0x2D77453, 0xC7B5, 0x45C3, { 0xAB, 0x8A, 0x6B, 0xFB, 0xC7, 0xBD, 0xB3, 0xF7 } };
     return SampleDrawBitmapCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleDrawBitmap"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleDrawBitmap"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   CSampleDrawBitmapConduit m_conduit;

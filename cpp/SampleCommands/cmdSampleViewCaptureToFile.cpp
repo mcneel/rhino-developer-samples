@@ -20,8 +20,8 @@ public:
     { 0xA3016DC5, 0xFEBC, 0x40C3, { 0xA0, 0x5A, 0x81, 0x53, 0x86, 0x58, 0xDF, 0xE2 } };
     return SampleViewCaptureToFileCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleViewCaptureToFile"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleViewCaptureToFile"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleViewCaptureToFile object

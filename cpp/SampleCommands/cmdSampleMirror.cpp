@@ -124,8 +124,8 @@ public:
     { 0xDFE87FFC, 0xC771, 0x4EE0, { 0x87, 0x46, 0x0D, 0x17, 0x34, 0x7B, 0xDA, 0x94 } };
     return SampleMirrorCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMirror"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMirror"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMirror object

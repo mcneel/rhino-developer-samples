@@ -20,8 +20,8 @@ public:
     { 0x72EAC2EB, 0xE568, 0x4C91, { 0xA1, 0xF4, 0x3E, 0xA3, 0xDC, 0x71, 0xE5, 0x37 } };
     return SampleToggleLayerCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleToggleLayer"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleToggleLayer"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleToggleLayer object

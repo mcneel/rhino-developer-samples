@@ -18,8 +18,8 @@ public:
     { 0x6CB51310, 0xC634, 0x4DE0, { 0x85, 0xE0, 0x02, 0xC4, 0x4A, 0x8E, 0x54, 0xB2 } };
     return SampleSyncRenderColorsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSyncRenderColors"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSyncRenderColors"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   bool SychronizeDiffuseColorWithDisplayColor(CRhinoDoc& doc, const CRhinoObject* obj);

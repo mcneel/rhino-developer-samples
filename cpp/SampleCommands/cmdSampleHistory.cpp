@@ -51,10 +51,10 @@ public:
   }
 
   // Returns the English command name.
-  const wchar_t* EnglishCommandName() { return L"SampleHistory"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleHistory"; }
 
   // Rhino calls RunCommand to run the command.
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
   // Returns the resulting surface from the input curves
   ON_Surface* MakeBilinearSurface(const ON_Curve& C0, const ON_Curve& C1);

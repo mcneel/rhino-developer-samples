@@ -606,7 +606,7 @@ public:
     { 0xAFD8D548, 0x8B70, 0x437F, { 0x9B, 0xF2, 0xF1, 0xF5, 0x1A, 0xD4, 0xB2, 0x31 } };
     return cmdSampleTwistedCubeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"cmdSampleTwistedCube"; }
+  const wchar_t* EnglishCommandName() override { return L"cmdSampleTwistedCube"; }
   CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
 };
 

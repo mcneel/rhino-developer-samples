@@ -18,8 +18,8 @@ public:
     { 0xAB907EC4, 0x6070, 0x40F6, { 0xA7, 0x6B, 0x62, 0x3F, 0x29, 0x02, 0x15, 0x8C } };
     return SampleJoinSrfCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleJoinSrf"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleJoinSrf"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleJoinSrf object

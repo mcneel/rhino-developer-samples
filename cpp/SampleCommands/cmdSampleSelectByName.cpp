@@ -20,8 +20,8 @@ public:
     { 0xEDEE31B8, 0x5402, 0x4B82, { 0xA6, 0x8B, 0x10, 0x58, 0x80, 0xA6, 0x1D, 0x10 } };
     return SampleSelectByNameCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSelectByName"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSelectByName"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSelectByName object

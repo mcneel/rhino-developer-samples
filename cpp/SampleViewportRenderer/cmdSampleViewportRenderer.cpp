@@ -21,8 +21,8 @@ public:
     { 0x12352A6D, 0x4707, 0x4FB2, { 0xA9, 0x53, 0x7E, 0xFA, 0x6E, 0x25, 0x52, 0x16 } };
     return SampleViewportRendererCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleViewportRenderer"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleViewportRenderer"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleViewportRenderer object

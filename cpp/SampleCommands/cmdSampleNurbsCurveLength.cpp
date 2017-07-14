@@ -20,8 +20,8 @@ public:
     { 0x758DBFB, 0xFE78, 0x43CF,{ 0xB2, 0x0A, 0xEB, 0x6E, 0x91, 0x18, 0xD7, 0x4A } };
     return SampleNurbsCurveLengthCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleNurbsCurveLength"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleNurbsCurveLength"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleNurbsCurveLength object

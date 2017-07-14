@@ -20,7 +20,7 @@ public:
     return SampleImportMeshesCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleImportMeshes"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&) override;
+ CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleImportMeshes object

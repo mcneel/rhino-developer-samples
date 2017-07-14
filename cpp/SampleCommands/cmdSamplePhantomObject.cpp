@@ -59,7 +59,7 @@ public:
     return m_bbox;
   }
 
-  virtual	ON_BoundingBox BoundingBox(const CRhinoView*) const
+  virtual	ON_BoundingBox BoundingBox(const class CRhinoViewport* pViewport) const
   {
     return BoundingBox();
   }
@@ -122,8 +122,8 @@ public:
     { 0x73E99022, 0x5A65, 0x4081, { 0xBD, 0xE9, 0x7C, 0x70, 0xC4, 0xA8, 0x87, 0x06 } };
     return SamplePhantomObjectCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePhantomObject"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePhantomObject"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePhantomObject object

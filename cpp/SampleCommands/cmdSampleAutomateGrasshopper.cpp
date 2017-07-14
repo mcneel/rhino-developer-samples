@@ -90,8 +90,8 @@ public:
     { 0xAAA95B6, 0x8F9E, 0x4F81, { 0x9E, 0x3E, 0x10, 0xF7, 0x86, 0x38, 0x2C, 0x11 } };
     return SampleAutomateGrasshopperCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAutomateGrasshopper"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAutomateGrasshopper"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleAutomateGrasshopper object

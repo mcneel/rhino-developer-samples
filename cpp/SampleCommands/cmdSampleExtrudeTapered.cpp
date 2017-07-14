@@ -40,8 +40,8 @@ public:
     { 0x36E7E077, 0xF350, 0x4E9A, { 0x96, 0x60, 0x25, 0xA1, 0xEB, 0xC2, 0xF1, 0x05 } };
     return SampleExtrudeTaperedCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleExtrudeTapered"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleExtrudeTapered"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleExtrudeTapered object

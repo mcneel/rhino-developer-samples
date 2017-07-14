@@ -21,8 +21,8 @@ public:
     { 0x18EB7E00, 0xB3CD, 0x4501, { 0x85, 0xD2, 0xAF, 0xCC, 0x62, 0xBB, 0x7, 0xE3 } };
     return SampleAutomationCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAutomation"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAutomation"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleAutomation object

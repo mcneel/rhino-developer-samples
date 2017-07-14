@@ -415,7 +415,7 @@ public:
     { 0xC2B28A4E, 0xD89C, 0x4B57,{ 0xAF, 0xF4, 0x71, 0xF1, 0x5F, 0xB0, 0xDA, 0xBA } };
     return SampleGuillocheCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGuilloche"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleGuilloche"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context);
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

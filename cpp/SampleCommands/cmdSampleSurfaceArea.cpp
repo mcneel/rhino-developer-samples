@@ -20,8 +20,8 @@ public:
     { 0x9A978BBA, 0xDDE8, 0x4C87, { 0x8A, 0x58, 0x8B, 0x88, 0x74, 0x42, 0xB8, 0x68 } };
     return SampleSurfaceAreaCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSurfaceArea"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSurfaceArea"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSurfaceArea object

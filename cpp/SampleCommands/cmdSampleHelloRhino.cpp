@@ -44,10 +44,10 @@ public:
   }
 
   // Returns the English command name.
-  const wchar_t* EnglishCommandName() { return L"SampleHelloRhino"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleHelloRhino"; }
 
   // Rhino calls RunCommand to run the command.
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleHelloRhino object.  

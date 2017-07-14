@@ -93,8 +93,8 @@ public:
     { 0x55972E8, 0xC866, 0x4432,{ 0xAD, 0x29, 0x51, 0x52, 0x98, 0x81, 0x18, 0x90 } };
     return SampleEscapeKeyCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleEscapeKey"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleEscapeKey"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleEscapeKey object
@@ -150,8 +150,8 @@ public:
     { 0xECB5023, 0x8915, 0x41D2,{ 0xBF, 0x8F, 0x90, 0x8F, 0x27, 0x0B, 0x41, 0x13 } };
     return SampleEscapeKeySimpleCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleEscapeKeySimple"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleEscapeKeySimple"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 public:
   enum class EscapeKeyResult : int

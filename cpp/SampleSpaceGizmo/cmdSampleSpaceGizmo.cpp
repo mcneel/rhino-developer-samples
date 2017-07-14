@@ -21,8 +21,8 @@ public:
     { 0xDB2A1D6B, 0xA8F3, 0x41EE, { 0xAB, 0xC7, 0x3A, 0xAA, 0x70, 0xC8, 0x1F, 0x4A } };
     return SampleSpaceGizmoCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleSpaceGizmo"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleSpaceGizmo"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleSpaceGizmo object

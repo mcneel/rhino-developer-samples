@@ -21,8 +21,8 @@ public:
     { 0xA16EC009, 0xE898, 0x4775, { 0xA3, 0x79, 0x50, 0x24, 0xD5, 0x1E, 0x5B, 0x3E } };
     return SampleBrepFaceUserDataCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleBrepFaceUserData"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleBrepFaceUserData"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleBrepFaceUserData object
@@ -151,8 +151,8 @@ public:
     { 0x5B941346, 0xE07F, 0x4E03, { 0x85, 0xBD, 0x35, 0x15, 0x85, 0x3A, 0xA4, 0xEE } };
     return SampleGetBrepFaceUserDataCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleGetBrepFaceUserData"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleGetBrepFaceUserData"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleGetBrepFaceUserData object

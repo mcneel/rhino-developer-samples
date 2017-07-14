@@ -20,8 +20,8 @@ public:
     { 0x6353A345, 0xE93D, 0x4863, { 0xB5, 0x74, 0x18, 0x5F, 0xB1, 0x70, 0x59, 0xE2 } };
     return SampleLineMeshIntersectCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleLineMeshIntersect"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleLineMeshIntersect"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleLineMeshIntersect object

@@ -96,8 +96,8 @@ public:
     { 0x986D21C4, 0xBC03, 0x4E05, { 0xB5, 0x30, 0x66, 0x8F, 0x7A, 0x8E, 0xE4, 0x20 } };
     return SampleOrientOnMeshCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleOrientOnMesh"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleOrientOnMesh"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleOrientOnMesh object

@@ -20,8 +20,8 @@ public:
     { 0x74F4A34, 0x54C4, 0x4B3F, { 0xB7, 0x04, 0xDC, 0xF4, 0xB1, 0x48, 0x86, 0x9D } };
     return SampleMoveGripsCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMoveGrips"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMoveGrips"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMoveGrips object

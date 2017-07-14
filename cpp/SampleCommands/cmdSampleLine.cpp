@@ -18,8 +18,8 @@ public:
     { 0xF4226F9A, 0x132, 0x4D66, { 0xAA, 0xB1, 0xEE, 0x48, 0x3B, 0x80, 0xC2, 0x21 } };
     return SampleLineCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleLine"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleLine"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleLine object

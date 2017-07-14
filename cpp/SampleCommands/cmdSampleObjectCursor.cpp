@@ -21,8 +21,8 @@ public:
     { 0x1E0B30A9, 0x4015, 0x4205, { 0xAD, 0xD5, 0xE8, 0x12, 0xD9, 0x50, 0x28, 0x3F } };
     return SampleObjectCursorCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleObjectCursor"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleObjectCursor"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleObjectCursor object

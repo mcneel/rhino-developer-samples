@@ -144,8 +144,8 @@ public:
     { 0x20B46D76, 0x345B, 0x4495, { 0x99, 0xAB, 0xDF, 0xB4, 0xB9, 0xFE, 0x2D, 0x33 } };
     return SampleMemoryBufferCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleMemoryBuffer"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleMemoryBuffer"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleMemoryBuffer object

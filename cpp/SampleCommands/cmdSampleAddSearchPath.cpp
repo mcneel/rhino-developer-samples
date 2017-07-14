@@ -20,8 +20,8 @@ public:
     { 0xDE0F201C, 0x6D7D, 0x4F7E, { 0x8B, 0x02, 0x1A, 0x70, 0x4E, 0xB8, 0x43, 0x06 } };
     return SampleAddSearchPathCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAddSearchPath"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAddSearchPath"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   int AddFileSearchFolder(const wchar_t* folder, int index = -1);

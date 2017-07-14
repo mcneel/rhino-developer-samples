@@ -35,8 +35,8 @@ public:
     { 0x7CFC7B7D, 0xD26E, 0x4244, { 0xAE, 0x51, 0x93, 0x28, 0x93, 0x07, 0xAA, 0x07 } };
     return SampleExtendLinesCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleExtendLines"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleExtendLines"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleExtendLines object

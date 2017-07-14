@@ -20,8 +20,8 @@ public:
     { 0x1E4E8E65, 0xB040, 0x4908, { 0xA4, 0x95, 0xE3, 0x31, 0x43, 0x98, 0x46, 0x11 } };
     return SampleAddNurbsCircleCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SampleAddNurbsCircle"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SampleAddNurbsCircle"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleAddNurbsCircle object

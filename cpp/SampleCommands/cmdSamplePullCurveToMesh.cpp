@@ -20,8 +20,8 @@ public:
     { 0xA3C5DF7E, 0x8F4A, 0x46F6,{ 0xA4, 0xA1, 0x58, 0x8D, 0x58, 0x74, 0x16, 0x75 } };
     return SamplePullCurveToMeshCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() { return L"SamplePullCurveToMesh"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
+  const wchar_t* EnglishCommandName() override { return L"SamplePullCurveToMesh"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePullCurveToMesh object

@@ -47,7 +47,7 @@ public:
 	}
 
   // Returns the English command name.
-	const wchar_t* EnglishCommandName() { return L"SampleLocalization"; }
+	const wchar_t* EnglishCommandName() override { return L"SampleLocalization"; }
 
   // Rhino calls RunCommand to run the command.
 	CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
