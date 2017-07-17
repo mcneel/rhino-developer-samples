@@ -2,20 +2,14 @@
 #include "SampleSpaceGizmoOptions.h"
 #include "SampleSpaceGizmoPlugIn.h"
 
-IMPLEMENT_DYNAMIC(CSampleSpaceGizmoOptions, CRhinoOptionsDialogPage)
-
 CSampleSpaceGizmoOptions::CSampleSpaceGizmoOptions(CWnd* pParent)
-  : CRhinoOptionsDialogPage(CSampleSpaceGizmoOptions::IDD, pParent)
-{
-}
-
-CSampleSpaceGizmoOptions::~CSampleSpaceGizmoOptions()
+  : TRhinoOptionsPage<CRhinoDialog>(CSampleSpaceGizmoOptions::IDD, 0, true)
 {
 }
 
 void CSampleSpaceGizmoOptions::DoDataExchange(CDataExchange* pDX)
 {
-  CRhinoOptionsDialogPage::DoDataExchange(pDX);
+  __base_class::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_SEP1, m_sep1);
   DDX_Check(pDX, IDC_CHK_ROTATE_ABOUT_CAMERA, m_settings.m_rotate_about_camera);
   DDX_Check(pDX, IDC_CHK_DOLLY_ZOOM, m_settings.m_swap_zoom_with_dolly);
@@ -28,7 +22,7 @@ void CSampleSpaceGizmoOptions::DoDataExchange(CDataExchange* pDX)
   m_TranslationScale.DDX_Text(pDX, IDC_ED_TRANS_SCALE, m_settings.m_translation_scale);
 }
 
-BEGIN_MESSAGE_MAP(CSampleSpaceGizmoOptions, CRhinoOptionsDialogPage)
+BEGIN_MESSAGE_MAP(CSampleSpaceGizmoOptions, __base_class)
 END_MESSAGE_MAP()
 
 // CSampleSpaceGizmoOptions message handlers
@@ -36,7 +30,7 @@ BOOL CSampleSpaceGizmoOptions::OnInitDialog()
 {
   m_settings = SampleSpaceGizmoPlugIn().SpaceGizmoSettings();
 
-  CRhinoOptionsDialogPage::OnInitDialog();
+  __base_class::OnInitDialog();
 
   m_RotationScale.SetMin(true, -1000000);
   m_TranslationScale.SetMin(true, -1000000);
@@ -46,7 +40,7 @@ BOOL CSampleSpaceGizmoOptions::OnInitDialog()
 
 void CSampleSpaceGizmoOptions::PostNcDestroy()
 {
-  CRhinoOptionsDialogPage::PostNcDestroy();
+  __base_class::PostNcDestroy();
 }
 
 BOOL CSampleSpaceGizmoOptions::OnHelpInfo(HELPINFO* pHelpInfo)
@@ -56,17 +50,17 @@ BOOL CSampleSpaceGizmoOptions::OnHelpInfo(HELPINFO* pHelpInfo)
   return TRUE;
 }
 
-const wchar_t* CSampleSpaceGizmoOptions::EnglishPageTitle()
+const wchar_t* CSampleSpaceGizmoOptions::EnglishTitle() const
 {
   return L"SpaceGizmo";
 }
 
-const wchar_t* CSampleSpaceGizmoOptions::LocalPageTitle()
+const wchar_t* CSampleSpaceGizmoOptions::LocalTitle() const
 {
-  return L"SpaceGizmo";
+  return EnglishTitle();
 }
 
-BOOL CSampleSpaceGizmoOptions::OnApply()
+bool CSampleSpaceGizmoOptions::Apply(CRhinoOptionsPageEventArgs& /*e*/)
 {
   if (!UpdateData(TRUE))
     return FALSE;
@@ -76,19 +70,12 @@ BOOL CSampleSpaceGizmoOptions::OnApply()
   return TRUE;
 }
 
-void CSampleSpaceGizmoOptions::OnCancel()
+void CSampleSpaceGizmoOptions::UpdatePage(CRhinoOptionsPageEventArgs& /*e*/)
 {
 }
 
-void CSampleSpaceGizmoOptions::RhinoDeleteThisPage()
+CRhinoCommand::result CSampleSpaceGizmoOptions::RunScript(CRhinoOptionsPageEventArgs& /*e*/)
 {
-  delete this;
-}
-
-CRhinoCommand::result CSampleSpaceGizmoOptions::RunScript(const unsigned int rhino_doc_sn)
-{
-  UNREFERENCED_PARAMETER(rhino_doc_sn);
-
   m_settings = SampleSpaceGizmoPlugIn().SpaceGizmoSettings();
 
   CRhinoCommandOptionValue no = RHCMDOPTVALUE(L"No");

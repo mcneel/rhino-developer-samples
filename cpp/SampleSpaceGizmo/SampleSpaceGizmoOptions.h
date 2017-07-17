@@ -3,13 +3,14 @@
 #include "resource.h"
 #include "SampleSpaceGizmoSettings.h"
 
-class CSampleSpaceGizmoOptions : public CRhinoOptionsDialogPage
+class CSampleSpaceGizmoOptions : public TRhinoOptionsPage<CRhinoDialog>
 {
-  DECLARE_DYNAMIC(CSampleSpaceGizmoOptions)
-
 public:
   CSampleSpaceGizmoOptions(CWnd* pParent);
-  virtual ~CSampleSpaceGizmoOptions();
+  virtual ~CSampleSpaceGizmoOptions() = default;
+
+  RHINO_PAGE_DECLARE
+  RHINO_OPTIONS_PAGE_DECLARE
 
   // Dialog Data
   enum { IDD = IDD_SPACEGIZMO_OPTIONS };
@@ -17,14 +18,6 @@ public:
   CRhinoUiEditInt	m_RotationScale;
   CRhinoUiEditInt	m_TranslationScale;
   CSampleSpaceGizmoSettings m_settings;
-
-  // Overrides
-  int OnApply();
-  void OnCancel();
-  const wchar_t* EnglishPageTitle();
-  const wchar_t* LocalPageTitle();
-  void RhinoDeleteThisPage();
-  CRhinoCommand::result RunScript(const unsigned int rhino_doc_sn);
 
 protected:
   virtual BOOL OnInitDialog();

@@ -61,6 +61,9 @@
 // Rhino SDK classes
 #include "C:\Program Files\Rhino 6.0 SDK\Inc\RhinoSdk.h" 
 
+#define ON_RUNTIME_WIN
+#include "C:\Program Files\Rhino 6.0 SDK\Inc\RhinoSdkTPages.h" 
+
 // Rhino Render Development Kit (RDK) classes
 #include "C:\Program Files\Rhino 6.0 SDK\Inc\RhRdkHeaders.h" 
 

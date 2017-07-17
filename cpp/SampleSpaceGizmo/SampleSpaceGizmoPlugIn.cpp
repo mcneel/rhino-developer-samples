@@ -187,12 +187,12 @@ void CSampleSpaceGizmoPlugIn::SaveProfile(LPCTSTR lpszSection, CRhinoProfileCont
   m_settings.SaveProfile(lpszSection, pc);
 }
 
-void CSampleSpaceGizmoPlugIn::AddPagesToOptionsDialog(HWND hWnd, ON_SimpleArray<CRhinoOptionsDialogPage*>& pages)
+void CSampleSpaceGizmoPlugIn::AddPagesToOptionsDialog(CRhinoOptionsPageCollection& collection)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
-  CSampleSpaceGizmoOptions* options_page = new CSampleSpaceGizmoOptions(CWnd::FromHandle(hWnd));
-  if (options_page)
-    pages.Append(options_page);
+  CSampleSpaceGizmoOptions* page = new CSampleSpaceGizmoOptions(CWnd::FromHandle(collection.Parent()));
+  if (page)
+    collection.AddPage(page);
 }
 
 /////////////////////////////////////////////////////////////////////////////

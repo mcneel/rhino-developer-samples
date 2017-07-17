@@ -10,20 +10,20 @@ public:
   ~CSampleSpaceGizmoPlugIn();
 
   // Required overrides
-  const wchar_t* PlugInName() const;
-  const wchar_t* PlugInVersion() const;
-  GUID PlugInID() const;
-  BOOL OnLoadPlugIn();
-  void OnUnloadPlugIn();
+  const wchar_t* PlugInName() const override;
+  const wchar_t* PlugInVersion() const override;
+  GUID PlugInID() const override;
+  BOOL OnLoadPlugIn() override;
+  void OnUnloadPlugIn() override;
 
   // Online help overrides
-  BOOL AddToPlugInHelpMenu() const;
-  BOOL OnDisplayPlugInHelp(HWND hWnd) const;
+  BOOL AddToPlugInHelpMenu() const override;
+  BOOL OnDisplayPlugInHelp(HWND hWnd) const override;
 
   // Additional overrides
-  void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);
-  void SaveProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);
-  void AddPagesToOptionsDialog(HWND hWnd, ON_SimpleArray<CRhinoOptionsDialogPage*>& pages);
+  void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc) override;
+  void SaveProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc) override;
+  void AddPagesToOptionsDialog(CRhinoOptionsPageCollection& collection) override;
 
   // SpaceGizmo members
   const CSampleSpaceGizmoSettings& SpaceGizmoSettings() const;
@@ -35,13 +35,9 @@ private:
 
 private:
   ON_wString m_plugin_version;
-
-  // TODO: Add additional class information here
+  // Additional class information
   CSampleSpaceGizmoWnd* m_pWnd;
   CSampleSpaceGizmoSettings m_settings;
 };
 
 CSampleSpaceGizmoPlugIn& SampleSpaceGizmoPlugIn();
-
-
-
