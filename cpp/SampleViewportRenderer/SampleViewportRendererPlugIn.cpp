@@ -235,35 +235,35 @@ GUID CSampleViewportRendererPlugIn::DisplayModeID() const
 // Starts the renderer
 void CSampleViewportRendererPlugIn::StartRenderer()
 {
-  if (0 == m_pRenderer)
+  if (nullptr == m_pRenderer)
   {
     // Create and start the renderer
     m_pRenderer = new CSampleRenderer();
-    if (0 != m_pRenderer)
+    if (nullptr != m_pRenderer)
       m_pRenderer->StartRenderProcess();
 
     // Set timer for the viewport updating
-    CWnd* pMainWnd = RhinoApp().GetMainWnd();
-    if (0 != pMainWnd)
-      m_uTimerProcId = pMainWnd->SetTimer(CSampleViewportRendererPlugIn::s_uTimerProcEvent, 100, CSampleViewportRendererPlugIn::RedrawTimerProc);
+    HWND hWnd = RhinoApp().MainWnd();
+    if (::IsWindow(hWnd))
+      m_uTimerProcId = SetTimer(hWnd, CSampleViewportRendererPlugIn::s_uTimerProcEvent, 100, CSampleViewportRendererPlugIn::RedrawTimerProc);
   }
 }
 
 // Stops the renderer
 void CSampleViewportRendererPlugIn::StopRenderer()
 {
-  if (0 != m_pRenderer)
+  if (nullptr != m_pRenderer)
   {
     // Kill the timer
-    CWnd* pMainWnd = RhinoApp().GetMainWnd();
-    if (0 != pMainWnd)
-      pMainWnd->KillTimer(m_uTimerProcId);
+    HWND hWnd = RhinoApp().MainWnd();
+    if (::IsWindow(hWnd))
+      KillTimer(hWnd, m_uTimerProcId);
     m_uTimerProcId = 0;
 
     // Stop renderer and delete it
     m_pRenderer->StopRenderProcess();
     delete m_pRenderer;
-    m_pRenderer = 0;
+    m_pRenderer = nullptr;
   }
 }
 

@@ -23,9 +23,6 @@ public:
   bool m_bDirty;
 
 protected:
-  void DoModification(IRhinoPropertiesPanelPageEventArgs& args, const wchar_t* hyperlink);
-
-protected:
   virtual void DoDataExchange(CDataExchange* pDX) override;
   virtual BOOL OnInitDialog() override;
   afx_msg void OnEditChange();

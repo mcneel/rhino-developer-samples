@@ -570,9 +570,6 @@
     <ClCompile Include="cmdSamplePointCursor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cmdSampleColorPicker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cmdSampleCustomGrips.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

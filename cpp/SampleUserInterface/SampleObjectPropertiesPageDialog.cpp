@@ -93,8 +93,9 @@ void CSampleObjectPropertiesPageDialog::UpdatePage(IRhinoPropertiesPanelPageEven
   }
 }
 
-void CSampleObjectPropertiesPageDialog::OnModifyPage(IRhinoPropertiesPanelPageEventArgs& e)
+void CSampleObjectPropertiesPageDialog::OnModifyPage(IRhinoPropertiesPanelPageEventArgs& args)
 {
+  // Check undo handling
 
 }
 
@@ -122,7 +123,10 @@ CRhinoCommand::result CSampleObjectPropertiesPageDialog::RunScript(IRhinoPropert
   if (0 == m_hyperlink.CompareOrdinal(hyperlink, false))
     return CRhinoCommand::nothing;
 
-  DoModification(args, hyperlink);
+  //DoModification(args, hyperlink);
+  IRhinoPropertiesPanelPageHost* host = PropertiesPanelPageHost();
+  if (nullptr != host)
+    host->ModifyPage();
 
   return CRhinoCommand::success;
 }
@@ -177,26 +181,30 @@ void CSampleObjectPropertiesPageDialog::OnEditKillFocus()
   if (0 == m_hyperlink.CompareOrdinal(str, false))
     return;
 
-  //DoModification(str);
+  IRhinoPropertiesPanelPageHost* host = PropertiesPanelPageHost();
+  if (nullptr != host)
+    host->ModifyPage();
 }
 
-void CSampleObjectPropertiesPageDialog::DoModification(IRhinoPropertiesPanelPageEventArgs& args, const wchar_t* hyperlink)
-{
-  CRhinoDoc* doc = args.Document();
-  if (nullptr == doc || 0 == args.ObjectCount())
-    return;
-
-  m_hyperlink = hyperlink;
-  m_bVaries = false;
-
-  for (int i = 0; i < args.ObjectCount(); i++)
-  {
-    const CRhinoObject* obj = args.ObjectAt(i);
-    if (nullptr != obj)
-    {
-      ON_3dmObjectAttributes attrib = obj->Attributes();
-      attrib.m_url = hyperlink;
-      doc->ModifyObjectAttributes(CRhinoObjRef(obj), attrib, false);
-    }
-  }
-}
+//void CSampleObjectPropertiesPageDialog::DoModification(const wchar_t* hyperlink)
+//{
+//  PropertiesPanelPageHost()->ModifyPage();
+//  ModifyPa
+//  CRhinoDoc* doc = args.Document();
+//  if (nullptr == doc || 0 == args.ObjectCount())
+//    return;
+//
+//  m_hyperlink = hyperlink;
+//  m_bVaries = false;
+//
+//  for (int i = 0; i < args.ObjectCount(); i++)
+//  {
+//    const CRhinoObject* obj = args.ObjectAt(i);
+//    if (nullptr != obj)
+//    {
+//      ON_3dmObjectAttributes attrib = obj->Attributes();
+//      attrib.m_url = hyperlink;
+//      doc->ModifyObjectAttributes(CRhinoObjRef(obj), attrib, false);
+//    }
+//  }
+//}

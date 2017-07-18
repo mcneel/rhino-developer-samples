@@ -20,6 +20,7 @@
     <ClCompile Include="cmdSampleBlockView.cpp" />
     <ClCompile Include="cmdSampleBlockWalk.cpp" />
     <ClCompile Include="cmdSampleCirclePreview.cpp" />
+    <ClCompile Include="cmdSampleColorPicker.cpp" />
     <ClCompile Include="cmdSampleDockbar.cpp" />
     <ClCompile Include="cmdSampleMenu.cpp" />
     <ClCompile Include="cmdSampleMenuToggle.cpp" />

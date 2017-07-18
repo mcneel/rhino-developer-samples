@@ -10,6 +10,11 @@
 
 // This plug-in is Rhino 6 ready
 #define RHINO_V6_READY
+
+// To allow the use of Rhino's MFC UI classes, then
+// uncomment the #define below. Note, doing will
+// require your plug-in use the same vesion of MFC
+// as Rhino.
 #define RHINO_SDK_MFC
 
 // Plug-ins must use the release version of MFC used by Rhino.
@@ -65,8 +70,8 @@
 // Rhino SDK classes
 #include "C:\Program Files\Rhino 6.0 SDK\Inc\RhinoSdk.h" 
 
-#define ON_RUNTIME_WIN
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\RhinoSdkTPages.h" 
+// Rhino MFC UI template classes
+#include "C:\Program Files\Rhino 6.0 SDK\Inc\rhinoSdkTMfcPages.h" 
 
 // Rhino Render Development Kit (RDK) classes
 #include "C:\Program Files\Rhino 6.0 SDK\Inc\RhRdkHeaders.h" 

@@ -25,21 +25,26 @@ bool CSampleDisplayPipeline::ShowFrameBuffer(HDC hDC)
 
   // Get the rendered image, it's device context and size.
   CRhinoDib* pDib = SampleViewportRendererPlugIn().LockRenderImage();
-  if (0 == pDib)
+  if (nullptr == pDib)
     return false;
 
-  CDC* pSrcDC = *pDib;
-  if (nullptr != pSrcDC)
+  HDC hDibDC = *pDib;
+  if (nullptr != hDibDC)
   {
+    CDC dibDC;
+    dibDC.Attach(hDibDC);
+
     const int iSrcWidth = pDib->Width();
     const int iSrcHeight = pDib->Height();
 
     // Copy the rendered image into viewport using either BitBlt or StretchBlt depending
     // on if the device contexts' sizes are the same or not.
     if (iSrcWidth == iDestWidth && iSrcHeight == iDestHeight)
-      pDestDC->BitBlt(0, 0, iSrcWidth, iSrcHeight, pSrcDC, 0, 0, SRCCOPY);
+      pDestDC->BitBlt(0, 0, iSrcWidth, iSrcHeight, &dibDC, 0, 0, SRCCOPY);
     else
-      pDestDC->StretchBlt(0, 0, iDestWidth, iDestHeight, pSrcDC, 0, 0, iSrcWidth, iSrcHeight, SRCCOPY);
+      pDestDC->StretchBlt(0, 0, iDestWidth, iDestHeight, &dibDC, 0, 0, iSrcWidth, iSrcHeight, SRCCOPY);
+
+    dibDC.Detach();
   }
 
   // Allow others to access the rendered image again
@@ -47,6 +52,7 @@ bool CSampleDisplayPipeline::ShowFrameBuffer(HDC hDC)
 
   // Tell that the image has been shown in viewport
   SampleViewportRendererPlugIn().AcknowledgeRedraw();
+
 
   return true;
 }

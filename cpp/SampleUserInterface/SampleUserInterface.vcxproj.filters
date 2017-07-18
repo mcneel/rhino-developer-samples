@@ -124,6 +124,9 @@
     <ClCompile Include="SampleOptionsListCtrlPageDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cmdSampleColorPicker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SampleAnimatorDialog.h">
