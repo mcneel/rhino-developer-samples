@@ -7,8 +7,7 @@ class CSampleModelessDialog : public CRhinoDialog
   DECLARE_DYNAMIC(CSampleModelessDialog)
 
 public:
-  CSampleModelessDialog(CWnd* pParent = 0);
-  virtual ~CSampleModelessDialog();
+  CSampleModelessDialog(CWnd* pParent = nullptr);
 
   // Dialog Data
   enum { IDD = IDD_MODELESS_DIALOG };
@@ -23,16 +22,14 @@ public:
   void SetPointValue(int item, const ON_3dPoint& pt);
   void KillDialog();
 
-public:
-  virtual BOOL OnInitDialog();
+protected:
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
   afx_msg void OnBnClickedButton1();
   afx_msg void OnBnClickedButton2();
   afx_msg void OnBnClickedButton3();
-
-protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
-  virtual void PostNcDestroy();
-  virtual void OnOK();
-  virtual void OnCancel();
+  virtual void PostNcDestroy() override;
+  virtual void OnOK() override;
+  virtual void OnCancel() override;
   DECLARE_MESSAGE_MAP()
 };

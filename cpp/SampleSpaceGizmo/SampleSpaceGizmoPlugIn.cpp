@@ -190,7 +190,7 @@ void CSampleSpaceGizmoPlugIn::SaveProfile(LPCTSTR lpszSection, CRhinoProfileCont
 void CSampleSpaceGizmoPlugIn::AddPagesToOptionsDialog(CRhinoOptionsPageCollection& collection)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
-  CSampleSpaceGizmoOptions* page = new CSampleSpaceGizmoOptions(CWnd::FromHandle(collection.Parent()));
+  CSampleSpaceGizmoOptions* page = new CSampleSpaceGizmoOptions();
   if (page)
     collection.AddPage(page);
 }

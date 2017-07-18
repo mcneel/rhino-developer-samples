@@ -38,10 +38,6 @@ CSampleCirclePreviewDialog::CSampleCirclePreviewDialog(CWnd* pParent, unsigned i
   m_radius = 1.0;
 }
 
-CSampleCirclePreviewDialog::~CSampleCirclePreviewDialog()
-{
-}
-
 void CSampleCirclePreviewDialog::DoDataExchange(CDataExchange* pDX)
 {
   CRhinoDialog::DoDataExchange(pDX);

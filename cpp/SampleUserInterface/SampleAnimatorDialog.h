@@ -4,7 +4,7 @@ class CSampleAnimatorConduit : public CRhinoDisplayConduit
 {
 public:
   CSampleAnimatorConduit();
-  bool ExecConduit(CRhinoDisplayPipeline& dp, UINT nChannel, bool& bTerminate);
+  bool ExecConduit(CRhinoDisplayPipeline& dp, UINT nChannel, bool& bTerminate)  override;
 
 public:
   ON_SimpleArray<const CRhinoObject*> m_objects;
@@ -30,10 +30,10 @@ public:
   unsigned int m_document_sn;
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
-  virtual BOOL OnInitDialog();
-  virtual void OnOK();
-  virtual void OnCancel();
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
+  virtual void OnOK() override;
+  virtual void OnCancel() override;
   afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
   DECLARE_MESSAGE_MAP()
 };

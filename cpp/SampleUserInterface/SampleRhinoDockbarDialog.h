@@ -15,8 +15,8 @@ public:
   enum { IDD = IDD_RHINO_DOCKBAR_DIALOG };
 
 protected:
-  virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);
+  virtual BOOL OnInitDialog() override;
+  virtual void DoDataExchange(CDataExchange* pDX) override;
   afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
   afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
   afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);

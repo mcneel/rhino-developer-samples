@@ -10,10 +10,6 @@ CSampleBlockWalkDialog::CSampleBlockWalkDialog(CWnd* pParent, CRhinoDoc& doc)
 {
 }
 
-CSampleBlockWalkDialog::~CSampleBlockWalkDialog()
-{
-}
-
 void CSampleBlockWalkDialog::DoDataExchange(CDataExchange* pDX)
 {
   CRhinoDialog::DoDataExchange(pDX);

@@ -2,7 +2,7 @@
 #include "SampleSpaceGizmoOptions.h"
 #include "SampleSpaceGizmoPlugIn.h"
 
-CSampleSpaceGizmoOptions::CSampleSpaceGizmoOptions(CWnd* pParent)
+CSampleSpaceGizmoOptions::CSampleSpaceGizmoOptions()
   : TRhinoOptionsPage<CRhinoDialog>(CSampleSpaceGizmoOptions::IDD, 0, true)
 {
 }
@@ -38,11 +38,6 @@ BOOL CSampleSpaceGizmoOptions::OnInitDialog()
   return TRUE;
 }
 
-void CSampleSpaceGizmoOptions::PostNcDestroy()
-{
-  __base_class::PostNcDestroy();
-}
-
 BOOL CSampleSpaceGizmoOptions::OnHelpInfo(HELPINFO* pHelpInfo)
 {
   UNREFERENCED_PARAMETER(pHelpInfo);
@@ -63,11 +58,11 @@ const wchar_t* CSampleSpaceGizmoOptions::LocalTitle() const
 bool CSampleSpaceGizmoOptions::Apply(CRhinoOptionsPageEventArgs& /*e*/)
 {
   if (!UpdateData(TRUE))
-    return FALSE;
+    return false;
 
   SampleSpaceGizmoPlugIn().SetSpaceGizmoSettings(m_settings);
 
-  return TRUE;
+  return true;
 }
 
 void CSampleSpaceGizmoOptions::UpdatePage(CRhinoOptionsPageEventArgs& /*e*/)

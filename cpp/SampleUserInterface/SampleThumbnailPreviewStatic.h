@@ -10,7 +10,7 @@ public:
   virtual ~CSampleThumbnailPreviewStatic();
 
   bool UpdateDib(const wchar_t* filename);
-  void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+  void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) override;
 
 protected:
   DECLARE_MESSAGE_MAP()

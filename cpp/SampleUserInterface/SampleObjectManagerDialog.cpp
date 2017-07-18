@@ -40,12 +40,6 @@ ON_UUID CSampleObjectManagerDialog::PlugInId() const
   return SampleUserInterfacePlugIn().PlugInID();
 }
 
-HICON CSampleObjectManagerDialog::Icon(const CSize& sizeInPixels) const
-{
-  AFX_MANAGE_STATE(AfxGetStaticModuleState());
-  return CRhinoDpi::LoadIcon(AfxGetInstanceHandle(), IDI_OBJECT_MANAGER_ICON, sizeInPixels.cx, sizeInPixels.cy);
-}
-
 void CSampleObjectManagerDialog::DoDataExchange(CDataExchange* pDX)
 {
   CRhinoTabbedDockBarDialog::DoDataExchange(pDX);
@@ -53,14 +47,14 @@ void CSampleObjectManagerDialog::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_LISTBOX, m_listbox);
 }
 
-void CSampleObjectManagerDialog::OnShowDockBar(CRhinoUiDockBar::ShowEventArgs args)
+void CSampleObjectManagerDialog::OnShowDockBar(IDockBarEventWatcher::ShowEventArgs args)
 {
-  if (args == CRhinoUiDockBar::ShowEventArgs::Show)
+  if (args == IDockBarEventWatcher::ShowEventArgs::Show)
   {
     CRhinoEventWatcher::Enable(TRUE);
     FillListBox();
   }
-  else if (args == CRhinoUiDockBar::ShowEventArgs::Hide)
+  else if (args == IDockBarEventWatcher::ShowEventArgs::Hide)
   {
     CRhinoEventWatcher::Enable(FALSE);
     m_listbox.ResetContent();

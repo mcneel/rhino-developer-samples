@@ -12,7 +12,7 @@
 class CCommandSampleOptionsListCtrl : public CRhinoCommand
 {
 public:
-	CCommandSampleOptionsListCtrl() = default;
+  CCommandSampleOptionsListCtrl() = default;
   ~CCommandSampleOptionsListCtrl() = default;
   UUID CommandUUID() override
   {
@@ -22,47 +22,47 @@ public:
     return SampleOptionsListCtrlCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleOptionsListCtrl"; }
-	CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext&);
 };
 
 static class CCommandSampleOptionsListCtrl theSampleOptionsListCtrlCommand;
 
-CRhinoCommand::result CCommandSampleOptionsListCtrl::RunCommand( const CRhinoCommandContext& context )
+CRhinoCommand::result CCommandSampleOptionsListCtrl::RunCommand(const CRhinoCommandContext& context)
 {
   ON_UUID tabId = CSampleOptionsListCtrlPageDialog::ID();
 
-  if( context.IsInteractive() )
+  if (context.IsInteractive())
   {
-    CRhinoTabbedDockBarDialog::OpenDockbarTab( tabId );
+    CRhinoTabbedDockBarDialog::OpenDockbarTab(context.m_doc, tabId);
   }
   else
   {
-    bool bVisible = CRhinoTabbedDockBarDialog::IsTabVisible( tabId );
- 
+    bool bVisible = CRhinoTabbedDockBarDialog::IsTabVisible(context.m_doc, tabId);
+
     ON_wString str;
-    str.Format( L"%s is %s. New value", LocalCommandName(), bVisible ? L"visible" : L"hidden" );
- 
+    str.Format(L"%s is %s. New value", LocalCommandName(), bVisible ? L"visible" : L"hidden");
+
     CRhinoGetOption go;
-    go.SetCommandPrompt( str );
-    int h_option = go.AddCommandOption( RHCMDOPTNAME(L"Hide") );
-    int s_option = go.AddCommandOption( RHCMDOPTNAME(L"Show") );
-    int t_option = go.AddCommandOption( RHCMDOPTNAME(L"Toggle") );
+    go.SetCommandPrompt(str);
+    int h_option = go.AddCommandOption(RHCMDOPTNAME(L"Hide"));
+    int s_option = go.AddCommandOption(RHCMDOPTNAME(L"Show"));
+    int t_option = go.AddCommandOption(RHCMDOPTNAME(L"Toggle"));
     go.GetOption();
-    if( go.CommandResult() != CRhinoCommand::success )
+    if (go.CommandResult() != CRhinoCommand::success)
       return go.CommandResult();
- 
+
     const CRhinoCommandOption* option = go.Option();
-    if( 0 == option )
+    if (0 == option)
       return CRhinoCommand::failure;
- 
+
     int option_index = option->m_option_index;
 
-    if( h_option == option_index && bVisible )
-      CRhinoTabbedDockBarDialog::ShowDockbarTab( tabId, false );
-    else if( s_option == option_index && !bVisible  )
-      CRhinoTabbedDockBarDialog::ShowDockbarTab( tabId, true );
-    else if( t_option == option_index )
-      CRhinoTabbedDockBarDialog::ShowDockbarTab( tabId, !bVisible );
+    if (h_option == option_index && bVisible)
+      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, false, nullptr);
+    else if (s_option == option_index && !bVisible)
+      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, true, nullptr);
+    else if (t_option == option_index)
+      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, !bVisible, nullptr);
   }
 
   return CRhinoCommand::success;

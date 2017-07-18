@@ -8,13 +8,11 @@ class CSampleModalDialog : public CDialog
 
 public:
   CSampleModalDialog(CWnd* pParent = 0);   // standard constructor
-  virtual ~CSampleModalDialog();
 
   // Dialog Data
   enum { IDD = IDD_MODAL_DIALOG };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
+  virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
   DECLARE_MESSAGE_MAP()
 };

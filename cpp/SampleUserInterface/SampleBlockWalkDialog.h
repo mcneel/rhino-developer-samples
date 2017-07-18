@@ -8,7 +8,6 @@ class CSampleBlockWalkDialog : public CRhinoDialog
 
 public:
   CSampleBlockWalkDialog(CWnd* pParent, CRhinoDoc& doc);
-  virtual ~CSampleBlockWalkDialog();
 
   // Dialog Data
   enum { IDD = IDD_BLOCKWALK_DIALOG };
@@ -17,14 +16,12 @@ public:
   CComboBox m_view_combo;
   CComboBox m_display_combo;
 
-public:
-  virtual BOOL OnInitDialog();
+protected:
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
   afx_msg void OnSelChangeBlockTree(NMHDR *pNMHDR, LRESULT* pResult);
   afx_msg void OnSelChangeComboView();
   afx_msg void OnSelChangeComboDisplay();
-
-protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
   DECLARE_MESSAGE_MAP()
 
 private:

@@ -8,10 +8,6 @@ CSampleModalDialog::CSampleModalDialog(CWnd* pParent /*=NULL*/)
 {
 }
 
-CSampleModalDialog::~CSampleModalDialog()
-{
-}
-
 void CSampleModalDialog::DoDataExchange(CDataExchange* pDX)
 {
   CDialog::DoDataExchange(pDX);

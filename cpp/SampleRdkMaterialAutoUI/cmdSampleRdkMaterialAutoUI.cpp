@@ -16,19 +16,14 @@ public:
 // The one and only CCommandSampleRdkMaterialAutoUI object
 static class CCommandSampleRdkMaterialAutoUI theSampleRdkMaterialAutoUICommand;
 
-CRhinoCommand::result CCommandSampleRdkMaterialAutoUI::RunCommand( const CRhinoCommandContext& context )
+CRhinoCommand::result CCommandSampleRdkMaterialAutoUI::RunCommand(const CRhinoCommandContext& context)
 {
-	auto pDoc = context.Document();
-	if (nullptr == pDoc)
-		return failure;
-
-	auto& rdkDoc = pDoc->RdkDocument().BeginChange(RhRdkChangeContext::UI);
+	auto& rdkDoc = context.m_doc.RdkDocument().BeginChange(RhRdkChangeContext::UI);
 
 	auto pContent = new CSampleRdkMaterial;
 	pContent->Initialize();
 
 	rdkDoc.AttachContent(*pContent);
-
 	rdkDoc.EndChange();
 
 	return success;

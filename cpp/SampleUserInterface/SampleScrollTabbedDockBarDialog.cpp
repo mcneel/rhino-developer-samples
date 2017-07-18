@@ -58,16 +58,11 @@ ON_UUID CSampleScrollTabbedDockBarDialog::PlugInId() const
   return SampleUserInterfacePlugIn().PlugInID();
 }
 
-HICON CSampleScrollTabbedDockBarDialog::Icon(const CSize& sizeInPixels) const
+void CSampleScrollTabbedDockBarDialog::OnShowTab(const class CRhinoUiPanel& db, bool bShowTab, const ON_UUID& dockBarId)
 {
-  AFX_MANAGE_STATE(AfxGetStaticModuleState());
-  return CRhinoDpi::LoadIcon(AfxGetInstanceHandle(), IDI_SCROLL_DOCKBAR_ICON, sizeInPixels.cx, sizeInPixels.cy);
-}
-
-void CSampleScrollTabbedDockBarDialog::OnShowTab(bool bShowTab, const ON_UUID& tabId)
-{
+  UNREFERENCED_PARAMETER(db);
   UNREFERENCED_PARAMETER(bShowTab);
-  UNREFERENCED_PARAMETER(tabId);
+  UNREFERENCED_PARAMETER(dockBarId);
 
   // TODO: Add "On Show" or "On Hide" tab code here
 }

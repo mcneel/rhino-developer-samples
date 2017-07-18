@@ -130,10 +130,6 @@ CSampleOptionsListCtrlPageDialog::CSampleOptionsListCtrlPageDialog()
 {
 }
 
-CSampleOptionsListCtrlPageDialog::~CSampleOptionsListCtrlPageDialog()
-{
-}
-
 void CSampleOptionsListCtrlPageDialog::DoDataExchange(CDataExchange* pDX)
 {
   CRhinoTabbedDockBarDialog::DoDataExchange(pDX);
@@ -171,14 +167,15 @@ HICON CSampleOptionsListCtrlPageDialog::Icon(const CSize& sizeInPixels) const
   return CRhinoDpi::LoadIcon(AfxGetInstanceHandle(), IDI_LISTCTRL_ICON, sizeInPixels.cx, sizeInPixels.cy);
 }
 
-void CSampleOptionsListCtrlPageDialog::OnShowTab(bool bShowTab, const ON_UUID& tabId)
+void CSampleOptionsListCtrlPageDialog::OnShowTab(const class CRhinoUiPanel& db, bool bShowTab, const ON_UUID& dockBarId)
 {
+  UNREFERENCED_PARAMETER(db);
   UNREFERENCED_PARAMETER(bShowTab);
-  UNREFERENCED_PARAMETER(tabId);
+  UNREFERENCED_PARAMETER(dockBarId);
   // TODO: Add "On Show" or "On Hide" tab code here
 }
 
-void CSampleOptionsListCtrlPageDialog::OnShowDockBar(CRhinoUiDockBar::ShowEventArgs args)
+void CSampleOptionsListCtrlPageDialog::OnShowDockBar(IDockBarEventWatcher::ShowEventArgs args)
 {
   UNREFERENCED_PARAMETER(args);
   // TODO: Add "On Show" or "On Hide" dockbar code here

@@ -6,8 +6,8 @@
 class CSampleSpaceGizmoOptions : public TRhinoOptionsPage<CRhinoDialog>
 {
 public:
-  CSampleSpaceGizmoOptions(CWnd* pParent);
-  virtual ~CSampleSpaceGizmoOptions() = default;
+  CSampleSpaceGizmoOptions();
+  ~CSampleSpaceGizmoOptions() = default;
 
   RHINO_PAGE_DECLARE
   RHINO_OPTIONS_PAGE_DECLARE
@@ -20,9 +20,8 @@ public:
   CSampleSpaceGizmoSettings m_settings;
 
 protected:
-  virtual BOOL OnInitDialog();
-  virtual void PostNcDestroy();
-  virtual void DoDataExchange(CDataExchange* pDX);
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
   afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
   DECLARE_MESSAGE_MAP()
 };

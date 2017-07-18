@@ -8,15 +8,14 @@ class CSamplePickObjectsDialog : public CRhinoDialog
 
 public:
   CSamplePickObjectsDialog(CWnd* pParent, unsigned int document_sn);
-  virtual ~CSamplePickObjectsDialog();
 
   // Dialog Data
   enum { IDD = IDD_PICKOBJECTS_DIALOG };
   CStatic m_message;
 
 protected:
-  virtual BOOL OnInitDialog();
-  virtual void DoDataExchange(CDataExchange* pDX);
+  virtual BOOL OnInitDialog() override;
+  virtual void DoDataExchange(CDataExchange* pDX) override;
   afx_msg void OnBnClickedPick();
   DECLARE_MESSAGE_MAP()
 };

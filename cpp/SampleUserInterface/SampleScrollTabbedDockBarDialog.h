@@ -12,21 +12,20 @@ public:
   virtual ~CSampleScrollTabbedDockBarDialog();
 
   // Required CRhinoTabbedDockBarDialog overrides
-  const wchar_t* Caption() const;
-  ON_UUID TabId() const;
+  const wchar_t* Caption() const override;
+  ON_UUID TabId() const override;
   static ON_UUID ID();
-  ON_UUID PlugInId() const;
-  HICON Icon(const CSize& sizeInPixels) const;
+  ON_UUID PlugInId() const override;
 
   // Optional CRhinoTabbedDockBarDialog overrides
-  void OnShowTab(bool bShowTab, const ON_UUID& tabId);
+  void OnShowTab(const class CRhinoUiPanel& db, bool bShowTab, const ON_UUID& dockBarId) override;
 
   // Dialog Data
   enum { IDD = IDD_SCROLL_DOCKBAR_DIALOG };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
-  virtual BOOL OnInitDialog();
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
   afx_msg void OnBnClickedButton1();
   afx_msg void OnBnClickedButton2();
   afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);

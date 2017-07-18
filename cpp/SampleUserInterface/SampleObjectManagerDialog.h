@@ -11,28 +11,27 @@ public:
   virtual ~CSampleObjectManagerDialog();
 
   // Required CRhinoTabbedDockBarDialog overrides
-  const wchar_t* Caption() const;
-  ON_UUID TabId() const;
+  const wchar_t* Caption() const override;
+  ON_UUID TabId() const override;
   static ON_UUID ID();
-  ON_UUID PlugInId() const;
-  HICON Icon(const CSize& sizeInPixels) const;
+  ON_UUID PlugInId() const override;
 
   // Optional CRhinoTabbedDockBarDialog overrides
-  void OnShowDockBar(CRhinoUiDockBar::ShowEventArgs args);
+  void OnShowDockBar(IDockBarEventWatcher::ShowEventArgs args) override;
 
   // Optional CRhinoEventWatcher overrides
-  void OnNewDocument(CRhinoDoc& doc);
-  void OnEndOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference);
-  void OnCloseDocument(CRhinoDoc& doc);
-  void OnBeginCommand(const CRhinoCommand& command, const CRhinoCommandContext& context);
-  void OnEndCommand(const CRhinoCommand& command, const CRhinoCommandContext& context, CRhinoCommand::result rc);
-  void OnAddObject(CRhinoDoc& doc, CRhinoObject& object);
-  void OnDeleteObject(CRhinoDoc& doc, CRhinoObject& object);
-  void OnSelectObject(CRhinoDoc& doc, const CRhinoObject& object);
-  void OnSelectObjects(CRhinoDoc& doc, const ON_SimpleArray<const CRhinoObject*>& objects);
-  void OnDeselectObject(CRhinoDoc& doc, const CRhinoObject& object);
-  void OnDeselectObjects(CRhinoDoc& doc, const ON_SimpleArray<const CRhinoObject*>& objects);
-  void OnDeselectAllObjects(CRhinoDoc& doc, int count);
+  void OnNewDocument(CRhinoDoc& doc) override;
+  void OnEndOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference) override;
+  void OnCloseDocument(CRhinoDoc& doc) override;
+  void OnBeginCommand(const CRhinoCommand& command, const CRhinoCommandContext& context) override;
+  void OnEndCommand(const CRhinoCommand& command, const CRhinoCommandContext& context, CRhinoCommand::result rc) override;
+  void OnAddObject(CRhinoDoc& doc, CRhinoObject& object) override;
+  void OnDeleteObject(CRhinoDoc& doc, CRhinoObject& object) override;
+  void OnSelectObject(CRhinoDoc& doc, const CRhinoObject& object) override;
+  void OnSelectObjects(CRhinoDoc& doc, const ON_SimpleArray<const CRhinoObject*>& objects) override;
+  void OnDeselectObject(CRhinoDoc& doc, const CRhinoObject& object) override;
+  void OnDeselectObjects(CRhinoDoc& doc, const ON_SimpleArray<const CRhinoObject*>& objects) override;
+  void OnDeselectAllObjects(CRhinoDoc& doc, int count) override;
 
   // Dialog Data
   enum { IDD = IDD_OBJECT_MANAGER_DIALOG };
@@ -56,9 +55,9 @@ public:
   void CreateTimer(timer_type timer);
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
-  virtual BOOL OnInitDialog();
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
+  virtual BOOL PreTranslateMessage(MSG* pMsg) override;
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OSelChangeListBox();
   DECLARE_MESSAGE_MAP()

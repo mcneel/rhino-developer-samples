@@ -13,10 +13,6 @@ CSampleModelessDialog::CSampleModelessDialog(CWnd* pParent /*=NULL*/)
   m_pt3 = ON_3dPoint(0, 0, 0);
 }
 
-CSampleModelessDialog::~CSampleModelessDialog()
-{
-}
-
 void CSampleModelessDialog::DoDataExchange(CDataExchange* pDX)
 {
   CRhinoDialog::DoDataExchange(pDX);

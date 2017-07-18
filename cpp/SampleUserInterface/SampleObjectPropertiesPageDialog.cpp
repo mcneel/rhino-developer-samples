@@ -1,53 +1,46 @@
 #include "stdafx.h"
 #include "SampleObjectPropertiesPageDialog.h"
 
-CSampleObjectPropertiesPageDialog::CSampleObjectPropertiesPageDialog(UINT nID, CWnd* pParent)
-  : CRhinoObjectPropertiesDialogPage(nID, pParent)
+CSampleObjectPropertiesPageDialog::CSampleObjectPropertiesPageDialog()
+  : TRhinoPropertiesPanelPage<CRhinoDialog>(CSampleObjectPropertiesPageDialog::IDD, IDI_OBJPROPS_ICON, true)
   , m_bVaries(false)
+  , m_bDirty(false)
 {
 }
 
 void CSampleObjectPropertiesPageDialog::DoDataExchange(CDataExchange* pDX)
 {
-  CRhinoObjectPropertiesDialogPage::DoDataExchange(pDX);
+  __base_class::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_S_HYPERLINK, m_separator);
   DDX_Control(pDX, IDC_E_HYPERLINK, m_edit);
   DDX_Control(pDX, IDC_B_HYPERLINK, m_button);
 }
 
-BEGIN_MESSAGE_MAP(CSampleObjectPropertiesPageDialog, CRhinoObjectPropertiesDialogPage)
+BEGIN_MESSAGE_MAP(CSampleObjectPropertiesPageDialog, __base_class)
   ON_EN_CHANGE(IDC_E_HYPERLINK, OnEditChange)
   ON_EN_KILLFOCUS(IDC_E_HYPERLINK, OnEditKillFocus)
   ON_BN_CLICKED(IDC_B_HYPERLINK, OnButton)
 END_MESSAGE_MAP()
 
-CRhinoObjectPropertiesDialogPage::page_type CSampleObjectPropertiesPageDialog::PageType() const
+const wchar_t* CSampleObjectPropertiesPageDialog::EnglishTitle() const
 {
-  return CRhinoObjectPropertiesDialogPage::custom_page;
+  return L"Sample Properties";
 }
 
-HICON CSampleObjectPropertiesPageDialog::Icon(const CSize& sizeInPixels) const
+const wchar_t* CSampleObjectPropertiesPageDialog::LocalTitle() const
 {
-  AFX_MANAGE_STATE(AfxGetStaticModuleState());
-  return CRhinoDpi::LoadIcon(AfxGetInstanceHandle(), IDI_OBJPROPS_ICON, sizeInPixels.cx, sizeInPixels.cy);
+  return EnglishTitle();
 }
 
-bool CSampleObjectPropertiesPageDialog::SupportsSubObjectSelection() const
+bool CSampleObjectPropertiesPageDialog::IncludeInNavigationControl(IRhinoPropertiesPanelPageEventArgs& /*args*/) const
 {
-  return false;
+  return true;
 }
 
-void CSampleObjectPropertiesPageDialog::InitControls(const CRhinoObject* new_obj)
+void CSampleObjectPropertiesPageDialog::UpdatePage(IRhinoPropertiesPanelPageEventArgs& args)
 {
-  UNREFERENCED_PARAMETER(new_obj);
-
-  // Initialize the dialog's controls here.
-
-  if (!::IsWindow(m_hWnd))
-    return;
-
-  const int count = SelectedObjectCount();
-  if (count == 0)
+  const int count = args.ObjectCount();
+  if (0 == count)
   {
     m_edit.SetWindowText(L"");
     m_button.EnableWindow(FALSE);
@@ -55,26 +48,26 @@ void CSampleObjectPropertiesPageDialog::InitControls(const CRhinoObject* new_obj
   }
 
   m_bVaries = false;
+  m_bDirty = false;
 
   ON_wString hyperlink;
-  const CRhinoObject* obj = GetSelectedObject(0);
-  if (obj)
+  const CRhinoObject* obj = args.ObjectAt(0);
+  if (nullptr != obj)
   {
     hyperlink = obj->Attributes().m_url;
     hyperlink.TrimLeftAndRight();
   }
 
-  int i;
-  for (i = 1; i < count; i++)
+  for (int i = 1; i < count; i++)
   {
-    obj = GetSelectedObject(i);
-    if (obj)
+    obj = args.ObjectAt(i);
+    if (nullptr != obj)
     {
       ON_wString str = obj->Attributes().m_url;
       str.TrimLeftAndRight();
-      if (hyperlink.CompareNoCase(str) != 0)
+      if (0 != hyperlink.CompareOrdinal(str, true))
       {
-        m_bVaries = TRUE;
+        m_bVaries = true;
         break;
       }
     }
@@ -100,90 +93,17 @@ void CSampleObjectPropertiesPageDialog::InitControls(const CRhinoObject* new_obj
   }
 }
 
-void CSampleObjectPropertiesPageDialog::InitControls(ON_SimpleArray<const CRhinoObject*>& objects)
+void CSampleObjectPropertiesPageDialog::OnModifyPage(IRhinoPropertiesPanelPageEventArgs& e)
 {
-  // This is called by the scriptable version - RunScript().
-  const int count = objects.Count();
-  if (count == 0)
-    return;
 
-  m_bVaries = false;
-
-  ON_wString hyperlink;
-  const CRhinoObject* obj = GetSelectedObject(0);
-  if (obj)
-  {
-    hyperlink = obj->Attributes().m_url;
-    hyperlink.TrimLeftAndRight();
-  }
-
-  int i;
-  for (i = 1; i < count; i++)
-  {
-    obj = GetSelectedObject(i);
-    if (obj)
-    {
-      ON_wString str = obj->Attributes().m_url;
-      str.TrimLeftAndRight();
-      if (hyperlink.CompareNoCase(str) != 0)
-      {
-        m_bVaries = TRUE;
-        break;
-      }
-    }
-  }
-
-  if (m_bVaries)
-    m_hyperlink = L"varies";
-  else if (hyperlink.IsEmpty())
-    m_hyperlink = L"";
-  else
-    m_hyperlink = hyperlink;
 }
 
-BOOL CSampleObjectPropertiesPageDialog::AddPageToControlBar(const CRhinoObject* obj) const
-{
-  // Here is where we test whether or not we need to add our page
-  // to the object properties window based on test object.
-  // In this simple example, we will always return true.
-
-  BOOL rc = FALSE;
-  if (obj)
-  {
-    // Test this object
-    rc = TRUE;
-  }
-  else
-  {
-    // Test all selected objects
-    const int count = SelectedObjectCount();
-    int i;
-    for (i = 0; i < count; i++)
-    {
-      rc = TRUE;
-    }
-  }
-  return rc;
-}
-
-void CSampleObjectPropertiesPageDialog::OnModifyObjectAttributes(CRhinoDoc& doc, CRhinoObject& object, const CRhinoObjectAttributes& old_attributes)
-{
-  UNREFERENCED_PARAMETER(doc);
-  UNREFERENCED_PARAMETER(object);
-  UNREFERENCED_PARAMETER(old_attributes);
-
-  InitControls();
-}
-
-
-CRhinoCommand::result CSampleObjectPropertiesPageDialog::RunScript(ON_SimpleArray<const CRhinoObject*>& objects)
+CRhinoCommand::result CSampleObjectPropertiesPageDialog::RunScript(IRhinoPropertiesPanelPageEventArgs& args)
 {
   // Scriptable version of our dialog box is handled here.
-
-  if (0 == objects.Count())
+  const int count = args.ObjectCount();
+  if (0 == count)
     return CRhinoCommand::nothing;
-
-  InitControls(objects);
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Hyperlink");
@@ -199,10 +119,10 @@ CRhinoCommand::result CSampleObjectPropertiesPageDialog::RunScript(ON_SimpleArra
 
   ON_wString hyperlink = gs.String();
   hyperlink.TrimLeftAndRight();
-  if (m_hyperlink.CompareNoCase(hyperlink) == 0)
+  if (0 == m_hyperlink.CompareOrdinal(hyperlink, false))
     return CRhinoCommand::nothing;
 
-  ModifyObjectList(objects, hyperlink);
+  DoModification(args, hyperlink);
 
   return CRhinoCommand::success;
 }
@@ -212,22 +132,22 @@ BOOL CSampleObjectPropertiesPageDialog::OnInitDialog()
   m_Resize.Add(IDC_S_HYPERLINK, CRhinoUiDialogItemResizer::resize_lockleft | CRhinoUiDialogItemResizer::resize_lockright);
   m_Resize.Add(IDC_E_HYPERLINK, CRhinoUiDialogItemResizer::resize_lockleft | CRhinoUiDialogItemResizer::resize_lockright);
 
-  CRhinoObjectPropertiesDialogPage::OnInitDialog();
+  __base_class::OnInitDialog();
 
   return TRUE;
 }
 
 void CSampleObjectPropertiesPageDialog::OnEditChange()
 {
-  CString str;
-  m_edit.GetWindowText(str);
+  CString text;
+  m_edit.GetWindowText(text);
 
-  str.TrimLeft();
-  str.TrimRight();
+  ON_wString str = text;
+  str.TrimLeftAndRight();
 
   if (str.IsEmpty())
     m_button.EnableWindow(FALSE);
-  else if (str.CompareNoCase(L"varies") == 0)
+  else if (0 == str.CompareOrdinal(L"varies", false))
     m_button.EnableWindow(FALSE);
   else
     m_button.EnableWindow(TRUE);
@@ -235,16 +155,12 @@ void CSampleObjectPropertiesPageDialog::OnEditChange()
 
 void CSampleObjectPropertiesPageDialog::OnButton()
 {
-  CString str;
-  m_edit.GetWindowText(str);
+  CString text;
+  m_edit.GetWindowText(text);
 
-  str.TrimLeft();
-  str.TrimRight();
-
-  if (str.IsEmpty())
-    return;
-
-  if (str.CompareNoCase(L"varies") == 0)
+  ON_wString str = text;
+  str.TrimLeftAndRight();
+  if (str.IsEmpty() || 0 == str.CompareOrdinal(L"varies", false))
     return;
 
   ::ShellExecute(RhinoApp().MainWnd(), L"open", str, NULL, NULL, SW_SHOWNORMAL);
@@ -252,77 +168,35 @@ void CSampleObjectPropertiesPageDialog::OnButton()
 
 void CSampleObjectPropertiesPageDialog::OnEditKillFocus()
 {
-  CString str;
-  m_edit.GetWindowText(str);
+  CString text;
+  m_edit.GetWindowText(text);
 
-  str.TrimLeft();
-  str.TrimRight();
+  ON_wString str = text;
+  str.TrimLeftAndRight();
 
-  if (m_hyperlink.CompareNoCase(str) == 0)
+  if (0 == m_hyperlink.CompareOrdinal(str, false))
     return;
 
-  ModifyObjectList(str);
+  //DoModification(str);
 }
 
-void CSampleObjectPropertiesPageDialog::ModifyObjectList(const wchar_t* hyperlink)
+void CSampleObjectPropertiesPageDialog::DoModification(IRhinoPropertiesPanelPageEventArgs& args, const wchar_t* hyperlink)
 {
-  const int count = SelectedObjectCount();
-  if (count == 0)
-    return;
-
-  ON_SimpleArray<const CRhinoObject*> objects;
-  objects.Reserve(count);
-
-  int i;
-  for (i = 0; i < count; i++)
-    objects.Append(GetSelectedObject(i));
-
-  ModifyObjectList(objects, hyperlink);
-}
-
-void CSampleObjectPropertiesPageDialog::ModifyObjectList(ON_SimpleArray<const CRhinoObject*>& objects, const wchar_t* hyperlink)
-{
-  const int count = objects.Count();
-  if (count == 0)
+  CRhinoDoc* doc = args.Document();
+  if (nullptr == doc || 0 == args.ObjectCount())
     return;
 
   m_hyperlink = hyperlink;
-  m_bVaries = FALSE;
+  m_bVaries = false;
 
-  bool bRecordUndo = false;
-  CRhinoDoc* doc = RhinoApp().ActiveDoc();
-  if (doc)
-    bRecordUndo = doc->BeginUndoRecord(L"Object Properties change");
-
-  int i;
-  for (i = 0; i < count; i++)
+  for (int i = 0; i < args.ObjectCount(); i++)
   {
-    const CRhinoObject* obj = objects[i];
-    if (obj)
+    const CRhinoObject* obj = args.ObjectAt(i);
+    if (nullptr != obj)
     {
       ON_3dmObjectAttributes attrib = obj->Attributes();
       attrib.m_url = hyperlink;
       doc->ModifyObjectAttributes(CRhinoObjRef(obj), attrib, false);
     }
   }
-
-  if (bRecordUndo)
-    doc->EndUndoRecord();
-}
-
-void CSampleObjectPropertiesPageDialog::RhinoDeleteThisPage()
-{
-  // This member is called when the dialog is about to be destroyed,
-  // but the page was never been created. If this is the case, then
-  // PostNcDestroy() will never get called. Thus, we are responsible 
-  // for making sure that the dialog that we "new-ed" up in our plug-in's 
-  // AddPagesToObjectPropertiesDialog() member is deleted.
-  delete this;
-}
-
-void CSampleObjectPropertiesPageDialog::PostNcDestroy()
-{
-  CRhinoObjectPropertiesDialogPage::PostNcDestroy();
-  // No need to do anyting here, RhinoDeleteThisPage() will get called
-  // by the dialog that owns this page.
 }

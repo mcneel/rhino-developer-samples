@@ -8,24 +8,17 @@ class CSampleBlockViewDialog : public CRhinoDialog
 
 public:
   CSampleBlockViewDialog(CWnd* pParent, CRhinoDoc& doc);
-  virtual ~CSampleBlockViewDialog();
 
   // Dialog Data
   enum { IDD = IDD_BLOCKVIEW_DIALOG };
   CListBox m_listbox;
   CRhinoUiBlockPreview m_preview;
 
-public:
-  virtual BOOL OnInitDialog();
-  afx_msg void OnSelChangeListBox();
-
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
+  afx_msg void OnSelChangeListBox();
   DECLARE_MESSAGE_MAP()
-
-  void CreateTopViewport(CRhinoViewport& vp);
-  void ZoomExtentsViewport(CRhinoViewport& vp);
-  CRect GetPaintRect();
 
 protected:
   CRhinoDoc& m_doc;

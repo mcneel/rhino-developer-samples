@@ -146,17 +146,36 @@ BOOL CSampleUserInterfacePlugIn::OnLoadPlugIn()
   // TODO: Add plug-in initialization code here.
 
   // Register tabbed dockbar
-  CSampleTabbedDockBarDialog::Register(RUNTIME_CLASS(CSampleTabbedDockBarDialog), CSampleTabbedDockBarDialog::IDD, AfxGetStaticModuleState());
+  CSampleTabbedDockBarDialog::Register(
+    RUNTIME_CLASS(CSampleTabbedDockBarDialog),
+    CSampleTabbedDockBarDialog::IDD, 
+    IDI_DOCKBAR_ICON, 
+    AfxGetStaticModuleState()
+  );
 
   // Register scroll tabbed dockbar
-  CSampleScrollTabbedDockBarDialog::Register(RUNTIME_CLASS(CSampleScrollTabbedDockBarDialog), CSampleScrollTabbedDockBarDialog::IDD, AfxGetStaticModuleState());
+  CSampleScrollTabbedDockBarDialog::Register(
+    RUNTIME_CLASS(CSampleScrollTabbedDockBarDialog), 
+    CSampleScrollTabbedDockBarDialog::IDD, 
+    IDI_SCROLL_DOCKBAR_ICON, 
+    AfxGetStaticModuleState()
+  );
 
   // Register object manager panel
-  CSampleObjectManagerDialog::CRhinoTabbedDockBarDialog::Register(RUNTIME_CLASS(CSampleObjectManagerDialog), CSampleObjectManagerDialog::IDD, AfxGetStaticModuleState());
+  CSampleObjectManagerDialog::CRhinoTabbedDockBarDialog::Register(
+    RUNTIME_CLASS(CSampleObjectManagerDialog), 
+    CSampleObjectManagerDialog::IDD, 
+    IDI_OBJECT_MANAGER_ICON, 
+    AfxGetStaticModuleState()
+  );
 
   // Register list control panel
-  CSampleOptionsListCtrlPageDialog::Register(RUNTIME_CLASS(CSampleOptionsListCtrlPageDialog), CSampleOptionsListCtrlPageDialog::IDD, AfxGetStaticModuleState());
-
+  CSampleOptionsListCtrlPageDialog::Register(
+    RUNTIME_CLASS(CSampleOptionsListCtrlPageDialog), 
+    CSampleOptionsListCtrlPageDialog::IDD, 
+    IDI_LISTCTRL_ICON, 
+    AfxGetStaticModuleState()
+  );
 
   // Create our old-school dockbar
   RhinoUiDockBarManager().CreateRhinoDockBar(
@@ -312,40 +331,33 @@ CRhinoPlugIn::plugin_load_time CSampleUserInterfacePlugIn::PlugInLoadTime()
   return CRhinoPlugIn::load_plugin_when_needed_or_optionsdlg;
 }
 
-void CSampleUserInterfacePlugIn::AddPagesToOptionsDialog(HWND hWnd, ON_SimpleArray<class CRhinoOptionsDialogPage*>& pages)
+void CSampleUserInterfacePlugIn::AddPagesToOptionsDialog(CRhinoOptionsPageCollection& collection)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-  CSampleOptionsPage* pPage = new CSampleOptionsPage(CWnd::FromHandle(hWnd));
-  if (pPage)
-    pages.Append(pPage);
+  CSampleOptionsPage* page = new CSampleOptionsPage();
+  if (nullptr != page)
+    collection.AddPage(page);
 }
 
-void CSampleUserInterfacePlugIn::AddPagesToDocumentPropertiesDialog(CRhinoDoc& doc, HWND hWnd, ON_SimpleArray<class CRhinoOptionsDialogPage*>& pages)
+void CSampleUserInterfacePlugIn::AddPagesToDocumentPropertiesDialog(CRhinoOptionsPageCollection& collection)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-  UNREFERENCED_PARAMETER(doc);
-
-  CSampleDocumentPropertiesPage* pPage = new CSampleDocumentPropertiesPage(CWnd::FromHandle(hWnd));
-  if (pPage)
-    pages.Append(pPage);
+  CSampleDocumentPropertiesPage* page = new CSampleDocumentPropertiesPage();
+  if (nullptr != page)
+    collection.AddPage(page);
 }
 
-void CSampleUserInterfacePlugIn::AddPagesToObjectPropertiesDialog(ON_SimpleArray<class CRhinoPropertiesDialogPage*>& pages)
+void CSampleUserInterfacePlugIn::AddPagesToObjectPropertiesDialog(CRhinoPropertiesPanelPageCollection& collection)
 {
   AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-  HWND hWnd = RhinoApp().MainWnd();
-  CSampleObjectPropertiesPageDialog* pPage = new CSampleObjectPropertiesPageDialog(IDD_OBJPROPS_DIALOG, CWnd::FromHandle(hWnd));
-  if (pPage)
-    pages.Append(pPage);
+  CSampleObjectPropertiesPageDialog* page = new CSampleObjectPropertiesPageDialog();
+  if (nullptr != page)
+    collection.Add(page);
 }
 
 void CSampleUserInterfacePlugIn::OnInitPlugInMenuPopups(WPARAM wParam, LPARAM lParam)
 {
   UNREFERENCED_PARAMETER(lParam);
-
   HMENU hMenu = (HMENU)wParam;
   if (hMenu)
   {

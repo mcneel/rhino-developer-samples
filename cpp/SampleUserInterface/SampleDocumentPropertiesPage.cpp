@@ -1,25 +1,19 @@
 #include "stdafx.h"
 #include "SampleDocumentPropertiesPage.h"
 
-IMPLEMENT_DYNAMIC(CSampleDocumentPropertiesPage, CRhinoOptionsDialogPage)
-
-CSampleDocumentPropertiesPage::CSampleDocumentPropertiesPage(CWnd* pParent /*=NULL*/)
-  : CRhinoOptionsDialogPage(CSampleDocumentPropertiesPage::IDD, pParent)
-{
-}
-
-CSampleDocumentPropertiesPage::~CSampleDocumentPropertiesPage()
+CSampleDocumentPropertiesPage::CSampleDocumentPropertiesPage()
+  : TRhinoOptionsPage<CRhinoDialog>(CSampleDocumentPropertiesPage::IDD, 0, true)
 {
 }
 
 void CSampleDocumentPropertiesPage::DoDataExchange(CDataExchange* pDX)
 {
-  CRhinoOptionsDialogPage::DoDataExchange(pDX);
+  __base_class::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_BUTTON1, m_button);
   DDX_Control(pDX, IDC_SEP1, m_sep1);
 }
 
-BEGIN_MESSAGE_MAP(CSampleDocumentPropertiesPage, CRhinoOptionsDialogPage)
+BEGIN_MESSAGE_MAP(CSampleDocumentPropertiesPage, __base_class)
   ON_BN_CLICKED(IDC_BUTTON1, &CSampleDocumentPropertiesPage::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
@@ -27,49 +21,36 @@ BOOL CSampleDocumentPropertiesPage::OnInitDialog()
 {
   m_Resize.Add(IDC_SEP1, CRhinoUiDialogItemResizer::resize_lockwidth);
 
-  CRhinoOptionsDialogPage::OnInitDialog();
+  __base_class::OnInitDialog();
 
   return TRUE;
 }
 
-const wchar_t* CSampleDocumentPropertiesPage::EnglishPageTitle()
+const wchar_t* CSampleDocumentPropertiesPage::EnglishTitle() const
 {
   return L"Sample Properties";
 }
 
-const wchar_t* CSampleDocumentPropertiesPage::LocalPageTitle()
+const wchar_t* CSampleDocumentPropertiesPage::LocalTitle() const
 {
-  return L"Sample Properties";
+  return EnglishTitle();
 }
 
-void CSampleDocumentPropertiesPage::RhinoDeleteThisPage()
+bool CSampleDocumentPropertiesPage::Apply(CRhinoOptionsPageEventArgs& /*e*/)
 {
-  /*
-  DO NOT DELETE THIS PAGE IN PostNcDestroy()!
-  When V4 first shipped, where was a lot of confusion when and where to
-  delete stacked dialog pages that were created in plug-ins. The reason
-  being that if the page had never been created (you never clicked on it),
-  then its PostNcDestroy() member was never called. This confusion led to
-  may reported crashes. Thus in later releases, Rhino always calls the
-  RhinoDeleteThisPage() member. Thus the only place you need to delete
-  the page is here.
-  */
-  delete this;
+  return true;
 }
 
-int CSampleDocumentPropertiesPage::OnApply()
+void CSampleDocumentPropertiesPage::UpdatePage(CRhinoOptionsPageEventArgs& /*e*/)
 {
-  return TRUE;
 }
 
-CRhinoCommand::result CSampleDocumentPropertiesPage::RunScript(const unsigned int rhino_doc_sn)
+CRhinoCommand::result CSampleDocumentPropertiesPage::RunScript(CRhinoOptionsPageEventArgs& /*e*/)
 {
-  UNREFERENCED_PARAMETER(rhino_doc_sn);
   return CRhinoCommand::success;
 }
 
 void CSampleDocumentPropertiesPage::OnBnClickedButton1()
 {
-  RhinoMessageBox(GetSafeHwnd(), L"Pick me button pressed", LocalPageTitle(), MB_OK);
+  RhinoMessageBox(GetSafeHwnd(), L"Pick me button pressed", LocalTitle(), MB_OK);
 }
-

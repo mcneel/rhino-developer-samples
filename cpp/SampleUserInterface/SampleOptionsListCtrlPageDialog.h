@@ -37,25 +37,24 @@ class CSampleOptionsListCtrlPageDialog : public CRhinoTabbedDockBarDialog
 
 public:
   CSampleOptionsListCtrlPageDialog();
-  virtual ~CSampleOptionsListCtrlPageDialog();
 
   // Required CRhinoTabbedDockBarDialog overrides
-  const wchar_t* Caption() const;
-  ON_UUID TabId() const;
+  const wchar_t* Caption() const override;
+  ON_UUID TabId() const override;
   static ON_UUID ID();
-  ON_UUID PlugInId() const;
+  ON_UUID PlugInId() const override;
   HICON Icon(const CSize& sizeInPixels) const;
 
   // Optional CRhinoTabbedDockBarDialog overrides
-  void OnShowTab(bool bShowTab, const ON_UUID& tabId);
-  void OnShowDockBar(CRhinoUiDockBar::ShowEventArgs args);
+  void OnShowTab(const class CRhinoUiPanel& db, bool bShowTab, const ON_UUID& dockBarId) override;
+  void OnShowDockBar(IDockBarEventWatcher::ShowEventArgs args) override;
 
   // Dialog Data
   enum { IDD = IDD_LISTCTRL_DIALOG };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
-  virtual BOOL OnInitDialog();
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
   afx_msg LRESULT OnRegisteredMessage(WPARAM wParam, LPARAM lParam);
   DECLARE_MESSAGE_MAP()
 

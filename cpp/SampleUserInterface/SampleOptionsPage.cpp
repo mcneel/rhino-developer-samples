@@ -1,25 +1,19 @@
 #include "stdafx.h"
 #include "SampleOptionsPage.h"
 
-IMPLEMENT_DYNAMIC(CSampleOptionsPage, CRhinoOptionsDialogPage)
-
-CSampleOptionsPage::CSampleOptionsPage(CWnd* pParent /*=NULL*/)
-  : CRhinoOptionsDialogPage(CSampleOptionsPage::IDD, pParent)
-{
-}
-
-CSampleOptionsPage::~CSampleOptionsPage()
+CSampleOptionsPage::CSampleOptionsPage()
+  : TRhinoOptionsPage<CRhinoDialog>(CSampleOptionsPage::IDD, 0, true)
 {
 }
 
 void CSampleOptionsPage::DoDataExchange(CDataExchange* pDX)
 {
-  CRhinoOptionsDialogPage::DoDataExchange(pDX);
+  __base_class::DoDataExchange(pDX);
   DDX_Control(pDX, IDC_BUTTON1, m_button);
   DDX_Control(pDX, IDC_SEP1, m_sep1);
 }
 
-BEGIN_MESSAGE_MAP(CSampleOptionsPage, CRhinoOptionsDialogPage)
+BEGIN_MESSAGE_MAP(CSampleOptionsPage, __base_class)
   ON_BN_CLICKED(IDC_BUTTON1, &CSampleOptionsPage::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
@@ -27,48 +21,37 @@ BOOL CSampleOptionsPage::OnInitDialog()
 {
   m_Resize.Add(IDC_SEP1, CRhinoUiDialogItemResizer::resize_lockwidth);
 
-  CRhinoOptionsDialogPage::OnInitDialog();
+  __base_class::OnInitDialog();
 
   return TRUE;
 }
 
-const wchar_t* CSampleOptionsPage::EnglishPageTitle()
+const wchar_t* CSampleOptionsPage::EnglishTitle() const
 {
   return L"Sample Options";
 }
 
-const wchar_t* CSampleOptionsPage::LocalPageTitle()
+const wchar_t* CSampleOptionsPage::LocalTitle() const
 {
-  return L"Sample Options";
+  return EnglishTitle();
 }
 
-void CSampleOptionsPage::RhinoDeleteThisPage()
+bool CSampleOptionsPage::Apply(CRhinoOptionsPageEventArgs& /*e*/)
 {
-  /*
-  DO NOT DELETE THIS PAGE IN PostNcDestroy()!
-  When V4 first shipped, where was a lot of confusion when and where to
-  delete stacked dialog pages that were created in plug-ins. The reason
-  being that if the page had never been created (you never clicked on it),
-  then its PostNcDestroy() member was never called. This confusion led to
-  may reported crashes. Thus in later releases, Rhino always calls the
-  RhinoDeleteThisPage() member. Thus the only place you need to delete
-  the page is here.
-  */
-  delete this;
+  return true;
 }
 
-int CSampleOptionsPage::OnApply()
+void CSampleOptionsPage::UpdatePage(CRhinoOptionsPageEventArgs& /*e*/)
 {
-  return TRUE;
 }
 
-CRhinoCommand::result CSampleOptionsPage::RunScript(const unsigned int rhino_doc_sn)
+CRhinoCommand::result CSampleOptionsPage::RunScript(CRhinoOptionsPageEventArgs& /*e*/)
 {
-  UNREFERENCED_PARAMETER(rhino_doc_sn);
+  // TODO...
   return CRhinoCommand::success;
 }
 
 void CSampleOptionsPage::OnBnClickedButton1()
 {
-  RhinoMessageBox(GetSafeHwnd(), L"Pick me button pressed", LocalPageTitle(), MB_OK);
+  RhinoMessageBox(GetSafeHwnd(), L"Pick me button pressed", LocalTitle(), MB_OK);
 }

@@ -17,11 +17,9 @@ public:
   CButton m_button;
   CSampleThumbnailPreviewStatic m_preview;
 
-public:
-  virtual BOOL OnInitDialog();
-
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
+  virtual BOOL OnInitDialog() override;
+  virtual void DoDataExchange(CDataExchange* pDX) override;
   afx_msg void OnPreviewButtonClick();
   DECLARE_MESSAGE_MAP()
 

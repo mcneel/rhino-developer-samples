@@ -9,10 +9,6 @@ CSamplePickObjectsDialog::CSamplePickObjectsDialog(CWnd* pParent, unsigned int d
   SetEnableDisplayCommands(TRUE, document_sn);
 }
 
-CSamplePickObjectsDialog::~CSamplePickObjectsDialog()
-{
-}
-
 void CSamplePickObjectsDialog::DoDataExchange(CDataExchange* pDX)
 {
   CRhinoDialog::DoDataExchange(pDX);

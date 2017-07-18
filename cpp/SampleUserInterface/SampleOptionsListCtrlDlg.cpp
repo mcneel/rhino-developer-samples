@@ -84,10 +84,6 @@ CSampleOptionsListCtrlDlg::CSampleOptionsListCtrlDlg()
 {
 }
 
-CSampleOptionsListCtrlDlg::~CSampleOptionsListCtrlDlg()
-{
-}
-
 void CSampleOptionsListCtrlDlg::DoDataExchange(CDataExchange* pDX)
 {
   CRhinoDialog::DoDataExchange(pDX);

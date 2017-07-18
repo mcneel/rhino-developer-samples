@@ -25,14 +25,13 @@ class CSampleOptionsListCtrlDlg : public CRhinoDialog
 
 public:
   CSampleOptionsListCtrlDlg();
-  virtual ~CSampleOptionsListCtrlDlg();
 
   // Dialog Data
   enum { IDD = IDD_OPTIONS_DIALOG };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
-  virtual BOOL OnInitDialog();
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
   afx_msg LRESULT OnRegisteredMessage(WPARAM wParam, LPARAM lParam);
   DECLARE_MESSAGE_MAP()
 

@@ -11,7 +11,7 @@ public:
     CRhinoDisplayPipeline& dp, // pipeline executing this conduit
     UINT nChannel,             // current channel within the pipeline
     bool& bTerminate           // channel termination flag
-  );
+  ) override;
 
   ON_Circle m_circle;
 };
@@ -23,7 +23,6 @@ class CSampleCirclePreviewDialog : public CRhinoDialog
 
 public:
   CSampleCirclePreviewDialog(CWnd* pParent, unsigned int document_sn);
-  virtual ~CSampleCirclePreviewDialog();
 
   // Dialog Data
   enum { IDD = IDD_CIRCLEPREVIEW_DIALOG };
@@ -41,13 +40,11 @@ public:
   CSampleCirclePreviewConduit m_preview;
   unsigned int m_document_sn;
 
-public:
-  virtual BOOL OnInitDialog();
+protected:
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
   afx_msg void OnBnClickedPreview();
   afx_msg void OnBnClickedCancel();
-
-protected:
-  virtual void DoDataExchange(CDataExchange* pDX);
   DECLARE_MESSAGE_MAP()
 
 };

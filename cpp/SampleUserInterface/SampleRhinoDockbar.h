@@ -11,8 +11,8 @@ public:
   virtual ~CSampleRhinoDockbar();
 
   // Required overrides
-  UUID DockBarID() const;
-  const wchar_t* DockBarName(int language_id = 1033) const;
+  UUID DockBarID() const override;
+  const wchar_t* DockBarName(int language_id = 1033) const override;
 
 protected:
   bool CreateDockBarControls();
