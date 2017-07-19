@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\rhinoSdkPlugInDeclare.h"
+#include "rhinoSdkPlugInDeclare.h"
 #include "SampleSkinApp.h"
 
 // Rhino plug-in declaration

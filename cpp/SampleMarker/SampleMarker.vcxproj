@@ -44,6 +44,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleMarker.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleMarker.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{A71676AB-7A9B-4AED-98A7-4E7FAD6A8A9D}</ProjectGuid>

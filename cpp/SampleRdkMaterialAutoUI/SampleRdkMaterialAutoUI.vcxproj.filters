@@ -59,6 +59,9 @@
     <ClInclude Include="SampleRdkMaterialIOPlugIn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SampleRdkMaterialAutoUI.def">
@@ -72,5 +75,10 @@
     <ResourceCompile Include="SampleRdkMaterialAutoUI.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleRdkMaterialAutoUI.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

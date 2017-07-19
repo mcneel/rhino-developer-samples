@@ -27,7 +27,7 @@
 #endif
 
 // Rhino SDK Preamble
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\RhinoSdkStdafxPreamble.h"
+#include "RhinoSdkStdafxPreamble.h"
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS       // some CString constructors will be explicit
 
@@ -68,13 +68,13 @@
 #endif
 
 // Rhino SDK classes
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\RhinoSdk.h" 
+#include "RhinoSdk.h" 
 
 // Rhino MFC UI template classes
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\rhinoSdkTMfcPages.h" 
+#include "rhinoSdkTMfcPages.h" 
 
 // Rhino Render Development Kit (RDK) classes
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\RhRdkHeaders.h" 
+#include "RhRdkHeaders.h" 
 
 #if defined(RHINO_DEBUG_PLUGIN)
 // Now that all the system headers are read, we can
@@ -84,4 +84,4 @@
 #endif
 
 // Rhino SDK linking pragmas
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\rhinoSdkPlugInLinkingPragmas.h"
+#include "rhinoSdkPlugInLinkingPragmas.h"

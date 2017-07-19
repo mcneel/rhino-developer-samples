@@ -42,6 +42,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleViewportRenderer.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleViewportRenderer.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{BF09C3E1-4090-4798-9D63-6A10AAD00142}</ProjectGuid>

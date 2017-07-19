@@ -38,6 +38,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleSkinHandler.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleSkinHandler.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{3D211A2E-1483-4E5F-A14A-0EE2CA4BC05C}</ProjectGuid>

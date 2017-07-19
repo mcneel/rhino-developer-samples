@@ -449,6 +449,8 @@ IDI_OBJECT_MANAGER_ICON ICON                    "res\\SampleObjectManager.ico"
 
 IDI_LISTCTRL_ICON       ICON                    "res\\SampleOptionsListCtrl.ico"
 
+IDI_PLUGIN              ICON                    "res\\SampleUserInterface.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

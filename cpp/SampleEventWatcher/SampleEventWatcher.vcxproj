@@ -43,6 +43,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleEventWatcher.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleEventWatcher.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{4217A2FA-B42F-4713-ABA9-4DB1E4D76D20}</ProjectGuid>

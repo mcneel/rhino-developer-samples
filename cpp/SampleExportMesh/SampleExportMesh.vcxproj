@@ -37,6 +37,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleExportMesh.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleExportMesh.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{D6CD6128-BFBB-447A-A791-456041EA91CF}</ProjectGuid>

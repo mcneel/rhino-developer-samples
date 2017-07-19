@@ -82,7 +82,7 @@ public:
     return SampleColorPickerCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleColorPicker"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context);
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 
   void LoadProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);
   void SaveProfile(LPCTSTR lpszSection, CRhinoProfileContext& pc);

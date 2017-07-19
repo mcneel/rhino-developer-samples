@@ -22,7 +22,7 @@
 #endif
 
 // Rhino SDK Preamble
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\RhinoSdkStdafxPreamble.h"
+#include "RhinoSdkStdafxPreamble.h"
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS       // some CString constructors will be explicit
 
@@ -59,13 +59,11 @@
 #endif
 
 // Rhino SDK classes
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\RhinoSdk.h" 
-
-#define ON_RUNTIME_WIN
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\RhinoSdkTPages.h" 
+#include "RhinoSdk.h" 
+#include "RhinoSdkTPages.h" 
 
 // Rhino Render Development Kit (RDK) classes
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\RhRdkHeaders.h" 
+#include "RhRdkHeaders.h" 
 
 // SpaceBall Header
 extern "C"
@@ -76,7 +74,6 @@ extern "C"
 #undef OS_WIN32
 }
 
-
 #if defined(RHINO_DEBUG_PLUGIN)
 // Now that all the system headers are read, we can
 // safely define _DEBUG so the developers can test
@@ -85,7 +82,7 @@ extern "C"
 #endif
 
 // Rhino SDK linking pragmas
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\rhinoSdkPlugInLinkingPragmas.h"
+#include "rhinoSdkPlugInLinkingPragmas.h"
 
 // SpaceBall Linking Pragmas
 #if defined(NDEBUG)

@@ -43,6 +43,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleAutomation.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleAutomation.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{EC5823AC-9513-4D9A-8181-D65744423FE4}</ProjectGuid>

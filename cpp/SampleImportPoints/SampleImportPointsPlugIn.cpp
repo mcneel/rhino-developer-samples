@@ -1,6 +1,7 @@
 #include "StdAfx.h"
-#include "C:\Program Files\Rhino 6.0 SDK\Inc\rhinoSdkPlugInDeclare.h"
+#include "rhinoSdkPlugInDeclare.h"
 #include "SampleImportPointsPlugIn.h"
+#include "Resource.h"
 
 // The plug-in object must be constructed before any plug-in classes derived
 // from CRhinoCommand. The #pragma init_seg(lib) ensures that this happens.
@@ -23,6 +24,14 @@ RHINO_PLUG_IN_ID(L"FC3EBED3-87A6-4D6C-9BB3-AF87755638AC");
 // Rhino plug-in version
 // Provide a version number string for this plug-in
 RHINO_PLUG_IN_VERSION(__DATE__ "  " __TIME__)
+
+// Rhino plug-in description
+// Provide a description of this plug-in
+RHINO_PLUG_IN_DESCRIPTION(L"Rhino SDK Sample - SampleImportPoints");
+
+// Rhino plug-in icon resource id
+// Provide the resource id of the plug-in icon.
+RHINO_PLUG_IN_ICON_RESOURCE_ID(IDI_ICON1);
 
 // Rhino plug-in developer declarations
 RHINO_PLUG_IN_DEVELOPER_ORGANIZATION(L"Robert McNeel & Associates");

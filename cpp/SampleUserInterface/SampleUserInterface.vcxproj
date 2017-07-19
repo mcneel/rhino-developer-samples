@@ -103,6 +103,7 @@
     <Image Include="res\SampleOptionsListCtrl.ico" />
     <Image Include="res\SampleScrollTabbedDockBar.ico" />
     <Image Include="res\SampleTabbedDockBar.ico" />
+    <Image Include="res\SampleUserInterface.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>

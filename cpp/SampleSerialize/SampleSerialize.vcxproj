@@ -42,6 +42,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleSerialize.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleSerialize.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{A1C5D0C6-912D-4504-8426-3BF5D76F684F}</ProjectGuid>

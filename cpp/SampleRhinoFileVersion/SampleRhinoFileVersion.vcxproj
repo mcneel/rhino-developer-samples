@@ -37,6 +37,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleRhinoFileVersion.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleRhinoFileVersion.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{F797EED0-4168-4B0A-956A-465B64CD4FCC}</ProjectGuid>

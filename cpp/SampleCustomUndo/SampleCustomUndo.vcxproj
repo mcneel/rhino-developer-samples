@@ -40,6 +40,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleCustomUndo.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleCustomUndo.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{1A7AD606-4B4C-495D-9489-A0EC2792B8EB}</ProjectGuid>

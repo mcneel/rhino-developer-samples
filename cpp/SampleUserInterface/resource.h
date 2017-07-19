@@ -42,6 +42,8 @@
 #define IDI_OBJECT_MANAGER_ICON         13001
 #define IDR_SAMPLE_MENU                 13002
 #define IDI_LISTCTRL_ICON               13002
+#define IDI_ICON2                       13003
+#define IDI_PLUGIN                      13003
 #define IDD_OBJECT_MANAGER_DIALOG       17000
 #define IDC_LABEL                       17001
 #define IDC_EDIT1                       19000
@@ -68,7 +70,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        13003
+#define _APS_NEXT_RESOURCE_VALUE        13004
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         13000
 #define _APS_NEXT_SYMED_VALUE           13000

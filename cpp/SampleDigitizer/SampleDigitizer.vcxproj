@@ -37,6 +37,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleDigitizer.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleDigitizer.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{BBA91EAD-30DF-4CCE-8E61-1B196B78BE8D}</ProjectGuid>

@@ -38,6 +38,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleSharedUserData2.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleSharedUserData2.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{EB107F20-8EA3-407E-987A-55CD1DCEECD2}</ProjectGuid>

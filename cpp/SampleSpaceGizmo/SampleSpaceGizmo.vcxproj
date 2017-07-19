@@ -46,6 +46,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleSpaceGizmo.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleSpaceGizmo.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{77575B79-42FD-4456-9933-81784BD9A4A6}</ProjectGuid>

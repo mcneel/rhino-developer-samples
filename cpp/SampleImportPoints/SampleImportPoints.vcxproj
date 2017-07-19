@@ -37,6 +37,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleImportPoints.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleImportPoints.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{D2D3B9EF-207B-42B9-9E55-6DE168CB3B91}</ProjectGuid>

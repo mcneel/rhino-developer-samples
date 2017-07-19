@@ -35,6 +35,7 @@
     <ClInclude Include="SampleRdkMaterialAutoUIRdkPlugIn.h" />
     <ClInclude Include="SampleRdkMaterialIOPlugIn.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\SampleRdkMaterialAutoUI.rc2" />
@@ -42,6 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SampleRdkMaterialAutoUI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleRdkMaterialAutoUI.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>

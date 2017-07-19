@@ -11,12 +11,13 @@
 #define IDC_CHK_ROTATE_ABOUT_CAMERA     14007
 #define IDC_ED_ROTATE_SCALE             14008
 #define IDC_ED_TRANS_SCALE              14009
+#define IDI_ICON1                       21000
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        21000
+#define _APS_NEXT_RESOURCE_VALUE        21001
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         21000
 #define _APS_NEXT_SYMED_VALUE           21000

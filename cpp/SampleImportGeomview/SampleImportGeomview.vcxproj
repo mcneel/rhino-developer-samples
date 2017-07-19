@@ -37,6 +37,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleImportGeomview.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleImportGeomview.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{FE725F68-0E5C-44D0-A3E0-C2AF42DF09DA}</ProjectGuid>

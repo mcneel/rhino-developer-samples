@@ -42,6 +42,9 @@
   <ItemGroup>
     <ResourceCompile Include="SampleLocalization.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleLocalization.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{71F7EB35-7C2D-4646-802C-066BB942A22C}</ProjectGuid>

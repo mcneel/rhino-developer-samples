@@ -17,10 +17,10 @@ public:
   CRhinoUiSeparator m_separator;
   CEdit	m_edit;
   CButton	m_button;
-  // Extra data
-  ON_wString m_hyperlink;
-  bool m_bVaries;
-  bool m_bDirty;
+  ON_wString m_old_value;
+  ON_wString m_new_value;
+
+  const wchar_t* Varies() const;
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX) override;
