@@ -166,7 +166,7 @@ public:
     { 0xF04E2C6F, 0xD219, 0x4A20, { 0xAA, 0x69, 0xD3, 0xAB, 0xD5, 0x9A, 0x63, 0x27 } };
     return ImportDisplayModeCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() override { return L"ImportDisplayMode"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleImportDisplayMode"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 

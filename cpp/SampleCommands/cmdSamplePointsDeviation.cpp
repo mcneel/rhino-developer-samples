@@ -17,7 +17,7 @@ public:
     { 0x416B1B0A, 0x5413, 0x4704, { 0xBB, 0xF2, 0x39, 0x78, 0x59, 0xB6, 0xB0, 0xC2 } };
     return SamplePointsDeviationCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() override { return L"foo_SamplePointsDeviation"; }
+  const wchar_t* EnglishCommandName() override { return L"SamplePointsDeviation"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
