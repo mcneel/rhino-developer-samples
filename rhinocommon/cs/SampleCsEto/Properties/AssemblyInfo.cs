@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using Rhino.PlugIns;
 
-
 // Plug-in Description Attributes - all of these are optional
 // These will show in Rhino's option dialog, in the tab Plug-ins
 [assembly: PlugInDescription(DescriptionType.Address, "3670 Woodland Park Avenue North\r\nSeattle, WA 98103")]
@@ -13,17 +12,17 @@ using Rhino.PlugIns;
 [assembly: PlugInDescription(DescriptionType.Organization, "Robert McNeel & Associates")]
 [assembly: PlugInDescription(DescriptionType.UpdateUrl, "https://github.com/mcneel/Rhino6Samples_CS")]
 [assembly: PlugInDescription(DescriptionType.WebSite, "http://www.rhino3d.com/")]
-
+[assembly: PlugInDescription(DescriptionType.Icon, "SampleCsEto.Resources.SampleCs.ico")]
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SampleCsEto")] // Plug-In title is extracted from this
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("RhinoCommon Sample - SampleCsEto")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Robert McNeel & Associates")]
 [assembly: AssemblyProduct("SampleCsEto")]
-[assembly: AssemblyCopyright("Copyright © 2016, Robert McNeel & Associates")]
+[assembly: AssemblyCopyright("Copyright © 2017, Robert McNeel & Associates")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -45,5 +44,5 @@ using Rhino.PlugIns;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0.0")]

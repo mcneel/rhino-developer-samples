@@ -1,7 +1,7 @@
 ﻿using Rhino.UI.Controls;
 using System;
 
-namespace CustomRenderSections
+namespace SampleCustomRenderSettingsSections
 {
   ///<summary>
   /// Base class for all the custom sections

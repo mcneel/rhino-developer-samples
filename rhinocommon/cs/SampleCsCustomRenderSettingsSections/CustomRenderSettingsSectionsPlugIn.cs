@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Rhino;
 using Rhino.Commands;
 
-using CustomRenderSections;
 using System;
 
 namespace SampleCustomRenderSettingsSections

@@ -1,7 +1,4 @@
-﻿using System;
-using Rhino;
-using Rhino.Commands;
-using Rhino.UI.Controls;
+﻿using Rhino.UI.Controls;
 using Eto.Forms;
 
 namespace SampleViewportPropertiesETOUI

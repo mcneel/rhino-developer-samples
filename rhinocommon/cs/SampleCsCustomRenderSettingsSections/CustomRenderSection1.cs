@@ -1,11 +1,8 @@
 ﻿using System;
-using Rhino.UI.Controls;
 using Eto.Forms;
 using Rhino.UI;
-using SampleCustomRenderSettingsSections;
-using System.ComponentModel;
 
-namespace CustomRenderSections
+namespace SampleCustomRenderSettingsSections
 {
   ///<summary>
   /// The UI implementation of of Section one
