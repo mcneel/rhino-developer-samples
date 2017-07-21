@@ -70,9 +70,6 @@
 // Rhino SDK classes
 #include "RhinoSdk.h" 
 
-// Rhino MFC UI template classes
-#include "rhinoSdkTMfcPages.h" 
-
 // Rhino Render Development Kit (RDK) classes
 #include "RhRdkHeaders.h" 
 

@@ -60,7 +60,6 @@
 
 // Rhino SDK classes
 #include "RhinoSdk.h" 
-#include "RhinoSdkTPages.h" 
 
 // Rhino Render Development Kit (RDK) classes
 #include "RhRdkHeaders.h" 
