@@ -69,8 +69,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 6,0,0,0
+ PRODUCTVERSION 6,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -87,12 +87,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Robert McNeel & Associates"
             VALUE "FileDescription", "SampleAutomation"
-            VALUE "FileVersion", "1.0.0.0"
+            VALUE "FileVersion", "6.0.0.0"
             VALUE "InternalName", "SampleAutomation.rhp"
             VALUE "LegalCopyright", "Copyright © 2016, Robert McNeel & Associates"
             VALUE "OriginalFilename", "SampleAutomation.rhp"
             VALUE "ProductName", "SampleAutomation"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "6.0.0.0"
         END
     END
     BLOCK "VarFileInfo"
