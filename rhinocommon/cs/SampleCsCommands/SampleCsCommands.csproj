@@ -154,6 +154,7 @@
     <Compile Include="SampleCsRotate.cs" />
     <Compile Include="SampleCsSaveAs.cs" />
     <Compile Include="SampleCsScriptedSweep2.cs" />
+    <Compile Include="SampleCsSelCircle.cs" />
     <Compile Include="SampleCsSelectLayerObjects.cs" />
     <Compile Include="SampleCsSerializeClass.cs" />
     <Compile Include="SampleCsSetCameraTarget.cs" />
