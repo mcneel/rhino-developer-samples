@@ -203,6 +203,7 @@
     <ClCompile Include="cmdSampleTrimmedPlane.cpp" />
     <ClCompile Include="cmdSampleTruncatedCone.cpp" />
     <ClCompile Include="cmdSampleTwistedCube.cpp" />
+    <ClCompile Include="cmdSampleUngroup.cpp" />
     <ClCompile Include="cmdSampleUnrollSurface.cpp" />
     <ClCompile Include="cmdSampleUserStrings.cpp" />
     <ClCompile Include="cmdSampleUserText.cpp" />
