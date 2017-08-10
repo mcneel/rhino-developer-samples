@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace SampleCsCommand
+namespace SampleCsConsole
 {
   class Program
   {
@@ -11,9 +11,8 @@ namespace SampleCsCommand
       dynamic rhino = null;
       try
       {
-        // string rhinoId = "Rhino5.Application";
-        string rhinoId = "Rhino5x64.Application";
-        //string rhinoId = "Rhino5x64.Interface";
+        string rhinoId = "Rhino.Application";
+        //string rhinoId = "Rhino.Interface";
         System.Type type = System.Type.GetTypeFromProgID(rhinoId);
         rhino = System.Activator.CreateInstance(type);
       }
