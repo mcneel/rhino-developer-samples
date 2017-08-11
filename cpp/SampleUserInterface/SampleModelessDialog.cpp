@@ -86,16 +86,16 @@ void CSampleModelessDialog::PostNcDestroy()
 
 void CSampleModelessDialog::OnBnClickedButton1()
 {
-  RhinoApp().RunScript(L"! _GetPoint1", 0);
+  SampleUserInterfacePlugIn().RunCommandScript(L"! _GetPoint1");
 }
 
 void CSampleModelessDialog::OnBnClickedButton2()
 {
-  RhinoApp().RunScript(L"! _GetPoint2", 0);
+  SampleUserInterfacePlugIn().RunCommandScript(L"! _GetPoint2");
 }
 
 void CSampleModelessDialog::OnBnClickedButton3()
 {
-  RhinoApp().RunScript(L"! _GetPoint3", 0);
+  SampleUserInterfacePlugIn().RunCommandScript(L"! _GetPoint3");
 }
 

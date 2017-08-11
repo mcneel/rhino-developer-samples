@@ -61,7 +61,11 @@ SHORT CSampleScriptObject::Command(LPCTSTR bstrScript, SHORT nEchoMode)
   if (strScript.IsEmpty())
     return 0;
 
-  bool rc = RhinoApp().RunScript(strScript, nEchoMode ? 1 : 0);
+  CRhinoDoc* doc = RhinoApp().ActiveDoc();
+  if (nullptr == doc)
+    return 0;
+
+  bool rc = RhinoApp().RunScript(doc->RuntimeSerialNumber(), strScript, nEchoMode ? 1 : 0);
 
   return (rc ? 1 : 0);
 }

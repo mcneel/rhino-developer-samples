@@ -72,7 +72,7 @@ CRhinoCommand::result CCommandSampleSave3DS::RunCommand(const CRhinoCommandConte
   // will deal with the string property.
   ON_wString script;
   script.Format(L"_-SaveAs \"%s\" _Enter", (const wchar_t*)filename);
-  RhinoApp().RunScript(script, 0);
+  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), script, 0);
 
   return CRhinoCommand::success;
 }

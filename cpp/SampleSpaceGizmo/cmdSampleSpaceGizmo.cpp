@@ -33,7 +33,7 @@ CRhinoCommand::result CCommandSampleSpaceGizmo::RunCommand(const CRhinoCommandCo
   UNREFERENCED_PARAMETER(context);
 
   // This will bring up Rhino's Options dialog with our page selected
-  RhinoApp().RunScript(L"! _OptionsPage _SpaceGizmo", 0);
+  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), L"! _OptionsPage _SpaceGizmo", 0);
 
   return CRhinoCommand::success;
 }

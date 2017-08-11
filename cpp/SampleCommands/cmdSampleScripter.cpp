@@ -74,15 +74,15 @@ CRhinoCommand::result CCommandSampleScripter::RunCommand(const CRhinoCommandCont
 
   CSampleScriptCancelHelper helper;
 
-  RhinoApp().RunScript(L"_Line", 1);
+  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), L"_Line", 1);
   if (helper.LastCommandResult() != CRhinoCommand::success)
     return helper.LastCommandResult();
 
-  RhinoApp().RunScript(L"_Circle", 1);
+  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), L"_Circle", 1);
   if (helper.LastCommandResult() != CRhinoCommand::success)
     return helper.LastCommandResult();
 
-  RhinoApp().RunScript(L"_Arc", 1);
+  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), L"_Arc", 1);
   if (helper.LastCommandResult() != CRhinoCommand::success)
     return helper.LastCommandResult();
 

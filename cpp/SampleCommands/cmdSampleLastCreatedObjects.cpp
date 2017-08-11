@@ -123,7 +123,7 @@ CRhinoCommand::result CCommandSampleLastCreatedObjects::RunCommand(const CRhinoC
   unsigned int first = CRhinoObject::NextRuntimeObjectSerialNumber();
 
   // Run the Explode command
-  RhinoApp().RunScript(L"_-Explode", 0);
+  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), L"_-Explode", 0);
 
   // Get the runtime serial number that will be assigned to
   // the next CRhinoObject that is created.

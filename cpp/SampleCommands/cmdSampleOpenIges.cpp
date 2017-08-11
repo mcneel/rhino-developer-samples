@@ -81,7 +81,7 @@ CRhinoCommand::result CCommandSampleOpenIges::RunCommand(const CRhinoCommandCont
   ON_wString script;
   script.Format(L"_-Open \"%s\" _Enter _Enter _Enter", (const wchar_t*)filename);
 
-  RhinoApp().RunScript(script, 0);
+  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), script, 0);
 
   return CRhinoCommand::success;
 }

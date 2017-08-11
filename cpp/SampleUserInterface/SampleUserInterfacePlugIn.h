@@ -46,6 +46,8 @@ public:
   BOOL ShowSampleMenu();
   BOOL HideSampleMenu();
 
+  void RunCommandScript(const wchar_t* script);
+
 private:
   ON_wString m_plugin_version;
 

@@ -182,7 +182,7 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
   if (pMaterial)
   {
     // There's a material - let's see if there's a texture.
-    const CRhRdkTexture* pTexture = dynamic_cast<const CRhRdkTexture*>(pMaterial->GetTextureForUsage(CRhRdkMaterial::ChildSlotUsage::kDiffuse));
+    const CRhRdkTexture* pTexture = dynamic_cast<const CRhRdkTexture*>(pMaterial->GetTextureForUsage(CRhRdkMaterial::ChildSlotUsage::Diffuse));
     if (pTexture)
     {
       //There's a texture in the diffuse slot.  Set the repeat value.

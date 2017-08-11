@@ -13,7 +13,7 @@ UUID CSampleRdkMaterial::PlugInId(void) const
 	return CSampleRdkMaterialAutoUIRdkPlugIn::RdkPlugInId();
 }
 
-DWORD CSampleRdkMaterial::BitFlags(void) const
+unsigned int CSampleRdkMaterial::BitFlags(void) const
 {
   return (__super::BitFlags() & ~bfTextureSummary) | bfFields;
 }

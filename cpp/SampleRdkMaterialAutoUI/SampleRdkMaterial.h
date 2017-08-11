@@ -16,7 +16,7 @@ public:
 	virtual void AddUISections(IRhRdkExpandableContentUI& ui) override;
 	virtual UUID RenderEngineId(void) const override;
 	virtual UUID PlugInId(void) const override;
-	virtual DWORD BitFlags(void) const override;
+	virtual unsigned int BitFlags(void) const override;
 	virtual ParamSerialMethod ParameterSerializationMethod(void) const override;
 	virtual void AddAutoParameters(IRhRdkParamBlock& paramBlock, int sectionId) const override;
 	virtual void GetAutoParameters(const IRhRdkParamBlock& paramBlock, int sectionId) override;

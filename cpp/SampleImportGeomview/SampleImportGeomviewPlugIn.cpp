@@ -300,7 +300,7 @@ BOOL CSampleImportGeomviewPlugIn::ReadOffFile(const wchar_t* filename, CRhinoDoc
 
   doc.AddMeshObject(mesh);
 
-  RhinoApp().RunScript(L"_Zoom _All _Extents", 0);
+  RhinoApp().RunScript(doc.RuntimeSerialNumber(), L"_Zoom _All _Extents", 0);
 
   return TRUE;
 }

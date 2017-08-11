@@ -104,6 +104,7 @@
     <ClCompile Include="cmdSampleInterpCurve.cpp" />
     <ClCompile Include="cmdSampleIntersectCrv.cpp" />
     <ClCompile Include="cmdSampleIntersetCrvSrf.cpp" />
+    <ClCompile Include="cmdSampleIterateObjects.cpp" />
     <ClCompile Include="cmdSampleJoinSrf.cpp" />
     <ClCompile Include="cmdSampleLastCreatedObjects.cpp" />
     <ClCompile Include="cmdSampleLeader.cpp" />

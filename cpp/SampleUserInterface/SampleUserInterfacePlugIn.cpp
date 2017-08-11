@@ -386,36 +386,36 @@ BOOL CSampleUserInterfacePlugIn::OnPlugInMenuCommand(WPARAM wParam)
   case ID_SAMPLEMENU_SAMPLEMENUCOMMAND1:
   {
     if (m_bScriptMode)
-      RhinoApp().RunScript(L"! _-SampleMenuCommand1");
+      RunCommandScript(L"! _-SampleMenuCommand1");
     else
-      RhinoApp().RunScript(L"! _SampleMenuCommand1");
+      RunCommandScript(L"! _SampleMenuCommand1");
   }
   break;
 
   case ID_SAMPLEMENU_SAMPLEMENUCOMMAND2:
   {
     if (m_bScriptMode)
-      RhinoApp().RunScript(L"! _-SampleMenuCommand2");
+      RunCommandScript(L"! _-SampleMenuCommand2");
     else
-      RhinoApp().RunScript(L"! _SampleMenuCommand2");
+      RunCommandScript(L"! _SampleMenuCommand2");
   }
   break;
 
   case ID_MORE_SAMPLEMENUCOMMAND3:
   {
     if (m_bScriptMode)
-      RhinoApp().RunScript(L"! _-SampleMenuCommand3");
+      RunCommandScript(L"! _-SampleMenuCommand3");
     else
-      RhinoApp().RunScript(L"! _SampleMenuCommand3");
+      RunCommandScript(L"! _SampleMenuCommand3");
   }
   break;
 
   case ID_MORE_SAMPLEMENUCOMMAND4:
   {
     if (m_bScriptMode)
-      RhinoApp().RunScript(L"! _-SampleMenuCommand4");
+      RunCommandScript(L"! _-SampleMenuCommand4");
     else
-      RhinoApp().RunScript(L"! _SampleMenuCommand4");
+      RunCommandScript(L"! _SampleMenuCommand4");
   }
   break;
 
@@ -434,6 +434,19 @@ BOOL CSampleUserInterfacePlugIn::OnPlugInMenuCommand(WPARAM wParam)
 
   return TRUE;
 }
+
+void CSampleUserInterfacePlugIn::RunCommandScript(const wchar_t* script)
+{
+  if (nullptr != script)
+  {
+    CRhinoDoc* doc = RhinoApp().ActiveDoc();
+    if (nullptr != doc)
+    {
+      RhinoApp().RunScript(doc->RuntimeSerialNumber(), script, 0);
+    }
+  }
+}
+
 
 BOOL CSampleUserInterfacePlugIn::IsSampleMenuVisible() const
 {

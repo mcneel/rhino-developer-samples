@@ -466,7 +466,7 @@ void CSampleObjectManagerDialog::OSelChangeListBox()
     if (uuid_list.Count())
     {
       theSampleObjectManagerSelectCommand.SetModelObjectIds(uuid_list);
-      RhinoApp().RunScript(L"_SampleObjectManagerSelect", 0);
+      SampleUserInterfacePlugIn().RunCommandScript(L"_SampleObjectManagerSelect");
     }
 
     CRhinoEventWatcher::Enable(TRUE);
