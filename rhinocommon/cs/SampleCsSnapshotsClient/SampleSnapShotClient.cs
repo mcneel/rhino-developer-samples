@@ -3,6 +3,7 @@ using Rhino;
 using Rhino.DocObjects;
 using Rhino.FileIO;
 using Rhino.Geometry;
+using Rhino.Runtime.InteropWrappers;
 
 namespace SampleCsSnapshotsClient
 {
@@ -26,7 +27,7 @@ namespace SampleCsSnapshotsClient
 
     public override void AnimationStart(RhinoDoc doc, int iFrames)
     {
-     
+
     }
 
     public override bool AnimationStop(RhinoDoc doc)
@@ -36,7 +37,7 @@ namespace SampleCsSnapshotsClient
 
     public override string Category()
     {
-      return Rhino.DocObjects.SnapShots.SnapShotsClient.RenderingCategory();
+      return Rhino.DocObjects.SnapShots.SnapShotsClient.ObjectsCategory();
     }
 
     public override Guid ClientId()
@@ -46,12 +47,12 @@ namespace SampleCsSnapshotsClient
 
     public override void ExtendBoundingBoxForDocumentAnimation(RhinoDoc doc, BinaryArchiveReader archive_start, BinaryArchiveReader archive_stop, ref BoundingBox bbox)
     {
-      
+
     }
 
     public override void ExtendBoundingBoxForObjectAnimation(RhinoDoc doc, RhinoObject doc_object, ref Transform transform, BinaryArchiveReader archive_start, BinaryArchiveReader archive_stop, ref BoundingBox bbox)
     {
-      
+
     }
 
     public override string Name()
@@ -84,14 +85,8 @@ namespace SampleCsSnapshotsClient
       return false;
     }
 
-    public override bool CompareDocument(RhinoDoc doc, BinaryArchiveReader archive_a, BinaryArchiveReader archive_b)
-    {
-      throw new NotImplementedException();
-    }
-
     public override bool RestoreObject(RhinoDoc doc, RhinoObject doc_object, ref Transform transform, BinaryArchiveReader archive)
     {
-
       Rhino.Collections.ArchivableDictionary userdata = archive.ReadDictionary();
 
       string name = "";
@@ -101,11 +96,6 @@ namespace SampleCsSnapshotsClient
         doc_object.CommitChanges();
       }
       return !archive.ReadErrorOccured;
-    }
-
-    public override bool CompareObject(RhinoDoc doc, RhinoObject doc_object, BinaryArchiveReader archive_a, BinaryArchiveReader archive_b)
-    {
-      throw new NotImplementedException();
     }
 
     public override bool SaveDocument(RhinoDoc doc, BinaryArchiveWriter archive)
@@ -148,6 +138,36 @@ namespace SampleCsSnapshotsClient
     public override bool SupportsObjects()
     {
       return true;
+    }
+
+    public override bool IsCurrentModelStateInAnySnapshot(RhinoDoc doc, BinaryArchiveReader archive, SimpleArrayBinaryArchiveReader archive_array, TextLog text_log = null)
+    {
+      throw new NotImplementedException();
+    }
+   
+    public override bool IsCurrentModelStateInAnySnapshot(RhinoDoc doc, RhinoObject doc_object, BinaryArchiveReader archive, SimpleArrayBinaryArchiveReader archive_array, TextLog text_log = null)
+    {
+      var userdata = archive.ReadDictionary();
+
+      string name = "";
+      if (!userdata.TryGetString("ObjName", out name))
+        return false;
+
+      for (int i = 0; i < archive_array.Count; i++)
+      {
+        var ba = archive_array.Get(i);
+        var ud = ba.ReadDictionary();
+
+        string s = "";
+
+        if (ud.TryGetString("ObjName", out s))
+        {
+          if (0 == s.CompareTo(name))
+            return true;
+        }
+      }
+
+      return false;
     }
   }
 }
