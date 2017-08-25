@@ -1,0 +1,36 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' InsertRandom.rvb -- August 2017
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+Randomize
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Inserts a random block
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub InsertRandom
+	
+	Dim arrBlocks, nCount, nItem, strCmd
+	arrBlocks = Rhino.BlockNames
+	If IsNull(arrBlocks) Then
+		Call Rhino.Print("No block definitions found.")
+		Exit Sub
+	End If
+	
+	nCount = UBound(arrBlocks) + 1
+	nItem = Int(Rnd * nCount)
+	
+	strCmd = "_-Insert " & Chr(34) & arrBlocks(nItem) & Chr(34) & " _Enter _Pause 1.0 0.0"
+	Rhino.Print strCmd
+	Call Rhino.Command(strCmd, 1)
+	
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Drag and drop support
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Call Rhino.AddStartupScript(Rhino.LastLoadedScriptFile)
+Call Rhino.AddAlias("InsertRandom", "_NoEcho _-RunScript (InsertRandom)")

@@ -1,0 +1,55 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' LabelElevation.rvb -- August 2017
+' If this code works, it was written by Dale Fugier.
+' If not, I don't know who wrote it.
+' Works with Rhino 5.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Labels the z-elevation of point objects
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub LabelElevation
+	
+	' Declare local constants
+	Const HEIGHT = 0.125  ' Text height
+	Const OFFSET = 0.1    ' Text offset
+	Const PREFIX = "FL "  ' Text prefix
+	Const PRECISION = 2   ' Numeric precision
+	
+	' Declare local variables
+	Dim arrObjects, strObject
+	Dim arrLocation, strValue
+	Dim arrPlane, arrPoint
+	
+	' Select points to label
+	arrObjects = Rhino.GetObjects("Select points to label", 1, True, True)
+	If IsNull(arrObjects) Then Exit Sub
+	
+	' Turn off screen redrawing (for speed)
+	Call Rhino.EnableRedraw(False)
+	
+	' Process each point object
+	For Each strObject In arrObjects
+		' Get the point object's location
+		arrLocation = Rhino.PointCoordinates(strObject)
+		' Format a string value
+		strValue = PREFIX & FormatNumber(arrLocation(2), PRECISION, 0, 0, 0)
+		' Create a world xy plane using the location as the origin
+		arrPlane = Rhino.MovePlane(Rhino.WorldXYPlane, arrLocation)
+		' Calculate the text insertion point
+		arrPoint = Rhino.PointAdd(arrPlane(0), Array(OFFSET, 0, 0))
+		' Add the text
+		Call Rhino.AddText(strValue, arrPoint, HEIGHT,,, 3)
+	Next
+	
+	' Turn on screen redrawing
+	Call Rhino.EnableRedraw(True)
+
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Drag & drop support
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Call Rhino.AddStartupScript(Rhino.LastLoadedScriptFile)
+Call Rhino.AddAlias("LabelElevation", "_NoEcho _-RunScript (LabelElevation)")
