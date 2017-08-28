@@ -1,12 +1,12 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' TestRhino5Automation.rvb -- July 2014, Dale Fugier.
+' TestRhino5Automation.rvb -- July 2014.
 ' If this code works, it was written by Dale Fugier.
 ' If not, I don't know who wrote it.
 ' Works with Rhinoceros 5.
 '
 ' Run from a Windows command prompt with this syntax:
 '
-'   C:\> cscript TestRhinoAutomation.vbs
+'   C:\> cscript TestRhino5Automation.vbs
 '
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Option Explicit
