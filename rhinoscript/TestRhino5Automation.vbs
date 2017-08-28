@@ -6,7 +6,7 @@
 '
 ' Run from a Windows command prompt with this syntax:
 '
-'   C:\> cscript TestRhinoAutomation.vbs
+'   C:\> cscript TestRhino5Automation.vbs
 '
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Option Explicit
