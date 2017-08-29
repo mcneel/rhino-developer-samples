@@ -9,33 +9,31 @@ namespace SampleCsWinForms.Forms
   {
     private SampleCsObjectPropertiesUserControl m_control;
 
-    public override Icon Icon
+    public override System.Drawing.Icon PageIcon(System.Drawing.Size sizeInPixels)
     {
-      get { return SampleCsWinForms.Properties.Resources.Property; }
+      var icon = Rhino.UI.DrawingUtilities.LoadIconWithScaleDown(
+        "SampleCsWinForms.Resources.Property.ico",
+        sizeInPixels.Width,
+        GetType().Assembly);
+      return icon;
     }
 
-    public override object PageControl
-    {
-      get { return m_control ?? (m_control = new SampleCsObjectPropertiesUserControl()); }
-    }
+    public override object PageControl => m_control ?? (m_control = new SampleCsObjectPropertiesUserControl());
 
-    public override string EnglishPageTitle
-    {
-      get { return "Sample"; }
-    }
+    public override string EnglishPageTitle => "Sample";
 
-    public override bool ShouldDisplay(RhinoObject rhinoObject)
+    public override bool ShouldDisplay(ObjectPropertiesPageEventArgs e)
     {
       var rc = false;
       // One object selected
-      if (null != rhinoObject)
+      if (1 == e.ObjectCount)
       {
         rc = true;
       }
       else
       {
         // Multiple objects selected
-        foreach (var rh_obj in SelectedObjects)
+        foreach (var rh_obj in e.Objects)
         {
           rc = true;
           break;
@@ -44,7 +42,7 @@ namespace SampleCsWinForms.Forms
       return rc;
     }
 
-    public override void InitializeControls(RhinoObject rhObj)
+    public override void UpdatePage(ObjectPropertiesPageEventArgs e)
     {
       // TODO...
     }

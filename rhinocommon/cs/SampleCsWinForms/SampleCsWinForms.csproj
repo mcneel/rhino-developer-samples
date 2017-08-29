@@ -154,7 +154,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Property.ico" />
+    <EmbeddedResource Include="Resources\Property.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\SampleCs.ico" />

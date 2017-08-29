@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using Eto.Drawing;
 using Eto.Forms;
 using Rhino.DocObjects;
@@ -10,34 +11,28 @@ namespace SampleCsEto.Views
   {
     private SampleCsEtoPropertiesPageControl m_page_control;
 
-    public override string EnglishPageTitle
+    public override string EnglishPageTitle => "Sample";
+
+    public override System.Drawing.Icon PageIcon(System.Drawing.Size sizeInPixels)
     {
-      get { return "Sample"; }
+      var icon = Rhino.UI.DrawingUtilities.LoadIconWithScaleDown(
+        "SampleCsEto.Resources.SampleCsEtoPanel.ico", 
+        sizeInPixels.Width,
+        GetType().Assembly);
+      return icon;
     }
 
-    public override System.Drawing.Icon Icon
-    {
-      get { return Properties.Resources.SampleCsEtoPanel; }
-    }
+    public override object PageControl => m_page_control ?? (m_page_control = new SampleCsEtoPropertiesPageControl());
 
-    public override object PageControl
+    public override bool ShouldDisplay(ObjectPropertiesPageEventArgs e)
     {
-      get
-      {
-        return (m_page_control ?? (m_page_control = new SampleCsEtoPropertiesPageControl()));
-      }
-    }
-
-    public override bool ShouldDisplay(RhinoObject rhObj)
-    {
-      Debug.WriteLine("SampleCsEtoPropertiesPage.ShouldDisplay(" + rhObj + ")");
+      Debug.WriteLine("SampleCsEtoPropertiesPage.ShouldDisplay()");
       return true;
     }
 
-    public override void InitializeControls(RhinoObject rhObj)
+    public override void UpdatePage(ObjectPropertiesPageEventArgs e)
     {
-      if (m_page_control != null)
-        m_page_control.InitializeControls(rhObj);
+      Debug.WriteLine("SampleCsEtoPropertiesPage.UpdatePage()");
     }
   }
 
@@ -56,11 +51,6 @@ namespace SampleCsEto.Views
       layout.AddSeparateRow(child_button, null);
       layout.Add(null);
       Content = layout;
-    }
-
-    public void InitializeControls(RhinoObject rhObj)
-    {
-      Debug.WriteLine("SampleCsEtoPropertiesPage.InitializeControls(" + rhObj + ")");
     }
 
     /// <summary>
