@@ -71,7 +71,7 @@ CRhinoCommand::result CCommandSampleTexture::RunCommand(const CRhinoCommandConte
   }
 
   CRhinoDib dib;
-  if (!dib.ReadFromFile(filename))
+  if (!dib.ReadFromFile(context.m_doc.RuntimeSerialNumber(), filename))
   {
     RhinoApp().Print(L"The specified file cannot be identifed as a supported type.\n");
     return CRhinoCommand::nothing;
