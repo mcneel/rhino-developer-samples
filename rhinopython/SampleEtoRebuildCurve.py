@@ -3,15 +3,12 @@
 # MIT License - Copyright (c) 2017 Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
-
-# Imports from
-from Rhino.UI import *
-from Eto.Forms import *
-from Eto.Drawing import *
-
 # Imports
 import Rhino
 import scriptcontext as sc
+import Rhino.UI
+import Eto.Drawing as drawing
+import Eto.Forms as forms
 
 ################################################################################
 # Class to hold rebuild arguments
@@ -34,18 +31,18 @@ class RebuildCurveArgs():
 ################################################################################
 # Rebuild curve dialog class
 ################################################################################
-class RebuildCurveDialog(Dialog[bool]):
+class RebuildCurveDialog(forms.Dialog[bool]):
     
     # Initializer
     def __init__(self, args):
         self.Args = args
         # Initialize dialog box
         self.Title = 'Rebuild'
-        self.Padding = Padding(5)
+        self.Padding = drawing.Padding(5)
         # Create layout
-        layout = TableLayout()
-        layout.Padding = Padding(5)
-        layout.Spacing = Size(5, 5)
+        layout = forms.TableLayout()
+        layout.Padding = drawing.Padding(5)
+        layout.Spacing = drawing.Size(5, 5)
         layout.Rows.Add(self.CreateSteppers())
         layout.Rows.Add(None) # spacer
         layout.Rows.Add(self.CreateCheckBoxes())
@@ -57,46 +54,46 @@ class RebuildCurveDialog(Dialog[bool]):
     # Creates numeric stepper controls
     def CreateSteppers(self):
         # Create labels
-        label0 = Label(Text = 'Point count:')
-        label1 = Label(Text = 'Degree:')
-        label2 = Label(Text = '({})'.format(self.Args.PointCount))
-        label3 = Label(Text = '({})'.format(self.Args.Degree))
+        label0 = forms.Label(Text = 'Point count:')
+        label1 = forms.Label(Text = 'Degree:')
+        label2 = forms.Label(Text = '({})'.format(self.Args.PointCount))
+        label3 = forms.Label(Text = '({})'.format(self.Args.Degree))
         # Create numeric steppers
-        self.PointCount = NumericStepper(
+        self.PointCount = forms.NumericStepper(
             Value = self.Args.PointCount,
             MinValue = 2,
             MaxValue = 32767
             )
-        self.Degree = NumericStepper(
+        self.Degree = forms.NumericStepper(
             Value = self.Args.Degree,
             MinValue = 1,
             MaxValue = 11
             )
         # Create table layout
-        layout = TableLayout()
-        layout.Spacing = Size(5, 5)
-        layout.Rows.Add(TableRow(label0, label2, self.PointCount))
-        layout.Rows.Add(TableRow(label1, label3, self.Degree))
+        layout = forms.TableLayout()
+        layout.Spacing = drawing.Size(5, 5)
+        layout.Rows.Add(forms.TableRow(label0, label2, self.PointCount))
+        layout.Rows.Add(forms.TableRow(label1, label3, self.Degree))
         return layout
     
     # Creates checkbox controls
     def CreateCheckBoxes(self):
         # Create checkboxes
-        self.DeleteInput = CheckBox(
+        self.DeleteInput = forms.CheckBox(
             Text = 'Delete input', 
             Checked = self.Args.DeleteInput,
             ThreeState = False
             )
-        self.PreserveTangents = CheckBox(
+        self.PreserveTangents = forms.CheckBox(
             Text = 'Preserve tangent end directions', 
             Checked = self.Args.PreserveTangents,
             ThreeState = False
             )
         # Create table layout
-        layout = TableLayout()
-        layout.Spacing = Size(5, 5)
-        layout.Rows.Add(TableRow(self.DeleteInput))
-        layout.Rows.Add(TableRow(self.PreserveTangents))
+        layout = forms.TableLayout()
+        layout.Spacing = drawing.Size(5, 5)
+        layout.Rows.Add(forms.TableRow(self.DeleteInput))
+        layout.Rows.Add(forms.TableRow(self.PreserveTangents))
         return layout
     
     # OK button click handler
@@ -115,15 +112,15 @@ class RebuildCurveDialog(Dialog[bool]):
     # Create button controls
     def CreateButtons(self):
         # Create the default button
-        self.DefaultButton = Button(Text = 'OK')
+        self.DefaultButton = forms.Button(Text = 'OK')
         self.DefaultButton.Click += self.OnOkButtonClick
         # Create the abort button
-        self.AbortButton = Button(Text = 'Cancel')
+        self.AbortButton = forms.Button(Text = 'Cancel')
         self.AbortButton.Click += self.OnCancelButtonClick
         # Create button layout
-        button_layout = TableLayout()
-        button_layout.Spacing = Size(5, 5)
-        button_layout.Rows.Add(TableRow(None, self.DefaultButton, self.AbortButton, None))
+        button_layout = forms.TableLayout()
+        button_layout.Spacing = drawing.Size(5, 5)
+        button_layout.Rows.Add(forms.TableRow(None, self.DefaultButton, self.AbortButton, None))
         return button_layout
     
 ################################################################################
@@ -149,7 +146,7 @@ def TestRebuildCurve():
     args.Degree = nurb.Degree
     
     dlg = RebuildCurveDialog(args)
-    rc = dlg.ShowModal(RhinoEtoApp.MainWindow)
+    rc = dlg.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow)
     if rc and args.IsValid():
         nurb = curve.Rebuild(args.PointCount, args.Degree, args.PreserveTangents)
         if nurb:
