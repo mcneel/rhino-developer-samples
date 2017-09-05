@@ -24,13 +24,13 @@ class SampleEtoViewCaptureDialog(Eto.Forms.Dialog[bool]):
         self.Title = 'SampleEtoViewCaptureDialog'
         self.Padding = drawing.Padding(10)
         # Create a table layout and add all the controls
-        layout = forms.TableLayout()
+        layout = forms.DynamicLayout()
         layout.Padding = drawing.Padding(10)
         layout.Spacing = drawing.Size(5, 5)
-        layout.Rows.Add(self.CreateLabel())
-        layout.Rows.Add(self.CreateImageView())
-        layout.Rows.Add(None) # spacer
-        layout.Rows.Add(self.CreateButtons())
+        layout.AddRow(self.CreateLabel())
+        layout.AddRow(self.CreateImageView())
+        layout.AddRow(None) # spacer
+        layout.AddRow(self.CreateButtons())
         # Set the dialog content
         self.Content = layout
     
@@ -73,12 +73,12 @@ class SampleEtoViewCaptureDialog(Eto.Forms.Dialog[bool]):
         self.AbortButton = forms.Button(Text = 'Close')
         self.AbortButton.Click += self.OnCloseButtonClick
         # Create button layout
-        button_layout = forms.TableLayout()
+        button_layout = forms.DynamicLayout()
         button_layout.Spacing = drawing.Size(5, 5)
         if Rhino.Runtime.HostUtils.RunningOnWindows:
-            button_layout.Rows.Add(forms.TableRow(None, self.DefaultButton, self.AbortButton))
+            button_layout.AddRow(None, self.DefaultButton, self.AbortButton)
         else:
-            button_layout.Rows.Add(forms.TableRow(None, self.AbortButton, self.DefaultButton))
+            button_layout.AddRow(None, self.AbortButton, self.DefaultButton)
         return button_layout
         
     # Returns the captured image

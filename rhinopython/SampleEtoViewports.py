@@ -23,14 +23,13 @@ class ViewportsDialog(forms.Dialog[bool]):
         viewport0 = Rhino.UI.Controls.ViewportControl(Size = drawing.Size(400, 200))
         viewport1 = Rhino.UI.Controls.ViewportControl(Size = drawing.Size(400, 200))
         # Create layout
-        layout = forms.StackLayout()
+        layout = forms.DynamicLayout()
         layout.Padding = drawing.Padding(5)
-        layout.Spacing = 5
-        layout.HorizontalContentAlignment = forms.HorizontalAlignment.Stretch
-        layout.Items.Add(viewport0)
-        layout.Items.Add(viewport1)
-        layout.Items.Add(None)
-        layout.Items.Add(self.CloseButton())
+        layout.Spacing = drawing.Size(5, 5)
+        layout.AddRow(viewport0)
+        layout.AddRow(viewport1)
+        layout.AddRow(None)
+        layout.AddRow(self.CloseButton())
         # Set the dialog content
         self.Content = layout
    
