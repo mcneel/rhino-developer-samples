@@ -40,14 +40,14 @@ class RebuildCurveDialog(forms.Dialog[bool]):
         self.Title = 'Rebuild'
         self.Padding = drawing.Padding(5)
         # Create layout
-        layout = forms.TableLayout()
+        layout = forms.DynamicLayout()
         layout.Padding = drawing.Padding(5)
         layout.Spacing = drawing.Size(5, 5)
-        layout.Rows.Add(self.CreateSteppers())
-        layout.Rows.Add(None) # spacer
-        layout.Rows.Add(self.CreateCheckBoxes())
-        layout.Rows.Add(None) # spacer
-        layout.Rows.Add(self.CreateButtons())
+        layout.AddRow(self.CreateSteppers())
+        layout.AddRow(None) # spacer
+        layout.AddRow(self.CreateCheckBoxes())
+        layout.AddRow(None) # spacer
+        layout.AddRow(self.CreateButtons())
         # Set the dialog content
         self.Content = layout
     
@@ -70,10 +70,10 @@ class RebuildCurveDialog(forms.Dialog[bool]):
             MaxValue = 11
             )
         # Create table layout
-        layout = forms.TableLayout()
+        layout = forms.DynamicLayout()
         layout.Spacing = drawing.Size(5, 5)
-        layout.Rows.Add(forms.TableRow(label0, label2, self.PointCount))
-        layout.Rows.Add(forms.TableRow(label1, label3, self.Degree))
+        layout.AddRow(label0, label2, self.PointCount)
+        layout.AddRow(label1, label3, self.Degree)
         return layout
     
     # Creates checkbox controls
@@ -90,10 +90,10 @@ class RebuildCurveDialog(forms.Dialog[bool]):
             ThreeState = False
             )
         # Create table layout
-        layout = forms.TableLayout()
+        layout = forms.DynamicLayout()
         layout.Spacing = drawing.Size(5, 5)
-        layout.Rows.Add(forms.TableRow(self.DeleteInput))
-        layout.Rows.Add(forms.TableRow(self.PreserveTangents))
+        layout.AddRow (self.DeleteInput)
+        layout.AddRow (self.PreserveTangents)
         return layout
     
     # OK button click handler
@@ -118,9 +118,9 @@ class RebuildCurveDialog(forms.Dialog[bool]):
         self.AbortButton = forms.Button(Text = 'Cancel')
         self.AbortButton.Click += self.OnCancelButtonClick
         # Create button layout
-        button_layout = forms.TableLayout()
+        button_layout = forms.DynamicLayout()
         button_layout.Spacing = drawing.Size(5, 5)
-        button_layout.Rows.Add(forms.TableRow(None, self.DefaultButton, self.AbortButton, None))
+        button_layout.AddRow(None, self.DefaultButton, self.AbortButton, None)
         return button_layout
     
 ################################################################################
