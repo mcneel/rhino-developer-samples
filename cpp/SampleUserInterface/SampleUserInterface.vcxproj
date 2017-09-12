@@ -36,6 +36,7 @@
     <ClCompile Include="SampleDialogScrollHelper.cpp" />
     <ClCompile Include="SampleDocumentPropertiesPage.cpp" />
     <ClCompile Include="SampleLayerContextMenuExtension.cpp" />
+    <ClCompile Include="SampleMessageOnlyWnd.cpp" />
     <ClCompile Include="SampleModalDialog.cpp" />
     <ClCompile Include="SampleModelessDialog.cpp" />
     <ClCompile Include="SampleObjectManagerDialog.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="SampleDialogScrollHelper.h" />
     <ClInclude Include="SampleDocumentPropertiesPage.h" />
     <ClInclude Include="SampleLayerContextMenuExtension.h" />
+    <ClInclude Include="SampleMessageOnlyWnd.h" />
     <ClInclude Include="SampleModalDialog.h" />
     <ClInclude Include="SampleModelessDialog.h" />
     <ClInclude Include="SampleObjectManagerDialog.h" />

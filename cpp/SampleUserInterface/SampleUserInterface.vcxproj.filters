@@ -127,6 +127,9 @@
     <ClCompile Include="cmdSampleColorPicker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SampleMessageOnlyWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SampleAnimatorDialog.h">
@@ -205,6 +208,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SampleOptionsListCtrlPageDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleMessageOnlyWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
