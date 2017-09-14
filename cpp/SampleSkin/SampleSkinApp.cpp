@@ -13,7 +13,7 @@ RHINO_PLUG_IN_DEVELOPER_PHONE(L"206-545-6877");
 RHINO_PLUG_IN_DEVELOPER_FAX(L"206-545-7321");
 RHINO_PLUG_IN_DEVELOPER_EMAIL(L"devsupport@mcneel.com");
 RHINO_PLUG_IN_DEVELOPER_WEBSITE(L"http://www.rhino3d.com");
-RHINO_PLUG_IN_UPDATE_URL(L"https://github.com/mcneel/Rhino6Samples_CPP");
+RHINO_PLUG_IN_UPDATE_URL(L"https://github.com/mcneel/rhino-developer-samples");
 
 //
 //	Note!
