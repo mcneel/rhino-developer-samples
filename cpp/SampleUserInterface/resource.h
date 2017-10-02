@@ -53,6 +53,9 @@
 #define IDC_BUTTON1                     19003
 #define IDC_BUTTON2                     19004
 #define IDC_BUTTON3                     19005
+#define IDC_COMBO1                      22000
+#define IDD_DIALOG2                     22000
+#define IDD_FONT_DIALOG                 22000
 #define IDD_OPTIONS_DIALOG              29002
 #define IDD_ANIMATOR_DIALOG             29003
 #define IDC_FRAME                       29006

@@ -18,6 +18,7 @@
     <ClCompile Include="cmdSampleCirclePreview.cpp" />
     <ClCompile Include="cmdSampleColorPicker.cpp" />
     <ClCompile Include="cmdSampleDockbar.cpp" />
+    <ClCompile Include="cmdSampleDrawAnnotation.cpp" />
     <ClCompile Include="cmdSampleMenu.cpp" />
     <ClCompile Include="cmdSampleMenuToggle.cpp" />
     <ClCompile Include="cmdSampleModalDialog.cpp" />
@@ -35,6 +36,7 @@
     <ClCompile Include="SampleCirclePreviewDialog.cpp" />
     <ClCompile Include="SampleDialogScrollHelper.cpp" />
     <ClCompile Include="SampleDocumentPropertiesPage.cpp" />
+    <ClCompile Include="SampleDrawAnnotationDialog.cpp" />
     <ClCompile Include="SampleLayerContextMenuExtension.cpp" />
     <ClCompile Include="SampleMessageOnlyWnd.cpp" />
     <ClCompile Include="SampleModalDialog.cpp" />
@@ -66,6 +68,7 @@
     <ClInclude Include="SampleCirclePreviewDialog.h" />
     <ClInclude Include="SampleDialogScrollHelper.h" />
     <ClInclude Include="SampleDocumentPropertiesPage.h" />
+    <ClInclude Include="SampleDrawAnnotationDialog.h" />
     <ClInclude Include="SampleLayerContextMenuExtension.h" />
     <ClInclude Include="SampleMessageOnlyWnd.h" />
     <ClInclude Include="SampleModalDialog.h" />
