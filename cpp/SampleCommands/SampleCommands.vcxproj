@@ -148,6 +148,7 @@
     <ClCompile Include="cmdSamplePerspectiveColors.cpp" />
     <ClCompile Include="cmdSamplePhantomObject.cpp" />
     <ClCompile Include="cmdSamplePickColor.cpp" />
+    <ClCompile Include="cmdSamplePickContext.cpp" />
     <ClCompile Include="cmdSamplePickTextDot.cpp" />
     <ClCompile Include="cmdSamplePipe.cpp" />
     <ClCompile Include="cmdSamplePlaceCameraTarget.cpp" />
