@@ -49,6 +49,7 @@ class SampleEtoListBoxDialog(forms.Dialog[bool]):
         layout.Padding = drawing.Padding(5)
         layout.Spacing = drawing.Size(5, 5)
         # Add controls to layout
+        layout.AddRow(label)
         layout.AddRow(self.CreateListBox())
         layout.AddRow(None) # spacer
         layout.AddRow(self.CreateButtons())
