@@ -17,6 +17,7 @@ import Eto.Forms as forms
 ################################################################################
 class Fruit(object):
    
+    # Initializer
     def __init__(self, name, color):
         self.m_name = name
         self.m_color = color
@@ -37,7 +38,7 @@ class SampleEtoListBoxDialog(forms.Dialog[bool]):
     # Initializer
     def __init__(self, collection):
         self.m_collection = collection
-        # Initialize dialog box
+        # Initialize dialog box properties
         self.Title = 'Sample Eto ListBox'
         self.Padding = drawing.Padding(5)
         self.Resizable = True
