@@ -1,5 +1,5 @@
 ################################################################################
-# SampleTextDot.py
+# SampleDrawBrepEdges.py
 # MIT License - Copyright (c) 2017 Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
