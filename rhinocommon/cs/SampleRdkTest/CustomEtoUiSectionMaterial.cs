@@ -12,8 +12,10 @@ using Rhino;
 using Rhino.Display;
 using Rhino.Render;
 using Rhino.Render.UI;
+using Rhino.UI.Controls;
 using RhinoWindows.ViewModels;
 using RhinoWindows.Controls;
+using Rhino.UI;
 
 namespace rdktest_cs
 {
@@ -111,13 +113,9 @@ namespace rdktest_cs
 	}
 
 	[Guid("B8AF5769-E57B-4760-8F54-F9187DF3A6EA")]
-	public class CustomEtoCyclesUiSectionHost : EtoElementHost, IUserInterfaceSection
+	public class CustomEtoCyclesUiSectionHost : EtoCollapsibleSection
 	{
-		public CustomEtoCyclesUiSectionHost()
-			: base(new CustomEtoCyclesUISection(), null)
-		{
-		}
-		public void UserInterfaceDisplayData(UserInterfaceSection userInterfaceSection, RenderContent[] renderContentList)
+		/*public void UserInterfaceDisplayData(UserInterfaceSection userInterfaceSection, RenderContent[] renderContentList)
 		{
 			RhinoApp.WriteLine("in CustomEtoCyclesUiSectionHost.UserInterfaceDisplayData");
 			foreach (var tm in renderContentList.OfType<CustomEtoUiSectionMaterial>())
@@ -136,10 +134,13 @@ namespace rdktest_cs
 				}
 			}
 		}
-        bool IUserInterfaceSection.Hidden { get { return false;} }
+		bool IUserInterfaceSection.Hidden { get { return false;} }
 		public void OnUserInterfaceSectionExpanding(UserInterfaceSection userInterfaceSection, bool expanding)
 		{
-		}
+		}*/
+		public override LocalizeStringPair Caption => new LocalizeStringPair("Test Eto Ui Section", "Test Eto Ui Section");
+
+		public override int SectionHeight => Content.Height;
 	}
 
 	[Guid("2FEE12AE-1D16-4338-9D28-0BBD6EFE763D")]
@@ -153,11 +154,14 @@ namespace rdktest_cs
 			Fields.Add("diffuse_color", Color4f.White, "Diffuse Color");
 		}
 
+		private CustomEtoCyclesUiSectionHost m_sect = new CustomEtoCyclesUiSectionHost();
+
 		protected override void OnAddUserInterfaceSections()
 		{
 			AddAutomaticUserInterfaceSection("Parameters", 0);
-			var type = typeof(CustomEtoCyclesUiSectionHost);
-			AddUserInterfaceSection(type, "(Eto) Custom Material", true, true);
+			//var type = typeof(CustomEtoCyclesUiSectionHost);
+			//AddUserInterfaceSection(type, "(Eto) Custom Material", true, true);
+			AddUserInterfaceSection(m_sect);
 		}
 
 		public override void SimulateMaterial(ref Rhino.DocObjects.Material simulatedMaterial, bool forDataOnly)
