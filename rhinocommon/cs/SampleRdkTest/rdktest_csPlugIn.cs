@@ -350,7 +350,7 @@ namespace rdktest_cs
       //Rhino.Render.IOPlugIn.RegisterContentIo(this.Assembly, this.Id);
 
       // Tell Rhino about our custom mesh provider
-      CustomRenderMeshProvider.RegisterProviders(GetType().Assembly, Id);
+      CustomRenderMeshProvider2.RegisterProviders(GetType().Assembly, Id);
 
       RhinoDoc.NewDocument += g_rhino_doc_new_doc;
 

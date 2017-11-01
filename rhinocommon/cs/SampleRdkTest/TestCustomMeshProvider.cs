@@ -55,6 +55,7 @@ namespace rdktest_cs
 		{
 			var bbox = obj.Geometry.GetBoundingBox(false);
 			var radius = bbox.Diagonal.Length * 0.25;
+			radius = radius < 0.1 ? 0.1 : radius;
 			var sphere = new Sphere(bbox.Center, radius);
 			return sphere;
 		}
@@ -79,7 +80,7 @@ namespace rdktest_cs
 			else
 			{
 				var sphere = SphereFromObject(obj);
-				objMeshes.Add(sphere, obj.RenderMaterial);
+				objMeshes.Add(Mesh.CreateFromSphere(sphere, 100, 100), obj.RenderMaterial);
 			}
 
 			return true;
