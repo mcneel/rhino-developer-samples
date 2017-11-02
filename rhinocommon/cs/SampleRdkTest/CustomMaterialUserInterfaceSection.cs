@@ -31,7 +31,7 @@ namespace rdktest_cs
     {
       get
       {
-        return new LocalizeStringPair("Parameters", "Parameters");
+        return new LocalizeStringPair("Custom Section: Parameters", "Custom Section: Parameters");
       }
     }
 

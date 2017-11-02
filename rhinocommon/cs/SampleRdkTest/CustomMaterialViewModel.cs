@@ -321,7 +321,7 @@ namespace rdktest_cs
     {
       get
       {
-        return (int)this.FrameworkElement.ActualHeight;
+        return (int)FrameworkElement.ActualHeight;
       }
     }
   }
