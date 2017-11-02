@@ -25,6 +25,12 @@ namespace rdktest_cs
 
       //Hook up the data display to the changed event
       DataChanged += UserInterfaceDisplayData;
+      ControlAdded += CustomMaterialUserInterfaceSection_ControlAdded;
+    }
+
+    private void CustomMaterialUserInterfaceSection_ControlAdded(object sender, ControlEventArgs e)
+    {
+      height = Size.Height;
     }
 
     public override LocalizeStringPair Caption
@@ -34,14 +40,15 @@ namespace rdktest_cs
         return new LocalizeStringPair("Custom Section: Parameters", "Custom Section: Parameters");
       }
     }
-
+    private int height = 400;
     public override int SectionHeight
     {
       get
       {
-        return 200;
+        return height;
       }
     }
+
 
     #region private members
     // This is the same type of view model used by the WPF version of the user control
