@@ -2,6 +2,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using Rhino.Render;
 using Rhino.Render.Fields;
+using Rhino.UI.Controls;
 
 namespace rdktest_cs
 {
@@ -74,13 +75,20 @@ namespace rdktest_cs
       Fields.Add(ShowSectionKey, true, "Yes/No");
     }
 
+
+    ICollapsibleSection m_wpf = new CustomMaterialWpfUserInterfaceSectionHost();
+
+    ICollapsibleSection m_one = new CustomMaterialUserInterfaceSection();
+
+    ICollapsibleSection m_two = new CustomMaterialUserInterfaceSection2();
+
     protected override void OnAddUserInterfaceSections()
     {
-      AddUserInterfaceSection(new CustomMaterialWpfUserInterfaceSectionHost());
+      AddUserInterfaceSection(m_wpf);
 
-      AddUserInterfaceSection(new CustomMaterialUserInterfaceSection());
+      AddUserInterfaceSection(m_one);
 
-      AddUserInterfaceSection(new CustomMaterialUserInterfaceSection2());
+      AddUserInterfaceSection(m_two);
     }
   }
 }
