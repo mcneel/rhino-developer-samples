@@ -70,7 +70,8 @@ namespace rdktest_cs
 
 	}
 
-	public class CustomEtoCyclesUISection : Eto.Forms.Panel
+	[Guid("10E83715-82F1-439B-83B6-1CA1EF8C054E")]
+	public class CustomEtoCyclesUISection : EtoCollapsibleSection
 	{
 		public CustomEtoCyclesUISection()
 		{
@@ -110,38 +111,11 @@ namespace rdktest_cs
 
 			return label;
 		}
-	}
-
-	[Guid("B8AF5769-E57B-4760-8F54-F9187DF3A6EA")]
-	public class CustomEtoCyclesUiSectionHost : EtoCollapsibleSection
-	{
-		/*public void UserInterfaceDisplayData(UserInterfaceSection userInterfaceSection, RenderContent[] renderContentList)
-		{
-			RhinoApp.WriteLine("in CustomEtoCyclesUiSectionHost.UserInterfaceDisplayData");
-			foreach (var tm in renderContentList.OfType<CustomEtoUiSectionMaterial>())
-			{
-				Color4f color;
-				tm.Fields.TryGetValue("diffuse_color", out color);
-
-				var ui_section = Control as CustomEtoCyclesUISection;
-				if (ui_section != null)
-				{
-					var co = ui_section.DataContext as ColorObject;
-					if (co != null)
-					{
-						co.ColorAsString = String.Format("{0} {1} {2}", color.R, color.B, color.G);
-					}
-				}
-			}
-		}
-		bool IUserInterfaceSection.Hidden { get { return false;} }
-		public void OnUserInterfaceSectionExpanding(UserInterfaceSection userInterfaceSection, bool expanding)
-		{
-		}*/
 		public override LocalizeStringPair Caption => new LocalizeStringPair("Test Eto Ui Section", "Test Eto Ui Section");
 
-		public override int SectionHeight => Content.Height;
+		public override int SectionHeight => 200;
 	}
+
 
 	[Guid("2FEE12AE-1D16-4338-9D28-0BBD6EFE763D")]
 	public class CustomEtoUiSectionMaterial : RenderMaterial
@@ -154,13 +128,11 @@ namespace rdktest_cs
 			Fields.Add("diffuse_color", Color4f.White, "Diffuse Color");
 		}
 
-		private CustomEtoCyclesUiSectionHost m_sect = new CustomEtoCyclesUiSectionHost();
+		private CustomEtoCyclesUISection m_sect = new CustomEtoCyclesUISection();
 
 		protected override void OnAddUserInterfaceSections()
 		{
 			AddAutomaticUserInterfaceSection("Parameters", 0);
-			//var type = typeof(CustomEtoCyclesUiSectionHost);
-			//AddUserInterfaceSection(type, "(Eto) Custom Material", true, true);
 			AddUserInterfaceSection(m_sect);
 		}
 
