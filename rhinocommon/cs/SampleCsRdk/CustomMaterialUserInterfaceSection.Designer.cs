@@ -33,6 +33,9 @@ namespace SampleCsRdk
       this.components = new System.ComponentModel.Container();
       this.imageList = new ImageList(this.components);
       this.labelColor = new System.Windows.Forms.Label();
+      this.buttonA = new System.Windows.Forms.Button();
+      this.buttonB = new System.Windows.Forms.Button();
+      this.buttonC = new System.Windows.Forms.Button();
       this.buttonColor = new System.Windows.Forms.Button();
       this.checkBox1 = new System.Windows.Forms.CheckBox();
       this.subNodeControl = new RhinoWindows.Forms.Controls.Render.SubNodeControl();
@@ -42,10 +45,25 @@ namespace SampleCsRdk
       this.imageList.Images.Add(Properties.Resources.AtoZ);
       this.imageList.Images.SetKeyName(0, "ONE");
 
+      this.buttonA.Location = new System.Drawing.Point(3, 3);
+      this.buttonA.Name = "buttonA";
+      this.buttonA.Size = new System.Drawing.Size(20, 23);
+      this.buttonA.TabIndex = 1;
+
+      this.buttonB.Location = new System.Drawing.Point(26, 3);
+      this.buttonB.Name = "buttonB";
+      this.buttonB.Size = new System.Drawing.Size(20, 23);
+      this.buttonB.TabIndex = 1;
+
+      this.buttonC.Location = new System.Drawing.Point(52, 3);
+      this.buttonC.Name = "buttonC";
+      this.buttonC.Size = new System.Drawing.Size(20, 23);
+      this.buttonC.TabIndex = 1;
+
       // special component
       this.bufferedTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.bufferedTreeView.Location = new System.Drawing.Point(3, 3);
+      this.bufferedTreeView.Location = new System.Drawing.Point(3, 26);
       this.bufferedTreeView.Size = new System.Drawing.Size(149, 200);
       this.bufferedTreeView.ImageList = this.imageList;
       this.bufferedTreeView.ItemHeight = 30;
@@ -69,7 +87,7 @@ namespace SampleCsRdk
       // labelColor
       // 
       this.labelColor.AutoSize = true;
-      this.labelColor.Location = new System.Drawing.Point(3, 211);
+      this.labelColor.Location = new System.Drawing.Point(3, 243);
       this.labelColor.Name = "labelColor";
       this.labelColor.Size = new System.Drawing.Size(34, 13);
       this.labelColor.TabIndex = 0;
@@ -80,7 +98,7 @@ namespace SampleCsRdk
       this.buttonColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.buttonColor.BackColor = System.Drawing.Color.White;
-      this.buttonColor.Location = new System.Drawing.Point(47, 211);
+      this.buttonColor.Location = new System.Drawing.Point(47, 243);
       this.buttonColor.Name = "buttonColor";
       this.buttonColor.Size = new System.Drawing.Size(105, 23);
       this.buttonColor.TabIndex = 1;
@@ -89,7 +107,7 @@ namespace SampleCsRdk
       // checkBox1
       // 
       this.checkBox1.AutoSize = true;
-      this.checkBox1.Location = new System.Drawing.Point(3, 243);
+      this.checkBox1.Location = new System.Drawing.Point(3, 266);
       this.checkBox1.Name = "checkBox1";
       this.checkBox1.Size = new System.Drawing.Size(99, 17);
       this.checkBox1.TabIndex = 2;
@@ -107,7 +125,7 @@ namespace SampleCsRdk
       this.subNodeControl.CheckBoxEnabled = false;
       this.subNodeControl.ChildSlotName = "diffuse-child-slot";
       this.subNodeControl.IsChecked = false;
-      this.subNodeControl.Location = new System.Drawing.Point(3, 296);
+      this.subNodeControl.Location = new System.Drawing.Point(3, 325);
       this.subNodeControl.Name = "subNodeControl";
       this.subNodeControl.ShowAmountEditControl = true;
       this.subNodeControl.ShowCheckBox = true;
@@ -118,6 +136,9 @@ namespace SampleCsRdk
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.Controls.Add(this.buttonA);
+      this.Controls.Add(this.buttonB);
+      this.Controls.Add(this.buttonC);
       this.Controls.Add(this.bufferedTreeView);
       this.Controls.Add(this.subNodeControl);
       this.Controls.Add(this.checkBox1);
@@ -132,6 +153,9 @@ namespace SampleCsRdk
 
     #endregion
 
+    private System.Windows.Forms.Button buttonA;
+    private System.Windows.Forms.Button buttonB;
+    private System.Windows.Forms.Button buttonC;
     private System.Windows.Forms.Label labelColor;
     private System.Windows.Forms.Button buttonColor;
     private System.Windows.Forms.CheckBox checkBox1;
