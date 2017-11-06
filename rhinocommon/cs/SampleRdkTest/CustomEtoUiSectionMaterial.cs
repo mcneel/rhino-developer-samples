@@ -17,7 +17,7 @@ using RhinoWindows.ViewModels;
 using RhinoWindows.Controls;
 using Rhino.UI;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
 	internal class ColorObject : ViewModelBase
 	{

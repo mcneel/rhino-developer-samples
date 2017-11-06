@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
   partial class CustomMaterialUserInterfaceSection
   {

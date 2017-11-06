@@ -13,7 +13,7 @@ using Rhino.DocObjects;
 using Rhino.Render.ChangeQueue;
 using Rhino.PlugIns;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
 
   public class NewSizeArgs : EventArgs

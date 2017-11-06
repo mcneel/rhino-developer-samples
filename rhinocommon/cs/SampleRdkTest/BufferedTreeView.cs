@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
 	public class BufferedTreeView : TreeView
     {

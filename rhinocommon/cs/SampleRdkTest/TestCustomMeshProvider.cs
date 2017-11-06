@@ -6,7 +6,7 @@ using Rhino.Render;
 using Rhino;
 using Rhino.Display;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
 	/// <summary>
 	/// Make this class public to test.  If it is public and the plug-in is

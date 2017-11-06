@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Rhino.Render;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
   [System.Runtime.InteropServices.Guid("57BF48A5-C656-4996-920D-41B5BD63C57A")]
   public class CustomTexture : TwoColorRenderTexture

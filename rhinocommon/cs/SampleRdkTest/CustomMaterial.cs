@@ -4,7 +4,7 @@ using Rhino.Render;
 using Rhino.Render.Fields;
 using Rhino.UI.Controls;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
   // TODO: You must provide a unique Guid for this class
   [System.Runtime.InteropServices.Guid("ABE4059B-9BD7-451C-91B2-67C2F188860A")]

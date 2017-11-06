@@ -14,7 +14,7 @@ using Rhino.UI;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
   class CustomMaterialViewModel : ViewModelBase
   {

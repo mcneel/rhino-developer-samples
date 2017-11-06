@@ -1,7 +1,7 @@
 using System;
 using Rhino;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
   [System.Runtime.InteropServices.Guid("68d3c5e9-2f92-42f3-aeca-c60a77cd59c3")]
   public class rdktest_csCommand : Rhino.Commands.Command

@@ -1,5 +1,5 @@
 ﻿
-namespace rdktest_cs
+namespace SampleCsRdk
 {
   /// <summary>
   /// Interaction logic for CusomMaterialWpfUserInterfaceSection.xaml

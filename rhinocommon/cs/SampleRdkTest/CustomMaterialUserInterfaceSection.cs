@@ -10,7 +10,7 @@ using Rhino.UI.Controls;
 using Rhino.UI.Controls.DataSource;
 using System.Diagnostics;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
   [System.Runtime.InteropServices.Guid("49864F18-905C-4160-8C74-2AB2CCAD6649")]
   public partial class CustomMaterialUserInterfaceSection : RhinoWindows.Controls.RenderContentUserControlCollapsibleSection

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Rhino.Render;
 
-namespace rdktest_cs
+namespace SampleCsRdk
 {
   [System.Runtime.InteropServices.Guid("5F97DC31-9750-491E-9FE3-060B8BFD1FA6")]
   public class CustomEnvironment : RenderEnvironment
