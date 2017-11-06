@@ -40,7 +40,7 @@ namespace rdktest_cs
         return new LocalizeStringPair("Custom Section: Parameters", "Custom Section: Parameters");
       }
     }
-    private int height = 400;
+    private int height = 300;
     public override int SectionHeight
     {
       get

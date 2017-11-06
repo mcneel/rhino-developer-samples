@@ -40,15 +40,36 @@ namespace rdktest_cs
       this.SuspendLayout();
 
       this.imageList.Images.Add(Properties.Resources.AtoZ);
-      this.imageList.Images.Add(Properties.Resources.AtoZ);
-      this.imageList.Images.Add(Properties.Resources.AtoZ);
-      this.imageList.Images.Add(Properties.Resources.AtoZ);
-      this.imageList.Images.Add(Properties.Resources.AtoZ);
+      this.imageList.Images.SetKeyName(0, "ONE");
+
+      // special component
+      this.bufferedTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.bufferedTreeView.Location = new System.Drawing.Point(3, 3);
+      this.bufferedTreeView.Size = new System.Drawing.Size(149, 200);
+      this.bufferedTreeView.ImageList = this.imageList;
+      this.bufferedTreeView.ItemHeight = 30;
+      this.bufferedTreeView.ImageIndex = 0;
+      this.bufferedTreeView.SelectedImageIndex = 0;
+      this.bufferedTreeView.BackColor = System.Drawing.Color.BlueViolet;
+
+      var rootNode = new TreeNode("root");
+      rootNode.ImageIndex = 0;
+      rootNode.SelectedImageIndex = 1;
+
+      for(int i = 0; i < 5; i++)
+      {
+        var chNode = new TreeNode("child");
+        chNode.ImageIndex = 0;
+        chNode.SelectedImageIndex = 0;
+        rootNode.Nodes.Add(chNode);
+      }
+      this.bufferedTreeView.Nodes.Add(rootNode);
       // 
       // labelColor
       // 
       this.labelColor.AutoSize = true;
-      this.labelColor.Location = new System.Drawing.Point(3, 8);
+      this.labelColor.Location = new System.Drawing.Point(3, 211);
       this.labelColor.Name = "labelColor";
       this.labelColor.Size = new System.Drawing.Size(34, 13);
       this.labelColor.TabIndex = 0;
@@ -59,17 +80,16 @@ namespace rdktest_cs
       this.buttonColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.buttonColor.BackColor = System.Drawing.Color.White;
-      this.buttonColor.Location = new System.Drawing.Point(47, 3);
+      this.buttonColor.Location = new System.Drawing.Point(47, 211);
       this.buttonColor.Name = "buttonColor";
       this.buttonColor.Size = new System.Drawing.Size(105, 23);
       this.buttonColor.TabIndex = 1;
       this.buttonColor.UseVisualStyleBackColor = false;
       this.buttonColor.Click += new System.EventHandler(this.ButtonColorClick);
-      /*// 
       // checkBox1
       // 
       this.checkBox1.AutoSize = true;
-      this.checkBox1.Location = new System.Drawing.Point(3, 32);
+      this.checkBox1.Location = new System.Drawing.Point(3, 243);
       this.checkBox1.Name = "checkBox1";
       this.checkBox1.Size = new System.Drawing.Size(99, 17);
       this.checkBox1.TabIndex = 2;
@@ -87,30 +107,20 @@ namespace rdktest_cs
       this.subNodeControl.CheckBoxEnabled = false;
       this.subNodeControl.ChildSlotName = "diffuse-child-slot";
       this.subNodeControl.IsChecked = false;
-      this.subNodeControl.Location = new System.Drawing.Point(3, 53);
+      this.subNodeControl.Location = new System.Drawing.Point(3, 296);
       this.subNodeControl.Name = "subNodeControl";
       this.subNodeControl.ShowAmountEditControl = true;
       this.subNodeControl.ShowCheckBox = true;
       this.subNodeControl.Size = new System.Drawing.Size(149, 20);
-      this.subNodeControl.TabIndex = 3;*/
-
-      this.bufferedTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.bufferedTreeView.Location = new System.Drawing.Point(3, 35);
-      this.bufferedTreeView.Size = new System.Drawing.Size(149, 200);
-      this.bufferedTreeView.ImageList = this.imageList;
-      this.bufferedTreeView.ItemHeight = 30;
-      this.bufferedTreeView.ImageIndex = 0;
-      this.bufferedTreeView.SelectedImageIndex = 0;
-      this.bufferedTreeView.BackColor = System.Drawing.Color.BlueViolet;
+      this.subNodeControl.TabIndex = 3;
       // 
       // CustomMaterialUserInterfaceSection
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.Controls.Add(this.bufferedTreeView);
-      //this.Controls.Add(this.subNodeControl);
-      //this.Controls.Add(this.checkBox1);
+      this.Controls.Add(this.subNodeControl);
+      this.Controls.Add(this.checkBox1);
       this.Controls.Add(this.buttonColor);
       this.Controls.Add(this.labelColor);
       this.Name = "CustomMaterialUserInterfaceSection";
