@@ -82,26 +82,27 @@ namespace SampleCsRdk
         if (sel == null)
           return null;
 
-        foreach (RenderMaterial material in sel)
+        foreach (var item in sel)
         {
-          if (null == material)
-            continue;
+          if (item is RenderMaterial material)
+          {
 
-          Color4f colorThis;
-          if (!material.Fields.TryGetValue(COLOR_FIELD_NAME, out colorThis))
-          {
-            continue;
-          }
+            Color4f colorThis;
+            if (!material.Fields.TryGetValue(COLOR_FIELD_NAME, out colorThis))
+            {
+              continue;
+            }
 
-          //First time through
-          if (color == null)
-          {
-            color = colorThis;
-          }
-          else if (!bColorVaries && colorThis != color)
-          {
-            bColorVaries = true;
-            break;
+            //First time through
+            if (color == null)
+            {
+              color = colorThis;
+            }
+            else if (!bColorVaries && colorThis != color)
+            {
+              bColorVaries = true;
+              break;
+            }
           }
         }
 
@@ -115,23 +116,24 @@ namespace SampleCsRdk
 
         var undo = Rhino.RhinoDoc.ActiveDoc.BeginUndoRecord("Set material Color value");
 
-        foreach (RenderMaterial material in sel)
+        foreach (var item in sel)
         {
-          if (null == material)
-            continue;
-
-          Color4f colorThis;
-          if (!material.Fields.TryGetValue(COLOR_FIELD_NAME, out colorThis))
+          if (item is RenderMaterial material)
           {
-            Debug.Assert(false);
-            continue;
-          }
 
-          if (value != colorThis)
-          {
-            material.BeginChange(RenderContent.ChangeContexts.UI);
-            material.Fields.Set(COLOR_FIELD_NAME, value.Value);
-            material.EndChange();
+            Color4f colorThis;
+            if (!material.Fields.TryGetValue(COLOR_FIELD_NAME, out colorThis))
+            {
+              Debug.Assert(false);
+              continue;
+            }
+
+            if (value != colorThis)
+            {
+              material.BeginChange(RenderContent.ChangeContexts.UI);
+              material.Fields.Set(COLOR_FIELD_NAME, value.Value);
+              material.EndChange();
+            }
           }
         }
 
@@ -169,26 +171,28 @@ namespace SampleCsRdk
         if (sel == null)
           return null;
 
-        foreach (RenderMaterial material in sel)
+        foreach (var item in sel)
         {
-          if (null == material)
-            continue;
 
-          bool bThis;
-          if (!material.Fields.TryGetValue(CustomMaterialWithUserControl.ShowSectionKey, out bThis))
+          if (item is RenderMaterial material)
           {
-            continue;
-          }
 
-          //First time through
-          if (b == null)
-          {
-            b = bThis;
-          }
-          else if (!bVaries && bThis != b)
-          {
-            bVaries = true;
-            break;
+            bool bThis;
+            if (!material.Fields.TryGetValue(CustomMaterialWithUserControl.ShowSectionKey, out bThis))
+            {
+              continue;
+            }
+
+            //First time through
+            if (b == null)
+            {
+              b = bThis;
+            }
+            else if (!bVaries && bThis != b)
+            {
+              bVaries = true;
+              break;
+            }
           }
         }
 
@@ -202,23 +206,24 @@ namespace SampleCsRdk
 
         var undo = Rhino.RhinoDoc.ActiveDoc.BeginUndoRecord("Set material ShowSectionKey value");
 
-        foreach (RenderMaterial material in sel)
+        foreach (var item in sel)
         {
-          if (null == material)
-            continue;
-
-          bool bThis;
-          if (!material.Fields.TryGetValue(CustomMaterialWithUserControl.ShowSectionKey, out bThis))
+          if (item is RenderMaterial material)
           {
-            Debug.Assert(false);
-            continue;
-          }
 
-          if (value != bThis)
-          {
-            material.BeginChange(RenderContent.ChangeContexts.UI);
-            material.Fields.Set(CustomMaterialWithUserControl.ShowSectionKey, value.Value);
-            material.EndChange();
+            bool bThis;
+            if (!material.Fields.TryGetValue(CustomMaterialWithUserControl.ShowSectionKey, out bThis))
+            {
+              Debug.Assert(false);
+              continue;
+            }
+
+            if (value != bThis)
+            {
+              material.BeginChange(RenderContent.ChangeContexts.UI);
+              material.Fields.Set(CustomMaterialWithUserControl.ShowSectionKey, value.Value);
+              material.EndChange();
+            }
           }
         }
 
@@ -235,12 +240,12 @@ namespace SampleCsRdk
         RenderContentCollection sel = Selection;
         if (sel != null)
         {
-          foreach (RenderMaterial material in sel)
+          foreach (var item in sel)
           {
-            if (null == material)
-              continue;
-
-            list.Add(material.Id);
+            if (item is RenderMaterial material)
+            {
+              list.Add(material.Id);
+            }
           }
         }
 
