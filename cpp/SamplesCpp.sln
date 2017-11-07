@@ -64,6 +64,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRhinoFileVersion", "S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkMaterialAutoUI", "SampleRdkMaterialAutoUI\SampleRdkMaterialAutoUI.vcxproj", "{D9106855-428A-428F-9588-9076DE1A1321}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRealtimeRenderer", "SampleRealtimeRenderer\SampleRealtimeRenderer.vcxproj", "{9996042C-BA07-4F6F-88EF-D9C304B40A7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -162,6 +164,10 @@ Global
 		{D9106855-428A-428F-9588-9076DE1A1321}.Debug|x64.Build.0 = Debug|x64
 		{D9106855-428A-428F-9588-9076DE1A1321}.Release|x64.ActiveCfg = Release|x64
 		{D9106855-428A-428F-9588-9076DE1A1321}.Release|x64.Build.0 = Release|x64
+		{9996042C-BA07-4F6F-88EF-D9C304B40A7D}.Debug|x64.ActiveCfg = Debug|x64
+		{9996042C-BA07-4F6F-88EF-D9C304B40A7D}.Debug|x64.Build.0 = Debug|x64
+		{9996042C-BA07-4F6F-88EF-D9C304B40A7D}.Release|x64.ActiveCfg = Release|x64
+		{9996042C-BA07-4F6F-88EF-D9C304B40A7D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
