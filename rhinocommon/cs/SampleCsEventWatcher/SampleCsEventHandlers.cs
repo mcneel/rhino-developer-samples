@@ -28,10 +28,7 @@ namespace SampleCsEventWatcher
     /// <summary>
     /// Returns the one and only instance of this object
     /// </summary>
-    public static SampleCsEventHandlers Instance
-    {
-      get { return g_instance ?? (g_instance = new SampleCsEventHandlers()); }
-    }
+    public static SampleCsEventHandlers Instance => g_instance ?? (g_instance = new SampleCsEventHandlers());
 
     /// <summary>
     /// Returns the enabled status
@@ -78,6 +75,7 @@ namespace SampleCsEventWatcher
           RhinoDoc.LayerTableEvent += OnLayerTableEvent;
           RhinoDoc.LightTableEvent += OnLightTableEvent;
           RhinoDoc.MaterialTableEvent += OnMaterialTableEvent;
+          RhinoDoc.DimensionStyleTableEvent += OnDimensionStyleTableEvent;
           RhinoDoc.DocumentPropertiesChanged += OnDocumentPropertiesChanged;
 
           RhinoDoc.RenderEnvironmentTableEvent += OnRenderEnvironmentTableEvent;
@@ -126,6 +124,7 @@ namespace SampleCsEventWatcher
           RhinoDoc.LayerTableEvent -= OnLayerTableEvent;
           RhinoDoc.LightTableEvent -= OnLightTableEvent;
           RhinoDoc.MaterialTableEvent -= OnMaterialTableEvent;
+          RhinoDoc.DimensionStyleTableEvent -= OnDimensionStyleTableEvent;
           RhinoDoc.DocumentPropertiesChanged -= OnDocumentPropertiesChanged;
 
           RhinoDoc.RenderEnvironmentTableEvent -= OnRenderEnvironmentTableEvent;
@@ -254,33 +253,41 @@ namespace SampleCsEventWatcher
     /// <summary>
     /// Called if a new object is added to the document.
     /// </summary>
-    void OnAddRhinoObject(object sender, Rhino.DocObjects.RhinoObjectEventArgs e)
+    public static void OnAddRhinoObject(object sender, Rhino.DocObjects.RhinoObjectEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> AddRhinoObject ({0})", e.ObjectId);
     }
 
-    void OnReplaceRhinoObject(object sender, Rhino.DocObjects.RhinoReplaceObjectEventArgs e)
+    /// <summary>
+    /// Called if an extisting object is being replaced.
+    /// </summary>
+    public static void OnReplaceRhinoObject(object sender, Rhino.DocObjects.RhinoReplaceObjectEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> ReplaceRhinoObject ({0})", e.ObjectId);
+      RhinoApp.WriteLine("     UndoActive = {0} **", e.Document.UndoActive);
+      RhinoApp.WriteLine("     RedoActive = {0} **", e.Document.RedoActive);
     }
 
     /// <summary>
     /// Called when an object is deleted
     /// </summary>
-    void OnDeleteRhinoObject(object sender, Rhino.DocObjects.RhinoObjectEventArgs e)
+    public static void OnDeleteRhinoObject(object sender, Rhino.DocObjects.RhinoObjectEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> DeleteRhinoObject ({0})", e.ObjectId);
     }
 
-    void OnUndeleteRhinoObject(object sender, Rhino.DocObjects.RhinoObjectEventArgs e)
+    /// <summary>
+    /// Called when an object is undeleted
+    /// </summary>
+    public static void OnUndeleteRhinoObject(object sender, Rhino.DocObjects.RhinoObjectEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> UndeleteRhinoObject ({0})", e.ObjectId);
     }
 
     /// <summary>
     /// Called when Rhino permanently deletes an object
     /// </summary>
-    void OnPurgeRhinoObject(object sender, Rhino.DocObjects.RhinoObjectEventArgs e)
+    public static void OnPurgeRhinoObject(object sender, Rhino.DocObjects.RhinoObjectEventArgs e)
     {
       DebugWriteMethod();
     }
@@ -288,7 +295,7 @@ namespace SampleCsEventWatcher
     /// <summary>
     /// Called when an object's attributes have been modified
     /// </summary>
-    void OnModifyObjectAttributes(object sender, Rhino.DocObjects.RhinoModifyObjectAttributesEventArgs e)
+    public static void OnModifyObjectAttributes(object sender, Rhino.DocObjects.RhinoModifyObjectAttributesEventArgs e)
     {
       DebugWriteMethod();
     }
@@ -296,7 +303,7 @@ namespace SampleCsEventWatcher
     /// <summary>
     /// Called before objects are being transformed
     /// </summary>
-    void OnBeforeTransformObjects(object sender, Rhino.DocObjects.RhinoTransformObjectsEventArgs e)
+    public static void OnBeforeTransformObjects(object sender, Rhino.DocObjects.RhinoTransformObjectsEventArgs e)
     {
       DebugWriteMethod();
     }
@@ -336,47 +343,61 @@ namespace SampleCsEventWatcher
     /// <summary>
     /// A group table event has occurred
     /// </summary>
-    void OnGroupTableEvent(object sender, Rhino.DocObjects.Tables.GroupTableEventArgs e)
+    public static void OnGroupTableEvent(object sender, Rhino.DocObjects.Tables.GroupTableEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> GroupTableEvent");
+      RhinoApp.WriteLine("    EventType = {0} **", e.EventType);
     }
 
     /// <summary>
     /// An instance definition table event has occurred
     /// </summary>
-    void OnInstanceDefinitionTableEvent(object sender, Rhino.DocObjects.Tables.InstanceDefinitionTableEventArgs e)
+    public static void OnInstanceDefinitionTableEvent(object sender, Rhino.DocObjects.Tables.InstanceDefinitionTableEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> InstanceDefinitionTableEvent");
+      RhinoApp.WriteLine("    EventType = {0} **", e.EventType);
     }
 
     /// <summary>
     /// A layer table event has occurred
     /// </summary>
-    void OnLayerTableEvent(object sender, Rhino.DocObjects.Tables.LayerTableEventArgs e)
+    public static void OnLayerTableEvent(object sender, Rhino.DocObjects.Tables.LayerTableEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> LayerTableEvent");
+      RhinoApp.WriteLine("    EventType = {0} **", e.EventType);
     }
 
     /// <summary>
     /// A light table event has occurred
     /// </summary>
-    void OnLightTableEvent(object sender, Rhino.DocObjects.Tables.LightTableEventArgs e)
+    public static void OnLightTableEvent(object sender, Rhino.DocObjects.Tables.LightTableEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> LightTableEvent");
+      RhinoApp.WriteLine("    EventType = {0} **", e.EventType);
     }
 
     /// <summary>
     /// A material table event has occurred
     /// </summary>
-    void OnMaterialTableEvent(object sender, Rhino.DocObjects.Tables.MaterialTableEventArgs e)
+    public static void OnMaterialTableEvent(object sender, Rhino.DocObjects.Tables.MaterialTableEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> MaterialTableEvent");
+      RhinoApp.WriteLine("    EventType = {0} **", e.EventType);
+    }
+
+    /// <summary>
+    /// An annotation style table event has occurred
+    /// </summary>
+    public static void OnDimensionStyleTableEvent(object sender, Rhino.DocObjects.Tables.DimStyleTableEventArgs e)
+    {
+      RhinoApp.WriteLine("> DimensionStyleTableEvent");
+      RhinoApp.WriteLine("    EventType = {0} **", e.EventType);
     }
 
     /// <summary>
     /// Called when the properties of the active document are changed
     /// </summary>
-    void OnDocumentPropertiesChanged(object sender, DocumentEventArgs e)
+    public static void OnDocumentPropertiesChanged(object sender, DocumentEventArgs e)
     {
       DebugWriteMethod();
     }
@@ -449,30 +470,63 @@ namespace SampleCsEventWatcher
 
     #region Command Events
 
+    /// <summary>
+    /// Called when a command begins
+    /// </summary>
     public static void OnBeginCommand(object sender, CommandEventArgs e)
     {
       DebugWriteMethod();
     }
 
+    /// <summary>
+    /// Called when a command ends
+    /// </summary>
     public static void OnEndCommand(object sender, CommandEventArgs e)
     {
       DebugWriteMethod();
     }
 
+    /// <summary>
+    /// Called when a command is undone/redone
+    /// </summary>
     public static void OnUndoRedo(object sender, UndoRedoEventArgs e)
     {
       DebugWriteMethod();
+
+      //RhinoApp.WriteLine("> Undo/Redo");
+
+      //string event_type = "None";
+      //if (e.IsBeginRecording)
+      //  event_type = "Begin Recording";
+      //else if (e.IsEndRecording)
+      //  event_type = "End Recording";
+      //else if (e.IsBeginUndo)
+      //  event_type = "Begin Undo";
+      //else if (e.IsEndUndo)
+      //  event_type = "End Undo";
+      //else if (e.IsBeginRedo)
+      //  event_type = "Begin Redo";
+      //else if (e.IsEndRedo)
+      //  event_type = "End Redo";
+      //else if (e.IsPurgeRecord)
+      //  event_type = "Purge Record";
+
+      //RhinoApp.WriteLine("    EventType = {0}", event_type);
     }
 
     #endregion
 
     private static void DebugWriteMethod()
     {
-#if DEBUG
-      var class_name = MethodBase.GetCurrentMethod().DeclaringType.Name;
-      var method_name = new StackTrace().GetFrame(1).GetMethod().Name;
-      RhinoApp.WriteLine("** EVENT: {0}.{1} **", class_name, method_name);
-#endif
+      //try
+      //{
+      //  var method_name = new StackTrace().GetFrame(1).GetMethod().Name;
+      //  RhinoApp.WriteLine("> {0}", method_name);
+      //}
+      //catch
+      //{
+      //  // ignored
+      //}
     }
   }
 }
