@@ -36,7 +36,7 @@
   <ItemGroup>
     <Reference Include="PresentationFramework" />
     <Reference Include="RhinoWindows">
-      <HintPath>C:\Program Files\Rhino WIP\System\RhinoWindows.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 6\System\RhinoWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -47,7 +47,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="RhinoCommon">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino WIP\System\rhinocommon.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 6\System\rhinocommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -175,7 +175,7 @@ Erase "$(TargetPath)"</PostBuildEvent>
     <FallbackCulture>en-US</FallbackCulture>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <StartProgram>C:\Program Files\Rhino WIP\System\Rhino.exe</StartProgram>
+    <StartProgram>C:\Program Files\Rhino 6\System\Rhino.exe</StartProgram>
     <StartArguments>
     </StartArguments>
     <StartAction>Program</StartAction>
