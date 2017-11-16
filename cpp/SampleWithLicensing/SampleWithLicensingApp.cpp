@@ -1,7 +1,3 @@
-/////////////////////////////////////////////////////////////////////////////
-// SampleWithLicensingApp.cpp : Defines the initialization routines for the DLL.
-//
-
 #include "stdafx.h"
 #include "SampleWithLicensingApp.h"
 
@@ -45,8 +41,8 @@ END_MESSAGE_MAP()
 
 CSampleWithLicensingApp::CSampleWithLicensingApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
+  // TODO: add construction code here,
+  // Place all significant initialization in InitInstance
 }
 
 // The one and only CSampleWithLicensingApp object
@@ -62,9 +58,9 @@ BOOL CSampleWithLicensingApp::InitInstance()
   //   All other significant initialization should take place in
   //   CSampleWithLicensingPlugIn::OnLoadPlugIn().
 
-	CWinApp::InitInstance();
+  CWinApp::InitInstance();
 
-	return TRUE;
+  return TRUE;
 }
 
 int CSampleWithLicensingApp::ExitInstance()

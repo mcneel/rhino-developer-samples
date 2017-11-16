@@ -59,11 +59,11 @@ CRhinoCommand::result CCommandSampleObjectManager::RunCommand(const CRhinoComman
     int option_index = option->m_option_index;
 
     if (h_option == option_index && bVisible)
-      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, false, nullptr);
+      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, false, false, nullptr);
     else if (s_option == option_index && !bVisible)
-      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, true, nullptr);
+      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, true, true, nullptr);
     else if (t_option == option_index)
-      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, !bVisible, nullptr);
+      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, !bVisible, !bVisible, nullptr);
   }
 
   return CRhinoCommand::success;

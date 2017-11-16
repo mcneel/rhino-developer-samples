@@ -61,8 +61,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,0,0
+ FILEVERSION 6,0,0,0
+ PRODUCTVERSION 6,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -79,12 +79,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Robert McNeel & Associates"
             VALUE "FileDescription", "SampleWithLicensing"
-            VALUE "FileVersion", "1.0.0.0"
+            VALUE "FileVersion", "6.0.0.0"
             VALUE "InternalName", "SampleWithLicensing.rhp"
-            VALUE "LegalCopyright", "Copyright © 2015, Robert McNeel & Associates"
+            VALUE "LegalCopyright", "Copyright © 2017, Robert McNeel & Associates"
             VALUE "OriginalFilename", "SampleWithLicensing.rhp"
             VALUE "ProductName", "SampleWithLicensing"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "6.0.0.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -102,6 +102,7 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_MAIN                ICON                    "res\\SampleWithLicensing.ico"
+
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

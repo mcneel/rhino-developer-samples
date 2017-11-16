@@ -11,19 +11,39 @@ class CSampleWithLicensingValidator : public CRhinoLicenseValidator
 {
 public:
   CSampleWithLicensingValidator();
-  ~CSampleWithLicensingValidator() {}
-  CRhinoLicenseValidator::product_build_type ProductBuildType();
-  CRhinoLicenseValidator::result ValidateProductKey( const wchar_t* product_key );
-  CRhinoLicenseValidator::result  VerifyLicenseKey(const wchar_t* licenseKey, const wchar_t* validationCode, const double validationCodeInstalledDate, bool gracePeriodExpired);
-  bool VerifyPreviousVersionLicense(const wchar_t* license, const wchar_t* previousVersionLicense);
-  void OnLeaseChanged(CRhinoLeaseChangedEventArgs&);
+  ~CSampleWithLicensingValidator() = default;
+
+  // Returns the 'build' type of this plug-in
+  CRhinoLicenseValidator::product_build_type ProductBuildType() override;
+  
+  // Obsolete
+  CRhinoLicenseValidator::result ValidateProductKey(const wchar_t* product_key) override;
+  
+  // This member is called by Rhino, from CRhinoPlugIn::GetLicense(), when it
+  // needs your plug-in to validate your product key or license.
+  CRhinoLicenseValidator::result VerifyLicenseKey(
+    const wchar_t* licenseKey, 
+    const wchar_t* validationCode, 
+    const double validationCodeInstalledDate, 
+    bool gracePeriodExpired
+  ) override;
+  
+  // Called by Rhino, from CRhinoPlugIn::GetLicense(), after a call to VerifyLicenseKey that
+  // sets m_requires_previous_version_license_verification to true.
+  bool VerifyPreviousVersionLicense(
+    const wchar_t* license, 
+    const wchar_t* previousVersionLicense
+  ) override;
+
+  // When Rhino Accounts gets a new lease, this function is called.
+  void OnLeaseChanged(CRhinoLeaseChangedEventArgs&) override;
 
 private:
-  ON_wString Reverse( const wchar_t* input );
+  ON_wString Reverse(const wchar_t* input);
 };
 
 // The one and only CSampleWithLicensingValidator object
-static class CSampleWithLicensingValidator theTestRhinoPluginCPPValidator;
+static class CSampleWithLicensingValidator theSampleWithLicensingValidator;
 
 CSampleWithLicensingValidator::CSampleWithLicensingValidator()
 {
@@ -35,11 +55,11 @@ CRhinoLicenseValidator::product_build_type CSampleWithLicensingValidator::Produc
   return CRhinoLicenseValidator::release_build;
 }
 
-CRhinoLicenseValidator::result CSampleWithLicensingValidator::ValidateProductKey( const wchar_t* product_key )
+CRhinoLicenseValidator::result CSampleWithLicensingValidator::ValidateProductKey(const wchar_t* product_key)
 {
-  AFX_MANAGE_STATE( AfxGetStaticModuleState() );
+  AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-  if( 0 == product_key || 0 == product_key[0] )
+  if (nullptr == product_key || 0 == product_key[0])
     return CSampleWithLicensingValidator::error_show_message;
 
   // This value will never be display in any user interface.
@@ -59,11 +79,11 @@ CRhinoLicenseValidator::result CSampleWithLicensingValidator::ValidateProductKey
   // validated by this plugin, should return this value.
   //
   // This example just reverses product_key...
-  m_serial_number = Reverse( product_key );
+  m_serial_number = Reverse(product_key);
 
   // This value will display in user interface items, such as in
   // the Zoo console and in About dialog boxes.
-  // (e.g. "Rhinoceros 5.0", "Rhinoceros 5.0 Commercial", etc.)
+  // (e.g. "Rhinoceros 6", "Rhinoceros 6 Commercial", etc.)
   m_license_title = "SampleWithLicensing 1.0 Commercial";
 
   // The build of the product that this license work with.
@@ -85,16 +105,21 @@ CRhinoLicenseValidator::result CSampleWithLicensingValidator::ValidateProductKey
   // expiration date here. Note, this value must be specified in
   // Coordinated Universal Time (UTC). If your license does not expire,
   // then just this value to null.
-  memset( &m_date_to_expire, 0, sizeof(m_date_to_expire) );
+  memset(&m_date_to_expire, 0, sizeof(m_date_to_expire));
 
   // This icon will displayed in the "Licenses" page in the Options dialog.
   // Note, Rhino will make a copy of this icon..
-  m_product_icon = (HICON)::LoadImage( AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_MAIN), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR );
+  m_product_icon =  CRhinoDpi::LoadIcon(AfxGetInstanceHandle(), IDI_MAIN, 32, 32);
 
   return CRhinoLicenseValidator::success;
 }
 
-CRhinoLicenseValidator::result  CSampleWithLicensingValidator::VerifyLicenseKey(const wchar_t* licenseKey, const wchar_t* validationCode, const double validationCodeInstalledDate, bool gracePeriodExpired)
+CRhinoLicenseValidator::result  CSampleWithLicensingValidator::VerifyLicenseKey(
+  const wchar_t* licenseKey, 
+  const wchar_t* validationCode, 
+  const double validationCodeInstalledDate, 
+  bool gracePeriodExpired
+)
 {
   CString sLicenseKey(licenseKey);
   CString sValidationCode(validationCode);
@@ -102,15 +127,15 @@ CRhinoLicenseValidator::result  CSampleWithLicensingValidator::VerifyLicenseKey(
   m_requires_previous_version_license_verification = false;
   if (sLicenseKey.IsEmpty())
   {
-    sLicenseKey = "evaluat-111-222";
+    sLicenseKey = "evaluate-111-222";
   }
 
-  if (sLicenseKey.Left(8).CompareNoCase(L"evaluat-") == 0)
+  if (sLicenseKey.Left(8).CompareNoCase(L"evaluate-") == 0)
   {
     // Hard-coded evaluation licenses don't get validated online
     m_requires_online_validation = false;
   }
-  
+
   m_product_license = sLicenseKey;
   m_serial_number = sLicenseKey.MakeReverse();
   m_license_title = L"Sample License";
@@ -139,7 +164,10 @@ CRhinoLicenseValidator::result  CSampleWithLicensingValidator::VerifyLicenseKey(
   return CRhinoLicenseValidator::success;
 }
 
-bool CSampleWithLicensingValidator::VerifyPreviousVersionLicense(const wchar_t* license, const wchar_t* previousVersionLicense)
+bool CSampleWithLicensingValidator::VerifyPreviousVersionLicense(
+  const wchar_t* license, 
+  const wchar_t* previousVersionLicense
+)
 {
   CString sLicense(license);
   CString sPrevVersionLicense(previousVersionLicense);
@@ -162,25 +190,24 @@ void CSampleWithLicensingValidator::OnLeaseChanged(CRhinoLeaseChangedEventArgs& 
     // license. It is up to the plug-in to determine what that looks like.
     return;
   }
-  
+
   // Verify that pLease->ProductId is correct
   // Verify that pLease->ProductEdition is correct
   // Verify that pLease->ProductVersion is correct
   // Verify that pLease->IsExpired() is false
 }
 
-
-ON_wString CSampleWithLicensingValidator::Reverse( const wchar_t* input )
+ON_wString CSampleWithLicensingValidator::Reverse(const wchar_t* input)
 {
   ON_wString str;
 
-  if( 0 == input || 0 == input[0] )
+  if (nullptr == input || 0 == input[0])
     return str;
 
   str = input;
   str.MakeReverse();
 
-	return str;
+  return str;
 }
 
 //

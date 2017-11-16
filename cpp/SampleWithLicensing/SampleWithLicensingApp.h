@@ -1,11 +1,7 @@
-/////////////////////////////////////////////////////////////////////////////
-// SampleWithLicensingApp.h : main header file for the SampleWithLicensing DLL
-//
-
 #pragma once
 
 #ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
 #include "Resource.h"		// main symbols
@@ -18,12 +14,12 @@
 class CSampleWithLicensingApp : public CWinApp
 {
 public:
-	CSampleWithLicensingApp();
+  CSampleWithLicensingApp();
 
-// Overrides
+  // Overrides
 public:
-	virtual BOOL InitInstance();
-	virtual int ExitInstance();
+  virtual BOOL InitInstance();
+  virtual int ExitInstance();
 
-	DECLARE_MESSAGE_MAP()
+  DECLARE_MESSAGE_MAP()
 };
