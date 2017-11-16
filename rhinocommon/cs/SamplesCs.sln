@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsRdk", "SampleCsRdk\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsWizardPanel", "SampleCsWizardPanel\SampleCsWizardPanel.csproj", "{53E7D066-B367-4DA9-BA4B-C51FCB634DA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsDockBar", "SampleCsDockBar\SampleCsDockBar.csproj", "{9C84103D-7C1B-4685-8763-129503FEE6B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,10 @@ Global
 		{53E7D066-B367-4DA9-BA4B-C51FCB634DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53E7D066-B367-4DA9-BA4B-C51FCB634DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53E7D066-B367-4DA9-BA4B-C51FCB634DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C84103D-7C1B-4685-8763-129503FEE6B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C84103D-7C1B-4685-8763-129503FEE6B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C84103D-7C1B-4685-8763-129503FEE6B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C84103D-7C1B-4685-8763-129503FEE6B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
