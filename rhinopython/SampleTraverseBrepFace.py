@@ -1,6 +1,6 @@
 ################################################################################
 # SampleTraverseBrepFace.py
-# MIT License - Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2017 Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
 import Rhino
