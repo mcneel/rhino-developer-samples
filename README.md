@@ -9,7 +9,7 @@ The source of this repository will be used to populate the [Samples](http://deve
 Much like the Rhino Developer website, the version of Rhino that these samples are compatible with are determined by which branch of this repository one is viewing:
 
 - The `master` branch corresponds to the current, stable, shipping version of Rhino.
-- The `wip` branch corresponds to the version of Rhino currently in active development.
+- The `6` branch corresponds to the version of Rhino currently in active development.
 - Older versions of Rhino will be archived into version-specific branches (for example: `5`).
 
 ## Samples by SDK or Language
