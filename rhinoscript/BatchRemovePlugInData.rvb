@@ -1,8 +1,8 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' BatchRemovePlugInData.rvb -- January 2014
+' BatchRemovePlugInData.rvb -- November 2017
 ' If this code works, it was written by Dale Fugier.
 ' If not, I don't know who wrote it.
-' Works with Rhino 5.
+' Works with Rhino 5 or greater.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Option Explicit
 
@@ -10,60 +10,37 @@ Option Explicit
 ' BatchRemovePlugInData
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Sub BatchRemovePlugInData
-  
-	' Declare local variables
-	Dim sFolder, oFSO, oFolder
-	Dim strTitle, nRecurse, blnCheck
 	
-	strTitle = "Batch Remove Plug-in Data"
-
-	' Make sure were are running Rhino 5.        
 	If (Rhino.ExeVersion < 5) Then
-		Call Rhino.Print("This script requires Rhino 5.0 for greater.")
+		Call Rhino.Print("This script requires Rhino 5 or greater.")
 		Exit Sub
 	End If
 
-	' Browse to a folder you want to  process
-	sFolder = Rhino.WorkingFolder
-	sFolder = Rhino.BrowseForFolder(sFolder, "Select folder to process", strTitle)
+	Dim sFolder : sFolder = Rhino.WorkingFolder
+	sFolder = Rhino.BrowseForFolder(sFolder, "Select folder to process", "Batch Remove Plug-in Data")
 	If IsNull(sFolder) Then Exit Sub
-	
-	' Should we recurse through subfolders?
-	nRecurse = Rhino.MessageBox("You want to process each subfolder in this folder?", 35, strTitle)
-	If nRecurse = vbCancel Then Exit Sub
 
-	' Create file system and folder objects
-	Set oFSO = CreateObject("Scripting.FileSystemObject") 
-	Set oFolder = oFSO.GetFolder(sFolder)
-
-	' Turn off bad object error checking
-	blnCheck = Rhino.CheckNewObjects(False)
-
-	' Call our worker procedure
-	Call DoRemovePlugInData(oFSO, oFolder, nRecurse)
-
-	' Clean up and finish
-	Call Rhino.CheckNewObjects(blnCheck)
+	Dim oFSO : Set oFSO = CreateObject("Scripting.FileSystemObject") 
+	Dim oFolder : Set oFolder = oFSO.GetFolder(sFolder)
+  
+	Call RemovePlugInData(oFSO, oFolder)
+  
 	Call Rhino.DocumentModified(False)
 	Call Rhino.Command("_-New _None", 0)
+  
 	Call Rhino.Print("Done!")  
 
 End Sub
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' DoRemovePlugInData
+' RemovePlugInData
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Sub DoRemovePlugInData(oFSO, oFolder, nRecurse)
+Sub RemovePlugInData(oFSO, oFolder)
 
-	' Declare local variables
-	Dim oFile, strOpen, arrInfo, strVer, oSubFolder
-  
-	' Process each file in the folder
+	Dim oFile, strOpen, arrInfo, strVer
 	For Each oFile In oFolder.Files
-		' Process only 3dm files
 		If LCase(oFSO.GetExtensionName(oFile.Path)) = "3dm" Then
 			strOpen = LCase(oFile.Path)
-			' Determine the 3dm file version
 			arrInfo = Rhino.DocumentInfo(strOpen)
 			If IsArray(arrInfo) Then
 				If arrInfo(1) = 2 Then
@@ -72,36 +49,23 @@ Sub DoRemovePlugInData(oFSO, oFolder, nRecurse)
 					strVer = "_Version=3"
 				ElseIf arrInfo(1) = 4 Then
 					strVer = "_Version=4"
-				Else
+				ElseIf arrInfo(1) = 50 Then
 					strVer = "_Version=5"
+				Else
+					strVer = "_Version=6"
 				End If
-				' Here we go...
 				Call Rhino.DocumentModified(False)
-				' Open the file
-				Call Rhino.Command("_-Open " & DoubleQuote(strOpen))
-				' Save it without plug-in data
-				Call Rhino.Command("_-Save " & strVer & " _SavePlugInData=_No _Enter", 0)
+				Call Rhino.Command("_-Open " & Chr(34) & strOpen & Chr(34), False)
+				Call Rhino.Command("_-Save " & strVer & " _SavePlugInData=_No _Enter", False)
 			End If
 		End If
 	Next
 
-	If nRecurse = vbYes Then
-		For Each oSubFolder In oFolder.SubFolders
-			Call DoRemovePlugInData(oFSO, oSubFolder, nRecurse)
-		Next
-	End If
+	' *** NOTE ***
+	' Uncomment the following if you want to recurse this folder.
+	'Dim oSubFolder
+	'For Each oSubFolder In oFolder.SubFolders
+	'	Call RemovePlugInData(oFSO, oSubFolder)
+	'Next
 
 End Sub
-
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' DoubleQuote
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Function DoubleQuote(str)
-	DoubleQuote = Chr(34) & str & Chr(34)	
-End Function
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Drag & drop support
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Call Rhino.AddStartupScript(Rhino.LastLoadedScriptFile)
-Call Rhino.AddAlias("BatchRemovePlugInData", "_NoEcho _-RunScript (BatchRemovePlugInData)")
