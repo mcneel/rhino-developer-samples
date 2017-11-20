@@ -46,7 +46,7 @@ static CRhinoPlugIn::license_capabilities g_capabilities = (
   CRhinoPlugIn::license_capabilities)(CRhinoPlugIn::license_capabilities::can_be_evaluated
     | CRhinoPlugIn::license_capabilities::can_be_purchased
     | CRhinoPlugIn::license_capabilities::can_be_specified
-    | CRhinoPlugIn::license_capabilities::supports_rhino_accounts
+    //| CRhinoPlugIn::license_capabilities::supports_rhino_accounts
     );
 
 static wchar_t* g_text_mask = L"AAAAAAA-AAA-AAA";

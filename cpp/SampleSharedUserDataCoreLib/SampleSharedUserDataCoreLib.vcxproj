@@ -62,11 +62,11 @@
   </PropertyGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="C:\Program Files\Rhino 6.0 SDK\PropertySheets\Rhino.Cpp.PlugInComponent.props" />
+    <Import Project="C:\Program Files\Rhino 6 SDK\PropertySheets\Rhino.Cpp.PlugInComponent.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="C:\Program Files\Rhino 6.0 SDK\PropertySheets\Rhino.Cpp.PlugInComponent.props" />
+    <Import Project="C:\Program Files\Rhino 6 SDK\PropertySheets\Rhino.Cpp.PlugInComponent.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
