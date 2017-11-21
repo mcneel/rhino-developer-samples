@@ -27,6 +27,13 @@ BEGIN_MESSAGE_MAP(CSampleModelessDialog, CRhinoDialog)
   ON_BN_CLICKED(IDC_BUTTON3, &CSampleModelessDialog::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
+BOOL CSampleModelessDialog::PreTranslateMessage(MSG* pMsg)
+{
+  BOOL result = CRhinoDialog::PreTranslateMessage(pMsg);
+  static int x = 0;
+  RhinoApp().Print(L"%d::CSampleModelessDialog::PreTranslateMessage(%x)\n", ++x, pMsg->message);
+  return result;
+}
 
 BOOL CSampleModelessDialog::OnInitDialog()
 {
