@@ -264,8 +264,8 @@ namespace SampleCsEventWatcher
     public static void OnReplaceRhinoObject(object sender, Rhino.DocObjects.RhinoReplaceObjectEventArgs e)
     {
       RhinoApp.WriteLine("> ReplaceRhinoObject ({0})", e.ObjectId);
-      RhinoApp.WriteLine("     UndoActive = {0} **", e.Document.UndoActive);
-      RhinoApp.WriteLine("     RedoActive = {0} **", e.Document.RedoActive);
+      RhinoApp.WriteLine("     UndoActive = {0}", e.Document.UndoActive);
+      RhinoApp.WriteLine("     RedoActive = {0}", e.Document.RedoActive);
     }
 
     /// <summary>
