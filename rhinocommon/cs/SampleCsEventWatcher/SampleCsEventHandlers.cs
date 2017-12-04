@@ -475,7 +475,7 @@ namespace SampleCsEventWatcher
     /// </summary>
     public static void OnBeginCommand(object sender, CommandEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> BeginCommand ({0})", e.CommandEnglishName);
     }
 
     /// <summary>
@@ -483,7 +483,7 @@ namespace SampleCsEventWatcher
     /// </summary>
     public static void OnEndCommand(object sender, CommandEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> EndCommand ({0})", e.CommandEnglishName);
     }
 
     /// <summary>
