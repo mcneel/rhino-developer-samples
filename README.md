@@ -31,6 +31,7 @@ The samples in this repository are organized by folders that correspond to the d
 - [RhinoMobile](rhinomobile) (C#)
 - [RhinoPython](rhinopython)
 - [RhinoScript](rhinoscript) (VBScript)
+- [Zoo](zoo) (C# or VB)
 
 ## Building Samples
 
