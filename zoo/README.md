@@ -22,8 +22,7 @@ Building Samples
 To build the samples, you are going to need:
 
 * Zoo - (http://www.rhino3d.com/zoo)
-* Microsoft Visual C# 2010, or
-* Microsoft Visual Basic 2010
+* A version of Microsoft Visual Studio (C#  or Visual Basic) capable of building .NET Framework 4.0 libraries.
 
 Legal Stuff
 -----------
