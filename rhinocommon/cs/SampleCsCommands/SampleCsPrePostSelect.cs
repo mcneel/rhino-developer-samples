@@ -51,7 +51,7 @@ namespace SampleCsCommands
         doc.Views.Redraw();
       }
 
-      RhinoApp.WriteLine("Select object count = {0}", go.ObjectCount);
+      RhinoApp.WriteLine("Select object count: {0}", go.ObjectCount);
 
       return Result.Success;
     }

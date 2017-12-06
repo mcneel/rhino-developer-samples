@@ -80,9 +80,9 @@ namespace SampleCsCommands
       integer1 = option_integer1.CurrentValue;
       integer2 = option_integer2.CurrentValue;
 
-      RhinoApp.WriteLine("Select object count = {0}", object_count);
-      RhinoApp.WriteLine("Value of integer1 = {0}", integer1);
-      RhinoApp.WriteLine("Value of integer2 = {0}", integer2);
+      RhinoApp.WriteLine("Select object count: {0}", object_count);
+      RhinoApp.WriteLine("Value of integer1: {0}", integer1);
+      RhinoApp.WriteLine("Value of integer2: {0}", integer2);
 
       return Result.Success;
     }
