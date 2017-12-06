@@ -147,6 +147,7 @@
     <Compile Include="SampleCsPlanarFaceLoops.cs" />
     <Compile Include="SampleCsPointCloudPoints.cs" />
     <Compile Include="SampleCsPointOnMesh.cs" />
+    <Compile Include="SampleCsPrePostSelect.cs" />
     <Compile Include="SampleCsPrintViewList.cs" />
     <Compile Include="SampleCsProjectCurvesToBrep.cs" />
     <Compile Include="SampleCsProjectPointToMesh.cs" />

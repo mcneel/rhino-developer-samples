@@ -1,77 +1,66 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
+using Rhino.DocObjects;
+using Rhino.Input;
+using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("ca2bbdc8-d1cf-4dcc-b085-97e94c1fba32")]
   public class SampleCsCommandLineOptions : Command
   {
-    static SampleCsCommandLineOptions _instance;
-    public SampleCsCommandLineOptions()
-    {
-      _instance = this;
-    }
-
-    ///<summary>The only instance of the SampleCsCommandLineOptions command.</summary>
-    public static SampleCsCommandLineOptions Instance
-    {
-      get { return _instance; }
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsCommandLineOptions"; }
-    }
+    public override string EnglishName => "SampleCsCommandLineOptions";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      const Rhino.DocObjects.ObjectType geometryFilter = Rhino.DocObjects.ObjectType.Surface |
-                                                         Rhino.DocObjects.ObjectType.PolysrfFilter |
-                                                         Rhino.DocObjects.ObjectType.Mesh;
-      int integer1 = 300;
-      int integer2 = 300;
+      const ObjectType geometry_filter = ObjectType.Surface | ObjectType.PolysrfFilter | ObjectType.Mesh;
+      var integer1 = 300;
+      var integer2 = 300;
 
-      Rhino.Input.Custom.OptionInteger optionInteger1 = new Rhino.Input.Custom.OptionInteger(integer1, 200, 900);
-      Rhino.Input.Custom.OptionInteger optionInteger2 = new Rhino.Input.Custom.OptionInteger(integer2, 200, 900);
+      var option_integer1 = new OptionInteger(integer1, 200, 900);
+      var option_integer2 = new OptionInteger(integer2, 200, 900);
 
-      Rhino.Input.Custom.GetObject go = new Rhino.Input.Custom.GetObject();
+      var go = new GetObject();
       go.SetCommandPrompt("Select surfaces, polysurfaces, or meshes");
-      go.GeometryFilter = geometryFilter;
-      go.AddOptionInteger("Option1", ref optionInteger1);
-      go.AddOptionInteger("Option2", ref optionInteger2);
+      go.GeometryFilter = geometry_filter;
+      go.AddOptionInteger("Option1", ref option_integer1);
+      go.AddOptionInteger("Option2", ref option_integer2);
       go.GroupSelect = true;
       go.SubObjectSelect = false;
-      go.EnableClearObjectsOnEntry(false);
-      go.EnableUnselectObjectsOnExit(false);
-      go.DeselectAllBeforePostSelect = false;
 
-      bool bHavePreselectedObjects = false;
+      var have_preselected_objects = false;
 
-      for (; ; )
+      while (true)
       {
-        Rhino.Input.GetResult res = go.GetMultiple(1, 0);
+        var res = go.GetMultiple(1, 0);
 
-        if (res == Rhino.Input.GetResult.Option)
+        if (res == GetResult.Option)
         {
           go.EnablePreSelect(false, true);
+          go.AlreadySelectedObjectSelect = true;
+          go.EnableClearObjectsOnEntry(false);
+          go.DeselectAllBeforePostSelect = false;
+          go.EnableUnselectObjectsOnExit(false);
           continue;
         }
 
-        else if (res != Rhino.Input.GetResult.Object)
-          return Rhino.Commands.Result.Cancel;
+        if (res != GetResult.Object)
+          return Result.Cancel;
 
         if (go.ObjectsWerePreselected)
         {
-          bHavePreselectedObjects = true;
+          have_preselected_objects = true;
           go.EnablePreSelect(false, true);
+          go.AlreadySelectedObjectSelect = true;
+          go.EnableClearObjectsOnEntry(false);
+          go.DeselectAllBeforePostSelect = false;
+          go.EnableUnselectObjectsOnExit(false);
           continue;
         }
 
         break;
       }
 
-      if (bHavePreselectedObjects)
+      if (have_preselected_objects)
       {
         // Normally, pre-selected objects will remain selected, when a
         // command finishes, and post-selected objects will be unselected.
@@ -79,24 +68,23 @@ namespace SampleCsCommands
         // of pre-selected and post-selected. So, to make sure everything
         // "looks the same", lets unselect everything before finishing
         // the command.
-        for (int i = 0; i < go.ObjectCount; i++)
+        for (var i = 0; i < go.ObjectCount; i++)
         {
-          Rhino.DocObjects.RhinoObject rhinoObject = go.Object(i).Object();
-          if (null != rhinoObject)
-            rhinoObject.Select(false);
+          var rhino_object = go.Object(i).Object();
+          rhino_object?.Select(false);
         }
         doc.Views.Redraw();
       }
 
-      int objectCount = go.ObjectCount;
-      integer1 = optionInteger1.CurrentValue;
-      integer2 = optionInteger2.CurrentValue;
+      var object_count = go.ObjectCount;
+      integer1 = option_integer1.CurrentValue;
+      integer2 = option_integer2.CurrentValue;
 
-      Rhino.RhinoApp.WriteLine("Select object count = {0}", objectCount);
-      Rhino.RhinoApp.WriteLine("Value of integer1 = {0}", integer1);
-      Rhino.RhinoApp.WriteLine("Value of integer2 = {0}", integer2);
+      RhinoApp.WriteLine("Select object count = {0}", object_count);
+      RhinoApp.WriteLine("Value of integer1 = {0}", integer1);
+      RhinoApp.WriteLine("Value of integer2 = {0}", integer2);
 
-      return Rhino.Commands.Result.Success;
+      return Result.Success;
     }
   }
 }
