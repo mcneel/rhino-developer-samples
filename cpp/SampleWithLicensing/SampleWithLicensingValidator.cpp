@@ -123,7 +123,7 @@ CRhinoLicenseValidator::result  CSampleWithLicensingValidator::VerifyLicenseKey(
 {
   CString sLicenseKey(licenseKey);
   CString sValidationCode(validationCode);
-  m_requires_online_validation = true;
+  m_requires_online_validation = false;
   m_requires_previous_version_license_verification = false;
   if (sLicenseKey.IsEmpty())
   {

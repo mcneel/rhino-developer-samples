@@ -31,5 +31,6 @@ protected:
   virtual void PostNcDestroy() override;
   virtual void OnOK() override;
   virtual void OnCancel() override;
+  BOOL PreTranslateMessage(MSG* pMsg) override;
   DECLARE_MESSAGE_MAP()
 };

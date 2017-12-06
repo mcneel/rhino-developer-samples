@@ -167,6 +167,7 @@
     <ClCompile Include="cmdSampleRayShooter.cpp" />
     <ClCompile Include="cmdSampleReduceMesh.cpp" />
     <ClCompile Include="cmdSampleResetLayers.cpp" />
+    <ClCompile Include="cmdSampleRevolve.cpp" />
     <ClCompile Include="cmdSampleRotate.cpp" />
     <ClCompile Include="cmdSampleRotateCenter.cpp" />
     <ClCompile Include="cmdSampleRotateView.cpp" />
