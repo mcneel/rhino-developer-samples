@@ -90,6 +90,7 @@
     <ClCompile Include="cmdSampleGrayscale.cpp" />
     <ClCompile Include="cmdSampleGuilloche.cpp" />
     <ClCompile Include="cmdSampleGumball.cpp" />
+    <ClCompile Include="cmdSampleGumballCylinder.cpp" />
     <ClCompile Include="cmdSampleHatch.cpp" />
     <ClCompile Include="cmdSampleHelloRhino.cpp" />
     <ClCompile Include="cmdSampleHideObjectsOnLayer.cpp" />
