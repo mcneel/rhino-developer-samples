@@ -357,6 +357,7 @@
     <ClCompile Include="cmdSampleGoldenRectangle.cpp" />
     <ClCompile Include="cmdSampleGradeLine.cpp" />
     <ClCompile Include="cmdSampleGumball.cpp" />
+    <ClCompile Include="cmdSampleGumballCylinder.cpp" />
     <ClCompile Include="cmdSampleHatch.cpp" />
     <ClCompile Include="cmdSampleIdleProcessor.cpp" />
     <ClCompile Include="cmdSampleImportEarthAnchor.cpp" />
