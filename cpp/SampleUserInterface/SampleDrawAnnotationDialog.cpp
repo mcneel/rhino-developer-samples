@@ -31,12 +31,10 @@ void CSampleDrawAnnotationConduit::SetDimStyle(const ON_DimStyle& dim_style)
   m_dim_style = dim_style;
 }
 
-
 void CSampleDrawAnnotationConduit::SetTextFont(const ON_Font& font)
 {
   m_dim_style.SetFont(font);
-  const ON_wString facename(m_dim_style.Font().FontFaceName());
-  m_text.Create(facename, &m_dim_style, ON_Plane::World_xy);
+  m_text.Create(m_dim_style.Font().FontFaceName(), &m_dim_style, ON_Plane::World_xy);
 }
 
 // CSampleDrawAnnotationDialog dialog
