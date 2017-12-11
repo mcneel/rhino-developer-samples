@@ -212,6 +212,7 @@
     <ClCompile Include="cmdSampleViewLock.cpp" />
     <ClCompile Include="cmdSampleViewportDecoration.cpp" />
     <ClCompile Include="cmdSampleVolume.cpp" />
+    <ClCompile Include="cmdSampleWriteBigModel.cpp" />
     <ClCompile Include="cmdSampleZoomWindow.cpp" />
     <ClCompile Include="SampleAttributeUserData.cpp" />
     <ClCompile Include="SampleClippingPlaneUserData.cpp" />

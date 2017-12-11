@@ -648,6 +648,9 @@
     <ClCompile Include="cmdSampleGumballCylinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cmdSampleWriteBigModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SampleCommandsApp.h">
