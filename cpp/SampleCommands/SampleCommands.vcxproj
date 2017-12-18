@@ -39,6 +39,7 @@
     <ClCompile Include="cmdSampleCone.cpp" />
     <ClCompile Include="cmdSampleConvertQuadsToTriangles.cpp" />
     <ClCompile Include="cmdSampleCPlaneObject.cpp" />
+    <ClCompile Include="cmdSampleCreatePlanarMeshes.cpp" />
     <ClCompile Include="cmdSampleCurvature.cpp" />
     <ClCompile Include="cmdSampleCurveAreaCentroid.cpp" />
     <ClCompile Include="cmdSampleCurveLinetype.cpp" />
