@@ -67,7 +67,7 @@ int RhCreatePlanarMeshes(
 
   for (int i = 0; i < curve_count; i++)
   {
-    const ON_PolylineCurve* curve = curves[0];
+    const ON_PolylineCurve* curve = curves[i];
     if (nullptr != curve && curve->IsClosed() && curve->m_pline.Count() >= 4)
     {
       const int point_count = curve->m_pline.Count();
