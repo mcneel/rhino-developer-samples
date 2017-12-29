@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
-    <DefineConstants>DEBUG; OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+    <DefineConstants>DEBUG; RHINO3DMIO_BUILD,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -33,14 +33,14 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
-    <DefineConstants>OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+    <DefineConstants>RHINO3DMIO_BUILD,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG;OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+    <DefineConstants>DEBUG;RHINO3DMIO_BUILD,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchDebug>true</MtouchDebug>
@@ -62,7 +62,7 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
-    <DefineConstants>OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+    <DefineConstants>RHINO3DMIO_BUILD,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
     <Optimize>true</Optimize>
@@ -76,7 +76,7 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
-    <DefineConstants>OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+    <DefineConstants>RHINO3DMIO_BUILD,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <Optimize>true</Optimize>
@@ -89,7 +89,7 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchArch>ARMv7</MtouchArch>
-    <DefineConstants>OPENNURBS_SDK,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
+    <DefineConstants>RHINO3DMIO_BUILD,MONO_BUILD,__MONOTOUCH__,MOBILE_BUILD</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -19,10 +19,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <MtouchArch>i386</MtouchArch>
+    <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>None</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
-    <MtouchProfiling>true</MtouchProfiling>
+    <MtouchProfiling>false</MtouchProfiling>
+<CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>full</DebugType>
@@ -36,12 +37,12 @@
     <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
-    <DebugType>full</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchArch>i386</MtouchArch>
+    <MtouchArch>x86_64</MtouchArch>
     <ConsolePause>false</ConsolePause>
     <MtouchLink>None</MtouchLink>
   </PropertyGroup>
@@ -66,17 +67,15 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
     <Reference Include="OpenTK-1.0" />
+    <Reference Include="Rhino3dmIO.iOS">
+      <HintPath>..\packages\Rhino3dmIO.iOS.6.0.17363.3261-dujour\lib\Xamarin.iOS\Rhino3dmIO.iOS.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\RhinoMobile\RhinoMobile.iOS.csproj">
-      <Project>{48AD165B-872A-4F55-85BA-A467466E7EDE}</Project>
-      <Name>RhinoMobile.iOS</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Resources\Models\" />
@@ -125,5 +124,11 @@
   <ItemGroup>
     <InterfaceDefinition Include="HelloRhinoViewController_iPad.xib" />
     <InterfaceDefinition Include="HelloRhinoViewController_iPhone.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\RhinoMobile\RhinoMobile.iOS.csproj">
+      <Project>{A58FBF64-28D8-436B-82DB-5BFFAF75FDDE}</Project>
+      <Name>RhinoMobile.iOS</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

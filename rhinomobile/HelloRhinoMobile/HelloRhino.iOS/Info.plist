@@ -22,7 +22,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>8.0</string>
+	<string>9.3</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>Icon57</string>
@@ -39,6 +39,8 @@
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>CFBundleDisplayName</key>
+	<string>HelloRhino</string>
+	<key>CFBundleName</key>
 	<string>HelloRhino</string>
 </dict>
 </plist>
