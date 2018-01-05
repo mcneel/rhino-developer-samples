@@ -31,7 +31,7 @@
 *.out
 *.app
 
-# Visual Studio temp files
+# Visual Studio temp files and folders
 *.suo
 *.sdf
 *.userprefs
@@ -41,6 +41,7 @@
 *.opensdf
 *.VC.db
 *.DotSettings.user
+.vs/
 
 # Visual Studio performance session files
 *.psess
