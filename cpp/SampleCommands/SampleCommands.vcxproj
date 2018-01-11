@@ -17,6 +17,7 @@
     <ClCompile Include="cmdSampleAddLayout.cpp" />
     <ClCompile Include="cmdSampleAddNurbsCircle.cpp" />
     <ClCompile Include="cmdSampleAddSearchPath.cpp" />
+    <ClCompile Include="cmdSampleAddText.cpp" />
     <ClCompile Include="cmdSampleAdjacentBrepFace.cpp" />
     <ClCompile Include="cmdSampleAnalysisMode.cpp" />
     <ClCompile Include="cmdSampleAnnotateCurveEndPoints.cpp" />
