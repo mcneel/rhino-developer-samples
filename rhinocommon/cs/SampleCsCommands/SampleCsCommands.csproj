@@ -185,6 +185,7 @@
     <Compile Include="SampleCsSetUserText.cs" />
     <Compile Include="SampleCsViewSize.cs" />
     <Compile Include="SampleCsWorldToPageTransform.cs" />
+    <Compile Include="SampleCsZAnalysis.cs" />
     <Compile Include="SampleCsZebraAnalysis.cs" />
     <Compile Include="SampleCsZoom.cs" />
   </ItemGroup>
