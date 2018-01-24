@@ -30,12 +30,7 @@ static class CCommandSampleWithLicensing theSampleWithLicensingCommand;
 
 CRhinoCommand::result CCommandSampleWithLicensing::RunCommand(const CRhinoCommandContext& context)
 {
-  ON_wString wStr;
-  wStr.Format(L"The \"%s\" command is under construction.\n", EnglishCommandName());
-  if (context.IsInteractive())
-    RhinoMessageBox(wStr, PlugIn()->PlugInName(), MB_OK);
-  else
-    RhinoApp().Print(wStr);
+  RhinoApp().Print(L"%s plug-in loaded.\n", SampleWithLicensingPlugIn().PlugInName());
   return CRhinoCommand::success;
 }
 

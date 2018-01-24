@@ -9,7 +9,7 @@ class CSampleWithLicensingPlugIn : public CRhinoUtilityPlugIn
 {
 public:
   CSampleWithLicensingPlugIn();
-  ~CSampleWithLicensingPlugIn();
+  ~CSampleWithLicensingPlugIn() = default;
 
   // Required overrides
   const wchar_t* PlugInName() const;
