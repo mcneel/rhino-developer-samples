@@ -92,7 +92,7 @@ CRhinoLicenseValidator::result CSampleWithLicensingValidator::VerifyLicenseKey(
     license_key = L"SAMPLE-EVALUATION";
     bEvaluation = true;
   }
-  else if (license_key.Left(8).CompareNoCase(L"EVALUATION") == 0)
+  else if (license_key.Right(10).CompareNoCase(L"EVALUATION") == 0)
   {
     bEvaluation = true;
   }
