@@ -43,29 +43,6 @@ RHINO_PLUG_IN_UPDATE_URL(L"https://github.com/mcneel/rhino-developer-samples");
 static CSampleWithLicensingPlugIn thePlugIn;
 
 /////////////////////////////////////////////////////////////////////////////
-// CSampleWithLicensingPlugIn licensing info
-
-// When prompted for a license, the use interface will use this text
-// mask to assist the user in entering the correct code.
-static wchar_t* g_text_mask = L"AAAAAAAA-AAA-AAA";
-
-// The UUID used by this plug0in to request a license.
-// {FBDC82F8-578C-4DD7-827C-51B8C3DA7BD1}
-static const GUID g_license_id =
-{ 0xfbdc82f8, 0x578c, 0x4dd7,{ 0x82, 0x7c, 0x51, 0xb8, 0xc3, 0xda, 0x7b, 0xd1 } };
-
-// Our plug-in's license capabilities
-static CRhinoPlugIn::license_capabilities g_capabilities = (CRhinoPlugIn::license_capabilities)
-(
-    CRhinoPlugIn::license_capabilities::can_be_evaluated
-  | CRhinoPlugIn::license_capabilities::can_be_purchased
-  | CRhinoPlugIn::license_capabilities::can_be_specified
-  // This sample current does not support Rhino accounts.
-  //| CRhinoPlugIn::license_capabilities::supports_rhino_accounts
-);
-
-
-/////////////////////////////////////////////////////////////////////////////
 // CSampleWithLicensingPlugIn definition
 
 CSampleWithLicensingPlugIn& SampleWithLicensingPlugIn()
@@ -77,6 +54,18 @@ CSampleWithLicensingPlugIn& SampleWithLicensingPlugIn()
 CSampleWithLicensingPlugIn::CSampleWithLicensingPlugIn()
 {
   m_plugin_version = RhinoPlugInVersion();
+
+  // When prompted for a license, the use interface will use this text
+  // mask to assist the user in entering the correct code.
+  m_text_mask = L">S\\AMP\\LE-AAAAAAAAAA";
+
+  // Our plug-in's license capabilities
+  m_capabilities = (CRhinoPlugIn::license_capabilities)
+    (
+      CRhinoPlugIn::license_capabilities::can_be_evaluated |
+      CRhinoPlugIn::license_capabilities::can_be_purchased |
+      CRhinoPlugIn::license_capabilities::can_be_specified
+      );
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -102,7 +91,7 @@ BOOL CSampleWithLicensingPlugIn::OnLoadPlugIn()
 {
   // Before requesting a license, we must inform the license
   // manager what we are capable of supporting.
-  SetLicenseCapabilities(g_text_mask, g_capabilities, g_license_id);
+  SetLicenseCapabilities(m_text_mask, m_capabilities, PlugInID());
 
   // Ask Rhino to get a product license for us.
   bool rc = GetLicense();
@@ -115,9 +104,4 @@ BOOL CSampleWithLicensingPlugIn::OnLoadPlugIn()
 
 void CSampleWithLicensingPlugIn::OnUnloadPlugIn()
 {
-}
-
-CRhinoPlugIn::plugin_load_time CSampleWithLicensingPlugIn::PlugInLoadTime()
-{
-  return plugin_load_time::load_plugin_at_startup;
 }

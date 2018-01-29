@@ -12,20 +12,16 @@ public:
   ~CSampleWithLicensingPlugIn() = default;
 
   // Required overrides
-  const wchar_t* PlugInName() const;
-  const wchar_t* PlugInVersion() const;
-  GUID PlugInID() const;
-  BOOL OnLoadPlugIn();
-  void OnUnloadPlugIn();
-  plugin_load_time PlugInLoadTime();
+  const wchar_t* PlugInName() const override;
+  const wchar_t* PlugInVersion() const override;
+  GUID PlugInID() const override;
+  BOOL OnLoadPlugIn() override;
+  void OnUnloadPlugIn() override;
 
 private:
   ON_wString m_plugin_version;
-
-  // TODO: Add additional class information here
+  ON_wString m_text_mask;
+  CRhinoPlugIn::license_capabilities m_capabilities;
 };
 
 CSampleWithLicensingPlugIn& SampleWithLicensingPlugIn();
-
-
-

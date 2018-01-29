@@ -14,14 +14,10 @@ public:
   CSampleWithLicensingValidator();
   ~CSampleWithLicensingValidator() = default;
 
-  // Returns the 'build' type of this plug-in
+  // Returns the build type of this plug-in
   CRhinoLicenseValidator::product_build_type ProductBuildType() override;
   
-  // This member is obsolete.
-  CRhinoLicenseValidator::result ValidateProductKey(const wchar_t* product_key) override;
-  
-  // This member is called by Rhino, from CRhinoPlugIn::GetLicense(), when it
-  // needs your plug-in to validate your product key or license.
+  // Called by Rhino when it needs your plug-in to validate your product key or license.
   CRhinoLicenseValidator::result VerifyLicenseKey(
     const wchar_t* licenseKey, 
     const wchar_t* validationCode, 
@@ -29,15 +25,18 @@ public:
     bool gracePeriodExpired
   ) override;
   
-  // Called by Rhino, from CRhinoPlugIn::GetLicense(), after a call to VerifyLicenseKey that
-  // sets m_requires_previous_version_license_verification to true.
+  // Called by Rhino after a call to VerifyLicenseKey that sets 
+  // CRhinoLicenseValidator::m_requires_previous_version_license_verification to true.
   bool VerifyPreviousVersionLicense(
     const wchar_t* licenseKey,
     const wchar_t* previousVersionLicenseKey
   ) override;
 
-  // When Rhino Accounts gets a new lease, this function is called.
+  // Called by Rhino when Rhino Accounts gets a new lease, this function is called.
   void OnLeaseChanged(CRhinoLeaseChangedEventArgs&) override;
+
+  // This member is obsolete.
+  CRhinoLicenseValidator::result ValidateProductKey(const wchar_t* product_key) override;
 
 private:
   bool ValidateSampleLicenseKey(const wchar_t* licenseKey);
@@ -46,23 +45,21 @@ private:
 // The one and only CSampleWithLicensingValidator object
 static class CSampleWithLicensingValidator theSampleWithLicensingValidator;
 
-// Class constructor
+// Constructor
 CSampleWithLicensingValidator::CSampleWithLicensingValidator()
 {
   m_date_to_expire = 0.0;
   m_license_count = 1;
+  // This sample does not support Rhino accounts.
+  m_requires_online_validation = false;
+  // This sample does not require a previous license.
+  m_requires_previous_version_license_verification = false;
 }
 
-// Return the 'build' type of this plug-in
+// Returns the build type of this plug-in
 CRhinoLicenseValidator::product_build_type CSampleWithLicensingValidator::ProductBuildType()
 {
   return CRhinoLicenseValidator::release_build;
-}
-
-// This member is obsolete.
-CRhinoLicenseValidator::result CSampleWithLicensingValidator::ValidateProductKey(const wchar_t* product_key)
-{
-  return CRhinoLicenseValidator::result::error_show_message;
 }
 
 // This member is called by Rhino, from CRhinoPlugIn::GetLicense(), when it
@@ -87,24 +84,17 @@ CRhinoLicenseValidator::result CSampleWithLicensingValidator::VerifyLicenseKey(
   CString license_key(licenseKey);
   CString validation_code(validationCode);
 
-  // This sample current does not support Rhino accounts.
-  m_requires_online_validation = false;
-
-  m_requires_previous_version_license_verification = false;
   bool bEvaluation = false;
 
-  // Verify license key (if provided)
+  // Verify license key
   if (license_key.IsEmpty())
   {
-    license_key = "evaluate-111-222";
-  }
-  else if (license_key.Left(8).CompareNoCase(L"EVALUATE-") == 0)
-  {
+    license_key = L"SAMPLE-EVALUATION";
     bEvaluation = true;
   }
-  else if (license_key.Left(8).CompareNoCase(L"UPGRADE*-") == 0)
+  else if (license_key.Left(8).CompareNoCase(L"EVALUATION") == 0)
   {
-    m_requires_previous_version_license_verification = true;
+    bEvaluation = true;
   }
   else if (!ValidateSampleLicenseKey(licenseKey))
   {
@@ -172,12 +162,12 @@ bool CSampleWithLicensingValidator::VerifyPreviousVersionLicense(
   const wchar_t* previousVersionLicenseKey
 )
 {
-  CString sLicense(licenseKey);
-  CString sPrevVersionLicense(previousVersionLicenseKey);
+  CString license_key(licenseKey);
+  CString previous_version_license(previousVersionLicenseKey);
 
-  if (sLicense.IsEmpty())
+  if (license_key.IsEmpty())
     return false;
-  if (sPrevVersionLicense.IsEmpty())
+  if (previous_version_license.IsEmpty())
     return false;
 
   // For this example, we'll consider any non-empty previous version license to be valid.
@@ -203,6 +193,12 @@ void CSampleWithLicensingValidator::OnLeaseChanged(CRhinoLeaseChangedEventArgs& 
   // Verify that pLease->IsExpired() is false
 }
 
+// This member is obsolete.
+CRhinoLicenseValidator::result CSampleWithLicensingValidator::ValidateProductKey(const wchar_t* product_key)
+{
+  return CRhinoLicenseValidator::result::error_show_message;
+}
+
 // Our license key validation code. In this example, we'll accept
 // anything but a null or empty string.
 bool CSampleWithLicensingValidator::ValidateSampleLicenseKey(const wchar_t* licenseKey)
@@ -211,7 +207,6 @@ bool CSampleWithLicensingValidator::ValidateSampleLicenseKey(const wchar_t* lice
     return false;
   return true;
 }
-
 
 //
 // END SampleWithLicensingValidator license validator
