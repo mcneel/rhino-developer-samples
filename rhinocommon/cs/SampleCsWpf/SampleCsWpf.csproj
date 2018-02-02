@@ -36,6 +36,10 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Rhino.UI">
+      <HintPath>C:\Program Files\Rhino 6\System\Rhino.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="RhinoWindows">
       <HintPath>C:\Program Files\Rhino 6\System\RhinoWindows.dll</HintPath>
       <Private>False</Private>
@@ -57,9 +61,10 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\SampleCsWpfPanel.cs" />
-    <Compile Include="Forms\SampleCsWpfPanelUserControl.xaml.cs">
-      <DependentUpon>SampleCsWpfPanelUserControl.xaml</DependentUpon>
+    <Compile Include="Commands\SampleCsWpfPanelCommand.cs" />
+    <Compile Include="ViewModels\SampleCsWpfPaneViewModel.cs" />
+    <Compile Include="Views\SampleCsWpfPanel.xaml.cs">
+      <DependentUpon>SampleCsWpfPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -76,7 +81,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Forms\SampleCsWpfPanelUserControl.xaml">
+    <Page Include="Views\SampleCsWpfPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
