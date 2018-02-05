@@ -1,21 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug64</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{098AF3EE-CF77-4FEF-859B-B3BC22C7336A}</ProjectGuid>
+    <ProjectGuid>{5DEFF610-A9C2-4922-92BC-FF6D3DEB8D5E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SampleCsWpf</RootNamespace>
-    <AssemblyName>SampleCsWpf</AssemblyName>
+    <RootNamespace>SampleCsWithLicense</RootNamespace>
+    <AssemblyName>SampleCsWithLicense</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -31,15 +30,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="Rhino.UI">
-      <HintPath>C:\Program Files\Rhino 6\System\Rhino.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="RhinoWindows">
       <HintPath>C:\Program Files\Rhino 6\System\RhinoWindows.dll</HintPath>
       <Private>False</Private>
@@ -47,47 +39,27 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="RhinoCommon">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Rhino 6\System\rhinocommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Eto">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Rhino 6\System\Eto.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Rhino.UI">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Rhino 6\System\Rhino.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\SampleCsWpfPanelCommand.cs" />
-    <Compile Include="ViewModels\SampleCsWpfPaneViewModel.cs" />
-    <Compile Include="Views\SampleCsWpfPanel.xaml.cs">
-      <DependentUpon>SampleCsWpfPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="SampleCsWpfPlugIn.cs" />
+    <Compile Include="SampleCsWithLicenseCommand.cs" />
+    <Compile Include="SampleCsWithLicensePlugIn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Views\SampleCsWpfPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SampleCsWpfPanel.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\SampleCs.ico" />
@@ -107,11 +79,10 @@ Erase "$(TargetPath)"</PostBuildEvent>
   <PropertyGroup>
     <FallbackCulture>en-US</FallbackCulture>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartProgram>C:\Program Files\Rhino 6\System\Rhino.exe</StartProgram>
     <StartArguments>
     </StartArguments>
     <StartAction>Program</StartAction>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
 </Project>
