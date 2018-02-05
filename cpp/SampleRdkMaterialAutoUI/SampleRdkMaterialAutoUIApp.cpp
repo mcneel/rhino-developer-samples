@@ -1,10 +1,14 @@
-// SampleRdkMaterialAutoUI.cpp : Defines the initialization routines for the DLL.
-//
+
+/** This sample demonstrates how to create an RDK Material with an automatic user interface.
+
+	For an example of how to create a standard user interface, see SampleRdkMaterialStandardUI
+	For an example of how to create a custom user interface, see SampleRdkMaterialCustomUI
+
+*/
 
 #include "stdafx.h"
 #include "SampleRdkMaterialAutoUIApp.h"
 
-//
 //	Note!
 //
 //    A Rhino plug-in is an MFC DLL.

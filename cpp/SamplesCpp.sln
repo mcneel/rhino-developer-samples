@@ -70,6 +70,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleWithLicensing", "Samp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkMaterialCustomUI", "SampleRdkMaterialCustomUI\SampleRdkMaterialCustomUI.vcxproj", "{4128DEDE-8A8A-40A3-9DC4-87918DCE1E18}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkRenderer", "SampleRdkRenderer\SampleRdkRenderer.vcxproj", "{61FB7653-1897-45E1-9146-894D68963107}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkAsyncRenderer", "SampleRdkAsyncRenderer\SampleRdkAsyncRenderer.vcxproj", "{4F1C6A55-6481-4E5F-9E08-05BFAB531E0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -180,6 +184,14 @@ Global
 		{4128DEDE-8A8A-40A3-9DC4-87918DCE1E18}.Debug|x64.Build.0 = Debug|x64
 		{4128DEDE-8A8A-40A3-9DC4-87918DCE1E18}.Release|x64.ActiveCfg = Release|x64
 		{4128DEDE-8A8A-40A3-9DC4-87918DCE1E18}.Release|x64.Build.0 = Release|x64
+		{61FB7653-1897-45E1-9146-894D68963107}.Debug|x64.ActiveCfg = Debug|x64
+		{61FB7653-1897-45E1-9146-894D68963107}.Debug|x64.Build.0 = Debug|x64
+		{61FB7653-1897-45E1-9146-894D68963107}.Release|x64.ActiveCfg = Release|x64
+		{61FB7653-1897-45E1-9146-894D68963107}.Release|x64.Build.0 = Release|x64
+		{4F1C6A55-6481-4E5F-9E08-05BFAB531E0C}.Debug|x64.ActiveCfg = Debug|x64
+		{4F1C6A55-6481-4E5F-9E08-05BFAB531E0C}.Debug|x64.Build.0 = Debug|x64
+		{4F1C6A55-6481-4E5F-9E08-05BFAB531E0C}.Release|x64.ActiveCfg = Release|x64
+		{4F1C6A55-6481-4E5F-9E08-05BFAB531E0C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

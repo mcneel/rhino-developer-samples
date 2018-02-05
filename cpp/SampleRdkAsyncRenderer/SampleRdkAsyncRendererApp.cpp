@@ -1,13 +1,13 @@
 
-/** This sample demonstrates how to create an RDK Material with a custom user interface.
+/** This sample demonstrates how to create an asynchronous RDK Renderer plug-in.
 
-	For an example of how to create a standard user interface, see SampleRdkMaterialStandardUI
-	For an example of how to create an automatic user interface, see SampleRdkMaterialAutoUI
+	Asynchronous rendering runs in the background and the user can continue using Rhino
+	while it is running. Multiple renderings can be run at the same time if desired.
 
 */
 
 #include "stdafx.h"
-#include "SampleRdkMaterialCustomUIApp.h"
+#include "SampleRdkAsyncRendererApp.h"
 
 //	Note!
 //
@@ -37,34 +37,34 @@
 //		details.
 //
 
-// CSampleRdkMaterialCustomUIApp
+// CSampleRdkAsyncRendererApp
 
-BEGIN_MESSAGE_MAP(CSampleRdkMaterialCustomUIApp, CWinApp)
+BEGIN_MESSAGE_MAP(CSampleRdkAsyncRendererApp, CWinApp)
 END_MESSAGE_MAP()
 
-// The one and only CSampleRdkMaterialCustomUIApp object
-CSampleRdkMaterialCustomUIApp theApp;
+// The one and only CSampleRdkAsyncRendererApp object
+CSampleRdkAsyncRendererApp theApp;
 
-// CSampleRdkMaterialCustomUIApp initialization
+// CSampleRdkAsyncRendererApp initialization
 
-BOOL CSampleRdkMaterialCustomUIApp::InitInstance()
+BOOL CSampleRdkAsyncRendererApp::InitInstance()
 {
   // CRITICAL: DO NOT CALL RHINO SDK FUNCTIONS HERE!
   // Only standard MFC DLL instance initialization belongs here. 
   // All other significant initialization should take place in
-  // CSampleRdkMaterialCustomUIPlugIn::OnLoadPlugIn().
+  // CSampleRdkAsyncRendererPlugIn::OnLoadPlugIn().
 
 	CWinApp::InitInstance();
 
 	return TRUE;
 }
 
-int CSampleRdkMaterialCustomUIApp::ExitInstance()
+int CSampleRdkAsyncRendererApp::ExitInstance()
 {
   // CRITICAL: DO NOT CALL RHINO SDK FUNCTIONS HERE!
   // Only standard MFC DLL instance clean up belongs here. 
   // All other significant cleanup should take place in either
-  // CSampleRdkMaterialCustomUIPlugIn::OnSaveAllSettings() or
-  // CSampleRdkMaterialCustomUIPlugIn::OnUnloadPlugIn().
+  // CSampleRdkAsyncRendererPlugIn::OnSaveAllSettings() or
+  // CSampleRdkAsyncRendererPlugIn::OnUnloadPlugIn().
   return CWinApp::ExitInstance();
 }

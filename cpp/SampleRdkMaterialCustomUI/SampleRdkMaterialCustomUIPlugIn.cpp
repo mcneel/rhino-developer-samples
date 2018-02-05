@@ -40,8 +40,6 @@ RHINO_PLUG_IN_ICON_RESOURCE_ID(IDI_ICON);
 // TODO: fill in the following developer declarations with
 // your company information. Note, all of these declarations
 // must be present or your plug-in will not load.
-//
-// Rhino plug-in developer declarations
 RHINO_PLUG_IN_DEVELOPER_ORGANIZATION(L"Robert McNeel & Associates");
 RHINO_PLUG_IN_DEVELOPER_ADDRESS(L"3670 Woodland Park Avenue North\r\nSeattle WA 98103");
 RHINO_PLUG_IN_DEVELOPER_COUNTRY(L"United States");
@@ -172,6 +170,8 @@ void CSampleRdkMaterialCustomUIPlugIn::OnUnloadPlugIn()
 
 CRhinoCommand::result CSampleRdkMaterialCustomUIPlugIn::Render(const CRhinoCommandContext& context, bool bPreview)
 {
+	// See project SampleRdkAsyncRenderer for an example.
+
 	UNREFERENCED_PARAMETER(context);
 	UNREFERENCED_PARAMETER(bPreview);
 
