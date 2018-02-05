@@ -1,11 +1,6 @@
-// SampleRdkMaterialAutoUIPlugIn.h : main header file for the SampleRdkMaterialAutoUI plug-in.
-//
 
 #pragma once
 
-// CSampleRdkMaterialAutoUIPlugIn
-// See SampleRdkMaterialAutoUIPlugIn.cpp for the implementation of this class
-//
 class CSampleRdkMaterialAutoUIPlugIn : public CRhinoRenderPlugIn
 {
 public:

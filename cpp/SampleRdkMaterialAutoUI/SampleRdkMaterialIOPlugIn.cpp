@@ -4,20 +4,33 @@
 #include "SampleRdkMaterialAutoUIRdkPlugIn.h"
 #include "SampleRdkMaterial.h"
 
-/* .sample file format:
+/*	This example of a 'Content I/O plug-in' demonstrates how to save and load
+	a render content from any desired file format. The example uses a file
+	format with an extension of '.sample' and a simple name=value style grammar.
 
-Type       Syntax
-----       ------
-<null>     <no text>
-bool       <true|false>
-float      <float>
-String     "<string>"
-Color      Color(<float-red>, <float-green>, <float-blue>, <float-alpha>)
-Vector2D   Vector2D(<float-x>, <float-y>)
-Vector3D   Vector3D(<float-x>, <float-y>, <float-z>)
- 
-Example:
+	Syntax
+	------
+	( ) denotes English description.
+	{ } denotes zero or more occurrances.
+	[ ] denotes optional items.
+	' ' denotes a literal item.
+	 |  denotes a choice ('OR').
 
+	cr ::= (byte value 13)
+	lf ::= (byte value 10)
+	bool-value ::= 'true' | 'false'
+	float-value ::= (any valid float literal, e.g., 3.1415926)
+	string-value ::= '"' (any sequence of printable characters) '"'
+	color-value ::= 'Color' '(' float-value ',' float-value ',' float-value ',' float-value ')'
+	vec2d-value ::= 'Vector2D' '(' float-value ',' float-value ')'
+	vec3d-value ::= 'Vector3D' '(' float-value ',' float-value ',' float-value ')'
+	value ::= bool-value | float-value | string-value | color-value | vec2d-value | vec3d-value
+	name ::= alpha | digit { alpha | digit }
+	line ::= name '=' [ value ] [ cr ] lf
+	sample-file ::= { line }
+
+	Examples
+	--------
 	no-type =
 	opaque = true
 	gloss = 0.5
@@ -34,9 +47,10 @@ static const char* szVector3D = "Vector3D";
 
 CRhRdkContentKindList CSampleRdkMaterialIOPlugIn::SupportedKinds(void) const
 {
-  CRhRdkContentKindList list;
-  list.Add(CRhRdkContent::Kinds::Material);
-  return list;
+	CRhRdkContentKindList list;
+	list.Add(CRhRdkContent::Kinds::Material);
+
+	return list;
 }
 
 UUID CSampleRdkMaterialIOPlugIn::PlugInId(void) const
@@ -64,7 +78,9 @@ static _locale_t Locale(void)
 static void SkipWhiteSpace(char*& p)
 {
 	while ((' ' == *p) || ('\t' == *p))
+	{
 		p++;
+	}
 }
 
 bool CSampleRdkMaterialIOPlugIn::Parse(char*& p, const char* pSubString, bool bExpect) const
@@ -182,7 +198,8 @@ CRhRdkVariant CSampleRdkMaterialIOPlugIn::GetValue(char* p) const
 
 	if (nullptr != p)
 	{
-		if (*p == 0)
+		SkipWhiteSpace(p);
+		if (0 == *p)
 		{
 			// Null type; valid.
 		}
@@ -261,23 +278,30 @@ CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc*, const wchar_t*
 	//
 	// - The document is only provided for completeness. You must NOT attach your loaded content to a document.
 	//
-	// - If this I/O plug-in only supports a single content kind, you should ignore wszKind and create
+	// - If this I/O plug-in only supports a single content kind, you should ignore 'kind' and create
 	//   the content kind it supports. If this I/O plug-in supports multiple kinds, you MUST create
-	//   the kind specified by wszKind.
+	//   the kind specified by 'kind'.
 
 	m_sFilename = wszFilename;
 
 	auto pMaterial = new CSampleRdkMaterial;
 	pMaterial->Initialize();
 
-	CFile file;
-	if (!file.Open(wszFilename, CFile::modeRead | CFile::typeBinary | CFile::shareDenyWrite))
+	const ON_String sFilename = wszFilename;
+	const auto pFile = fopen(sFilename, "rb");
+	if (nullptr == pFile)
 		return false;
 
-	const UINT length = UINT(file.GetLength());
+	// Get the length of the file.
+	fseek(pFile, 0, SEEK_END);
+	const auto length = ftell(pFile);
+	fseek(pFile, 0, SEEK_SET);
 
+	// Read the file into a buffer.
 	char* pBuffer = new char[length+2];
-	file.Read(pBuffer, length);
+	fread(pBuffer, sizeof(char), length, pFile);
+
+	fclose(pFile);
 
 	// Ensure end-of-line in buffer even if not in file.
 	pBuffer[length+0] = '\n';
@@ -322,14 +346,12 @@ CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc*, const wchar_t*
 			if (!sName.IsEmpty())
 			{
 				// Name is good so add a field to the material.
-				pMaterial->AddField(sName, vValue);
+				pMaterial->AddDynamicField(sName, vValue);
 			}
 
 			// Search for end of line; stop if end of buffer.
 			while ((0 != *p) && (('\r' == *p) || ('\n' == *p)))
-			{
 				*p++;
-			}
 
 			// If there are more characters to parse, set pLine to the start of the
 			// next line and reset pValue to null in case the next line is invalid.
@@ -343,20 +365,19 @@ CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc*, const wchar_t*
 
 		// If not at end of line, check the next character.
 		if (0 != *p)
-		{
 			p++;
-		}
 	}
 
-	file.Close();
+	delete[] pBuffer;
 
 	return pMaterial;
 }
 
 bool CSampleRdkMaterialIOPlugIn::Save(const wchar_t* wszFilename, const CRhRdkContent& c, const IRhRdkPreviewSceneServer*) const
 {
-	CFile file;
-	if (!file.Open(wszFilename, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary | CFile::shareExclusive))
+	const ON_String sFilename = wszFilename;
+	const auto pFile = fopen(sFilename, "wb");
+	if (nullptr == pFile)
 		return false;
 
 	const auto& fields = c.Fields();
@@ -366,41 +387,42 @@ bool CSampleRdkMaterialIOPlugIn::Save(const wchar_t* wszFilename, const CRhRdkCo
 		auto& field = *fields.Field(i);
 
 		const wchar_t* wszName = field.InternalName();
-		const auto wszValue = field.Value().AsString();
 
-		ON_wString s;
+		const wchar_t* wszValue = L"";
+		const auto& vValue = field.Value();
+		if (!vValue.IsNull())
+			wszValue = vValue.AsString();
+
+		ON_wString sText;
 
 		switch (field.Value().Type())
 		{
 		case CRhRdkVariant::vtString:
-			s.Format(L"%s = \"%s\"\r\n", wszName, wszValue);
+			sText.Format(L"%s = \"%s\"\r\n", wszName, wszValue);
 			break;
 
 		case CRhRdkVariant::vtColor:
-			s.Format(L"%s = %S(%s)\r\n", wszName, szColor, wszValue);
+			sText.Format(L"%s = %S(%s)\r\n", wszName, szColor, wszValue);
 			break;
 
 		case CRhRdkVariant::vtVector2d:
-			s.Format(L"%s = %S(%s)\r\n", wszName, szVector2D, wszValue);
+			sText.Format(L"%s = %S(%s)\r\n", wszName, szVector2D, wszValue);
 			break;
 
 		case CRhRdkVariant::vtVector3d:
-			s.Format(L"%s = %S(%s)\r\n", wszName, szVector3D, wszValue);
+			sText.Format(L"%s = %S(%s)\r\n", wszName, szVector3D, wszValue);
 			break;
 
 		default:
-			s.Format(L"%s = %s\r\n", wszName, wszValue);
+			sText.Format(L"%s = %s\r\n", wszName, wszValue);
 			break;
 		}
 
-		const int bufferLen = s.Length();
-		char* pBuffer = new char[bufferLen];
-		::WideCharToMultiByte(CP_ACP, 0, (const wchar_t*)s, -1, pBuffer, bufferLen, nullptr, nullptr);
-		file.Write(pBuffer, bufferLen);
-		delete[] pBuffer;
+		const ON_String s = sText;
+		fwrite(s.Array(), sizeof(char), s.Length(), pFile);
 	}
 
-	file.Close();
+	fclose(pFile);
 
 	return true;
 }

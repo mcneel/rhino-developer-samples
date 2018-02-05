@@ -1,0 +1,7 @@
+no-type = 
+opaque = true
+gloss = 0.5
+text = "Fruit"
+color = Color(1,0.5,0.5,1)
+2D-vector = Vector2D(0.20000000298023224,0.30000001192092896)
+3D-vector = Vector3D(1,2,3)

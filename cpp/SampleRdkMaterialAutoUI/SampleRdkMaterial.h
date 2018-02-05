@@ -4,9 +4,11 @@
 class CSampleRdkMaterial : public CRhRdkMaterial
 {
 public:
-	virtual ~CSampleRdkMaterial();
+	CSampleRdkMaterial();
 
-	void AddField(const wchar_t* wszName, const CRhRdkVariant vValue);
+	void AddDynamicField(const wchar_t* wszName, const CRhRdkVariant vValue);
+
+	static UUID UuidType(void);
 
 public:
 	virtual UUID TypeId(void) const override;
@@ -21,6 +23,15 @@ public:
 	virtual void AddAutoParameters(IRhRdkParamBlock& paramBlock, int sectionId) const override;
 	virtual void GetAutoParameters(const IRhRdkParamBlock& paramBlock, int sectionId) override;
 	virtual void SimulateMaterial(ON_Material& matOut, CRhRdkTexture::TextureGeneration tg, int iSimulatedTextureSize, const CRhinoObject* pObject) const override;
+	virtual bool IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* wszChildSlotName) const override;
+
+private:
+	CRhRdkTexturedContentField m_diffuse_color;
+	CRhRdkTexturedContentField m_emission_color;
+	CRhRdkContentField m_ambient_color;
+	CRhRdkContentField m_glossiness;
+	CRhRdkContentField m_description;
+	//CRhRdkSolarContentField m_sun;
 };
 
 class CSampleRdkMaterialFactory : public CRhRdkMaterialFactory

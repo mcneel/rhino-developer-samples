@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleCommands", "SampleCommands\SampleCommands.vcxproj", "{2AE01DAD-D283-4ADA-861C-6F0B2BFAF11C}"
 EndProject
@@ -67,6 +67,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRealtimeRenderer", "SampleRealtimeRenderer\SampleRealtimeRenderer.vcxproj", "{9996042C-BA07-4F6F-88EF-D9C304B40A7D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleWithLicensing", "SampleWithLicensing\SampleWithLicensing.vcxproj", "{F24371C6-7DD7-4208-B6D4-D652F0DE434A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkMaterialCustomUI", "SampleRdkMaterialCustomUI\SampleRdkMaterialCustomUI.vcxproj", "{4128DEDE-8A8A-40A3-9DC4-87918DCE1E18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,6 +176,10 @@ Global
 		{F24371C6-7DD7-4208-B6D4-D652F0DE434A}.Debug|x64.Build.0 = Debug|x64
 		{F24371C6-7DD7-4208-B6D4-D652F0DE434A}.Release|x64.ActiveCfg = Release|x64
 		{F24371C6-7DD7-4208-B6D4-D652F0DE434A}.Release|x64.Build.0 = Release|x64
+		{4128DEDE-8A8A-40A3-9DC4-87918DCE1E18}.Debug|x64.ActiveCfg = Debug|x64
+		{4128DEDE-8A8A-40A3-9DC4-87918DCE1E18}.Debug|x64.Build.0 = Debug|x64
+		{4128DEDE-8A8A-40A3-9DC4-87918DCE1E18}.Release|x64.ActiveCfg = Release|x64
+		{4128DEDE-8A8A-40A3-9DC4-87918DCE1E18}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
