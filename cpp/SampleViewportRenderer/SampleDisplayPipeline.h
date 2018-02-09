@@ -15,5 +15,5 @@ public:
   // Override the CRhinoDisplayPipeline::ShowFrameBuffer.
   // This is called when Rhino wants the pipeline to show
   // it's back buffer.
-  virtual bool ShowFrameBuffer(HDC hDC);
+  virtual bool ShowFrameBuffer(HDC hDC) override;
 };

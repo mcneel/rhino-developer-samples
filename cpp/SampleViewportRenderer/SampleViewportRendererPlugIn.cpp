@@ -20,15 +20,15 @@ RHINO_PLUG_IN_DECLARE
 
 // Rhino plug-in name
 // Provide a short, friendly name for this plug-in.
-RHINO_PLUG_IN_NAME( L"SampleViewportRenderer" );
+RHINO_PLUG_IN_NAME(L"SampleViewportRenderer");
 
 // Rhino plug-in id
 // Provide a unique uuid for this plug-in
-RHINO_PLUG_IN_ID( L"336403E8-9B17-41C5-910F-7D951D99E607" );
+RHINO_PLUG_IN_ID(L"336403E8-9B17-41C5-910F-7D951D99E607");
 
 // Rhino plug-in version
 // Provide a version number string for this plug-in
-RHINO_PLUG_IN_VERSION( __DATE__ "  " __TIME__ )
+RHINO_PLUG_IN_VERSION(__DATE__ "  " __TIME__)
 
 // Rhino plug-in description
 // Provide a description of this plug-in
@@ -61,7 +61,9 @@ CSampleViewportRendererPlugIn& SampleViewportRendererPlugIn()
 }
 
 CSampleViewportRendererPlugIn::CSampleViewportRendererPlugIn()
-  : m_pRenderer(0)
+  : m_pRenderer(nullptr)
+  , m_bRedrawRequested(false)
+  , m_uTimerProcId(0)
 {
   // Description:
   //   CSampleViewportRendererPlugIn constructor. The constructor is called when the
@@ -69,13 +71,7 @@ CSampleViewportRendererPlugIn::CSampleViewportRendererPlugIn()
   //   is loaded, CSampleViewportRendererPlugIn::OnLoadPlugIn() is called. The
   //   constructor should be simple and solid. Do anything that might fail in
   //   CSampleViewportRendererPlugIn::OnLoadPlugIn().
-
-  // TODO: Add construction code here
   m_plugin_version = RhinoPlugInVersion();
-
-  // Reset everything to idle state
-  m_bRedrawRequested = false;
-  m_uTimerProcId = 0;
 
   // Create a dib to render to.
   // We want to copy this image into Rhino's viewport DC
@@ -129,7 +125,7 @@ GUID CSampleViewportRendererPlugIn::PlugInID() const
 
   // TODO: Return a unique identifier for the plug-in.
   // {336403E8-9B17-41C5-910F-7D951D99E607}
-  return ON_UuidFromString( RhinoPlugInId() );
+  return ON_UuidFromString(RhinoPlugInId());
 }
 
 BOOL CSampleViewportRendererPlugIn::OnLoadPlugIn()
@@ -154,10 +150,10 @@ BOOL CSampleViewportRendererPlugIn::OnLoadPlugIn()
   DisplayAttrsMgrListDesc* pDisplayAttrsMgrListDesc = CRhinoDisplayAttrsMgr::FindDisplayAttrsDesc(DisplayModeID());
 
   // ... and if it isn't then add it.
-  if (0 == pDisplayAttrsMgrListDesc)
+  if (nullptr == pDisplayAttrsMgrListDesc)
   {
     pDisplayAttrsMgrListDesc = CRhinoDisplayAttrsMgr::AppendNewEntry();
-    if (0 != pDisplayAttrsMgrListDesc && 0 != pDisplayAttrsMgrListDesc->m_pAttrs)
+    if (nullptr != pDisplayAttrsMgrListDesc && nullptr != pDisplayAttrsMgrListDesc->m_pAttrs)
     {
       // Show it in the drop down menu
       pDisplayAttrsMgrListDesc->m_bAddToMenu = true;
@@ -177,7 +173,7 @@ BOOL CSampleViewportRendererPlugIn::OnLoadPlugIn()
   // Start the renderer
   StartRenderer();
 
-  // Enable our displa mode event watcher
+  // Enable our display mode event watcher
   m_display_mode_watcher.Register();
   m_display_mode_watcher.Enable(true);
 
@@ -210,14 +206,14 @@ BOOL CSampleViewportRendererPlugIn::AddToPlugInHelpMenu() const
   return FALSE;
 }
 
-BOOL CSampleViewportRendererPlugIn::OnDisplayPlugInHelp( HWND hWnd ) const
+BOOL CSampleViewportRendererPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
   // Description:
   //   Called when the user requests help about your plug-in.
   //   It should display a standard Windows Help file (.hlp or .chm).
 
   // TODO: Add support for online help here.
-  return CRhinoUtilityPlugIn::OnDisplayPlugInHelp( hWnd );
+  return CRhinoUtilityPlugIn::OnDisplayPlugInHelp(hWnd);
 }
 
 /////////////////////////////////////////////////////////////////////////////
