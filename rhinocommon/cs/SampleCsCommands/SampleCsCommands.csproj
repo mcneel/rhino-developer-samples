@@ -156,6 +156,7 @@
     <Compile Include="SampleCsRestoreLayerState.cs" />
     <Compile Include="SampleCsRestoreNamedView.cs" />
     <Compile Include="SampleCsRotate.cs" />
+    <Compile Include="SampleCsSave3DS.cs" />
     <Compile Include="SampleCsSaveAs.cs" />
     <Compile Include="SampleCsScriptedSweep2.cs" />
     <Compile Include="SampleCsSelCircle.cs" />
