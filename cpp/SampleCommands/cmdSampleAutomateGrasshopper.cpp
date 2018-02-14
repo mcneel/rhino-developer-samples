@@ -158,7 +158,7 @@ CRhinoCommand::result CCommandSampleAutomateGrasshopper::RunCommand(const CRhino
 
   if (!CRhinoFileUtilities::FileExists(filename))
   {
-    RhinoApp().Print(L"File \"%s\" not found.\n", (const wchar_t*)filename);
+    RhinoApp().Print(L"File \"%s\" not found.\n", static_cast<const wchar_t*>(filename));
     return CRhinoCommand::failure;
   }
 

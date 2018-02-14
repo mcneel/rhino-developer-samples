@@ -94,7 +94,7 @@ bool CSampleRdkMaterialIOPlugIn::Parse(char*& p, const char* pSubString, bool bE
 		{
 			ON_wString s;
 			s.Format(L"CSampleRdkMaterialIOPlugIn syntax error while loading file\n\n%s\n\n"
-			         L"Expected '%S' but found '%S' at line %d\n", (const wchar_t*)m_sFilename, pSubString, p, m_iLine);
+			         L"Expected '%S' but found '%S' at line %d\n", static_cast<const wchar_t*>(m_sFilename), pSubString, p, m_iLine);
 			OutputDebugString(s);
 			::RhRdkErrorBox(s);
 		}

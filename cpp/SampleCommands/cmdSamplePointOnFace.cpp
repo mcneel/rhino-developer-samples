@@ -113,7 +113,7 @@ CRhinoCommand::result CCommandSamplePointOnFace::RunCommand(const CRhinoCommandC
   {
     ON_wString point_str;
     RhinoFormatPoint(point, point_str);
-    RhinoApp().Print(L"Point on face = %s\n", (const wchar_t*)point_str);
+    RhinoApp().Print(L"Point on face = %s\n", static_cast<const wchar_t*>(point_str));
 
     context.m_doc.AddPointObject(point);
     context.m_doc.Redraw();

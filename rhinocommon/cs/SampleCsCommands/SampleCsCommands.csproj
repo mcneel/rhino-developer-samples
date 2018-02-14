@@ -138,6 +138,7 @@
     <Compile Include="SampleCsNamedPlaneSurface.cs" />
     <Compile Include="SampleCsOpen3dm.cs" />
     <Compile Include="SampleCsOpenDwg.cs" />
+    <Compile Include="SampleCsOptionsList.cs" />
     <Compile Include="SampleCsOrientOnMesh.cs" />
     <Compile Include="SampleCsOrientPerpendicularToCurve.cs" />
     <Compile Include="SampleCsOverCut.cs" />

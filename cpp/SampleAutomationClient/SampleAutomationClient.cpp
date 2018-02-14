@@ -95,7 +95,7 @@ int wmain(int argc, TCHAR* argv[], TCHAR* envp[])
   plugin.AttachDispatch(lpDispatch, TRUE);
 
   CString str = plugin.Hello();
-  wprintf(L"%s\n", (const wchar_t*)str);
+  wprintf(L"%s\n", static_cast<const wchar_t*>(str));
 
   plugin.ReleaseDispatch();
   app.ReleaseDispatch();

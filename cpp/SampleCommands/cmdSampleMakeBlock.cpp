@@ -73,7 +73,7 @@ CRhinoCommand::result CCommandSampleMakeBlock::RunCommand(const CRhinoCommandCon
   int idef_index = idef_table.FindInstanceDefinition(idef_name);
   if (idef_index >= 0)
   {
-    RhinoApp().Print(L"Block definition \"%s\" already exists.\n", (const wchar_t*)idef_name);
+    RhinoApp().Print(L"Block definition \"%s\" already exists.\n", static_cast<const wchar_t*>(idef_name));
     return CRhinoCommand::nothing;
   }
 
@@ -127,7 +127,7 @@ CRhinoCommand::result CCommandSampleMakeBlock::RunCommand(const CRhinoCommandCon
   idef_index = idef_table.AddInstanceDefinition(idef, idef_objects);
   if (idef_index < 0)
   {
-    RhinoApp().Print(L"Unable to create block definition \"%s\".\n", (const wchar_t*)idef_name);
+    RhinoApp().Print(L"Unable to create block definition \"%s\".\n", static_cast<const wchar_t*>(idef_name));
     return CRhinoCommand::failure;
   }
 

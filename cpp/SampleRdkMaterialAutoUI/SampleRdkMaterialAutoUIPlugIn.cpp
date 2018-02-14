@@ -162,7 +162,7 @@ BOOL CSampleRdkMaterialAutoUIPlugIn::OnLoadPlugIn()
 	RhinoApp().Print(wStr);
 
 #ifdef _DEBUG
-	RhinoApp().Print(L"running on RDK version %s\n", (const wchar_t*)::RhRdkBuildDate());
+	RhinoApp().Print(L"running on RDK version %s\n", static_cast<const wchar_t*>(::RhRdkBuildDate()));
 #endif
 
 	// TODO: Add render plug-in initialization code here.

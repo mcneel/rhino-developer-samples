@@ -246,7 +246,10 @@ CRhinoCommand::result CCommandSampleGetUserStrings::RunCommand(const CRhinoComma
   {
     for (int i = 0; i < count; i++)
     {
-      RhinoApp().Print(L"Key: %s, Value: %s\n", (const wchar_t*)user_strings[i].m_key, (const wchar_t*)user_strings[i].m_string_value);
+      RhinoApp().Print(L"Key: %s, Value: %s\n", 
+        static_cast<const wchar_t*>(user_strings[i].m_key), 
+        static_cast<const wchar_t*>(user_strings[i].m_string_value)
+      );
     }
   }
 

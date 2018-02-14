@@ -45,7 +45,7 @@ CRhinoCommand::result CCommandSampleDumpBlockTree::RunCommand(const CRhinoComman
   for (int i = 0; i < idef_count; i++)
     DumpInstanceDefinition(idef_table[i], dump, true);
 
-  RhinoApp().Print(L"%s\n", (const wchar_t*)writer);
+  RhinoApp().Print(L"%s\n", static_cast<const wchar_t*>(writer));
 
   return CRhinoCommand::success;
 }
@@ -55,7 +55,7 @@ void CCommandSampleDumpBlockTree::DumpInstanceDefinition(const CRhinoInstanceDef
   if (idef && !idef->IsDeleted())
   {
     ON_wString node = (bRoot) ? L"\x2500" : L"\x2514";
-    dump.Print(L"%s Instance definition %d = %s\n", (const wchar_t*)node, idef->Index(), (const wchar_t*)idef->Name());
+    dump.Print(L"%s Instance definition %d = %s\n", static_cast<const wchar_t*>(node), idef->Index(), static_cast<const wchar_t*>(idef->Name()));
 
     const int idef_object_count = idef->ObjectCount();
     if (idef_object_count)

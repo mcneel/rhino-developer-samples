@@ -67,7 +67,7 @@ CRhinoCommand::result CCommandSampleOpenIges::RunCommand(const CRhinoCommandCont
 
   if (!CRhinoFileUtilities::FileExists(filename))
   {
-    RhinoApp().Print(L"File \"%s\" not found.\n", (const wchar_t*)filename);
+    RhinoApp().Print(L"File \"%s\" not found.\n", static_cast<const wchar_t*>(filename));
     return CRhinoCommand::failure;
   }
 
@@ -79,7 +79,7 @@ CRhinoCommand::result CCommandSampleOpenIges::RunCommand(const CRhinoCommandCont
   context.m_doc.SetModifiedFlag(FALSE);
 
   ON_wString script;
-  script.Format(L"_-Open \"%s\" _Enter _Enter _Enter", (const wchar_t*)filename);
+  script.Format(L"_-Open \"%s\" _Enter _Enter _Enter", static_cast<const wchar_t*>(filename));
 
   RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), script, 0);
 

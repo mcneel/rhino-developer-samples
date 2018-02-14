@@ -57,7 +57,7 @@ CRhinoCommand::result CCommandSampleEnumFonts::RunCommand( const CRhinoCommandCo
   ReleaseDC(NULL, hDC);
 
   for (int i = 0; i < font_names.Count(); i++)
-    RhinoApp().Print(L"%s\n", (const wchar_t*)font_names[i]);
+    RhinoApp().Print(L"%s\n", static_cast<const wchar_t*>(font_names[i]));
 
   return CRhinoCommand::success;
 }
