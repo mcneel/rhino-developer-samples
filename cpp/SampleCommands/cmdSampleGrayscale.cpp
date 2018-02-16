@@ -177,27 +177,27 @@ CRhinoCommand::result CCommandSampleGrayscale::RunCommand(const CRhinoCommandCon
 
       if (e_opt == option->m_option_index)
       {
-        bool bIsEnabled = m_conduit.IsEnabled();
-        bool bEnable = false;
+        bool bConduitEnabled = m_conduit.IsEnabled();
+        bool bGrayScaleEnable = false;
         switch (option->m_list_option_current)
         {
         case 0: // on
-          bEnable = true;
+          bGrayScaleEnable = true;
           break;
         case 1: // off
-          bEnable = false;
+          bGrayScaleEnable = false;
           break;
         default:
-          bEnable = bIsEnabled;
+          bGrayScaleEnable = !bGrayScaleEnable;
           break;
         }
 
-        if (bEnable && !bIsEnabled)
+        if (bGrayScaleEnable && !bConduitEnabled)
         {
           m_conduit.Enable(context.m_doc.RuntimeSerialNumber());
           context.m_doc.Regen();
         }
-        else if (!bEnable && bIsEnabled)
+        else if (!bGrayScaleEnable && bConduitEnabled)
         {
           m_conduit.Disable();
           context.m_doc.Regen();
