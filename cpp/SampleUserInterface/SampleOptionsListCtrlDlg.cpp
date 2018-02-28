@@ -181,7 +181,7 @@ LRESULT CSampleOptionsListCtrlDlg::OnRegisteredMessage(WPARAM wParam, LPARAM lPa
     CString s, sLabel = pItemButton->Label();
     if (sLabel.IsEmpty())
       sLabel = L"Untitled";
-    s.Format(L"Button %s clicked", (const wchar_t*)sLabel);
+    s.Format(L"Button %s clicked", static_cast<const wchar_t*>(sLabel));
     MessageBox(s);
   }
   break;
@@ -221,7 +221,7 @@ LRESULT CSampleOptionsListCtrlDlg::OnRegisteredMessage(WPARAM wParam, LPARAM lPa
     if (!sLabel.IsEmpty())
     {
       CString s;
-      s.Format(L"nc_on_end_edit_item Label(%s)", (const wchar_t*)sLabel);
+      s.Format(L"nc_on_end_edit_item Label(%s)", static_cast<const wchar_t*>(sLabel));
       //MessageBox( s);
     }
   }

@@ -54,6 +54,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SampleCsDrawGrayscale.cs" />
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
     <Compile Include="SampleCsFairCurves.cs" />
     <Compile Include="SampleCsGumballCylinder.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="SampleCsNamedPlaneSurface.cs" />
     <Compile Include="SampleCsOpen3dm.cs" />
     <Compile Include="SampleCsOpenDwg.cs" />
+    <Compile Include="SampleCsOptionsList.cs" />
     <Compile Include="SampleCsOrientOnMesh.cs" />
     <Compile Include="SampleCsOrientPerpendicularToCurve.cs" />
     <Compile Include="SampleCsOverCut.cs" />
@@ -156,6 +158,7 @@
     <Compile Include="SampleCsRestoreLayerState.cs" />
     <Compile Include="SampleCsRestoreNamedView.cs" />
     <Compile Include="SampleCsRotate.cs" />
+    <Compile Include="SampleCsSave3DS.cs" />
     <Compile Include="SampleCsSaveAs.cs" />
     <Compile Include="SampleCsScriptedSweep2.cs" />
     <Compile Include="SampleCsSelCircle.cs" />

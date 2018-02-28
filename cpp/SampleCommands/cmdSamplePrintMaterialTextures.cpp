@@ -39,7 +39,7 @@ CRhinoCommand::result CCommandSamplePrintMaterialTextures::RunCommand(const CRhi
       if (material.m_textures[ti].m_image_file_reference.IsSet())
       {
         ON_wString filename = material.m_textures[ti].m_image_file_reference.FullPath();
-        RhinoApp().Print(L"Material[%d] = %s\n", mi, (const wchar_t*)filename);
+        RhinoApp().Print(L"Material[%d] = %s\n", mi, static_cast<const wchar_t*>(filename));
       }
     }
   }

@@ -37,7 +37,7 @@ CRhinoCommand::result CCommandSampleAddSearchPath::RunCommand(const CRhinoComman
 
   ON_wString folder;
   if (BrowseForFolder(folder))
-    AddFileSearchFolder((const wchar_t*)folder);
+    AddFileSearchFolder(static_cast<const wchar_t*>(folder));
 
   return CRhinoCommand::success;
 }

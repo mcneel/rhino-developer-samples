@@ -82,11 +82,11 @@ CRhinoCommand::result CCommandSampleQueryDiameterDimension::RunCommand(const CRh
   RhinoFormatPoint(dimline_pt, dimline_str);
   RhinoFormatPoint(knee_pt, knee_str);
 
-  RhinoApp().Print(L"Center point: %s\n", (const wchar_t*)center_str);
-  RhinoApp().Print(L"Radius point: %s\n", (const wchar_t*)radius_str);
-  RhinoApp().Print(L"Dimension line point: %s\n", (const wchar_t*)dimline_str);
-  RhinoApp().Print(L"Knee point: %s\n", (const wchar_t*)knee_str);
-  RhinoApp().Print(L"Dimension text: %s\n", (const wchar_t*)dim_object->PlainText());
+  RhinoApp().Print(L"Center point: %s\n", static_cast<const wchar_t*>(center_str));
+  RhinoApp().Print(L"Radius point: %s\n", static_cast<const wchar_t*>(radius_str));
+  RhinoApp().Print(L"Dimension line point: %s\n", static_cast<const wchar_t*>(dimline_str));
+  RhinoApp().Print(L"Knee point: %s\n", static_cast<const wchar_t*>(knee_str));
+  RhinoApp().Print(L"Dimension text: %s\n", static_cast<const wchar_t*>(dim_object->PlainText()));
 
   return CRhinoCommand::success;
 }

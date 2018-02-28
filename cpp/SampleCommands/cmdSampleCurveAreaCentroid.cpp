@@ -95,9 +95,9 @@ CRhinoCommand::result CCommandSampleCurveAreaCentroid::RunCommand(const CRhinoCo
   RhinoFormatPoint(centroid, str, L"%g");
 
   if (1 == curves.Count())
-    RhinoApp().Print(L"Area Centroid = %s\n", (const wchar_t*)str);
+    RhinoApp().Print(L"Area Centroid = %s\n", static_cast<const wchar_t*>(str));
   else
-    RhinoApp().Print(L"Cumulative Area Centroid = %s for %d planar curves\n", (const wchar_t*)str, curves.Count());
+    RhinoApp().Print(L"Cumulative Area Centroid = %s for %d planar curves\n", static_cast<const wchar_t*>(str), curves.Count());
 
   return CRhinoCommand::success;
 }

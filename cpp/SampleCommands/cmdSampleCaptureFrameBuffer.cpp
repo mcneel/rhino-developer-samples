@@ -44,7 +44,7 @@ CRhinoCommand::result CCommandSampleCaptureFrameBuffer::RunCommand(const CRhinoC
   {
     ON_wString file, folder;
     CRhinoFileUtilities::GetMyDocumentsFolder(folder);
-    file.Format(L"%s\\%s.png", (const wchar_t*)folder, EnglishCommandName());
+    file.Format(L"%s\\%s.png", static_cast<const wchar_t*>(folder), EnglishCommandName());
     fb.WriteToFile(file);
   }
 

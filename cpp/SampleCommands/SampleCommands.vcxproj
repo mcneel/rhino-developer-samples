@@ -224,6 +224,7 @@
     <ClCompile Include="SampleCommandsEventWatcher.cpp" />
     <ClCompile Include="SampleCommandsPlugIn.cpp" />
     <ClCompile Include="SampleDrawCallback.cpp" />
+    <ClCompile Include="cmdSampleDump3dmInstanceDefinitionsEx.cpp" />
     <ClCompile Include="SampleObjectUserData.cpp" />
     <ClCompile Include="SampleRectangleObject.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -117,7 +117,7 @@ CRhinoCommand::result CCommandSampleInsert::RunCommand(const CRhinoCommandContex
   int block_index = block_table.FindInstanceDefinition(block_name);
   if (block_index < 0)
   {
-    ::RhinoApp().Print(L"Unable to insert \"%s\". Block not found.\n", (const wchar_t*)block_name);
+    ::RhinoApp().Print(L"Unable to insert \"%s\". Block not found.\n", static_cast<const wchar_t*>(block_name));
     return CRhinoCommand::cancel;
   }
 
