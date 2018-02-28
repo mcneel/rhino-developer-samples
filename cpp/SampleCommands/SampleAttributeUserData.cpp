@@ -8,7 +8,7 @@
 // Opennurbs classes that are saved in .3dm files require
 // an ON_OBJECT_IMPLEMENT() call in their implmentation.
 // Use Microsoft's guidgen to create the id.
-ON_OBJECT_IMPLEMENT(CSampleAttributeUserData, ON_UserData, "8D2D3E74-16EE-4F97-BCCE-EA8AFEC4FD1B");
+ON_OBJECT_IMPLEMENT(CSampleAttributeUserData, ON_UserData, "4DFFA5FA-8E0D-4427-8CC7-D46D21A37372");
 
 ON_UUID CSampleAttributeUserData::Id()
 {

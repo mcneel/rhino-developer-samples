@@ -2,7 +2,7 @@
 #include "SampleClippingPlaneUserData.h"
 #include "SampleCommandsPlugIn.h"
 
-ON_OBJECT_IMPLEMENT(CSampleClippingPlaneUserData, ON_UserData, "82A75FC9-ECFC-44E1-BECB-991A15A6AD94");
+ON_OBJECT_IMPLEMENT(CSampleClippingPlaneUserData, ON_UserData, "2E3D9ECD-22CC-4909-A962-D3D336339F4C");
 
 ON_UUID CSampleClippingPlaneUserData::Id()
 {

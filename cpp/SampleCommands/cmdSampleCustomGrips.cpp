@@ -16,9 +16,9 @@ public:
   ~CCommandSampleCustomGrips() = default;
   UUID CommandUUID() override
   {
-    // {C28CAF32-E5C1-4628-944D-34C47DE267BC}
+    // {2F2C77D8-0010-452D-A241-2DDD0C0AA1C9}
     static const GUID SampleCustomGripsCommand_UUID =
-    { 0xC28CAF32, 0xE5C1, 0x4628, { 0x94, 0x4D, 0x34, 0xC4, 0x7D, 0xE2, 0x67, 0xBC } };
+    { 0x2f2c77d8, 0x10, 0x452d,{ 0xa2, 0x41, 0x2d, 0xdd, 0xc, 0xa, 0xa1, 0xc9 } };
     return SampleCustomGripsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleCustomGrips"; }
@@ -30,30 +30,35 @@ static class CCommandSampleCustomGrips theSampleCustomGripsCommand;
 
 CRhinoCommand::result CCommandSampleCustomGrips::RunCommand(const CRhinoCommandContext& context)
 {
-  ON_3dPoint rect[5];
-
   CArgsRhinoGetPlane args;
   args.SetCornerMode(CArgsRhinoGetPlane::mode_corners);
   args.SetAllowRounded(FALSE);
   args.SetAllowDeformable(FALSE);
 
+  ON_3dPoint rect[5];
   CRhinoCommand::result rc = RhinoGetRectangle(args, rect);
 
   if (rc == CRhinoCommand::success)
   {
-    ON_Polyline pline;
+    ON_Polyline polyline;
     rect[4] = rect[0];
-    pline.Create(3, FALSE, 5, 3, (double*)&rect);
+    polyline.Create(3, FALSE, 5, 3, (double*)&rect);
+    if (!polyline.IsValid())
+      return CRhinoCommand::failure;
 
-    ON_PolylineCurve* pline_curve = new ON_PolylineCurve(pline);
+    ON_PolylineCurve* rectangle_curve = new ON_PolylineCurve(polyline);
+    if (nullptr == rectangle_curve || !rectangle_curve->IsValid())
+      return CRhinoCommand::failure;
 
-    CSampleRectangleObject* rect_object = new CSampleRectangleObject();
-    rect_object->SetCurve(pline_curve);
-
-    if (context.m_doc.AddObject(rect_object))
-      context.m_doc.Redraw();
-    else
-      delete rect_object;
+    CSampleRectangleObject* rectangle_object = new CSampleRectangleObject();
+    if (nullptr != rectangle_object)
+    {
+      rectangle_object->SetCurve(rectangle_curve);
+      if (context.m_doc.AddObject(rectangle_object))
+        context.m_doc.Redraw();
+      else
+        delete rectangle_object;
+    }
   }
 
   return CRhinoCommand::success;

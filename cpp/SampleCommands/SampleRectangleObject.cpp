@@ -4,15 +4,15 @@
 /////////////////////////////////////////////////////////////////////////////
 // CSampleRectangleObject
 
-ON_OBJECT_IMPLEMENT(CSampleRectangleObject, CRhinoCurveObject, "DD761B37-17AE-4E5A-B47C-60CFE1AF88F4")
+ON_OBJECT_IMPLEMENT(CSampleRectangleObject, CRhinoCurveObject, "975BC780-2D30-4543-85A0-9D14E06F7F6C")
 
 CSampleRectangleObject::CSampleRectangleObject()
   : CRhinoCurveObject()
 {
 }
 
-CSampleRectangleObject::CSampleRectangleObject(const ON_3dmObjectAttributes& a)
-  : CRhinoCurveObject(a)
+CSampleRectangleObject::CSampleRectangleObject(const ON_3dmObjectAttributes& att)
+  : CRhinoCurveObject(att)
 {
 }
 
@@ -24,35 +24,13 @@ CSampleRectangleObject::CSampleRectangleObject(const CSampleRectangleObject& src
 CSampleRectangleObject& CSampleRectangleObject::operator=(const CSampleRectangleObject& src)
 {
   if (&src != this)
-  {
     CRhinoCurveObject::operator=(src);
-  }
-
   return *this;
-}
-
-CSampleRectangleObject::~CSampleRectangleObject()
-{
 }
 
 const wchar_t* CSampleRectangleObject::ShortDescription(bool bPlural) const
 {
   return bPlural ? L"rectangle objects" : L"rectangle object";
-}
-
-ON_Curve* CSampleRectangleObject::SetCurve(const ON_PolylineCurve& curve)
-{
-  return CRhinoCurveObject::SetCurve(curve);
-}
-
-void CSampleRectangleObject::SetCurve(ON_PolylineCurve* pCurve)
-{
-  CRhinoCurveObject::SetCurve(pCurve);
-}
-
-const ON_PolylineCurve* CSampleRectangleObject::Curve() const
-{
-  return ON_PolylineCurve::Cast(CRhinoCurveObject::Curve());
 }
 
 
@@ -65,22 +43,19 @@ class CSampleRectangleGrip : public CRhinoGripObject
 
 public:
   CSampleRectangleGrip();
-  ~CSampleRectangleGrip();
+  ~CSampleRectangleGrip() = default;
 
   // virtual CRhinoObject::ShortDescription override
-  const wchar_t* ShortDescription(bool bPlural) const;
+  const wchar_t* ShortDescription(bool bPlural) const override;
 
+public:
   bool m_bActive; // true if grip motion can change dimension.
 };
 
-ON_OBJECT_IMPLEMENT(CSampleRectangleGrip, CRhinoGripObject, "19E44BCF-EF51-47F0-A4D7-E7CFC864BE08");
+ON_OBJECT_IMPLEMENT(CSampleRectangleGrip, CRhinoGripObject, "49C9CE2B-364D-4733-84D0-25EF4F285D96");
 
 CSampleRectangleGrip::CSampleRectangleGrip()
-{
-  m_bActive = true;
-}
-
-CSampleRectangleGrip::~CSampleRectangleGrip()
+  : m_bActive(true)
 {
 }
 
@@ -96,24 +71,21 @@ const wchar_t* CSampleRectangleGrip::ShortDescription(bool bPlural) const
 class CSampleRectangleGrips : public CRhinoObjectGrips
 {
 public:
-  static
-    const ON_UUID m_rectangle_grips_id;
-
-  static
-    class CSampleRectangleGrips* RectangleGrips(CRhinoObjectGrips* grips);
+  static ON_UUID Id();
+  static class CSampleRectangleGrips* RectangleGrips(CRhinoObjectGrips* grips);
 
 public:
   CSampleRectangleGrips();
   ~CSampleRectangleGrips();
 
   // virtual CRhinoObjectGrips::Reset override
-  void Reset();
+  void Reset() override;
 
   // virtual CRhinoObjectGrips override
-  CRhinoObject* NewObject();
+  CRhinoObject* NewObject() override;
 
   // virtual CRhinoObjectGrips override
-  void Draw(CRhinoDrawGripsSettings& dgs);
+  void Draw(CRhinoDrawGripsSettings& dgs) override;
 
   /////////////////////////////////////////////////
   //
@@ -121,7 +93,7 @@ public:
   //
   bool CreateGrips(const ON_PolylineCurve& rectangle);
 
-  // Uses current grip locations to update m_nurbs_curve.
+  // Uses current grip locations to update m_rectangle.
   void UpdateRectangle();
 
   // temporary rectangle being edited.
@@ -148,25 +120,29 @@ public:
   CSampleRectangleObject* RectangleObject() const;
 };
 
-// {21A75B67-485F-47B2-8E71-FC594BEBAF89}
-const ON_UUID CSampleRectangleGrips::m_rectangle_grips_id =
-{ 0x21A75B67, 0x485F, 0x47B2, { 0x8E, 0x71, 0xFC, 0x59, 0x4B, 0xEB, 0xAF, 0x89 } };
+ON_UUID CSampleRectangleGrips::Id()
+{
+  // {5FD31CCF-4E57-4911-90E8-DBF04494ED05}
+  static const ON_UUID CSampleRectangleGrips_UUID =
+  { 0x5fd31ccf, 0x4e57, 0x4911,{ 0x90, 0xe8, 0xdb, 0xf0, 0x44, 0x94, 0xed, 0x5 } };
+  return CSampleRectangleGrips_UUID;
+}
 
 CSampleRectangleGrips* CSampleRectangleGrips::RectangleGrips(CRhinoObjectGrips* grips)
 {
-  if (!grips)
-    return 0;
+  if (nullptr == grips)
+    return nullptr;
   if (CRhinoGripObject::custom_grip != grips->m__grips_type)
-    return 0;
-  if (ON_UuidCompare(CSampleRectangleGrips::m_rectangle_grips_id, grips->m_grips_id))
-    return 0;
+    return nullptr;
+  if (ON_UuidCompare(CSampleRectangleGrips::Id(), grips->m_grips_id))
+    return nullptr;
   return static_cast<CSampleRectangleGrips*>(grips);
 }
 
 CSampleRectangleGrips::CSampleRectangleGrips()
   : CRhinoObjectGrips(CRhinoGripObject::custom_grip)
 {
-  m_grips_id = CSampleRectangleGrips::m_rectangle_grips_id;
+  m_grips_id = CSampleRectangleGrips::Id();
   m_bDrawRectangle = false;
 }
 
@@ -193,7 +169,7 @@ CRhinoObject* CSampleRectangleGrips::NewObject()
 {
   UpdateRectangle();
 
-  CSampleRectangleObject* pNewObject = 0;
+  CSampleRectangleObject* pNewObject = nullptr;
 
   if (m_bGripsMoved && m_bDrawRectangle)
   {
@@ -222,8 +198,7 @@ void CSampleRectangleGrips::Draw(CRhinoDrawGripsSettings& dgs)
   {
     const int count = m_rectangle.Count();
     const ON_3dPoint* P = m_rectangle.Array();
-    int i;
-    for (i = 1; i < count; i++)
+    for (int i = 1; i < count; i++)
       dgs.m_dp.DrawLine(P[i - 1], P[i]);
   }
   CRhinoObjectGrips::Draw(dgs);
@@ -242,24 +217,22 @@ bool CSampleRectangleGrips::CreateGrips(const ON_PolylineCurve& rectangle)
   m_rectangle = rectangle.m_pline;
   m_rectangle0 = m_rectangle;
 
-  ON_Line L;
-  int i;
-  for (i = 0; i < 4; i++)
+  ON_Line line;
+  for (int i = 0; i < 4; i++)
   {
     int gi = 2 * i;
-    L.from = m_rectangle[i];
-    L.to = m_rectangle[i + 1];
-    m_rectangle_grips[gi].m_base_point = L.from;
-    m_rectangle_grips[gi + 1].m_base_point = 0.5*L.from + 0.5*L.to;
+    line.from = m_rectangle[i];
+    line.to = m_rectangle[i + 1];
+    m_rectangle_grips[gi].m_base_point = line.from;
+    m_rectangle_grips[gi + 1].m_base_point = 0.5 * line.from + 0.5 * line.to;
     m_rectangle_grips[gi].m_bActive = true;
     m_rectangle_grips[gi + 1].m_bActive = true;
   }
 
   m_grip_list.Reserve(8);
-  for (i = 0; i < 8; i++)
-  {
+  for (int i = 0; i < 8; i++)
     m_grip_list.Append(&m_rectangle_grips[i]);
-  }
+
   return true;
 }
 
@@ -268,13 +241,12 @@ void CSampleRectangleGrips::UpdateRectangle()
   if (m_bNewLocation)
   {
     // Update rectangle from grip locations
-    int i;
     m_rectangle.Reserve(5);
     m_rectangle.SetCount(5);
 
     // If anything moved this time, the ones that didn't move will
     // be inactive for the rest of the drag
-    for (i = 0; i < 8; i++)
+    for (int i = 0; i < 8; i++)
     {
       if (m_rectangle_grips[i].m_bActive && m_rectangle_grips[i].GripMoved())
       {
@@ -288,7 +260,7 @@ void CSampleRectangleGrips::UpdateRectangle()
     }
 
     // first check corners
-    for (i = 0; i < 8; i += 2)
+    for (int i = 0; i < 8; i += 2)
     {
       if (m_rectangle_grips[i].m_bActive && m_rectangle_grips[i].GripMoved())
       {
@@ -299,7 +271,7 @@ void CSampleRectangleGrips::UpdateRectangle()
     }
 
     // second check middles
-    for (i = 1; i < 8; i += 2)
+    for (int i = 1; i < 8; i += 2)
     {
       if (m_rectangle_grips[i].m_bActive && m_rectangle_grips[i].GripMoved())
       {
@@ -309,7 +281,6 @@ void CSampleRectangleGrips::UpdateRectangle()
       }
     }
 
-    // 
     double x0 = m_rectangle[0].x;
     if (m_rectangle_grips[0].m_bActive && m_rectangle_grips[0].GripMoved())
       x0 = m_rectangle_grips[0].GripLocation().x;
@@ -350,14 +321,14 @@ void CSampleRectangleGrips::UpdateRectangle()
     m_rectangle[4] = m_rectangle[0];
 
     // apply rectangular constraints to grip locations
-    ON_Line L;
-    for (i = 0; i < 4; i++)
+    ON_Line line;
+    for (int i = 0; i < 4; i++)
     {
       int gi = 2 * i;
-      L.from = m_rectangle[i];
-      L.to = m_rectangle[i + 1];
-      m_rectangle_grips[gi].SetPoint(L.from);
-      m_rectangle_grips[gi + 1].SetPoint(0.5*L.from + 0.5*L.to);
+      line.from = m_rectangle[i];
+      line.to = m_rectangle[i + 1];
+      m_rectangle_grips[gi].SetPoint(line.from);
+      m_rectangle_grips[gi + 1].SetPoint(0.5*line.from + 0.5*line.to);
     }
 
     m_bDrawRectangle = true;
@@ -383,16 +354,14 @@ public:
 
 CSampleRectangleGripsEnabler::CSampleRectangleGripsEnabler()
 {
-  m_grips_id = CSampleRectangleGrips::m_rectangle_grips_id;
+  m_grips_id = CSampleRectangleGrips::Id();
 }
 
 void CSampleRectangleGripsEnabler::TurnOnGrips(CRhinoObject* object) const
 {
-  CSampleRectangleObject* obj = CSampleRectangleObject::Cast(object);
-  if (obj)
-  {
-    obj->EnableGrips(true);
-  }
+  CSampleRectangleObject* rectangle_object = CSampleRectangleObject::Cast(object);
+  if (nullptr != rectangle_object)
+    rectangle_object->EnableGrips(true);
 }
 
 
@@ -408,28 +377,28 @@ public:
   void RegisterGrips();
 
 private:
-  CSampleRectangleGripsEnabler* m_pGripsEnabler;
+  CSampleRectangleGripsEnabler * m_pGripsEnabler;
 };
 
 CSampleRectangleGripsRegistration::CSampleRectangleGripsRegistration()
-  : m_pGripsEnabler(0)
+  : m_pGripsEnabler(nullptr)
 {
 }
 
 CSampleRectangleGripsRegistration::~CSampleRectangleGripsRegistration()
 {
-  if (m_pGripsEnabler)
+  if (nullptr != m_pGripsEnabler)
   {
     delete m_pGripsEnabler;
-    m_pGripsEnabler = 0;
+    m_pGripsEnabler = nullptr;
   }
 }
 
 void CSampleRectangleGripsRegistration::RegisterGrips()
 {
-  if (!m_pGripsEnabler)
+  if (nullptr == m_pGripsEnabler)
   {
-    // register once and only once
+    // Register once (and only once)
     m_pGripsEnabler = new CSampleRectangleGripsEnabler();
     RhinoApp().RegisterGripsEnabler(m_pGripsEnabler);
   }
@@ -438,29 +407,31 @@ void CSampleRectangleGripsRegistration::RegisterGrips()
 // The one and only CSampleRectangleGripsRegistration object
 static class CSampleRectangleGripsRegistration theRectangleGripsRegistrar;
 
-
 void CSampleRectangleObject::EnableGrips(bool bGripsOn)
 {
   if (bGripsOn)
     theRectangleGripsRegistrar.RegisterGrips();
 
-  if (!bGripsOn || (m_grips && 0 == CSampleRectangleGrips::RectangleGrips(m_grips)))
+  if (!bGripsOn || (m_grips && CRhinoGripObject::custom_grip != m_grips->m__grips_type))
   {
-    // turn off wrong kind of grips
+    // Turn off wrong kind of grips
     CRhinoObject::EnableGrips(false);
   }
 
   if (bGripsOn && !m_grips)
   {
-    const ON_PolylineCurve* pline = Curve();
-    if (pline)
+    const ON_PolylineCurve* rectangle_curve = ON_PolylineCurve::Cast(Curve());
+    if (nullptr != rectangle_curve)
     {
-      // turn on rectangle grips
+      // Turn on rectangle grips
       CSampleRectangleGrips* rectangle_grips = new CSampleRectangleGrips();
-      if (rectangle_grips->CreateGrips(*pline))
-        CRhinoObject::EnableCustomGrips(rectangle_grips);
-      else
-        delete rectangle_grips;
+      if (nullptr != rectangle_grips)
+      {
+        if (rectangle_grips->CreateGrips(*rectangle_curve))
+          CRhinoObject::EnableCustomGrips(rectangle_grips);
+        else
+          delete rectangle_grips;
+      }
     }
   }
 }

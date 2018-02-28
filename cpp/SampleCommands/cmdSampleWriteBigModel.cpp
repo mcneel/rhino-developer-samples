@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
-class ON_Bloat : public ON_UserData
+class CSampleBloat : public ON_UserData
 {
-  ON_OBJECT_DECLARE(ON_Bloat);
+  ON_OBJECT_DECLARE(CSampleBloat);
 
 public:
-  ON_Bloat();
+  CSampleBloat();
 
   // virtual
   bool Write(ON_BinaryArchive& binary_archive) const;
@@ -26,16 +26,16 @@ public:
   static bool m_bEnableBloat;
 };
 
-ON_OBJECT_IMPLEMENT(ON_Bloat, ON_UserData, "FB66B2BE-FD37-48B6-AC0F-FD0626DBB15E");
+ON_OBJECT_IMPLEMENT(CSampleBloat, ON_UserData, "3BA3D3D2-A674-4B29-84E4-CB06660EF590");
 
-bool ON_Bloat::m_bEnableBloat = true;
+bool CSampleBloat::m_bEnableBloat = true;
 
-ON__UINT64 ON_Bloat::AddBloat(const ON_Object* obj, size_t mb)
+ON__UINT64 CSampleBloat::AddBloat(const ON_Object* obj, size_t mb)
 {
   if (0 == obj)
     return 0;
 
-  ON_Bloat* bloat = ON_Bloat::Cast(obj->GetUserData(ON_CLASS_ID(ON_Bloat)));
+  CSampleBloat* bloat = CSampleBloat::Cast(obj->GetUserData(ON_CLASS_ID(CSampleBloat)));
 
   if (bloat)
   {
@@ -48,7 +48,7 @@ ON__UINT64 ON_Bloat::AddBloat(const ON_Object* obj, size_t mb)
   }
   else if (mb > 0)
   {
-    bloat = new ON_Bloat();
+    bloat = new CSampleBloat();
     if (!const_cast<ON_Object*>(obj)->AttachUserData(bloat))
     {
       delete bloat;
@@ -63,16 +63,16 @@ ON__UINT64 ON_Bloat::AddBloat(const ON_Object* obj, size_t mb)
 }
 
 
-ON_Bloat::ON_Bloat()
+CSampleBloat::CSampleBloat()
   : m_sizeof_bloat(1024 * 1024 * 256)
 {
-  m_userdata_uuid = m_userdata_uuid = ON_CLASS_ID(ON_Bloat);
+  m_userdata_uuid = m_userdata_uuid = ON_CLASS_ID(CSampleBloat);
   m_application_uuid = ON_rhino5_id;
-  m_userdata_copycount = ON_Bloat::m_bEnableBloat ? 1 : 0;
+  m_userdata_copycount = CSampleBloat::m_bEnableBloat ? 1 : 0;
 }
 
 // virtual
-bool ON_Bloat::Write(
+bool CSampleBloat::Write(
   ON_BinaryArchive& binary_archive
 ) const
 {
@@ -117,7 +117,7 @@ bool ON_Bloat::Write(
 }
 
 // virtual
-bool ON_Bloat::Read(
+bool CSampleBloat::Read(
   ON_BinaryArchive& binary_archive
 )
 {
@@ -151,13 +151,13 @@ bool ON_Bloat::Read(
     }
     if (sz != (size_t)chunk_length)
     {
-      ON_ERROR("ON_Bloat::Read - wrong amount of bloat in file");
+      ON_ERROR("CSampleBloat::Read - wrong amount of bloat in file");
       rc = false;
       break;
     }
     if (TCODE_USER != chunk_tcode)
     {
-      ON_ERROR("ON_Bloat::Read - wrong chunk tcode around file bloat");
+      ON_ERROR("CSampleBloat::Read - wrong chunk tcode around file bloat");
       rc = false;
       break;
     }
@@ -170,7 +170,7 @@ bool ON_Bloat::Read(
 
   if (!binary_archive.EndRead3dmChunk())
   {
-    ON_ERROR("ON_Bloat::Read - EndWrite3dmChunk() failed");
+    ON_ERROR("CSampleBloat::Read - EndWrite3dmChunk() failed");
     rc = false;
   }
 
@@ -178,7 +178,7 @@ bool ON_Bloat::Read(
 }
 
 // virtual 
-bool ON_Bloat::GetDescription(ON_wString& description)
+bool CSampleBloat::GetDescription(ON_wString& description)
 {
   const double mb = ((double)m_sizeof_bloat) / (1024.0*1024.0);
   description.Format(L"Bloat: %g MB (%Lu bytes)", mb, m_sizeof_bloat);
@@ -186,9 +186,9 @@ bool ON_Bloat::GetDescription(ON_wString& description)
 }
 
 // virtual 
-bool ON_Bloat::Archive() const
+bool CSampleBloat::Archive() const
 {
-  return (ON_Bloat::m_bEnableBloat && m_sizeof_bloat > 0);
+  return (CSampleBloat::m_bEnableBloat && m_sizeof_bloat > 0);
 }
 
 
@@ -239,7 +239,7 @@ CRhinoCommand::result CCommandSampleWriteBigModel::RunCommand(const CRhinoComman
   error_counter.ClearLibraryErrors();
 
   ON_Object* bloated_500_megabyte_brep = brep->Duplicate();
-  ON_Bloat::AddBloat(bloated_500_megabyte_brep, 500);
+  CSampleBloat::AddBloat(bloated_500_megabyte_brep, 500);
 
   const int count = 32; // file size ~14 GB
 
