@@ -1,0 +1,3 @@
+The SampleViewportRenderer samples has been removed and replaced with SampleRealtimeRenderer.
+
+Deriving classes from CRhinoDisplayPipeline is now discouraged in Rhino 6 onwards.  Customization of the display process should be achieved through conduits.  The RhRdk::Realtime::DisplayMode class provides a specific way to display realtime rendering results in the viewport without having to deal with the specifics of the pipeline.
