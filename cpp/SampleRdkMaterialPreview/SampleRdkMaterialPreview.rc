@@ -1,0 +1,190 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"    
+    "#include ""res\\SampleRdkMaterialPreview.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+#ifndef _AFXDLL
+    "#include ""afxres.rc""      // Standard components\r\n"
+#endif
+    "#endif\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO     VERSIONINFO
+  FILEVERSION       1,0,0,1
+  PRODUCTVERSION    1,0,0,1
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_DLL
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN
+        BLOCK "0409"
+		BEGIN
+            VALUE "CompanyName", "My Company Name"
+            VALUE "FileDescription", "SampleRdkMaterialPreview"
+			VALUE "FileVersion",     "1.0.0.0"
+			VALUE "InternalName",    "SampleRdkMaterialPreview.rhp"
+            VALUE "LegalCopyright", "Copyright © 2018, My Company Name"
+			VALUE "OriginalFilename","SampleRdkMaterialPreview.rhp"
+            VALUE "ProductName", "SampleRdkMaterialPreview"
+			VALUE "ProductVersion",  "1.0.0.0"
+		END
+	END
+	BLOCK "VarFileInfo"
+	BEGIN
+		VALUE "Translation", 0x0409, 1252
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+IDI_ICON ICON                    "res\\SampleRdkMaterialPreview.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MATERIAL_SECTION DIALOGEX 0, 0, 211, 75
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_RENDER MENU DISCARDABLE
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Save &As...",                 IDM_APP_FILE_SAVE_AS
+        MENUITEM "&Print",                      IDM_APP_FILE_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_APP_FILE_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy",                       IDM_APP_EDIT_COPY
+    END
+    POPUP "&Zoom"
+    BEGIN
+        MENUITEM "In 10x",                      ID_APP_VIEW_IN10X
+        MENUITEM "In 9x",                       ID_APP_VIEW_IN9X
+        MENUITEM "In 8x",                       ID_APP_VIEW_IN8X
+        MENUITEM "In 7x",                       ID_APP_VIEW_IN7X
+        MENUITEM "In 6x",                       ID_APP_VIEW_IN6X
+        MENUITEM "In 5x",                       ID_APP_VIEW_IN5X
+        MENUITEM "In 4x",                       ID_APP_VIEW_IN4X
+        MENUITEM "In 3x",                       ID_APP_VIEW_IN3X
+        MENUITEM "In 2x",                       ID_APP_VIEW_IN2X
+        MENUITEM SEPARATOR
+        MENUITEM "&Normal Viewing 1:1",         ID_APP_VIEW_NORMALVIEW
+        MENUITEM SEPARATOR
+        MENUITEM "Out 2x",                      ID_APP_VIEW_OUT2X
+        MENUITEM "Out 3x",                      ID_APP_VIEW_OUT3X
+        MENUITEM "Out 4x",                      ID_APP_VIEW_OUT4X
+        MENUITEM "Out 5x",                      ID_APP_VIEW_OUT5X
+        MENUITEM "Out 6x",                      ID_APP_VIEW_OUT6X
+        MENUITEM "Out 7x",                      ID_APP_VIEW_OUT7X
+        MENUITEM "Out 8x",                      ID_APP_VIEW_OUT8X
+        MENUITEM "Out 9x",                      ID_APP_VIEW_OUT9X
+        MENUITEM "Out 10x",                     ID_APP_VIEW_OUT10X
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Display Help",                IDM_APP_HELP_DISPLAY_HELP
+    END
+END
+
+#endif
+#ifndef APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#include "res\\SampleRdkMaterialPreview.rc2"  // non-Microsoft Visual C++ edited resources
+#ifndef _AFXDLL
+#include "afxres.rc"      // Standard components
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
