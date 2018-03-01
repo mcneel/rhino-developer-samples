@@ -62,7 +62,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\SampleCsWpfPanelCommand.cs" />
+    <Compile Include="Commands\SampleCsWpfSemiModalDialogCommand.cs" />
     <Compile Include="ViewModels\SampleCsWpfPaneViewModel.cs" />
+    <Compile Include="Views\SampleCsWpfDialog.xaml.cs">
+      <DependentUpon>SampleCsWpfDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SampleCsWpfPanel.xaml.cs">
       <DependentUpon>SampleCsWpfPanel.xaml</DependentUpon>
     </Compile>
@@ -81,6 +85,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\SampleCsWpfDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SampleCsWpfPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
