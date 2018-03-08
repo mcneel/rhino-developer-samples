@@ -21,7 +21,7 @@ BOOL CRhinoGetTranslationPoint::CalculateTransform(CRhinoViewport& vp, const ON_
   if (dir.IsTiny())
     xform = ON_Xform::IdentityTransformation;
   else
-    xform.TranslationTransformation(dir);
+    xform = ON_Xform::TranslationTransformation(dir);
   return (xform.IsValid()) ? TRUE : FALSE;
 }
 

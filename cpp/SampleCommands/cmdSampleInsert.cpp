@@ -36,7 +36,7 @@ bool CGetBlockInsertPoint::CalculateTransform(CRhinoViewport& vp, const ON_3dPoi
 {
   UNREFERENCED_PARAMETER(vp);
   ON_3dVector v = pt - BasePoint();
-  xform.TranslationTransformation(v);
+  xform = ON_Xform::TranslationTransformation(v);
   return true;
 }
 

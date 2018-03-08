@@ -93,7 +93,7 @@ BOOL CSampleAnimatorDialog::OnInitDialog()
 
   // Draw first position
   ON_3dVector v = m_points[0] - m_start;
-  m_conduit.m_xform.TranslationTransformation(v);
+  m_conduit.m_xform = ON_Xform::TranslationTransformation(v);
   RedrawDocument();
 
   return TRUE;
@@ -150,7 +150,7 @@ void CSampleAnimatorDialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScro
   if (pos >= m_slider.GetRangeMin() || pos <= m_slider.GetRangeMax())
   {
     ON_3dVector v = m_points[pos] - m_start;
-    m_conduit.m_xform.TranslationTransformation(v);
+    m_conduit.m_xform = ON_Xform::TranslationTransformation(v);
     RedrawDocument();
   }
 }
