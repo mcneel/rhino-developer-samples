@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "SampleCommandsPlugIn.h"
 
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
@@ -22,7 +23,7 @@ private:
 static class CSampleIdleEventWatcher theSampleIdleEventWatcher;
 
 CSampleIdleEventWatcher::CSampleIdleEventWatcher()
-  : CRhinoIsIdle(RhinoApp().Rhino5_UUID())
+  : CRhinoIsIdle(SampleCommandsPlugIn().PlugInID())
   , m_time0(0)
 {
 }
