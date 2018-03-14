@@ -27,8 +27,7 @@ namespace SampleCsMobilePlane
     /// </summary>
     protected override void OnDuplicate(UserData source)
     {
-      var src = source as SampleCsMobilePlaneUserData;
-      if (null != src)
+      if (source is SampleCsMobilePlaneUserData src)
       {
         Plane = src.Plane;
         ViewportId = src.ViewportId;
@@ -39,26 +38,19 @@ namespace SampleCsMobilePlane
     /// <summary>
     /// Descriptive name of the user data.
     /// </summary>
-    public override string Description
-    {
-      get { return "Mobile Plane User Data"; }
-    }
+    public override string Description => "Mobile Plane User Data";
 
     /// <summary>
     /// Return true to serialize to 3dm files.
     /// </summary>
-    public override bool ShouldWrite
-    {
-      get { return true; }
-    }
+    public override bool ShouldWrite => true;
 
     /// <summary>
     /// Reads the content of this data from a stream archive.
     /// </summary>
     protected override bool Read(BinaryArchiveReader archive)
     {
-      int major, minor;
-      archive.Read3dmChunkVersion(out major, out minor);
+      archive.Read3dmChunkVersion(out var major, out var minor);
       if (1 == major && 0 == minor)
       {
         Plane = archive.ReadPlane();

@@ -17,6 +17,10 @@ namespace SampleCsMain
   /// </summary>
   public class SampleCsMainPlugIn : PlugIn
   {
+    // Major and minor version numbers of our document user data
+    private const int MAJOR = 1;
+    private const int MINOR = 0;
+
     public SampleCsMainPlugIn()
     {
       Instance = this;
@@ -101,6 +105,7 @@ namespace SampleCsMain
     /// </summary>
     protected override void WriteDocument(RhinoDoc doc, BinaryArchiveWriter archive, FileWriteOptions options)
     {
+      archive.Write3dmChunkVersion(MAJOR, MINOR);
       SampleCsStringTable string_table = SampleCsStringTable.Instance;
       string_table.WriteDocument(doc, archive, options);
     }
@@ -111,8 +116,12 @@ namespace SampleCsMain
     /// </summary>
     protected override void ReadDocument(RhinoDoc doc, BinaryArchiveReader archive, FileReadOptions options)
     {
-      SampleCsStringTable string_table = SampleCsStringTable.Instance;
-      string_table.ReadDocument(doc, archive, options);
+      archive.Read3dmChunkVersion(out var major, out var minor);
+      if (MAJOR == major && MINOR == minor)
+      {
+        SampleCsStringTable string_table = SampleCsStringTable.Instance;
+        string_table.ReadDocument(doc, archive, options);
+      }
     }
 
     /// <summary>

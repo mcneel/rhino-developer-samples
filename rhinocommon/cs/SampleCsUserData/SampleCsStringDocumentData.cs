@@ -131,8 +131,7 @@ namespace SampleCsUserData
     /// </summary>
     public void ReadDocument(BinaryArchiveReader archive)
     {
-      int major, minor;
-      archive.Read3dmChunkVersion(out major, out minor);
+      archive.Read3dmChunkVersion(out var major, out var minor);
       if (MAJOR == major && MINOR == minor)
       {
         var string_table = archive.ReadStringArray();

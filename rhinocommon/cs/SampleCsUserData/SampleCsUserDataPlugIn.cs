@@ -90,8 +90,7 @@ namespace SampleCsUserData
     /// </summary>
     protected override void ReadDocument(RhinoDoc doc, BinaryArchiveReader archive, FileReadOptions options)
     {
-      int major, minor;
-      archive.Read3dmChunkVersion(out major, out minor);
+      archive.Read3dmChunkVersion(out var major, out var minor);
       if (MAJOR == major && MINOR == minor)
       {
         // Always read user data even though you might not use it.

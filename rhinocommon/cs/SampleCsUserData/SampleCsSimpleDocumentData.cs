@@ -10,7 +10,7 @@ namespace SampleCsUserData
   public class SampleCsSimpleDocumentData
   {
     /// <summary>
-    /// Class major and minor verson numbers
+    /// Class major and minor version numbers
     /// </summary>
     private const int MAJOR = 1;
     private const int MINOR = 0;
@@ -60,8 +60,7 @@ namespace SampleCsUserData
       {
         try
         {
-          int major, minor;
-          archive.Read3dmChunkVersion(out major, out minor);
+          archive.Read3dmChunkVersion(out var major, out var minor);
           if (major == MAJOR && minor == MINOR)
           {
             Value = archive.ReadInt();
@@ -122,8 +121,7 @@ namespace SampleCsUserData
       {
         try
         {
-          int major, minor;
-          archive.Read3dmChunkVersion(out major, out minor);
+          archive.Read3dmChunkVersion(out var major, out var minor);
           if (major == MAJOR && minor == MINOR)
           {
             var count = archive.ReadInt();

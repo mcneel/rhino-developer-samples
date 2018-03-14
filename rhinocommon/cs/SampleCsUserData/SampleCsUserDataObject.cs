@@ -14,21 +14,9 @@ namespace SampleCsUserData
       set;
     }
 
-    public bool IsValid
-    {
-      get
-      {
-        return !string.IsNullOrEmpty(Notes);
-      }
-    }
+    public bool IsValid => !string.IsNullOrEmpty(Notes);
 
-    public override string Description
-    {
-      get
-      {
-        return "SampleCsUserData";
-      }
-    }
+    public override string Description => "SampleCsUserData";
 
     public override string ToString()
     {
@@ -37,22 +25,17 @@ namespace SampleCsUserData
 
     protected override void OnDuplicate(UserData source)
     {
-      var src = source as SampleCsUserDataObject;
-      if (null != src)
+      if (source is SampleCsUserDataObject src)
       {
         Notes = src.Notes;
       }
     }
 
-    public override bool ShouldWrite
-    {
-      get { return IsValid; }
-    }
+    public override bool ShouldWrite => IsValid;
 
     protected override bool Read(Rhino.FileIO.BinaryArchiveReader archive)
     {
-      int major, minor;
-      archive.Read3dmChunkVersion(out major, out minor);
+      archive.Read3dmChunkVersion(out var major, out var minor);
       if (1 == major && 0 == minor)
         Notes = archive.ReadString();
       return !archive.ReadErrorOccured;
