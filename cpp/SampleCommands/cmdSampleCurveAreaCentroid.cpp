@@ -77,6 +77,10 @@ CRhinoCommand::result CCommandSampleCurveAreaCentroid::RunCommand(const CRhinoCo
       ON_Plane plane;
       if (crv->IsPlanar(&plane, ON_ZERO_TOLERANCE))
       {
+        // Check the orienation of the curve and flip it's plane if necessary
+        if (ON_ClosedCurveOrientation(*crv, plane) < 0)
+          plane.Flip();
+
         ON_BoundingBox bbox = crv->BoundingBox();
         ON_3dPoint point = plane.ClosestPointTo(bbox.Center());
 

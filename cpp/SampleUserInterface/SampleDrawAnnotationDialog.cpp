@@ -34,7 +34,7 @@ void CSampleDrawAnnotationConduit::SetDimStyle(const ON_DimStyle& dim_style)
 void CSampleDrawAnnotationConduit::SetTextFont(const ON_Font& font)
 {
   m_dim_style.SetFont(font);
-  m_text.Create(m_dim_style.Font().FontFaceName(), &m_dim_style, ON_Plane::World_xy);
+  m_text.Create(m_dim_style.Font().WindowsLogfontNameAsPointer(), &m_dim_style, ON_Plane::World_xy);
 }
 
 // CSampleDrawAnnotationDialog dialog
