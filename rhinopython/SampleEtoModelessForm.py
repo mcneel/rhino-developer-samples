@@ -108,21 +108,21 @@ class SampleEtoModelessForm(forms.Form):
     def CreateEvents(self):
         Rhino.RhinoDoc.CloseDocument += self.OnCloseDocument
         Rhino.RhinoDoc.NewDocument += self.OnNewDocument
-        Rhino.RhinoDoc.EndOpenDocument += self.OnEndOpenDocument;
-        Rhino.RhinoDoc.AddRhinoObject += self.OnAddRhinoObject;
-        Rhino.RhinoDoc.DeleteRhinoObject += self.OnDeleteRhinoObject;
+        Rhino.RhinoDoc.EndOpenDocument += self.OnEndOpenDocument
+        Rhino.RhinoDoc.AddRhinoObject += self.OnAddRhinoObject
+        Rhino.RhinoDoc.DeleteRhinoObject += self.OnDeleteRhinoObject
         Rhino.RhinoDoc.SelectObjects += self.OnSelectObjects
-        Rhino.RhinoDoc.DeselectAllObjects += self.OnDeselectAllObjects;
+        Rhino.RhinoDoc.DeselectAllObjects += self.OnDeselectAllObjects
         
     # Remove Rhino event handlers
     def RemoveEvents(self):        
         Rhino.RhinoDoc.CloseDocument -= self.OnCloseDocument
         Rhino.RhinoDoc.NewDocument -= self.OnNewDocument
-        Rhino.RhinoDoc.EndOpenDocument -= self.OnEndOpenDocument;
-        Rhino.RhinoDoc.AddRhinoObject -= self.OnAddRhinoObject;
-        Rhino.RhinoDoc.DeleteRhinoObject -= self.OnDeleteRhinoObject;
+        Rhino.RhinoDoc.EndOpenDocument -= self.OnEndOpenDocument
+        Rhino.RhinoDoc.AddRhinoObject -= self.OnAddRhinoObject
+        Rhino.RhinoDoc.DeleteRhinoObject -= self.OnDeleteRhinoObject
         Rhino.RhinoDoc.SelectObjects -= self.OnSelectObjects
-        Rhino.RhinoDoc.DeselectAllObjects -= self.OnDeselectAllObjects;
+        Rhino.RhinoDoc.DeselectAllObjects -= self.OnDeselectAllObjects
         
     # Create all of the controls used by the form
     def CreateFormControls(self):
