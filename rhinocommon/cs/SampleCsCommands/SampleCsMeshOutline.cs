@@ -10,7 +10,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("35b38130-0a2f-4577-bd3a-f5e4ee132daa")]
   public class SampleCsMeshOutline : Command
   {
     public SampleCsMeshOutline()

@@ -11,7 +11,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsCurveDir command
   /// </summary>
-  [System.Runtime.InteropServices.Guid("08d7d1bf-c7b7-4508-9de4-00a4aedb289e")]
   public class SampleCsCurveDirection : Command
   {
     public SampleCsCurveDirection()

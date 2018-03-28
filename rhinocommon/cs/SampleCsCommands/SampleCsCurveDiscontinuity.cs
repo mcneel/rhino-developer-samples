@@ -10,7 +10,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("e91781cd-e748-4a77-80fd-1658d2c5a89e")]
   public class SampleCsCurveDiscontinuity : Command
   {
     public override string EnglishName

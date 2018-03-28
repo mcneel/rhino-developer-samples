@@ -37,7 +37,6 @@ namespace SampleCsCommands
     }
   }
 
-  [System.Runtime.InteropServices.Guid("ba3fb034-00ab-48da-9d69-c495b7d4f90d")]
   public class SampleCsEscapeKey2 : Command
   {
     private readonly Random m_random;

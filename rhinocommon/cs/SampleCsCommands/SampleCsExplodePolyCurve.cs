@@ -29,7 +29,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsExplodePolyCurve
   /// </summary>
-  [System.Runtime.InteropServices.Guid("308666d1-24f7-46d0-85d2-15f81438e08f")]
   public class SampleCsExplodePolyCurve : Command
   {
     public SampleCsExplodePolyCurve()

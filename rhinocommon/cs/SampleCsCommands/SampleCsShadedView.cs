@@ -5,7 +5,6 @@ using Rhino.Display;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("d1e5fb6f-647c-4e8c-bf92-eba401d87b42")]
   public class SampleCsShadedView : Command
   {
     public SampleCsShadedView()

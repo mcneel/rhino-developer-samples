@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("979bfa1b-3187-4a40-9205-95f8915e806f")]
   public class SampleCsColorfulMeshBox : Command
   {
     private Random m_random;

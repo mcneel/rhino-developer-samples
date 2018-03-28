@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [Guid("1dbaa178-2797-47eb-b1ba-30507c320289"), CommandStyle(Style.ScriptRunner)]
   public class SampleCsIsolate : Command
   {
     public SampleCsIsolate()

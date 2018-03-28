@@ -5,10 +5,7 @@ using Rhino.DocObjects;
 
 namespace SampleCsCommands
 {
-  [
-    System.Runtime.InteropServices.Guid("42d2ae21-1c1b-4730-913a-9cdfd4ba1015"), 
-    CommandStyle(Style.ScriptRunner)
-  ]
+  [CommandStyle(Style.ScriptRunner)]
   public class SampleCsLastCreatedObjects : Command
   {
     public override string EnglishName

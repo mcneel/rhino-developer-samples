@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("46543756-089e-4fbd-a7eb-2079112d4c3f")]
   public class SampleCsTestPlanarCurveContainment : Command
   {
     public SampleCsTestPlanarCurveContainment()

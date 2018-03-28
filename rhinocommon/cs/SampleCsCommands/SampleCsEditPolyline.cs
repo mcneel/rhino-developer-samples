@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("fc2dcb30-1702-49af-80c0-ec4937300de3")]
   public class SampleCsEditPolyline : Command
   {
     public override string EnglishName

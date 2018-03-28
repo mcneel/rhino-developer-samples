@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("973f21ec-6a64-4bbb-bd0e-d60d0507985d")]
   public class SampleCsMeshBrep : Command
   {
     public SampleCsMeshBrep()

@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("9765613b-3a4c-493a-a4ef-664f79a90979")]
   public class SampleCsZebraAnalysis : Command
   {
     public override string EnglishName

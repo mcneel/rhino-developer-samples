@@ -5,7 +5,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("48515194-efdc-487c-b4b1-5af81b438127")]
   public class SampleCsGetDirection : Command
   {
     public override string EnglishName

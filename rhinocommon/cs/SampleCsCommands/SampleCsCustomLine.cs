@@ -31,7 +31,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsCustomLine
   /// </summary>
-  [System.Runtime.InteropServices.Guid("3fa7ebfd-43fa-473e-9219-f564bfc4f3b2")]
   public class SampleCsCustomLine : Command
   {
     public SampleCsCustomLine()

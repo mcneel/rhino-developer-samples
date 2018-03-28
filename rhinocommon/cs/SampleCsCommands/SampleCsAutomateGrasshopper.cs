@@ -7,7 +7,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("cb825773-b04f-49df-9c12-5e9134696854")]
   public class SampleCsAutomateGrasshopper : Command
   {
     /// <summary>

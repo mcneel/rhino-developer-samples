@@ -10,7 +10,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("6c645108-0f9d-48c1-8b68-4a0237354693")]
   public class SampleCsText : Command
   {
     private TextJustification m_justification = TextJustification.None;

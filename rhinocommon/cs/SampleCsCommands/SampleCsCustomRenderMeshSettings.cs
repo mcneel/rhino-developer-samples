@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("bf2f62b2-a52b-44d4-9c9a-6c2d77babf54")]
   public class SampleCsCustomRenderMeshSettings : Command
   {
     public SampleCsCustomRenderMeshSettings()

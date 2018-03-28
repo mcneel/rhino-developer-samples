@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("3b40e581-7f9e-45b8-99c5-140c2c297204")]
   public class SampleCsBooleanDifference2 : Command
   {
     public override string EnglishName

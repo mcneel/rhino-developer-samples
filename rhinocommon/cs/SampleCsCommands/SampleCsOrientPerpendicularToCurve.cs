@@ -7,7 +7,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("87d8544e-c7de-47a2-a671-cdb69a382ba9")]
   public class SampleCsOrientPerpendicularToCurve : Command
   {
     /// <summary>

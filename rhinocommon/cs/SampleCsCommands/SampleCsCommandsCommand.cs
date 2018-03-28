@@ -3,7 +3,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("2137ef57-cf08-4002-8e25-960af352442c")]
   public class SampleCsCommandsCommand : Command
   {
     public SampleCsCommandsCommand()

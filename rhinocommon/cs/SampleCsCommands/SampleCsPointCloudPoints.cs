@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("343b9569-48bf-49ec-97e9-da3f20ad16e0")]
   public class SampleCsPointCloudPoints : Command
   {
     public SampleCsPointCloudPoints()

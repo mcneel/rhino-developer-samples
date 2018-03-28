@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("fe532160-4567-4821-a59c-d1334fc7a371")]
   public class SampleCsSetDisplayMode : Command
   {
     public SampleCsSetDisplayMode()

@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("ef64718b-8bd2-47e3-a434-6ab2af176435")]
   public class SampleCsBoundingBox : Command
   {
     private bool m_use_cplane = false;

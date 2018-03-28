@@ -3,13 +3,9 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("ae89e1db-fa97-4010-82c4-cf1109bb3294")]
   public class SampleCsSetCameraTarget : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsSetCameraTarget"; }
-    }
+    public override string EnglishName => "SampleCsSetCameraTarget";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

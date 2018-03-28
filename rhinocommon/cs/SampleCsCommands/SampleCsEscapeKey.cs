@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("9c581028-0837-4f26-a7a0-4465d2975ad9")]
   public class SampleCsEscapeKey : Command
   {
     private bool m_escape_key_pressed;

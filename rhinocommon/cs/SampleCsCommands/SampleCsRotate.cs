@@ -173,7 +173,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsRotate command
   /// </summary>
-  [System.Runtime.InteropServices.Guid("01d510e7-b682-4076-b2a7-48eb027096f7")]
   public class SampleCsRotate : TransformCommand
   {
     public override string EnglishName

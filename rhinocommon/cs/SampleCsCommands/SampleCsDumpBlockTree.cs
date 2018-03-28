@@ -7,7 +7,6 @@ using Rhino.FileIO;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("4f14c2cb-237c-4c03-ad16-b7e063dd9c21")]
   public class SampleCsDumpBlockTree : Command
   {
     public override string EnglishName

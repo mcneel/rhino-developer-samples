@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("06f18176-ac87-45c3-a058-419f20a6908e")]
   public class SampleCsSubCurve : Command
   {
     public SampleCsSubCurve()

@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("70c5e6c7-f0ed-4a0a-a314-c750b1dc91d1")]
   public class SampleCsGetPoint : Command
   {
     public SampleCsGetPoint()

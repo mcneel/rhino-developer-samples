@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("0fd0e29f-076b-4081-a08b-d4791a53c7b0")]
   public class SampleCsPlanarClosedCurveRelationship : Command
   {
     public SampleCsPlanarClosedCurveRelationship()

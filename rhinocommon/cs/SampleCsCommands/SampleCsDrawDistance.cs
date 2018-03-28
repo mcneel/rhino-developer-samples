@@ -8,7 +8,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("4944ec62-13e1-433c-b619-dbbb45eb4f2a")]
   public class SampleCsDrawDistance : Command
   {
     public SampleCsDrawDistance()

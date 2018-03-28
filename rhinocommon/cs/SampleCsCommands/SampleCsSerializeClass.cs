@@ -10,7 +10,6 @@ using Rhino.Input;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("43b12e34-84ea-4e27-b62b-1536b47b5698")]
   public class SampleCsSerializeClass : Command
   {
     public override string EnglishName => "SampleCsSerializeClass";

@@ -8,7 +8,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("ae164ad5-62e1-4d1f-995c-3eff15262bb6")]
   public class SampleCsDeleteSubCurve : Command
   {
     public SampleCsDeleteSubCurve()

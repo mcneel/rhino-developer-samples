@@ -8,7 +8,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("27efa9fd-c783-4f52-8afc-aebf1d8b0ae2")]
   public class SampleCsFilletSrf : Command
   {
     public SampleCsFilletSrf()

@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("5c16e399-76ea-4361-824f-aa049e0211fc")]
   public class SampleCsCurveGetter : Command
   {
     public override string EnglishName

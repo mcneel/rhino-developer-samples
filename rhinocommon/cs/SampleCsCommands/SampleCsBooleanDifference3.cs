@@ -6,7 +6,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("047e23cd-998d-4e0d-9dbd-53b390cdeebe")]
   public class SampleCsBooleanDifference3 : Command
   {
     public override string EnglishName

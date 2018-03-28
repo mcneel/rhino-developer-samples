@@ -5,11 +5,7 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [
-    System.Runtime.InteropServices.Guid("b46acba3-4d22-4975-b994-35a408813336"),
-    // Required to call RhinoApp.RunScript
-    Rhino.Commands.CommandStyle(Rhino.Commands.Style.ScriptRunner) 
-  ]
+  [Rhino.Commands.CommandStyle(Rhino.Commands.Style.ScriptRunner)]
   public class SampleCsSmooth : Command
   {
     private double m_smooth_factor = 0.2;
@@ -19,14 +15,7 @@ namespace SampleCsCommands
     private bool m_use_cplane = false;
     private bool m_fix_boundaries = true;
 
-    public SampleCsSmooth()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsSmooth"; }
-    }
+    public override string EnglishName => "SampleCsSmooth";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

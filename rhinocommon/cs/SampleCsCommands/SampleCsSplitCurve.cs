@@ -9,7 +9,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("ec8f64cd-0599-40eb-b495-5cb763068b6e")]
   public class SampleCsSplitCurve : Command
   {
     public SampleCsSplitCurve()

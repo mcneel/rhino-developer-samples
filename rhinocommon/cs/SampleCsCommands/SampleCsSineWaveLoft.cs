@@ -6,7 +6,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("cf2bd80a-cccc-43a1-94ab-942f89f2163e")]
   public class SampleCsSineWaveLoft : Command
   {
     public SampleCsSineWaveLoft()

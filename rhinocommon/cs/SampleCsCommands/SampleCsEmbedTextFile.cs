@@ -10,7 +10,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsEmbedTextFile
   /// </summary>
-  [System.Runtime.InteropServices.Guid("21E8F3EC-77A4-45AE-98C7-55D419A3DF45")]
   public class SampleCsEmbedTextFile : Command
   {
     public override string EnglishName
@@ -80,7 +79,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsExtractTextFile
   /// </summary>
-  [System.Runtime.InteropServices.Guid("A945E8F2-6887-4014-B324-671409AA4F72")]
   public class SampleCsExtractTextFile : Command
   {
     public override string EnglishName

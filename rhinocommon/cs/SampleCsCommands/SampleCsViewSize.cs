@@ -8,7 +8,6 @@ using Rhino.Display;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("515ed74a-a2f8-4483-ab43-7303c6de50b4")]
   public class SampleCsViewSize : Command
   {
     public SampleCsViewSize()

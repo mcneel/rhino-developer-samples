@@ -5,7 +5,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("15e7b432-8d22-47db-b7e9-45b321991b6c")]
   public class SampleCsIntersectCurveLine : Command
   {
     public override string EnglishName

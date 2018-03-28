@@ -6,7 +6,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("258809a5-29d2-431a-b8a3-621939f3aae8")]
   public class SampleCsPictureFrame : Command
   {
     public SampleCsPictureFrame()

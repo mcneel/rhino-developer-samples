@@ -6,7 +6,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("69dc574e-98a0-42b2-8e6d-6101d7ed5273")]
   public class SampleCsAppearanceColors : Command
   {
     public override string EnglishName

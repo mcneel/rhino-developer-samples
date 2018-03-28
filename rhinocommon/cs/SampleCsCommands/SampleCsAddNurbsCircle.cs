@@ -5,7 +5,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("e021ecb0-41ed-455b-a3de-014345c17923")]
   public class SampleCsAddNurbsCircle : Command
   {
     public SampleCsAddNurbsCircle()

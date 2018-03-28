@@ -8,7 +8,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("103ab027-f33d-4122-8752-f9997f44e530")]
   public class SampleCsProjectCurvesToBrep : Command
   {
     public override string EnglishName

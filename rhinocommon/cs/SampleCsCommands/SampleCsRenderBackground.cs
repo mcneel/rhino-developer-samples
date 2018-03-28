@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("6a488cda-0e70-4ba0-8a5f-6c5359993a8f")]
   public class SampleCsRenderBackground : Command
   {
     public SampleCsRenderBackground()

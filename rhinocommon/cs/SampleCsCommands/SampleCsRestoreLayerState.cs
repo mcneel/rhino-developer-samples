@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("aea8c681-4580-4317-8ee1-0ae4a02439c4")]
   public class SampleCsRestoreLayerState : Command
   {
     public override string EnglishName

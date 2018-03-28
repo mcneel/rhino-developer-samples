@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("9610b5bd-49bd-48e0-90f6-170446b8d60c")]
   public class SampleCsMove : Command
   {
     public override string EnglishName

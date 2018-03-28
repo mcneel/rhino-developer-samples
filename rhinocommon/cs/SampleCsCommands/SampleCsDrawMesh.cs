@@ -32,7 +32,6 @@ namespace SampleCsCommands
     }
   }
 
-  [System.Runtime.InteropServices.Guid("afe4262d-b092-40f4-8dfd-f82ecd2e69ab")]
   public class SampleCsDrawMesh : Command
   {
     public SampleCsDrawMesh()

@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("b9d9602f-bff1-4968-95cd-35c24072f2fd")]
   public class SampleCsSweep1 : Command
   {
     /// <summary>

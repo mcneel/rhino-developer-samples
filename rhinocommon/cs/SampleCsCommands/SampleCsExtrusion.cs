@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("22435645-2882-4598-8519-e3efecbe0699")]
   public class SampleCsExtrusion : Command
   {
     public SampleCsExtrusion()

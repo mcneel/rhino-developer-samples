@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("d5a0bfb2-ef89-45a8-a29e-baaf0fb47a59")]
   public class SampleCsPickHole : Command
   {
     public override string EnglishName

@@ -7,7 +7,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("5afa1361-d9bb-443f-91dd-4efced6d60db")]
   public class SampleCsCylinderTest : Command
   {
     public override string EnglishName

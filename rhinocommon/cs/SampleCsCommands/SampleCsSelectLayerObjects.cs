@@ -6,10 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsSelectLayerObjects : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsSelectLayerObjects"; }
-    }
+    public override string EnglishName => "SampleCsSelectLayerObjects";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

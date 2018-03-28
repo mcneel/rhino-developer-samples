@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("fbbcb9f8-f991-4521-be63-beae59f96647")]
   public class SampleCsContourMesh : Command
   {
     public SampleCsContourMesh()

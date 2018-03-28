@@ -8,7 +8,6 @@ using Rhino.Input;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("e18531ba-e3ff-49ff-91e2-9f2800eedc00")]
   public class SampleCsCurveEditPoints : Command
   {
     public SampleCsCurveEditPoints()

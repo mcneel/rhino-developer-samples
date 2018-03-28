@@ -67,7 +67,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsGetMultiplePoints command
   /// </summary>
-  [System.Runtime.InteropServices.Guid("6c4b530a-78ec-44cf-be47-59fa92b08ad0")]
   public class SampleCsGetMultiplePoints : Command
   {
     public override string EnglishName

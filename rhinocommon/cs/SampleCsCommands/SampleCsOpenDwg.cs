@@ -6,7 +6,7 @@ using Rhino.Input;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("3172f27b-2dfb-4c56-81f0-58daa3638e40"), CommandStyle(Style.ScriptRunner)]
+  [CommandStyle(Style.ScriptRunner)]
   public class SampleCsOpenDwg : Command
   {
     public override string EnglishName

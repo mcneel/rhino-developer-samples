@@ -9,10 +9,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsSelCircle : SelCommand
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsSelCircle"; }
-    }
+    public override string EnglishName => "SampleCsSelCircle";
 
     protected override bool SelFilter(RhinoObject rhObj)
     {

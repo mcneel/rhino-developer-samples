@@ -57,7 +57,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsSetPoint
   /// </summary>
-  [System.Runtime.InteropServices.Guid("ece11f77-6a51-49cd-a737-d31072967f27")]
   public class SampleCsSetPoint : TransformCommand
   {
     public SampleCsSetPoint()

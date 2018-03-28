@@ -5,7 +5,6 @@ using Rhino.DocObjects;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("aacdc2a8-ff40-4170-81f4-87d46232a0ef")]
   public class SampleCsDuplicateMeshBorder : Command
   {
     public SampleCsDuplicateMeshBorder()

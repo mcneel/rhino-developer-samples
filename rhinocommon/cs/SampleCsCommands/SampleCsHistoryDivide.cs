@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("74528b07-baba-48c0-9be4-2659de76f01b")]
   public class SampleCsHistoryDivide : Command
   {
     static int _historyVersion = 20121101; 

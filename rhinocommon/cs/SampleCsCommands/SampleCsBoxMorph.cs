@@ -7,7 +7,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsBoxMorph command class
   /// </summary>
-  [System.Runtime.InteropServices.Guid("6515b54c-0ece-412e-a0ef-535c47496b50")]
   public class SampleCsBoxMorph : Command
   {
     public SampleCsBoxMorph()

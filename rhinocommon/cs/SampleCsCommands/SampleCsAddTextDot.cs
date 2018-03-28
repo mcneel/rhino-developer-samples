@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("a03e5d45-b4da-47ea-9e81-a0d67fc17a37")]
   public class SampleCsAddTextDot : Command
   {
     public override string EnglishName

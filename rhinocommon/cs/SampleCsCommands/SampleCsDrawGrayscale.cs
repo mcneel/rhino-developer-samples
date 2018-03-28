@@ -7,7 +7,6 @@ using Rhino.Input;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("fa6d0a17-d17d-4586-987d-61f306876433")]
   public class SampleCsDrawGrayscale : Command
   {
     public override string EnglishName

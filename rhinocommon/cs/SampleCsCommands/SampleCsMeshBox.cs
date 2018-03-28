@@ -9,7 +9,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("cf607c82-f54e-4648-a11c-12d07c9cb444")]
   public class SampleCsMeshBox : Command
   {
     public override string EnglishName

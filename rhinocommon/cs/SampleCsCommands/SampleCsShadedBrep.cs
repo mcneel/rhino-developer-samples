@@ -62,7 +62,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsShadedBrep command
   /// </summary>
-  [System.Runtime.InteropServices.Guid("380a2b33-6c84-4e26-a705-c539f47c1548")]
   public class SampleCsShadedBrep : Command
   {
     public SampleCsShadedBrep()

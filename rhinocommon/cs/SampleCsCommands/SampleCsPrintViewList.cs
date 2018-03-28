@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("0af9dfc5-e0ca-42bb-8fe6-42015bc0b13d")]
   public class SampleCsPrintViewList : Command
   {
     public SampleCsPrintViewList()

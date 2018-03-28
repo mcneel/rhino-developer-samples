@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("74f3cdb8-412e-47a7-85ba-b312703e9901")]
   public class SampleCsSpiral : Command
   {
     public SampleCsSpiral()

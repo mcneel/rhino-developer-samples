@@ -8,10 +8,7 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  /// <summary>
-  /// http://wiki.mcneel.com/developer/runrhinocommandfromplugincommand
-  /// </summary>
-  [System.Runtime.InteropServices.Guid("f636bcf3-1966-4a3e-8bb1-9059468d5e98"), CommandStyle(Style.ScriptRunner)]
+  [CommandStyle(Style.ScriptRunner)]
   public class SampleCsScriptedSweep2 : Command
   {
     public override string EnglishName

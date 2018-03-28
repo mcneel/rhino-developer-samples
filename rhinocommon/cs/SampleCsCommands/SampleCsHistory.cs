@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("a40dadbc-276f-470e-bb09-4bd4ca065707")]
   public class SampleCsHistory : Command
   {
     /// <summary>

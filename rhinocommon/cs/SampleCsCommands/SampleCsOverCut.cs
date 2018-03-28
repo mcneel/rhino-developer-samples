@@ -15,7 +15,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsOverCut command
   /// </summary>
-  [System.Runtime.InteropServices.Guid("e9aa0945-78f5-4165-b368-865c7d92bad7")]
   public class SampleCsOverCut : Command
   {
     enum CutType

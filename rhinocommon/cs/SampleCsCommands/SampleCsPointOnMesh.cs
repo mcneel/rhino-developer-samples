@@ -8,7 +8,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("216a9b4b-9991-463e-af00-929b1994223e")]
   public class SampleCsPointOnMesh : Command
   {
     public SampleCsPointOnMesh()

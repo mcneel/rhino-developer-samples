@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("ee0d1c9c-7139-47b8-9deb-4e8e196c5ec8")]
   public class SampleCsLayerOff : Command
   {
     public override string EnglishName

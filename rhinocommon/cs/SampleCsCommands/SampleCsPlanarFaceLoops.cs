@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("d8f632e9-8236-49a4-90e1-d7c8fe5e3ac1")]
   public class SampleCsPlanarFaceLoops : Command
   {
     public override string EnglishName

@@ -40,7 +40,6 @@ namespace SampleCsCommands
     }
   }
 
-  [System.Runtime.InteropServices.Guid("7cbc6972-069b-45a2-8fac-3958ab7ad4ae")]
   public class SampleCsDrawRightAlignedText : Command
   {
     public override string EnglishName => "SampleCsDrawRightAlignedText";

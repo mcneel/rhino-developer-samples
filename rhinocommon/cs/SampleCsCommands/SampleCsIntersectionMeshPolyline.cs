@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("901bed9e-b2c9-47f3-9e43-53da8eda682f")]
   public class SampleCsIntersectionMeshPolyline : Command
   {
     public override string EnglishName

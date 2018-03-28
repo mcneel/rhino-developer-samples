@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("8522b794-213a-4097-892d-8a0cd8b90dcd")]
   public class SampleCsCircleRadius : Command
   {
     public override string EnglishName

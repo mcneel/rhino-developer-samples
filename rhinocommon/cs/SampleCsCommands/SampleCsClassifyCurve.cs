@@ -12,7 +12,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsClassifyCurve command
   /// </summary>
-  [System.Runtime.InteropServices.Guid("2dc99333-d983-464f-a0c1-f922ec7efc63")]
   public class SampleCsClassifyCurve : Command
   {
     private double m_tolerance;

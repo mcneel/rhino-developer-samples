@@ -5,7 +5,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("c067ae91-9244-4e3f-afd6-2f0606174df8")]
   public class SampleCsZoom : Command
   {
     public SampleCsZoom()

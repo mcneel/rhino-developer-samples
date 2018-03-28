@@ -3,7 +3,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("1206d7fe-e8e2-4b83-b657-7f1ca1a97e95")]
   public class SampleCsBooleanDifference : Command
   {
     public SampleCsBooleanDifference()

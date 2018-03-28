@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("17b2d51e-5bd6-457d-a43c-1c2ec3529f7c")]
   public class SampleCsExplodeHatch : Command
   {
     public SampleCsExplodeHatch()

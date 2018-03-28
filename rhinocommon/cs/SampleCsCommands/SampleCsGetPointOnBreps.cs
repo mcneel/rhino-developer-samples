@@ -13,7 +13,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsGetPointOnBreps
   /// </summary>
-  [System.Runtime.InteropServices.Guid("3dfc74e4-8cbb-4670-b490-0aeafab6fdc7")]
   public class SampleCsGetPointOnBreps : Command
   {
     public SampleCsGetPointOnBreps()

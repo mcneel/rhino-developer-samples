@@ -6,7 +6,6 @@ using Rhino.DocObjects;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("df016c71-cd32-4ab8-8aa6-ce2e413cd409")]
   public class SampleCsInvertSelected : Command
   {
     public override string EnglishName

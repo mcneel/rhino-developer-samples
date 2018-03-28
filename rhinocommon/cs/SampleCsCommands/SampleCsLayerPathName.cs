@@ -7,7 +7,6 @@ using Rhino.FileIO;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("62b8f03f-2462-4b5a-b284-31733cf4235c")]
   public class SampleCsLayerPathName : Command
   {
     public override string EnglishName

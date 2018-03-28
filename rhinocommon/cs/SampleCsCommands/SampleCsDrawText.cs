@@ -40,7 +40,6 @@ namespace SampleCsCommands
     }
   }
 
-  [System.Runtime.InteropServices.Guid("95bee6a7-a0f9-4da5-bc53-6f914373eee6")]
   public class SampleCsDrawText : Command
   {
     public SampleCsDrawText()

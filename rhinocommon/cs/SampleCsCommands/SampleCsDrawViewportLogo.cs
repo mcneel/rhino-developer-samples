@@ -9,7 +9,6 @@ namespace SampleCsCommands
   /// <summary>
   /// SampleCsDrawViewportLogo command
   /// </summary>
-  [System.Runtime.InteropServices.Guid("909d379d-4f74-4b0e-9a4d-856b013b44cc")]
   public class SampleCsDrawViewportLogo : Command
   {
     public SampleCsDrawViewportLogo()

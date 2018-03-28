@@ -8,7 +8,6 @@ using Rhino.UI.Gumball;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("d30a3d2d-4163-4f52-80cd-97d162ad9883")]
   public class SampleCsGumballCylinderCommand : Command
   {
     double m_radius;

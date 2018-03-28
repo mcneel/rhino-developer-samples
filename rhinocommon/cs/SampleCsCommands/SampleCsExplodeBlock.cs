@@ -6,7 +6,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("e327e3b0-c6b6-4537-95cd-430fc56e76b6")]
   public class SampleCsExplodeBlock : Command
   {
     public SampleCsExplodeBlock()

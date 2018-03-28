@@ -9,7 +9,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("00f1e446-d410-44f8-a947-b729d2323317")]
   public class SampleCsDeleteMeshFace : Command
   {
     public SampleCsDeleteMeshFace()

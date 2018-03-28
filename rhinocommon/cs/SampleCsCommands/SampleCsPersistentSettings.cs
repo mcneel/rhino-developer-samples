@@ -4,7 +4,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("7e24bc25-2c10-434b-b3a1-170e66e6a9d6")]
   public class SampleCsPersistentSettings : Command
   {
     private const bool BOOL_DEFAULT = true;

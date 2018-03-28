@@ -13,7 +13,6 @@ namespace SampleCsCommands
   /// <summary>
   /// Sets some sample user text
   /// </summary>
-  [System.Runtime.InteropServices.Guid("E7278A9F-FCE9-4FC0-8AA0-85FFD378DE7E")]
   public class SampleCsSetUserText : Command
   {
     public override string EnglishName
@@ -45,7 +44,6 @@ namespace SampleCsCommands
   /// <summary>
   /// Gets some sample user text
   /// </summary>
-  [System.Runtime.InteropServices.Guid("FF5DB119-7D95-44B2-B4CD-99EC8A068FDA")]
   public class SampleCsGetUserText : Command
   {
     public override string EnglishName
@@ -81,7 +79,6 @@ namespace SampleCsCommands
   /// <summary>
   /// Clears some sample user text
   /// </summary>
-  [System.Runtime.InteropServices.Guid("19D14FD3-2867-4DE5-8E79-217EE2EB3E76")]
   public class SampleCsClearUserText : Command
   {
     public override string EnglishName

@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("397f98ec-e57c-4649-bee4-afe99aa61b68")]
   public class SampleCsSmash : Command
   {
     public SampleCsSmash()

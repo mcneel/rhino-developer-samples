@@ -7,7 +7,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("e9e0feff-c684-429b-8e63-2f3e5dc3577f")]
   public class SampleCsCurveSeam : Command
   {
     public SampleCsCurveSeam()

@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("6b55aabc-fce8-4f21-9793-27ecb7692aaa")]
   public class SampleCsFairCurves : Command
   {
     private enum FairClamp

@@ -7,7 +7,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("26f27d4f-f596-4de8-bfdf-0e274c9bd808")]
   public class SampleCsExtractPreview : Command
   {
     public SampleCsExtractPreview()

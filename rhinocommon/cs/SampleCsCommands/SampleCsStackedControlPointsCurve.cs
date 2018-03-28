@@ -6,7 +6,6 @@ using Rhino.Input;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("ffb318f1-8836-416f-9aef-5b99efb4558c")]
   public class SampleCsStackedControlPointsCurve : Command
   {
     public override string EnglishName

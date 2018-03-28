@@ -9,7 +9,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("83352b46-7061-41dc-b7f9-bd83e647d4dd")]
   public class SampleCsProjectPointToMesh : Command
   {
     public SampleCsProjectPointToMesh()

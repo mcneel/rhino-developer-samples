@@ -7,7 +7,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("982b610f-434d-4aa7-90a1-39f064834c6e")]
   public class SampleCsExtrudeMeshFace : Command
   {
     public override string EnglishName

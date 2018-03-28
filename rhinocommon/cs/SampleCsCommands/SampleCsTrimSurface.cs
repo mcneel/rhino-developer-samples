@@ -8,7 +8,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("98ccc868-1649-44ea-b47f-51432f276bdf")]
   public class SampleCsTrimSurface : Command
   {
     public SampleCsTrimSurface()

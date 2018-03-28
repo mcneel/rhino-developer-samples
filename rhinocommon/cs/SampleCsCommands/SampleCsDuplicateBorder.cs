@@ -7,7 +7,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("f34abe7d-050c-4067-8548-2f449670e0d6")]
   public class SampleCsDuplicateBorder : Command
   {
     public override string EnglishName

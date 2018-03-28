@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("6aa65b22-36b9-4e6a-b20f-f140e316fda3")]
   public class SampleCsCircleOfLines : Command
   {
     public SampleCsCircleOfLines()

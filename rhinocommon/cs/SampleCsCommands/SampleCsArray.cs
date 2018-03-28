@@ -115,7 +115,6 @@ namespace SampleCsCommands
     }
   }
 
-  [System.Runtime.InteropServices.Guid("660f53d4-6390-467f-bbe0-3381d7524a0f")]
   public class SampleCsArray : Command
   {
     public SampleCsArray()

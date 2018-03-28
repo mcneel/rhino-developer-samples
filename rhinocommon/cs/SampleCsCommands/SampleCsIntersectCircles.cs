@@ -5,7 +5,6 @@ using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
-  [System.Runtime.InteropServices.Guid("63e7f731-8e62-4d7c-86dd-e9dc7297e6af")]
   public class SampleCsIntersectCircles : Command
   {
     public SampleCsIntersectCircles()
