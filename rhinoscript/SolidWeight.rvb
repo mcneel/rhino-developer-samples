@@ -70,6 +70,6 @@ Sub SolidWeight
   ' Weight = Volume x Density 
   dblWeight = dblVolume * dblDensity
   strWeight = FormatNumber(dblWeight, 3)
-  Call Rhino.Print("Volume = " & strWeight & " grams")
+  Call Rhino.Print("Weight = " & strWeight & " grams")
   
 End Sub
