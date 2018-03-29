@@ -1,0 +1,6 @@
+; Marmalade.def : Declares the module parameters for the DLL.
+
+; LIBRARY      "Marmalade"
+
+EXPORTS
+    ; Explicit exports can go here
