@@ -218,6 +218,7 @@
     <ClCompile Include="cmdSampleVolume.cpp" />
     <ClCompile Include="cmdSampleWriteBigModel.cpp" />
     <ClCompile Include="cmdSampleZoomWindow.cpp" />
+    <ClCompile Include="cmdSampleSaveCopy.cpp" />
     <ClCompile Include="SampleAttributeUserData.cpp" />
     <ClCompile Include="SampleClippingPlaneUserData.cpp" />
     <ClCompile Include="SampleCommandsApp.cpp" />

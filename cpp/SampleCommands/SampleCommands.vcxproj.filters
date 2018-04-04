@@ -666,6 +666,9 @@
     <ClCompile Include="cmdSampleDump3dmInstanceDefinitionsEx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cmdSampleSaveCopy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SampleCommandsApp.h">
