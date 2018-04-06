@@ -24,25 +24,25 @@ void CSampleCustomUndoEventWatcher::UndoEvent(CRhinoEventWatcher::undo_event und
   switch (undo_event)
   {
   case CRhinoEventWatcher::begin_recording:
-    RhinoApp().Print(L"> UNDO EVENT %5d: Begin recording %s changes\n", undo_event_sn, cmd_name);
+    RhinoApp().Print(L"> UNDO EVENT %5d: Begin recording %ls changes\n", undo_event_sn, cmd_name);
     break;
   case CRhinoEventWatcher::end_recording:
-    RhinoApp().Print(L"> UNDO EVENT %5d: End recording %s changes\n", undo_event_sn, cmd_name);
+    RhinoApp().Print(L"> UNDO EVENT %5d: End recording %ls changes\n", undo_event_sn, cmd_name);
     break;
   case CRhinoEventWatcher::begin_undo:
-    RhinoApp().Print(L"> UNDO EVENT %5d: Begin undoing %s changes\n", undo_event_sn, cmd_name);
+    RhinoApp().Print(L"> UNDO EVENT %5d: Begin undoing %ls changes\n", undo_event_sn, cmd_name);
     break;
   case CRhinoEventWatcher::end_undo:
-    RhinoApp().Print(L"> UNDO EVENT %5d: End undoing %s changes\n", undo_event_sn, cmd_name);
+    RhinoApp().Print(L"> UNDO EVENT %5d: End undoing %ls changes\n", undo_event_sn, cmd_name);
     break;
   case CRhinoEventWatcher::begin_redo:
-    RhinoApp().Print(L"> UNDO EVENT %5d: Begin redoing %s changes\n", undo_event_sn, cmd_name);
+    RhinoApp().Print(L"> UNDO EVENT %5d: Begin redoing %ls changes\n", undo_event_sn, cmd_name);
     break;
   case CRhinoEventWatcher::end_redo:
-    RhinoApp().Print(L"> UNDO EVENT %5d: End redoing %s changes\n", undo_event_sn, cmd_name);
+    RhinoApp().Print(L"> UNDO EVENT %5d: End redoing %ls changes\n", undo_event_sn, cmd_name);
     break;
   case CRhinoEventWatcher::purge_record:
-    RhinoApp().Print(L"> UNDO EVENT %5d: Purging %s changes\n", undo_event_sn, cmd_name);
+    RhinoApp().Print(L"> UNDO EVENT %5d: Purging %ls changes\n", undo_event_sn, cmd_name);
     break;
   }
 }

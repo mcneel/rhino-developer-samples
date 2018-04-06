@@ -114,7 +114,7 @@ void CSampleBlockWalkDialog::AddInstanceDefinitionToTreeCtrl(const CRhinoInstanc
           if (n.IsEmpty())
             s = d;
           else
-            s.Format(L"%s - %s", static_cast<const wchar_t*>(n), static_cast<const wchar_t*>(d));
+            s.Format(L"%ls - %ls", static_cast<const wchar_t*>(n), static_cast<const wchar_t*>(d));
 
           HTREEITEM hItem = m_tree.InsertItem(s, hRoot, hInsertAfter);
           m_tree.SetItemData(hItem, (DWORD_PTR)-((int)obj->RuntimeSerialNumber()));
@@ -140,7 +140,7 @@ void CSampleBlockWalkDialog::AddInstanceDefinitionToTreeCtrl(const CRhinoInstanc
       if (n.IsEmpty())
         s = d;
       else
-        s.Format(L"%s - %s", static_cast<const wchar_t*>(n), static_cast<const wchar_t*>(d));
+        s.Format(L"%ls - %ls", static_cast<const wchar_t*>(n), static_cast<const wchar_t*>(d));
 
       HTREEITEM hItem = m_tree.InsertItem(s, hRoot, hInsertAfter);
       m_tree.SetItemData(hItem, (DWORD_PTR)-((int)obj->RuntimeSerialNumber()));

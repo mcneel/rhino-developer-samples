@@ -96,8 +96,8 @@ void CSampleRhinoEventWatcher::OnDeleteObject(CRhinoDoc&, CRhinoObject&)
 void CSampleRhinoEventWatcher::OnReplaceObject(CRhinoDoc& doc, CRhinoObject&, CRhinoObject&)
 {
   RhinoApp().Print(L"** EVENT: Replace Object **\n");
-  RhinoApp().Print(L"**      UndoActive() = %s **\n", doc.UndoActive() ? L"TRUE" : L"FALSE");
-  RhinoApp().Print(L"**      RedoActive() = %s **\n", doc.RedoActive() ? L"TRUE" : L"FALSE");
+  RhinoApp().Print(L"**      UndoActive() = %ls **\n", doc.UndoActive() ? L"TRUE" : L"FALSE");
+  RhinoApp().Print(L"**      RedoActive() = %ls **\n", doc.RedoActive() ? L"TRUE" : L"FALSE");
 }
 
 void CSampleRhinoEventWatcher::OnUnDeleteObject(CRhinoDoc&, CRhinoObject&)
@@ -226,5 +226,5 @@ void CSampleRhinoEventWatcher::UndoEvent(CRhinoEventWatcher::undo_event type, un
     str = L"Purge Record";
     break;
   }
-  RhinoApp().Print(L"** EVENT: Undo, Type: %s **\n", static_cast<const wchar_t*>(str));
+  RhinoApp().Print(L"** EVENT: Undo, Type: %ls **\n", static_cast<const wchar_t*>(str));
 }

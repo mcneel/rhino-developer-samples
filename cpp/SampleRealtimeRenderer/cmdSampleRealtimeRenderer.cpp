@@ -31,7 +31,7 @@ static class CCommandSampleRealtimeRenderer theSampleRealtimeRendererCommand;
 CRhinoCommand::result CCommandSampleRealtimeRenderer::RunCommand(const CRhinoCommandContext& context)
 {
 	UNREFERENCED_PARAMETER(context);
-	RhinoApp().Print(L"%s plug-in loaded.\n", SampleRealtimeRendererPlugIn().PlugInName());
+	RhinoApp().Print(L"%ls plug-in loaded.\n", SampleRealtimeRendererPlugIn().PlugInName());
 	return CRhinoCommand::success;
 }
 

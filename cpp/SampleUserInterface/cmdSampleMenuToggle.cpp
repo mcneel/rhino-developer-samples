@@ -35,7 +35,7 @@ CRhinoCommand::result CCommandSampleMenuToggle::RunCommand(const CRhinoCommandCo
   BOOL bVisible = SampleUserInterfacePlugIn().IsSampleMenuVisible();
 
   ON_wString str;
-  str.Format(L"%s is %s. New value", LocalCommandName(), bVisible ? L"visible" : L"hidden");
+  str.Format(L"%ls is %ls. New value", LocalCommandName(), bVisible ? L"visible" : L"hidden");
 
   CRhinoGetOption go;
   go.SetCommandPrompt(str);

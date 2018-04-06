@@ -29,7 +29,7 @@ static class CCommandSampleMenuCommand1 theSampleMenuCommand1Command;
 CRhinoCommand::result CCommandSampleMenuCommand1::RunCommand(const CRhinoCommandContext& context)
 {
   ON_wString wStr;
-  wStr.Format(L"The \"%s\" command is under construction.\n", EnglishCommandName());
+  wStr.Format(L"The \"%ls\" command is under construction.\n", EnglishCommandName());
   if (context.IsInteractive())
     RhinoMessageBox(wStr, EnglishCommandName(), MB_OK);
   else
@@ -71,7 +71,7 @@ static class CCommandSampleMenuCommand2 theSampleMenuCommand2Command;
 CRhinoCommand::result CCommandSampleMenuCommand2::RunCommand(const CRhinoCommandContext& context)
 {
   ON_wString wStr;
-  wStr.Format(L"The \"%s\" command is under construction.\n", EnglishCommandName());
+  wStr.Format(L"The \"%ls\" command is under construction.\n", EnglishCommandName());
   if (context.IsInteractive())
     RhinoMessageBox(wStr, EnglishCommandName(), MB_OK);
   else
@@ -113,7 +113,7 @@ static class CCommandSampleMenuCommand3 theSampleMenuCommand3Command;
 CRhinoCommand::result CCommandSampleMenuCommand3::RunCommand(const CRhinoCommandContext& context)
 {
   ON_wString wStr;
-  wStr.Format(L"The \"%s\" command is under construction.\n", EnglishCommandName());
+  wStr.Format(L"The \"%ls\" command is under construction.\n", EnglishCommandName());
   if (context.IsInteractive())
     RhinoMessageBox(wStr, EnglishCommandName(), MB_OK);
   else
@@ -155,7 +155,7 @@ static class CCommandSampleMenuCommand4 theSampleMenuCommand4Command;
 CRhinoCommand::result CCommandSampleMenuCommand4::RunCommand(const CRhinoCommandContext& context)
 {
   ON_wString wStr;
-  wStr.Format(L"The \"%s\" command is under construction.\n", EnglishCommandName());
+  wStr.Format(L"The \"%ls\" command is under construction.\n", EnglishCommandName());
   if (context.IsInteractive())
     RhinoMessageBox(wStr, EnglishCommandName(), MB_OK);
   else

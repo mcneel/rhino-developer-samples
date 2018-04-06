@@ -65,7 +65,7 @@ CRhinoCommand::result CCommandSampleObjectUserDataAdd::RunCommand(const CRhinoCo
     return gs.CommandResult();
 
   bool rc = CSampleObjectUserData::AddSampleObjectUserData(context.m_doc, object, gp.Point(), gs.String());
-  RhinoApp().Print(L"%s\n", rc ? L"Succeeded!" : L"Failed!");
+  RhinoApp().Print(L"%ls\n", rc ? L"Succeeded!" : L"Failed!");
 
   return CRhinoCommand::success;
 }
@@ -123,7 +123,7 @@ CRhinoCommand::result CCommandSampleObjectUserDataGet::RunCommand(const CRhinoCo
   {
     ON_wString pointstr;
     RhinoFormatPoint(point, pointstr);
-    RhinoApp().Print(L"point = %s, string = %s\n", static_cast<const wchar_t*>(pointstr), static_cast<const wchar_t*>(string));
+    RhinoApp().Print(L"point = %ls, string = %ls\n", static_cast<const wchar_t*>(pointstr), static_cast<const wchar_t*>(string));
   }
   else
   {
@@ -177,7 +177,7 @@ CRhinoCommand::result CCommandSampleObjectUserDataRemove::RunCommand(const CRhin
     return CRhinoCommand::failure;
 
   bool rc = CSampleObjectUserData::RemoveSampleObjectUserData(context.m_doc, object);
-  RhinoApp().Print(L"%s\n", rc ? L"Succeeded!" : L"Failed!");
+  RhinoApp().Print(L"%ls\n", rc ? L"Succeeded!" : L"Failed!");
 
   return CRhinoCommand::success;
 }

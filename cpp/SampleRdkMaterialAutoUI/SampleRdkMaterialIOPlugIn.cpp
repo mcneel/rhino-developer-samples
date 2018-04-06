@@ -93,7 +93,7 @@ bool CSampleRdkMaterialIOPlugIn::Parse(char*& p, const char* pSubString, bool bE
 		if (bExpect)
 		{
 			ON_wString s;
-			s.Format(L"CSampleRdkMaterialIOPlugIn syntax error while loading file\n\n%s\n\n"
+			s.Format(L"CSampleRdkMaterialIOPlugIn syntax error while loading file\n\n%ls\n\n"
 			         L"Expected '%S' but found '%S' at line %d\n", static_cast<const wchar_t*>(m_sFilename), pSubString, p, m_iLine);
 			OutputDebugString(s);
 			::RhRdkErrorBox(s);
@@ -398,23 +398,23 @@ bool CSampleRdkMaterialIOPlugIn::Save(const wchar_t* wszFilename, const CRhRdkCo
 		switch (field.Value().Type())
 		{
 		case CRhRdkVariant::vtString:
-			sText.Format(L"%s = \"%s\"\r\n", wszName, wszValue);
+			sText.Format(L"%ls = \"%ls\"\r\n", wszName, wszValue);
 			break;
 
 		case CRhRdkVariant::vtColor:
-			sText.Format(L"%s = %S(%s)\r\n", wszName, szColor, wszValue);
+			sText.Format(L"%ls = %S(%ls)\r\n", wszName, szColor, wszValue);
 			break;
 
 		case CRhRdkVariant::vtVector2d:
-			sText.Format(L"%s = %S(%s)\r\n", wszName, szVector2D, wszValue);
+			sText.Format(L"%ls = %S(%ls)\r\n", wszName, szVector2D, wszValue);
 			break;
 
 		case CRhRdkVariant::vtVector3d:
-			sText.Format(L"%s = %S(%s)\r\n", wszName, szVector3D, wszValue);
+			sText.Format(L"%ls = %S(%ls)\r\n", wszName, szVector3D, wszValue);
 			break;
 
 		default:
-			sText.Format(L"%s = %s\r\n", wszName, wszValue);
+			sText.Format(L"%ls = %ls\r\n", wszName, wszValue);
 			break;
 		}
 

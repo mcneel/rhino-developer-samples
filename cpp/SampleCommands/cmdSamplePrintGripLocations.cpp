@@ -49,7 +49,7 @@ CRhinoCommand::result CCommandSamplePrintGripLocations::RunCommand(const CRhinoC
       ON_wString point_str;
       RhinoFormatPoint(point, point_str);
 
-      RhinoApp().Print(L"Grip %d = %s\n", i, static_cast<const wchar_t*>(point_str));
+      RhinoApp().Print(L"Grip %d = %ls\n", i, static_cast<const wchar_t*>(point_str));
     }
   }
 

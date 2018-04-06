@@ -196,7 +196,7 @@ static class CCommandSampleCustomUndo theSampleCustomUndoCommand;
 CRhinoCommand::result CCommandSampleCustomUndo::RunCommand(const CRhinoCommandContext& context)
 {
   UNREFERENCED_PARAMETER(context);
-  RhinoApp().Print(L"%s plug-in loaded.\n", SampleCustomUndoPlugIn().PlugInName());
+  RhinoApp().Print(L"%ls plug-in loaded.\n", SampleCustomUndoPlugIn().PlugInName());
   return CRhinoCommand::success;
 }
 

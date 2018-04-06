@@ -152,17 +152,17 @@ BOOL CSampleRdkMaterialAutoUIPlugIn::OnLoadPlugIn()
 		delete m_pRdkPlugIn;
 		m_pRdkPlugIn = NULL;
 
-		wStr.Format(L"Failed to load %s, version %s.  RDK initialization failed\n", PlugInName(), PlugInVersion());
+		wStr.Format(L"Failed to load %ls, version %ls.  RDK initialization failed\n", PlugInName(), PlugInVersion());
 		RhinoApp().Print(wStr);
 
 		return FALSE;
 	}
 
-	wStr.Format(L"Loading %s, version %s\n", PlugInName(), PlugInVersion());
+	wStr.Format(L"Loading %ls, version %ls\n", PlugInName(), PlugInVersion());
 	RhinoApp().Print(wStr);
 
 #ifdef _DEBUG
-	RhinoApp().Print(L"running on RDK version %s\n", static_cast<const wchar_t*>(::RhRdkBuildDate()));
+	RhinoApp().Print(L"running on RDK version %ls\n", static_cast<const wchar_t*>(::RhRdkBuildDate()));
 #endif
 
 	// TODO: Add render plug-in initialization code here.

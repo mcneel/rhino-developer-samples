@@ -79,7 +79,7 @@ CRhinoCommand::result CCommandSampleDump3dmInstanceDefinitionsEx::RunCommand(con
     }
   }
 
-  RhinoApp().Print(L"%s\n", static_cast<const wchar_t*>(writer));
+  RhinoApp().Print(L"%ls\n", static_cast<const wchar_t*>(writer));
 
   return CRhinoCommand::success;
 }
@@ -92,7 +92,7 @@ void CCommandSampleDump3dmInstanceDefinitionsEx::DumpInstanceDefinition(ONX_Mode
   {
     // Dump output
     ON_wString node = (bRoot) ? L"\x2500" : L"\x2514";
-    dump.Print(L"%s instance_definition %d = %s\n", static_cast<const wchar_t*>(node), idef->Index(), static_cast<const wchar_t*>(idef->Name()));
+    dump.Print(L"%ls instance_definition %d = %ls\n", static_cast<const wchar_t*>(node), idef->Index(), static_cast<const wchar_t*>(idef->Name()));
 
     const ON_SimpleArray<ON_UUID>& geometry_id_list = idef->InstanceGeometryIdList();
     const int geometry_id_count = geometry_id_list.Count();
@@ -116,7 +116,7 @@ void CCommandSampleDump3dmInstanceDefinitionsEx::DumpInstanceDefinition(ONX_Mode
             else
             {
               ON_wString type = ObjectTypeToString(geometry->ObjectType());
-              dump.Print(L"\x2514 object %d = %s\n", i, static_cast<const wchar_t*>(type));
+              dump.Print(L"\x2514 object %d = %ls\n", i, static_cast<const wchar_t*>(type));
             }
           }
         }

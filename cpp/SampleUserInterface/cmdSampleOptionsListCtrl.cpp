@@ -40,7 +40,7 @@ CRhinoCommand::result CCommandSampleOptionsListCtrl::RunCommand(const CRhinoComm
     bool bVisible = CRhinoTabbedDockBarDialog::IsTabVisible(context.m_doc, tabId);
 
     ON_wString str;
-    str.Format(L"%s is %s. New value", LocalCommandName(), bVisible ? L"visible" : L"hidden");
+    str.Format(L"%ls is %ls. New value", LocalCommandName(), bVisible ? L"visible" : L"hidden");
 
     CRhinoGetOption go;
     go.SetCommandPrompt(str);

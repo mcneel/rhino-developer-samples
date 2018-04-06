@@ -48,7 +48,7 @@ CRhinoCommand::result CCommandSampleSaveCopy::RunCommand(const CRhinoCommandCont
   for (int i = 1; i < 999; i++)
   {
     new_path.Format(
-      L"%s%s%s %03d%s",
+      L"%ls%ls%ls %03d%ls",
       static_cast<const wchar_t*>(drive),
       static_cast<const wchar_t*>(dir),
       static_cast<const wchar_t*>(fname),
@@ -74,7 +74,7 @@ CRhinoCommand::result CCommandSampleSaveCopy::RunCommand(const CRhinoCommandCont
   FILE* fp = ON::OpenFile(ptr_new_path, L"wb");
   if (nullptr == fp)
   {
-    RhinoApp().Print(L"Unable to open %s.\n", ptr_new_path);
+    RhinoApp().Print(L"Unable to open %ls.\n", ptr_new_path);
     return CRhinoCommand::failure;
   }
 
@@ -84,9 +84,9 @@ CRhinoCommand::result CCommandSampleSaveCopy::RunCommand(const CRhinoCommandCont
   ON::CloseFile(fp);
 
   if (rc)
-    RhinoApp().Print(L"File successfully saved as %s.\n", ptr_new_path);
+    RhinoApp().Print(L"File successfully saved as %ls.\n", ptr_new_path);
   else
-    RhinoApp().Print(L"Failed to save %s.\n", ptr_new_path);
+    RhinoApp().Print(L"Failed to save %ls.\n", ptr_new_path);
 
   return (rc) ? CRhinoCommand::success : CRhinoCommand::failure;
 }

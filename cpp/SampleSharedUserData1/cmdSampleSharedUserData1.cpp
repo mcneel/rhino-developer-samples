@@ -53,7 +53,7 @@ CRhinoCommand::result CCommandSampleSharedUserData1::RunCommand(const CRhinoComm
     return gs.CommandResult();
 
   bool rc = AddPlugInUserData(context.m_doc, object, gp.Point(), gs.String());
-  RhinoApp().Print(L"%s\n", rc ? L"Succeeded!" : L"Failed!");
+  RhinoApp().Print(L"%ls\n", rc ? L"Succeeded!" : L"Failed!");
 
   context.m_doc.Redraw();
 

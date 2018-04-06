@@ -122,17 +122,17 @@ BOOL CSampleRdkMaterialCustomUIPlugIn::OnLoadPlugIn()
 	{
 		delete m_pRdkPlugIn;
 		m_pRdkPlugIn = NULL;
-		str.Format(L"Failed to load %s, version %s. RDK initialization failed\n", PlugInName(), PlugInVersion());
+		str.Format(L"Failed to load %ls, version %ls. RDK initialization failed\n", PlugInName(), PlugInVersion());
 		RhinoApp().Print(str);
 		return FALSE;
 	}
 
-	str.Format(L"Loading %s, version %s\n", PlugInName(), PlugInVersion());
+	str.Format(L"Loading %ls, version %ls\n", PlugInName(), PlugInVersion());
 	RhinoApp().Print(str);
 
 	// TODO: Add render plug-in initialization code here.
 
-	str.Format(L"Loading %s, version %s\n", PlugInName(), PlugInVersion());
+	str.Format(L"Loading %ls, version %ls\n", PlugInName(), PlugInVersion());
 	RhinoApp().Print(str);
 
 	m_event_watcher.Register();

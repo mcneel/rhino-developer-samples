@@ -73,7 +73,7 @@ CRhinoCommand::result CCommandSampleIdleProcessor::RunCommand(const CRhinoComman
     theSampleIdleEventWatcher.Enable(theSampleIdleEventWatcher.IsEnabled() ? false : true);
 
   RhinoApp().Print(
-    L"%s %s\n",
+    L"%ls %ls\n",
     EnglishCommandName(),
     theSampleIdleEventWatcher.IsEnabled() ? L"enabled" : L"disabled"
   );

@@ -30,7 +30,7 @@ static class CCommandSampleWithLicensing theSampleWithLicensingCommand;
 
 CRhinoCommand::result CCommandSampleWithLicensing::RunCommand(const CRhinoCommandContext& context)
 {
-  RhinoApp().Print(L"%s plug-in loaded.\n", SampleWithLicensingPlugIn().PlugInName());
+  RhinoApp().Print(L"%ls plug-in loaded.\n", SampleWithLicensingPlugIn().PlugInName());
   return CRhinoCommand::success;
 }
 
