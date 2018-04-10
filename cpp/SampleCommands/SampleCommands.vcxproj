@@ -197,6 +197,7 @@
     <ClCompile Include="cmdSampleSurfaceNormal.cpp" />
     <ClCompile Include="cmdSampleSurfacePoints.cpp" />
     <ClCompile Include="cmdSampleSwapHatch.cpp" />
+    <ClCompile Include="cmdSampleSweep2.cpp" />
     <ClCompile Include="cmdSampleSweep2Point.cpp" />
     <ClCompile Include="cmdSampleSyncRenderColors.cpp" />
     <ClCompile Include="cmdSampleSyncViews.cpp" />
