@@ -135,6 +135,7 @@
     <ClCompile Include="cmdSampleMove.cpp" />
     <ClCompile Include="cmdSampleMoveCPlane.cpp" />
     <ClCompile Include="cmdSampleMoveGrips.cpp" />
+    <ClCompile Include="cmdSampleNetworkSrf.cpp" />
     <ClCompile Include="cmdSampleNewFloatingViewport.cpp" />
     <ClCompile Include="cmdSampleNurbsCircle.cpp" />
     <ClCompile Include="cmdSampleNurbsCurveLength.cpp" />
