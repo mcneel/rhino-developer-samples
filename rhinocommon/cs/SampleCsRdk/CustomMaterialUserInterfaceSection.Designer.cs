@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using RhinoWindows.Forms;
 
 namespace SampleCsRdk
 {
@@ -64,7 +65,7 @@ namespace SampleCsRdk
       this.bufferedTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.bufferedTreeView.Location = new System.Drawing.Point(3, 26);
-      this.bufferedTreeView.Size = new System.Drawing.Size(149, 200);
+      this.bufferedTreeView.Size = Dpi.ScaleSize(new System.Drawing.Size(149, 200));
       this.bufferedTreeView.ImageList = this.imageList;
       this.bufferedTreeView.ItemHeight = 30;
       this.bufferedTreeView.ImageIndex = 0;
@@ -89,7 +90,7 @@ namespace SampleCsRdk
       this.labelColor.AutoSize = true;
       this.labelColor.Location = new System.Drawing.Point(3, 243);
       this.labelColor.Name = "labelColor";
-      this.labelColor.Size = new System.Drawing.Size(34, 13);
+      this.labelColor.Size = new System.Drawing.Size(34, Dpi.ScaleInt(13));
       this.labelColor.TabIndex = 0;
       this.labelColor.Text = "Color:";
       // 
@@ -98,7 +99,7 @@ namespace SampleCsRdk
       this.buttonColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.buttonColor.BackColor = System.Drawing.Color.White;
-      this.buttonColor.Location = new System.Drawing.Point(47, 243);
+      this.buttonColor.Location = new System.Drawing.Point(47, 500);
       this.buttonColor.Name = "buttonColor";
       this.buttonColor.Size = new System.Drawing.Size(105, 23);
       this.buttonColor.TabIndex = 1;
@@ -145,9 +146,10 @@ namespace SampleCsRdk
       this.Controls.Add(this.buttonColor);
       this.Controls.Add(this.labelColor);
       this.Name = "CustomMaterialUserInterfaceSection";
-      this.Size = new System.Drawing.Size(155, 250);
+      this.Size = Dpi.ScaleSize(new System.Drawing.Size(155, 250));
       this.ResumeLayout(false);
       this.PerformLayout();
+      this.ResumeLayout(true);
 
     }
 
