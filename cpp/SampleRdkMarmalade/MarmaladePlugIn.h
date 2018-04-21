@@ -15,20 +15,21 @@ public:
 	static GUID ID(void);
 
 	// Required overrides.
-	virtual const wchar_t* PlugInName() const;
-	virtual const wchar_t* PlugInVersion() const;
-	virtual GUID PlugInID() const;
-	virtual BOOL OnLoadPlugIn();
-	virtual void OnUnloadPlugIn();
+	virtual const wchar_t* PlugInName() const override;
+	virtual const wchar_t* PlugInVersion() const override;
+	virtual GUID PlugInID() const override;
+	virtual BOOL OnLoadPlugIn() override;
+	virtual void OnUnloadPlugIn() override;
+	virtual plugin_load_time PlugInLoadTime() override { return load_plugin_at_startup; }
 
 	// Online help overrides.
-	virtual BOOL AddToPlugInHelpMenu() const;
-	virtual BOOL OnDisplayPlugInHelp( HWND hWnd ) const;
+	virtual BOOL AddToPlugInHelpMenu() const override;
+	virtual BOOL OnDisplayPlugInHelp(HWND hWnd) const override;
 
 	// Render overrides.
-	virtual CRhinoCommand::result Render(const CRhinoCommandContext& context, bool bPreview);
-	virtual CRhinoCommand::result RenderWindow(const CRhinoCommandContext& context, bool bPreview, CRhinoView* view, const LPRECT rect, bool bInWindow);
-
+	virtual CRhinoCommand::result Render(const CRhinoCommandContext& context, bool bPreview) override;
+	virtual CRhinoCommand::result RenderWindow(const CRhinoCommandContext& context, bool bPreview,
+                                               CRhinoView* view, const LPRECT rect, bool bInWindow, bool bBlowUp) override;
 	// Menu.
 	virtual void AddMarmaladeMenu(void);
 	virtual void RemoveMarmaladeMenu(void);
@@ -46,14 +47,12 @@ public:
 
 	bool IsMarmaladeCurrentRenderer(void) const;
 
-	// Non-modal options dialog. How about having a handler object for this stuff?
+	// Non-modal options dialog.
 	void ShowNonModalOptionsDialog(bool bShow);
 	void ToggleNonModalOptionsDialog(void);
 	void EnableNonModalOptionsDialog(bool bEnable) const;
 	bool IsNonModalOptionsDialogVisible(void) const;
 	bool IsNonModalOptionsDialogMinimized(void) const;
-
-	virtual plugin_load_time PlugInLoadTime() { return load_plugin_at_startup; }
 
 private:
 	ON_wString m_plugin_version;

@@ -39,12 +39,10 @@ ON_wString CMarmaladePointCloudRMP::Name(void) const
 	 return L"Point Cloud";
 }
 
-bool CMarmaladePointCloudRMP::WillBuildCustomMesh(const ON_Viewport& vp, 
-												  const CRhinoObject* pObject, 
-												  const UUID& uuidRequestingPlugIn, 
-												  IRhRdkCustomRenderMeshManager::eMeshType type) const
+bool CMarmaladePointCloudRMP::WillBuildCustomMesh(const ON_Viewport& vp, const CRhinoObject* pObject, const CRhinoDoc&,
+                                                  const UUID&, const CDisplayPipelineAttributes*) const
 {
-	if (NULL == pObject)
+	if (nullptr == pObject)
 		return false;
 
 	static CRhinoPointCloudObject pc;
@@ -55,27 +53,31 @@ bool CMarmaladePointCloudRMP::WillBuildCustomMesh(const ON_Viewport& vp,
 	return true;
 }
 
-ON_BoundingBox CMarmaladePointCloudRMP::BoundingBox(const ON_Viewport& vp, const CRhinoObject* pObject, const UUID& uuidRequestingPlugIn, IRhRdkCustomRenderMeshManager::eMeshType type) const
+ON_BoundingBox CMarmaladePointCloudRMP::BoundingBox(const ON_Viewport& vp, const CRhinoObject* pObject, const CRhinoDoc& doc,
+                                        const UUID& uuidRequestingPlugIn, const CDisplayPipelineAttributes* pAttributes) const
 {
-	return ::RMPBoundingBoxImpl(*this, vp, pObject, uuidRequestingPlugIn, type);
+	return ::RMPBoundingBoxImpl(*this, vp, pObject, doc, uuidRequestingPlugIn, pAttributes);
 }
 
-bool CMarmaladePointCloudRMP::BuildCustomMeshes(const ON_Viewport& vp, 
-												const UUID& uuidRequestingPlugIn, 
-												IRhRdkCustomRenderMeshes& mesh, 
-												IRhRdkCustomRenderMeshManager::eMeshType type) const
+bool CMarmaladePointCloudRMP::BuildCustomMeshes(const ON_Viewport& vp, const UUID& uuidRequestingPlugIn, const CRhinoDoc& doc,
+                                                IRhRdkCustomRenderMeshes& crmInOut, const CDisplayPipelineAttributes* pAttributes,
+                                                bool bWillBuildCustomMeshCheck) const
+
 {
-	if (!WillBuildCustomMesh(vp, mesh.Object(), uuidRequestingPlugIn, type))
+	// Guaranteed a point cloud by this point.
+	const auto* pObject = crmInOut.Object();
+	if (nullptr == pObject)
 		return false;
 
-	// Guaranteed a point cloud by this point.
-	const CRhinoObject* pObject = mesh.Object();
-	
-	const ON_PointCloud* pPC = static_cast<const ON_PointCloud*>(pObject->Geometry());
+	if (bWillBuildCustomMeshCheck && !WillBuildCustomMesh(vp, pObject, doc, uuidRequestingPlugIn, pAttributes))
+		return false;
 
-	const int iPointCount = pPC->PointCount();
+	const auto* pPC = static_cast<const ON_PointCloud*>(pObject->Geometry());
+	if (nullptr == pPC)
+		return false;
 
-	for (int i = 0; i < iPointCount; i++)
+	const int pointCount = pPC->PointCount();
+	for (int i = 0; i < pointCount; i++)
 	{
 		ON_COMPONENT_INDEX ci;
 		ci.m_type = ON_COMPONENT_INDEX::pointcloud_point;
@@ -86,7 +88,7 @@ bool CMarmaladePointCloudRMP::BuildCustomMeshes(const ON_Viewport& vp,
 		ON_Sphere sphere;
 		sphere.plane = ON_Plane(pt, ON_3dVector::UnitVector(2));
 		sphere.radius = 0.1;
-		mesh.Add(sphere, NULL);
+		crmInOut.Add(sphere, nullptr);
 	}
 
 	return true;

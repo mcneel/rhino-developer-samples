@@ -17,27 +17,24 @@ public:
 	virtual ~CMarmaladeAutoUITexture();
 
 public: // Overrides from CRhRdkContent.
-	virtual UUID TypeId(void) const;
-	virtual ON_wString TypeName(void) const;
-	virtual ON_wString TypeDescription(void) const;
-	virtual ON_wString InternalName(void) const;
-	virtual void AddUISections(void);
-	virtual void AddAutoParameters(IRhRdkParamBlock& paramBlock, int iId); /*const*/
-	virtual void GetAutoParameters(const IRhRdkParamBlock& paramBlock, int iId);
-	virtual eParamSerialMethod ParameterSerializationMethod(void) const { return get_set; }
-	virtual bool GetParameters(const IRhRdk_XMLSection& section, eGetParamsContext context);
-	virtual bool SetParameters(IRhRdk_XMLSection& section, eSetParamsContext context) const;
-	virtual UUID RenderEngineId(void) const;
-	virtual UUID PlugInId(void) const;
-	virtual void* GetShader(const UUID& uuidRenderEngine, void* pvData) const;
-	virtual bool IsFactoryProductAcceptableAsChild(const IRhRdkContentFactory* pFactory, const wchar_t* wszChildSlotName) const;
-	virtual DWORD BitFlags(void) const;
-	virtual const wchar_t* Category(void) const { return RDK_CAT_PROCEDURAL_2D; }
-	virtual IRhRdkTextureEvaluator* NewTextureEvaluator(void) const;
-	virtual bool IsImageBased(void) const { return false; }
-
-public: // Overrides from CRhRdkTexture.
-	virtual void SimulateTexture(CRhRdkSimulatedTexture& mat, bool bForDataOnlyDec) const;
+	virtual UUID TypeId(void) const override;
+	virtual ON_wString TypeName(void) const override;
+	virtual ON_wString TypeDescription(void) const override;
+	virtual ON_wString InternalName(void) const override;
+	virtual void AddUISections(IRhRdkExpandableContentUI& ui) override;
+	virtual void AddAutoParameters(IRhRdkParamBlock& paramBlock, int iId) const override;
+	virtual void GetAutoParameters(const IRhRdkParamBlock& paramBlock, int iId) override;
+	virtual ParamSerialMethod ParameterSerializationMethod(void) const override { return ParamSerialMethod ::GetSet; }
+	virtual bool ReadParametersFromSection(const IRhRdk_XMLSection& section, ReadParamsContext context) override;
+	virtual bool WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const override;
+	virtual UUID RenderEngineId(void) const override;
+	virtual UUID PlugInId(void) const override;
+	virtual void* GetShader(const UUID& uuidRenderEngine, void* pvData) const override;
+	virtual bool IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* wszChildSlotName) const override;
+	virtual unsigned int BitFlags(void) const override;
+	virtual const wchar_t* Category(void) const override { return RDK_CAT_PROCEDURAL_2D; }
+	virtual IRhRdkTextureEvaluator* NewTextureEvaluator(IRhRdkTextureEvaluator::CEvalFlags ef) const override;
+	virtual bool IsImageBased(void) const override { return false; }
 
 private:
 	class Evaluator;

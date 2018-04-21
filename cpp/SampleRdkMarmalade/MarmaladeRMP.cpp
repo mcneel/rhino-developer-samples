@@ -41,10 +41,10 @@ ON_wString CMarmaladeRMP::Name(void) const
 	 return L"Fake Flat People";
 }
 
-bool CMarmaladeRMP::WillBuildCustomMesh(const ON_Viewport& vp, const CRhinoObject* pObject,
-                                        const UUID& uuidRequestingPlugIn, IRhRdkCustomRenderMeshManager::eMeshType) const
+bool CMarmaladeRMP::WillBuildCustomMesh(const ON_Viewport& vp, const CRhinoObject* pObject, const CRhinoDoc&,
+                                        const UUID&, const CDisplayPipelineAttributes*) const
 {
-	if (NULL == pObject)
+	if (nullptr == pObject)
 		return false;
 
 	ON_wString s;
@@ -54,23 +54,24 @@ bool CMarmaladeRMP::WillBuildCustomMesh(const ON_Viewport& vp, const CRhinoObjec
 	return true;
 }
 
-ON_BoundingBox CMarmaladeRMP::BoundingBox(const ON_Viewport& vp, const CRhinoObject* pObject, const UUID& uuidRequestingPlugIn, IRhRdkCustomRenderMeshManager::eMeshType type) const
+ON_BoundingBox CMarmaladeRMP::BoundingBox(const ON_Viewport& vp, const CRhinoObject* pObject, const CRhinoDoc& doc,
+                                          const UUID& uuidRequestingPlugIn, const CDisplayPipelineAttributes* pAttributes) const
 {
-	return ::RMPBoundingBoxImpl(*this, vp, pObject, uuidRequestingPlugIn, type);
+	return ::RMPBoundingBoxImpl(*this, vp, pObject, doc, uuidRequestingPlugIn, pAttributes);
 }
 
 static void SetTextureSlot(CRhRdkBasicMaterial* pBasicMaterial, const ON_Material& mat,
-                           CRhRdkTexture::eType type, ON_Texture::TYPE texType)
+                           CRhRdkMaterial::ChildSlotUsage usage, ON_Texture::TYPE texType)
 {
-	int iIndex = mat.FindTexture(NULL, texType);
+	int iIndex = mat.FindTexture(nullptr, texType);
 	if (iIndex >= 0)
 	{
 		const ON_Texture& tex = mat.m_textures[iIndex];
-		CRhRdkBasicMaterial::CTextureSlot slot = pBasicMaterial->TextureSlot(type);
+		CRhRdkBasicMaterial::CTextureSlot slot = pBasicMaterial->TextureSlot(usage);
 		slot.m_bOn = tex.m_bOn;
-		slot.m_bFilterOn = (tex.m_magfilter == tex.linear_filter) && (tex.m_minfilter == tex.linear_filter);
-		slot.m_dAmount = (tex.m_mode == tex.decal_texture) ? 1.0 : tex.m_blend_constant_A;
-		pBasicMaterial->SetTextureSlot(type, slot, CRhRdkContent::ccProgram);
+		slot.m_bFilterOn = (tex.m_magfilter == ON_Texture::FILTER::linear_filter) && (tex.m_minfilter == ON_Texture::FILTER::linear_filter);
+		slot.m_dAmount = (tex.m_mode == ON_Texture::MODE::decal_texture) ? 1.0 : tex.m_blend_constant_A;
+		pBasicMaterial->SetTextureSlot(usage, slot);
 	}
 }
 
@@ -79,15 +80,19 @@ static inline ON_3fPoint To3f(const ON_3dPoint& p)
 	return ON_3fPoint((float)p.x, (float)p.y, (float)p.z);
 }
 
-bool CMarmaladeRMP::BuildCustomMeshes(const ON_Viewport& vp, const UUID& uuidRequestingPlugIn, IRhRdkCustomRenderMeshes& crmInOut, IRhRdkCustomRenderMeshManager::eMeshType type) const
+bool CMarmaladeRMP::BuildCustomMeshes(const ON_Viewport& vp, const UUID& uuidRequestingPlugIn, const CRhinoDoc& doc,
+                                      IRhRdkCustomRenderMeshes& crmInOut, const CDisplayPipelineAttributes* pAttributes,
+                                      bool bWillBuildCustomMeshCheck) const
 {
-	if (!WillBuildCustomMesh(vp, crmInOut.Object(), uuidRequestingPlugIn, type))
+	const auto* pObject = crmInOut.Object();
+	if (nullptr == pObject)
 		return false;
 
-	const CRhinoObject* pObject = crmInOut.Object();
+	if (bWillBuildCustomMeshCheck && !WillBuildCustomMesh(vp, pObject, doc, uuidRequestingPlugIn, pAttributes))
+		return false;
 
-	const CRhinoPointObject* pPoint = CRhinoPointObject::Cast(pObject);
-	if (NULL == pPoint)
+	const auto* pPoint = CRhinoPointObject::Cast(pObject);
+	if (nullptr == pPoint)
 		return false;
 
 	crmInOut.SetAutoDeleteMeshesOn();
@@ -103,7 +108,7 @@ bool CMarmaladeRMP::BuildCustomMeshes(const ON_Viewport& vp, const UUID& uuidReq
 	md.m_x = md.m_y = md.m_z = 1;
 	ON_Mesh* pMesh = RhinoMeshPlane(plane, ON_Interval(0.0, 10.0), ON_Interval(0.0, 20.0), md);
 
-	CRhRdkBasicMaterial* pBasicMaterial = new CRhRdkBasicMaterial;
+	auto* pBasicMaterial = new CRhRdkBasicMaterial;
 
 	wchar_t buf[MAX_PATH+1];
 	::GetWindowsDirectory(buf, MAX_PATH);
@@ -111,14 +116,18 @@ bool CMarmaladeRMP::BuildCustomMeshes(const ON_Viewport& vp, const UUID& uuidReq
 	sFilename += L"\\Coffee Bean.bmp";
 
 	CRhinoDib dib;
-	dib.ReadFromFile(sFilename);
-	CRhRdkTexture* pTexture = ::RhRdkNewDibTexture(dib.CopyHBitmap());
-	pTexture->SetChildSlotName(RDK_BASIC_MAT_BITMAP_TEXTURE);
-	pBasicMaterial->AddChild(pTexture);
+	dib.ReadFromFile(doc.RuntimeSerialNumber(), sFilename);
+	auto* pTexture = ::RhRdkNewDibTexture(&dib, &doc);
+	if (nullptr != pTexture)
+	{
+		pBasicMaterial->SetChild(pTexture, RDK_BASIC_MAT_BITMAP_TEXTURE);
+	}
 
-	CRhRdkBasicMaterial::CTextureSlot ts = pBasicMaterial->TextureSlot(CRhRdkTexture::bitmap);
+	const auto usage = CRhRdkMaterial::ChildSlotUsage::Diffuse;
+
+	auto ts = pBasicMaterial->TextureSlot(usage);
 	ts.m_bOn = true;
-	pBasicMaterial->SetTextureSlot(CRhRdkTexture::bitmap, ts, CRhRdkContent::ccProgram);
+	pBasicMaterial->SetTextureSlot(usage, ts);
 
 	crmInOut.Add(pMesh, pBasicMaterial);
 

@@ -7,6 +7,21 @@
 #include "MarmaladeActualShaders.h"
 #include "Resource.h"
 
+static bool ConvertIconToDib(HICON hIcon, CRhinoDib& dibOut)
+{
+	ICONINFO info = { 0 };
+	if (!GetIconInfo(hIcon, &info))
+		return false;
+
+	// This just assumes it's a 32-bit dib with alpha in it.
+	dibOut.SetBitmap(info.hbmColor);
+
+	VERIFY(::DeleteObject(info.hbmColor));
+	VERIFY(::DeleteObject(info.hbmMask));
+
+	return true;
+}
+
 CMarmaladeExtraPeelAction::CMarmaladeExtraPeelAction(const UUID& uuidClient)
 	:
 	CRhRdkAction(uuidClient)
@@ -48,12 +63,23 @@ CMarmaladeFlavorAction::CMarmaladeFlavorAction(const UUID& uuidClient, const CMa
 
 void CMarmaladeFlavorAction::AddNewMaterial(COLORREF col1, COLORREF col2) const
 {
-	CMarmaladeOrangeShader os;
-	CRhRdkContent* pContent = ::RhRdkCreateContentByType(os.Uuid());
-	CMarmaladeAutoMaterial* pMaterial = static_cast<CMarmaladeAutoMaterial*>(pContent);
+	const auto rhino_doc_sn = CRhinoDoc::ModelessUserInterfaceDocSerialNumber();
+	const auto* pDoc = CRhinoDoc::FromRuntimeSerialNumber(rhino_doc_sn);
+	if (nullptr == pDoc)
+		return;
 
-	const ON_Color col = m_ExtraPeelAction.Checked() ? col2 : col1;
-	pMaterial->SetParameter(L"color", col, CRhRdkContent::ccUI);
+	const auto& rdkDocConst = CRhRdkDocument::Get(*pDoc);
+	auto& rdkDoc = rdkDocConst.BeginChange(RhRdkChangeContext::UI);
+
+	CMarmaladeOrangeShader os;
+	const auto* pContent = rdkDoc.CreateContentByType(os.Uuid());
+
+	{	CRhRdkContent::Change<CRhRdkContent> c(*pContent);
+		const ON_Color col = m_ExtraPeelAction.Checked() ? col2 : col1;
+		c().SetParameter(L"color", col);
+	}
+
+	rdkDoc.EndChange();
 }
 
 CMarmaladeOrangeAction::CMarmaladeOrangeAction(const UUID& uuidClient, const CMarmaladeExtraPeelAction& mpa)
@@ -81,11 +107,12 @@ UUID CMarmaladeOrangeAction::Ident(void)
 	return uuid;
 }
 
-HICON CMarmaladeOrangeAction::Icon(void) const
+bool CMarmaladeOrangeAction::Icon(const ON_2iSize& size, CRhinoDib& dibOut) const
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	return ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	return ConvertIconToDib(hIcon, dibOut);
 }
 
 bool CMarmaladeOrangeAction::Execute(void)
@@ -120,11 +147,12 @@ UUID CMarmaladeLemonAction::Ident(void)
 	return uuid;
 }
 
-HICON CMarmaladeLemonAction::Icon(void) const
+bool CMarmaladeLemonAction::Icon(const ON_2iSize& size, CRhinoDib& dibOut) const
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	return ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	return ConvertIconToDib(hIcon, dibOut);
 }
 
 bool CMarmaladeLemonAction::Execute(void)
@@ -159,11 +187,12 @@ UUID CMarmaladeLimeAction::Ident(void)
 	return uuid;
 }
 
-HICON CMarmaladeLimeAction::Icon(void) const
+bool CMarmaladeLimeAction::Icon(const ON_2iSize& size, CRhinoDib& dibOut) const
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	return ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	return ConvertIconToDib(hIcon, dibOut);
 }
 
 bool CMarmaladeLimeAction::Execute(void)

@@ -12,5 +12,5 @@ bool CMarmaladeContentIOPlugIn::Save(const wchar_t* wszFilename, const CRhRdkCon
 {
 	// Just do simple content saving; you could do something more complicated.
 
-	return content.SaveToLibraryFile(wszFilename, pSceneServer);
+	return content.SaveToLibraryFile(wszFilename, pSceneServer, CRhRdkContent::EmbedFilesChoice::kAskUser);
 }

@@ -5,9 +5,13 @@
 
 static UINT uChangedMessageNumber = 0;
 
+BEGIN_MESSAGE_MAP(CMarmaladeColorSection, CRhRdkMaterialUISection_MFC)
+	ON_REGISTERED_MESSAGE(uChangedMessageNumber, OnColorButton)
+END_MESSAGE_MAP()
+
 CMarmaladeColorSection::CMarmaladeColorSection()
 	:
-	CRhRdkMaterialUISection(IDD)
+	CRhRdkMaterialUISection_MFC(IDD)
 {
 	uChangedMessageNumber = m_buttonColor.ChangedMessageNumber();
 }
@@ -18,17 +22,13 @@ CMarmaladeColorSection::~CMarmaladeColorSection()
 
 void CMarmaladeColorSection::DoDataExchange(CDataExchange* pDX)
 {
-	CRhRdkMaterialUISection::DoDataExchange(pDX);
+	CRhRdkMaterialUISection_MFC::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_BT_MATERIAL_COLOR, m_buttonColor);
 }
 
-BEGIN_MESSAGE_MAP(CMarmaladeColorSection, CRhRdkMaterialUISection)
-	ON_REGISTERED_MESSAGE(uChangedMessageNumber, OnColorButton)
-END_MESSAGE_MAP()
-
 BOOL CMarmaladeColorSection::OnInitDialog()
 {
-	CRhRdkMaterialUISection::OnInitDialog();
+	CRhRdkMaterialUISection_MFC::OnInitDialog();
 
 	DisplayData();
 

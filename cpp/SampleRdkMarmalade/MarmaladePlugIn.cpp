@@ -15,16 +15,18 @@
 #pragma init_seg( lib )
 #pragma warning( pop )
 
-// Rhino plug-in declaration
-RHINO_PLUG_IN_DECLARE
-RHINO_PLUG_IN_DEVELOPER_ORGANIZATION(L"Robert McNeel & Associates");
-RHINO_PLUG_IN_DEVELOPER_ADDRESS     (L"3670 Woodland Park Avenue North\r\nSeattle WA 98103");
-RHINO_PLUG_IN_DEVELOPER_COUNTRY     (L"United States");
-RHINO_PLUG_IN_DEVELOPER_PHONE       (L"206-545-7000");
-RHINO_PLUG_IN_DEVELOPER_FAX         (L"206-545-7321");
-RHINO_PLUG_IN_DEVELOPER_EMAIL       (L"tech@mcneel.com");
-RHINO_PLUG_IN_DEVELOPER_WEBSITE     (L"http://www.mcneel.com");
-RHINO_PLUG_IN_UPDATE_URL            (L"http://www.mcneel.com");
+// rhinoSdkPlugInDeclare.h defines the RHINO_PLUG_IN_DECLARE macro
+//#include "../../../SDK/inc/rhinoSdkPlugInDeclare.h"
+//RHINO_PLUG_IN_DECLARE
+//
+//RHINO_PLUG_IN_DEVELOPER_ORGANIZATION(L"Robert McNeel & Associates");
+//RHINO_PLUG_IN_DEVELOPER_ADDRESS     (L"3670 Woodland Park Avenue North\r\nSeattle WA 98103");
+//RHINO_PLUG_IN_DEVELOPER_COUNTRY     (L"United States");
+//RHINO_PLUG_IN_DEVELOPER_PHONE       (L"206-545-7000");
+//RHINO_PLUG_IN_DEVELOPER_FAX         (L"206-545-7321");
+//RHINO_PLUG_IN_DEVELOPER_EMAIL       (L"tech@mcneel.com");
+//RHINO_PLUG_IN_DEVELOPER_WEBSITE     (L"http://www.mcneel.com");
+//RHINO_PLUG_IN_UPDATE_URL            (L"http://www.mcneel.com");
 
 // The one and only CMarmaladePlugIn object
 static CMarmaladePlugIn thePlugIn;
@@ -51,10 +53,10 @@ CMarmaladePlugIn::CMarmaladePlugIn()
 	//   constructor should be simple and solid. Do anything that might fail in
 	//   CMarmaladePlugIn::OnLoadPlugIn().
 
-	m_pRdkPlugIn = NULL;
+	m_pRdkPlugIn = nullptr;
 	m_plugin_version = __DATE__ "  " __TIME__;
-	m_pMenu = NULL;
-	m_pNonModalOptionsDialog = NULL;
+	m_pMenu = nullptr;
+	m_pNonModalOptionsDialog = nullptr;
 }
 
 CMarmaladePlugIn::~CMarmaladePlugIn()
@@ -67,10 +69,10 @@ CMarmaladePlugIn::~CMarmaladePlugIn()
 	//   with onmalloc(), onrealloc(), oncalloc(), or onstrdup().
 
 	delete m_pNonModalOptionsDialog;
-	m_pNonModalOptionsDialog = NULL;
+	m_pNonModalOptionsDialog = nullptr;
 
 	delete m_pMenu;
-	m_pMenu = NULL;
+	m_pMenu = nullptr;
 }
 
 const wchar_t* CMarmaladePlugIn::PlugInName() const
@@ -140,7 +142,7 @@ BOOL CMarmaladePlugIn::OnLoadPlugIn()
 	if (!m_pRdkPlugIn->Initialize())
 	{
 		delete m_pRdkPlugIn;
-		m_pRdkPlugIn = NULL;
+		m_pRdkPlugIn = nullptr;
 
 		wStr.Format(L"Failed to load %s, version %s.  RDK initialization failed\n", PlugInName(), PlugInVersion());
 		RhinoApp().Print(wStr);
@@ -151,10 +153,10 @@ BOOL CMarmaladePlugIn::OnLoadPlugIn()
 	wStr.Format(L"Loading %s, version %s\n", PlugInName(), PlugInVersion());
 	RhinoApp().Print(wStr);
 
-#ifdef _DEBUG
-	RhinoApp().Print(L"%s compiled with RDK_SDK_VERSION %s, ", PlugInName(), RDK_SDK_VERSION);
-	RhinoApp().Print(L"running on RDK version %s, %s\n", ::RhRdkVersion(), ::RhRdkBuildDate());
-#endif
+//#ifdef _DEBUG
+//	RhinoApp().Print(L"%s compiled with RDK_SDK_VERSION %s, ", PlugInName(), RDK_SDK_VERSION);
+//	RhinoApp().Print(L"running on RDK version %s, %s\n", ::RhRdkVersion(), ::RhRdkBuildDate());
+//#endif
 
 	m_event_watcher.Register();
 	m_event_watcher.Enable(TRUE);
@@ -168,7 +170,7 @@ BOOL CMarmaladePlugIn::OnLoadPlugIn()
 	m_iTimer = RhinoApp().GetMainWnd()->SetTimer(iTimerId, 500, TimerProc);
 
 	CRhinoDoc* pDoc = RhinoApp().ActiveDoc();
-	if (NULL != pDoc)
+	if (nullptr != pDoc)
 	{
 		m_event_watcher.OnNewDocument(*pDoc);
 	}
@@ -189,7 +191,7 @@ void CMarmaladePlugIn::OnUnloadPlugIn()
 		m_pRdkPlugIn->Uninitialize();
 
 		delete m_pRdkPlugIn;
-		m_pRdkPlugIn = NULL;
+		m_pRdkPlugIn = nullptr;
 
 		m_event_watcher.Enable(FALSE);
 		m_event_watcher.UnRegister();
@@ -229,24 +231,24 @@ CRhinoCommand::result CMarmaladePlugIn::Render(const CRhinoCommandContext& conte
 	//   Called by the Render and RenderPreview commands if this application is both
 	//   a Render plug-in and is set as the default render engine.
 	// Parameters:
-	//   context [in] Command paramaters passed to the render command.
+	//   context [in] Command parameters passed to the render command.
 	//   bPreview [in] If true, a faster, lower quality rendering is expected.
 
-	CMarmaladeSdkRender render(context, this, L"Marmalade", IDI_MARMALADE, bPreview);
+	const auto* pDoc = context.Document();
+	if (nullptr == pDoc)
+		return CRhinoCommand::failure;
 
-	if (CRhinoSdkRender::render_ok == render.Render())
+	CMarmaladeSdkRender render(context, *this, L"Marmalade", IDI_MARMALADE, bPreview);
+
+	const ON_2iSize size = render.RenderSize(*pDoc, true);
+	if (CRhinoSdkRender::render_ok == render.Render(size))
 		return CRhinoCommand::success;
 
 	return CRhinoCommand::failure;
 }
 
-CRhinoCommand::result CMarmaladePlugIn::RenderWindow(
-	const CRhinoCommandContext& context,
-	bool bPreview,
-	CRhinoView* pView,
-	const LPRECT rect,
-	bool bInWindow
-	)
+CRhinoCommand::result CMarmaladePlugIn::RenderWindow(const CRhinoCommandContext& context, bool bPreview,
+                                                     CRhinoView* pView, const LPRECT rect, bool bInWindow, bool bBlowUp)
 {
 	// Description:
 	//   Called by Render command if this application is both
@@ -257,7 +259,7 @@ CRhinoCommand::result CMarmaladePlugIn::RenderWindow(
 	//   view [in] View to render.
 	//   rect [in] Rectangle to render in viewport window coordinates.
 
-	CMarmaladeSdkRender render(context, this, L"Marmalade", IDI_MARMALADE, bPreview);
+	CMarmaladeSdkRender render(context, *this, L"Marmalade", IDI_MARMALADE, bPreview);
 
 	if (CRhinoSdkRender::render_ok == render.RenderWindow(pView, rect, bInWindow))
 		return CRhinoCommand::success;
@@ -305,7 +307,7 @@ enum
 
 void CMarmaladePlugIn::AddMarmaladeMenu(void)
 {
-	if (NULL == m_pMenu)
+	if (nullptr == m_pMenu)
 	{
 		m_pMenu = new CMenu;
 		m_pMenu->CreateMenu();
@@ -324,17 +326,17 @@ void CMarmaladePlugIn::AddMarmaladeMenu(void)
 
 void CMarmaladePlugIn::RemoveMarmaladeMenu(void)
 {
-	if (NULL != m_pMenu)
+	if (nullptr != m_pMenu)
 	{
 		RemovePlugInMenuFromRhino(m_pMenu->GetSafeHmenu());
 		delete m_pMenu;
-		m_pMenu = NULL;
+		m_pMenu = nullptr;
 	}
 }
 
 BOOL CMarmaladePlugIn::OnPlugInMenuCommand(WPARAM wParam)
 {
-	const wchar_t* wszCommand = NULL;
+	const wchar_t* wszCommand = nullptr;
 
 	switch (LOWORD(wParam))
 	{
@@ -359,23 +361,29 @@ BOOL CMarmaladePlugIn::OnPlugInMenuCommand(WPARAM wParam)
 		break;
 	}
 
-	RhinoApp().RunScript(wszCommand, 0);
+	const unsigned int rhino_doc_sn = CRhinoDoc::ModelessUserInterfaceDocSerialNumber();
+	RhinoApp().RunScript(rhino_doc_sn, wszCommand, 0);
 
 	return TRUE;
 }
 
 void CMarmaladePlugIn::UpdateMarmaladeMenuState(void)
 {
-	if (NULL == m_pMenu)
+	if (nullptr == m_pMenu)
 		return;
 
-	bool bVis = ::RhRdkIsThumbnailEditorVisible(RDK_KIND_MATERIAL);
+	auto rhino_doc_sn = CRhinoDoc::ModelessUserInterfaceDocSerialNumber();
+	auto* pDoc = CRhinoDoc::FromRuntimeSerialNumber(rhino_doc_sn);
+	if (nullptr == pDoc)
+		return;
+
+	bool bVis = ::RhRdkIsThumbnailEditorVisible(*pDoc, CRhRdkContent::Kinds::Material);
 	m_pMenu->CheckMenuItem(ID_MATERIAL_EDITOR_CMD, (bVis ? MF_CHECKED : MF_UNCHECKED));
 
-	bVis = ::RhRdkIsThumbnailEditorVisible(RDK_KIND_ENVIRONMENT);
+	bVis = ::RhRdkIsThumbnailEditorVisible(*pDoc, CRhRdkContent::Kinds::Environment);
 	m_pMenu->CheckMenuItem(ID_ENVIRONMENT_EDITOR_CMD, (bVis ? MF_CHECKED : MF_UNCHECKED));
 
-	bVis = ::RhRdkIsThumbnailEditorVisible(RDK_KIND_TEXTURE);
+	bVis = ::RhRdkIsThumbnailEditorVisible(*pDoc, CRhRdkContent::Kinds::Texture);
 	m_pMenu->CheckMenuItem(ID_TEXTURE_EDITOR_CMD, (bVis ? MF_CHECKED : MF_UNCHECKED));
 
 	bVis = ::RhRdkIsContentBrowserDockBarVisible();
@@ -384,8 +392,6 @@ void CMarmaladePlugIn::UpdateMarmaladeMenuState(void)
 	bVis = m_pNonModalOptionsDialog ? (TRUE == m_pNonModalOptionsDialog->IsWindowVisible()) : false;
 	m_pMenu->CheckMenuItem(ID_RENDERER_SETTINGS_CMD, (bVis ? MF_CHECKED : MF_UNCHECKED));
 }
-
-
 
 bool CMarmaladePlugIn::IsMarmaladeCurrentRenderer(void) const
 {
@@ -401,14 +407,14 @@ void CMarmaladePlugIn::ShowNonModalOptionsDialog(bool bShow)
 	{
 		if (IsMarmaladeCurrentRenderer())
 		{
-			if (NULL != m_pNonModalOptionsDialog && m_pNonModalOptionsDialog->GetSafeHwnd() == 0)
+			if (nullptr != m_pNonModalOptionsDialog && m_pNonModalOptionsDialog->GetSafeHwnd() == 0)
 			{
 				// Someone's whacked the options window. We're going to get rid of it and start again.
 				delete m_pNonModalOptionsDialog;
-				m_pNonModalOptionsDialog = NULL;
+				m_pNonModalOptionsDialog = nullptr;
 			}
 
-			if (NULL == m_pNonModalOptionsDialog)
+			if (nullptr == m_pNonModalOptionsDialog)
 			{
 				AFX_MANAGE_STATE(AfxGetStaticModuleState());
 				m_pNonModalOptionsDialog = new CMarmaladeNonModalOptionsDlg;
@@ -418,7 +424,7 @@ void CMarmaladePlugIn::ShowNonModalOptionsDialog(bool bShow)
 		}
 	}
 	else
-	if (NULL != m_pNonModalOptionsDialog)
+	if (nullptr != m_pNonModalOptionsDialog)
 	{
 		m_pNonModalOptionsDialog->PostMessage(WM_CLOSE, 0, 0);
 	}
@@ -440,7 +446,7 @@ void CMarmaladePlugIn::EnableNonModalOptionsDialog(bool bEnable) const
 
 	if (0 == c)
 	{
-		if (NULL != m_pNonModalOptionsDialog)
+		if (nullptr != m_pNonModalOptionsDialog)
 		{
 			m_pNonModalOptionsDialog->EnableWindow(bEnable);
 		}
@@ -455,10 +461,10 @@ void CMarmaladePlugIn::ToggleNonModalOptionsDialog(void)
 
 bool CMarmaladePlugIn::IsNonModalOptionsDialogVisible(void) const
 {
-	return (NULL != m_pNonModalOptionsDialog) && (m_pNonModalOptionsDialog->IsWindowVisible());
+	return (nullptr != m_pNonModalOptionsDialog) && (m_pNonModalOptionsDialog->IsWindowVisible());
 }
 
 bool CMarmaladePlugIn::IsNonModalOptionsDialogMinimized(void) const
 {
-	return (NULL != m_pNonModalOptionsDialog) && m_pNonModalOptionsDialog->IsIconic();
+	return (nullptr != m_pNonModalOptionsDialog) && m_pNonModalOptionsDialog->IsIconic();
 }

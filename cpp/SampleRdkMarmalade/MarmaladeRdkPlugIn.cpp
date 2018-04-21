@@ -64,20 +64,28 @@ void CMarmaladeRdkPlugIn::RegisterContent(IRhRdkContentFactories& factories) con
 	__super::RegisterContent(factories);
 }
 
-void CMarmaladeRdkPlugIn::RegisterCustomRenderMeshProviders(IRhRdkCustomRenderMeshManager& crmm) const
+void CMarmaladeRdkPlugIn::RegisterExtensions(void) const
 {
 	crmm.Add(new CMarmaladeRMP);
 	crmm.Add(new CMarmaladePointCloudRMP);
 
-	__super::RegisterCustomRenderMeshProviders(crmm);
-}
-
-void CMarmaladeRdkPlugIn::RegisterContentIOPlugIns(IRhRdkContentIOPlugIns& ciop) const
-{
 	ciop.Add(new CMarmaladeContentIOPlugIn);
-
-	__super::RegisterContentIOPlugIns(ciop);
 }
+
+//void CMarmaladeRdkPlugIn::RegisterCustomRenderMeshProviders(IRhRdkCustomRenderMeshManager& crmm) const
+//{
+//	crmm.Add(new CMarmaladeRMP);
+//	crmm.Add(new CMarmaladePointCloudRMP);
+//
+//	__super::RegisterCustomRenderMeshProviders(crmm);
+//}
+//
+//void CMarmaladeRdkPlugIn::RegisterContentIOPlugIns(IRhRdkContentIOPlugIns& ciop) const
+//{
+//	ciop.Add(new CMarmaladeContentIOPlugIn);
+//
+//	__super::RegisterContentIOPlugIns(ciop);
+//}
 
 void CMarmaladeRdkPlugIn::AddCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const
 {

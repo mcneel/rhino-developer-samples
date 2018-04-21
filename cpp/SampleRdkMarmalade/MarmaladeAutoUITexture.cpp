@@ -18,7 +18,7 @@ static const wchar_t* wszColor2 = L"color-2";
 class CMarmaladeAutoUITexture::Evaluator : public CRhRdkTextureEvaluator
 {
 public:
-	Evaluator(const CRhRdkColor& col1, const CRhRdkColor& col2, const ON_Xform& xform);
+	Evaluator(CEvalFlags ef, const CRhRdkColor& col1, const CRhRdkColor& col2, const ON_Xform& xform);
 
 	virtual void DeleteThis(void) { delete this; }
 	virtual bool GetColor(const ON_3dPoint& uvw, const ON_3dVector& duvwdx,
@@ -31,20 +31,20 @@ private:
 	ON_Xform m_xform;
 };
 
-CMarmaladeAutoUITexture::Evaluator::Evaluator(const CRhRdkColor& col1, const CRhRdkColor& col2, const ON_Xform& xform)
+CMarmaladeAutoUITexture::Evaluator::Evaluator(CEvalFlags ef, const CRhRdkColor& col1, const CRhRdkColor& col2, const ON_Xform& xform)
+	:
+	CRhRdkTextureEvaluator(ef),
+	m_color1(col1),
+	m_color2(col2),
+	m_xform (xform)
 {
-	m_color1 = col1;
-	m_color2 = col2;
-	m_xform  = xform;
 }
 
 bool CMarmaladeAutoUITexture::Evaluator::GetColor(const ON_3dPoint& uvw, const ON_3dVector& duvwdx,
                                                   const ON_3dVector& duvwdy, CRhRdkColor& colOut, void* pvData) const
 {
 	const ON_3dVector uvwNew = m_xform * (ON_Xform(2) * uvw);
-
 	const int sum = (int)(uvwNew.x + 10000.0) + (int)(uvwNew.y + 10000.0);
-
 	colOut = (sum % 2) ? m_color1 : m_color2;
 
 	return true;
@@ -101,25 +101,21 @@ ON_wString CMarmaladeAutoUITexture::InternalName(void) const
 	return L"MarmaladeAutoUITexture";
 }
 
-void CMarmaladeAutoUITexture::SimulateTexture(CRhRdkSimulatedTexture& tex, bool bForDataOnly) const
+void CMarmaladeAutoUITexture::AddUISections(IRhRdkExpandableContentUI& ui)
 {
-	CRhRdkTexture::SimulateTexture(tex, bForDataOnly);
+	const auto* wsz = L"Marmalade parameters";
+	AddAutomaticUISection(ui, wsz, wsz);
+
+	CRhRdkTexture::AddUISections(ui);
 }
 
-void CMarmaladeAutoUITexture::AddUISections(void)
+unsigned int CMarmaladeAutoUITexture::BitFlags(void) const
 {
-	AddAutomaticUISection(L"Marmalade parameters");
-
-	CRhRdkTexture::AddUISections();
+	return CRhRdkTexture::BitFlags() & ~bfTextureSummary; // No texture summary required.
+	                              // |  bfSharedUI;       // Shared UI is mandatory now.
 }
 
-DWORD CMarmaladeAutoUITexture::BitFlags(void) const
-{
-	return CRhRdkTexture::BitFlags() & ~bfTextureSummary // No texture summary required.
-	                                 |  bfSharedUI;      // Shared UI supported.
-}
-
-void CMarmaladeAutoUITexture::AddAutoParameters(IRhRdkParamBlock& paramBlock, int iId)
+void CMarmaladeAutoUITexture::AddAutoParameters(IRhRdkParamBlock& paramBlock, int iId) const
 {
 	// It is through this method that the values in your content get transferred into the automatic UI.
 	paramBlock.Add(wszColor1, L"", L"Color 1", m_color1.OnColor(), CRhRdkVariant::Null(), CRhRdkVariant::Null());
@@ -148,15 +144,7 @@ void CMarmaladeAutoUITexture::GetAutoParameters(const IRhRdkParamBlock& paramBlo
 	}
 }
 
-bool CMarmaladeAutoUITexture::SetParameters(IRhRdk_XMLSection& section, eSetParamsContext context) const
-{
-	section.SetParam(wszColor1, m_color1.OnColor());
-	section.SetParam(wszColor2, m_color2.OnColor());
-
-	return __super::SetParameters(section, context);
-}
-
-bool CMarmaladeAutoUITexture::GetParameters(const IRhRdk_XMLSection& section, eGetParamsContext context)
+bool CMarmaladeAutoUITexture::ReadParametersFromSection(const IRhRdk_XMLSection& section, ReadParamsContext context)
 {
 	CRhRdkVariant v;
 
@@ -166,7 +154,15 @@ bool CMarmaladeAutoUITexture::GetParameters(const IRhRdk_XMLSection& section, eG
 	if (section.GetParam(wszColor2, v))
 		m_color2 = v.AsOnColor();
 
-	return __super::GetParameters(section, context);
+	return __super::ReadParametersFromSection(section, context);
+}
+
+bool CMarmaladeAutoUITexture::WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const
+{
+	section.SetParam(wszColor1, m_color1.OnColor());
+	section.SetParam(wszColor2, m_color2.OnColor());
+
+	return __super::WriteParametersToSection(section, context);
 }
 
 void* CMarmaladeAutoUITexture::GetShader(const UUID& uuidRenderEngine, void* pvData) const
@@ -174,18 +170,15 @@ void* CMarmaladeAutoUITexture::GetShader(const UUID& uuidRenderEngine, void* pvD
 	return NULL;
 }
 
-bool CMarmaladeAutoUITexture::IsFactoryProductAcceptableAsChild(const IRhRdkContentFactory* pFactory,
-                                                                const wchar_t* wszChildSlotName) const
+bool CMarmaladeAutoUITexture::IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* wszChildSlotName) const
 {
-	const ON_wString sFactoryKind = pFactory->Kind();
-
-	if (0 == sFactoryKind.CompareNoCase(RDK_KIND_TEXTURE))
+	if (f.Kind() == Kinds::Texture)
 		return true; // Factory produces textures.
 
 	return false; // Factory produces something "unpalatable".
 }
 
-IRhRdkTextureEvaluator* CMarmaladeAutoUITexture::NewTextureEvaluator(void) const
+IRhRdkTextureEvaluator* CMarmaladeAutoUITexture::NewTextureEvaluator(IRhRdkTextureEvaluator::CEvalFlags ef) const
 {
-	return new Evaluator(m_color1, m_color2, LocalMappingTransform());
+	return new Evaluator(ef, m_color1, m_color2, LocalMappingTransform());
 }

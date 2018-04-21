@@ -40,7 +40,7 @@ void CIOREdit::OnContextMenu(CWnd* pWnd, CPoint point)
 
 CMarmaladeMaterialSection::CMarmaladeMaterialSection()
 	:
-	CRhRdkMaterialUISection(IDD)
+	CRhRdkMaterialUISection_MFC(IDD)
 {
 	m_editIOR.SetSection(*this);
 
@@ -72,7 +72,7 @@ UUID CMarmaladeMaterialSection::Uuid(void) const
 
 void CMarmaladeMaterialSection::DoDataExchange(CDataExchange* pDX)
 {
-	CRhRdkExpandingSection::DoDataExchange(pDX);
+	CRhRdkMaterialUISection_MFC::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_BT_MATERIAL_COLOR, m_btColor);
 	DDX_Control(pDX, IDC_CHECK_TEXTURE_ON, m_checkTextureOn);
 	DDX_Control(pDX, IDC_EDIT_TEXTURE_AMOUNT, m_editTextureAmount);
@@ -82,7 +82,7 @@ void CMarmaladeMaterialSection::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC_IOR_NAME, m_staticIORName);
 }
 
-BEGIN_MESSAGE_MAP(CMarmaladeMaterialSection, CRhRdkMaterialUISection)
+BEGIN_MESSAGE_MAP(CMarmaladeMaterialSection, CRhRdkMaterialUISection_MFC)
 	ON_WM_SIZE()
 	ON_WM_DROPFILES()
 	ON_EN_KILLFOCUS(IDC_EDIT_TEXTURE_AMOUNT, OnKillfocusEditTextureAmount)
@@ -101,7 +101,7 @@ void CMarmaladeMaterialSection::OnDropFiles(HDROP hDropInfo)
 
 BOOL CMarmaladeMaterialSection::OnInitDialog()
 {
-	CRhRdkMaterialUISection::OnInitDialog();
+	CRhRdkMaterialUISection_MFC::OnInitDialog();
 
 	if (NULL == Material())
 		return FALSE;
@@ -160,7 +160,7 @@ LRESULT CMarmaladeMaterialSection::OnSubNodeChanged(WPARAM, LPARAM ctrlID)
 	return 1;
 }
 
-ON_wString CMarmaladeMaterialSection::Caption(void) const
+ON_wString CMarmaladeMaterialSection::Caption(bool) const
 {
 	return L"Marmalade Material";
 }
@@ -189,10 +189,21 @@ void CMarmaladeMaterialSection::DisplayData(void)
 
 void CMarmaladeMaterialSection::OnClickCheckTextureOn()
 {
-	if (NULL != Material())
+	const auto con = Controller();
+	if (!con)
+		return;
+
+	const bool bChecked = (BST_CHECKED == m_checkTextureOn.GetCheck());
+
+	CRhRdkEditableContentArray aContent(*con, true);
+	for (int i = 0; i < aContent.Count(); i++)
 	{
-		const bool bChecked = (BST_CHECKED == m_checkTextureOn.GetCheck());
-		Material()->SetTextureOn(bChecked, CRhRdkContent::ccUI);
+		const auto pMaterial = dynamic_cast<const CMarmaladeMaterial*>(aContent[i]);
+		if (nullptr != pMaterial)
+		{
+			const CRhRdkContent::Change<CMarmaladeMaterial> m(*pMaterial, RhRdkChangeContext::UI);
+			m().SetTextureOn(bChecked, CRhRdkContent::ccUI);
+		}
 	}
 }
 
@@ -230,7 +241,7 @@ void CMarmaladeMaterialSection::OnKillfocusEditTextureAmount()
 
 void CMarmaladeMaterialSection::OnSize(UINT nType, int cx, int cy)
 {
-	CRhRdkMaterialUISection::OnSize(nType, cx, cy);
+	CRhRdkMaterialUISection_MFC::OnSize(nType, cx, cy);
 
 	if (!IsWindow(m_editTexturePlaceholder.GetSafeHwnd()))
 		return;
@@ -239,9 +250,4 @@ void CMarmaladeMaterialSection::OnSize(UINT nType, int cx, int cy)
 	m_editTexturePlaceholder.GetWindowRect(rect);
 	ScreenToClient(rect);
 	m_SubNode.MoveWindow(rect, true);
-}
-
-CMarmaladeMaterial* CMarmaladeMaterialSection::Material(void) const
-{
-	return static_cast<CMarmaladeMaterial*>(CRhRdkMaterialUISection::Material());
 }

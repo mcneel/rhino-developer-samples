@@ -5,16 +5,19 @@
 #include "MarmaladeRenderer.h"
 #include "MarmaladeShader.h"
 
-CMarmaladeSdkRender::CMarmaladeSdkRender(const CRhinoCommandContext& context, CRhinoRenderPlugIn* plugin, 
-                                         const ON_wString& sCaption, UINT id, bool pPreview)
+CMarmaladeSdkRender::CMarmaladeSdkRender(const CRhinoCommandContext& context, CRhinoRenderPlugIn& plugIn,
+                                         const ON_wString& sCaption, UINT uIconId, bool bPreview)
 	:
-	CRhRdkSdkRender(context, plugin, sCaption, id)
+	m_bRenderQuick(bPreview),
+	CRhRdkSdkRender(context, plugIn, sCaption, uIconId)
 {
-	m_bRenderQuick = pPreview;
+	const auto* pDoc = context.Document();
+	if (nullptr == pDoc)
+		return;
 
-	m_bContinueModal = true;
+	m_uRhinoDocSerial = pDoc->RuntimeSerialNumber();
 
-	const ON_3dmRenderSettings& rs = context.m_doc.Properties().RenderSettings();
+	const auto& rs = pDoc->Properties().RenderSettings();
 	m_pRenderer = new CMarmaladeRenderer(*this, rs);
 
 	GetRenderWindow().ClearChannels();
@@ -27,7 +30,7 @@ CMarmaladeSdkRender::CMarmaladeSdkRender(const CRhinoCommandContext& context, CR
 CMarmaladeSdkRender::~CMarmaladeSdkRender()
 {
 	delete m_pRenderer;
-	m_pRenderer = NULL;
+	m_pRenderer = nullptr;
 }
 
 bool CMarmaladeSdkRender::RenderQuick(void) const
@@ -35,7 +38,7 @@ bool CMarmaladeSdkRender::RenderQuick(void) const
 	return m_bRenderQuick;
 }
 
-CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::Render(const CSize& sizeRender)
+CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::Render(const ON_2iSize& sizeRender)
 {
 	m_pRenderer->SetRenderSize(sizeRender);
 
@@ -57,7 +60,7 @@ CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::Render(const CSize& size
 	{
 		CMarmaladeShader* pShader = static_cast<CMarmaladeShader*>(
 		                            ::RhRdkObjectMaterialShader(rm.Object(), MarmaladePlugIn().PlugInID()));
-		if (NULL != pShader)
+		if (nullptr != pShader)
 		{
 			RhinoApp().Print(pShader->FriendlyName());
 			RhinoApp().Print(L"\n");
@@ -68,19 +71,25 @@ CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::Render(const CSize& size
 		}
 	}
 
-	const CRhinoSdkRender::RenderReturnCodes rc = CRhRdkSdkRender::Render(sizeRender);
+	ON_2iSize s;
+	s.cx = sizeRender.cx;
+	s.cy = sizeRender.cy;
+	const CRhinoSdkRender::RenderReturnCodes rc = CRhRdkSdkRender::Render(s);
 
 	delete pIterator;
 
 	return rc;
 }
 
-CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::
-                                   RenderWindow(CRhinoView* pView, const LPRECT pRect, bool bInPopupWindow)
+CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::RenderWindow(CRhinoView* pView, const LPRECT pRect, bool bInPopupWindow)
 {
+	const auto* pDoc = CRhinoDoc::FromRuntimeSerialNumber(m_uRhinoDocSerial);
+	if (nullptr == pDoc)
+		return CRhinoSdkRender::RenderReturnCodes::render_empty_scene;
+
 	m_pRenderer->SetRenderRegion(pRect);
 
-	const CSize sizeRender = RenderSize();
+	const auto sizeRender = RenderSize(*pDoc, true);
 	m_pRenderer->SetRenderSize(sizeRender);
 
 	// NB. Marmalade doesn't use these render meshes, but your plug-in will
@@ -102,7 +111,11 @@ CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::
 		// Rendering the specified region in a normal popup window.
 
 		// This method gives roughly a region-sized frame.
-		rc = CRhRdkSdkRender::Render(CRect(pRect).Size());
+		ON_2iSize s;
+		const CRect rect = pRect;
+		s.cx = rect.Width();
+		s.cy = rect.Height();
+		rc = CRhRdkSdkRender::Render(s);
 
 		// This method gives a normal-sized frame with a region-sized rendered area inside it.
 //		rc = CRhRdkSdkRender::Render(sizeRender);

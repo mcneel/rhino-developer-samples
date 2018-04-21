@@ -5,7 +5,7 @@
 
 class CMarmaladeAutoMaterial;
 
-class CMarmaladeColorSection : public CRhRdkMaterialUISection
+class CMarmaladeColorSection : public CRhRdkMaterialUISection_MFC
 {
 public:
 	CMarmaladeColorSection();
@@ -16,12 +16,12 @@ private:
 	CRhRdkColorButton m_buttonColor;
 
 protected:
-	virtual BOOL OnInitDialog();
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual UUID Uuid(void) const;
-	virtual void DisplayData(void);
-	virtual ON_wString Caption(void) const { return L"Marmalade color"; }
-	virtual AFX_MODULE_STATE* GetModuleState(void) const { return AfxGetStaticModuleState(); }
+	virtual BOOL OnInitDialog() override;
+	virtual void DoDataExchange(CDataExchange* pDX) override;
+	virtual UUID Uuid(void) const override;
+	virtual void DisplayData(void) override;
+	virtual ON_wString Caption(bool bAlwaysEnglish) const override { return L"Marmalade color"; }
+	virtual AFX_MODULE_STATE* GetModuleState(void) const override { return AfxGetStaticModuleState(); }
 
 protected:
 	afx_msg LRESULT OnColorButton(WPARAM, LPARAM);

@@ -6,8 +6,8 @@ class CMarmaladeRenderer;
 class CMarmaladeSdkRender : public CRhRdkSdkRender
 {
 public:
-	CMarmaladeSdkRender(const CRhinoCommandContext& context, CRhinoRenderPlugIn* pPlugin,
-	                    const ON_wString& sCaption, UINT idIcon, bool pPreview);
+	CMarmaladeSdkRender(const CRhinoCommandContext& context, CRhinoRenderPlugIn& plugIn,
+	                    const ON_wString& sCaption, UINT uIconId, bool bPreview);
 
 	virtual ~CMarmaladeSdkRender();
 
@@ -15,10 +15,9 @@ public:
 	void SetContinueModal(bool b);
 	bool RenderQuick(void) const;
 
-	CRhinoSdkRender::RenderReturnCodes Render(const CSize& sizeRender = RenderSize());
-	CRhinoSdkRender::RenderReturnCodes RenderWindow(CRhinoView* pView, const LPRECT pRect, bool bInPopupWindow);
-
 	// CRhRdkSdkRender overrides
+	virtual CRhinoSdkRender::RenderReturnCodes Render(const ON_2iSize& sizeImage) override;
+	virtual CRhinoSdkRender::RenderReturnCodes RenderWindow(CRhinoView* pView, const LPRECT pRect, bool bInWindow) override;
 	virtual BOOL RenderSceneWithNoMeshes()				{ return TRUE; }
 	virtual BOOL IgnoreRhinoObject(const CRhinoObject*)	{ return FALSE; }
 	virtual BOOL RenderPreCreateWindow();
@@ -33,7 +32,8 @@ public:
 	virtual void StartRendering();
 
 private:
-	bool m_bContinueModal;
 	bool m_bRenderQuick;
-	CMarmaladeRenderer* m_pRenderer;
+	bool m_bContinueModal = true;
+	unsigned int m_uRhinoDocSerial = 0;
+	CMarmaladeRenderer* m_pRenderer = nullptr;
 };

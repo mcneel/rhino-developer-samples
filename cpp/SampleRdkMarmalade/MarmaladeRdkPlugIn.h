@@ -12,43 +12,46 @@ public:
 	virtual ~CMarmaladeRdkPlugIn(void);
 
 	// Initialization.
-	virtual bool Initialize(void);
-	virtual void Uninitialize(void);
+	virtual bool Initialize(void) override;
+	virtual void Uninitialize(void) override;
 
-	virtual UUID PlugInId(void) const;
+	virtual UUID PlugInId(void) const override;
 
-	void PlugInRdkVersion(int& iMajor, int& iMinor, int& iBeta) const { iMajor = RDK_MAJOR_VERSION; iMinor = RDK_MINOR_VERSION, iBeta = RDK_BETA_RELEASE; }
-	CRhinoPlugIn& RhinoPlugIn(void) const { return ::MarmaladePlugIn(); }
+	/// deprecated void PlugInRdkVersion(int& iMajor, int& iMinor, int& iBeta) const { iMajor = RDK_MAJOR_VERSION; iMinor = RDK_MINOR_VERSION, iBeta = RDK_BETA_RELEASE; }
+	CRhinoPlugIn& RhinoPlugIn(void) const override { return ::MarmaladePlugIn(); }
 
 protected:
-	virtual void EnableNonModalWindows(bool bEnable) const;
+	// OBSOLETE virtual void EnableNonModalWindows(bool bEnable) const;
 
-	virtual bool AllowChooseContent(const CRhRdkContent& content) const;
-	
-	virtual void RegisterContent(IRhRdkContentFactories& factories) const;
-	virtual void AbortRender(void);
+	virtual bool AllowChooseContent(const CRhRdkContent& content) const override;
 
-	virtual CRhRdkVariant GetParameter(const wchar_t* wszParam) const;
+	virtual void RegisterExtensions(void) const override;
+
+	virtual void AbortRender(void) override;
+
+	virtual CRhRdkVariant GetParameter(const wchar_t* wszParam) const override;
 
 	// Preview renderers.
-	virtual HBITMAP CreatePreview(const CSize& sizeImage, eRhRdkRenderQuality quality, const IRhRdkPreviewSceneServer* pSceneServer);
-	virtual HBITMAP CreatePreview(const CSize& sizeImage, const CRhRdkTexture& texture);
+	virtual bool CreatePreview(const ON_2iSize& sizeImage, RhRdkPreviewQuality quality,
+	                           const IRhRdkPreviewSceneServer* pSceneServer, IRhRdkPreviewCallbacks* pNotify, CRhinoDib& dibOut) override;
 
-	virtual bool SupportsFeature(const UUID& uuidFeature) const;
+	virtual bool CreatePreview(const ON_2iSize& sizeImage, const CRhRdkTexture& texture, CRhinoDib& dibOut) override;
+
+	virtual bool SupportsFeature(const UUID& uuidFeature) const override;
 
 	// Custom commands.
-	virtual void AddCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const;
-	virtual void UpdateCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const;
-	virtual void AddCustomEditorMenu(IRhRdkMenu& menu, const IRhRdkContentEditor& editor) const;
+	virtual void AddCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const override;
+	virtual void UpdateCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const override;
+	virtual void AddCustomEditorMenu(IRhRdkMenu& menu, const IRhRdkContentEditor& editor) const override;
 
-	// View dock bar
-	virtual void RegisterCustomPlugIns(void) const;
-
-	// Custom render mesh providers.
-	virtual void RegisterCustomRenderMeshProviders(IRhRdkCustomRenderMeshManager& crmm) const;
-
-	// Custom content I/O plug-ins.
-	virtual void RegisterContentIOPlugIns(IRhRdkContentIOPlugIns& ciop) const;
+//	// View dock bar
+//	virtual void RegisterCustomPlugIns(void) const override;
+//
+//	// Custom render mesh providers.
+//	virtual void RegisterCustomRenderMeshProviders(IRhRdkCustomRenderMeshManager& crmm) const override;
+//
+//	// Custom content I/O plug-ins.
+//	virtual void RegisterContentIOPlugIns(IRhRdkContentIOPlugIns& ciop) const override;
 
 	bool IsMarmaladeCurrentRenderer(void) const;
 };

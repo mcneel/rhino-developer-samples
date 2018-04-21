@@ -166,7 +166,7 @@ ON_wString CMarmaladeMaterial::InternalName(void) const
 	return L"MarmaladeMaterial";
 }
 
-void CMarmaladeMaterial::SimulateMaterial(ON_Material& mat, bool bForDataOnly) const
+void CMarmaladeMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::TextureGeneration tg, int iSize, const CRhinoObject* pObject) const
 {
 	mat.m_diffuse = Color();
 	mat.SetTransparency(Transparency());
@@ -177,48 +177,37 @@ void CMarmaladeMaterial::SimulateMaterial(ON_Material& mat, bool bForDataOnly) c
 	{
 		// IsFactoryProductAcceptableAsChild should ensure that the child is a RDK_KIND_TEXTURE
 		// but it never hurts to check.
-		if (pChild->IsKind(RDK_KIND_TEXTURE))
+		if (pChild->IsKind(Kinds::Texture))
 		{
 			const CRhRdkTexture* pTexture = static_cast<const CRhRdkTexture*>(pChild);
 
 			CRhRdkSimulatedTexture onTexture;
-			pTexture->SimulateTexture(onTexture, bForDataOnly);
+			pTexture->SimulateTexture(onTexture, tg);
 
-			mat.AddTexture(onTexture.Filename(), ON_Texture::bitmap_texture);
+			mat.AddTexture(onTexture.Filename(), ON_Texture::TYPE::bitmap_texture);
 
 			if (1 == mat.m_textures.Count())
 			{
 				ON_Texture& tex = mat.m_textures[0];
 				tex.m_bOn = TextureOn();
-				tex.m_magfilter = tex.m_minfilter = tex.linear_filter;
+				tex.m_magfilter = tex.m_minfilter = ON_Texture::FILTER::linear_filter;
 				tex.m_blend_constant_A = TextureAmount();
-				tex.m_mode = (tex.m_blend_constant_A < 1.0) ? tex.blend_texture : tex.decal_texture;
+				tex.m_mode = (tex.m_blend_constant_A < 1.0) ? ON_Texture::MODE::blend_texture : ON_Texture::MODE::decal_texture;
 			}
 		}
 	}
 }
 
-void CMarmaladeMaterial::AddUISections(void)
+void CMarmaladeMaterial::AddUISections(IRhRdkExpandableContentUI& ui)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	UI()->AddSection(new CMarmaladeMaterialSection);
+	ui.AddSection(new CMarmaladeMaterialSection);
 
 	CRhRdkMaterial::AddUISections();
 }
 
-bool CMarmaladeMaterial::SetParameters(IRhRdk_XMLSection& section, eSetParamsContext context) const
-{
-	section.SetParam(wszColor, ON_Color(Color()));
-	section.SetParam(wszTransparency,   Transparency());
-	section.SetParam(wszIOR,            IOR());
-	section.SetParam(wszTextureOn,      TextureOn());
-	section.SetParam(wszTextureAmount,  TextureAmount());
-
-	return true;
-}
-
-bool CMarmaladeMaterial::GetParameters(const IRhRdk_XMLSection& section, eGetParamsContext context)
+bool CMarmaladeMaterial::ReadParametersFromSection(const IRhRdk_XMLSection& section, ReadParamsContext context)
 {
 	CRhRdkVariant v;
 
@@ -240,6 +229,17 @@ bool CMarmaladeMaterial::GetParameters(const IRhRdk_XMLSection& section, eGetPar
 	return true;
 }
 
+bool CMarmaladeMaterial::WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const
+{
+	section.SetParam(wszColor, ON_Color(Color()));
+	section.SetParam(wszTransparency,   Transparency());
+	section.SetParam(wszIOR,            IOR());
+	section.SetParam(wszTextureOn,      TextureOn());
+	section.SetParam(wszTextureAmount,  TextureAmount());
+
+	return true;
+}
+
 void* CMarmaladeMaterial::GetShader(const UUID& uuidRenderEngine, void* pvData) const
 {
 	if (!IsCompatible(uuidRenderEngine))
@@ -251,19 +251,16 @@ void* CMarmaladeMaterial::GetShader(const UUID& uuidRenderEngine, void* pvData) 
 	return (void*)pShader;
 }
 
-bool CMarmaladeMaterial::IsFactoryProductAcceptableAsChild(const IRhRdkContentFactory* pFactory,
-                                                           const wchar_t* wszChildSlotName) const
+bool CMarmaladeMaterial::IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* wszChildSlotName) const
 {
-	const ON_wString sFactoryKind = pFactory->Kind();
-
-	if (0 == sFactoryKind.CompareNoCase(RDK_KIND_TEXTURE))
+	if (f.Kind() == Kinds::Texture)
 		return true; // Factory produces textures.
 
 	return false; // Factory produces something "unpalatable".
 }
 
-DWORD CMarmaladeMaterial::BitFlags(void) const
+unsigned int CMarmaladeMaterial::BitFlags(void) const
 {
-	return CRhRdkMaterial::BitFlags() & ~bfTextureSummary // No texture summary required.
-	                                  |  bfSharedUI;      // Shared UI supported.
+	return CRhRdkMaterial::BitFlags() & ~bfTextureSummary; // No texture summary required.
+	                               // |  bfSharedUI;       // Shared UI is mandatory now.
 }

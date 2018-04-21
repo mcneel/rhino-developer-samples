@@ -5,7 +5,7 @@
 #include "MarmaladeRdkPlugIn.h"
 
 // Do NOT put the definition of class CCommandMarmalade in a header
-// file.  There is only ONE instance of a CCommandMarmalade class
+// file. There is only ONE instance of a CCommandMarmalade class
 // and that instance is the static theMarmaladeCommand that appears
 // immediately below the class definition.
 
@@ -64,11 +64,15 @@ CRhinoCommand::result CCommandMarmalade::RunCommand(const CRhinoCommandContext& 
 	// know what kind of content the instance id refers to. Even temporary contents
 	// can be found as shown here.
 
+	const auto* pDoc = context.Document();
+	if (nullptr == pDoc)
+		return failure;
+
 	CMarmaladeMaterial material; // It's a material but it could be any kind.
 
 	const UUID uuidInstance = material.InstanceId();
-	CRhRdkContent* pContent = ::RhRdkFindContentInstance(uuidInstance);
-	if (NULL != pContent)
+	const auto* pContent = ::RhRdkFindContentInstance(pDoc, uuidInstance);
+	if (nullptr != pContent)
 	{
 		// Rhino commands that display a dialog box interface should also support
 		// a command-line, or scriptable interface.

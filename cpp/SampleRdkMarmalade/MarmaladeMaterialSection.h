@@ -3,13 +3,10 @@
 
 #include "Resource.h"
 
-class CMarmaladeMaterial;
-class CMarmaladeMaterialSection;
-
 class CIOREdit : public CEdit
 {
 public:
-	void SetSection(CMarmaladeMaterialSection& section);
+	void SetSection(class CMarmaladeMaterialSection& section);
 
 	ON_wString ChosenName(void) const { return m_sName; }
 	void SetChosenName(const ON_wString& s) { m_sName = s; }
@@ -23,7 +20,7 @@ private:
 	CMarmaladeMaterialSection* m_pSection;
 };
 
-class CMarmaladeMaterialSection : public CRhRdkMaterialUISection
+class CMarmaladeMaterialSection : public CRhRdkMaterialUISection_MFC
 {
 public:
 	CMarmaladeMaterialSection();
@@ -42,12 +39,13 @@ private:
 	CStatic m_staticIORName;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog();
-	virtual void DisplayData(void);
-	virtual ON_wString Caption(void) const;
-	virtual UUID Uuid(void) const;
-	virtual AFX_MODULE_STATE* GetModuleState(void) const { return AfxGetStaticModuleState(); }
+	virtual void DoDataExchange(CDataExchange* pDX) override;
+	virtual BOOL OnInitDialog() override;
+	virtual void DisplayData(void) override;
+	virtual ON_wString Caption(bool bAlwaysEnglish) const override;
+	virtual unsigned int GetIDD(void) const override { return IDD; }
+	virtual UUID Uuid(void) const override;
+	virtual AFX_MODULE_STATE* GetModuleState(void) const override { return AfxGetStaticModuleState(); }
 
 protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -60,8 +58,6 @@ protected:
 	afx_msg LRESULT OnSubNodeChanged(WPARAM, LPARAM ctrlID);
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 	DECLARE_MESSAGE_MAP()
-
-	CMarmaladeMaterial* Material(void) const;
 
 private:
 	CRhRdkSubNodeCtrl m_SubNode;

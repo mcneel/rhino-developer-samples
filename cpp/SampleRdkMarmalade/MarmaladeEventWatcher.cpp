@@ -169,7 +169,7 @@ static bool ON_3dmRenderSettingsEqual(const ON_3dmRenderSettings& s1, const ON_3
 	       (s1.m_background_bitmap_filename == s2.m_background_bitmap_filename);
 }
 
-void CMarmaladeEventWatcher::OnDocumentPropertiesChanged(CRhinoDoc& doc, const wchar_t* old_model_name, const ON_3dmProperties& old_properties, const ON_3dmSettings& old_settings)
+void CMarmaladeEventWatcher::OnDocumentPropertiesChanged(CRhinoDoc& doc)
 {
 }
 
@@ -384,12 +384,12 @@ void CMarmaladeEventWatcher::GroupTableEvent(CRhinoEventWatcher::group_event eve
 {
 }
 
-void CMarmaladeEventWatcher::FontTableEvent(CRhinoEventWatcher::font_event event, 
-                                            const CRhinoFontTable& font_table,
-                                            int font_index, 
-                                            const ON_Font* old_settings)
-{
-}
+//void CMarmaladeEventWatcher::FontTableEvent(CRhinoEventWatcher::font_event event, 
+//                                            const CRhinoFontTable& font_table,
+//                                            int font_index, 
+//                                            const ON_Font* old_settings)
+//{
+//}
 
 void CMarmaladeEventWatcher::DimStyleTableEvent(CRhinoEventWatcher::dimstyle_event event, 
                                                 const CRhinoDimStyleTable& dimstyle_table,

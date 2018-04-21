@@ -31,22 +31,22 @@ public:
 	void SetTextureAmount(double d, CRhRdkContent::eChangeContext cc);
 
 public: // Overrides from CRhRdkContent.
-	virtual UUID TypeId(void) const;
-	virtual ON_wString TypeName(void) const;
-	virtual ON_wString TypeDescription(void) const;
-	virtual ON_wString InternalName(void) const;
-	virtual void AddUISections(void);
-	virtual eParamSerialMethod ParameterSerializationMethod(void) const { return get_set; }
-	virtual bool GetParameters(const IRhRdk_XMLSection& section, eGetParamsContext context);
-	virtual bool SetParameters(IRhRdk_XMLSection& section, eSetParamsContext context) const;
-	virtual UUID RenderEngineId(void) const;
-	virtual UUID PlugInId(void) const;
-	virtual void* GetShader(const UUID& uuidRenderEngine, void* pvData) const;
-	virtual bool IsFactoryProductAcceptableAsChild(const IRhRdkContentFactory* pFactory, const wchar_t* wszChildSlotName) const;
-	virtual DWORD BitFlags(void) const;
+	virtual UUID TypeId(void) const override;
+	virtual ON_wString TypeName(void) const override;
+	virtual ON_wString TypeDescription(void) const override;
+	virtual ON_wString InternalName(void) const override;
+	virtual void AddUISections(IRhRdkExpandableContentUI& ui) override;
+	virtual ParamSerialMethod ParameterSerializationMethod(void) const override { return ParamSerialMethod::GetSet; }
+	virtual bool ReadParametersFromSection(const IRhRdk_XMLSection& section, ReadParamsContext context) override;
+	virtual bool WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const override;
+	virtual UUID RenderEngineId(void) const override;
+	virtual UUID PlugInId(void) const override;
+	virtual void* GetShader(const UUID& uuidRenderEngine, void* pvData) const override;
+	virtual bool IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* wszChildSlotName) const override;
+	virtual unsigned int BitFlags(void) const override;
 
 public: // Overrides from CRhRdkMaterial.
-	virtual void SimulateMaterial(ON_Material& mat, bool bForDataOnlyDec) const;
+	virtual void SimulateMaterial(ON_Material& mat, CRhRdkTexture::TextureGeneration tg, int iSize, const CRhinoObject* pObject) const override;
 
 private:
 	// We keep a shader in the class as an easy way to  make this material represent

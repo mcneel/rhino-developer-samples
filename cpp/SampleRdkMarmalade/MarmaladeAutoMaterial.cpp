@@ -29,7 +29,7 @@ CMarmaladeAutoMaterial::CMarmaladeAutoMaterial(const UUID& uuidShader)
 {
 	m_pShader = Shaders().FindShader(uuidShader);
 
-	ASSERT(NULL != m_pShader);
+	ASSERT(nullptr != m_pShader);
 }
 
 bool CMarmaladeAutoMaterial::Initialize(void)
@@ -72,7 +72,7 @@ ON_wString CMarmaladeAutoMaterial::InternalName(void) const
 bool CMarmaladeAutoMaterial::TextureOn(void) const
 {
 	const CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszTextureOn);
-	ASSERT(NULL != pParam);
+	ASSERT(nullptr != pParam);
 
 	return pParam->m_vValue;
 }
@@ -80,7 +80,7 @@ bool CMarmaladeAutoMaterial::TextureOn(void) const
 void CMarmaladeAutoMaterial::SetTextureOn(bool b, eChangeContext cc)
 {
 	CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszTextureOn);
-	ASSERT(NULL != pParam);
+	ASSERT(nullptr != pParam);
 
 	if (pParam->m_vValue.AsBool() != b)
 	{
@@ -92,7 +92,7 @@ void CMarmaladeAutoMaterial::SetTextureOn(bool b, eChangeContext cc)
 double CMarmaladeAutoMaterial::TextureAmount(void) const
 {
 	const CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszTextureAmount);
-	ASSERT(NULL != pParam);
+	ASSERT(nullptr != pParam);
 
 	return pParam->m_vValue;
 }
@@ -100,7 +100,7 @@ double CMarmaladeAutoMaterial::TextureAmount(void) const
 void CMarmaladeAutoMaterial::SetTextureAmount(double d, eChangeContext cc)
 {
 	CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszTextureAmount);
-	ASSERT(NULL != pParam);
+	ASSERT(nullptr != pParam);
 
 	if (pParam->m_vValue.AsDouble() != d)
 	{
@@ -109,46 +109,45 @@ void CMarmaladeAutoMaterial::SetTextureAmount(double d, eChangeContext cc)
 	}
 }
 
-void CMarmaladeAutoMaterial::SimulateMaterial(ON_Material& mat, bool bForDataOnly) const
+void CMarmaladeAutoMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::TextureGeneration tg, int iSimulatedTextureSize, const CRhinoObject* pObject) const
 {
 	const CMarmaladeParam* pParam = m_ParamBlock.FindParameter(L"color");
-	if (NULL != pParam)
+	if (nullptr != pParam)
 	{
 		mat.SetDiffuse(pParam->m_vValue.AsRdkColor().ColorRefAlpha());
 	}
 
 	pParam = m_ParamBlock.FindParameter(L"transparency");
-	if (NULL != pParam)
+	if (nullptr != pParam)
 	{
 		mat.SetTransparency(pParam->m_vValue);
 	}
 
-	const CRhRdkContent* pChild = NULL;
-	if ((NULL != (pChild = FindChild(wszColorChildSlot)) && TextureOn() && (TextureAmount() > 0.0)))
+	const CRhRdkContent* pChild = nullptr;
+	if ((nullptr != (pChild = FindChild(wszColorChildSlot)) && TextureOn() && (TextureAmount() > 0.0)))
 	{
 		// IsFactoryProductAcceptableAsChild should ensure that the child is a RDK_KIND_TEXTURE
 		// but it never hurts to check.
-		if (pChild->IsKind(RDK_KIND_TEXTURE))
+		if (pChild->IsKind(CRhRdkContent::Kinds::Texture))
 		{
 			const CRhRdkTexture* pTexture = static_cast<const CRhRdkTexture*>(pChild);
 
 			CRhRdkSimulatedTexture onTexture;
 			pTexture->SimulateTexture(onTexture, bForDataOnly);
 
-			mat.AddTexture(onTexture.Filename(), ON_Texture::bitmap_texture);
+			mat.AddTexture(onTexture.Filename(), ON_Texture::TYPE::bitmap_texture);
 
 			if (1 == mat.m_textures.Count())
 			{
 				ON_Texture& tex = mat.m_textures[0];
 				tex.m_bOn = TextureOn();
-				tex.m_magfilter = tex.m_minfilter = tex.linear_filter;
+				tex.m_magfilter = tex.m_minfilter = ON_Texture::FILTER::linear_filter;
 				tex.m_blend_constant_A = TextureAmount();
-				tex.m_mode = (tex.m_blend_constant_A < 1.0) ? tex.blend_texture : tex.decal_texture;
+				tex.m_mode = (tex.m_blend_constant_A < 1.0) ? ON_Texture::MODE::blend_texture : ON_Texture::MODE::decal_texture;
 			}
 		}
 	}
 }
-
 
 const int idParameters1 = 0;
 const int idParameters2 = 1;
@@ -201,7 +200,7 @@ void CMarmaladeAutoMaterial::GetAutoParameters(const IRhRdkParamBlock& paramBloc
 	while (paramBlock.Next(pIterator, sParamName, vParamValue))
 	{
 		CMarmaladeParam* pParam = m_ParamBlock.FindParameter(sParamName);
-		if (NULL != pParam)
+		if (nullptr != pParam)
 		{
 			pParam->m_vValue = vParamValue;
 		}
@@ -231,7 +230,7 @@ bool CMarmaladeAutoMaterial::GetParameters(const IRhRdk_XMLSection& section, eGe
 	while (section.NextParam(pIterator, sParamName, vParamValue))
 	{
 		CMarmaladeParam* pParam = m_ParamBlock.FindParameter(sParamName);
-		if (NULL != pParam)
+		if (nullptr != pParam)
 		{
 			pParam->m_vValue = vParamValue;
 		}
@@ -245,7 +244,7 @@ bool CMarmaladeAutoMaterial::GetParameters(const IRhRdk_XMLSection& section, eGe
 CRhRdkVariant CMarmaladeAutoMaterial::GetParameter(const wchar_t* wszName) const
 {
 	const CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszName);
-	if (NULL == pParam)
+	if (nullptr == pParam)
 	{
 		return CRhRdkMaterial::GetParameter(wszName);
 	}
@@ -256,7 +255,7 @@ CRhRdkVariant CMarmaladeAutoMaterial::GetParameter(const wchar_t* wszName) const
 bool CMarmaladeAutoMaterial::SetParameter(const wchar_t* wszName, const CRhRdkVariant& vValue, CRhRdkContent::eChangeContext cc)
 {
 	CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszName);
-	if (NULL != pParam)
+	if (nullptr != pParam)
 	{
 		if (pParam->m_vValue != vValue)
 		{
@@ -272,7 +271,7 @@ bool CMarmaladeAutoMaterial::SetParameter(const wchar_t* wszName, const CRhRdkVa
 void* CMarmaladeAutoMaterial::GetShader(const UUID& uuidRenderEngine, void* pvData) const
 {
 	if (!IsCompatible(uuidRenderEngine))
-		return NULL;
+		return nullptr;
 
 	CMarmaladeShader* pShader = m_pShader->Clone();
 
@@ -283,9 +282,9 @@ void* CMarmaladeAutoMaterial::GetShader(const UUID& uuidRenderEngine, void* pvDa
 
 bool CMarmaladeAutoMaterial::IsTexturingSupported(void) const
 {
-	return (NULL != m_ParamBlock.FindParameter(wszColor)) &&
-	       (NULL != m_ParamBlock.FindParameter(wszTextureOn)) &&
-	       (NULL != m_ParamBlock.FindParameter(wszTextureAmount));
+	return (nullptr != m_ParamBlock.FindParameter(wszColor)) &&
+	       (nullptr != m_ParamBlock.FindParameter(wszTextureOn)) &&
+	       (nullptr != m_ParamBlock.FindParameter(wszTextureAmount));
 }
 
 DWORD CMarmaladeAutoMaterial::BitFlags(void) const
@@ -416,7 +415,7 @@ bool CMarmaladeAutoMaterialCSI::NextChildSlot(ON_wString& sInternalNameOut, ON_w
 CRhRdkContent::CChildSlotIterator* CMarmaladeAutoMaterial::NewChildSlotIterator(eCSI_Context context) const
 {
 	if (!IsTexturingSupported())
-		return NULL;
+		return nullptr;
 
 	return new CMarmaladeAutoMaterialCSI(this, context);
 }

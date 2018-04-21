@@ -11,12 +11,12 @@ static float Random(void)
 CMarmaladeRenderer::CMarmaladeRenderer(CMarmaladeSdkRender& sdkRender, const ON_3dmRenderSettings& rs)
 	:
 	m_RenderSize(0, 0),
-	m_pRectRegion(NULL),
 	m_bContinueRendering(false),
 	m_SdkRender(sdkRender),
 	m_RenderSettings(rs),
 	m_eventRenderEnd(false, true /* Manual reset */)
 {
+	m_RectRegion.SetRectEmpty();
 }
 
 CMarmaladeRenderer::~CMarmaladeRenderer(void)
@@ -25,10 +25,20 @@ CMarmaladeRenderer::~CMarmaladeRenderer(void)
 
 void CMarmaladeRenderer::SetRenderRegion(const LPCRECT pRectRegion)
 {
-	m_pRectRegion = pRectRegion;
+	if (nullptr == pRectRegion)
+	{
+		m_RectRegion.SetRectEmpty();
+	}
+	else
+	{
+		m_RectRegion.left   = pRectRegion->left;
+		m_RectRegion.top    = pRectRegion->top;
+		m_RectRegion.right  = pRectRegion->right;
+		m_RectRegion.bottom = pRectRegion->bottom;
+	}
 }
 
-void CMarmaladeRenderer::SetRenderSize(const CSize& size)
+void CMarmaladeRenderer::SetRenderSize(const ON_2iSize& size)
 {
 	m_RenderSize = size;
 }
@@ -48,14 +58,15 @@ bool CMarmaladeRenderer::Render(void)
 	const bool bPreview = m_SdkRender.RenderQuick();
 	IRhRdkRenderWindow& renderWindow = m_SdkRender.GetRenderWindow();
 
-	CRect region(0, 0, m_RenderSize.cx, m_RenderSize.cy);
+	ON_4iRect region(0, 0, m_RenderSize.cx, m_RenderSize.cy);
 
-	if (NULL != m_pRectRegion)
-	{
-		region = *m_pRectRegion;
-	}
+	if (!m_RectRegion.IsRectEmpty())
+		region = m_RectRegion;
 
-	renderWindow.SetSize(region.Size());
+	ON_2iSize s;
+	s.cx = region.Width();
+	s.cy = region.Height();
+	renderWindow.SetSize(s);
 
 	CRhinoView* pView = RhinoApp().ActiveView();
 	if (NULL != pView)
@@ -65,7 +76,7 @@ bool CMarmaladeRenderer::Render(void)
 
 	IRhRdkRenderWindow::IChannel* pChannel = renderWindow.OpenChannel(IRhRdkRenderWindow::chanRGBA);
 
-	CRect rect(0, 0, region.Width(), 0);
+	ON_4iRect rect(0, 0, region.Width(), 0);
 
 	int percent = 0;
 
@@ -173,13 +184,13 @@ bool CMarmaladeRenderer::Render(void)
 				{
 					for (int i = 0; i < mosaic; i++)
 					{
-						pChannel->SetValue(pixelX+i, pixelY+j, &rgba);
+						pChannel->SetValue(pixelX+i, pixelY+j, ComponentOrder::RGBA, &rgba);
 					}
 				}
 			}
 			else
 			{
-				pChannel->SetValue(pixelX, pixelY, &rgba);
+				pChannel->SetValue(pixelX, pixelY, ComponentOrder::RGBA, &rgba);
 			}
 		}
 
