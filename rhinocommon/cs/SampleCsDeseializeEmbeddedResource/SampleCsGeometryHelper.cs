@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Rhino.Geometry;
 
-namespace SampleCsDeseializeEmbeddedResource
+namespace SampleCsDeserializeEmbeddedResource
 {
   public static class SampleCsGeometryHelper
   {

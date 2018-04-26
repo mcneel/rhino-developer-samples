@@ -6,7 +6,7 @@ using Rhino.Input;
 using Rhino.Input.Custom;
 using Rhino.UI;
 
-namespace SampleCsDeseializeEmbeddedResource.Commands
+namespace SampleCsDeserializeEmbeddedResource.Commands
 {
   /// <summary>
   /// SampleCsSerializeBrepToFile test command (e.g. hidden)
