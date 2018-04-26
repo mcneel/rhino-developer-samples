@@ -1,7 +1,6 @@
 ﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
-using SampleCsDeseializeEmbeddedResource;
 
 namespace SampleCsDeserializeEmbeddedResource.Commands
 {

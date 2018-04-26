@@ -1,4 +1,4 @@
-﻿namespace SampleCsDeseializeEmbeddedResource
+﻿namespace SampleCsDeserializeEmbeddedResource
 {
   public class SampleCsDeserializeEmbeddedResourcePlugIn : Rhino.PlugIns.PlugIn
   {
