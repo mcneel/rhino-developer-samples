@@ -1,0 +1,26 @@
+﻿using System.Reflection;
+using System.Runtime.InteropServices;
+using Rhino.PlugIns;
+
+[assembly: PlugInDescription(DescriptionType.Address, "3670 Woodland Park Avenue North\r\nSeattle, WA 98103")]
+[assembly: PlugInDescription(DescriptionType.Country, "United States")]
+[assembly: PlugInDescription(DescriptionType.Email, "devsupport@mcneel.com")]
+[assembly: PlugInDescription(DescriptionType.Phone, "206-545-6877")]
+[assembly: PlugInDescription(DescriptionType.Fax, "206-545-7321")]
+[assembly: PlugInDescription(DescriptionType.Organization, "Robert McNeel & Associates")]
+[assembly: PlugInDescription(DescriptionType.UpdateUrl, "https://github.com/mcneel/rhino-developer-samples")]
+[assembly: PlugInDescription(DescriptionType.WebSite, "http://www.rhino3d.com/")]
+[assembly: PlugInDescription(DescriptionType.Icon, "SampleCsDeseializeEmbeddedResource.Resources.SampleCs.ico")]
+[assembly: AssemblyTitle("SampleCsDeseializeEmbeddedResource")]
+[assembly: AssemblyDescription("RhinoCommon Sample - SampleCsDeseializeEmbeddedResource")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Robert McNeel & Associates")]
+[assembly: AssemblyProduct("SampleCsDeseializeEmbeddedResource")]
+[assembly: AssemblyCopyright("Copyright © 2018, Robert McNeel & Associates")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+[assembly: ComVisible(false)]
+[assembly: Guid("178bfe94-c990-40ad-b467-21a31a5f9c19")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0.0")]
+[assembly: AssemblyInformationalVersion("2")]
