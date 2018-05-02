@@ -29,6 +29,7 @@ public:
 
 	void operator = (const CMarmaladeParamBlock& pb);
 
+	void Clear(void);
 	void Add(CMarmaladeParam* pParam);
 	int ParameterCount(void) const;
 	CMarmaladeParam* Parameter(int iIndex) const;

@@ -22,8 +22,8 @@ public:
 
 	virtual void DeleteThis(void) { delete this; }
 	virtual bool GetColor(const ON_3dPoint& uvw, const ON_3dVector& duvwdx,
-		                  const ON_3dVector& duvwdy, CRhRdkColor& colOut, void* pvData = NULL) const;
-	virtual void* EVF(const wchar_t* wszFunc, void* pvData) { return NULL; }
+		                  const ON_3dVector& duvwdy, CRhRdkColor& colOut, void* pvData = nullptr) const;
+	virtual void* EVF(const wchar_t* wszFunc, void* pvData) { return nullptr; }
 
 private:
 	CRhRdkColor m_color1;
@@ -74,14 +74,15 @@ UUID CMarmaladeAutoUITexture::PlugInId(void) const
 
 UUID CMarmaladeAutoUITexture::TypeId(void) const
 {
-	//**********************************************************************
-	// Generated for this class using GUIDGEN  *** Don't reuse this GUID ***
-	// {5E33DC89-8217-4048-B1EF-F0EB4A8F03D2}
-	static const GUID uuidTypeId =
-	{
-		0x5e33dc89, 0x8217, 0x4048, { 0xb1, 0xef, 0xf0, 0xeb, 0x4a, 0x8f, 0x03, 0xd2 }
-	};
-	//**********************************************************************
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	static const UUID uuidTypeId = { 0x5e33dc89, 0x8217, 0x4048, { 0xb1, 0xef, 0xf0, 0xeb, 0x4a, 0x8f, 0x03, 0xd2 } };
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
 
 	return uuidTypeId;
 }
@@ -167,7 +168,7 @@ bool CMarmaladeAutoUITexture::WriteParametersToSection(IRhRdk_XMLSection& sectio
 
 void* CMarmaladeAutoUITexture::GetShader(const UUID& uuidRenderEngine, void* pvData) const
 {
-	return NULL;
+	return nullptr;
 }
 
 bool CMarmaladeAutoUITexture::IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* wszChildSlotName) const

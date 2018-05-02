@@ -14,6 +14,8 @@ public:
 
 	static GUID ID(void);
 
+	virtual void AddPagesToObjectPropertiesDialog(CRhinoPropertiesPanelPageCollection& collection) override;
+
 	// Required overrides.
 	virtual const wchar_t* PlugInName() const override;
 	virtual const wchar_t* PlugInVersion() const override;
@@ -47,20 +49,12 @@ public:
 
 	bool IsMarmaladeCurrentRenderer(void) const;
 
-	// Non-modal options dialog.
-	void ShowNonModalOptionsDialog(bool bShow);
-	void ToggleNonModalOptionsDialog(void);
-	void EnableNonModalOptionsDialog(bool bEnable) const;
-	bool IsNonModalOptionsDialogVisible(void) const;
-	bool IsNonModalOptionsDialogMinimized(void) const;
-
 private:
 	ON_wString m_plugin_version;
 	CMarmaladeEventWatcher m_event_watcher;
-	CMarmaladeRdkPlugIn* m_pRdkPlugIn;
-	CMenu* m_pMenu;
+	CMarmaladeRdkPlugIn* m_pRdkPlugIn = nullptr;
+	CMenu* m_pMenu = nullptr;
 	UINT_PTR m_iTimer;
-	CMarmaladeNonModalOptionsDlg* m_pNonModalOptionsDialog;
 };
 
 CMarmaladePlugIn& MarmaladePlugIn();

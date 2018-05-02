@@ -5,6 +5,7 @@ class CMarmaladeContentIOPlugIn : public CRhRdkContentIOPlugIn
 {
 public:
 	virtual UUID RdkPlugInId(void) const override;
+	virtual UUID PlugInId(void) const override;
 	virtual const wchar_t* FileExtension(void) const override { return L".marm"; }
 	virtual const wchar_t* Description(void) const override { return L"Marmalade Files"; }
 	virtual bool CanLoad(void) const override { return false; }

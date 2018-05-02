@@ -21,10 +21,10 @@ public:
 	CMarmaladeAutoMaterial(const UUID& uuidShader);
 
 	bool TextureOn(void) const;
-	void SetTextureOn(bool b, eChangeContext cc);
+	void SetTextureOn(bool b);
 
 	double TextureAmount(void) const;
-	void SetTextureAmount(double d, eChangeContext cc);
+	void SetTextureAmount(double d);
 
 public: // Overrides from CRhRdkContent.
 	virtual bool Initialize(void) override;

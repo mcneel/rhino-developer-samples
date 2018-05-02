@@ -6,9 +6,11 @@
 #include "MarmaladePointCloudRMP.h"
 #include "MarmaladeActions.h"
 #include "MarmaladeMaterial.h"
+#include "MarmaladeNewMaterial.h"
 #include "MarmaladeAutoMaterial.h"
 #include "MarmaladeAutoUITexture.h"
 #include "MarmaladeContentIOPlugIn.h"
+#include "MarmaladeRenderSettingsSection.h"
 
 CMarmaladeRdkPlugIn::CMarmaladeRdkPlugIn(void)
 {
@@ -44,48 +46,24 @@ bool CMarmaladeRdkPlugIn::AllowChooseContent(const CRhRdkContent& content) const
 	return true;
 }
 
-void CMarmaladeRdkPlugIn::EnableNonModalWindows(bool bEnable) const
+void CMarmaladeRdkPlugIn::RegisterExtensions(void) const
 {
-	// Marmalade doesn't have any non modal windows (like a non-model options dialog) so just do nothing.
-}
-
-void CMarmaladeRdkPlugIn::RegisterContent(IRhRdkContentFactories& factories) const
-{
-	factories.Add(new CMarmaladeMaterialFactory);
-	factories.Add(new CMarmaladeAutoUITextureFactory);
+	AddExtension(new CMarmaladeMaterialFactory);
+	AddExtension(new CMarmaladeNewMaterialFactory);
+	AddExtension(new CMarmaladeAutoUITextureFactory);
 
 	// Add all the plug-in shaders to the factories.
 	for (int i = 0; i < Shaders().Count(); i++)
 	{
-		const CMarmaladeShader* pShader = Shaders().Shader(i);
-		factories.Add(new CMarmaladeAutoMaterialFactory(pShader->Uuid()));
+		const auto* pShader = Shaders().Shader(i);
+		AddExtension(new CMarmaladeAutoMaterialFactory(pShader->Uuid()));
 	}
 
-	__super::RegisterContent(factories);
+	AddExtension(new CMarmaladeRMP);
+	AddExtension(new CMarmaladePointCloudRMP);
+
+	AddExtension(new CMarmaladeContentIOPlugIn);
 }
-
-void CMarmaladeRdkPlugIn::RegisterExtensions(void) const
-{
-	crmm.Add(new CMarmaladeRMP);
-	crmm.Add(new CMarmaladePointCloudRMP);
-
-	ciop.Add(new CMarmaladeContentIOPlugIn);
-}
-
-//void CMarmaladeRdkPlugIn::RegisterCustomRenderMeshProviders(IRhRdkCustomRenderMeshManager& crmm) const
-//{
-//	crmm.Add(new CMarmaladeRMP);
-//	crmm.Add(new CMarmaladePointCloudRMP);
-//
-//	__super::RegisterCustomRenderMeshProviders(crmm);
-//}
-//
-//void CMarmaladeRdkPlugIn::RegisterContentIOPlugIns(IRhRdkContentIOPlugIns& ciop) const
-//{
-//	ciop.Add(new CMarmaladeContentIOPlugIn);
-//
-//	__super::RegisterContentIOPlugIns(ciop);
-//}
 
 void CMarmaladeRdkPlugIn::AddCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const
 {
@@ -117,7 +95,7 @@ void CMarmaladeRdkPlugIn::UpdateCustomEditorActions(IRhRdkActions& actions, cons
 	for (int i = 0; i < actions.Count(); i++)
 	{
 		// Enable actions for the Material Editor only.
-		const bool bEnable = (0 == wcscmp(editor.Kind(), RDK_KIND_MATERIAL));
+		const bool bEnable = (editor.TopLevelKind() == CRhRdkContent::Kinds::Material);
 		actions.Action(i)->SetEnabled(bEnable);
 	}
 }
@@ -154,67 +132,69 @@ void CMarmaladeRdkPlugIn::AbortRender(void)
 	// Nothing to do in Marmalade.
 }
 
-HBITMAP CMarmaladeRdkPlugIn::CreatePreview(const CSize& sizeImage, eRhRdkRenderQuality quality,
-                                           const IRhRdkPreviewSceneServer* pSceneServer)
+bool CMarmaladeRdkPlugIn::CreatePreview(const ON_2iSize& sizeImage, RhRdkPreviewQuality quality,
+	                      const IRhRdkPreviewSceneServer* pSceneServer, IRhRdkPreviewCallbacks* pNotify, CRhinoDib& dibOut)
 {
-	// This function does nothing so that the simulated material is shown by the RDK preview renderer.
+	// This is how you might implement this function, but obviously, with a little better rendering quality.
 
-	if (NULL == pSceneServer)
-		return NULL;
+	if (nullptr == pSceneServer)
+		return false;
 
-	const IRhRdkPreviewSceneServer::IObject* pObject = pSceneServer->NextObject();
+	const auto* pObject = pSceneServer->NextObject();
+	if (nullptr == pObject)
+		return false;
 
-	const CRhRdkMaterial* pMaterial = pObject->Material();
-	if (NULL == pMaterial)
-		return NULL;
+	const auto* pMaterial = pObject->Material();
+	if (nullptr == pMaterial)
+		return false;
 
-	void* pvData = NULL; // Could be your own private data object.
-
-	HBITMAP hBitmap = NULL;
+	void* pvData = nullptr; // This could be your own private data object.
 
 	void* pvShader = pMaterial->GetShader(MarmaladePlugIn().PlugInID(), pvData);
-	if (NULL != pvShader)
-	{
-		CMarmaladeShader* pShader = reinterpret_cast<CMarmaladeShader*>(pvShader);
+	if (nullptr == pvShader)
+		return false;
 
-		// Use your shader to render into a bitmap.
+	const auto* pShader = reinterpret_cast<CMarmaladeShader*>(pvShader);
 
-		delete pShader;
-	}
+	// Use your shader to render into dibOut.
 
-	return hBitmap;
-
-
-
-	// This is how you might implement this function - but obviously, with a little better rendering quality.
+	const auto& paramBlock = pShader->ParamBlock();
 
 	CRhinoDib dib(sizeImage.cx, sizeImage.cy, 24);
 
 	switch (quality)
 	{
-	case rcmQualLow:
+	case RhRdkPreviewQuality::Low:
 		dib.FillSolid(RGB(255, 140, 0));
 		break;
 
-	case rcmQualMedium:
+	case RhRdkPreviewQuality::Medium:
 		dib.FillSolid(RGB(255, 255, 0));
 		break;
 
-	case rcmQualFull:
-		dib.FillSolid(RGB(0, 255, 0));
+	case RhRdkPreviewQuality::Full:
+		{
+		const auto* pParam = paramBlock.FindParameter(L"color");
+		const auto col = pParam->m_vValue.AsRdkColor().ColorRef();
+		dib.FillSolid(col);
 		break;
+		}
 	}
 
-	// Pretend to take a long time to produce the image.
-	Sleep(1000);
+	delete pShader;
 
-	return dib.CopyHBitmap();
+	// Pretend to take a long time to produce the image.
+	Sleep(500);
+
+	dibOut = dib;
+
+	return true;
 }
 
-HBITMAP CMarmaladeRdkPlugIn::CreatePreview(const CSize& sizeImage, const CRhRdkTexture& texture)
+bool CMarmaladeRdkPlugIn::CreatePreview(const ON_2iSize&, const CRhRdkTexture&, CRhinoDib&)
 {
 	// Allow RDK to produce all texture previews.
-	return NULL;
+	return false;
 }
 
 bool CMarmaladeRdkPlugIn::SupportsFeature(const UUID& uuidFeature) const
@@ -245,27 +225,21 @@ CRhRdkVariant CMarmaladeRdkPlugIn::GetParameter(const wchar_t* wszParam) const
 	else
 	if (_wcsicmp(wszParam, L"ExecuteSunSettingsCommand") == 0)
 	{
-		return RhinoApp().RunScript(L"MarmaladeSunSettings");
+		return RhinoApp().RunScript(CRhinoDoc::NullRuntimeSerialNumber, L"MarmaladeSunSettings");
 	}
 
 	return CRhRdkRenderPlugIn::GetParameter(wszParam);
 }
 
-#include "MarmaladeOptionsSection.h"
-class CMarmaladeViewDockBarManager : public CRhRdkViewDockBarCustomSectionManager
+void CMarmaladeRdkPlugIn::AddCustomRenderSettingsSections(RhRdkUiModalities m, ON_SimpleArray<IRhinoUiSection*>& aSections) const
 {
-	bool AddSections(ON_SimpleArray<CRhRdkViewDockBarCustomSection*>& aSections) const
-	{
-		AFX_MANAGE_STATE(AfxGetStaticModuleState());
-		aSections.Append(new CMarmaladeViewDockBarSection);
-		return true;
-	}
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	void DeleteThis()				{ delete this; }
-	UUID PlugInID(void) const		{		return MarmaladePlugIn().PlugInID();	}
-};
+	aSections.Append(new CMarmaladeRenderSettingsSection1(m));
+	aSections.Append(new CMarmaladeRenderSettingsSection2(m));
+	aSections.Append(new CMarmaladeRenderSettingsSection1_Detailed(m));
+	aSections.Append(new CMarmaladeRenderSettingsSection2_Detailed(m));
 
-void CMarmaladeRdkPlugIn::RegisterCustomPlugIns(void) const
-{
-	AddCustomPlugIn(new CMarmaladeViewDockBarManager);
+	// You must call the base class last.
+	CRhRdkRenderPlugIn::AddCustomRenderSettingsSections(m, aSections);
 }

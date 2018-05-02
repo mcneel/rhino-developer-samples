@@ -20,6 +20,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX) override;
 	virtual UUID Uuid(void) const override;
 	virtual void DisplayData(void) override;
+	virtual unsigned int GetIDD(void) const override { return IDD; }
 	virtual ON_wString Caption(bool bAlwaysEnglish) const override { return L"Marmalade color"; }
 	virtual AFX_MODULE_STATE* GetModuleState(void) const override { return AfxGetStaticModuleState(); }
 

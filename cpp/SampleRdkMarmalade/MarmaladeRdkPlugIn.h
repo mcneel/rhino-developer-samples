@@ -21,8 +21,6 @@ public:
 	CRhinoPlugIn& RhinoPlugIn(void) const override { return ::MarmaladePlugIn(); }
 
 protected:
-	// OBSOLETE virtual void EnableNonModalWindows(bool bEnable) const;
-
 	virtual bool AllowChooseContent(const CRhRdkContent& content) const override;
 
 	virtual void RegisterExtensions(void) const override;
@@ -39,19 +37,12 @@ protected:
 
 	virtual bool SupportsFeature(const UUID& uuidFeature) const override;
 
+	virtual void AddCustomRenderSettingsSections(RhRdkUiModalities m, ON_SimpleArray<IRhinoUiSection*>& aSections) const override;
+
 	// Custom commands.
 	virtual void AddCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const override;
 	virtual void UpdateCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const override;
 	virtual void AddCustomEditorMenu(IRhRdkMenu& menu, const IRhRdkContentEditor& editor) const override;
-
-//	// View dock bar
-//	virtual void RegisterCustomPlugIns(void) const override;
-//
-//	// Custom render mesh providers.
-//	virtual void RegisterCustomRenderMeshProviders(IRhRdkCustomRenderMeshManager& crmm) const override;
-//
-//	// Custom content I/O plug-ins.
-//	virtual void RegisterContentIOPlugIns(IRhRdkContentIOPlugIns& ciop) const override;
 
 	bool IsMarmaladeCurrentRenderer(void) const;
 };

@@ -19,10 +19,6 @@ CMarmaladeRenderer::CMarmaladeRenderer(CMarmaladeSdkRender& sdkRender, const ON_
 	m_RectRegion.SetRectEmpty();
 }
 
-CMarmaladeRenderer::~CMarmaladeRenderer(void)
-{
-}
-
 void CMarmaladeRenderer::SetRenderRegion(const LPCRECT pRectRegion)
 {
 	if (nullptr == pRectRegion)
@@ -40,13 +36,39 @@ void CMarmaladeRenderer::SetRenderRegion(const LPCRECT pRectRegion)
 
 void CMarmaladeRenderer::SetRenderSize(const ON_2iSize& size)
 {
+	// Called on the main thread.
+
 	m_RenderSize = size;
+
+	ON_4iRect region(0, 0, m_RenderSize.cx, m_RenderSize.cy);
+
+	if (!m_RectRegion.IsRectEmpty())
+		region = m_RectRegion;
+
+	auto& renderWindow = m_SdkRender.GetRenderWindow();
+
+	ON_2iSize s;
+	s.cx = region.Width();
+	s.cy = region.Height();
+	renderWindow.SetSize(s);
+
+	const auto* pView = RhinoApp().ActiveView();
+	if (nullptr != pView)
+	{
+		auto* pDoc = m_SdkRender.CommandContext().Document();
+		if (nullptr != pDoc)
+		{
+			renderWindow.AddWireframeChannel(*pDoc, pView->Viewport().View(), m_RenderSize, region);
+		}
+	}
 }
 
 bool CMarmaladeRenderer::Render(void)
 {
-	CRhinoDoc* pDoc = RhinoApp().ActiveDoc();
-	if (NULL == pDoc)
+	// Called on the worker thread.
+
+	auto* pDoc = m_SdkRender.CommandContext().Document();
+	if (nullptr == pDoc)
 		return false;
 
 	bool bSuccess = true;
@@ -56,25 +78,14 @@ bool CMarmaladeRenderer::Render(void)
 	m_eventRenderEnd.ResetEvent();
 
 	const bool bPreview = m_SdkRender.RenderQuick();
-	IRhRdkRenderWindow& renderWindow = m_SdkRender.GetRenderWindow();
+	auto& renderWindow = m_SdkRender.GetRenderWindow();
 
 	ON_4iRect region(0, 0, m_RenderSize.cx, m_RenderSize.cy);
 
 	if (!m_RectRegion.IsRectEmpty())
 		region = m_RectRegion;
 
-	ON_2iSize s;
-	s.cx = region.Width();
-	s.cy = region.Height();
-	renderWindow.SetSize(s);
-
-	CRhinoView* pView = RhinoApp().ActiveView();
-	if (NULL != pView)
-	{
-		renderWindow.AddWireframeChannel(*pDoc, pView->Viewport().View(), m_RenderSize, region);
-	}
-
-	IRhRdkRenderWindow::IChannel* pChannel = renderWindow.OpenChannel(IRhRdkRenderWindow::chanRGBA);
+	auto* pChannel = renderWindow.OpenChannel(IRhRdkRenderWindow::chanRGBA);
 
 	ON_4iRect rect(0, 0, region.Width(), 0);
 

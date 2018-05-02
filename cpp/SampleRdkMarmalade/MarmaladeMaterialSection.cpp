@@ -3,9 +3,7 @@
 #include "MarmaladeMaterialSection.h"
 #include "MarmaladeMaterial.h"
 
-static UINT uColorChangedMsg    = CRhRdkColorButton::ChangedMessageNumber();
-static UINT uSubNodeChangedMsg  = CRhRdkSubNodeCtrl::ChangedMessageNumber();
-static UINT uSubNodeChangingMsg = CRhRdkSubNodeCtrl::ChangingMessageNumber();
+static UINT uColorChangedMsg = CRhRdkColorButton::ChangedMessageNumber();
 
 static const ON_wString sChildSlotName = "marmalade-texture-slot";
 
@@ -18,11 +16,11 @@ void CIOREdit::SetSection(CMarmaladeMaterialSection& section)
 	m_pSection = &section;
 }
 
-void CIOREdit::OnContextMenu(CWnd* pWnd, CPoint point)
+void CIOREdit::OnContextMenu(CWnd* pWnd, CPoint pt)
 {
 	double dIOR = 0.0;
 	CRhRdkIORContextMenu m;
-	if (m.TrackMenu(pWnd, point, dIOR, &m_sName))
+	if (m.TrackMenu(pWnd->GetSafeHwnd(), ON_2iPoint(pt.x, pt.y), dIOR, &m_sName))
 	{
 		CString s;
 		s.Format(_T("%.2f"), dIOR);
@@ -31,9 +29,9 @@ void CIOREdit::OnContextMenu(CWnd* pWnd, CPoint point)
 		SetFocus();
 		SetSel(0, -1);
 
-		if (NULL != m_pSection)
+		if (nullptr != m_pSection)
 		{
-			m_pSection->OnIORChanged();
+			m_pSection->OnChangeAnything();
 		}
 	}
 }
@@ -43,8 +41,6 @@ CMarmaladeMaterialSection::CMarmaladeMaterialSection()
 	CRhRdkMaterialUISection_MFC(IDD)
 {
 	m_editIOR.SetSection(*this);
-
-	m_bChildSlotInUse = false;
 }
 
 CMarmaladeMaterialSection::~CMarmaladeMaterialSection()
@@ -79,7 +75,6 @@ void CMarmaladeMaterialSection::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_TEXTURE_PLACEHOLDER, m_editTexturePlaceholder);
 	DDX_Control(pDX, IDC_EDIT_TRANSPARENCY, m_editTransparency);
 	DDX_Control(pDX, IDC_EDIT_IOR, m_editIOR);
-	DDX_Control(pDX, IDC_STATIC_IOR_NAME, m_staticIORName);
 }
 
 BEGIN_MESSAGE_MAP(CMarmaladeMaterialSection, CRhRdkMaterialUISection_MFC)
@@ -90,8 +85,6 @@ BEGIN_MESSAGE_MAP(CMarmaladeMaterialSection, CRhRdkMaterialUISection_MFC)
 	ON_EN_KILLFOCUS(IDC_EDIT_IOR, OnKillfocusEditIOR)
 	ON_BN_CLICKED(IDC_CHECK_TEXTURE_ON, OnClickCheckTextureOn)
 	ON_REGISTERED_MESSAGE(uColorChangedMsg, OnColorChanged)
-	ON_REGISTERED_MESSAGE(uSubNodeChangingMsg, OnSubNodeChanging)
-	ON_REGISTERED_MESSAGE(uSubNodeChangedMsg,  OnSubNodeChanged)
 END_MESSAGE_MAP()
 
 void CMarmaladeMaterialSection::OnDropFiles(HDROP hDropInfo)
@@ -103,61 +96,17 @@ BOOL CMarmaladeMaterialSection::OnInitDialog()
 {
 	CRhRdkMaterialUISection_MFC::OnInitDialog();
 
-	if (NULL == Material())
-		return FALSE;
-
-	const UUID uuid = Material()->InstanceId();
-	m_SubNode.SetParentInstanceId(uuid);
+	// This old-style dialog only uses the child slot functionality of the sub-node control.
+	// It implements the 'on' and 'amount' functionality by using a discrete check box and edit box.
+	// The new dialog (CMarmaladeNewMaterialSection) uses the sub-node control's built-in
+	// 'on' check box and 'amount' edit box. 
 	m_SubNode.SetChildSlotName(sChildSlotName);
-	VERIFY(m_SubNode.Create(WS_CHILD | WS_VISIBLE, CRect(0, 0, 0, 0), this, 1234));
+	VERIFY(m_SubNode.CreateWnd(WS_CHILD | WS_VISIBLE, CRect(0, 0, 0, 0), this, 1234));
+	m_SubNode.SetController(Controller());
 
 	DisplayData();
 
 	return FALSE;
-}
-
-void CMarmaladeMaterialSection::OnIORChanged(void)
-{
-	m_staticIORName.SetWindowTextW(m_editIOR.ChosenName());
-}
-
-LRESULT CMarmaladeMaterialSection::OnColorChanged(WPARAM w, LPARAM l)
-{
-	if (NULL == Material())
-		return 0;
-
-	Material()->SetColor(m_btColor.GetColor().OnColor(), CRhRdkContent::ccUI);
-
-	return 1;
-}
-
-LRESULT CMarmaladeMaterialSection::OnSubNodeChanging(WPARAM, LPARAM ctrlID)
-{
-	if (NULL == Material())
-		return 0;
-
-	m_bChildSlotInUse = (NULL != Material()->FindChild(sChildSlotName));
-
-	return 1;
-}
-
-LRESULT CMarmaladeMaterialSection::OnSubNodeChanged(WPARAM, LPARAM ctrlID)
-{
-	if (NULL == Material())
-		return 0;
-
-	CRhRdkContent* pChild = Material()->FindChild(sChildSlotName);
-	if (NULL == pChild)
-		return 0;
-
-	if (m_bChildSlotInUse)
-		return 0;
-
-	Material()->SetTextureOn(true, CRhRdkContent::ccProgram);
-
-	DisplayData();
-
-	return 1;
 }
 
 ON_wString CMarmaladeMaterialSection::Caption(bool) const
@@ -167,76 +116,135 @@ ON_wString CMarmaladeMaterialSection::Caption(bool) const
 
 void CMarmaladeMaterialSection::DisplayData(void)
 {
-	if (NULL == Material())
+	const auto con = Controller();
+	if (!con)
 		return;
 
-	m_btColor.SetColor(Material()->Color(), false);
+	CRhRdkColor col;
+	bool bTextureOn = false;
+	double dIOR = 0.0, dTrans = 0.0, dTextureAmount = 0.0;
+	bool bColVaries = false, bIORVaries = false, bTransVaries = false, bTextureOnVaries = false, bTextureAmountVaries = false;
+
+	int count = 0;
+	CRhRdkEditableContentArray aContent(*con, false);
+	for (int i = 0; i < aContent.Count(); i++)
+	{
+		const auto pMaterial = dynamic_cast<const CMarmaladeMaterial*>(aContent[i]);
+		if (nullptr == pMaterial)
+			continue;
+
+		if (0 == count++)
+		{
+			col = pMaterial->Color();
+			dIOR = pMaterial->IOR();
+			dTrans = pMaterial->Transparency();
+			dTextureAmount = pMaterial->TextureAmount();
+			bTextureOn = pMaterial->TextureOn();
+		}
+		else
+		{
+			if (col != pMaterial->Color())
+				bColVaries = true;
+
+			if (dIOR != pMaterial->IOR())
+				bIORVaries = true;
+
+			if (dTrans != pMaterial->Transparency())
+				bTransVaries = true;
+
+			if (bTextureOn != pMaterial->TextureOn())
+				bTextureOnVaries = true;
+
+			if (dTextureAmount != pMaterial->TextureAmount())
+				bTextureAmountVaries = true;
+		}
+	}
+
+	m_btColor.SetColor(col, false);
+	m_btColor.SetVaries(bColVaries);
 
 	m_SubNode.DisplayData();
 
-	CString s;
-	s.Format(_T("%.1f"), Material()->Transparency());
-	m_editTransparency.SetWindowText(s);
+	ON_wString s1;
+	if (!bTransVaries)
+		s1.Format(_T("%.1f"), dTrans);
+	m_editTransparency.SetWindowText(s1);
 
-	s.Format(_T("%.2f"), Material()->IOR());
-	m_editIOR.SetWindowText(s);
+	ON_wString s2;
+	if (!bIORVaries)
+		s2.Format(_T("%.2f"), dIOR);
+	m_editIOR.SetWindowText(s2);
 
-	s.Format(_T("%.1f"), Material()->TextureAmount());
-	m_editTextureAmount.SetWindowText(s);
+	ON_wString s3;
+	if (!bTextureAmountVaries)
+		s3.Format(_T("%g%%"), dTextureAmount * 100.0);
+	m_editTextureAmount.SetWindowText(s3);
 
-	m_checkTextureOn.SetCheck(Material()->TextureOn() ? BST_CHECKED : BST_UNCHECKED);
+	m_checkTextureOn.SetCheck(bTextureOnVaries ? BST_INDETERMINATE : (bTextureOn ? BST_CHECKED : BST_UNCHECKED));
 }
 
-void CMarmaladeMaterialSection::OnClickCheckTextureOn()
+void CMarmaladeMaterialSection::OnChangeAnything(void)
 {
 	const auto con = Controller();
 	if (!con)
 		return;
 
-	const bool bChecked = (BST_CHECKED == m_checkTextureOn.GetCheck());
+	CString s;
 
 	CRhRdkEditableContentArray aContent(*con, true);
 	for (int i = 0; i < aContent.Count(); i++)
 	{
 		const auto pMaterial = dynamic_cast<const CMarmaladeMaterial*>(aContent[i]);
-		if (nullptr != pMaterial)
-		{
-			const CRhRdkContent::Change<CMarmaladeMaterial> m(*pMaterial, RhRdkChangeContext::UI);
-			m().SetTextureOn(bChecked, CRhRdkContent::ccUI);
-		}
+		if (nullptr == pMaterial)
+			continue;
+
+		const CRhRdkContent::Change<CMarmaladeMaterial> m(*pMaterial, RhRdkChangeContext::UI);
+
+		if (!m_btColor.Varies())
+			m().SetColor(m_btColor.GetColor());
+
+		const auto uCheck = m_checkTextureOn.GetCheck();
+		if (BST_INDETERMINATE != uCheck)
+			m().SetTextureOn(BST_CHECKED == uCheck);
+
+		m_editTextureAmount.GetWindowText(s);
+		if (!s.IsEmpty())
+			m().SetTextureAmount(_tstof(s) * 0.01);
+
+		m_editIOR.GetWindowText(s);
+		if (!s.IsEmpty())
+			m().SetIOR(_tstof(s));
+
+		m_editTransparency.GetWindowText(s);
+		if (!s.IsEmpty())
+			m().SetTransparency(_tstof(s));
 	}
+}
+
+LRESULT CMarmaladeMaterialSection::OnColorChanged(WPARAM w, LPARAM l)
+{
+	OnChangeAnything();
+	return 1;
+}
+
+void CMarmaladeMaterialSection::OnClickCheckTextureOn()
+{
+	OnChangeAnything();
 }
 
 void CMarmaladeMaterialSection::OnKillfocusEditTransparency()
 {
-	if (NULL != Material())
-	{
-		CString s;
-		m_editTransparency.GetWindowText(s);
-		Material()->SetTransparency(_tstof(s), CRhRdkContent::ccUI);
-	}
+	OnChangeAnything();
 }
 
 void CMarmaladeMaterialSection::OnKillfocusEditIOR()
 {
-	if (NULL != Material())
-	{
-		CString s;
-		m_editIOR.GetWindowText(s);
-		Material()->SetIOR(_tstof(s), CRhRdkContent::ccUI);
-
-		OnIORChanged();
-	}
+	OnChangeAnything();
 }
 
 void CMarmaladeMaterialSection::OnKillfocusEditTextureAmount()
 {
-	if (NULL != Material())
-	{
-		CString s;
-		m_editTextureAmount.GetWindowText(s);
-		Material()->SetTextureAmount(_tstof(s), CRhRdkContent::ccUI);
-	}
+	OnChangeAnything();
 }
 
 void CMarmaladeMaterialSection::OnSize(UINT nType, int cx, int cy)
@@ -250,4 +258,12 @@ void CMarmaladeMaterialSection::OnSize(UINT nType, int cx, int cy)
 	m_editTexturePlaceholder.GetWindowRect(rect);
 	ScreenToClient(rect);
 	m_SubNode.MoveWindow(rect, true);
+}
+
+void CMarmaladeMaterialSection::OnEvent(IRhinoUiController& con, const UUID& uuidData, IRhinoUiController::EventPriority ep, const IRhinoUiEventInfo* pInfo)
+{
+	CRhRdkMaterialUISection_MFC::OnEvent(con, uuidData, ep, pInfo);
+
+	DisplayData();
+	EnableDisableControls();
 }

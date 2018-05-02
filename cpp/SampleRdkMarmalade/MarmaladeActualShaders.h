@@ -12,6 +12,17 @@
 	effects of this shader to the user as part of the RDK material editor.
 */
 
+#define MARM_SHADER_COLOR        L"color"
+#define MARM_SHADER_TRANSPARENCY L"transparency"
+#define MARM_SHADER_IOR          L"ior"
+#define MARM_SHADER_SILKINESS    L"silkiness"
+#define MARM_SHADER_ROUGHNESS    L"roughness"
+#define MARM_SHADER_GRAININESS   L"graininess"
+#define MARM_SHADER_BUBBLINESS   L"bubbliness"
+
+#define MARM_SHADER_TEXTURE_ON      MARM_SHADER_COLOR L"-" FS_MAT_POSTFIX_ON
+#define MARM_SHADER_TEXTURE_AMOUNT  MARM_SHADER_COLOR L"-" FS_MAT_POSTFIX_AMOUNT
+
 class CMarmaladeOrangeShader : public CMarmaladeShader
 {
 public:

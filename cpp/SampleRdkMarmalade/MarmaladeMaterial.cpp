@@ -9,11 +9,18 @@ CRhRdkMaterial* CMarmaladeMaterialFactory::NewMaterial(void) const
 	return new CMarmaladeMaterial;
 }
 
+// This old-style material does not use content fields, so each parameter
+// is handled explicitly for each operation. This is only retained for
+// reference and is not recommended for new plug-in designs. Using
+// content fields instead (see CMarmaladeNewMaterial) automates a great
+// deal of the necessary behavior, thus making the plug-in smaller and
+// easier to implement.
+
 static const wchar_t* wszColor         = L"color";
 static const wchar_t* wszTransparency  = L"transparency";
 static const wchar_t* wszIOR           = L"ior";
-static const wchar_t* wszTextureOn     = L"texture-on";
-static const wchar_t* wszTextureAmount = L"texture-amount";
+static const wchar_t* wszTextureOn     = L"color-on";
+static const wchar_t* wszTextureAmount = L"color-amount";
 
 CMarmaladeMaterial::CMarmaladeMaterial()
 {
@@ -23,107 +30,154 @@ CMarmaladeMaterial::~CMarmaladeMaterial()
 {
 }
 
-COLORREF CMarmaladeMaterial::Color(void) const
+CRhRdkVariant CMarmaladeMaterial::GetParameter(const wchar_t* wszName) const
 {
-	const CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszColor);
-	ASSERT(NULL != pParam);
+	// This function is usually called by the UI if it directly uses the selected contents
+	// as CRhRdkContent. The alternative (which CMarmaladeMaterialSection uses) is to dynamic
+	// cast the selected contents to CMarmaladeMaterial and call the Get methods directly.
 
-	return pParam->m_vValue.AsRdkColor().ColorRef();
+	if (0 == _wcsicmp(wszName, wszColor))
+	{
+		return Color();
+	}
+	else
+	if (0 == _wcsicmp(wszName, wszTransparency))
+	{
+		return Transparency();
+	}
+	else
+	if (0 == _wcsicmp(wszName, wszIOR))
+	{
+		return IOR();
+	}
+
+	return __super::GetParameter(wszName);
 }
 
-void CMarmaladeMaterial::SetColor(COLORREF col, CRhRdkContent::eChangeContext cc)
+bool CMarmaladeMaterial::SetParameter(const wchar_t* wszName, const CRhRdkVariant& vValue)
 {
-	CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszColor);
-	ASSERT(NULL != pParam);
+	// This function is usually called by the UI if it directly uses the selected contents
+	// as CRhRdkContent. The alternative (which CMarmaladeMaterialSection uses) is to dynamic
+	// cast the selected contents to CMarmaladeMaterial and call the Set methods directly.
 
-	if (pParam->m_vValue.AsRdkColor() != CRhRdkColor(col))
+	if (0 == _wcsicmp(wszName, wszColor))
 	{
-		pParam->m_vValue = ON_Color(col);
+		SetColor(vValue);
+		return true;
+	}
+	else
+	if (0 == _wcsicmp(wszName, wszTransparency))
+	{
+		SetTransparency(vValue);
+		return true;
+	}
+	else
+	if (0 == _wcsicmp(wszName, wszIOR))
+	{
+		SetIOR(vValue);
+		return true;
+	}
 
-		if (CRhRdkContent::ccProgram != cc)
-		{
-			Changed(cc);
-		}
+	return __super::SetParameter(wszName, vValue);
+}
+
+CRhRdkColor CMarmaladeMaterial::Color(void) const
+{
+	const auto* pParam = m_shader.ParamBlock().FindParameter(wszColor);
+	ASSERT(nullptr != pParam);
+
+	return pParam->m_vValue.AsRdkColor();
+}
+
+void CMarmaladeMaterial::SetColor(const CRhRdkColor& col)
+{
+	auto* pParam = m_shader.ParamBlock().FindParameter(wszColor);
+	ASSERT(nullptr != pParam);
+
+	if (pParam->m_vValue.AsRdkColor() != col)
+	{
+		pParam->m_vValue = col;
+		Changed();
 	}
 }
 
 double CMarmaladeMaterial::Transparency(void) const
 {
-	const CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszTransparency);
-	ASSERT(NULL != pParam);
+	const auto* pParam = m_shader.ParamBlock().FindParameter(wszTransparency);
+	ASSERT(nullptr != pParam);
 
 	return pParam->m_vValue;
 }
 
-void CMarmaladeMaterial::SetTransparency(double d, CRhRdkContent::eChangeContext cc)
+void CMarmaladeMaterial::SetTransparency(double d)
 {
-	CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszTransparency);
-	ASSERT(NULL != pParam);
+	auto* pParam = m_shader.ParamBlock().FindParameter(wszTransparency);
+	ASSERT(nullptr != pParam);
 
 	if (pParam->m_vValue.AsDouble() != d)
 	{
 		pParam->m_vValue = d;
-		Changed(cc);
+		Changed();
 	}
 }
 
 double CMarmaladeMaterial::IOR(void) const
 {
-	const CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszIOR);
-	ASSERT(NULL != pParam);
+	const auto* pParam = m_shader.ParamBlock().FindParameter(wszIOR);
+	ASSERT(nullptr != pParam);
 
 	return pParam->m_vValue;
 }
 
-void CMarmaladeMaterial::SetIOR(double d, CRhRdkContent::eChangeContext cc)
+void CMarmaladeMaterial::SetIOR(double d)
 {
-	CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszIOR);
-	ASSERT(NULL != pParam);
+	auto* pParam = m_shader.ParamBlock().FindParameter(wszIOR);
+	ASSERT(nullptr != pParam);
 
 	if (pParam->m_vValue.AsDouble() != d)
 	{
 		pParam->m_vValue = d;
-		Changed(cc);
+		Changed();
 	}
 }
 
 bool CMarmaladeMaterial::TextureOn(void) const
 {
-	const CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszTextureOn);
-	ASSERT(NULL != pParam);
+	const auto* pParam = m_shader.ParamBlock().FindParameter(wszTextureOn);
+	ASSERT(nullptr != pParam);
 
 	return pParam->m_vValue;
 }
 
-void CMarmaladeMaterial::SetTextureOn(bool b, CRhRdkContent::eChangeContext cc)
+void CMarmaladeMaterial::SetTextureOn(bool b)
 {
-	CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszTextureOn);
-	ASSERT(NULL != pParam);
+	auto* pParam = m_shader.ParamBlock().FindParameter(wszTextureOn);
+	ASSERT(nullptr != pParam);
 
 	if (pParam->m_vValue.AsBool() != b)
 	{
 		pParam->m_vValue = b;
-		Changed(cc);
+		Changed();
 	}
 }
 
 double CMarmaladeMaterial::TextureAmount(void) const
 {
-	const CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszTextureAmount);
-	ASSERT(NULL != pParam);
+	const auto* pParam = m_shader.ParamBlock().FindParameter(wszTextureAmount);
+	ASSERT(nullptr != pParam);
 
 	return pParam->m_vValue;
 }
 
-void CMarmaladeMaterial::SetTextureAmount(double d, CRhRdkContent::eChangeContext cc)
+void CMarmaladeMaterial::SetTextureAmount(double d)
 {
-	CMarmaladeParam* pParam = m_shader.ParamBlock().FindParameter(wszTextureAmount);
-	ASSERT(NULL != pParam);
+	auto* pParam = m_shader.ParamBlock().FindParameter(wszTextureAmount);
+	ASSERT(nullptr != pParam);
 
 	if (pParam->m_vValue.AsDouble() != d)
 	{
 		pParam->m_vValue = d;
-		Changed(cc);
+		Changed();
 	}
 }
 
@@ -168,18 +222,18 @@ ON_wString CMarmaladeMaterial::InternalName(void) const
 
 void CMarmaladeMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::TextureGeneration tg, int iSize, const CRhinoObject* pObject) const
 {
-	mat.m_diffuse = Color();
+	mat.m_diffuse = Color().OnColor();
 	mat.SetTransparency(Transparency());
 	mat.m_index_of_refraction = IOR();
 
-	const CRhRdkContent* pChild = NULL;
-	if (TextureOn() && (TextureAmount() > 0.0) && (NULL != (pChild = FindChild(L"ColorChildSlot"))))
+	const CRhRdkContent* pChild = nullptr;
+	if (TextureOn() && (TextureAmount() > 0.0) && (nullptr != (pChild = FindChild(L"ColorChildSlot"))))
 	{
 		// IsFactoryProductAcceptableAsChild should ensure that the child is a RDK_KIND_TEXTURE
 		// but it never hurts to check.
 		if (pChild->IsKind(Kinds::Texture))
 		{
-			const CRhRdkTexture* pTexture = static_cast<const CRhRdkTexture*>(pChild);
+			const auto* pTexture = static_cast<const CRhRdkTexture*>(pChild);
 
 			CRhRdkSimulatedTexture onTexture;
 			pTexture->SimulateTexture(onTexture, tg);
@@ -204,7 +258,7 @@ void CMarmaladeMaterial::AddUISections(IRhRdkExpandableContentUI& ui)
 
 	ui.AddSection(new CMarmaladeMaterialSection);
 
-	CRhRdkMaterial::AddUISections();
+	CRhRdkMaterial::AddUISections(ui);
 }
 
 bool CMarmaladeMaterial::ReadParametersFromSection(const IRhRdk_XMLSection& section, ReadParamsContext context)
@@ -212,30 +266,30 @@ bool CMarmaladeMaterial::ReadParametersFromSection(const IRhRdk_XMLSection& sect
 	CRhRdkVariant v;
 
 	if (section.GetParam(wszColor, v))
-		SetColor(v.AsOnColor(), CRhRdkContent::ccProgram);
+		SetColor(v.AsRdkColor());
 
 	if (section.GetParam(wszTransparency, v))
-		SetTransparency(v, CRhRdkContent::ccProgram);
+		SetTransparency(v);
 
 	if (section.GetParam(wszIOR, v))
-		SetIOR(v, CRhRdkContent::ccProgram);
+		SetIOR(v);
 
 	if (section.GetParam(wszTextureOn, v))
-		SetTextureOn(v, CRhRdkContent::ccProgram);
+		SetTextureOn(v);
 
 	if (section.GetParam(wszTextureAmount, v))
-		SetTextureAmount(v, CRhRdkContent::ccProgram);
+		SetTextureAmount(v);
 
 	return true;
 }
 
 bool CMarmaladeMaterial::WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const
 {
-	section.SetParam(wszColor, ON_Color(Color()));
-	section.SetParam(wszTransparency,   Transparency());
-	section.SetParam(wszIOR,            IOR());
-	section.SetParam(wszTextureOn,      TextureOn());
-	section.SetParam(wszTextureAmount,  TextureAmount());
+	section.SetParam(wszColor,         Color());
+	section.SetParam(wszTransparency,  Transparency());
+	section.SetParam(wszIOR,           IOR());
+	section.SetParam(wszTextureOn,     TextureOn());
+	section.SetParam(wszTextureAmount, TextureAmount());
 
 	return true;
 }
@@ -243,9 +297,9 @@ bool CMarmaladeMaterial::WriteParametersToSection(IRhRdk_XMLSection& section, Wr
 void* CMarmaladeMaterial::GetShader(const UUID& uuidRenderEngine, void* pvData) const
 {
 	if (!IsCompatible(uuidRenderEngine))
-		return NULL;
+		return nullptr;
 
-	CMarmaladeShader* pShader = m_shader.Clone();
+	auto* pShader = m_shader.Clone();
 	pShader->ParamBlock() = m_shader.ParamBlock();
 
 	return (void*)pShader;
@@ -262,5 +316,4 @@ bool CMarmaladeMaterial::IsFactoryProductAcceptableAsChild(const CRhRdkContentFa
 unsigned int CMarmaladeMaterial::BitFlags(void) const
 {
 	return CRhRdkMaterial::BitFlags() & ~bfTextureSummary; // No texture summary required.
-	                               // |  bfSharedUI;       // Shared UI is mandatory now.
 }

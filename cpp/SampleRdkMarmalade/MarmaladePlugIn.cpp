@@ -5,6 +5,7 @@
 #include "MarmaladeSdkRender.h"
 #include "MarmaladeRdkPlugIn.h"
 #include "MarmaladeNonModalOptionsDlg.h"
+#include "MarmaladeViewPropertiesPage.h"
 
 // The plug-in object must be constructed before any plug-in classes
 // derived from CRhinoCommand. The #pragma init_seg(lib) ensures that
@@ -16,17 +17,17 @@
 #pragma warning( pop )
 
 // rhinoSdkPlugInDeclare.h defines the RHINO_PLUG_IN_DECLARE macro
-//#include "../../../SDK/inc/rhinoSdkPlugInDeclare.h"
-//RHINO_PLUG_IN_DECLARE
-//
-//RHINO_PLUG_IN_DEVELOPER_ORGANIZATION(L"Robert McNeel & Associates");
-//RHINO_PLUG_IN_DEVELOPER_ADDRESS     (L"3670 Woodland Park Avenue North\r\nSeattle WA 98103");
-//RHINO_PLUG_IN_DEVELOPER_COUNTRY     (L"United States");
-//RHINO_PLUG_IN_DEVELOPER_PHONE       (L"206-545-7000");
-//RHINO_PLUG_IN_DEVELOPER_FAX         (L"206-545-7321");
-//RHINO_PLUG_IN_DEVELOPER_EMAIL       (L"tech@mcneel.com");
-//RHINO_PLUG_IN_DEVELOPER_WEBSITE     (L"http://www.mcneel.com");
-//RHINO_PLUG_IN_UPDATE_URL            (L"http://www.mcneel.com");
+#include "C:/Program Files/Rhino 6 SDK/Inc/rhinoSdkPlugInDeclare.h"
+RHINO_PLUG_IN_DECLARE
+
+RHINO_PLUG_IN_DEVELOPER_ORGANIZATION(L"Robert McNeel & Associates");
+RHINO_PLUG_IN_DEVELOPER_ADDRESS     (L"3670 Woodland Park Avenue North\r\nSeattle WA 98103");
+RHINO_PLUG_IN_DEVELOPER_COUNTRY     (L"United States");
+RHINO_PLUG_IN_DEVELOPER_PHONE       (L"206-545-7000");
+RHINO_PLUG_IN_DEVELOPER_FAX         (L"206-545-7321");
+RHINO_PLUG_IN_DEVELOPER_EMAIL       (L"tech@mcneel.com");
+RHINO_PLUG_IN_DEVELOPER_WEBSITE     (L"http://www.mcneel.com");
+RHINO_PLUG_IN_UPDATE_URL            (L"http://www.mcneel.com");
 
 // The one and only CMarmaladePlugIn object
 static CMarmaladePlugIn thePlugIn;
@@ -53,10 +54,7 @@ CMarmaladePlugIn::CMarmaladePlugIn()
 	//   constructor should be simple and solid. Do anything that might fail in
 	//   CMarmaladePlugIn::OnLoadPlugIn().
 
-	m_pRdkPlugIn = nullptr;
 	m_plugin_version = __DATE__ "  " __TIME__;
-	m_pMenu = nullptr;
-	m_pNonModalOptionsDialog = nullptr;
 }
 
 CMarmaladePlugIn::~CMarmaladePlugIn()
@@ -67,9 +65,6 @@ CMarmaladePlugIn::~CMarmaladePlugIn()
 	//   DLL is unloaded, CMarmaladePlugIn::OnUnloadPlugin() is called. Do
 	//   not do too much here. Be sure to clean up any memory you have allocated
 	//   with onmalloc(), onrealloc(), oncalloc(), or onstrdup().
-
-	delete m_pNonModalOptionsDialog;
-	m_pNonModalOptionsDialog = nullptr;
 
 	delete m_pMenu;
 	m_pMenu = nullptr;
@@ -184,9 +179,10 @@ void CMarmaladePlugIn::OnUnloadPlugIn()
 	//   Called when the plug-in is about to be unloaded.  After
 	//   this function is called, the destructor will be called.
 
-	RemoveMarmaladeMenu();
+	delete m_pMenu;
+	m_pMenu = nullptr;
 
-	if (m_pRdkPlugIn)
+	if (nullptr != m_pRdkPlugIn)
 	{
 		m_pRdkPlugIn->Uninitialize();
 
@@ -293,16 +289,12 @@ void CMarmaladePlugIn::SetLightingChanged(bool bChanged)
 #define MATERIAL_EDITOR_CMD     L"MaterialEditor"
 #define ENVIRONMENT_EDITOR_CMD  L"EnvironmentEditor"
 #define TEXTURE_EDITOR_CMD      L"TexturePalette"
-#define CONTENT_BROWSER_CMD     L"ContentBrowser"
-#define RENDERER_SETTINGS_CMD   L"MarmaladeOptions"
 
 enum
 {
 	ID_MATERIAL_EDITOR_CMD = 1700,
 	ID_ENVIRONMENT_EDITOR_CMD,
 	ID_TEXTURE_EDITOR_CMD,
-	ID_CONTENT_BROWSER_CMD,
-	ID_RENDERER_SETTINGS_CMD
 };
 
 void CMarmaladePlugIn::AddMarmaladeMenu(void)
@@ -312,13 +304,13 @@ void CMarmaladePlugIn::AddMarmaladeMenu(void)
 		m_pMenu = new CMenu;
 		m_pMenu->CreateMenu();
 
-		m_pMenu->AppendMenu(MF_STRING, ID_MATERIAL_EDITOR_CMD,        _T("&Material Editor"));
-		m_pMenu->AppendMenu(MF_STRING, ID_ENVIRONMENT_EDITOR_CMD,     _T("&Environment Editor"));
-		m_pMenu->AppendMenu(MF_STRING, ID_TEXTURE_EDITOR_CMD,         _T("&Texture Editor"));
+		m_pMenu->AppendMenu(MF_STRING, ID_MATERIAL_EDITOR_CMD,   _T("&Material Editor"));
+		m_pMenu->AppendMenu(MF_STRING, ID_ENVIRONMENT_EDITOR_CMD,_T("&Environment Editor"));
+		m_pMenu->AppendMenu(MF_STRING, ID_TEXTURE_EDITOR_CMD,    _T("&Texture Editor"));
 		m_pMenu->AppendMenu(MF_SEPARATOR);
-		m_pMenu->AppendMenu(MF_STRING, ID_CONTENT_BROWSER_CMD,        _T("&Content Browser"));
-		m_pMenu->AppendMenu(MF_SEPARATOR);
-		m_pMenu->AppendMenu(MF_STRING, ID_RENDERER_SETTINGS_CMD,        _T("&Renderer Settings"));
+//		m_pMenu->AppendMenu(MF_STRING, ID_CONTENT_BROWSER_CMD,   _T("&Content Browser")); // Obsolete.
+//		m_pMenu->AppendMenu(MF_SEPARATOR);
+//		m_pMenu->AppendMenu(MF_STRING, ID_RENDERER_SETTINGS_CMD, _T("&Renderer Settings")); // Now uses custom render settings sections.
 
 		InsertPlugInMenuToRhinoMenu(*m_pMenu, _T("&Marmalade"));
 	}
@@ -336,33 +328,25 @@ void CMarmaladePlugIn::RemoveMarmaladeMenu(void)
 
 BOOL CMarmaladePlugIn::OnPlugInMenuCommand(WPARAM wParam)
 {
-	const wchar_t* wszCommand = nullptr;
+	const wchar_t* wsz= nullptr;
 
 	switch (LOWORD(wParam))
 	{
-	case          ID_MATERIAL_EDITOR_CMD:
-		wszCommand = MATERIAL_EDITOR_CMD;
+	case ID_MATERIAL_EDITOR_CMD:
+		wsz = MATERIAL_EDITOR_CMD;
 		break;
 
-	case          ID_ENVIRONMENT_EDITOR_CMD:
-		wszCommand = ENVIRONMENT_EDITOR_CMD;
+	case ID_ENVIRONMENT_EDITOR_CMD:
+		wsz = ENVIRONMENT_EDITOR_CMD;
 		break;
 
-	case          ID_TEXTURE_EDITOR_CMD:
-		wszCommand = TEXTURE_EDITOR_CMD;
-		break;
-
-	case          ID_CONTENT_BROWSER_CMD:
-		wszCommand = CONTENT_BROWSER_CMD;
-		break;
-
-	case          ID_RENDERER_SETTINGS_CMD:
-		wszCommand = RENDERER_SETTINGS_CMD;
+	case ID_TEXTURE_EDITOR_CMD:
+		wsz = TEXTURE_EDITOR_CMD;
 		break;
 	}
 
 	const unsigned int rhino_doc_sn = CRhinoDoc::ModelessUserInterfaceDocSerialNumber();
-	RhinoApp().RunScript(rhino_doc_sn, wszCommand, 0);
+	RhinoApp().RunScript(rhino_doc_sn, wsz, 0);
 
 	return TRUE;
 }
@@ -385,12 +369,6 @@ void CMarmaladePlugIn::UpdateMarmaladeMenuState(void)
 
 	bVis = ::RhRdkIsThumbnailEditorVisible(*pDoc, CRhRdkContent::Kinds::Texture);
 	m_pMenu->CheckMenuItem(ID_TEXTURE_EDITOR_CMD, (bVis ? MF_CHECKED : MF_UNCHECKED));
-
-	bVis = ::RhRdkIsContentBrowserDockBarVisible();
-	m_pMenu->CheckMenuItem(ID_CONTENT_BROWSER_CMD, (bVis ? MF_CHECKED : MF_UNCHECKED));
-
-	bVis = m_pNonModalOptionsDialog ? (TRUE == m_pNonModalOptionsDialog->IsWindowVisible()) : false;
-	m_pMenu->CheckMenuItem(ID_RENDERER_SETTINGS_CMD, (bVis ? MF_CHECKED : MF_UNCHECKED));
 }
 
 bool CMarmaladePlugIn::IsMarmaladeCurrentRenderer(void) const
@@ -401,70 +379,11 @@ bool CMarmaladePlugIn::IsMarmaladeCurrentRenderer(void) const
 	return false;
 }
 
-void CMarmaladePlugIn::ShowNonModalOptionsDialog(bool bShow)
+void CMarmaladePlugIn::AddPagesToObjectPropertiesDialog(CRhinoPropertiesPanelPageCollection& coll)
 {
-	if (bShow)
-	{
-		if (IsMarmaladeCurrentRenderer())
-		{
-			if (nullptr != m_pNonModalOptionsDialog && m_pNonModalOptionsDialog->GetSafeHwnd() == 0)
-			{
-				// Someone's whacked the options window. We're going to get rid of it and start again.
-				delete m_pNonModalOptionsDialog;
-				m_pNonModalOptionsDialog = nullptr;
-			}
+	// This method is called once at the completion of loading the plug-in.
 
-			if (nullptr == m_pNonModalOptionsDialog)
-			{
-				AFX_MANAGE_STATE(AfxGetStaticModuleState());
-				m_pNonModalOptionsDialog = new CMarmaladeNonModalOptionsDlg;
-			}
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-			m_pNonModalOptionsDialog->ShowWindow(SW_SHOWNORMAL);
-		}
-	}
-	else
-	if (nullptr != m_pNonModalOptionsDialog)
-	{
-		m_pNonModalOptionsDialog->PostMessage(WM_CLOSE, 0, 0);
-	}
-}
-
-void CMarmaladePlugIn::EnableNonModalOptionsDialog(bool bEnable) const
-{
-	static int iCount = 0;
-
-	int c = 0;
-	if (bEnable)
-	{
-		c = --iCount;
-	}
-	else
-	{
-		c = iCount++;
-	}
-
-	if (0 == c)
-	{
-		if (nullptr != m_pNonModalOptionsDialog)
-		{
-			m_pNonModalOptionsDialog->EnableWindow(bEnable);
-		}
-	}
-}
-
-void CMarmaladePlugIn::ToggleNonModalOptionsDialog(void)
-{
-	const bool bShow = !IsNonModalOptionsDialogVisible() || IsNonModalOptionsDialogMinimized();
-	ShowNonModalOptionsDialog(bShow);
-}
-
-bool CMarmaladePlugIn::IsNonModalOptionsDialogVisible(void) const
-{
-	return (nullptr != m_pNonModalOptionsDialog) && (m_pNonModalOptionsDialog->IsWindowVisible());
-}
-
-bool CMarmaladePlugIn::IsNonModalOptionsDialogMinimized(void) const
-{
-	return (nullptr != m_pNonModalOptionsDialog) && m_pNonModalOptionsDialog->IsIconic();
+	coll.Add(new CMarmaladeViewPropertiesPage);
 }

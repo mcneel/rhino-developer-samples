@@ -15,8 +15,6 @@ CMarmaladeSdkRender::CMarmaladeSdkRender(const CRhinoCommandContext& context, CR
 	if (nullptr == pDoc)
 		return;
 
-	m_uRhinoDocSerial = pDoc->RuntimeSerialNumber();
-
 	const auto& rs = pDoc->Properties().RenderSettings();
 	m_pRenderer = new CMarmaladeRenderer(*this, rs);
 
@@ -83,16 +81,16 @@ CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::Render(const ON_2iSize& 
 
 CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::RenderWindow(CRhinoView* pView, const LPRECT pRect, bool bInPopupWindow)
 {
-	const auto* pDoc = CRhinoDoc::FromRuntimeSerialNumber(m_uRhinoDocSerial);
+	const auto* pDoc = CommandContext().Document();
 	if (nullptr == pDoc)
 		return CRhinoSdkRender::RenderReturnCodes::render_empty_scene;
 
-	m_pRenderer->SetRenderRegion(pRect);
+	m_pRenderer->SetRenderRegion(pRect); // Must be before SetRenderSize().
 
 	const auto sizeRender = RenderSize(*pDoc, true);
 	m_pRenderer->SetRenderSize(sizeRender);
 
-	// NB. Marmalade doesn't use these render meshes, but your plug-in will
+	// Marmalade doesn't use these render meshes, but your plug-in will
 	// almost certainly need to access them. We provide this code as an example.
 
 	const ON_Viewport& vp = pView->ActiveViewport().VP();

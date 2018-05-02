@@ -42,10 +42,10 @@ public:
 	}
 
 	// Returns the English command name.
-	const wchar_t* EnglishCommandName() { return L"Marmalade"; }
+	const wchar_t* EnglishCommandName() override { return L"Marmalade"; }
 
 	// Returns the localized command name.
-	const wchar_t* LocalCommandName() { return L"Marmalade"; }
+	const wchar_t* LocalCommandName() const override { return L"Marmalade"; }
 
 	// Rhino calls RunCommand to run the command.
 	CRhinoCommand::result RunCommand( const CRhinoCommandContext& );
@@ -104,6 +104,11 @@ CRhinoCommand::result CCommandMarmalade::RunCommand(const CRhinoCommandContext& 
 	return failure;
 }
 
+#if 0
+
+// This command is obsolete. In Rhino 6 onwards, the preferred method of providing
+// your own render settings is to add custom sections (roll-ups) to the Rendering panel.
+
 class CMarmaladeOptionsCmd : public CRhinoCommand
 {
 protected:
@@ -138,3 +143,5 @@ CRhinoCommand::result CMarmaladeOptionsCmd::RunCommand(const CRhinoCommandContex
 
 	return CRhinoCommand::success;
 }
+
+#endif

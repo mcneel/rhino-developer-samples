@@ -3,6 +3,11 @@
 #include "MarmaladeContentIOPlugIn.h"
 #include "MarmaladeRdkPlugIn.h"
 
+UUID CMarmaladeContentIOPlugIn::PlugInId(void) const
+{
+	return MarmaladePlugIn().PlugInID();
+}
+
 UUID CMarmaladeContentIOPlugIn::RdkPlugInId(void) const
 {
 	return MarmaladePlugIn().RdkPlugIn().PlugInId();

@@ -26,8 +26,6 @@ public:
 	CMarmaladeMaterialSection();
 	virtual ~CMarmaladeMaterialSection();
 
-	void OnIORChanged(void);
-
 private:
 	enum { IDD = IDD_MATERIAL_SECTION };
 	CRhRdkColorButton m_btColor;
@@ -36,16 +34,16 @@ private:
 	CEdit m_editTransparency;
 	CEdit m_editTexturePlaceholder;
 	CIOREdit m_editIOR;
-	CStatic m_staticIORName;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;
 	virtual BOOL OnInitDialog() override;
+	virtual void DoDataExchange(CDataExchange* pDX) override;
 	virtual void DisplayData(void) override;
 	virtual ON_wString Caption(bool bAlwaysEnglish) const override;
 	virtual unsigned int GetIDD(void) const override { return IDD; }
 	virtual UUID Uuid(void) const override;
 	virtual AFX_MODULE_STATE* GetModuleState(void) const override { return AfxGetStaticModuleState(); }
+	virtual void OnEvent(IRhinoUiController&, const UUID& uuidData, IRhinoUiController::EventPriority, const IRhinoUiEventInfo*) override;
 
 protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -54,12 +52,12 @@ protected:
 	afx_msg void OnKillfocusEditTextureAmount();
 	afx_msg void OnClickCheckTextureOn();
 	afx_msg LRESULT OnColorChanged(WPARAM, LPARAM);
-	afx_msg LRESULT OnSubNodeChanging(WPARAM, LPARAM ctrlID);
-	afx_msg LRESULT OnSubNodeChanged(WPARAM, LPARAM ctrlID);
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 	DECLARE_MESSAGE_MAP()
 
+	friend class CIOREdit;
+	void OnChangeAnything(void);
+
 private:
 	CRhRdkSubNodeCtrl m_SubNode;
-	bool m_bChildSlotInUse;
 };

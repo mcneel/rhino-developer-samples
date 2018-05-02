@@ -162,12 +162,12 @@
       <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN64;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
@@ -327,15 +327,19 @@
     <ClCompile Include="MarmaladeEventWatcher.cpp" />
     <ClCompile Include="MarmaladeMaterial.cpp" />
     <ClCompile Include="MarmaladeMaterialSection.cpp" />
+    <ClCompile Include="MarmaladeNewMaterial.cpp" />
+    <ClCompile Include="MarmaladeNewMaterialSection.cpp" />
     <ClCompile Include="MarmaladeNonModalOptionsDlg.cpp" />
-    <ClCompile Include="MarmaladeOptionsSection.cpp" />
     <ClCompile Include="MarmaladePlugIn.cpp" />
     <ClCompile Include="MarmaladePointCloudRMP.cpp" />
     <ClCompile Include="MarmaladeRdkPlugIn.cpp" />
     <ClCompile Include="MarmaladeRenderer.cpp" />
+    <ClCompile Include="MarmaladeRenderSettingsSection.cpp" />
     <ClCompile Include="MarmaladeRMP.cpp" />
     <ClCompile Include="MarmaladeSdkRender.cpp" />
     <ClCompile Include="MarmaladeShader.cpp" />
+    <ClCompile Include="MarmaladeUtilities.cpp" />
+    <ClCompile Include="MarmaladeViewPropertiesPage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -348,6 +352,7 @@
   <ItemGroup>
     <None Include="Marmalade.def" />
     <None Include="icon1.ico" />
+    <None Include="res\marmalade.ico" />
     <None Include="res\Marmalade.rc2" />
   </ItemGroup>
   <ItemGroup>
@@ -361,20 +366,27 @@
     <ClInclude Include="MarmaladeEventWatcher.h" />
     <ClInclude Include="MarmaladeMaterial.h" />
     <ClInclude Include="MarmaladeMaterialSection.h" />
+    <ClInclude Include="MarmaladeNewMaterial.h" />
+    <ClInclude Include="MarmaladeNewMaterialSection.h" />
     <ClInclude Include="MarmaladeNonModalOptionsDlg.h" />
-    <ClInclude Include="MarmaladeOptionsSection.h" />
     <ClInclude Include="MarmaladePlugIn.h" />
     <ClInclude Include="MarmaladePointCloudRMP.h" />
     <ClInclude Include="MarmaladeRdkPlugIn.h" />
     <ClInclude Include="MarmaladeRenderer.h" />
+    <ClInclude Include="MarmaladeRenderSettingsSection.h" />
     <ClInclude Include="MarmaladeRMP.h" />
     <ClInclude Include="MarmaladeSdkRender.h" />
     <ClInclude Include="MarmaladeShader.h" />
+    <ClInclude Include="MarmaladeUtilities.h" />
+    <ClInclude Include="MarmaladeViewPropertiesPage.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Marmalade.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\marmalade.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

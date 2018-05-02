@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "afxmt.h"
+
 class CMarmaladeSdkRender;
 
 /** \class MarmaladeRenderer
@@ -8,11 +10,10 @@ class CMarmaladeSdkRender;
 	This class implements a demo renderer. It just renders a procedural orange slice :-)
 
 */
-class CMarmaladeRenderer
+class CMarmaladeRenderer final
 {
 public:
 	CMarmaladeRenderer(CMarmaladeSdkRender& sdkRender, const ON_3dmRenderSettings& rs);
-	~CMarmaladeRenderer(void);
 
 	void SetRenderSize(const ON_2iSize& size);
 	void SetRenderRegion(const LPCRECT pRectRegion);

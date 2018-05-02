@@ -7,14 +7,23 @@
 
 CMarmaladeParamBlock::~CMarmaladeParamBlock()
 {
+	Clear();
+}
+
+void CMarmaladeParamBlock::Clear(void)
+{
 	for (int i = 0; i < m_aParams.Count(); i++)
 	{
 		delete m_aParams[i];
 	}
+
+	m_aParams.Destroy();
 }
 
 void CMarmaladeParamBlock::operator = (const CMarmaladeParamBlock& pb)
 {
+	Clear();
+
 	for (int i = 0; i < pb.m_aParams.Count(); i++)
 	{
 		const CMarmaladeParam& param = *pb.Parameter(i);
@@ -35,7 +44,7 @@ int CMarmaladeParamBlock::ParameterCount(void) const
 CMarmaladeParam* CMarmaladeParamBlock::Parameter(int iIndex) const
 {
 	if ((iIndex < 0) || (iIndex >= m_aParams.Count()))
-		return NULL;
+		return nullptr;
 
 	return m_aParams[iIndex];
 }
@@ -48,7 +57,7 @@ CMarmaladeParam* CMarmaladeParamBlock::FindParameter(const ON_wString& sName) co
 			return m_aParams[i];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //---- CMarmaladeShader
@@ -86,7 +95,7 @@ const CMarmaladeShader* CMarmaladeShaders::FindShader(const UUID& uuid) const
 			return m_aShaders[i];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 int CMarmaladeShaders::Count(void) const
@@ -97,7 +106,7 @@ int CMarmaladeShaders::Count(void) const
 const CMarmaladeShader* CMarmaladeShaders::Shader(int iIndex) const
 {
 	if ((iIndex < 0) || (iIndex >= m_aShaders.Count()))
-		return NULL;
+		return nullptr;
 
 	return m_aShaders[iIndex];
 }

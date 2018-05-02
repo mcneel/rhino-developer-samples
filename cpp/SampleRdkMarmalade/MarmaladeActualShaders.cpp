@@ -8,11 +8,11 @@ static const CRhRdkVariant vNull;
 
 CMarmaladeOrangeShader::CMarmaladeOrangeShader()
 {
-	ParamBlock().Add(new CMarmaladeParam(L"color",          L"Color", ON_Color(255, 140, 0), vNull, vNull));
-	ParamBlock().Add(new CMarmaladeParam(L"transparency",   L"Transparency",   0.0, 0.0, 1.0));
-	ParamBlock().Add(new CMarmaladeParam(L"ior",            L"IOR",            1.0, 0.0, vNull));
-	ParamBlock().Add(new CMarmaladeParam(L"texture-amount", L"Texture Amount", 1.0, 0.0, 1.0));
-	ParamBlock().Add(new CMarmaladeParam(L"texture-on",     L"Texture On", true, vNull, vNull));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_COLOR,          L"Color", ON_Color(255, 140, 0), vNull, vNull));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_TRANSPARENCY,   L"Transparency",   0.0, 0.0, 1.0));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_IOR,            L"IOR",            1.0, 0.0, vNull));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_TEXTURE_ON,     L"Texture On",  true, vNull, vNull));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_TEXTURE_AMOUNT, L"Texture Amount", 1.0, 0.0, 1.0));
 }
 
 UUID CMarmaladeOrangeShader::Uuid(void) const
@@ -38,9 +38,9 @@ UUID CMarmaladeOrangeShader::Uuid(void) const
 
 CMarmaladeSatinShader::CMarmaladeSatinShader()
 {
-	ParamBlock().Add(new CMarmaladeParam(L"color",     L"Color", ON_Color(250, 250, 250), vNull, vNull));
-	ParamBlock().Add(new CMarmaladeParam(L"silkiness", L"Silkiness", 0.8, 0.0, 1.0));
-	ParamBlock().Add(new CMarmaladeParam(L"roughness", L"Roughness", 0.2, 0.0, 1.0));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_COLOR,     L"Color", ON_Color(250, 250, 250), vNull, vNull));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_SILKINESS, L"Silkiness", 0.8, 0.0, 1.0));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_ROUGHNESS, L"Roughness", 0.2, 0.0, 1.0));
 }
 
 UUID CMarmaladeSatinShader::Uuid(void) const
@@ -65,10 +65,10 @@ UUID CMarmaladeSatinShader::Uuid(void) const
 
 CMarmaladeLemonCurdShader::CMarmaladeLemonCurdShader()
 {
-	ParamBlock().Add(new CMarmaladeParam(L"color",        L"Color", ON_Color(190, 175, 40), vNull, vNull));
-	ParamBlock().Add(new CMarmaladeParam(L"transparency", L"Transparency",  0.2, 0.0, 1.0));
-	ParamBlock().Add(new CMarmaladeParam(L"graininess",   L"Graininess",    0.4, 0.0, 1.0));
-	ParamBlock().Add(new CMarmaladeParam(L"bubbliness",   L"Bubbliness",    0.5, 0.0, 1.0));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_COLOR,        L"Color", ON_Color(190, 175, 40), vNull, vNull));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_TRANSPARENCY, L"Transparency",  0.2, 0.0, 1.0));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_GRAININESS,   L"Graininess",    0.4, 0.0, 1.0));
+	ParamBlock().Add(new CMarmaladeParam(MARM_SHADER_BUBBLINESS,   L"Bubbliness",    0.5, 0.0, 1.0));
 }
 
 UUID CMarmaladeLemonCurdShader::Uuid(void) const

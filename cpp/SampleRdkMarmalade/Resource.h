@@ -9,28 +9,27 @@
 #define IDM_APP_HELP_DISPLAY_HELP       105
 #define IDI_ICON1                       3000
 #define IDI_MARMALADE                   3000
-#define IDC_CHECK_TEXTURE_ON            3000
 #define IDD_OPTIONS_SECTION_1           3001
 #define IDC_CHECK1                      3001
 #define IDC_CHECK2                      3002
 #define IDD_OPTIONS_SECTION_2           3002
-#define IDD_NON_MODAL_OPTIONS           6134
-#define IDC_STATIC_MATERIAL_COLOR       6539
-#define IDC_EDIT_TEXTURE_AMOUNT         6545
-#define IDC_BT_RENDER                   7141
-#define IDC_STATIC_FRAME                7142
-#define IDC_CHECK_EXPERT                7950
+#define IDC_CHECK_EXPERT_MODE           3003
+#define IDD_OPTIONS_SECTION_4           3003
+#define IDC_EDIT_TARGET_X               3003
+#define IDC_EDIT_TARGET_Y               3004
+#define IDC_EDIT_TARGET_Z               3005
+#define IDC_EDIT_TARGET_X3              3005
+#define IDC_CHECK_TEXTURE_ON            3007
 #define IDR_RENDER                      12006
 #define IDC_BT_MATERIAL_COLOR           19001
-#define IDC_STATIC_TRANSPARENCY         19003
-#define IDC_STATIC_IOR                  19004
-#define IDC_STATIC_IOR2                 19005
-#define IDC_STATIC_IOR_NAME             19005
 #define IDC_EDIT_TRANSPARENCY           22005
 #define IDC_EDIT_IOR                    22006
-#define IDD_MATERIAL_SECTION            22007
 #define IDC_EDIT_TEXTURE_PLACEHOLDER    22007
 #define IDD_COLOR_SECTION               22008
+#define IDC_EDIT_TEXTURE_AMOUNT         22008
+#define IDD_VIEW_PROPERTIES             22009
+#define IDD_MATERIAL_SECTION            22010
+#define IDD_NEW_MATERIAL_SECTION        22011
 #define ID_APP_VIEW_NORMALVIEW          32777
 #define ID_APP_VIEW_IN2X                32779
 #define ID_APP_VIEW_IN3X                32780
@@ -55,9 +54,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3003
+#define _APS_NEXT_RESOURCE_VALUE        3010
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3003
+#define _APS_NEXT_CONTROL_VALUE         3008
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

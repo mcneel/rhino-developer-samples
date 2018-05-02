@@ -71,47 +71,47 @@ ON_wString CMarmaladeAutoMaterial::InternalName(void) const
 
 bool CMarmaladeAutoMaterial::TextureOn(void) const
 {
-	const CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszTextureOn);
+	const auto* pParam = m_ParamBlock.FindParameter(wszTextureOn);
 	ASSERT(nullptr != pParam);
 
 	return pParam->m_vValue;
 }
 
-void CMarmaladeAutoMaterial::SetTextureOn(bool b, eChangeContext cc)
+void CMarmaladeAutoMaterial::SetTextureOn(bool b)
 {
-	CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszTextureOn);
+	auto* pParam = m_ParamBlock.FindParameter(wszTextureOn);
 	ASSERT(nullptr != pParam);
 
 	if (pParam->m_vValue.AsBool() != b)
 	{
 		pParam->m_vValue = b;
-		Changed(cc);
+		Changed();
 	}
 }
 
 double CMarmaladeAutoMaterial::TextureAmount(void) const
 {
-	const CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszTextureAmount);
+	const auto* pParam = m_ParamBlock.FindParameter(wszTextureAmount);
 	ASSERT(nullptr != pParam);
 
 	return pParam->m_vValue;
 }
 
-void CMarmaladeAutoMaterial::SetTextureAmount(double d, eChangeContext cc)
+void CMarmaladeAutoMaterial::SetTextureAmount(double d)
 {
-	CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszTextureAmount);
+	auto* pParam = m_ParamBlock.FindParameter(wszTextureAmount);
 	ASSERT(nullptr != pParam);
 
 	if (pParam->m_vValue.AsDouble() != d)
 	{
 		pParam->m_vValue = d;
-		Changed(cc);
+		Changed();
 	}
 }
 
 void CMarmaladeAutoMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::TextureGeneration tg, int iSimulatedTextureSize, const CRhinoObject* pObject) const
 {
-	const CMarmaladeParam* pParam = m_ParamBlock.FindParameter(L"color");
+	const auto* pParam = m_ParamBlock.FindParameter(L"color");
 	if (nullptr != pParam)
 	{
 		mat.SetDiffuse(pParam->m_vValue.AsRdkColor().ColorRefAlpha());
@@ -130,10 +130,9 @@ void CMarmaladeAutoMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::T
 		// but it never hurts to check.
 		if (pChild->IsKind(CRhRdkContent::Kinds::Texture))
 		{
-			const CRhRdkTexture* pTexture = static_cast<const CRhRdkTexture*>(pChild);
-
+			const auto* pTexture = static_cast<const CRhRdkTexture*>(pChild);
 			CRhRdkSimulatedTexture onTexture;
-			pTexture->SimulateTexture(onTexture, bForDataOnly);
+			pTexture->SimulateTexture(onTexture, tg);
 
 			mat.AddTexture(onTexture.Filename(), ON_Texture::TYPE::bitmap_texture);
 
@@ -152,39 +151,39 @@ void CMarmaladeAutoMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::T
 const int idParameters1 = 0;
 const int idParameters2 = 1;
 
-void CMarmaladeAutoMaterial::AddUISections(void)
+void CMarmaladeAutoMaterial::AddUISections(IRhRdkExpandableContentUI& ui)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	UI()->AddSection(new CMarmaladeColorSection);
+	ui.AddSection(new CMarmaladeColorSection);
 
-	AddAutomaticUISection(L"Parameters 1", idParameters1);
-	AddAutomaticUISection(L"Parameters 2", idParameters2);
+	AddAutomaticUISection(ui, L"Parameters 1", L"Parameters 1", idParameters1);
+	AddAutomaticUISection(ui, L"Parameters 2", L"Parameters 2", idParameters2);
 
-	CRhRdkMaterial::AddUISections();
+	CRhRdkMaterial::AddUISections(ui);
 }
 
-void CMarmaladeAutoMaterial::AddAutoParameters(IRhRdkParamBlock& paramBlock, int iId)
+void CMarmaladeAutoMaterial::AddAutoParameters(IRhRdkParamBlock& paramBlock, int iId) const
 {
 	for (int i = 0; i < m_ParamBlock.ParameterCount(); i++)
 	{
-		const CMarmaladeParam* p = m_ParamBlock.Parameter(i);
+		const auto* p = m_ParamBlock.Parameter(i);
 
 		const bool bColor = (0 == p->m_sName.CompareNoCase(wszColor));
 
-		if ( bColor && (iId == CRhRdkCoreContent::eIdTextureSummary) ||
+		if ( bColor && (iId == CRhRdkCoreContent::TextureSummary) ||
 			 bColor && (iId == idParameters1) ||
 			!bColor && (iId == idParameters2))
 		{
 			if (bColor && IsTexturingSupported())
 			{
 				paramBlock.Add(p->m_sName, wszColorChildSlot, p->m_sFriendlyName, p->m_vValue,
-							   p->m_vMin, p->m_vMax, RDK_TEXTURING, this);
+							   p->m_vMin, p->m_vMax, IRhRdkParamBlock::UiHints::None, RDK_TEXTURING, this);
 			}
 			else
 			{
 				paramBlock.Add(p->m_sName, L"", p->m_sFriendlyName, p->m_vValue,
-							   p->m_vMin, p->m_vMax, RDK_DECIMAL_PLACES, this);
+							   p->m_vMin, p->m_vMax, IRhRdkParamBlock::UiHints::None, RDK_DECIMAL_PLACES, this);
 			}
 		}
 	}
@@ -192,44 +191,44 @@ void CMarmaladeAutoMaterial::AddAutoParameters(IRhRdkParamBlock& paramBlock, int
 
 void CMarmaladeAutoMaterial::GetAutoParameters(const IRhRdkParamBlock& paramBlock, int iId)
 {
-	IRhRdkParamBlock::Iterator* pIterator = paramBlock.NewIterator();
+	auto* pIterator = paramBlock.NewIterator();
 
 	ON_wString sParamName;
 	CRhRdkVariant vParamValue;
 
-	while (paramBlock.Next(pIterator, sParamName, vParamValue))
+	while (pIterator->Next(sParamName, vParamValue))
 	{
-		CMarmaladeParam* pParam = m_ParamBlock.FindParameter(sParamName);
+		auto* pParam = m_ParamBlock.FindParameter(sParamName);
 		if (nullptr != pParam)
 		{
 			pParam->m_vValue = vParamValue;
 		}
 	}
 
-	delete pIterator;
+	pIterator->DeleteThis();
 }
 
-bool CMarmaladeAutoMaterial::SetParameters(IRhRdk_XMLSection& section, eSetParamsContext context) const
+bool CMarmaladeAutoMaterial::WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const
 {
 	for (int i = 0; i < m_ParamBlock.ParameterCount(); i++)
 	{
-		const CMarmaladeParam* pParam = m_ParamBlock.Parameter(i);
+		const auto* pParam = m_ParamBlock.Parameter(i);
 		section.SetParam(pParam->m_sName, pParam->m_vValue);
 	}
 
 	return true;
 }
 
-bool CMarmaladeAutoMaterial::GetParameters(const IRhRdk_XMLSection& section, eGetParamsContext context)
+bool CMarmaladeAutoMaterial::ReadParametersFromSection(const IRhRdk_XMLSection& section, ReadParamsContext context)
 {
-	IRhRdk_XMLSection::Iterator* pIterator = section.NewIterator();
+	auto* pIterator = section.NewIterator();
 
 	ON_wString sParamName;
 	CRhRdkVariant vParamValue;
 
 	while (section.NextParam(pIterator, sParamName, vParamValue))
 	{
-		CMarmaladeParam* pParam = m_ParamBlock.FindParameter(sParamName);
+		auto* pParam = m_ParamBlock.FindParameter(sParamName);
 		if (nullptr != pParam)
 		{
 			pParam->m_vValue = vParamValue;
@@ -243,7 +242,7 @@ bool CMarmaladeAutoMaterial::GetParameters(const IRhRdk_XMLSection& section, eGe
 
 CRhRdkVariant CMarmaladeAutoMaterial::GetParameter(const wchar_t* wszName) const
 {
-	const CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszName);
+	const auto* pParam = m_ParamBlock.FindParameter(wszName);
 	if (nullptr == pParam)
 	{
 		return CRhRdkMaterial::GetParameter(wszName);
@@ -252,16 +251,16 @@ CRhRdkVariant CMarmaladeAutoMaterial::GetParameter(const wchar_t* wszName) const
 	return pParam->m_vValue;
 }
 
-bool CMarmaladeAutoMaterial::SetParameter(const wchar_t* wszName, const CRhRdkVariant& vValue, CRhRdkContent::eChangeContext cc)
+bool CMarmaladeAutoMaterial::SetParameter(const wchar_t* wszName, const CRhRdkVariant& vValue)
 {
-	CMarmaladeParam* pParam = m_ParamBlock.FindParameter(wszName);
+	auto* pParam = m_ParamBlock.FindParameter(wszName);
 	if (nullptr != pParam)
 	{
 		if (pParam->m_vValue != vValue)
 		{
 			pParam->m_vValue = vValue;
 
-			Changed(cc);
+			Changed();
 		}
 	}
 
@@ -273,9 +272,11 @@ void* CMarmaladeAutoMaterial::GetShader(const UUID& uuidRenderEngine, void* pvDa
 	if (!IsCompatible(uuidRenderEngine))
 		return nullptr;
 
-	CMarmaladeShader* pShader = m_pShader->Clone();
-
-	pShader->ParamBlock() = m_ParamBlock;
+	auto* pShader = m_pShader->Clone();
+	if (nullptr != pShader)
+	{
+		pShader->ParamBlock() = m_ParamBlock;
+	}
 
 	return reinterpret_cast<void*>(pShader);
 }
@@ -287,14 +288,14 @@ bool CMarmaladeAutoMaterial::IsTexturingSupported(void) const
 	       (nullptr != m_ParamBlock.FindParameter(wszTextureAmount));
 }
 
-DWORD CMarmaladeAutoMaterial::BitFlags(void) const
+unsigned int CMarmaladeAutoMaterial::BitFlags(void) const
 {
-	DWORD dw = CRhRdkMaterial::BitFlags() | bfSharedUI; // Shared UI supported.
+	auto flags = CRhRdkMaterial::BitFlags(); // | bfSharedUI; // Shared UI is now mandatory.
 
 	if (!IsTexturingSupported()) // If texturing not supported then
-		dw &= ~bfTextureSummary; // no texture summary required.
+		flags &= ~bfTextureSummary; // no texture summary required.
 
-	return dw;
+	return flags;
 }
 
 const wchar_t* CMarmaladeAutoMaterial::Category(void) const
@@ -302,12 +303,9 @@ const wchar_t* CMarmaladeAutoMaterial::Category(void) const
 	return RDK_CAT_GENERAL;
 }
 
-bool CMarmaladeAutoMaterial::IsFactoryProductAcceptableAsChild(const IRhRdkContentFactory* pFactory,
-                                                               const wchar_t* wszChildSlotName) const
+bool CMarmaladeAutoMaterial::IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* wszChildSlotName) const
 {
-	const ON_wString sFactoryKind = pFactory->Kind();
-
-	if (0 == sFactoryKind.CompareNoCase(RDK_KIND_TEXTURE))
+	if (f.Kind() == CRhRdkContent::Kinds::Texture)
 		return true; // Factory produces textures.
 
 	return false; // Factory produces something "unpalatable".
@@ -358,25 +356,25 @@ bool CMarmaladeAutoMaterial::GetExtraRequirementParameter(const wchar_t* wszPara
 
 bool CMarmaladeAutoMaterial::SetExtraRequirementParameter(const wchar_t* wszParamName,
                                                           const wchar_t* wszExtraRequirementName,
-	                                                      const CRhRdkVariant& vValue, eSetContext sc)
+	                                                      const CRhRdkVariant& vValue, SetContext sc)
 {
 	const ON_wString sParamName = wszParamName;
 
 	if (sParamName == wszColor)
 	{
-		const eChangeContext cc = ChangeContextFromSetContext(sc);
+		//const auto cc = ChangeContextFromSetContext(sc);
 
 		const ON_wString sExtraRequirementName = wszExtraRequirementName;
 
 		if (sExtraRequirementName == RDK_TEXTURE_ON)
 		{
-			SetTextureOn(vValue, cc);
+			SetTextureOn(vValue);
 			return true;
 		}
 
 		if (sExtraRequirementName == RDK_TEXTURE_AMOUNT)
 		{
-			SetTextureAmount(vValue.AsFloat() / 100.0f, cc);
+			SetTextureAmount(vValue.AsFloat() / 100.0f);
 			return true;
 		}
 	}
@@ -387,7 +385,7 @@ bool CMarmaladeAutoMaterial::SetExtraRequirementParameter(const wchar_t* wszPara
 class CMarmaladeAutoMaterialCSI : public CRhRdkContent::CChildSlotIterator
 {
 public:
-	CMarmaladeAutoMaterialCSI(const CMarmaladeAutoMaterial* pMaterial, CRhRdkContent::eCSI_Context context)
+	CMarmaladeAutoMaterialCSI(const CMarmaladeAutoMaterial* pMaterial, CRhRdkContent::CSIContext context)
 		: CRhRdkContent::CChildSlotIterator(pMaterial, context) { m_iIndex = -1; }
 
 	virtual bool NextChildSlot(ON_wString& sInternalNameOut, ON_wString& sChildSlotNameOut, ON_wString& sDisplayNameOut);
@@ -412,7 +410,7 @@ bool CMarmaladeAutoMaterialCSI::NextChildSlot(ON_wString& sInternalNameOut, ON_w
 	return false;
 }
 
-CRhRdkContent::CChildSlotIterator* CMarmaladeAutoMaterial::NewChildSlotIterator(eCSI_Context context) const
+CRhRdkContent::CChildSlotIterator* CMarmaladeAutoMaterial::NewChildSlotIterator(CSIContext context) const
 {
 	if (!IsTexturingSupported())
 		return nullptr;

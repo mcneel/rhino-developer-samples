@@ -39,23 +39,51 @@ static const wchar_t* wszColor = L"color";
 
 void CMarmaladeColorSection::DisplayData(void)
 {
-	if (NULL == Material())
+	const auto con = Controller();
+	if (!con)
 		return;
 
-	const CRhRdkColor col = Material()->GetParameter(wszColor).AsRdkColor();
+	CRhRdkColor col;
+	bool bColVaries = false;
+
+	CRhRdkEditableContentArray aContent(*con, false);
+	for (int i = 0; i < aContent.Count(); i++)
+	{
+		const auto colThis = aContent[i]->GetParameter(wszColor).AsRdkColor();
+
+		if (0 == i)
+		{
+			col = colThis;
+		}
+		else
+		{
+			if (col != colThis)
+				bColVaries = true;
+		}
+	}
+
 	m_buttonColor.SetColor(col);
+	m_buttonColor.SetVaries(bColVaries);
 }
 
 LRESULT CMarmaladeColorSection::OnColorButton(WPARAM, LPARAM)
 {
-	if (NULL == Material())
+	const auto con = Controller();
+	if (!con)
 		return 0;
 
-	const CRhRdkColor colOld = Material()->GetParameter(wszColor).AsRdkColor();
-	const CRhRdkColor colNew = m_buttonColor.GetColor();
-	if (colNew != colOld)
+	const auto colNew = m_buttonColor.GetColor();
+
+	CRhRdkEditableContentArray aContent(*con, true);
+	for (int i = 0; i < aContent.Count(); i++)
 	{
-		Material()->SetParameter(wszColor, colNew.OnColor(), CRhRdkContent::ccUI);
+		const CRhRdkContent::Change<CRhRdkContent> m(*aContent[i], RhRdkChangeContext::UI);
+
+		//const auto colOld = m().GetParameter(wszColor).AsRdkColor();
+		//if (colNew != colOld)
+		{
+			m().SetParameter(wszColor, colNew.OnColor());
+		}
 	}
 
 	return 1;
