@@ -351,8 +351,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Marmalade.def" />
-    <None Include="icon1.ico" />
-    <None Include="res\marmalade.ico" />
     <None Include="res\Marmalade.rc2" />
   </ItemGroup>
   <ItemGroup>
