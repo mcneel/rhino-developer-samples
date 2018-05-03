@@ -161,6 +161,7 @@
     <ClCompile Include="cmdSamplePlanarFaceLoops.cpp" />
     <ClCompile Include="cmdSamplePointCursor.cpp" />
     <ClCompile Include="cmdSamplePointOnFace.cpp" />
+    <ClCompile Include="cmdSamplePointOnSurface.cpp" />
     <ClCompile Include="cmdSamplePointsDeviation.cpp" />
     <ClCompile Include="cmdSamplePolyline.cpp" />
     <ClCompile Include="cmdSamplePrePostSelect.cpp" />
