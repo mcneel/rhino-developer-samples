@@ -111,7 +111,7 @@ bool CMarmaladeOrangeAction::Icon(const ON_2iSize& size, CRhinoDib& dibOut) cons
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_MARMALADE));
 	return ConvertIconToDib(hIcon, dibOut);
 }
 
@@ -151,7 +151,7 @@ bool CMarmaladeLemonAction::Icon(const ON_2iSize& size, CRhinoDib& dibOut) const
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_MARMALADE));
 	return ConvertIconToDib(hIcon, dibOut);
 }
 
@@ -191,7 +191,7 @@ bool CMarmaladeLimeAction::Icon(const ON_2iSize& size, CRhinoDib& dibOut) const
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON1));
+	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_MARMALADE));
 	return ConvertIconToDib(hIcon, dibOut);
 }
 
