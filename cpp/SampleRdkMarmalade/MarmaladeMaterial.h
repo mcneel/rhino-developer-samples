@@ -70,6 +70,7 @@ public: // Overrides from CRhRdkMaterial.
 private:
 	// We keep a shader in the class as an easy way to  make this material represent
 	// the values in the shader. This may not be a good idea for your own plug-in depending
-	// on whether shaders are easy to embed in objects.
+	// on whether shaders are easy to embed in objects. In fact, it is now recommended to
+	// use content fields here to store the values.
 	CMarmaladeOrangeShader m_shader;
 };

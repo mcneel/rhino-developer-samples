@@ -10,10 +10,10 @@ CRhRdkMaterial* CMarmaladeMaterialFactory::NewMaterial(void) const
 	return new CMarmaladeMaterial;
 }
 
-/*	This is the original Marmalade Material and as such it works in the old-fashioned way.
+/*	This is the original Marmalade Material and as such it works in the old-style way.
 	It has been retained for completeness and so that it can be compared with the old (V5) version,
-	but it is not recomended to use this method of making a material. Please see MarmaladeNewMaterial.cpp
-	for the recommended example.
+	but it is not recomended to use this method of making a material.
+	Please see MarmaladeNewMaterial.cpp for the recommended example.
 
 	This old-style material does not use content fields, so each parameter is handled explicitly for
 	each operation. This is only retained for reference and is not recommended for new plug-in designs.

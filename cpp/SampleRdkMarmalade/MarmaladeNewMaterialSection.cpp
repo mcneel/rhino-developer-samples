@@ -30,7 +30,7 @@ LRESULT CMarmaladeNewMaterialSection::CIOREdit::OnContextMenu(WPARAM w, LPARAM l
 			if (GetValue() != dIOR)
 			{
 				SetValue(dIOR);
-				m_Section.OnChangeAnything();
+				m_Section.OnEditIOR();
 			}
 
 			SetFocus();
@@ -133,34 +133,28 @@ void CMarmaladeNewMaterialSection::DisplayData(void)
 {
 	__super::DisplayData();
 
-	if (m_iInternalCall > 0)
-		return;
-
 	const auto con = Controller();
 	if (!con)
 		return;
-
-	CRhRdkVariant vCol, vIOR, vTrans, vOn, vAmount;
 
 	CRhRdkEditableContentArray aContent(*con, false);
 	if (0 == aContent.Count())
 		return;
 
-	m_btColor.SetUndoString(::RhRdkSmartUndoString(*this, MARM_SHADER_COLOR));
+	CRhRdkVariant vCol, vIOR, vTrans, vOn, vAmount;
 
 	int count = 0;
-
 	for (int i = 0; i < aContent.Count(); i++)
 	{
-		const auto pMaterial = dynamic_cast<const CMarmaladeNewMaterial*>(aContent[i]);
-		if (nullptr == pMaterial)
-			continue;
+		const auto pContent = aContent[i];
+		if (nullptr == pContent)
+			continue; // Not really needed unless you dynamic_cast to your material type.
 
-		const auto vColThis    = pMaterial->GetParameter(MARM_SHADER_COLOR);
-		const auto vTransThis  = pMaterial->GetParameter(MARM_SHADER_TRANSPARENCY);
-		const auto vIORThis    = pMaterial->GetParameter(MARM_SHADER_IOR);
-		const auto vOnThis     = pMaterial->GetParameter(MARM_SHADER_TEXTURE_ON);
-		const auto vAmountThis = pMaterial->GetParameter(MARM_SHADER_TEXTURE_AMOUNT);
+		const auto vColThis    = pContent->GetParameter(MARM_SHADER_COLOR);
+		const auto vTransThis  = pContent->GetParameter(MARM_SHADER_TRANSPARENCY);
+		const auto vIORThis    = pContent->GetParameter(MARM_SHADER_IOR);
+		const auto vOnThis     = pContent->GetParameter(MARM_SHADER_TEXTURE_ON);
+		const auto vAmountThis = pContent->GetParameter(MARM_SHADER_TEXTURE_AMOUNT);
 
 		if (0 == count++)
 		{
@@ -224,63 +218,93 @@ void CMarmaladeNewMaterialSection::DisplayData(void)
 	m_SubNode.DisplayData();
 }
 
-void CMarmaladeNewMaterialSection::OnChangeAnything(void)
+LRESULT CMarmaladeNewMaterialSection::OnColorChanged(WPARAM w, LPARAM l)
 {
 	const auto con = Controller();
 	if (!con)
-		return;
+		return 0;
 
-	m_iInternalCall++;
+	ASSERT(!m_btColor.Varies());
 
 	CRhRdkNewUndoableEvent e(*con, ::RhRdkSmartUndoString(*this, MARM_SHADER_COLOR));
 
 	CRhRdkEditableContentArray aContent(*con, true);
 	for (int i = 0; i < aContent.Count(); i++)
 	{
-		const CRhRdkContent::Change<CRhRdkContent> m(*aContent[i], RhRdkChangeContext::UI);
-
-		if (!m_btColor.Varies())
-		{
-			const auto col = m_btColor.GetColor();
-			m().SetParameter(MARM_SHADER_COLOR, col);
-		}
-
-		if (!m_editIOR.IsBlank())
-			m().SetParameter(MARM_SHADER_IOR, m_editIOR.GetValue());
-
-		if (!m_editTransparency.IsBlank())
-			m().SetParameter(MARM_SHADER_TRANSPARENCY, m_editTransparency.GetValue());
-
-		const auto uCheck = m_SubNode.GetCheck();
-		if (BST_INDETERMINATE != uCheck)
-			m().SetParameter(MARM_SHADER_TEXTURE_ON, BST_CHECKED == uCheck);
-
-		if (!m_SubNode.AmountVaries())
-			m().SetParameter(MARM_SHADER_TEXTURE_AMOUNT, int(m_SubNode.GetAmount() * 100.0));
+		const CRhRdkContent::Change<CRhRdkContent> c(*aContent[i], RhRdkChangeContext::UI);
+		c().SetParameter(MARM_SHADER_COLOR, m_btColor.GetColor());
 	}
 
-	m_iInternalCall--;
-}
-
-LRESULT CMarmaladeNewMaterialSection::OnColorChanged(WPARAM w, LPARAM l)
-{
-	OnChangeAnything();
 	return 1;
 }
 
-void CMarmaladeNewMaterialSection::OnClickCheckTextureOn()
+void CMarmaladeNewMaterialSection::OnEditIOR(void)
 {
-	OnChangeAnything();
+	const auto con = Controller();
+	if (!con)
+		return;
+
+	ASSERT(!m_editIOR.IsBlank());
+
+	CRhRdkNewUndoableEvent e(*con, ::RhRdkSmartUndoString(*this, MARM_SHADER_IOR));
+	CRhRdkEditableContentArray aContent(*con, true);
+	for (int i = 0; i < aContent.Count(); i++)
+	{
+		const CRhRdkContent::Change<CRhRdkContent> c(*aContent[i], RhRdkChangeContext::UI);
+		c().SetParameter(MARM_SHADER_IOR, m_editIOR.GetValue());
+	}
 }
 
 void CMarmaladeNewMaterialSection::OnKillfocusEditTransparency()
 {
-	OnChangeAnything();
+	const auto con = Controller();
+	if (!con)
+		return;
+
+	ASSERT(!m_editTransparency.IsBlank());
+
+	CRhRdkNewUndoableEvent e(*con, ::RhRdkSmartUndoString(*this, MARM_SHADER_TRANSPARENCY));
+	CRhRdkEditableContentArray aContent(*con, true);
+	for (int i = 0; i < aContent.Count(); i++)
+	{
+		const CRhRdkContent::Change<CRhRdkContent> c(*aContent[i], RhRdkChangeContext::UI);
+		c().SetParameter(MARM_SHADER_TRANSPARENCY, m_editTransparency.GetValue());
+	}
 }
 
-void CMarmaladeNewMaterialSection::OnKillfocusEditTextureAmount()
+void CMarmaladeNewMaterialSection::OnSubnodeCheck(void)
 {
-	OnChangeAnything();
+	const auto con = Controller();
+	if (!con)
+		return;
+
+	const auto uCheck = m_SubNode.GetCheck();
+	ASSERT(BST_INDETERMINATE != uCheck);
+
+	CRhRdkNewUndoableEvent e(*con, ::RhRdkSmartUndoString(*this, MARM_SHADER_TEXTURE_ON));
+	CRhRdkEditableContentArray aContent(*con, true);
+	for (int i = 0; i < aContent.Count(); i++)
+	{
+		const CRhRdkContent::Change<CRhRdkContent> c(*aContent[i], RhRdkChangeContext::UI);
+		c().SetParameter(MARM_SHADER_TEXTURE_ON, BST_CHECKED == uCheck);
+	}
+}
+
+void CMarmaladeNewMaterialSection::OnSubnodeAmount(void)
+{
+	const auto con = Controller();
+	if (!con)
+		return;
+
+	ASSERT(!m_SubNode.AmountVaries());
+
+	CRhRdkNewUndoableEvent e(*con, ::RhRdkSmartUndoString(*this, MARM_SHADER_TEXTURE_AMOUNT));
+	CRhRdkEditableContentArray aContent(*con, true);
+	for (int i = 0; i < aContent.Count(); i++)
+	{
+		const CRhRdkContent::Change<CRhRdkContent> c(*aContent[i], RhRdkChangeContext::UI);
+		c().SetParameter(MARM_SHADER_TEXTURE_AMOUNT, int(m_SubNode.GetAmount() * 100.0));
+	}
 }
 
 void CMarmaladeNewMaterialSection::OnSize(UINT nType, int cx, int cy)
@@ -298,12 +322,4 @@ void CMarmaladeNewMaterialSection::OnSize(UINT nType, int cx, int cy)
 	ScreenToClient(rect);
 	rect.right = rectClient.right;
 	m_SubNode.MoveWindow(rect, true);
-}
-
-void CMarmaladeNewMaterialSection::OnEvent(IRhinoUiController& con, const UUID& uuidData, IRhinoUiController::EventPriority ep, const IRhinoUiEventInfo* pInfo)
-{
-	__super::OnEvent(con, uuidData, ep, pInfo);
-
-	DisplayData();
-	EnableDisableControls();
 }
