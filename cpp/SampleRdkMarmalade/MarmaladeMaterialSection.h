@@ -6,25 +6,20 @@
 class CIOREdit : public CEdit
 {
 public:
-	void SetSection(class CMarmaladeMaterialSection& section);
-
-	ON_wString ChosenName(void) const { return m_sName; }
-	void SetChosenName(const ON_wString& s) { m_sName = s; }
+	CIOREdit(class CMarmaladeMaterialSection& s) : m_Section(s) { }
 
 protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 
 private:
-	ON_wString m_sName;
-	CMarmaladeMaterialSection* m_pSection;
+	CMarmaladeMaterialSection& m_Section;
 };
 
 class CMarmaladeMaterialSection : public CRhRdkMaterialUISection_MFC
 {
 public:
 	CMarmaladeMaterialSection();
-	virtual ~CMarmaladeMaterialSection();
 
 private:
 	enum { IDD = IDD_MATERIAL_SECTION };
@@ -42,6 +37,7 @@ protected:
 	virtual ON_wString Caption(bool bAlwaysEnglish) const override;
 	virtual unsigned int GetIDD(void) const override { return IDD; }
 	virtual UUID Uuid(void) const override;
+	virtual bool SupportsVaries(const CRhRdkContentArray& aContent) const override;
 	virtual AFX_MODULE_STATE* GetModuleState(void) const override { return AfxGetStaticModuleState(); }
 	virtual void OnEvent(IRhinoUiController&, const UUID& uuidData, IRhinoUiController::EventPriority, const IRhinoUiEventInfo*) override;
 
@@ -60,4 +56,5 @@ protected:
 
 private:
 	CRhRdkSubNodeCtrl m_SubNode;
+	int m_iInternalCall = 0;
 };

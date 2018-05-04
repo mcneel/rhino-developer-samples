@@ -43,8 +43,9 @@ CMarmaladeAutoUITexture::Evaluator::Evaluator(CEvalFlags ef, const CRhRdkColor& 
 bool CMarmaladeAutoUITexture::Evaluator::GetColor(const ON_3dPoint& uvw, const ON_3dVector& duvwdx,
                                                   const ON_3dVector& duvwdy, CRhRdkColor& colOut, void* pvData) const
 {
+	// This produces a checker effect.
 	const ON_3dVector uvwNew = m_xform * (ON_Xform(2) * uvw);
-	const int sum = (int)(uvwNew.x + 10000.0) + (int)(uvwNew.y + 10000.0);
+	const int sum = int(uvwNew.x + 10000.0) + int(uvwNew.y + 10000.0);
 	colOut = (sum % 2) ? m_color1 : m_color2;
 
 	return true;
@@ -119,8 +120,8 @@ unsigned int CMarmaladeAutoUITexture::BitFlags(void) const
 void CMarmaladeAutoUITexture::AddAutoParameters(IRhRdkParamBlock& paramBlock, int iId) const
 {
 	// It is through this method that the values in your content get transferred into the automatic UI.
-	paramBlock.Add(wszColor1, L"", L"Color 1", m_color1.OnColor(), CRhRdkVariant::Null(), CRhRdkVariant::Null());
-	paramBlock.Add(wszColor2, L"", L"Color 2", m_color2.OnColor(), CRhRdkVariant::Null(), CRhRdkVariant::Null());
+	paramBlock.Add(wszColor1, L"", L"Color 1", m_color1, CRhRdkVariant(), CRhRdkVariant());
+	paramBlock.Add(wszColor2, L"", L"Color 2", m_color2, CRhRdkVariant(), CRhRdkVariant());
 }
 
 void CMarmaladeAutoUITexture::GetAutoParameters(const IRhRdkParamBlock& paramBlock, int iId)
@@ -136,12 +137,12 @@ void CMarmaladeAutoUITexture::GetAutoParameters(const IRhRdkParamBlock& paramBlo
 
 	if (paramBlock.Get(wszColor1, vValue))
 	{
-		m_color1 = vValue.AsOnColor();
+		m_color1 = vValue.AsRdkColor();
 	}
 
 	if (paramBlock.Get(wszColor2, vValue))
 	{
-		m_color2 = vValue.AsOnColor();
+		m_color2 = vValue.AsRdkColor();
 	}
 }
 
@@ -150,20 +151,25 @@ bool CMarmaladeAutoUITexture::ReadParametersFromSection(const IRhRdk_XMLSection&
 	CRhRdkVariant v;
 
 	if (section.GetParam(wszColor1, v))
-		m_color1 = v.AsOnColor();
+		m_color1 = v.AsRdkColor();
 
 	if (section.GetParam(wszColor2, v))
-		m_color2 = v.AsOnColor();
+		m_color2 = v.AsRdkColor();
 
 	return __super::ReadParametersFromSection(section, context);
 }
 
 bool CMarmaladeAutoUITexture::WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const
 {
-	section.SetParam(wszColor1, m_color1.OnColor());
-	section.SetParam(wszColor2, m_color2.OnColor());
+	section.SetParam(wszColor1, m_color1);
+	section.SetParam(wszColor2, m_color2);
 
 	return __super::WriteParametersToSection(section, context);
+}
+
+void CMarmaladeAutoUITexture::SimulateTexture(CRhRdkSimulatedTexture& texOut, CRhRdkTexture::TextureGeneration tg, int iSimulatedTextureSize, const CRhinoObject * pObject) const
+{
+	__super::SimulateTexture(texOut, tg, iSimulatedTextureSize, pObject);
 }
 
 void* CMarmaladeAutoUITexture::GetShader(const UUID& uuidRenderEngine, void* pvData) const

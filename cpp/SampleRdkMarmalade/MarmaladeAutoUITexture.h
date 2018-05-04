@@ -27,6 +27,7 @@ public: // Overrides from CRhRdkContent.
 	virtual ParamSerialMethod ParameterSerializationMethod(void) const override { return ParamSerialMethod ::GetSet; }
 	virtual bool ReadParametersFromSection(const IRhRdk_XMLSection& section, ReadParamsContext context) override;
 	virtual bool WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const override;
+	virtual void SimulateTexture(CRhRdkSimulatedTexture& texOut, CRhRdkTexture::TextureGeneration tg, int iSimulatedTextureSize, const CRhinoObject* pObject) const override;
 	virtual UUID RenderEngineId(void) const override;
 	virtual UUID PlugInId(void) const override;
 	virtual void* GetShader(const UUID& uuidRenderEngine, void* pvData) const override;

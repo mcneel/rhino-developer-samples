@@ -62,7 +62,7 @@ void CMarmaladeColorSection::DisplayData(void)
 		}
 	}
 
-	m_buttonColor.SetColor(col);
+	m_buttonColor.SetColor(col, false);
 	m_buttonColor.SetVaries(bColVaries);
 }
 
@@ -78,12 +78,7 @@ LRESULT CMarmaladeColorSection::OnColorButton(WPARAM, LPARAM)
 	for (int i = 0; i < aContent.Count(); i++)
 	{
 		const CRhRdkContent::Change<CRhRdkContent> m(*aContent[i], RhRdkChangeContext::UI);
-
-		//const auto colOld = m().GetParameter(wszColor).AsRdkColor();
-		//if (colNew != colOld)
-		{
-			m().SetParameter(wszColor, colNew.OnColor());
-		}
+		m().SetParameter(wszColor, colNew);
 	}
 
 	return 1;

@@ -15,6 +15,13 @@ protected:
 	virtual CRhRdkMaterial* NewMaterial(void) const;
 };
 
+static const wchar_t* wszColor          = L"color";
+static const wchar_t* wszTransparency   = L"transparency";
+static const wchar_t* wszIOR            = L"ior";
+static const wchar_t* wszTextureOn      = L"color-on";
+static const wchar_t* wszTextureAmount  = L"color-amount";
+static const wchar_t* wszColorChildSlot = L"ColorChildSlot";
+
 class CMarmaladeMaterial : public CRhRdkMaterial
 {
 public:
@@ -47,6 +54,8 @@ public: // Overrides from CRhRdkContent.
 	virtual CRhRdkVariant GetParameter(const wchar_t* wszName) const override;
 	virtual bool SetParameter(const wchar_t* wszName, const CRhRdkVariant& vValue) override;
 	virtual ParamSerialMethod ParameterSerializationMethod(void) const override { return ParamSerialMethod::GetSet; }
+	virtual ON_wString ChildSlotNameFromParamName(const wchar_t* wszParamName) const override;
+	virtual ON_wString ParamNameFromChildSlotName(const wchar_t* wszChildSlotName) const override;
 	virtual bool ReadParametersFromSection(const IRhRdk_XMLSection& section, ReadParamsContext context) override;
 	virtual bool WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const override;
 	virtual UUID RenderEngineId(void) const override;

@@ -3,6 +3,7 @@
 #include "MarmaladeNewMaterial.h"
 #include "MarmaladeNewMaterialSection.h"
 #include "MarmaladePlugIn.h"
+#include "MarmaladeUtilities.h"
 
 CRhRdkMaterial* CMarmaladeNewMaterialFactory::NewMaterial(void) const
 {
@@ -81,17 +82,14 @@ void CMarmaladeNewMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::Te
 	double dTextureAmount = m_Color.TextureAmount();
 
 	const CRhRdkContent* pChild = nullptr;
-	if (bTextureOn && (dTextureAmount > 0.0) && (nullptr != (pChild = FindChild(L"ColorChildSlot"))))
+	if (bTextureOn && (dTextureAmount > 0.0) && (nullptr != (pChild = FindChild(MARM_SHADER_COLOR_CSN))))
 	{
-		// IsFactoryProductAcceptableAsChild should ensure that the child
-		// is a texture, but it never hurts to check.
-		if (pChild->IsKind(Kinds::Texture))
+		// IsFactoryProductAcceptableAsChild should ensure that the child is a texture.
+		const auto* pTexture = dynamic_cast<const CRhRdkTexture*>(pChild);
+		if (nullptr != pTexture)
 		{
-			const auto* pTexture = static_cast<const CRhRdkTexture*>(pChild);
-
 			CRhRdkSimulatedTexture onTexture;
 			pTexture->SimulateTexture(onTexture, tg);
-
 			mat.AddTexture(onTexture.Filename(), ON_Texture::TYPE::bitmap_texture);
 
 			if (1 == mat.m_textures.Count())
@@ -147,7 +145,7 @@ void* CMarmaladeNewMaterial::GetShader(const UUID& uuidRenderEngine, void* pvDat
 	return (void*)pShader;
 }
 
-bool CMarmaladeNewMaterial::IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* wszChildSlotName) const
+bool CMarmaladeNewMaterial::IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* /*wszChildSlotName*/) const
 {
 	if (f.Kind() == Kinds::Texture)
 		return true; // Factory produces textures.

@@ -4,11 +4,15 @@
 #include "MarmaladePlugIn.h"
 #include "MarmaladeColorSection.h"
 
-static const wchar_t* wszColor         = L"color";
-static const wchar_t* wszTransparency  = L"transparency";
-static const wchar_t* wszTextureOn     = L"texture-on";
-static const wchar_t* wszTextureAmount = L"texture-amount";
-static const wchar_t* wszColorChildSlot= L"color-child-slot";
+// Automatic materials such as Orange, Satin and Lemon Curd are based on the various shaders
+// and use the RDK Automatic UI instead of a hard-coded UI. This makes it possible to use the
+// same material code for many different shaders without having to produce a UI for each one.
+
+static const wchar_t* wszColor          = L"color";
+static const wchar_t* wszTransparency   = L"transparency";
+static const wchar_t* wszTextureOn      = L"color-on";
+static const wchar_t* wszTextureAmount  = L"color-amount";
+static const wchar_t* wszColorChildSlot = wszColor;
 
 //---- CMarmaladeAutoMaterialFactory
 
@@ -72,7 +76,8 @@ ON_wString CMarmaladeAutoMaterial::InternalName(void) const
 bool CMarmaladeAutoMaterial::TextureOn(void) const
 {
 	const auto* pParam = m_ParamBlock.FindParameter(wszTextureOn);
-	ASSERT(nullptr != pParam);
+	if (nullptr == pParam)
+		return false;
 
 	return pParam->m_vValue;
 }
@@ -80,7 +85,8 @@ bool CMarmaladeAutoMaterial::TextureOn(void) const
 void CMarmaladeAutoMaterial::SetTextureOn(bool b)
 {
 	auto* pParam = m_ParamBlock.FindParameter(wszTextureOn);
-	ASSERT(nullptr != pParam);
+	if (nullptr == pParam)
+		return;
 
 	if (pParam->m_vValue.AsBool() != b)
 	{
@@ -92,7 +98,8 @@ void CMarmaladeAutoMaterial::SetTextureOn(bool b)
 double CMarmaladeAutoMaterial::TextureAmount(void) const
 {
 	const auto* pParam = m_ParamBlock.FindParameter(wszTextureAmount);
-	ASSERT(nullptr != pParam);
+	if (nullptr == pParam)
+		return 0.0;
 
 	return pParam->m_vValue;
 }
@@ -100,7 +107,8 @@ double CMarmaladeAutoMaterial::TextureAmount(void) const
 void CMarmaladeAutoMaterial::SetTextureAmount(double d)
 {
 	auto* pParam = m_ParamBlock.FindParameter(wszTextureAmount);
-	ASSERT(nullptr != pParam);
+	if (nullptr == pParam)
+		return;
 
 	if (pParam->m_vValue.AsDouble() != d)
 	{
@@ -124,16 +132,14 @@ void CMarmaladeAutoMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::T
 	}
 
 	const CRhRdkContent* pChild = nullptr;
-	if ((nullptr != (pChild = FindChild(wszColorChildSlot)) && TextureOn() && (TextureAmount() > 0.0)))
+	if (TextureOn() && (TextureAmount() > 0.0) && (nullptr != (pChild = FindChild(wszColorChildSlot))))
 	{
-		// IsFactoryProductAcceptableAsChild should ensure that the child is a RDK_KIND_TEXTURE
-		// but it never hurts to check.
-		if (pChild->IsKind(CRhRdkContent::Kinds::Texture))
+		// IsFactoryProductAcceptableAsChild should ensure that the child is a texture.
+		const auto* pTexture = dynamic_cast<const CRhRdkTexture*>(pChild);
+		if (nullptr != pTexture)
 		{
-			const auto* pTexture = static_cast<const CRhRdkTexture*>(pChild);
 			CRhRdkSimulatedTexture onTexture;
 			pTexture->SimulateTexture(onTexture, tg);
-
 			mat.AddTexture(onTexture.Filename(), ON_Texture::TYPE::bitmap_texture);
 
 			if (1 == mat.m_textures.Count())
@@ -148,8 +154,8 @@ void CMarmaladeAutoMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::T
 	}
 }
 
-const int idParameters1 = 0;
-const int idParameters2 = 1;
+static const int idParameters1 = 0;
+static const int idParameters2 = 1;
 
 void CMarmaladeAutoMaterial::AddUISections(IRhRdkExpandableContentUI& ui)
 {
@@ -201,7 +207,11 @@ void CMarmaladeAutoMaterial::GetAutoParameters(const IRhRdkParamBlock& paramBloc
 		auto* pParam = m_ParamBlock.FindParameter(sParamName);
 		if (nullptr != pParam)
 		{
-			pParam->m_vValue = vParamValue;
+			if (pParam->m_vValue != vParamValue)
+			{
+				pParam->m_vValue = vParamValue;
+				Changed();
+			}
 		}
 	}
 
@@ -292,8 +302,8 @@ unsigned int CMarmaladeAutoMaterial::BitFlags(void) const
 {
 	auto flags = CRhRdkMaterial::BitFlags(); // | bfSharedUI; // Shared UI is now mandatory.
 
-	if (!IsTexturingSupported()) // If texturing not supported then
-		flags &= ~bfTextureSummary; // no texture summary required.
+	if (!IsTexturingSupported())    // If texturing is not supported then
+		flags &= ~bfTextureSummary; // no texture summary is required.
 
 	return flags;
 }
@@ -335,7 +345,6 @@ bool CMarmaladeAutoMaterial::GetExtraRequirementParameter(const wchar_t* wszPara
 	}
 
 	// Handle texturing extra requirements for the color parameter.
-
 	if (sParamName == wszColor)
 	{
 		if (sExtraRequirementName == RDK_TEXTURE_ON)
@@ -362,8 +371,6 @@ bool CMarmaladeAutoMaterial::SetExtraRequirementParameter(const wchar_t* wszPara
 
 	if (sParamName == wszColor)
 	{
-		//const auto cc = ChangeContextFromSetContext(sc);
-
 		const ON_wString sExtraRequirementName = wszExtraRequirementName;
 
 		if (sExtraRequirementName == RDK_TEXTURE_ON)
@@ -374,7 +381,7 @@ bool CMarmaladeAutoMaterial::SetExtraRequirementParameter(const wchar_t* wszPara
 
 		if (sExtraRequirementName == RDK_TEXTURE_AMOUNT)
 		{
-			SetTextureAmount(vValue.AsFloat() / 100.0f);
+			SetTextureAmount(vValue.AsDouble() * 0.01);
 			return true;
 		}
 	}
@@ -394,16 +401,16 @@ private:
 	int m_iIndex;
 };
 
-bool CMarmaladeAutoMaterialCSI::NextChildSlot(ON_wString& sInternalNameOut, ON_wString& sChildSlotNameOut, ON_wString& sDisplayNameOut)
+bool CMarmaladeAutoMaterialCSI::NextChildSlot(OUT ON_wString& sInternalName, OUT ON_wString& sChildSlotName, OUT ON_wString& sDisplayName)
 {
 	m_iIndex++;
 
 	switch (m_iIndex)
 	{
 	case 0:
-		sInternalNameOut  = wszColor;
-		sDisplayNameOut   = L"Color";
-		sChildSlotNameOut = wszColorChildSlot;
+		sInternalName  = wszColor;
+		sDisplayName   = L"Color";
+		sChildSlotName = wszColorChildSlot;
 		return true;
 	}
 

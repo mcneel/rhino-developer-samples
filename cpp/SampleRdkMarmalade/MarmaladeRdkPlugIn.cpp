@@ -132,6 +132,20 @@ void CMarmaladeRdkPlugIn::AbortRender(void)
 	// Nothing to do in Marmalade.
 }
 
+inline static void Fill(COLORREF col, CRhinoDib& dib, int step)
+{
+	for (int y = 0; y < dib.Height(); y += step)
+	{
+		for (int x = 0; x < dib.Width(); x += step)
+		{
+			dib.SetPixel(x  , y  , col);
+			dib.SetPixel(x+1, y  , col);
+			dib.SetPixel(x  , y+1, col);
+			dib.SetPixel(x+1, y+1, col);
+		}
+	}
+}
+
 bool CMarmaladeRdkPlugIn::CreatePreview(const ON_2iSize& sizeImage, RhRdkPreviewQuality quality,
 	                      const IRhRdkPreviewSceneServer* pSceneServer, IRhRdkPreviewCallbacks* pNotify, CRhinoDib& dibOut)
 {
@@ -160,25 +174,28 @@ bool CMarmaladeRdkPlugIn::CreatePreview(const ON_2iSize& sizeImage, RhRdkPreview
 
 	const auto& paramBlock = pShader->ParamBlock();
 
+	const auto* pParam = paramBlock.FindParameter(L"color");
+	if (nullptr == pParam)
+		return false;
+
 	CRhinoDib dib(sizeImage.cx, sizeImage.cy, 24);
+	dib.FillSolid(RGB(0, 0, 0));
+
+	const auto col = pParam->m_vValue.AsRdkColor().ColorRef();
 
 	switch (quality)
 	{
 	case RhRdkPreviewQuality::Low:
-		dib.FillSolid(RGB(255, 140, 0));
+		Fill(col, dib, 8);
 		break;
 
 	case RhRdkPreviewQuality::Medium:
-		dib.FillSolid(RGB(255, 255, 0));
+		Fill(col, dib, 4);
 		break;
 
 	case RhRdkPreviewQuality::Full:
-		{
-		const auto* pParam = paramBlock.FindParameter(L"color");
-		const auto col = pParam->m_vValue.AsRdkColor().ColorRef();
 		dib.FillSolid(col);
 		break;
-		}
 	}
 
 	delete pShader;

@@ -7,7 +7,6 @@ class CMarmaladeNewMaterialSection : public CRhRdkMaterialUISection_MFC
 {
 public:
 	CMarmaladeNewMaterialSection();
-	virtual ~CMarmaladeNewMaterialSection();
 
 private:
 	enum { IDD = IDD_NEW_MATERIAL_SECTION };
@@ -33,12 +32,13 @@ private:
 	m_editIOR;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;
 	virtual BOOL OnInitDialog() override;
+	virtual void DoDataExchange(CDataExchange* pDX) override;
 	virtual void DisplayData(void) override;
 	virtual ON_wString Caption(bool bAlwaysEnglish) const override;
 	virtual unsigned int GetIDD(void) const override { return IDD; }
 	virtual UUID Uuid(void) const override;
+	virtual bool SupportsVaries(const CRhRdkContentArray& aContent) const override;
 	virtual AFX_MODULE_STATE* GetModuleState(void) const override { return AfxGetStaticModuleState(); }
 	virtual void OnEvent(IRhinoUiController&, const UUID& uuidData, IRhinoUiController::EventPriority, const IRhinoUiEventInfo*) override;
 
@@ -68,5 +68,5 @@ private:
 	}
 	m_SubNode;
 
-	bool m_bChildSlotInUse = false;
+	int m_iInternalCall = 0;
 };

@@ -3,25 +3,24 @@
 #include "MarmaladeMaterial.h"
 #include "MarmaladeMaterialSection.h"
 #include "MarmaladePlugIn.h"
+#include "MarmaladeUtilities.h"
 
 CRhRdkMaterial* CMarmaladeMaterialFactory::NewMaterial(void) const
 {
 	return new CMarmaladeMaterial;
 }
 
-// This old-style material does not use content fields, so each parameter
-// is handled explicitly for each operation. This is only retained for
-// reference and is not recommended for new plug-in designs. Using
-// content fields instead (see CMarmaladeNewMaterial) automates a great
-// deal of the necessary behavior, thus making the plug-in smaller and
-// easier to implement.
+/*	This is the original Marmalade Material and as such it works in the old-fashioned way.
+	It has been retained for completeness and so that it can be compared with the old (V5) version,
+	but it is not recomended to use this method of making a material. Please see MarmaladeNewMaterial.cpp
+	for the recommended example.
 
-static const wchar_t* wszColor         = L"color";
-static const wchar_t* wszTransparency  = L"transparency";
-static const wchar_t* wszIOR           = L"ior";
-static const wchar_t* wszTextureOn     = L"color-on";
-static const wchar_t* wszTextureAmount = L"color-amount";
+	This old-style material does not use content fields, so each parameter is handled explicitly for
+	each operation. This is only retained for reference and is not recommended for new plug-in designs.
+	Using content fields instead (see CMarmaladeNewMaterial) automates a great deal of the necessary
+	behavior, thus making the plug-in smaller and easier to implement.
 
+*/
 CMarmaladeMaterial::CMarmaladeMaterial()
 {
 }
@@ -193,16 +192,20 @@ UUID CMarmaladeMaterial::PlugInId(void) const
 
 UUID CMarmaladeMaterial::TypeId(void) const
 {
-	//**********************************************************************
-	// Generated for this class using GUIDGEN  *** Don't reuse this GUID ***
-	// {69AFA258-CAAE-4f75-BAFA-3BEDE13CA7E8}
-	static const GUID uuidTypeId =
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	static const UUID uuid =
 	{
 		0x69afa258, 0xcaae, 0x4f75, { 0xba, 0xfa, 0x3b, 0xed, 0xe1, 0x3c, 0xa7, 0xe8 }
 	};
-	//**********************************************************************
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
+	// !!!! DO NOT REUSE THIS UUID !!!!
 
-	return uuidTypeId;
+	return uuid;
 }
 
 ON_wString CMarmaladeMaterial::TypeName(void) const
@@ -220,6 +223,32 @@ ON_wString CMarmaladeMaterial::InternalName(void) const
 	return L"MarmaladeMaterial";
 }
 
+ON_wString CMarmaladeMaterial::ChildSlotNameFromParamName(const wchar_t* wszParamName) const
+{
+	// If for whatever reason you choose to make the child slot name different to the
+	// parameter name it's associated with, you must override this method and convert
+	// the parameter name to the child slot name. This material's 'color' parameter is
+	// associated with the child slot called 'ColorChildSlot'.
+
+	if (0 == _wcsicmp(wszParamName, wszColor))
+		return wszColorChildSlot;
+
+	return wszParamName;
+}
+
+ON_wString CMarmaladeMaterial::ParamNameFromChildSlotName(const wchar_t* wszChildSlotName) const
+{
+	// If for whatever reason you choose to make the child slot name different to the
+	// parameter name it's associated with, you must override this method and convert
+	// the child slot name to the parameter name. This material's 'color' parameter is
+	// associated with the child slot called 'ColorChildSlot'.
+
+	if (0 == _wcsicmp(wszChildSlotName, wszColorChildSlot))
+		return wszColor;
+
+	return wszChildSlotName;
+}
+
 void CMarmaladeMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::TextureGeneration tg, int iSize, const CRhinoObject* pObject) const
 {
 	mat.m_diffuse = Color().OnColor();
@@ -227,17 +256,14 @@ void CMarmaladeMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::Textu
 	mat.m_index_of_refraction = IOR();
 
 	const CRhRdkContent* pChild = nullptr;
-	if (TextureOn() && (TextureAmount() > 0.0) && (nullptr != (pChild = FindChild(L"ColorChildSlot"))))
+	if (TextureOn() && (TextureAmount() > 0.0) && (nullptr != (pChild = FindChild(wszColorChildSlot))))
 	{
-		// IsFactoryProductAcceptableAsChild should ensure that the child is a RDK_KIND_TEXTURE
-		// but it never hurts to check.
-		if (pChild->IsKind(Kinds::Texture))
+		// IsFactoryProductAcceptableAsChild should ensure that the child is a texture.
+		const auto* pTexture = dynamic_cast<const CRhRdkTexture*>(pChild);
+		if (nullptr != pTexture)
 		{
-			const auto* pTexture = static_cast<const CRhRdkTexture*>(pChild);
-
 			CRhRdkSimulatedTexture onTexture;
 			pTexture->SimulateTexture(onTexture, tg);
-
 			mat.AddTexture(onTexture.Filename(), ON_Texture::TYPE::bitmap_texture);
 
 			if (1 == mat.m_textures.Count())
@@ -305,7 +331,7 @@ void* CMarmaladeMaterial::GetShader(const UUID& uuidRenderEngine, void* pvData) 
 	return (void*)pShader;
 }
 
-bool CMarmaladeMaterial::IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* wszChildSlotName) const
+bool CMarmaladeMaterial::IsFactoryProductAcceptableAsChild(const CRhRdkContentFactory& f, const wchar_t* /*wszChildSlotName*/) const
 {
 	if (f.Kind() == Kinds::Texture)
 		return true; // Factory produces textures.

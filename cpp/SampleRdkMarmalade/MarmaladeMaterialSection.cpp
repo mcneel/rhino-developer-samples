@@ -2,25 +2,19 @@
 #include "stdafx.h"
 #include "MarmaladeMaterialSection.h"
 #include "MarmaladeMaterial.h"
+#include "MarmaladeUtilities.h"
 
 static UINT uColorChangedMsg = CRhRdkColorButton::ChangedMessageNumber();
-
-static const ON_wString sChildSlotName = "marmalade-texture-slot";
 
 BEGIN_MESSAGE_MAP(CIOREdit, CEdit)
 	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
-void CIOREdit::SetSection(CMarmaladeMaterialSection& section)
-{
-	m_pSection = &section;
-}
-
 void CIOREdit::OnContextMenu(CWnd* pWnd, CPoint pt)
 {
 	double dIOR = 0.0;
 	CRhRdkIORContextMenu m;
-	if (m.TrackMenu(pWnd->GetSafeHwnd(), ON_2iPoint(pt.x, pt.y), dIOR, &m_sName))
+	if (m.TrackMenu(pWnd->GetSafeHwnd(), ON_2iPoint(pt.x, pt.y), dIOR))
 	{
 		CString s;
 		s.Format(_T("%.2f"), dIOR);
@@ -29,21 +23,14 @@ void CIOREdit::OnContextMenu(CWnd* pWnd, CPoint pt)
 		SetFocus();
 		SetSel(0, -1);
 
-		if (nullptr != m_pSection)
-		{
-			m_pSection->OnChangeAnything();
-		}
+		m_Section.OnChangeAnything();
 	}
 }
 
 CMarmaladeMaterialSection::CMarmaladeMaterialSection()
 	:
+	m_editIOR(*this),
 	CRhRdkMaterialUISection_MFC(IDD)
-{
-	m_editIOR.SetSection(*this);
-}
-
-CMarmaladeMaterialSection::~CMarmaladeMaterialSection()
 {
 }
 
@@ -96,13 +83,22 @@ BOOL CMarmaladeMaterialSection::OnInitDialog()
 {
 	CRhRdkMaterialUISection_MFC::OnInitDialog();
 
+	const auto con = Controller();
+
+	// The color button in V6 onwards supports texture slots. The button
+	// can display a texture icon and has texturing items on the menu.
+	// To use this feature, set the child slot name to the button before
+	// setting the controller.
+	m_btColor.SetChildSlotName(wszColorChildSlot);
+	m_btColor.SetController(con); // Must be after setting the child slot name.
+
 	// This old-style dialog only uses the child slot functionality of the sub-node control.
 	// It implements the 'on' and 'amount' functionality by using a discrete check box and edit box.
 	// The new dialog (CMarmaladeNewMaterialSection) uses the sub-node control's built-in
 	// 'on' check box and 'amount' edit box. 
-	m_SubNode.SetChildSlotName(sChildSlotName);
+	m_SubNode.SetChildSlotName(wszColorChildSlot);
 	VERIFY(m_SubNode.CreateWnd(WS_CHILD | WS_VISIBLE, CRect(0, 0, 0, 0), this, 1234));
-	m_SubNode.SetController(Controller());
+	m_SubNode.SetController(con); // Must be after setting the child slot name.
 
 	DisplayData();
 
@@ -114,8 +110,18 @@ ON_wString CMarmaladeMaterialSection::Caption(bool) const
 	return L"Marmalade Material";
 }
 
+bool CMarmaladeMaterialSection::SupportsVaries(const CRhRdkContentArray& aContent) const
+{
+	return RhRdkSupportsVariesHelperEx<CMarmaladeMaterial>(aContent);
+}
+
 void CMarmaladeMaterialSection::DisplayData(void)
 {
+	__super::DisplayData();
+
+	if (m_iInternalCall > 0)
+		return;
+
 	const auto con = Controller();
 	if (!con)
 		return;
@@ -163,8 +169,6 @@ void CMarmaladeMaterialSection::DisplayData(void)
 	m_btColor.SetColor(col, false);
 	m_btColor.SetVaries(bColVaries);
 
-	m_SubNode.DisplayData();
-
 	ON_wString s1;
 	if (!bTransVaries)
 		s1.Format(_T("%.1f"), dTrans);
@@ -181,6 +185,8 @@ void CMarmaladeMaterialSection::DisplayData(void)
 	m_editTextureAmount.SetWindowText(s3);
 
 	m_checkTextureOn.SetCheck(bTextureOnVaries ? BST_INDETERMINATE : (bTextureOn ? BST_CHECKED : BST_UNCHECKED));
+
+	m_SubNode.DisplayData();
 }
 
 void CMarmaladeMaterialSection::OnChangeAnything(void)
@@ -190,6 +196,8 @@ void CMarmaladeMaterialSection::OnChangeAnything(void)
 		return;
 
 	CString s;
+
+	m_iInternalCall++;
 
 	CRhRdkEditableContentArray aContent(*con, true);
 	for (int i = 0; i < aContent.Count(); i++)
@@ -219,6 +227,8 @@ void CMarmaladeMaterialSection::OnChangeAnything(void)
 		if (!s.IsEmpty())
 			m().SetTransparency(_tstof(s));
 	}
+
+	m_iInternalCall--;
 }
 
 LRESULT CMarmaladeMaterialSection::OnColorChanged(WPARAM w, LPARAM l)
