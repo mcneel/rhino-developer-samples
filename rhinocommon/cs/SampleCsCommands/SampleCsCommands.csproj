@@ -188,6 +188,7 @@
     <Compile Include="SampleCsUnisolate.cs" />
     <Compile Include="SampleCsSetUserText.cs" />
     <Compile Include="SampleCsUnweldAll.cs" />
+    <Compile Include="SampleCsViewCapture.cs" />
     <Compile Include="SampleCsViewSize.cs" />
     <Compile Include="SampleCsWorldToPageTransform.cs" />
     <Compile Include="SampleCsWrite3dmFile.cs" />
