@@ -77,18 +77,17 @@ namespace SampleCsCommands
 
                 //Tag the copy with a reference to the original so that we can figure out the next letter index easier
                 attributes.SetUserString(".Dup", obj_guid.ToString());
-                var copied_obj_guid = doc.Objects.Add(duplicate, attributes);
 
-                //Create a duplicate of the text tag
+                //Create a duplicate of the object in the doc
+                var copied_obj_guid = doc.Objects.Add(duplicate, attributes);
+                
+                //Create a new tag for the duplicate with updated functions
                 if (!(ro.DuplicateGeometry() is TextEntity dup_text)) continue;
                 dup_text.RichText = ReplaceGuid(dup_text.RichText, copied_obj_guid);
                 var tag_guid = doc.Objects.Add(dup_text);
 
-
-                //Add the new objects to the document
-                Guid[] selection = { tag_guid, copied_obj_guid };
-
                 //Select the new objects to make moving them easier
+                Guid[] selection = { tag_guid, copied_obj_guid };
                 doc.Objects.Select(selection);
                 doc.Views.Redraw();
 
@@ -120,7 +119,7 @@ namespace SampleCsCommands
 
         private static string ExtractGuidFromString(string inputstring)
         {
-            //Find a GUID nestled within a string
+            //Find the frist GUID nestled within a string
             var guids = Regex
                 .Matches(inputstring,
                     @"(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}")
@@ -141,7 +140,10 @@ namespace SampleCsCommands
                 return inputstring;
             }
 
-            var replace = inputstring.Replace(enumerable.First(), replacementguid.ToString());
+            var replace = inputstring;
+            foreach (var match in enumerable)
+              replace = inputstring.Replace(match, replacementguid.ToString());
+
             return replace;
         }
 
