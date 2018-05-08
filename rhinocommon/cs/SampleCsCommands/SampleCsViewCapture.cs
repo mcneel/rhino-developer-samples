@@ -35,7 +35,6 @@ namespace SampleCsCommands
         bitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Png);
       }
 
-
       return Result.Success;
     }
   }
