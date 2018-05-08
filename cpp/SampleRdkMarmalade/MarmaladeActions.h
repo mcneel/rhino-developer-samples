@@ -1,110 +1,135 @@
 
 #pragma once
 
-class CMarmaladeExtraPeelAction : public CRhRdkAction
+#include "MarmaladePlugIn.h"
+
+/** In Rhino 6, custom 'actions' have been superseded by custom 'tasks'.
+
+	CRhRdkAction is deprecated; use CRhRdkTask instead. The interface is a
+	bit different and has more functions but the basic principle is the same.
+
+*/
+
+class CMarmaladeExtraPeelTask : public CRhRdkCustomTask // was CMarmaladeExtraPeelAction
 {
 public:
-	CMarmaladeExtraPeelAction(const UUID& uuidClient);
+	bool IsChecked(void) const { return m_bChecked; }
+	void SetIsChecked(bool b) { m_bChecked = b; }
 
 	static  UUID Ident(void);
-	virtual UUID Uuid(void) const override { return Ident(); }
-	virtual ON_wString Caption(void) const override { return L"Extra &Peel"; }
-	virtual ON_wString ToolTip(void) const override { return L"Extra Peel"; }
-	virtual bool Icon(const ON_2iSize& size, CRhinoDib& dibOut) const override { return false; } // TODO:
-	virtual bool Execute(void) override;
+	virtual UUID Id(void) const override { return Ident(); }
+	virtual const wchar_t* MenuString(const IRhRdkTaskOrigin&, CRhRdkContent::Kinds) const override { return L"Extra &Peel"; }
+	virtual bool IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override { return false; }
+	virtual bool IconIn(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override;
+	virtual void Update(IRhRdkTaskUpdate& tu) const override;
+	virtual Result Execute(const IRhRdkTaskOrigin& origin) const override;
+	virtual UUID PlugInId(void) const override { return MarmaladePlugIn().PlugInID(); }
+	virtual bool IsEnabled(const IRhRdkTaskOrigin& origin) const override { return true; }
+	virtual int MenuOrder(const IRhRdkTaskOrigin& origin) const override { return 35; }
+	virtual Separator MenuSeparators(void) const override { return Separator::Both; }
+
+private:
+	mutable bool m_bChecked = false;
 };
 
-class CMarmaladeFlavorAction : public CRhRdkAction
+class CMarmaladeFlavorTask : public CRhRdkCustomTask // was CMarmaladeFlavorAction
 {
 public:
-	CMarmaladeFlavorAction(const UUID& uuidClient, const CMarmaladeExtraPeelAction& mpa);
+	CMarmaladeFlavorTask(const CMarmaladeExtraPeelTask& mpa);
 
 protected:
 	void AddNewMaterial(COLORREF col1, COLORREF col2) const;
 
+	virtual UUID PlugInId(void) const override { return MarmaladePlugIn().PlugInID(); }
+	virtual bool IsEnabled(const IRhRdkTaskOrigin& origin) const override { return true; }
+
 private:
-	const CMarmaladeExtraPeelAction& m_ExtraPeelAction;
+	const CMarmaladeExtraPeelTask& m_ExtraPeelAction;
 };
 
-class CMarmaladeOrangeAction : public CMarmaladeFlavorAction
+class CMarmaladeOrangeTask : public CMarmaladeFlavorTask // was CMarmaladeOrangeAction
 {
 public:
-	CMarmaladeOrangeAction(const UUID& uuidClient, const CMarmaladeExtraPeelAction& mpa);
+	CMarmaladeOrangeTask(const CMarmaladeExtraPeelTask& mpa);
 
 	static  UUID Ident(void);
-	virtual UUID Uuid(void) const override { return Ident(); }
-	virtual ON_wString Caption(void) const override { return L"New &Orange"; }
-	virtual ON_wString ToolTip(void) const override { return L"New Orange"; }
-	virtual bool Icon(const ON_2iSize& size, CRhinoDib& dibOut) const override;
-	virtual bool Execute(void) override;
+	virtual UUID Id(void) const override { return Ident(); }
+	virtual UUID PlugInId(void) const override { return MarmaladePlugIn().PlugInID(); }
+	virtual const wchar_t* MenuString(const IRhRdkTaskOrigin&, CRhRdkContent::Kinds) const override { return L"New &Orange"; }
+	virtual bool IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override;
+	virtual Result Execute(const IRhRdkTaskOrigin& origin) const override;
+	virtual int MenuOrder(const IRhRdkTaskOrigin& origin) const override { return 10; }
 };
 
-class CMarmaladeLemonAction : public CMarmaladeFlavorAction
+class CMarmaladeLemonTask : public CMarmaladeFlavorTask // was CMarmaladeLemonAction
 {
 public:
-	CMarmaladeLemonAction(const UUID& uuidClient, const CMarmaladeExtraPeelAction& mpa);
+	CMarmaladeLemonTask(const CMarmaladeExtraPeelTask& mpa);
 
 	static  UUID Ident(void);
-	virtual UUID Uuid(void) const override { return Ident(); }
-	virtual ON_wString Caption(void) const override { return L"New &Lemon"; }
-	virtual ON_wString ToolTip(void) const override { return L"New Lemon"; }
-	virtual bool Icon(const ON_2iSize& size, CRhinoDib& dibOut) const override;
-	virtual bool Execute(void) override;
+	virtual UUID Id(void) const override { return Ident(); }
+	virtual const wchar_t* MenuString(const IRhRdkTaskOrigin&, CRhRdkContent::Kinds) const override { return L"New &Lemon"; }
+	virtual bool IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override;
+	virtual Result Execute(const IRhRdkTaskOrigin& origin) const override;
+	virtual int MenuOrder(const IRhRdkTaskOrigin& origin) const override { return 20; }
 };
 
-class CMarmaladeLimeAction : public CMarmaladeFlavorAction
+class CMarmaladeLimeTask : public CMarmaladeFlavorTask // was CMarmaladeLimeAction
 {
 public:
-	CMarmaladeLimeAction(const UUID& uuidClient, const CMarmaladeExtraPeelAction& mpa);
+	CMarmaladeLimeTask(const CMarmaladeExtraPeelTask& mpa);
 
 	static  UUID Ident(void);
-	virtual UUID Uuid(void) const override { return Ident(); }
-	virtual ON_wString Caption(void) const override { return L"New L&ime"; }
-	virtual ON_wString ToolTip(void) const override { return L"New Lime"; }
-	virtual bool Icon(const ON_2iSize& size, CRhinoDib& dibOut) const override;
-	virtual bool Execute(void) override;
+	virtual UUID Id(void) const override { return Ident(); }
+	virtual const wchar_t* MenuString(const IRhRdkTaskOrigin&, CRhRdkContent::Kinds) const override { return L"New L&ime"; }
+	virtual bool IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override;
+	virtual Result Execute(const IRhRdkTaskOrigin& origin) const override;
+	virtual int MenuOrder(const IRhRdkTaskOrigin& origin) const override { return 30; }
 };
 
-// Grouped (mutually exclusive) actions.
+// Radio (mutually exclusive) actions.
 
-class CMarmaladeBreadAction : public CRhRdkAction
+class CMarmaladeBreadAction : public CRhRdkCustomTask
 {
 public:
-	CMarmaladeBreadAction(const UUID& uuidClient);
-
 	static  UUID Ident(void);
-	virtual UUID Uuid(void) const override { return Ident(); }
-	virtual ON_wString Caption(void) const override { return L"&Bread"; }
-	virtual ON_wString ToolTip(void) const override { return L"Bread"; }
-	virtual bool Icon(const ON_2iSize& size, CRhinoDib& dibOut) const override { return false; } // TODO:
-	virtual int Group(void) const override { return 1; }
-	virtual bool Execute(void) override { return false; }
+	virtual UUID Id(void) const override { return Ident(); }
+	virtual UUID PlugInId(void) const override { return MarmaladePlugIn().PlugInID(); }
+	virtual bool IsEnabled(const IRhRdkTaskOrigin& origin) const override { return true; }
+	virtual const wchar_t* MenuString(const IRhRdkTaskOrigin&, CRhRdkContent::Kinds) const override { return L"&Bread"; }
+	virtual bool IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override { return false; }
+	virtual bool IconIn(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override;
+	virtual void Update(IRhRdkTaskUpdate& tu) const override;
+	virtual Result Execute(const IRhRdkTaskOrigin&) const override;
+	virtual int MenuOrder(const IRhRdkTaskOrigin& origin) const override { return 40; }
 };
 
-class CMarmaladeToastAction : public CRhRdkAction
+class CMarmaladeToastAction : public CRhRdkCustomTask
 {
 public:
-	CMarmaladeToastAction(const UUID& uuidClient);
-
 	static  UUID Ident(void);
-	virtual UUID Uuid(void) const override { return Ident(); }
-	virtual ON_wString Caption(void) const override { return L"&Toast"; }
-	virtual ON_wString ToolTip(void) const override { return L"Toast"; }
-	virtual bool Icon(const ON_2iSize& size, CRhinoDib& dibOut) const override { return false; } // TODO:
-	virtual int Group(void) const override { return 1; }
-	virtual bool Execute(void) override { return false; }
+	virtual UUID Id(void) const override { return Ident(); }
+	virtual UUID PlugInId(void) const override { return MarmaladePlugIn().PlugInID(); }
+	virtual bool IsEnabled(const IRhRdkTaskOrigin& origin) const override { return true; }
+	virtual const wchar_t* MenuString(const IRhRdkTaskOrigin&, CRhRdkContent::Kinds) const override { return L"&Toast"; }
+	virtual bool IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override { return false; }
+	virtual bool IconIn(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override;
+	virtual void Update(IRhRdkTaskUpdate& tu) const override;
+	virtual Result Execute(const IRhRdkTaskOrigin&) const override;
+	virtual int MenuOrder(const IRhRdkTaskOrigin& origin) const override { return 50; }
 };
 
-class CMarmaladeSconeAction : public CRhRdkAction
+class CMarmaladeSconeAction : public CRhRdkCustomTask
 {
 public:
-	CMarmaladeSconeAction(const UUID& uuidClient);
-
 	static  UUID Ident(void);
-	virtual UUID Uuid(void) const override { return Ident(); }
-	virtual ON_wString Caption(void) const override { return L"&Scone"; }
-	virtual ON_wString ToolTip(void) const override { return L"Scone"; }
-	virtual bool Icon(const ON_2iSize& size, CRhinoDib& dibOut) const override { return false; } // TODO:
-	virtual int Group(void) const override { return 1; }
-	virtual bool Execute(void) override { return false; }
+	virtual UUID Id(void) const override { return Ident(); }
+	virtual UUID PlugInId(void) const override { return MarmaladePlugIn().PlugInID(); }
+	virtual bool IsEnabled(const IRhRdkTaskOrigin& origin) const override { return true; }
+	virtual const wchar_t* MenuString(const IRhRdkTaskOrigin&, CRhRdkContent::Kinds) const override { return L"&Scone"; }
+	virtual bool IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override { return false; }
+	virtual bool IconIn(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const override;
+	virtual void Update(IRhRdkTaskUpdate& tu) const override;
+	virtual Result Execute(const IRhRdkTaskOrigin&) const override;
+	virtual int MenuOrder(const IRhRdkTaskOrigin& origin) const override { return 60; }
 };

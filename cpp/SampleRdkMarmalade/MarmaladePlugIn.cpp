@@ -371,14 +371,6 @@ void CMarmaladePlugIn::UpdateMarmaladeMenuState(void)
 	m_pMenu->CheckMenuItem(ID_TEXTURE_EDITOR_CMD, (bVis ? MF_CHECKED : MF_UNCHECKED));
 }
 
-bool CMarmaladePlugIn::IsMarmaladeCurrentRenderer(void) const
-{
-	if (RhinoApp().GetDefaultRenderApp() == PlugInID())
-		return true;
-
-	return false;
-}
-
 void CMarmaladePlugIn::AddPagesToObjectPropertiesDialog(CRhinoPropertiesPanelPageCollection& coll)
 {
 	// This method is called once at the completion of loading the plug-in.

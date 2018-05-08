@@ -63,69 +63,35 @@ void CMarmaladeRdkPlugIn::RegisterExtensions(void) const
 	AddExtension(new CMarmaladePointCloudRMP);
 
 	AddExtension(new CMarmaladeContentIOPlugIn);
+
+	auto* pEPA = new CMarmaladeExtraPeelTask;
+	AddExtension(pEPA);
+
+	AddExtension(new CMarmaladeOrangeTask(*pEPA));
+	AddExtension(new CMarmaladeLemonTask (*pEPA));
+	AddExtension(new CMarmaladeLimeTask  (*pEPA));
+
+	AddExtension(new CMarmaladeBreadAction);
+	AddExtension(new CMarmaladeToastAction);
+	AddExtension(new CMarmaladeSconeAction); // Note: Marmalade is not a traditional scone condiment.
 }
 
+#ifdef OBSOLETE
 void CMarmaladeRdkPlugIn::AddCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const
 {
-	// Add custom actions for use by custom menu.
-
-	if (!IsMarmaladeCurrentRenderer())
-		return;
-
-	const UUID uuid = PlugInId();
-
-	CMarmaladeExtraPeelAction* pEPA = new CMarmaladeExtraPeelAction(uuid);
-	actions.Add(pEPA);
-
-	actions.Add(new CMarmaladeOrangeAction(uuid, *pEPA));
-	actions.Add(new CMarmaladeLemonAction (uuid, *pEPA));
-	actions.Add(new CMarmaladeLimeAction  (uuid, *pEPA));
-
-	actions.Add(new CMarmaladeBreadAction(uuid));
-	actions.Add(new CMarmaladeToastAction(uuid));
-	actions.Add(new CMarmaladeSconeAction(uuid)); // Note: Marmalade is not a traditional scone condiment.
+	// This function is obsolete because actions have been replaced by tasks. See RegisterExtensions().
 }
 
 void CMarmaladeRdkPlugIn::UpdateCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const
 {
-	if (!IsMarmaladeCurrentRenderer())
-		return;
-
-	// Update [checked and] enabled state of actions.
-	for (int i = 0; i < actions.Count(); i++)
-	{
-		// Enable actions for the Material Editor only.
-		const bool bEnable = (editor.TopLevelKind() == CRhRdkContent::Kinds::Material);
-		actions.Action(i)->SetEnabled(bEnable);
-	}
+	// This function is obsolete because actions have been replaced by tasks. See RegisterExtensions().
 }
 
 void CMarmaladeRdkPlugIn::AddCustomEditorMenu(IRhRdkMenu& menu, const IRhRdkContentEditor& editor) const
 {
-	// Add custom menu.
-
-	if (!IsMarmaladeCurrentRenderer())
-		return;
-
-	IRhRdkMenu& subMenu = menu.AddSubMenu(L"&Marmalade");
-	subMenu.AddItem(CMarmaladeOrangeAction::Ident());
-	subMenu.AddItem(CMarmaladeLemonAction::Ident());
-	subMenu.AddItem(CMarmaladeLimeAction::Ident());
-	subMenu.AddSeparator();
-	subMenu.AddItem(CMarmaladeExtraPeelAction::Ident());
-	subMenu.AddSeparator();
-	subMenu.AddItem(CMarmaladeBreadAction::Ident());
-	subMenu.AddItem(CMarmaladeToastAction::Ident());
-	subMenu.AddItem(CMarmaladeSconeAction::Ident());
+	// This function is obsolete because actions have been replaced by tasks. See RegisterExtensions().
 }
-
-bool CMarmaladeRdkPlugIn::IsMarmaladeCurrentRenderer(void) const
-{
-	if (RhinoApp().GetDefaultRenderApp() == PlugInId())
-		return true;
-
-	return false;
-}
+#endif
 
 void CMarmaladeRdkPlugIn::AbortRender(void)
 {

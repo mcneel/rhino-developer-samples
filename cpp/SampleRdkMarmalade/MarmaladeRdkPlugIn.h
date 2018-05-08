@@ -17,7 +17,6 @@ public:
 
 	virtual UUID PlugInId(void) const override;
 
-	/// deprecated void PlugInRdkVersion(int& iMajor, int& iMinor, int& iBeta) const { iMajor = RDK_MAJOR_VERSION; iMinor = RDK_MINOR_VERSION, iBeta = RDK_BETA_RELEASE; }
 	CRhinoPlugIn& RhinoPlugIn(void) const override { return ::MarmaladePlugIn(); }
 
 protected:
@@ -39,10 +38,10 @@ protected:
 
 	virtual void AddCustomRenderSettingsSections(RhRdkUiModalities m, ON_SimpleArray<IRhinoUiSection*>& aSections) const override;
 
-	// Custom commands.
+#ifdef OBSOLETE
+	void PlugInRdkVersion(int& iMajor, int& iMinor, int& iBeta) const { iMajor = RDK_MAJOR_VERSION; iMinor = RDK_MINOR_VERSION, iBeta = RDK_BETA_RELEASE; }
 	virtual void AddCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const override;
 	virtual void UpdateCustomEditorActions(IRhRdkActions& actions, const IRhRdkContentEditor& editor) const override;
 	virtual void AddCustomEditorMenu(IRhRdkMenu& menu, const IRhRdkContentEditor& editor) const override;
-
-	bool IsMarmaladeCurrentRenderer(void) const;
+#endif
 };

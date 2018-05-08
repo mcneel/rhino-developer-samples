@@ -22,13 +22,12 @@ static bool ConvertIconToDib(HICON hIcon, CRhinoDib& dibOut)
 	return true;
 }
 
-CMarmaladeExtraPeelAction::CMarmaladeExtraPeelAction(const UUID& uuidClient)
-	:
-	CRhRdkAction(uuidClient)
+bool CMarmaladeExtraPeelTask::IconIn(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const
 {
+	return ::RhRdkGetMenuIcon(RhRdkMenuIcons::Check, ON_2iSize(width, height), dib);
 }
 
-UUID CMarmaladeExtraPeelAction::Ident(void)
+UUID CMarmaladeExtraPeelTask::Ident(void)
 {
 	// !!!! DO NOT REUSE THIS UUID !!!!
 	// !!!! DO NOT REUSE THIS UUID !!!!
@@ -47,22 +46,30 @@ UUID CMarmaladeExtraPeelAction::Ident(void)
 	return uuid;
 }
 
-bool CMarmaladeExtraPeelAction::Execute(void)
+void CMarmaladeExtraPeelTask::Update(IRhRdkTaskUpdate& tu) const
 {
-	SetChecked(!Checked());
-
-	return true;
+	tu.SetIsChecked(m_bChecked);
 }
 
-CMarmaladeFlavorAction::CMarmaladeFlavorAction(const UUID& uuidClient, const CMarmaladeExtraPeelAction& mpa)
+CRhRdkTask::Result CMarmaladeExtraPeelTask::Execute(const IRhRdkTaskOrigin& origin) const
+{
+	m_bChecked = !m_bChecked;
+
+	return Result::Success;
+}
+
+CMarmaladeFlavorTask::CMarmaladeFlavorTask(const CMarmaladeExtraPeelTask& mpa)
 	:
-	CRhRdkAction(uuidClient),
 	m_ExtraPeelAction(mpa)
 {
 }
 
-void CMarmaladeFlavorAction::AddNewMaterial(COLORREF col1, COLORREF col2) const
+void CMarmaladeFlavorTask::AddNewMaterial(COLORREF col1, COLORREF col2) const
 {
+	// This is just a demonstration to make the task do something.
+	// It is not a good idea to add custom tasks that create materials
+	// because the RDK already has its own Create New Material tasks.
+
 	const auto rhino_doc_sn = CRhinoDoc::ModelessUserInterfaceDocSerialNumber();
 	const auto* pDoc = CRhinoDoc::FromRuntimeSerialNumber(rhino_doc_sn);
 	if (nullptr == pDoc)
@@ -75,20 +82,20 @@ void CMarmaladeFlavorAction::AddNewMaterial(COLORREF col1, COLORREF col2) const
 	const auto* pContent = rdkDoc.CreateContentByType(os.Uuid());
 
 	{	CRhRdkContent::Change<CRhRdkContent> c(*pContent);
-		const ON_Color col = m_ExtraPeelAction.Checked() ? col2 : col1;
+		const auto col = CRhRdkColor(m_ExtraPeelAction.IsChecked() ? col2 : col1);
 		c().SetParameter(L"color", col);
 	}
 
 	rdkDoc.EndChange();
 }
 
-CMarmaladeOrangeAction::CMarmaladeOrangeAction(const UUID& uuidClient, const CMarmaladeExtraPeelAction& mpa)
+CMarmaladeOrangeTask::CMarmaladeOrangeTask(const CMarmaladeExtraPeelTask& mpa)
 	:
-	CMarmaladeFlavorAction(uuidClient, mpa)
+	CMarmaladeFlavorTask(mpa)
 {
 }
 
-UUID CMarmaladeOrangeAction::Ident(void)
+UUID CMarmaladeOrangeTask::Ident(void)
 {
 	// !!!! DO NOT REUSE THIS UUID !!!!
 	// !!!! DO NOT REUSE THIS UUID !!!!
@@ -107,28 +114,28 @@ UUID CMarmaladeOrangeAction::Ident(void)
 	return uuid;
 }
 
-bool CMarmaladeOrangeAction::Icon(const ON_2iSize& size, CRhinoDib& dibOut) const
+bool CMarmaladeOrangeTask::IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_MARMALADE));
-	return ConvertIconToDib(hIcon, dibOut);
+	return ConvertIconToDib(hIcon, dib);
 }
 
-bool CMarmaladeOrangeAction::Execute(void)
+CRhRdkTask::Result CMarmaladeOrangeTask::Execute(const IRhRdkTaskOrigin& origin) const
 {
 	AddNewMaterial(RGB(255, 190, 90), RGB(255, 140, 0));
 
-	return true;
+	return Result::Success;
 }
 
-CMarmaladeLemonAction::CMarmaladeLemonAction(const UUID& uuidClient, const CMarmaladeExtraPeelAction& mpa)
+CMarmaladeLemonTask::CMarmaladeLemonTask(const CMarmaladeExtraPeelTask& mpa)
 	:
-	CMarmaladeFlavorAction(uuidClient, mpa)
+	CMarmaladeFlavorTask(mpa)
 {
 }
 
-UUID CMarmaladeLemonAction::Ident(void)
+UUID CMarmaladeLemonTask::Ident(void)
 {
 	// !!!! DO NOT REUSE THIS UUID !!!!
 	// !!!! DO NOT REUSE THIS UUID !!!!
@@ -147,28 +154,28 @@ UUID CMarmaladeLemonAction::Ident(void)
 	return uuid;
 }
 
-bool CMarmaladeLemonAction::Icon(const ON_2iSize& size, CRhinoDib& dibOut) const
+bool CMarmaladeLemonTask::IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_MARMALADE));
-	return ConvertIconToDib(hIcon, dibOut);
+	return ConvertIconToDib(hIcon, dib);
 }
 
-bool CMarmaladeLemonAction::Execute(void)
+CRhRdkTask::Result CMarmaladeLemonTask::Execute(const IRhRdkTaskOrigin& origin) const
 {
 	AddNewMaterial(RGB(250, 250, 160), RGB(255, 255, 0));
 
-	return true;
+	return Result::Success;
 }
 
-CMarmaladeLimeAction::CMarmaladeLimeAction(const UUID& uuidClient, const CMarmaladeExtraPeelAction& mpa)
+CMarmaladeLimeTask::CMarmaladeLimeTask(const CMarmaladeExtraPeelTask& mpa)
 	:
-	CMarmaladeFlavorAction(uuidClient, mpa)
+	CMarmaladeFlavorTask(mpa)
 {
 }
 
-UUID CMarmaladeLimeAction::Ident(void)
+UUID CMarmaladeLimeTask::Ident(void)
 {
 	// !!!! DO NOT REUSE THIS UUID !!!!
 	// !!!! DO NOT REUSE THIS UUID !!!!
@@ -187,26 +194,40 @@ UUID CMarmaladeLimeAction::Ident(void)
 	return uuid;
 }
 
-bool CMarmaladeLimeAction::Icon(const ON_2iSize& size, CRhinoDib& dibOut) const
+bool CMarmaladeLimeTask::IconOut(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	HICON hIcon = ::LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_MARMALADE));
-	return ConvertIconToDib(hIcon, dibOut);
+	return ConvertIconToDib(hIcon, dib);
 }
 
-bool CMarmaladeLimeAction::Execute(void)
+CRhRdkTask::Result CMarmaladeLimeTask::Execute(const IRhRdkTaskOrigin& origin) const
 {
 	AddNewMaterial(RGB(160, 250, 160), RGB(0, 255, 0));
 
-	return true;
+	return Result::Success;
 }
 
-CMarmaladeBreadAction::CMarmaladeBreadAction(const UUID& uuidClient)
-	:
-	CRhRdkAction(uuidClient)
+enum class Choices { Bread, Toast, Scone };
+
+static Choices Choice = Choices::Bread;
+
+void CMarmaladeBreadAction::Update(IRhRdkTaskUpdate& tu) const
 {
-	SetChecked(true);
+	tu.SetRadio(Choices::Bread == Choice);
+}
+
+CRhRdkTask::Result CMarmaladeBreadAction::Execute(const IRhRdkTaskOrigin&) const
+{
+	Choice = Choices::Bread;
+
+	return Result::Success;
+}
+
+bool CMarmaladeBreadAction::IconIn(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const
+{
+	return ::RhRdkGetMenuIcon(RhRdkMenuIcons::Radio, ON_2iSize(width, height), dib);
 }
 
 UUID CMarmaladeBreadAction::Ident(void)
@@ -228,10 +249,21 @@ UUID CMarmaladeBreadAction::Ident(void)
 	return uuid;
 }
 
-CMarmaladeToastAction::CMarmaladeToastAction(const UUID& uuidClient)
-	:
-	CRhRdkAction(uuidClient)
+bool CMarmaladeToastAction::IconIn(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const
 {
+	return ::RhRdkGetMenuIcon(RhRdkMenuIcons::Radio, ON_2iSize(width, height), dib);
+}
+
+void CMarmaladeToastAction::Update(IRhRdkTaskUpdate& tu) const
+{
+	tu.SetRadio(Choices::Toast == Choice);
+}
+
+CRhRdkTask::Result CMarmaladeToastAction::Execute(const IRhRdkTaskOrigin&) const
+{
+	Choice = Choices::Toast;
+
+	return Result::Success;
 }
 
 UUID CMarmaladeToastAction::Ident(void)
@@ -253,10 +285,21 @@ UUID CMarmaladeToastAction::Ident(void)
 	return uuid;
 }
 
-CMarmaladeSconeAction::CMarmaladeSconeAction(const UUID& uuidClient)
-	:
-	CRhRdkAction(uuidClient)
+bool CMarmaladeSconeAction::IconIn(CRhRdkContent::Kinds kind, int width, int height, OUT CRhinoDib& dib) const
 {
+	return ::RhRdkGetMenuIcon(RhRdkMenuIcons::Radio, ON_2iSize(width, height), dib);
+}
+
+void CMarmaladeSconeAction::Update(IRhRdkTaskUpdate& tu) const
+{
+	tu.SetRadio(Choices::Scone == Choice);
+}
+
+CRhRdkTask::Result CMarmaladeSconeAction::Execute(const IRhRdkTaskOrigin&) const
+{
+	Choice = Choices::Scone;
+
+	return Result::Success;
 }
 
 UUID CMarmaladeSconeAction::Ident(void)

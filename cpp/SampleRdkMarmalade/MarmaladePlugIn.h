@@ -4,7 +4,6 @@
 #include "MarmaladeEventWatcher.h"
 
 class CMarmaladeRdkPlugIn;
-class CMarmaladeNonModalOptionsDlg;
 
 class CMarmaladePlugIn : public CRhinoRenderPlugIn
 {
@@ -46,8 +45,6 @@ public:
 
 	// Misc.
 	CMarmaladeRdkPlugIn& RdkPlugIn(void) { return *m_pRdkPlugIn; }
-
-	bool IsMarmaladeCurrentRenderer(void) const;
 
 private:
 	ON_wString m_plugin_version;
