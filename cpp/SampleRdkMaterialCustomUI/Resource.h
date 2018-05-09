@@ -12,7 +12,8 @@
 #define IDD_MATERIAL_SECTION_CUSTOM     1002
 #define IDC_EDIT_NAME                   1003
 #define IDC_EDIT_NOTES                  1004
-#define IDC_COLOR_BUTTON                1005
+#define IDC_COLOR_BUTTON_PLACEHOLDER    1005
+#define IDD_MATERIAL_SECTION            1006
 #define IDR_RENDER                      12006
 #define ID_APP_VIEW_NORMALVIEW          32777
 #define ID_APP_VIEW_IN2X                32779
@@ -35,13 +36,12 @@
 #define ID_APP_VIEW_IN10X               32796
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-
-#define _APS_NEXT_RESOURCE_VALUE	1006
-#define _APS_NEXT_CONTROL_VALUE		1006
-#define _APS_NEXT_SYMED_VALUE		1006
-#define _APS_NEXT_COMMAND_VALUE		32771
+#define _APS_NEXT_RESOURCE_VALUE        1007
+#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_SYMED_VALUE           1006
 #endif
 #endif
