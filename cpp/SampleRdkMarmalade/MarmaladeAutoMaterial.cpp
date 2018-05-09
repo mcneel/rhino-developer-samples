@@ -197,6 +197,10 @@ void CMarmaladeAutoMaterial::AddAutoParameters(IRhRdkParamBlock& paramBlock, int
 
 void CMarmaladeAutoMaterial::GetAutoParameters(const IRhRdkParamBlock& paramBlock, int iId)
 {
+	// Because the values are stored in a param block (not fields)
+	// it is important to detect when a value changes and call Changed().
+	// If this is not done, the material preview will not update.
+
 	auto* pIterator = paramBlock.NewIterator();
 
 	ON_wString sParamName;

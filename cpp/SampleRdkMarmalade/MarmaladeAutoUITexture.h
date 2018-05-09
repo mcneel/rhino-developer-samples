@@ -16,6 +16,22 @@ public:
 	CMarmaladeAutoUITexture();
 	virtual ~CMarmaladeAutoUITexture();
 
+	class Evaluator : public CRhRdkTextureEvaluator
+	{
+	public:
+		Evaluator(CEvalFlags ef, const CRhRdkColor& col1, const CRhRdkColor& col2, const ON_Xform& xform);
+
+		virtual void DeleteThis(void) override { delete this; }
+		virtual bool GetColor(const ON_3dPoint& uvw, const ON_3dVector& duvwdx,
+							  const ON_3dVector& duvwdy, CRhRdkColor& colOut, void* pvData = nullptr) const override;
+		virtual void* EVF(const wchar_t* wszFunc, void* pvData) override { return nullptr; }
+
+	private:
+		CRhRdkColor m_color1;
+		CRhRdkColor m_color2;
+		ON_Xform m_xform;
+	};
+
 public: // Overrides from CRhRdkContent.
 	virtual UUID TypeId(void) const override;
 	virtual ON_wString TypeName(void) const override;
@@ -24,7 +40,7 @@ public: // Overrides from CRhRdkContent.
 	virtual void AddUISections(IRhRdkExpandableContentUI& ui) override;
 	virtual void AddAutoParameters(IRhRdkParamBlock& paramBlock, int iId) const override;
 	virtual void GetAutoParameters(const IRhRdkParamBlock& paramBlock, int iId) override;
-	virtual ParamSerialMethod ParameterSerializationMethod(void) const override { return ParamSerialMethod ::GetSet; }
+	virtual ParamSerialMethod ParameterSerializationMethod(void) const override { return ParamSerialMethod::GetSet; }
 	virtual bool ReadParametersFromSection(const IRhRdk_XMLSection& section, ReadParamsContext context) override;
 	virtual bool WriteParametersToSection(IRhRdk_XMLSection& section, WriteParamsContext context) const override;
 	virtual void SimulateTexture(CRhRdkSimulatedTexture& texOut, CRhRdkTexture::TextureGeneration tg, int iSimulatedTextureSize, const CRhinoObject* pObject) const override;
@@ -38,7 +54,6 @@ public: // Overrides from CRhRdkContent.
 	virtual bool IsImageBased(void) const override { return false; }
 
 private:
-	class Evaluator;
 	CRhRdkColor m_color1;
 	CRhRdkColor m_color2;
 };

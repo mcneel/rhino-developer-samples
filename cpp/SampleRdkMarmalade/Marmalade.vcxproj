@@ -327,6 +327,7 @@
     <ClCompile Include="MarmaladeEventWatcher.cpp" />
     <ClCompile Include="MarmaladeMaterial.cpp" />
     <ClCompile Include="MarmaladeMaterialSection.cpp" />
+    <ClCompile Include="MarmaladeNewAutoUITexture.cpp" />
     <ClCompile Include="MarmaladeNewMaterial.cpp" />
     <ClCompile Include="MarmaladeNewMaterialSection.cpp" />
     <ClCompile Include="MarmaladeNonModalOptionsDlg.cpp" />
@@ -364,6 +365,7 @@
     <ClInclude Include="MarmaladeEventWatcher.h" />
     <ClInclude Include="MarmaladeMaterial.h" />
     <ClInclude Include="MarmaladeMaterialSection.h" />
+    <ClInclude Include="MarmaladeNewAutoUITexture.h" />
     <ClInclude Include="MarmaladeNewMaterial.h" />
     <ClInclude Include="MarmaladeNewMaterialSection.h" />
     <ClInclude Include="MarmaladeNonModalOptionsDlg.h" />

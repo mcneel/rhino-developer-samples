@@ -39,6 +39,15 @@ private:
 	ON_SimpleArray<CMarmaladeParam*> m_aParams;
 };
 
+/* \class CMarmaladeShader
+
+	This class represents a 'shader' for the Marmalade renderer. Since Marmalade
+	doesn't actually do any real rendering, there are no functions that have anything
+	to do with rendering - it's just a storage object for some numbers.
+	This object, however, forms the basis of the Marmalade Material which presents the
+	effects of this shader to the user as part of the RDK Material Editor.
+
+*/
 class CMarmaladeShader
 {
 public:

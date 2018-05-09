@@ -9,6 +9,7 @@
 #include "MarmaladeNewMaterial.h"
 #include "MarmaladeAutoMaterial.h"
 #include "MarmaladeAutoUITexture.h"
+#include "MarmaladeNewAutoUITexture.h"
 #include "MarmaladeContentIOPlugIn.h"
 #include "MarmaladeRenderSettingsSection.h"
 
@@ -51,6 +52,7 @@ void CMarmaladeRdkPlugIn::RegisterExtensions(void) const
 	AddExtension(new CMarmaladeMaterialFactory);
 	AddExtension(new CMarmaladeNewMaterialFactory);
 	AddExtension(new CMarmaladeAutoUITextureFactory);
+	AddExtension(new CMarmaladeNewAutoUITextureFactory);
 
 	// Add all the plug-in shaders to the factories.
 	for (int i = 0; i < Shaders().Count(); i++)

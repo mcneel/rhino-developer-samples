@@ -3,15 +3,6 @@
 
 #include "MarmaladeShader.h"
 
-/* \class CMarmaladeOrangeShader
-
-	This class represents a "shader" for the Marmalade renderer.  Since Marmalade
-	doesn't actually do any real rendering, there are no functions that have anything
-	to do with rendering - it's just a storage object for some numbers.
-	This object, however, forms the basis of the Marmalade Material which presents the
-	effects of this shader to the user as part of the RDK material editor.
-*/
-
 #define MARM_SHADER_COLOR        L"color"
 #define MARM_SHADER_TRANSPARENCY L"transparency"
 #define MARM_SHADER_IOR          L"ior"
@@ -23,6 +14,9 @@
 
 #define MARM_SHADER_TEXTURE_ON      MARM_SHADER_COLOR L"-" FS_MAT_POSTFIX_ON
 #define MARM_SHADER_TEXTURE_AMOUNT  MARM_SHADER_COLOR L"-" FS_MAT_POSTFIX_AMOUNT
+
+#define MARM_TEXTURE_COLOR_1     L"color-1"
+#define MARM_TEXTURE_COLOR_2     L"color-2"
 
 class CMarmaladeOrangeShader : public CMarmaladeShader
 {

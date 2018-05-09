@@ -2,6 +2,10 @@
 #include "stdafx.h"
 #include "MarmaladeAutoUITexture.h"
 #include "MarmaladePlugIn.h"
+#include "MarmaladeActualShaders.h"
+
+// This is the original auto-texture code. It is only retained for reference.
+// Please see CMarmaladeNewAutoUITexture for the recommended way to create custom textures.
 
 CMarmaladeAutoUITextureFactory::CMarmaladeAutoUITextureFactory()
 {
@@ -12,24 +16,8 @@ CRhRdkTexture* CMarmaladeAutoUITextureFactory::NewTexture(void) const
 	return new CMarmaladeAutoUITexture;
 }
 
-static const wchar_t* wszColor1 = L"color-1";
-static const wchar_t* wszColor2 = L"color-2";
-
-class CMarmaladeAutoUITexture::Evaluator : public CRhRdkTextureEvaluator
-{
-public:
-	Evaluator(CEvalFlags ef, const CRhRdkColor& col1, const CRhRdkColor& col2, const ON_Xform& xform);
-
-	virtual void DeleteThis(void) { delete this; }
-	virtual bool GetColor(const ON_3dPoint& uvw, const ON_3dVector& duvwdx,
-		                  const ON_3dVector& duvwdy, CRhRdkColor& colOut, void* pvData = nullptr) const;
-	virtual void* EVF(const wchar_t* wszFunc, void* pvData) { return nullptr; }
-
-private:
-	CRhRdkColor m_color1;
-	CRhRdkColor m_color2;
-	ON_Xform m_xform;
-};
+static const wchar_t* wszColor1 = MARM_TEXTURE_COLOR_1;
+static const wchar_t* wszColor2 = MARM_TEXTURE_COLOR_2;
 
 CMarmaladeAutoUITexture::Evaluator::Evaluator(CEvalFlags ef, const CRhRdkColor& col1, const CRhRdkColor& col2, const ON_Xform& xform)
 	:
@@ -132,17 +120,31 @@ void CMarmaladeAutoUITexture::GetAutoParameters(const IRhRdkParamBlock& paramBlo
 	// with the Local Mapping section whose parameters are managed by the base class
 	// CRhRdkTexture. Because of this, it is important to make sure that you don't
 	// set your members if IRhRdkParamBlock::Get() returns false.
+	//
+	// Because the color values are stored as ordinary members (not fields)
+	// it is also important to detect when a color changes and call Changed().
+	// If this is not done, the texture preview will not update.
 
 	CRhRdkVariant vValue;
 
 	if (paramBlock.Get(wszColor1, vValue))
 	{
-		m_color1 = vValue.AsRdkColor();
+		const auto col = vValue.AsRdkColor();
+		if (m_color1 != col)
+		{
+			m_color1 = col;
+			Changed();
+		}
 	}
 
 	if (paramBlock.Get(wszColor2, vValue))
 	{
-		m_color2 = vValue.AsRdkColor();
+		const auto col = vValue.AsRdkColor();
+		if (m_color2 != col)
+		{
+			m_color2 = col;
+			Changed();
+		}
 	}
 }
 
