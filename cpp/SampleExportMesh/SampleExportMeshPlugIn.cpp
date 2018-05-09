@@ -269,7 +269,7 @@ BOOL CSampleExportMeshPlugIn::WriteFile(const wchar_t* filename, int index, CRhi
   bool rc = (0 == err || 0 != fp);
   if (!rc)
   {
-    RhinoApp().Print(L"\nUnable to open \"%s\" for writing.\n", filename);
+    RhinoApp().Print(L"\nUnable to open \"%ls\" for writing.\n", filename);
     return FALSE;
   }
 

@@ -30,6 +30,7 @@ namespace MockingBirdViewport
 			// prepare render, get a changequeue
 			_width = (int)w;
 			_height = (int)h;
+			renderWindow.SetSize(new System.Drawing.Size(w, h));
 			reng = new MockingRender(Rhino.PlugIns.PlugIn.IdFromName("MockingBirdViewport"), doc.RuntimeSerialNumber, view, renderWindow)
 			{
 				MaxPasses = 50

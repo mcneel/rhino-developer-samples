@@ -179,7 +179,7 @@ CRhinoCommand::result CCommandSampleDocumentUserData::ListOption()
 {
   CSampleCommandsPlugIn& plugin = SampleCommandsPlugIn();
   for (int i = 0; i < plugin.StringTableCount(); i++)
-    RhinoApp().Print(L"%s\n", static_cast<const wchar_t*>(plugin.GetStringTableItem(i)));
+    RhinoApp().Print(L"%ls\n", static_cast<const wchar_t*>(plugin.GetStringTableItem(i)));
   return CRhinoCommand::success;
 }
 

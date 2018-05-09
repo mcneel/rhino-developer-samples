@@ -70,7 +70,7 @@ CRhinoCommand::result CCommandSampleRdkMaterialCustomUI::RunCommand(const CRhino
   // a command-line, or scriptable interface.
 
   ON_wString str;
-  str.Format(L"The \"%s\" command is under construction.\n", EnglishCommandName());
+  str.Format(L"The \"%ls\" command is under construction.\n", EnglishCommandName());
   if (context.IsInteractive())
     RhinoMessageBox(str, SampleRdkMaterialCustomUIPlugIn().PlugInName(), MB_OK);
   else

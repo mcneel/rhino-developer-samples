@@ -55,6 +55,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SampleCsDrawGrayscale.cs" />
+    <Compile Include="SampleCsDuplicateObjectFromNameTag.cs" />
+    <Compile Include="SampleCsExportDXF.cs" />
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
     <Compile Include="SampleCsFairCurves.cs" />
     <Compile Include="SampleCsGumballCylinder.cs" />
@@ -186,6 +188,8 @@
     <Compile Include="SampleCsTrimSurface.cs" />
     <Compile Include="SampleCsUnisolate.cs" />
     <Compile Include="SampleCsSetUserText.cs" />
+    <Compile Include="SampleCsUnweldAll.cs" />
+    <Compile Include="SampleCsViewCapture.cs" />
     <Compile Include="SampleCsViewSize.cs" />
     <Compile Include="SampleCsWorldToPageTransform.cs" />
     <Compile Include="SampleCsWrite3dmFile.cs" />

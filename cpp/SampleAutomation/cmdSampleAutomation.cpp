@@ -31,7 +31,7 @@ static class CCommandSampleAutomation theSampleAutomationCommand;
 CRhinoCommand::result CCommandSampleAutomation::RunCommand(const CRhinoCommandContext& context)
 {
   UNREFERENCED_PARAMETER(context);
-  RhinoApp().Print(L"%s plug-in loaded.\n", SampleAutomationPlugIn().PlugInName());
+  RhinoApp().Print(L"%ls plug-in loaded.\n", SampleAutomationPlugIn().PlugInName());
   return CRhinoCommand::success;
 }
 

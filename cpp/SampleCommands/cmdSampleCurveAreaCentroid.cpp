@@ -48,6 +48,12 @@ public:
 // The one and only CCommandSampleCurveAreaCentroid object
 static class CCommandSampleCurveAreaCentroid theSampleCurveAreaCentroidCommand;
 
+static int RhinoClosedCurveOrientation(const ON_Curve& curve, const ON_Plane& plane)
+{
+  ON_Xform xform(plane.Origin(), plane.Xaxis(), plane.Yaxis(), plane.Normal());
+  return ON_ClosedCurveOrientation(curve, &xform);
+}
+
 CRhinoCommand::result CCommandSampleCurveAreaCentroid::RunCommand(const CRhinoCommandContext& context)
 {
   CGetClosedPlanarCurve go;
@@ -78,7 +84,7 @@ CRhinoCommand::result CCommandSampleCurveAreaCentroid::RunCommand(const CRhinoCo
       if (crv->IsPlanar(&plane, ON_ZERO_TOLERANCE))
       {
         // Check the orienation of the curve and flip it's plane if necessary
-        if (ON_ClosedCurveOrientation(*crv, plane) < 0)
+        if (RhinoClosedCurveOrientation(*crv, plane) < 0)
           plane.Flip();
 
         ON_BoundingBox bbox = crv->BoundingBox();
@@ -99,9 +105,9 @@ CRhinoCommand::result CCommandSampleCurveAreaCentroid::RunCommand(const CRhinoCo
   RhinoFormatPoint(centroid, str, L"%g");
 
   if (1 == curves.Count())
-    RhinoApp().Print(L"Area Centroid = %s\n", static_cast<const wchar_t*>(str));
+    RhinoApp().Print(L"Area Centroid = %ls\n", static_cast<const wchar_t*>(str));
   else
-    RhinoApp().Print(L"Cumulative Area Centroid = %s for %d planar curves\n", static_cast<const wchar_t*>(str), curves.Count());
+    RhinoApp().Print(L"Cumulative Area Centroid = %ls for %d planar curves\n", static_cast<const wchar_t*>(str), curves.Count());
 
   return CRhinoCommand::success;
 }

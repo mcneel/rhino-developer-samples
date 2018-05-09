@@ -62,7 +62,7 @@ CRhinoCommand::result CCommandSampleSelectFiles::RunCommand(const CRhinoCommandC
     {
       CString strPathName = dialog.GetNextPathName(pos);
       if (!strPathName.IsEmpty())
-        RhinoApp().Print(L"%s\n", static_cast<const wchar_t*>(strPathName));
+        RhinoApp().Print(L"%ls\n", static_cast<const wchar_t*>(strPathName));
     }
   }
 

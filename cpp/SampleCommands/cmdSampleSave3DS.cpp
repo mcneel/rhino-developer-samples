@@ -71,7 +71,7 @@ CRhinoCommand::result CCommandSampleSave3DS::RunCommand(const CRhinoCommandConte
   // with double-quote characters so the command line parser
   // will deal with the string property.
   ON_wString script;
-  script.Format(L"_-SaveAs \"%s\" _Enter", static_cast<const wchar_t*>(filename));
+  script.Format(L"_-SaveAs \"%ls\" _Enter", static_cast<const wchar_t*>(filename));
   RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), script, 0);
 
   return CRhinoCommand::success;

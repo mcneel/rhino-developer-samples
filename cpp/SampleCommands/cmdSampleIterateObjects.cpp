@@ -53,18 +53,18 @@ CRhinoCommand::result CCommandSampleIterateObjects::RunCommand(const CRhinoComma
       if (nullptr != idef)
       {
         ON_wString idef_name = idef->Name();
-        dump.Print(L"\x2514 Model object %d: %s (%s)\n", object_count++, iref_object->ShortDescription(false), static_cast<const wchar_t*>(idef_name));
+        dump.Print(L"\x2514 Model object %d: %ls (%ls)\n", object_count++, iref_object->ShortDescription(false), static_cast<const wchar_t*>(idef_name));
         IterateInstanceDefinition(iref_object->InstanceDefinition(), dump);
       }
     }
     else
     {
       // Just a regular model object
-      dump.Print(L"\x2500 Model object %d: %s\n", object_count++, object->ShortDescription(false));
+      dump.Print(L"\x2500 Model object %d: %ls\n", object_count++, object->ShortDescription(false));
     }
   }
 
-  RhinoApp().Print(L"%s\n", static_cast<const wchar_t*>(writer));
+  RhinoApp().Print(L"%ls\n", static_cast<const wchar_t*>(writer));
 
   return CRhinoCommand::success;
 }
@@ -95,7 +95,7 @@ void CCommandSampleIterateObjects::IterateInstanceDefinition(const CRhinoInstanc
           if (nullptr != idef2)
           {
             ON_wString idef2_name = idef2->Name();
-            dump.Print(L"\x2514 %s object %d: %s (%s)\n", static_cast<const wchar_t*>(idef_name), i, iref_object->ShortDescription(false), static_cast<const wchar_t*>(idef2_name));
+            dump.Print(L"\x2514 %ls object %d: %ls (%ls)\n", static_cast<const wchar_t*>(idef_name), i, iref_object->ShortDescription(false), static_cast<const wchar_t*>(idef2_name));
             // Recursive...
             IterateInstanceDefinition(idef2, dump);
           }
@@ -103,7 +103,7 @@ void CCommandSampleIterateObjects::IterateInstanceDefinition(const CRhinoInstanc
         else
         {
           // Just a regular instance definition object
-          dump.Print(L"\x2500 %s object %d: %s\n", static_cast<const wchar_t*>(idef_name), i, object->ShortDescription(false));
+          dump.Print(L"\x2500 %ls object %d: %ls\n", static_cast<const wchar_t*>(idef_name), i, object->ShortDescription(false));
         }
       }
     }

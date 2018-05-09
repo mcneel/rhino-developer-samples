@@ -42,7 +42,7 @@ CRhinoCommand::result CCommandSampleModelessDialog::RunCommand(const CRhinoComma
   else
   {
     ON_wString prompt;
-    prompt.Format(L"%s window is %s. New value", EnglishCommandName(), bVisible ? L"visible" : L"hidden");
+    prompt.Format(L"%ls window is %ls. New value", EnglishCommandName(), bVisible ? L"visible" : L"hidden");
 
     CRhinoGetOption go;
     go.SetCommandPrompt(prompt);

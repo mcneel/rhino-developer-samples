@@ -154,7 +154,7 @@ CRhinoCommand::result CCommandSampleSelectPolylineSegment::RunCommand(const CRhi
   {
     ON_wString point_str;
     RhinoFormatPoint(point, point_str);
-    RhinoApp().Print(L"Curve point = %s\n", static_cast<const wchar_t*>(point_str));
+    RhinoApp().Print(L"Curve point = %ls\n", static_cast<const wchar_t*>(point_str));
     RhinoApp().Print(L"Curve index0 = %d\n", index0);
     RhinoApp().Print(L"Curve index1 = %d\n", index1);
   }

@@ -135,6 +135,7 @@
     <ClCompile Include="cmdSampleMove.cpp" />
     <ClCompile Include="cmdSampleMoveCPlane.cpp" />
     <ClCompile Include="cmdSampleMoveGrips.cpp" />
+    <ClCompile Include="cmdSampleNetworkSrf.cpp" />
     <ClCompile Include="cmdSampleNewFloatingViewport.cpp" />
     <ClCompile Include="cmdSampleNurbsCircle.cpp" />
     <ClCompile Include="cmdSampleNurbsCurveLength.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="cmdSamplePlanarFaceLoops.cpp" />
     <ClCompile Include="cmdSamplePointCursor.cpp" />
     <ClCompile Include="cmdSamplePointOnFace.cpp" />
+    <ClCompile Include="cmdSamplePointOnSurface.cpp" />
     <ClCompile Include="cmdSamplePointsDeviation.cpp" />
     <ClCompile Include="cmdSamplePolyline.cpp" />
     <ClCompile Include="cmdSamplePrePostSelect.cpp" />
@@ -197,6 +199,7 @@
     <ClCompile Include="cmdSampleSurfaceNormal.cpp" />
     <ClCompile Include="cmdSampleSurfacePoints.cpp" />
     <ClCompile Include="cmdSampleSwapHatch.cpp" />
+    <ClCompile Include="cmdSampleSweep2.cpp" />
     <ClCompile Include="cmdSampleSweep2Point.cpp" />
     <ClCompile Include="cmdSampleSyncRenderColors.cpp" />
     <ClCompile Include="cmdSampleSyncViews.cpp" />
@@ -218,6 +221,7 @@
     <ClCompile Include="cmdSampleVolume.cpp" />
     <ClCompile Include="cmdSampleWriteBigModel.cpp" />
     <ClCompile Include="cmdSampleZoomWindow.cpp" />
+    <ClCompile Include="cmdSampleSaveCopy.cpp" />
     <ClCompile Include="SampleAttributeUserData.cpp" />
     <ClCompile Include="SampleClippingPlaneUserData.cpp" />
     <ClCompile Include="SampleCommandsApp.cpp" />

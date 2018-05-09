@@ -230,7 +230,7 @@ BOOL CSampleImportGeomviewPlugIn::ReadFile(const wchar_t* filename, int index, C
   if (index == 0)
     return ReadOffFile(filename, doc);
 
-  RhinoApp().Print(L"%s has encountered an unsupported file type index: %d\n", PlugInName(), index);
+  RhinoApp().Print(L"%ls has encountered an unsupported file type index: %d\n", PlugInName(), index);
   return FALSE;
 }
 

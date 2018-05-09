@@ -167,7 +167,7 @@ CRhinoCommand::result CCommandSampleGetUserText::RunCommand(const CRhinoCommandC
         key = L"";
       if (0 == value)
         value = L"";
-      RhinoApp().Print(L"  <%s> %s.\n", key, value);
+      RhinoApp().Print(L"  <%ls> %ls.\n", key, value);
     }
   }
 
@@ -183,7 +183,7 @@ CRhinoCommand::result CCommandSampleGetUserText::RunCommand(const CRhinoCommandC
         key = L"";
       if (0 == value)
         value = L"";
-      RhinoApp().Print(L"  <%s> %s.\n", key, value);
+      RhinoApp().Print(L"  <%ls> %ls.\n", key, value);
     }
   }
 
@@ -290,7 +290,7 @@ CRhinoCommand::result CCommandSampleGetDocumentUserText::RunCommand(const CRhino
         key = L"";
       if (0 == value)
         value = L"";
-      RhinoApp().Print(L"  <%s> %s.\n", key, value);
+      RhinoApp().Print(L"  <%ls> %ls.\n", key, value);
     }
   }
 

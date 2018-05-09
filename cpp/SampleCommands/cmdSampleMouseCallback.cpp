@@ -72,7 +72,7 @@ CRhinoCommand::result CCommandSampleMouseCallback::RunCommand(const CRhinoComman
 
   theSampleMouseCallback.Enable(theSampleMouseCallback.IsEnabled() ? FALSE : TRUE);
   ON_wString str;
-  str.Format(L"%s is %s.\n", EnglishCommandName(), theSampleMouseCallback.IsEnabled() ? L"enabled" : L"disabled");
+  str.Format(L"%ls is %ls.\n", EnglishCommandName(), theSampleMouseCallback.IsEnabled() ? L"enabled" : L"disabled");
   RhinoApp().Print(str);
 
   return CRhinoCommand::success;

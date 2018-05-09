@@ -66,7 +66,7 @@ CRhinoCommand::result CCommandSamplePickTextDot::RunCommand(const CRhinoCommandC
     {
       ON_wString sPoint;
       RhinoFormatPoint(p->CenterPoint(), sPoint);
-      RhinoApp().Print(L"TextDot%d: point = (%s), text = \"%s\"\n", i, static_cast<const wchar_t*>(sPoint), p->PrimaryText());
+      RhinoApp().Print(L"TextDot%d: point = (%ls), text = \"%ls\"\n", i, static_cast<const wchar_t*>(sPoint), p->PrimaryText());
     }
   }
 

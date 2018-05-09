@@ -56,7 +56,7 @@ void CSampleLayerContextMenuExtension::OnCommand(CRhinoContextMenuContext& conte
       {
         ON_wString layer_path_name;
         context.m_doc->m_layer_table.GetLayerPathName(layer_index, layer_path_name);
-        RhinoApp().Print(L"%s\n", static_cast<const wchar_t*>(layer_path_name));
+        RhinoApp().Print(L"%ls\n", static_cast<const wchar_t*>(layer_path_name));
       }
     }
   }

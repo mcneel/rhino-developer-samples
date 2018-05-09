@@ -9,6 +9,7 @@ using Rhino.UI;
 using Rhino.UI.Controls;
 using Rhino.UI.Controls.DataSource;
 using System.Diagnostics;
+using RhinoWindows.Forms;
 
 namespace SampleCsRdk
 {
@@ -40,7 +41,7 @@ namespace SampleCsRdk
         return new LocalizeStringPair("Custom Section: Parameters", "Custom Section: Parameters");
       }
     }
-    private int height = 300;
+    private int height = Dpi.ScaleInt(560);
     public override int SectionHeight
     {
       get

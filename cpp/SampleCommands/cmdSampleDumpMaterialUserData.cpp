@@ -48,17 +48,17 @@ CRhinoCommand::result CCommandSampleDumpMaterialUserData::RunCommand(const CRhin
 
     ON_wString str;
     ON_UuidToString(material.Id(), str);
-    theApp.Print(L"  Material ID = %s\n", static_cast<const wchar_t*>(str));
+    theApp.Print(L"  Material ID = %ls\n", static_cast<const wchar_t*>(str));
 
     str = L"<none>";
     if (!material.Name().IsEmpty())
       str = material.Name();
-    theApp.Print(L"  Material Name = %s\n", static_cast<const wchar_t*>(str));
+    theApp.Print(L"  Material Name = %ls\n", static_cast<const wchar_t*>(str));
 
     str = L"<none>";
     if (ON_UuidIsNotNil(material.MaterialPlugInId()))
       ON_UuidToString(material.MaterialPlugInId(), str);
-    theApp.Print(L"  PlugIn ID = %s\n", static_cast<const wchar_t*>(str));
+    theApp.Print(L"  PlugIn ID = %ls\n", static_cast<const wchar_t*>(str));
 
     int user_data_count = 0;
     ON_UserData* user_data = material.FirstUserData();
@@ -68,16 +68,16 @@ CRhinoCommand::result CCommandSampleDumpMaterialUserData::RunCommand(const CRhin
 
       str.Empty();
       ON_UuidToString(user_data->m_userdata_uuid, str);
-      theApp.Print(L"    UserData ID = %s\n", static_cast<const wchar_t*>(str));
+      theApp.Print(L"    UserData ID = %ls\n", static_cast<const wchar_t*>(str));
 
       str.Empty();
       ON_UuidToString(user_data->m_application_uuid, str);
-      theApp.Print(L"    UserData PlugIn ID = %s\n", static_cast<const wchar_t*>(str));
+      theApp.Print(L"    UserData PlugIn ID = %ls\n", static_cast<const wchar_t*>(str));
 
       str.Empty();
       if (!user_data->GetDescription(str))
         str = L"<none>";
-      theApp.Print(L"    UserData Description = %s\n", static_cast<const wchar_t*>(str));
+      theApp.Print(L"    UserData Description = %ls\n", static_cast<const wchar_t*>(str));
 
       user_data = user_data->Next();
     }

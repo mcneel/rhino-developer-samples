@@ -26,12 +26,14 @@ namespace MockingBirdViewport
 			cq = new MockingChangeQueue(plugInId, docSerialNumber, rhinoView);
 			cq.ChangesReady += Cq_ChangesReady;
 			cq.CreateWorld();
+			cq.Flush();
 			rw = renderWindow;
 			Passes = 0;
 		}
 
 		private void Cq_ChangesReady(object sender, EventArgs e)
 		{
+			cq.Flush();
 			Reset();
 		}
 

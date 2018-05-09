@@ -250,7 +250,7 @@ CRhinoCommand::result CCommandSampleRotate::RunCommand(const CRhinoCommandContex
   double angle = ga2.Angle();
   ON_wString angle_str;
   RhinoFormatNumber(angle * 180.0 / ON_PI, angle_str);
-  RhinoApp().Print(L"%s\n", angle_str.Array());
+  RhinoApp().Print(L"%ls\n", angle_str.Array());
 
   return CRhinoCommand::success;
 }
