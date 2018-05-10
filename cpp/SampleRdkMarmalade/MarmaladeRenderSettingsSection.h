@@ -30,6 +30,7 @@ protected:
 
 protected:
 	virtual BOOL OnInitDialog() override;
+	virtual void DisplayData(void) override;
 	virtual bool IsHidden(void) const;
 	virtual UUID PlugInId(void) const override { return MarmaladePlugIn().PlugInID(); }
 	virtual AFX_MODULE_STATE* GetModuleState(void) const override { return AfxGetStaticModuleState(); }
@@ -39,6 +40,7 @@ protected:
 
 private:
 	RhRdkUiModalities m_Modality;
+	bool m_bIsHidden = true;
 	static IRhinoUiDataSource* m_pDS;
 	static int m_iCount;
 };

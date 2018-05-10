@@ -65,16 +65,25 @@ BOOL CMarmaladeRenderSettingsSection::OnInitDialog()
 	return TRUE;
 }
 
-bool CMarmaladeRenderSettingsSection::IsHidden(void) const
+void CMarmaladeRenderSettingsSection::DisplayData(void)
 {
+	CRhRdkRenderSettingsSection_MFC::DisplayData();
+
+	m_bIsHidden = true;
+
 	if (RhinoApp().GetDefaultRenderApp() != MarmaladePlugIn().PlugInID())
-		return true;
+		return;
 
 	const auto* pDS = static_cast<CDataSource*>(GetData(uuidData_MarmRS, false));
 	if (nullptr == pDS)
-		return true;
+		return;
 
-	return pDS->ExpertMode() ^ IsDetailed() ? true : false;
+	m_bIsHidden = pDS->ExpertMode() ^ IsDetailed() ? true : false;
+}
+
+bool CMarmaladeRenderSettingsSection::IsHidden(void) const
+{
+	return m_bIsHidden;
 }
 
 void CMarmaladeRenderSettingsSection::OnEvent(IRhinoUiController& con, const UUID& uuidData, IRhinoUiController::EventPriority ep, const IRhinoUiEventInfo* pInfo)
