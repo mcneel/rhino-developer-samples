@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "MarmaladeRenderSettingsSection.h"
+#include "MarmaladePlugIn.h"
 
 static const UUID uuidData_MarmRS = { 0xc793fe5c, 0xf46e, 0x4b88, { 0x96, 0x18, 0xff, 0x84, 0xf, 0x93, 0xf4, 0x36 } };
 
@@ -66,6 +67,9 @@ BOOL CMarmaladeRenderSettingsSection::OnInitDialog()
 
 bool CMarmaladeRenderSettingsSection::IsHidden(void) const
 {
+	if (RhinoApp().GetDefaultRenderApp() != MarmaladePlugIn().PlugInID())
+		return true;
+
 	const auto* pDS = static_cast<CDataSource*>(GetData(uuidData_MarmRS, false));
 	if (nullptr == pDS)
 		return true;
