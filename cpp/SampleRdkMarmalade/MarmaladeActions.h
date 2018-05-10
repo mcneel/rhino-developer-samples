@@ -10,6 +10,8 @@
 
 */
 
+#if defined RHINO_SDK_6_5_OR_NEWER
+
 class CMarmaladeExtraPeelTask : public CRhRdkCustomTask // was CMarmaladeExtraPeelAction
 {
 public:
@@ -133,3 +135,7 @@ public:
 	virtual Result Execute(const IRhRdkTaskOrigin&) const override;
 	virtual int MenuOrder(const IRhRdkTaskOrigin& origin) const override { return 60; }
 };
+
+
+
+#endif

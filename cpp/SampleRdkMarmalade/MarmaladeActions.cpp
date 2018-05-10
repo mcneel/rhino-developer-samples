@@ -7,6 +7,8 @@
 #include "MarmaladeActualShaders.h"
 #include "Resource.h"
 
+#if defined RHINO_SDK_6_5_OR_NEWER
+
 static bool ConvertIconToDib(HICON hIcon, CRhinoDib& dibOut)
 {
 	ICONINFO info = { 0 };
@@ -320,3 +322,5 @@ UUID CMarmaladeSconeAction::Ident(void)
 
 	return uuid;
 }
+
+#endif

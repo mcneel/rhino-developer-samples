@@ -66,6 +66,7 @@ void CMarmaladeRdkPlugIn::RegisterExtensions(void) const
 
 	AddExtension(new CMarmaladeContentIOPlugIn);
 
+#if defined RHINO_SDK_6_5_OR_NEWER
 	auto* pEPA = new CMarmaladeExtraPeelTask;
 	AddExtension(pEPA);
 
@@ -76,6 +77,7 @@ void CMarmaladeRdkPlugIn::RegisterExtensions(void) const
 	AddExtension(new CMarmaladeBreadAction);
 	AddExtension(new CMarmaladeToastAction);
 	AddExtension(new CMarmaladeSconeAction); // Note: Marmalade is not a traditional scone condiment.
+#endif
 }
 
 #ifdef OBSOLETE
