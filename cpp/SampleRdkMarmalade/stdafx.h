@@ -21,7 +21,7 @@
 #undef WIN32
 #endif
 
-#include "C:\Program Files\Rhino 6 SDK\Inc\RhinoSdkStdafxPreamble.h"
+#include "RhinoSdkStdafxPreamble.h"
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 
@@ -70,8 +70,11 @@
 #undef WIN32
 #endif
 
-#include "C:\Program Files\Rhino 6 SDK\Inc\RhinoSdk.h"
-#include "C:\Program Files\Rhino 6 SDK\Inc\RhRdkHeaders.h"
+// Rhino SDK classes
+#include "RhinoSdk.h" 
+
+// Rhino Render Development Kit (RDK) classes
+#include "RhRdkHeaders.h" 
 
 #if defined( RHINO_DEBUG_PLUGIN )
 // Now that all the system headers are read, we can
@@ -80,11 +83,5 @@
 #define _DEBUG
 #endif
 
-// John says: I added this just to make it link but I know it's wrong... however I can't
-// FOR THE LIFE OF ME figure out what I should really do here. In particular, I can't
-// find the real define for RHINO_LIB_DIR anywhere, not in code, not in project settings...
-// where the heck is it defined?
-
-#define RHINO_LIB_DIR "C:/Program Files/Rhino 6 SDK/Lib/Debug" ////////////////////////////////////////////
-
-#include "C:/Program Files/Rhino 6 SDK/inc/rhinoSdkPlugInLinkingPragmas.h"
+// Rhino SDK linking pragmas
+#include "rhinoSdkPlugInLinkingPragmas.h"
