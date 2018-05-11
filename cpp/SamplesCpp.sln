@@ -58,8 +58,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleSpaceGizmo", "SampleS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleSpaceBallLib", "SampleSpaceBallLib\SampleSpaceBallLib.vcxproj", "{8C7A0630-6197-48C8-9D13-21CAEDA0A9FB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleViewportRenderer", "SampleViewportRenderer\SampleViewportRenderer.vcxproj", "{BF09C3E1-4090-4798-9D63-6A10AAD00142}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRhinoFileVersion", "SampleRhinoFileVersion\SampleRhinoFileVersion.vcxproj", "{F797EED0-4168-4B0A-956A-465B64CD4FCC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkMaterialAutoUI", "SampleRdkMaterialAutoUI\SampleRdkMaterialAutoUI.vcxproj", "{D9106855-428A-428F-9588-9076DE1A1321}"
@@ -246,14 +244,6 @@ Global
 		{8C7A0630-6197-48C8-9D13-21CAEDA0A9FB}.Release|x64.ActiveCfg = Release|x64
 		{8C7A0630-6197-48C8-9D13-21CAEDA0A9FB}.Release|x64.Build.0 = Release|x64
 		{8C7A0630-6197-48C8-9D13-21CAEDA0A9FB}.Release|x86.ActiveCfg = Release|x64
-		{BF09C3E1-4090-4798-9D63-6A10AAD00142}.Debug|x64.ActiveCfg = Debug|x64
-		{BF09C3E1-4090-4798-9D63-6A10AAD00142}.Debug|x64.Build.0 = Debug|x64
-		{BF09C3E1-4090-4798-9D63-6A10AAD00142}.Debug|x86.ActiveCfg = Debug|x64
-		{BF09C3E1-4090-4798-9D63-6A10AAD00142}.PseudoDebug|x64.ActiveCfg = Debug|x64
-		{BF09C3E1-4090-4798-9D63-6A10AAD00142}.PseudoDebug|x86.ActiveCfg = Release|x64
-		{BF09C3E1-4090-4798-9D63-6A10AAD00142}.Release|x64.ActiveCfg = Release|x64
-		{BF09C3E1-4090-4798-9D63-6A10AAD00142}.Release|x64.Build.0 = Release|x64
-		{BF09C3E1-4090-4798-9D63-6A10AAD00142}.Release|x86.ActiveCfg = Release|x64
 		{F797EED0-4168-4B0A-956A-465B64CD4FCC}.Debug|x64.ActiveCfg = Debug|x64
 		{F797EED0-4168-4B0A-956A-465B64CD4FCC}.Debug|x64.Build.0 = Debug|x64
 		{F797EED0-4168-4B0A-956A-465B64CD4FCC}.Debug|x86.ActiveCfg = Debug|x64
