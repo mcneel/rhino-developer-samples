@@ -152,7 +152,7 @@ namespace SampleGhTaskCapable
         {
           tsk = Task.Run(() => Compute(crv, pattern), CancelToken);
         }
-        // add an null task even if data ccollection fails. This keeps the
+        // Add a null task even if data collection fails. This keeps the
         // list size in sync with the iterations
         TaskList.Add(tsk);
         return;
