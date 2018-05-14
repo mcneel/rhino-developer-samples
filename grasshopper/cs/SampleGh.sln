@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGhPlatonics", "SampleGhPlatonics\SampleGhPlatonics.csproj", "{CA6711D3-BA81-4771-9DFC-6BE41E1995CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGhTaskCapable", "SampleGhTaskCapable\SampleGhTaskCapable.csproj", "{073D9AA5-A4EE-4060-A478-9B076FC0B139}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA6711D3-BA81-4771-9DFC-6BE41E1995CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA6711D3-BA81-4771-9DFC-6BE41E1995CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA6711D3-BA81-4771-9DFC-6BE41E1995CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA6711D3-BA81-4771-9DFC-6BE41E1995CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{073D9AA5-A4EE-4060-A478-9B076FC0B139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{073D9AA5-A4EE-4060-A478-9B076FC0B139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{073D9AA5-A4EE-4060-A478-9B076FC0B139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{073D9AA5-A4EE-4060-A478-9B076FC0B139}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A3E20FBE-78B8-4FA0-BDA6-5F6B47116C0A}
+	EndGlobalSection
+EndGlobal
