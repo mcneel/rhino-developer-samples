@@ -12,7 +12,7 @@ using namespace std;
 static CString SampleAutomationPlugInID()
 {
   // From ../SampleAutomation/SampleAutomationPlugIn.cpp
-  CString str(L"50CB06F5-1E78-4D57-A82F-1606ED35B7C");
+  CString str(L"50CB06F5-1E78-4D57-A82F-1606ED35B7CE");
   return str;
 }
 
