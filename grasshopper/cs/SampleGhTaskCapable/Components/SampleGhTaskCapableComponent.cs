@@ -10,7 +10,7 @@ using Rhino.Geometry;
 // folder in Grasshopper.
 // You can use the _GrasshopperDeveloperSettings Rhino command for that.
 
-namespace SampleGhTaskCapable
+namespace SampleGhTaskCapable.Components
 {
   public class SampleGhTaskCapableComponent : GH_TaskCapableComponent<SampleGhTaskCapableComponent.SolveResults>
   {

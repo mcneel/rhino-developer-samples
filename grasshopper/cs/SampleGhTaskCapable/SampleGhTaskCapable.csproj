@@ -61,10 +61,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SampleGhTaskCapableComponent.cs" />
+    <Compile Include="Components\SampleGhFibonacciComponent.cs" />
+    <Compile Include="Components\SampleGhTaskCapableComponent.cs" />
     <Compile Include="SampleGhTaskCapableInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SampleGhTaskFibonacciComponent.cs" />
+    <Compile Include="Components\SampleGhTaskFibonacciComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SampleGhTaskFibonacciComponent_24x24.png" />
@@ -77,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SampleGhTaskCapableComponent_24x24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SampleGhFibonacciComponent_24x24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
