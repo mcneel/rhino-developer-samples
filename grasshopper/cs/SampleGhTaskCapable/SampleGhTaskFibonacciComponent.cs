@@ -32,7 +32,7 @@ namespace SampleGhTaskCapable
     }
 
     /// <summary>
-    /// Simpl and quick iterative way to generate the sequence of Fibonacci Numbers.
+    /// Simple and quick iterative way to generate the sequence of Fibonacci Numbers.
     /// </summary>
     static int? Fibonacci(int n)
     {
