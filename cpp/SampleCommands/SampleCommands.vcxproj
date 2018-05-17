@@ -161,6 +161,7 @@
     <ClCompile Include="cmdSamplePlanarFaceLoops.cpp" />
     <ClCompile Include="cmdSamplePointCursor.cpp" />
     <ClCompile Include="cmdSamplePointOnFace.cpp" />
+    <ClCompile Include="cmdSamplePointOnSurface.cpp" />
     <ClCompile Include="cmdSamplePointsDeviation.cpp" />
     <ClCompile Include="cmdSamplePolyline.cpp" />
     <ClCompile Include="cmdSamplePrePostSelect.cpp" />
@@ -195,6 +196,7 @@
     <ClCompile Include="cmdSampleSrfPtGrid.cpp" />
     <ClCompile Include="cmdSampleSubCrvLength.cpp" />
     <ClCompile Include="cmdSampleSurfaceArea.cpp" />
+    <ClCompile Include="cmdSampleSurfaceBlend.cpp" />
     <ClCompile Include="cmdSampleSurfaceNormal.cpp" />
     <ClCompile Include="cmdSampleSurfacePoints.cpp" />
     <ClCompile Include="cmdSampleSwapHatch.cpp" />

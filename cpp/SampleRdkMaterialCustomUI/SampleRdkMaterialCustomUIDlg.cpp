@@ -3,20 +3,16 @@
 #include "SampleRdkMaterialCustomUIDlg.h"
 #include "SampleRdkMaterialCustomUIMaterial.h"
 
-inline const CRect R2R(const ON_4iRect& r) { return CRect(r.left, r.top, r.right, r.bottom); }
-
-static UINT g_uColorButtonMessage = CRhRdkColorButton::ChangedMessageNumber();
+inline CRect R2R(const ON_4iRect& r) { return     CRect(r.left, r.top, r.right, r.bottom); }
+inline ON_4iRect R2R(const CRect& r) { return ON_4iRect(r.left, r.top, r.right, r.bottom); }
 
 BEGIN_MESSAGE_MAP(CSampleRdkMaterialCustomUIDlg, CRhinoDialog)
-	ON_WM_SIZE()
 	ON_EN_KILLFOCUS(IDC_EDIT_NAME, OnKillfocusEditName)
 	ON_EN_KILLFOCUS(IDC_EDIT_NOTES, OnKillfocusEditNotes)
-	ON_REGISTERED_MESSAGE(g_uColorButtonMessage, OnColorChanged)
 END_MESSAGE_MAP()
 
 CSampleRdkMaterialCustomUIDlg::CSampleRdkMaterialCustomUIDlg(const UUID& uuidEditor, const UUID& uuidUI, CWnd* pParent)
 	:
-	m_iInternalCall(0),
 	CRhRdkCustomContentUI(uuidEditor, uuidUI),
 	CRhinoDialog(IDD, pParent)
 {
@@ -28,13 +24,19 @@ CSampleRdkMaterialCustomUIDlg::~CSampleRdkMaterialCustomUIDlg()
 	{
 		m_aDS[i]->DeleteThis();
 	}
+
+	if (nullptr != m_pColorButton)
+	{
+		m_pColorButton->Delete();
+		m_pColorButton = nullptr;
+	}
 }
 
 void CSampleRdkMaterialCustomUIDlg::DoDataExchange(CDataExchange* pDX)
 {
 	__super::DoDataExchange(pDX);
 
-	DDX_Control(pDX, IDC_COLOR_BUTTON, m_color_button);
+	DDX_Control(pDX, IDC_COLOR_BUTTON_PLACEHOLDER, m_color_button_placeholder);
 	DDX_Control(pDX, IDC_EDIT_NAME, m_edit_name);
 	DDX_Control(pDX, IDC_EDIT_NOTES, m_edit_notes);
 }
@@ -43,13 +45,18 @@ void CSampleRdkMaterialCustomUIDlg::CreateDlg(CWnd* pParent)
 {
 	Create(IDD, pParent);
 
-	// Because it will host child controls, set the dialog as
-	// a control parent. This is critical to avoid the risk of
-	// an infinite loop caused by a bug in Windows dialog code.
+	// Because it will host child controls, set the dialog as a control parent.
+	// This is critical to avoid the risk of an infinite loop caused by a bug in Windows dialog code.
 	ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 
-	// Make sure the automatic UI is placed correctly.
-	SetControlPositionAndSize();
+	m_pColorButton = IRhRdkColorButton::New(RhRdkUiFrameworks::Win32);
+
+	if (nullptr != m_pColorButton)
+	{
+		m_pColorButton->SetNotificationHandler(new CColorButtonNotificationHandler(*this));
+		m_pColorButton->SetParent(GetSafeHwnd());
+		m_pColorButton->SetController(Controller());
+	}
 }
 
 void CSampleRdkMaterialCustomUIDlg::Destroy(void)
@@ -69,17 +76,12 @@ BOOL CSampleRdkMaterialCustomUIDlg::OnInitDialog()
 	return FALSE; // Prevent focus being set to a control; this would interfere with the RDK UI.
 }
 
-void CSampleRdkMaterialCustomUIDlg::SetPositionAndSize(const ON_4iRect& rect)
-{
-	if (::IsWindow(GetSafeHwnd()))
-	{
-		MoveWindow(R2R(rect));
-	}
-}
-
 void CSampleRdkMaterialCustomUIDlg::DisplayData(void)
 {
 	if (m_iInternalCall > 0)
+		return;
+
+	if (nullptr == m_pColorButton)
 		return;
 
 	const auto con = Controller();
@@ -107,15 +109,15 @@ void CSampleRdkMaterialCustomUIDlg::DisplayData(void)
 		if (0 == count++)
 		{
 			// First content; set the values to the UI.
-			m_color_button.SetColor(col, false);
+			m_pColorButton->SetColor(col, false);
 			m_edit_name.SetWindowText(sName);
 			m_edit_notes.SetWindowText(sNotes);
 		}
 		else
 		{
 			// Subsequent contents; check the values and if different, set the UI to 'varies'.
-			if (m_color_button.GetColor() != col)
-				m_color_button.SetVaries(true);
+			if (m_pColorButton->GetColor() != col)
+				m_pColorButton->SetVaries(true);
 
 			CString s;
 			m_edit_name.GetWindowText(s);
@@ -129,31 +131,31 @@ void CSampleRdkMaterialCustomUIDlg::DisplayData(void)
 	}
 }
 
-LRESULT CSampleRdkMaterialCustomUIDlg::OnColorChanged(WPARAM w, LPARAM l)
+void CSampleRdkMaterialCustomUIDlg::OnColorButtonNotify(void)
 {
-	ASSERT(Controller());
-	if (!Controller())
-		return 0;
+	const auto con = Controller();
+	if (!con)
+		return;
 
-	const auto col = m_color_button.GetColor();
+	if (nullptr == m_pColorButton)
+		return;
 
-	CRhRdkNewUndoableEvent e(*Controller(), L"SampleRdkMaterialCustomUI material color");
-	CRhRdkEditableContentArray aContent(*Controller(), true);
+	const auto col = m_pColorButton->GetColor();
+
+	CRhRdkNewUndoableEvent e(*con, L"SampleRdkMaterialCustomUI material color");
+	CRhRdkEditableContentArray aContent(*con, true);
 
 	for (int i = 0; i < aContent.Count(); i++)
 	{
 		const CRhRdkContent::Change<CRhRdkContent> c(*aContent[i], RhRdkChangeContext::UI);
-
 		c().SetParameter(L"color", col);
 	}
-
-	return 1;
 }
 
 void CSampleRdkMaterialCustomUIDlg::OnKillfocusEditName()
 {
-	ASSERT(Controller());
-	if (!Controller())
+	const auto con = Controller();
+	if (!con)
 		return;
 
 	CString sName;
@@ -162,8 +164,8 @@ void CSampleRdkMaterialCustomUIDlg::OnKillfocusEditName()
 
 	m_iInternalCall++;
 
-	CRhRdkNewUndoableEvent e(*Controller(), L"SampleRdkMaterialCustomUI material name");
-	CRhRdkEditableContentArray aContent(*Controller(), true);
+	CRhRdkNewUndoableEvent e(*con, L"SampleRdkMaterialCustomUI material name");
+	CRhRdkEditableContentArray aContent(*con, true);
 
 	for (int i = 0; i < aContent.Count(); i++)
 	{
@@ -174,15 +176,20 @@ void CSampleRdkMaterialCustomUIDlg::OnKillfocusEditName()
 	m_iInternalCall--;
 }
 
-void CSampleRdkMaterialCustomUIDlg::OnSize(UINT nType, int cx, int cy)
+void CSampleRdkMaterialCustomUIDlg::SetPositionAndSize(const ON_4iRect& rect)
 {
-	__super::OnSize(nType, cx, cy);
+	if (!::IsWindow(GetSafeHwnd()))
+		return;
 
-	SetControlPositionAndSize();
-}
+	MoveWindow(R2R(rect));
 
-void CSampleRdkMaterialCustomUIDlg::SetControlPositionAndSize(void)
-{
+	if (nullptr != m_pColorButton)
+	{
+		CRect rectButton;
+		m_color_button_placeholder.GetWindowRect(rectButton);
+		ScreenToClient(rectButton);
+		m_pColorButton->Move(R2R(rectButton));
+	}
 }
 
 void CSampleRdkMaterialCustomUIDlg::OnKillfocusEditNotes()
@@ -213,13 +220,6 @@ void CSampleRdkMaterialCustomUIDlg::OnContentRenamed(const CRhRdkContent& c)
 {
 	if (m_iInternalCall > 0)
 		return;
-
-	//const CRhRdkDocument* pRdkDoc = RdkDocument();
-	//if (nullptr == pRdkDoc)
-	//	return;
-	//
-	//if (m_RdkDocRef != c.RdkDocumentRegistered())
-	//	return; // Wrong document.
 
 	CRhRdkContentArray aContent;
 	GetSelection(aContent);

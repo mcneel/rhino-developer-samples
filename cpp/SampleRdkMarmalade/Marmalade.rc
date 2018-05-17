@@ -1,0 +1,343 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "Resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_MARMALADE           ICON                    "res/marmalade.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COLOR_SECTION DIALOGEX 0, 0, 162, 24
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "MS Sans Serif", 400, 0, 0x0
+BEGIN
+    LTEXT           "Color:",IDC_STATIC,8,7,18,9
+    PUSHBUTTON      "",IDC_BT_MATERIAL_COLOR,31,5,121,13
+END
+
+IDD_OPTIONS_SECTION_1 DIALOGEX 0, 0, 186, 55
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Check1",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,7,172,12
+    CONTROL         "Check2",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,20,172,13
+    CONTROL         "Expert mode",IDC_CHECK_EXPERT_MODE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,35,172,13
+END
+
+IDD_OPTIONS_SECTION_2 DIALOGEX 0, 0, 186, 70
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "This is a demonstration dialog for the Marmalade render settings",IDC_STATIC,7,7,172,56
+END
+
+IDD_VIEW_PROPERTIES DIALOGEX 0, 0, 186, 70
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "This is a demonstration dialog for the Marmalade view properties page.",IDC_STATIC,7,7,158,19
+    EDITTEXT        IDC_EDIT_TARGET_X,35,42,30,12,ES_AUTOHSCROLL
+    LTEXT           "Target:",IDC_STATIC,7,42,25,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_TARGET_Y,67,42,30,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_TARGET_Z,99,42,30,12,ES_AUTOHSCROLL
+    LTEXT           "X",IDC_STATIC,42,32,8,8
+    LTEXT           "Y",IDC_STATIC,74,32,8,8
+    LTEXT           "Z",IDC_STATIC,106,32,8,8
+END
+
+IDD_MATERIAL_SECTION DIALOGEX 0, 0, 151, 54
+STYLE DS_SETFONT | WS_CHILD
+EXSTYLE WS_EX_ACCEPTFILES
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Color:",IDC_STATIC,8,6,25,8
+    PUSHBUTTON      "",IDC_BT_MATERIAL_COLOR,38,4,101,12
+    EDITTEXT        IDC_EDIT_TEXTURE_PLACEHOLDER,21,20,100,12,NOT WS_VISIBLE | WS_DISABLED
+    LTEXT           "Transp:",IDC_STATIC,8,36,24,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_TRANSPARENCY,36,36,32,12,ES_AUTOHSCROLL
+    LTEXT           "IOR:",IDC_STATIC,82,36,16,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_IOR,100,36,32,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_CHECK_TEXTURE_ON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,22,11,10
+    EDITTEXT        IDC_EDIT_TEXTURE_AMOUNT,123,20,24,12,ES_AUTOHSCROLL
+END
+
+IDD_NEW_MATERIAL_SECTION DIALOGEX 0, 0, 151, 54
+STYLE DS_SETFONT | WS_CHILD
+EXSTYLE WS_EX_ACCEPTFILES
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Color:",IDC_STATIC,8,6,25,8
+    PUSHBUTTON      "",IDC_BT_MATERIAL_COLOR,38,4,101,12
+    EDITTEXT        IDC_EDIT_TEXTURE_PLACEHOLDER,8,20,131,12,NOT WS_VISIBLE | WS_DISABLED
+    LTEXT           "Transp:",IDC_STATIC,8,36,24,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_TRANSPARENCY,36,36,32,12,ES_AUTOHSCROLL
+    LTEXT           "IOR:",IDC_STATIC,83,36,15,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_IOR,100,36,32,12,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_COLOR_SECTION, DIALOG
+    BEGIN
+        RIGHTMARGIN, 153
+        BOTTOMMARGIN, 22
+    END
+
+    IDD_OPTIONS_SECTION_1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_OPTIONS_SECTION_2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    IDD_VIEW_PROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    IDD_MATERIAL_SECTION, DIALOG
+    BEGIN
+    END
+
+    IDD_NEW_MATERIAL_SECTION, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 33
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_OPTIONS_SECTION_1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_OPTIONS_SECTION_2 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VIEW_PROPERTIES AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_COLOR_SECTION AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_NEW_MATERIAL_SECTION AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_NEW_MATERIAL_SECTION1 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MATERIAL_SECTION AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "Resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FIN)\r\n"
+    "LANGUAGE 11, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\Marmalade.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,0
+ PRODUCTVERSION 1,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040b04e4"
+        BEGIN
+            VALUE "CompanyName", "My Company Name"
+            VALUE "FileDescription", "Marmalade"
+            VALUE "FileVersion", "1.0.0.0"
+            VALUE "InternalName", "Marmalade.rhp"
+            VALUE "LegalCopyright", "Copyright © 2018, My Company Name"
+            VALUE "OriginalFilename", "Marmalade.rhp"
+            VALUE "ProductName", "Marmalade"
+            VALUE "ProductVersion", "1.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x40b, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_RENDER MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Save &As...",                 IDM_APP_FILE_SAVE_AS
+        MENUITEM "&Print",                      IDM_APP_FILE_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_APP_FILE_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy",                       IDM_APP_EDIT_COPY
+    END
+    POPUP "&Zoom"
+    BEGIN
+        MENUITEM "In 10x",                      ID_APP_VIEW_IN10X
+        MENUITEM "In 9x",                       ID_APP_VIEW_IN9X
+        MENUITEM "In 8x",                       ID_APP_VIEW_IN8X
+        MENUITEM "In 7x",                       ID_APP_VIEW_IN7X
+        MENUITEM "In 6x",                       ID_APP_VIEW_IN6X
+        MENUITEM "In 5x",                       ID_APP_VIEW_IN5X
+        MENUITEM "In 4x",                       ID_APP_VIEW_IN4X
+        MENUITEM "In 3x",                       ID_APP_VIEW_IN3X
+        MENUITEM "In 2x",                       ID_APP_VIEW_IN2X
+        MENUITEM SEPARATOR
+        MENUITEM "&Normal Viewing 1:1",         ID_APP_VIEW_NORMALVIEW
+        MENUITEM SEPARATOR
+        MENUITEM "Out 2x",                      ID_APP_VIEW_OUT2X
+        MENUITEM "Out 3x",                      ID_APP_VIEW_OUT3X
+        MENUITEM "Out 4x",                      ID_APP_VIEW_OUT4X
+        MENUITEM "Out 5x",                      ID_APP_VIEW_OUT5X
+        MENUITEM "Out 6x",                      ID_APP_VIEW_OUT6X
+        MENUITEM "Out 7x",                      ID_APP_VIEW_OUT7X
+        MENUITEM "Out 8x",                      ID_APP_VIEW_OUT8X
+        MENUITEM "Out 9x",                      ID_APP_VIEW_OUT9X
+        MENUITEM "Out 10x",                     ID_APP_VIEW_OUT10X
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Display Help",                IDM_APP_HELP_DISPLAY_HELP
+    END
+END
+
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FIN)
+LANGUAGE 11, 1
+#pragma code_page(1252)
+#include "res\Marmalade.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
