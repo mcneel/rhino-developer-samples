@@ -61,20 +61,17 @@ namespace SampleGhTaskCapable.Components
         data.GetData(0, ref steps);
         if (steps < 0)
         {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Steps must greater than or equal to 0.");
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Steps must be >= 0.");
           return;
         }
-        if (steps > max_steps) // Prevents overflow...
+        if (steps > max_steps) // Prevent overflow...
         {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must less than or equal to {max_steps}.");
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must be <= {max_steps}.");
           return;
         }
 
         // Run the task
         Task<SolveResults> task = Task.Run(() => ComputeFibonacci(steps), CancelToken);
-
-        // Add a null task even if data collection fails. 
-        // This keeps the list size in sync with the iterations.
         TaskList.Add(task);
         return;
       }
@@ -87,12 +84,12 @@ namespace SampleGhTaskCapable.Components
         data.GetData(0, ref steps);
         if (steps < 0)
         {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Steps must greater than or equal to 0.");
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Steps must be >= 0.");
           return;
         }
-        if (steps > max_steps) // Prevents overflow...
+        if (steps > max_steps) // Prevent overflow...
         {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must less than or equal to {max_steps}.");
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must be <= {max_steps}.");
           return;
         }
 
