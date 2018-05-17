@@ -7,7 +7,7 @@ namespace SampleGhTaskCapable.Components
   /// <summary>
   /// Task-capable components inherit from GH_TaskCapableComponent
   /// </summary>
-  public class SampleGhTaskFibonacciComponent : GH_TaskCapableComponent<int?>
+  public class SampleGhTaskFibonacciComponent : GH_TaskCapableComponent<SampleGhTaskFibonacciComponent.SolveResults>
   {
     public SampleGhTaskFibonacciComponent()
       : base("Sample Task Fibonacci", "SampleTFib", "Task computes a Fibonacci number.", "Sample", "C#")
@@ -24,24 +24,30 @@ namespace SampleGhTaskCapable.Components
       output.AddIntegerParameter("Fibonacci number", "F", "The Fibonacci number", GH_ParamAccess.item);
     }
 
-    /// <summary>
-    /// Simple and quick iterative way to generate the sequence of Fibonacci Numbers.
-    /// </summary>
-    static int? Fibonacci(int n)
+    public class SolveResults
     {
-      int x = 0, y = 1, rc = 0;
+      public int Value { get; set; }
+    }
 
-      if (n == 0) return 0; // To return the first Fibonacci number   
-      if (n == 1) return 1; // To return the second Fibonacci number   
-
-      for (var i = 2; i <= n; i++)
+    private static SolveResults ComputeFibonacci(int n)
+    {
+      SolveResults result = new SolveResults();
+      if (n == 0)
+        result.Value = 0;
+      else if (n == 1)
+        result.Value = 1;
+      else
       {
-        rc = x + y;
-        x = y;
-        y = rc;
+        int x = 0, y = 1, rc = 0;
+        for (int i = 2; i <= n; i++)
+        {
+          rc = x + y;
+          x = y;
+          y = rc;
+        }
+        result.Value = rc;
       }
-
-      return rc;
+      return result;
     }
 
     protected override void SolveInstance(IGH_DataAccess data)
@@ -51,7 +57,7 @@ namespace SampleGhTaskCapable.Components
       if (InPreSolve)
       {
         // First pass; collect data and construct tasks
-        var steps = 0;
+        int steps = 0;
         data.GetData(0, ref steps);
         if (steps < 0)
         {
@@ -60,23 +66,24 @@ namespace SampleGhTaskCapable.Components
         }
         if (steps > max_steps) // Prevents overflow...
         {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must less than or equal to { (object)max_steps}.");
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must less than or equal to {max_steps}.");
           return;
         }
 
-        Task<int?> tsk = Task.Run(() => Fibonacci(steps), CancelToken);
+        // Run the task
+        Task<SolveResults> task = Task.Run(() => ComputeFibonacci(steps), CancelToken);
 
         // Add a null task even if data collection fails. 
         // This keeps the list size in sync with the iterations.
-        TaskList.Add(tsk);
+        TaskList.Add(task);
         return;
       }
 
-      if (!GetSolveResults(data, out var result))
+      if (!GetSolveResults(data, out SolveResults result))
       {
         // Compute right here, right now.
         // 1. Collect
-        var steps = 0;
+        int steps = 0;
         data.GetData(0, ref steps);
         if (steps < 0)
         {
@@ -85,18 +92,18 @@ namespace SampleGhTaskCapable.Components
         }
         if (steps > max_steps) // Prevents overflow...
         {
-          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must less than or equal to { (object)max_steps}.");
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must less than or equal to {max_steps}.");
           return;
         }
 
         // 2. Compute
-        result = Fibonacci(steps);
+        result = ComputeFibonacci(steps);
       }
 
       // 3. Set
       if (result != null)
       {
-        data.SetData(0, result);
+        data.SetData(0, result.Value);
       }
     }
 

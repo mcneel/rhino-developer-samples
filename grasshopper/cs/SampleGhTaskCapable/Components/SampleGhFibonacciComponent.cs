@@ -23,32 +23,11 @@ namespace SampleGhTaskCapable.Components
       output.AddIntegerParameter("Fibonacci number", "F", "The Fibonacci number", GH_ParamAccess.item);
     }
 
-    /// <summary>
-    /// Simple and quick iterative way to generate the sequence of Fibonacci Numbers.
-    /// </summary>
-    static int Fibonacci(int n)
-    {
-      int x = 0, y = 1, rc = 0;
-
-      if (n == 0) return 0; // To return the first Fibonacci number   
-      if (n == 1) return 1; // To return the second Fibonacci number   
-
-      for (var i = 2; i <= n; i++)
-      {
-        rc = x + y;
-        x = y;
-        y = rc;
-      }
-
-      return rc;
-    }
-
     protected override void SolveInstance(IGH_DataAccess data)
     {
       const int max_steps = 46;
 
-      // 1. Collect
-      var steps = 0;
+      int steps = 0;
       data.GetData(0, ref steps);
       if (steps < 0)
       {
@@ -57,14 +36,27 @@ namespace SampleGhTaskCapable.Components
       }
       if (steps > max_steps) // Prevents overflow...
       {
-        AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must less than or equal to { (object)max_steps}.");
+        AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Steps must less than or equal to {max_steps}.");
         return;
       }
 
-      // 2. Compute
-      var result = Fibonacci(steps);
+      int result;
+      if (steps == 0)
+        result = 0;
+      else if (steps == 1)
+        result = 1;
+      else
+      {
+        int x = 0, y = 1, rc = 0;
+        for (int i = 2; i <= steps; i++)
+        {
+          rc = x + y;
+          x = y;
+          y = rc;
+        }
+        result = rc;
+      }
 
-      // 3. Set
       data.SetData(0, result);
     }
 
