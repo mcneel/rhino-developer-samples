@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockingBirdIntro", "MockingBirdIntro\MockingBirdIntro.csproj", "{CCB6AB63-FDEF-44AC-9C1F-7ECA810D5B75}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockingBirdChangeQueue", "MockingBirdChangeQueue\MockingBirdChangeQueue.csproj", "{4CE5B976-AE3D-4EA5-83DE-CD498A6E731D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockingBirdViewport", "MockingBirdViewport\MockingBirdViewport.csproj", "{EFD35550-4482-4F45-8EB1-75959E38A7DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockingBirdRenderPlugIn", "MockingBirdRenderPlugIn\MockingBirdRenderPlugIn.csproj", "{593F50A4-A5CF-4D58-83E4-446C54BA1EF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,8 +35,15 @@ Global
 		{EFD35550-4482-4F45-8EB1-75959E38A7DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFD35550-4482-4F45-8EB1-75959E38A7DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFD35550-4482-4F45-8EB1-75959E38A7DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{593F50A4-A5CF-4D58-83E4-446C54BA1EF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{593F50A4-A5CF-4D58-83E4-446C54BA1EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{593F50A4-A5CF-4D58-83E4-446C54BA1EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{593F50A4-A5CF-4D58-83E4-446C54BA1EF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92515BCE-EDA7-496B-8E7C-8408E7DE3B46}
 	EndGlobalSection
 EndGlobal
