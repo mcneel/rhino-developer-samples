@@ -86,9 +86,26 @@ namespace SampleCsRdk
       buttonColor.Refresh();
 
       subNodeControl.ParentInstanceList = m_view_model.SelectedMaterialIdList;
+
+      int? tbPos = m_view_model.TrackBarPositionVaries;
+      if(tbPos!=null)
+      {
+        trackPositionLabel.Text = $"{tbPos.Value}";
+      }
+      else
+      {
+        trackPositionLabel.Text = $"-";
+      }
+      trackPositionLabel.Refresh();
+
     }
 
     #region Control events
+
+    private void TrackBar_ValueChanged(object sender, System.EventArgs e)
+    {
+      m_view_model.TrackBarPositionVaries = trackBar.Value;
+    }
     private void ButtonColorClick(object sender, System.EventArgs e)
     {
       Color4f color = m_view_model.VariesColor.Value;

@@ -69,10 +69,12 @@ namespace SampleCsRdk
     public override string TypeDescription { get { return "Custom material with custom UserControl"; } }
 
     public static string ShowSectionKey { get { return "show-section-2"; } }
+    public static string TrackBarPositionKey { get { return "trackbar-position"; } }
 
     public CustomMaterialWithUserControl()
     {
       Fields.Add(ShowSectionKey, true, "Yes/No");
+      Fields.Add(TrackBarPositionKey, 0, "position");
     }
 
 
