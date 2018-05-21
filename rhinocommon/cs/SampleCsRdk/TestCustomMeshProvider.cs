@@ -33,9 +33,9 @@ namespace SampleCsRdk
 			get { return "Test Custom Mesh Provider"; }
 		}
 
-		public override BoundingBox BoundingBox(ViewportInfo vp, RhinoObject obj, RhinoDoc doc, Guid requestingPlugIn, bool preview)
+		public override BoundingBox BoundingBox(ViewportInfo vp, RhinoObject obj, RhinoDoc doc, Guid requestingPlugIn, DisplayPipelineAttributes attrs)
 		{
-			var bbox = base.BoundingBox(vp, obj, doc, requestingPlugIn, preview);
+			var bbox = base.BoundingBox(vp, obj, doc, requestingPlugIn, attrs);
 
 			if (obj == null)
 			{

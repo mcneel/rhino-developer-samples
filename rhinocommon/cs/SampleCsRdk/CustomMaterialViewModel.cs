@@ -158,6 +158,89 @@ namespace SampleCsRdk
       }
     }
 
+    public int TrackBarPosition
+    {
+      get
+      {
+        var vc = TrackBarPositionVaries;
+        if (null != vc) {
+          return vc.Value;
+        }
+        return int.MinValue;
+      }
+      set
+      {
+        TrackBarPositionVaries = new int?(value);
+      }
+    }
+
+    public int? TrackBarPositionVaries
+    {
+      get {
+        bool bVaries = false;
+        int? i = null;
+
+        RenderContentCollection sel = Selection;
+        if (sel == null)
+          return null;
+
+        foreach (var item in sel)
+        {
+
+          if (item is RenderMaterial material)
+          {
+
+            if (!material.Fields.TryGetValue(CustomMaterialWithUserControl.TrackBarPositionKey, out int iThis))
+            {
+              continue;
+            }
+
+            //First time through
+            if (i == null)
+            {
+              i = iThis;
+            }
+            else if (!bVaries && iThis != i)
+            {
+              bVaries = true;
+              break;
+            }
+          }
+        }
+
+        return bVaries ? null : i;
+      }
+      set {
+        RenderContentCollection sel = Selection;
+        if (sel == null)
+          return;
+
+        var undo = Rhino.RhinoDoc.ActiveDoc.BeginUndoRecord("Set material TrackBarPosition value");
+
+        foreach (var item in sel)
+        {
+          if (item is RenderMaterial material)
+          {
+
+            if (!material.Fields.TryGetValue(CustomMaterialWithUserControl.TrackBarPositionKey, out int iThis))
+            {
+              Debug.Assert(false);
+              continue;
+            }
+
+            if (value != iThis)
+            {
+              material.BeginChange(RenderContent.ChangeContexts.UI);
+              material.Fields.Set(CustomMaterialWithUserControl.TrackBarPositionKey, value.Value);
+              material.EndChange();
+            }
+          }
+        }
+
+        Rhino.RhinoDoc.ActiveDoc.EndUndoRecord(undo);
+      }
+    }
+
     //Returns null if the show flag varies or there were no materials in the selection
     public bool? VariesShowSection2
     {
