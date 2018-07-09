@@ -28,7 +28,6 @@ class SimpleEtoDialog(forms.Dialog):
 ################################################################################
 # Creating a dialog instance and displaying the dialog.
 ################################################################################
-
 def TestSampleEtoDialog():
     dialog = SimpleEtoDialog()
     dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow)
