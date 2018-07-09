@@ -24,7 +24,6 @@ class SimpleEtoDialog(forms.Dialog):
         label.Text = "Hello Rhino.Python!"
         self.Content = label
 
-
 ################################################################################
 # Creating a dialog instance and displaying the dialog.
 ################################################################################
