@@ -15,7 +15,7 @@ def SampleAddRenderMaterials():
     # defintion than this. And, not all rendering  plug-ins support the
     # same material properties. This is where Render materials come in. 
     
-    # An Render material is an abstract material - one that is defined 
+    # A Render material is an abstract material - one that is defined 
     # by the the owning render plug-in. But a basic Render material does
     # share some properties with a Rhino material.
     
@@ -51,7 +51,7 @@ def SampleAddRenderMaterials():
     # Materials panel. Note, RhinoDoc.Materials.Count will equal 0. This
     # is because we have not added any Rhino materials. We've only added
     # Render materials. When you assign a Render material to an object
-    # or a layer, a compatible Rhino material will be added doc.Materials,
+    # or a layer, a compatible Rhino material will be added RhinoDoc.Materials,
     # and this material will be referenced by the Render material.
     sc.doc.Layers[0].RenderMaterial = blue_render_material;  
     
