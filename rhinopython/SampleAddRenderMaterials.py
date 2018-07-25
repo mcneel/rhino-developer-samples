@@ -7,7 +7,7 @@ import Rhino
 import System
 import scriptcontext as sc
 
-# Demonstrates how to creaste render materials
+# Demonstrates how to create render materials
 def SampleAddRenderMaterials():
     
     # Properties of a Rhino material define what is required to draw an
