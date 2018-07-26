@@ -76,6 +76,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkMarmalade", "Sampl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleChangeQueue", "SampleChangeQueue\SampleChangeQueue.vcxproj", "{73B185C2-4058-4500-A12C-E2D7F917FA79}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleCustomRenderMesh", "SampleCustomRenderMesh\SampleCustomRenderMesh.vcxproj", "{3CCC067E-989F-4E33-BABA-6FC75FBAC201}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -334,6 +336,16 @@ Global
 		{73B185C2-4058-4500-A12C-E2D7F917FA79}.Release|x64.ActiveCfg = Release|x64
 		{73B185C2-4058-4500-A12C-E2D7F917FA79}.Release|x64.Build.0 = Release|x64
 		{73B185C2-4058-4500-A12C-E2D7F917FA79}.Release|x86.ActiveCfg = Release|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.Debug|x64.ActiveCfg = Debug|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.Debug|x64.Build.0 = Debug|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.Debug|x86.ActiveCfg = Debug|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.PseudoDebug|x64.ActiveCfg = Debug|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.PseudoDebug|x64.Build.0 = Debug|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.PseudoDebug|x86.ActiveCfg = Release|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.PseudoDebug|x86.Build.0 = Release|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.Release|x64.ActiveCfg = Release|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.Release|x64.Build.0 = Release|x64
+		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
