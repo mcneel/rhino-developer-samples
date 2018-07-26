@@ -90,6 +90,7 @@
     <Compile Include="SampleCsInvertSelected.cs" />
     <Compile Include="SampleCsLastCreatedObjects.cs" />
     <Compile Include="SampleCsLayerPathName.cs" />
+    <Compile Include="SampleCsMake2D.cs" />
     <Compile Include="SampleCsMeshBox.cs" />
     <Compile Include="SampleCsMove.cs" />
     <Compile Include="SampleCsMoveGrips.cs" />
