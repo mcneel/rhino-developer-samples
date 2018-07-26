@@ -2,6 +2,7 @@
 //
 
 #pragma once
+#include "SampleCustomRenderMeshEventWatcher.h"
 
 // CSampleCustomRenderMeshPlugIn
 // See SampleCustomRenderMeshPlugIn.cpp for the implementation of this class
@@ -57,6 +58,7 @@ public:
 
 private:
   ON_wString m_plugin_version;
+  CSampleCustomRenderMeshEventWatcher m_eventWatcher;
 
   // TODO: Add additional class information here
 };

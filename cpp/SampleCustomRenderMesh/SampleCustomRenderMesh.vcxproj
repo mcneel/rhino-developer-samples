@@ -14,6 +14,7 @@
     <ClCompile Include="cmdSampleCustomRenderMesh.cpp" />
     <ClCompile Include="SampleCRMP.cpp" />
     <ClCompile Include="SampleCustomRenderMeshApp.cpp" />
+    <ClCompile Include="SampleCustomRenderMeshEventWatcher.cpp" />
     <ClCompile Include="SampleCustomRenderMeshPlugIn.cpp" />
     <ClCompile Include="SampleCustomRenderMeshUserData.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -25,6 +26,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SampleCRMP.h" />
     <ClInclude Include="SampleCustomRenderMeshApp.h" />
+    <ClInclude Include="SampleCustomRenderMeshEventWatcher.h" />
     <ClInclude Include="SampleCustomRenderMeshPlugIn.h" />
     <ClInclude Include="SampleCustomRenderMeshUserData.h" />
     <ClInclude Include="stdafx.h" />
