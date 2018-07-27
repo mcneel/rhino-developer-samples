@@ -128,6 +128,7 @@ CRhinoCommand::result CCommandSampleCustomRenderMesh::RunCommand(const CRhinoCom
   int optAmount = gn.AddCommandOptionNumber(RHCMDOPTNAME(L"Amount"), &amount);
   while (true)
   {
+    gn.SetDefaultNumber(amount);
     CRhinoGet::result gnr = gn.GetNumber();
     if (gnr == CRhinoGet::number)
     {
