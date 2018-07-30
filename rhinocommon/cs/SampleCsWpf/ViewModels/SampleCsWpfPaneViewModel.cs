@@ -8,6 +8,14 @@
       SampleCsWpfPlugIn.Instance.SettingsSaved +=
         (sender, args) => SettingsChangedMessage = $"SettingsSaved {++m_saved_count}";
       m_use_multiple_counters = UseMultipleCounters == true;
+
+      Rhino.UI.Panels.Show += OnShowPanel;
+    }
+
+    private void OnShowPanel(object sender, Rhino.UI.ShowPanelEventArgs e)
+    {
+      var sn = e.DocumentSerialNumber;
+      // TOOD...
     }
 
     private int m_saved_count;
