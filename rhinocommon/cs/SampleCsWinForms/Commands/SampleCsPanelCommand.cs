@@ -8,13 +8,7 @@ namespace SampleCsWinForms.Commands
   [System.Runtime.InteropServices.Guid("3d3db472-509d-41c5-97e3-2890c5fb9827")]
   public class SampleCsPanelCommand : Command
   {
-    /// <returns> 
-    /// The command name as it appears on the Rhino command line.
-    /// </returns>
-    public override string EnglishName
-    {
-      get { return "SampleCsPanel"; }
-    }
+    public override string EnglishName => "SampleCsPanel";
 
     protected override Result RunCommand(Rhino.RhinoDoc doc, RunMode mode)
     {

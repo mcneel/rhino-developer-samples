@@ -44,12 +44,6 @@ namespace SampleCsWinForms.Forms
     /// <summary>
     /// Returns the ID of this panel.
     /// </summary>
-    public static Guid PanelId
-    {
-      get
-      {
-        return typeof(SampleCsPanelUserControl).GUID;
-      }
-    }
+    public static Guid PanelId => typeof(SampleCsPanelUserControl).GUID;
   }
 }

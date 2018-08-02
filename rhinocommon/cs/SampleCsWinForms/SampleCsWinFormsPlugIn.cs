@@ -28,8 +28,8 @@ namespace SampleCsWinForms
     /// </summary>
     protected override LoadReturnCode OnLoad(ref string errorMessage)
     {
-      var panel_type = typeof(SampleCsPanelUserControl);
-      Panels.RegisterPanel(this, panel_type, "Sample", SampleCsWinForms.Properties.Resources.Panel);
+      var type = typeof(SampleCsPanelUserControl);
+      Panels.RegisterPanel(this, type, "SampleWinForms", SampleCsWinForms.Properties.Resources.Panel, PanelType.System);
       return LoadReturnCode.Success;
     }
 
