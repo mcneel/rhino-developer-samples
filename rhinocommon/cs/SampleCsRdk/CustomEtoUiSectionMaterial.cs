@@ -128,12 +128,18 @@ namespace SampleCsRdk
 			Fields.Add("diffuse_color", Color4f.White, "Diffuse Color");
 		}
 
-		private CustomEtoCyclesUISection m_sect = new CustomEtoCyclesUISection();
+        static List<ICollapsibleSection> m_sections_to_keep_alive = new List<ICollapsibleSection>();
 
-		protected override void OnAddUserInterfaceSections()
+        protected override void OnAddUserInterfaceSections()
 		{
 			AddAutomaticUserInterfaceSection("Parameters", 0);
-			AddUserInterfaceSection(m_sect);
+
+            var s1 = new CustomEtoCyclesUISection();
+
+            //This line and the list will be unnecessary after Rhino 6.9
+            m_sections_to_keep_alive.Add(s1);
+
+            AddUserInterfaceSection(s1);
 		}
 
 		public override void SimulateMaterial(ref Rhino.DocObjects.Material simulatedMaterial, bool forDataOnly)

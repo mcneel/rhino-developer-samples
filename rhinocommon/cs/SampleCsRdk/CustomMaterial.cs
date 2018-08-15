@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using Rhino.Render;
 using Rhino.Render.Fields;
 using Rhino.UI.Controls;
+using System.Collections.Generic;
 
 namespace SampleCsRdk
 {
@@ -61,6 +62,9 @@ namespace SampleCsRdk
     //BoolField m_bool = new BoolField("bool", "Yes/No", false);
     //ColorField m_color = new ColorField("color", "Color", Rhino.Display.Color4f.White);
   }
+
+
+
   // TODO: You must provide a unique Guid for this class
   [System.Runtime.InteropServices.Guid("5A3CCE11-643B-4E4B-8BF7-CABFEE30B3CB")]
   public class CustomMaterialWithUserControl : CustomMaterial
@@ -77,20 +81,25 @@ namespace SampleCsRdk
       Fields.Add(TrackBarPositionKey, 0, "position");
     }
 
-
-    ICollapsibleSection m_wpf = new CustomMaterialWpfUserInterfaceSectionHost();
-
-    ICollapsibleSection m_one = new CustomMaterialUserInterfaceSection();
-
-    ICollapsibleSection m_two = new CustomMaterialUserInterfaceSection2();
+    static List<ICollapsibleSection> m_sections_to_keep_alive = new List<ICollapsibleSection>();
 
     protected override void OnAddUserInterfaceSections()
     {
-      AddUserInterfaceSection(m_wpf);
 
-      AddUserInterfaceSection(m_one);
+      var s1 = new CustomMaterialWpfUserInterfaceSectionHost();
+      var s2 = new CustomMaterialUserInterfaceSection();
+      var s3 = new CustomMaterialUserInterfaceSection2();
 
-      AddUserInterfaceSection(m_two);
+      //These next three lines will be unnecessary from Rhino 6.9 onwards.
+      m_sections_to_keep_alive.Add(s1);
+      m_sections_to_keep_alive.Add(s2);
+      m_sections_to_keep_alive.Add(s3);
+
+      AddUserInterfaceSection(s1);
+
+      AddUserInterfaceSection(s2);
+
+      AddUserInterfaceSection(s3);
     }
   }
 }
