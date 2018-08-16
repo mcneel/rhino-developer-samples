@@ -1,0 +1,357 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' SetAcadPrintInfo.rvb -- August 2018
+' Copyright (c) 2018, Robert McNeel & Associates
+' This script is licensed under the MIT License
+' https://opensource.org/licenses/MIT
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Option Explicit
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Main subrountine for script.
+'
+' This subroutine will read a comma-delimited file that contains AutoCAD
+' ACI color values and their associated RGB print color values and print
+' widths, in millimeters, and assign them to existing layers.
+'
+' The comma-delimited file should be in this format:
+'
+'  ACI,RED,GREEN,BLUE,MM
+'  0, 0, 0, 0, 0.0
+'  1, 255, 0, 0, 0.13
+'  2, 255, 255, 0, 0.18
+'  etc...
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SetAcadPrintInfo
+
+	' Declare local variables
+	Dim path, data, dict, i
+	Dim aci, color, print_color, print_width
+	
+	' Prompt the user to pick a comma-delimited file
+	path = Rhino.OpenFileName("Open", "Comma Delimited (*.csv)|*.csv|All Files (*.*)|*.*||")
+	If IsNull(path) Then Exit Sub
+
+	' Read the delimited file
+	data = Rhino.ReadDelimitedFile(path, ",", True, True)
+	If IsNull(data) Then Exit Sub
+
+	' Verify the delimited file has 4 columns
+	If UBound(data, 2) <> 4 Then Exit Sub
+
+	' Create the color lookup dictionary
+	Set dict = ColorDictionary()
+
+	' Turn off screen redrawing (faster!)
+	Call Rhino.EnableRedraw(False)
+	
+	' Process the delimited file
+	' Skip the first row, which contains column headers
+	For i = 1 To UBound(data, 1)
+		' Get the ACI color value
+		aci = data(i, 0)
+		' Lookup the ACI color value in the dictionary
+		If dict.Exists(aci) Then
+			' Get the associated RGB color value
+			color = dict(aci)
+			' Get the RGB print color value
+			print_color = RGB(data(i, 1), data(i, 2), data(i, 3))
+			' Get the print with in millimeters
+			print_width = data(i, 4)
+			' Set layer print properties
+			Call SetLayerPrintValues(color, print_color, print_width)
+		End If
+	Next
+
+	' Turn on screen redrawing
+	Call Rhino.EnableRedraw(True)
+
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Searches for all layers with a color equivalent to 'color'.
+' If found, sets the layer's print color and print width
+' the parameters passed to the subroutine.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub SetLayerPrintValues(color, print_color, print_width)
+	Dim layer_ids, layer_id
+	layer_ids = Rhino.LayerIds
+	For Each layer_id In layer_ids
+		If color = Rhino.LayerColor(layer_id) Then
+			Call Rhino.LayerPrintColor(layer_id, print_color)
+			Call Rhino.LayerPrintWidth(layer_id, print_width)
+		End If
+	Next
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Returns a dictionary, or lookup table, that holds an
+' AutoCAD ACI color value and it's RGB-equivalent color.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function ColorDictionary()
+	Dim dict
+	Set dict = CreateObject("Scripting.Dictionary")
+	Call dict.Add(0, RGB(0, 0, 0))
+	Call dict.Add(1, RGB(255, 0, 0))
+	Call dict.Add(2, RGB(255, 255, 0))
+	Call dict.Add(3, RGB(0, 255, 0))
+	Call dict.Add(4, RGB(0, 255, 255))
+	Call dict.Add(5, RGB(0, 0, 255))
+	Call dict.Add(6, RGB(255, 0, 255))
+	Call dict.Add(7, RGB(255, 255, 255))
+	Call dict.Add(8, RGB(128, 128, 128))
+	Call dict.Add(9, RGB(192, 192, 192))
+	Call dict.Add(10, RGB(255, 0, 0))
+	Call dict.Add(11, RGB(255, 127, 127))
+	Call dict.Add(12, RGB(204, 0, 0))
+	Call dict.Add(13, RGB(204, 102, 102))
+	Call dict.Add(14, RGB(153, 0, 0))
+	Call dict.Add(15, RGB(153, 76, 76))
+	Call dict.Add(16, RGB(127, 0, 0))
+	Call dict.Add(17, RGB(127, 63, 63))
+	Call dict.Add(18, RGB(76, 0, 0))
+	Call dict.Add(19, RGB(76, 38, 38))
+	Call dict.Add(20, RGB(255, 63, 0))
+	Call dict.Add(21, RGB(255, 159, 127))
+	Call dict.Add(22, RGB(204, 51, 0))
+	Call dict.Add(23, RGB(204, 127, 102))
+	Call dict.Add(24, RGB(153, 38, 0))
+	Call dict.Add(25, RGB(153, 95, 76))
+	Call dict.Add(26, RGB(127, 31, 0))
+	Call dict.Add(27, RGB(127, 79, 63))
+	Call dict.Add(28, RGB(76, 19, 0))
+	Call dict.Add(29, RGB(76, 47, 38))
+	Call dict.Add(30, RGB(255, 127, 0))
+	Call dict.Add(31, RGB(255, 191, 127))
+	Call dict.Add(32, RGB(204, 102, 0))
+	Call dict.Add(33, RGB(204, 153, 102))
+	Call dict.Add(34, RGB(153, 76, 0))
+	Call dict.Add(35, RGB(153, 114, 76))
+	Call dict.Add(36, RGB(127, 63, 0))
+	Call dict.Add(37, RGB(127, 95, 63))
+	Call dict.Add(38, RGB(76, 38, 0))
+	Call dict.Add(39, RGB(76, 57, 38))
+	Call dict.Add(40, RGB(255, 191, 0))
+	Call dict.Add(41, RGB(255, 223, 127))
+	Call dict.Add(42, RGB(204, 153, 0))
+	Call dict.Add(43, RGB(204, 178, 102))
+	Call dict.Add(44, RGB(153, 114, 0))
+	Call dict.Add(45, RGB(153, 133, 76))
+	Call dict.Add(46, RGB(127, 95, 0))
+	Call dict.Add(47, RGB(127, 111, 63))
+	Call dict.Add(48, RGB(76, 57, 0))
+	Call dict.Add(49, RGB(76, 66, 38))
+	Call dict.Add(50, RGB(255, 255, 0))
+	Call dict.Add(51, RGB(255, 255, 127))
+	Call dict.Add(52, RGB(204, 204, 0))
+	Call dict.Add(53, RGB(204, 204, 102))
+	Call dict.Add(54, RGB(153, 153, 0))
+	Call dict.Add(55, RGB(153, 153, 76))
+	Call dict.Add(56, RGB(127, 127, 0))
+	Call dict.Add(57, RGB(127, 127, 63))
+	Call dict.Add(58, RGB(76, 76, 0))
+	Call dict.Add(59, RGB(76, 76, 38))
+	Call dict.Add(60, RGB(191, 255, 0))
+	Call dict.Add(61, RGB(223, 255, 127))
+	Call dict.Add(62, RGB(153, 204, 0))
+	Call dict.Add(63, RGB(178, 204, 102))
+	Call dict.Add(64, RGB(114, 153, 0))
+	Call dict.Add(65, RGB(133, 153, 76))
+	Call dict.Add(66, RGB(95, 127, 0))
+	Call dict.Add(67, RGB(111, 127, 63))
+	Call dict.Add(68, RGB(57, 76, 0))
+	Call dict.Add(69, RGB(66, 76, 38))
+	Call dict.Add(70, RGB(127, 255, 0))
+	Call dict.Add(71, RGB(191, 255, 127))
+	Call dict.Add(72, RGB(102, 204, 0))
+	Call dict.Add(73, RGB(153, 204, 102))
+	Call dict.Add(74, RGB(76, 153, 0))
+	Call dict.Add(75, RGB(114, 153, 76))
+	Call dict.Add(76, RGB(63, 127, 0))
+	Call dict.Add(77, RGB(95, 127, 63))
+	Call dict.Add(78, RGB(38, 76, 0))
+	Call dict.Add(79, RGB(57, 76, 38))
+	Call dict.Add(80, RGB(63, 255, 0))
+	Call dict.Add(81, RGB(159, 255, 127))
+	Call dict.Add(82, RGB(51, 204, 0))
+	Call dict.Add(83, RGB(127, 204, 102))
+	Call dict.Add(84, RGB(38, 153, 0))
+	Call dict.Add(85, RGB(95, 153, 76))
+	Call dict.Add(86, RGB(31, 127, 0))
+	Call dict.Add(87, RGB(79, 127, 63))
+	Call dict.Add(88, RGB(19, 76, 0))
+	Call dict.Add(89, RGB(47, 76, 38))
+	Call dict.Add(90, RGB(0, 255, 0))
+	Call dict.Add(91, RGB(127, 255, 127))
+	Call dict.Add(92, RGB(0, 204, 0))
+	Call dict.Add(93, RGB(102, 204, 102))
+	Call dict.Add(94, RGB(0, 153, 0))
+	Call dict.Add(95, RGB(76, 153, 76))
+	Call dict.Add(96, RGB(0, 127, 0))
+	Call dict.Add(97, RGB(63, 127, 63))
+	Call dict.Add(98, RGB(0, 76, 0))
+	Call dict.Add(99, RGB(38, 76, 38))
+	Call dict.Add(100, RGB(0, 255, 63))
+	Call dict.Add(101, RGB(127, 255, 159))
+	Call dict.Add(102, RGB(0, 204, 51))
+	Call dict.Add(103, RGB(102, 204, 127))
+	Call dict.Add(104, RGB(0, 153, 38))
+	Call dict.Add(105, RGB(76, 153, 95))
+	Call dict.Add(106, RGB(0, 127, 31))
+	Call dict.Add(107, RGB(63, 127, 79))
+	Call dict.Add(108, RGB(0, 76, 19))
+	Call dict.Add(109, RGB(38, 76, 47))
+	Call dict.Add(110, RGB(0, 255, 127))
+	Call dict.Add(111, RGB(127, 255, 191))
+	Call dict.Add(112, RGB(0, 204, 102))
+	Call dict.Add(113, RGB(102, 204, 153))
+	Call dict.Add(114, RGB(0, 153, 76))
+	Call dict.Add(115, RGB(76, 153, 114))
+	Call dict.Add(116, RGB(0, 127, 63))
+	Call dict.Add(117, RGB(63, 127, 95))
+	Call dict.Add(118, RGB(0, 76, 38))
+	Call dict.Add(119, RGB(38, 76, 57))
+	Call dict.Add(120, RGB(0, 255, 191))
+	Call dict.Add(121, RGB(127, 255, 223))
+	Call dict.Add(122, RGB(0, 204, 153))
+	Call dict.Add(123, RGB(102, 204, 178))
+	Call dict.Add(124, RGB(0, 153, 114))
+	Call dict.Add(125, RGB(76, 153, 133))
+	Call dict.Add(126, RGB(0, 127, 95))
+	Call dict.Add(127, RGB(63, 127, 111))
+	Call dict.Add(128, RGB(0, 76, 57))
+	Call dict.Add(129, RGB(38, 76, 66))
+	Call dict.Add(130, RGB(0, 255, 255))
+	Call dict.Add(131, RGB(127, 255, 255))
+	Call dict.Add(132, RGB(0, 204, 204))
+	Call dict.Add(133, RGB(102, 204, 204))
+	Call dict.Add(134, RGB(0, 153, 153))
+	Call dict.Add(135, RGB(76, 153, 153))
+	Call dict.Add(136, RGB(0, 127, 127))
+	Call dict.Add(137, RGB(63, 127, 127))
+	Call dict.Add(138, RGB(0, 76, 76))
+	Call dict.Add(139, RGB(38, 76, 76))
+	Call dict.Add(140, RGB(0, 191, 255))
+	Call dict.Add(141, RGB(127, 223, 255))
+	Call dict.Add(142, RGB(0, 153, 204))
+	Call dict.Add(143, RGB(102, 178, 204))
+	Call dict.Add(144, RGB(0, 114, 153))
+	Call dict.Add(145, RGB(76, 133, 153))
+	Call dict.Add(146, RGB(0, 95, 127))
+	Call dict.Add(147, RGB(63, 111, 127))
+	Call dict.Add(148, RGB(0, 57, 76))
+	Call dict.Add(149, RGB(38, 66, 76))
+	Call dict.Add(150, RGB(0, 127, 255))
+	Call dict.Add(151, RGB(127, 191, 255))
+	Call dict.Add(152, RGB(0, 102, 204))
+	Call dict.Add(153, RGB(102, 153, 204))
+	Call dict.Add(154, RGB(0, 76, 153))
+	Call dict.Add(155, RGB(76, 114, 153))
+	Call dict.Add(156, RGB(0, 63, 127))
+	Call dict.Add(157, RGB(63, 95, 127))
+	Call dict.Add(158, RGB(0, 38, 76))
+	Call dict.Add(159, RGB(38, 57, 76))
+	Call dict.Add(160, RGB(0, 63, 255))
+	Call dict.Add(161, RGB(127, 159, 255))
+	Call dict.Add(162, RGB(0, 51, 204))
+	Call dict.Add(163, RGB(102, 127, 204))
+	Call dict.Add(164, RGB(0, 38, 153))
+	Call dict.Add(165, RGB(76, 95, 153))
+	Call dict.Add(166, RGB(0, 31, 127))
+	Call dict.Add(167, RGB(63, 79, 127))
+	Call dict.Add(168, RGB(0, 19, 76))
+	Call dict.Add(169, RGB(38, 47, 76))
+	Call dict.Add(170, RGB(0, 0, 255))
+	Call dict.Add(171, RGB(127, 127, 255))
+	Call dict.Add(172, RGB(0, 0, 204))
+	Call dict.Add(173, RGB(102, 102, 204))
+	Call dict.Add(174, RGB(0, 0, 153))
+	Call dict.Add(175, RGB(76, 76, 153))
+	Call dict.Add(176, RGB(0, 0, 127))
+	Call dict.Add(177, RGB(63, 63, 127))
+	Call dict.Add(178, RGB(0, 0, 76))
+	Call dict.Add(179, RGB(38, 38, 76))
+	Call dict.Add(180, RGB(63, 0, 255))
+	Call dict.Add(181, RGB(159, 127, 255))
+	Call dict.Add(182, RGB(51, 0, 204))
+	Call dict.Add(183, RGB(127, 102, 204))
+	Call dict.Add(184, RGB(38, 0, 153))
+	Call dict.Add(185, RGB(95, 76, 153))
+	Call dict.Add(186, RGB(31, 0, 127))
+	Call dict.Add(187, RGB(79, 63, 127))
+	Call dict.Add(188, RGB(19, 0, 76))
+	Call dict.Add(189, RGB(47, 38, 76))
+	Call dict.Add(190, RGB(127, 0, 255))
+	Call dict.Add(191, RGB(191, 127, 255))
+	Call dict.Add(192, RGB(102, 0, 204))
+	Call dict.Add(193, RGB(153, 102, 204))
+	Call dict.Add(194, RGB(76, 0, 153))
+	Call dict.Add(195, RGB(114, 76, 153))
+	Call dict.Add(196, RGB(63, 0, 127))
+	Call dict.Add(197, RGB(95, 63, 127))
+	Call dict.Add(198, RGB(38, 0, 76))
+	Call dict.Add(199, RGB(57, 38, 76))
+	Call dict.Add(200, RGB(191, 0, 255))
+	Call dict.Add(201, RGB(223, 127, 255))
+	Call dict.Add(202, RGB(153, 0, 204))
+	Call dict.Add(203, RGB(178, 102, 204))
+	Call dict.Add(204, RGB(114, 0, 153))
+	Call dict.Add(205, RGB(133, 76, 153))
+	Call dict.Add(206, RGB(95, 0, 127))
+	Call dict.Add(207, RGB(111, 63, 127))
+	Call dict.Add(208, RGB(57, 0, 76))
+	Call dict.Add(209, RGB(66, 38, 76))
+	Call dict.Add(210, RGB(255, 0, 255))
+	Call dict.Add(211, RGB(255, 127, 255))
+	Call dict.Add(212, RGB(204, 0, 204))
+	Call dict.Add(213, RGB(204, 102, 204))
+	Call dict.Add(214, RGB(153, 0, 153))
+	Call dict.Add(215, RGB(153, 76, 153))
+	Call dict.Add(216, RGB(127, 0, 127))
+	Call dict.Add(217, RGB(127, 63, 127))
+	Call dict.Add(218, RGB(76, 0, 76))
+	Call dict.Add(219, RGB(76, 38, 76))
+	Call dict.Add(220, RGB(255, 0, 191))
+	Call dict.Add(221, RGB(255, 127, 223))
+	Call dict.Add(222, RGB(204, 0, 153))
+	Call dict.Add(223, RGB(204, 102, 178))
+	Call dict.Add(224, RGB(153, 0, 114))
+	Call dict.Add(225, RGB(153, 76, 133))
+	Call dict.Add(226, RGB(127, 0, 95))
+	Call dict.Add(227, RGB(127, 63, 111))
+	Call dict.Add(228, RGB(76, 0, 57))
+	Call dict.Add(229, RGB(76, 38, 66))
+	Call dict.Add(230, RGB(255, 0, 127))
+	Call dict.Add(231, RGB(255, 127, 191))
+	Call dict.Add(232, RGB(204, 0, 102))
+	Call dict.Add(233, RGB(204, 102, 153))
+	Call dict.Add(234, RGB(153, 0, 76))
+	Call dict.Add(235, RGB(153, 76, 114))
+	Call dict.Add(236, RGB(127, 0, 63))
+	Call dict.Add(237, RGB(127, 63, 95))
+	Call dict.Add(238, RGB(76, 0, 38))
+	Call dict.Add(239, RGB(76, 38, 57))
+	Call dict.Add(240, RGB(255, 0, 63))
+	Call dict.Add(241, RGB(255, 127, 159))
+	Call dict.Add(242, RGB(204, 0, 51))
+	Call dict.Add(243, RGB(204, 102, 127))
+	Call dict.Add(244, RGB(153, 0, 38))
+	Call dict.Add(245, RGB(153, 76, 95))
+	Call dict.Add(246, RGB(127, 0, 31))
+	Call dict.Add(247, RGB(127, 63, 79))
+	Call dict.Add(248, RGB(76, 0, 19))
+	Call dict.Add(249, RGB(76, 38, 47))
+	Call dict.Add(250, RGB(51, 51, 51))
+	Call dict.Add(251, RGB(91, 91, 91))
+	Call dict.Add(252, RGB(132, 132, 132))
+	Call dict.Add(253, RGB(173, 173, 173))
+	Call dict.Add(254, RGB(214, 214, 214))
+	Call dict.Add(255, RGB(255, 255, 255))
+	Set ColorDictionary = dict
+End Function
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Drag & drop and alias creation stuff
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Call Rhino.AddStartUpScript(Rhino.LastLoadedScriptFile)
+Call Rhino.AddAlias("SetAcadPrintInfo", "_-RunScript (SetAcadPrintInfo)")
