@@ -200,6 +200,8 @@ bool CMarmaladeRdkPlugIn::SupportsFeature(const UUID& uuidFeature) const
 //	if (uuidFeature == uuidFeatureSun)
 //		return false;
 
+	// You should default to true in case we add new features.
+	// If a new feature appears that you don't support, you can veto it above.
 	return true;
 }
 

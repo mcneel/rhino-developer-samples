@@ -1,13 +1,13 @@
 
 #pragma once
 
-class CSampleRdkRendererSdkRender : public CRhRdkSdkRender
+class CSampleRdkEffectsPanelSdkRender : public CRhRdkSdkRender
 {
 public:
-	CSampleRdkRendererSdkRender(const CRhinoCommandContext& context, CRhinoRenderPlugIn& pPlugin,
+	CSampleRdkEffectsPanelSdkRender(const CRhinoCommandContext& context, CRhinoRenderPlugIn& pPlugin,
 	                            const ON_wString& sCaption, UINT idIcon, bool bPreview);
 
-	virtual ~CSampleRdkRendererSdkRender();
+	virtual ~CSampleRdkEffectsPanelSdkRender();
 
 	int ThreadedRender(void);
 	void SetContinueModal(bool b);
