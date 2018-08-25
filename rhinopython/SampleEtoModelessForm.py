@@ -35,7 +35,7 @@ class SampleEtoModelessForm(forms.Form):
         self.Resizable = True
         self.Maximizable = False
         self.Minimizable = False
-        self.ShowInTaskbar = False
+        self.ShowInTaskbar = True
         self.MinimumSize = drawing.Size(200, 150)
         # FormClosed event handler
         self.Closed += self.OnFormClosed
@@ -51,14 +51,18 @@ class SampleEtoModelessForm(forms.Form):
         
     # Fills the listbox with document objects
     def FillListBox(self):
+        sc.doc = Rhino.RhinoDoc.ActiveDoc   # apparently sc.doc has to be set to Rhino's ActiveDoc, otherwise line 61 will throw an error
+        
         iter = Rhino.DocObjects.ObjectEnumeratorSettings()
         iter.NormalObjects = True
         iter.LockedObjects = False
         iter.IncludeLights = True
         iter.IncludeGrips = False
-        objects = sc.doc.Objects.GetObjectList(iter)
+        objects = sc.doc.Objects.GetObjectList(iter)    
         for obj in objects:
             self.AddObject(obj)
+            
+        sc.doc = ghdoc  # changin sc.doc back to ghdoc
      
     # CloseDocument event handler
     def OnCloseDocument(self, sender, e):
@@ -208,15 +212,15 @@ def TestSampleEtoModelessForm():
     # See if the form is already visible
     if sc.sticky.has_key('sample_modeless_form'):
         return
-    
-    # Create and show form
-    form = SampleEtoModelessForm()
-    form.Owner = Rhino.UI.RhinoEtoApp.MainWindow
-    form.Show()
-    # Add the form to the sticky dictionary so it
-    # survives when the main function ends.
-    sc.sticky['sample_modeless_form'] = form
-    
+    else:
+        # Create and show form
+        form = SampleEtoModelessForm()
+        form.Owner = Rhino.UI.RhinoEtoApp.MainWindow
+        form.Show()
+        # Add the form to the sticky dictionary so it
+        # survives when the main function ends.
+        sc.sticky['sample_modeless_form'] = form
+
 ################################################################################
 # Check to see if this file is being executed as the 'main' python
 # script instead of being used as a module by some other python script
