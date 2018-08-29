@@ -72,8 +72,10 @@ private:
 };
 
 
-
-class CDisplayModeFactory : public RhRdk::Realtime::DisplayMode::Factory
+//ALB 2018.8.29 This object must be derived from CRhRdkObject so it can be cleaned up correctly.
+//This happens because of a bug in the SDK - there should have been a Delete function on RhRdk::Realtime::DisplayMode::Factory
+//https://mcneel.myjetbrains.com/youtrack/issue/RH-46405
+class CDisplayModeFactory : public RhRdk::Realtime::DisplayMode::Factory, public CRhRdkObject
 {
 public:
 	virtual ON_wString Name(void) const override
