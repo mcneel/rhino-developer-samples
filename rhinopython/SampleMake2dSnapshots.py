@@ -48,6 +48,25 @@ def __CreateSubLayers(layer_name, parent_id):
     sublayer1_index = sc.doc.Layers.Add(sublayer1)    
     
     return sublayer0_index, sublayer1_index
+    
+    
+################################################################################
+# Unpack block references recursively if required
+################################################################################
+def __AddGeometryToHDLP_Recursive(parameters, obj, xform) : 
+    
+    # Just add the geometry if there's nothing to recurse into
+    if obj.ObjectType != Rhino.DocObjects.ObjectType.InstanceReference:
+        parameters.AddGeometry(obj.Geometry, xform, None)
+        return
+    
+    xform = obj.InstanceXform * xform
+    
+    idef = obj.InstanceDefinition
+    
+    for o in idef.GetObjects():
+        __AddGeometryToHDLP_Recursive(parameters, o, xform)
+    
 
 ################################################################################
 # Computes hidden line drawing curves for a snapshot
@@ -68,10 +87,12 @@ def __ComputeHiddenLineDrawing(snapshot, viewport):
     #parameters.IncludeTangentSeams = False
     parameters.SetViewport(viewport)
     
+    transform = Rhino.Geometry.Transform(1.0)
+    
     # Process all of the document objects
     for obj in sc.doc.Objects:
         if obj.IsSelectable(True, False, False, False):
-            parameters.AddGeometry(obj.Geometry, None)
+            __AddGeometryToHDLP_Recursive(parameters, obj, transform)
     
     # Create the hidden line drawing geometry
     return Rhino.Geometry.HiddenLineDrawing.Compute(parameters, True)
