@@ -138,6 +138,14 @@ def SampleMake2dSnapshots():
     # so we can turn them on later.
     layer_indices = []
     
+    # We might be required to switch back to the original view at the
+    # end, so store the name now.
+    original_view = sc.doc.Views.ActiveView.ActiveViewport.Name
+    
+    # This is the name of a special layout, which, if present, the curves
+    # from Make2d will be extracted to at 1:10
+    special_layout_name = "2d"
+    
     # Do this for every snapshot...
     for snapshot in snapshots:
         
@@ -164,6 +172,17 @@ def SampleMake2dSnapshots():
         # Create object attributes that use the sublayer
         attributes = sc.doc.CreateDefaultAttributes()
         
+        # This is special code to force the output, at 1:10 scale onto a layer called
+        # special_layout_name if the layout exists.  If not, use model space.
+        scaling = Rhino.Geometry.Transform(1.0)
+        rhinoview_2d = sc.doc.Views.Find(special_layout_name, False)
+        
+        if (rhinoview_2d):
+            attributes.ViewportId = rhinoview_2d.ActiveViewportID
+            attributes.Space = Rhino.DocObjects.ActiveSpace.PageSpace
+            scaling = Rhino.Geometry.Transform(0.1)
+            Rhino.RhinoApp.RunScript("_SetActiveViewport " + special_layout_name, False)
+        
         # A collection for the added curves, so we can group them
         curve_ids = []
         
@@ -183,7 +202,7 @@ def SampleMake2dSnapshots():
                 # Copy the curve
                 curve = hld_curve.CurveGeometry.DuplicateCurve()
                 # Flatten the curve
-                curve.Transform(xform)
+                curve.Transform(scaling * xform)
                 # Add it to the document
                 id = sc.doc.Objects.AddCurve(curve, attributes)
                 
@@ -194,10 +213,17 @@ def SampleMake2dSnapshots():
             group_index = sc.doc.Groups.Add()
             if (-1 != group_index):
                 sc.doc.Groups.AddToGroup(group_index, curve_ids)
+                
+        if (sc.doc.Views.ActiveView.ActiveViewport.Name != original_view):
+            Rhino.RhinoApp.RunScript("_SetActiveViewport " + original_view, False)
     
     # Turn on the new, hidden layers
     for layer_index in layer_indices:
         sc.doc.Layers[layer_index].IsVisible = True
+    
+    # If we are dropping the curves onto the "special layout", switch to it now
+    if (sc.doc.Views.Find(special_layout_name, False)):
+        Rhino.RhinoApp.RunScript("_SetActiveViewport " + special_layout_name, False)
     
     # Redraw the document
     sc.doc.Views.Redraw()
