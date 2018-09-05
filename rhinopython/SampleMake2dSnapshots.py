@@ -165,7 +165,7 @@ def SampleMake2dSnapshots():
         attributes = sc.doc.CreateDefaultAttributes()
         
         # A collection for the added curves, so we can group them
-        curves = []
+        curve_ids = []
         
         # Add the results to the document
         for hld_curve in hld.Segments:
@@ -185,13 +185,15 @@ def SampleMake2dSnapshots():
                 # Flatten the curve
                 curve.Transform(xform)
                 # Add it to the document
-                curves.append(sc.doc.Objects.AddCurve(curve, attributes))
+                id = sc.doc.Objects.AddCurve(curve, attributes)
+                
+                curve_ids.append(id)
             
         # Now add a new group to the document, and add all of the curves to it
-        if (len(curves) > 0):
+        if (len(curve_ids) > 0):
             group_index = sc.doc.Groups.Add()
             if (-1 != group_index):
-                sc.doc.Groups.AddToGroup(group_index, curves)
+                sc.doc.Groups.AddToGroup(group_index, curve_ids)
     
     # Turn on the new, hidden layers
     for layer_index in layer_indices:
