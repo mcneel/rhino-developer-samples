@@ -54,6 +54,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SampleCsAddRadialDimension.cs" />
     <Compile Include="SampleCsDrawGrayscale.cs" />
     <Compile Include="SampleCsDuplicateObjectFromNameTag.cs" />
     <Compile Include="SampleCsExportDXF.cs" />
