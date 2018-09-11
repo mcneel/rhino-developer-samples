@@ -54,6 +54,9 @@ def __CreateSubLayers(layer_name, parent_id):
 # Unpack block references recursively if required
 ################################################################################
 def __AddGeometryToHDLP_Recursive(parameters, obj, xform) : 
+
+    if obj.Attributes.Space == Rhino.DocObjects.ActiveSpace.PageSpace:
+        return
     
     # Just add the geometry if there's nothing to recurse into
     if obj.ObjectType != Rhino.DocObjects.ObjectType.InstanceReference:
