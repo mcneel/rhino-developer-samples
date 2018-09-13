@@ -56,7 +56,9 @@
     </Compile>
     <Compile Include="SampleCsAddRadialDimension.cs" />
     <Compile Include="SampleCsContour.cs" />
+    <Compile Include="SampleCsDrawArrow.cs" />
     <Compile Include="SampleCsDrawGrayscale.cs" />
+    <Compile Include="SampleCsDrawPin.cs" />
     <Compile Include="SampleCsDuplicateObjectFromNameTag.cs" />
     <Compile Include="SampleCsExportDXF.cs" />
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
