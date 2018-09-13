@@ -47,6 +47,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Xfinium.Pdf.Win">
+      <HintPath>C:\Program Files\Rhino 6\Plug-ins\Xfinium.Pdf.Win.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -200,6 +204,7 @@
     <Compile Include="SampleCsViewSize.cs" />
     <Compile Include="SampleCsWorldToPageTransform.cs" />
     <Compile Include="SampleCsWrite3dmFile.cs" />
+    <Compile Include="SampleCsWritePdf.cs" />
     <Compile Include="SampleCsZAnalysis.cs" />
     <Compile Include="SampleCsZebraAnalysis.cs" />
     <Compile Include="SampleCsZoom.cs" />
