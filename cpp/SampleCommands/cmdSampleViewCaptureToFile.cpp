@@ -41,47 +41,37 @@ CRhinoCommand::result CCommandSampleViewCaptureToFile::RunCommand(const CRhinoCo
     return nothing;
 
   CRhinoView* view = RhinoApp().ActiveView();
-  if (view)
-  {
-    ON_4iRect rect;
-    view->GetClientRect(rect);
+  if (nullptr == view)
+    return CRhinoCommand::failure;
 
-    CRhinoDib dib;
-    if (dib.CreateDib(rect.Width(), rect.Height(), 24, true))
-    {
-      // Set these flags as you wish.
-      BOOL bIgnoreHighlights = TRUE;
-      BOOL bDrawTitle = FALSE;
-      BOOL bDrawConstructionPlane = FALSE;
-      BOOL bDrawWorldAxes = FALSE;
+  CRhinoDisplayPipeline* dp = view->ActiveViewport().DisplayPipeline();
+  if (nullptr == dp)
+    return CRhinoCommand::failure;
 
-      CRhinoObjectIterator it(CRhinoObjectIterator::normal_or_locked_objects, CRhinoObjectIterator::active_and_reference_objects);
+  ON_4iRect rect;
+  view->GetClientRect(rect);
 
-      if (view->ActiveViewport().View().m_display_mode_id == ON_StandardDisplayModeId::Wireframe)
-      {
-        context.m_doc.DrawToDC(it, dib, dib.Width(), dib.Height(),
-          view->ActiveViewport().View(),
-          bIgnoreHighlights,
-          bDrawTitle,
-          bDrawConstructionPlane,
-          bDrawWorldAxes
-        );
-      }
-      else
-      {
-        context.m_doc.RenderToDC(it, dib, dib.Width(), dib.Height(),
-          view->ActiveViewport().View(),
-          bIgnoreHighlights,
-          bDrawTitle,
-          bDrawConstructionPlane,
-          bDrawWorldAxes,
-          FALSE
-        );
-      }
+  CRhinoDib dib;
+  if (!dib.CreateDib(rect.Width(), rect.Height(), 24, true))
+    return CRhinoCommand::failure;
 
-      dib.WriteToFile(filename);
-    }
-  }
+  const CDisplayPipelineAttributes* pDA = CRhinoDisplayAttrsMgr::StdWireframeAttrs();
+  //const CDisplayPipelineAttributes* pDA = CRhinoDisplayAttrsMgr::StdShadedAttrs();
+  //const CDisplayPipelineAttributes* pDA = CRhinoDisplayAttrsMgr::StdShadedAttrs();
+
+  CDisplayPipelineAttributes da(*pDA);
+  da.m_contextDrawToDC = CDisplayPipelineAttributes::ContextsForDrawToDC::kUIPreview;
+  da.m_bUseDocumentGrid = false;
+  da.m_bDrawGrid = false;
+  da.m_bDrawAxes = false;
+  da.m_bDrawWorldAxes = false;
+  da.m_groundPlaneUsage = CDisplayPipelineAttributes::GroundPlaneUsages::Custom;
+  da.m_customGroundPlaneSettings.on = false;
+  da.m_bCastShadows = false;
+
+  bool rc = dp->DrawToDib(dib, rect.Width(), rect.Height(), da);
+  if (rc)
+    dib.WriteToFile(filename);
 
   return CRhinoCommand::success;
 }
