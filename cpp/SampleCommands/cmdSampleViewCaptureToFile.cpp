@@ -69,8 +69,8 @@ CRhinoCommand::result CCommandSampleViewCaptureToFile::RunCommand(const CRhinoCo
   da.m_customGroundPlaneSettings.on = false;
   da.m_bCastShadows = false;
 
-  bool rc = dp->DrawToDib(dib, rect.Width(), rect.Height(), da);
-  if (rc)
+  bool res = dp->DrawToDib(dib, rect.Width(), rect.Height(), da);
+  if (res)
     dib.WriteToFile(filename);
 
   return CRhinoCommand::success;
