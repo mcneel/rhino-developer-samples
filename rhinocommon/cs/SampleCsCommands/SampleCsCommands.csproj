@@ -195,6 +195,7 @@
     <Compile Include="SampleCsSweep1.cs" />
     <Compile Include="SampleCsTestPlanarCurveContainment.cs" />
     <Compile Include="SampleCsText.cs" />
+    <Compile Include="SampleCsTextEntityBoundingBox.cs" />
     <Compile Include="SampleCsTrimmedPlane.cs" />
     <Compile Include="SampleCsTrimSurface.cs" />
     <Compile Include="SampleCsUnisolate.cs" />
