@@ -209,6 +209,7 @@
     <ClCompile Include="cmdSampleSyncViews.cpp" />
     <ClCompile Include="cmdSampleTexture.cpp" />
     <ClCompile Include="cmdSampleTextureMapping.cpp" />
+    <ClCompile Include="cmdSampleTextureMappingEval.cpp" />
     <ClCompile Include="cmdSampleToggleLayer.cpp" />
     <ClCompile Include="cmdSampleTriangulatePolygon.cpp" />
     <ClCompile Include="cmdSampleTrimmedPlane.cpp" />
