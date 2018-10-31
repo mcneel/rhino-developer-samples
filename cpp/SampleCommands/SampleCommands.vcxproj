@@ -108,6 +108,7 @@
     <ClCompile Include="cmdSampleIntepCrvOnSrf.cpp" />
     <ClCompile Include="cmdSampleInterpCurve.cpp" />
     <ClCompile Include="cmdSampleIntersectCrv.cpp" />
+    <ClCompile Include="cmdSampleIntersectMeshRay.cpp" />
     <ClCompile Include="cmdSampleIntersetCrvSrf.cpp" />
     <ClCompile Include="cmdSampleIterateObjects.cpp" />
     <ClCompile Include="cmdSampleJoinSrf.cpp" />
