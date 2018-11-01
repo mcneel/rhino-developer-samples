@@ -18,6 +18,7 @@ class SampleEventHandler():
         Rhino.RhinoDoc.ReplaceRhinoObject += self.OnReplaceRhinoObject
         Rhino.RhinoDoc.DeleteRhinoObject += self.OnDeleteRhinoObject
         Rhino.RhinoDoc.UndeleteRhinoObject += self.OnUndeleteRhinoObject
+        self.Enabled = True
     
     # Disables the event handlers
     def Disable(self):
@@ -25,6 +26,11 @@ class SampleEventHandler():
         Rhino.RhinoDoc.ReplaceRhinoObject -= self.OnReplaceRhinoObject
         Rhino.RhinoDoc.DeleteRhinoObject -= self.OnDeleteRhinoObject
         Rhino.RhinoDoc.UndeleteRhinoObject -= self.OnUndeleteRhinoObject
+        self.Enabled = False
+    
+    # Returns the enabled state
+    def IsEnabled(self):
+        return self.Enabled
     
     # AddRhinoObject event handler
     def OnAddRhinoObject(self, sender, e):
