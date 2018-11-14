@@ -169,6 +169,7 @@
     <ClCompile Include="cmdSamplePolyline.cpp" />
     <ClCompile Include="cmdSamplePrePostSelect.cpp" />
     <ClCompile Include="cmdSamplePrintGripLocations.cpp" />
+    <ClCompile Include="cmdSamplePrintMaterialNames.cpp" />
     <ClCompile Include="cmdSamplePrintMaterialTextures.cpp" />
     <ClCompile Include="cmdSamplePtFromCrvStart.cpp" />
     <ClCompile Include="cmdSamplePullCurveToMesh.cpp" />
