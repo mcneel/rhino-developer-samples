@@ -175,6 +175,7 @@
     <ClCompile Include="cmdSamplePullCurveToMesh.cpp" />
     <ClCompile Include="cmdSamplePurgeGroups.cpp" />
     <ClCompile Include="cmdSampleQueryDiameterDimension.cpp" />
+    <ClCompile Include="cmdSampleRailRevolve.cpp" />
     <ClCompile Include="cmdSampleRayShooter.cpp" />
     <ClCompile Include="cmdSampleReduceMesh.cpp" />
     <ClCompile Include="cmdSampleResetLayers.cpp" />
