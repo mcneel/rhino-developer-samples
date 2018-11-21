@@ -11,7 +11,7 @@
 class CCommandSampleRailRevolve : public CRhinoCommand
 {
 public:
-  CCommandSampleRailRevolve() ;
+  CCommandSampleRailRevolve();
   UUID CommandUUID() override
   {
     // {A751D54C-26FB-4410-9798-410C7721C750}
@@ -47,9 +47,15 @@ CRhinoCommand::result CCommandSampleRailRevolve::RunCommand(const CRhinoCommandC
   get_profile.SetGeometryFilter(ON::curve_object);
   get_profile.AddCommandOptionToggle(RHCMDOPTNAME(L"ScaleHeight"), RHCMDOPTVALUE(L"No"), RHCMDOPTVALUE(L"Yes"), bScaleHeight, &bScaleHeight);
   get_profile.AddCommandOptionToggle(RHCMDOPTNAME(L"SplitAtTangents"), RHCMDOPTVALUE(L"No"), RHCMDOPTVALUE(L"Yes"), bSplitAtTangents, &bSplitAtTangents);
-  get_profile.GetObjects(1, 1);
-  if (CRhinoCommand::success != get_profile.CommandResult())
-    return get_profile.CommandResult();
+  for (;;)
+  {
+    CRhinoGet::result res = get_profile.GetObjects(1, 1);
+    if (res == CRhinoGet::option)
+      continue;
+    if (res != CRhinoGet::object)
+      return CRhinoCommand::cancel;
+    break;
+  }
 
   profile_curve = get_profile.Object(0).Curve();
   if (nullptr == profile_curve)
@@ -63,9 +69,15 @@ CRhinoCommand::result CCommandSampleRailRevolve::RunCommand(const CRhinoCommandC
   get_rail.AddCommandOptionToggle(RHCMDOPTNAME(L"SplitAtTangents"), RHCMDOPTVALUE(L"No"), RHCMDOPTVALUE(L"Yes"), bSplitAtTangents, &bSplitAtTangents);
   get_rail.EnablePreSelect(false);
   get_rail.EnableDeselectAllBeforePostSelect(false);
-  get_rail.GetObjects(1, 1);
-  if (CRhinoCommand::success != get_rail.CommandResult())
-    return get_rail.CommandResult();
+  for (;;)
+  {
+    CRhinoGet::result res = get_rail.GetObjects(1, 1);
+    if (res == CRhinoGet::option)
+      continue;
+    if (res != CRhinoGet::object)
+      return CRhinoCommand::cancel;
+    break;
+  }
 
   rail_curve = get_rail.Object(0).Curve();
   if (nullptr == rail_curve)
@@ -119,7 +131,7 @@ CRhinoCommand::result CCommandSampleRailRevolve::RunCommand(const CRhinoCommandC
 
   // Save for next use
   m_bSplitAtTangents = bSplitAtTangents;
-  
+
   return CRhinoCommand::success;
 }
 
