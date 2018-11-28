@@ -63,9 +63,6 @@
     <ClCompile Include="cmdSampleBend.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cmdSampleBlendCurve.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cmdSampleBooleanDifference.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -700,6 +697,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cmdSampleRailRevolve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

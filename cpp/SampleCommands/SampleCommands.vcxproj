@@ -24,7 +24,6 @@
     <ClCompile Include="cmdSampleAttributeUserData.cpp" />
     <ClCompile Include="cmdSampleAutomateGrasshopper.cpp" />
     <ClCompile Include="cmdSampleBend.cpp" />
-    <ClCompile Include="cmdSampleBlendCurve.cpp" />
     <ClCompile Include="cmdSampleBooleanDifference.cpp" />
     <ClCompile Include="cmdSampleBooleanUnion.cpp" />
     <ClCompile Include="cmdSampleBoundingBox.cpp" />
@@ -237,6 +236,7 @@
     <ClCompile Include="SampleCommandsPlugIn.cpp" />
     <ClCompile Include="SampleDrawCallback.cpp" />
     <ClCompile Include="cmdSampleDump3dmInstanceDefinitionsEx.cpp" />
+    <ClCompile Include="SampleFunctions.cpp" />
     <ClCompile Include="SampleObjectUserData.cpp" />
     <ClCompile Include="SampleRectangleObject.cpp" />
     <ClCompile Include="stdafx.cpp">
