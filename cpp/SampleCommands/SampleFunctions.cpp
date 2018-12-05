@@ -269,9 +269,10 @@ bool ON_DollyExtents(
 Description:
   Get the Brep definition of a trimmed surface.
 Parameters:
-  surface  - [in] surface that will be trimmed.
-  boundary - [in] a closed, 2d parameter space boundary curve that
-                  defines the outer boundary of the trimmed surface.
+  srf   - [in] Surface that will be trimmed.
+  crv2d - [in] Closed, 2d parameter space boundary curve that
+               defines the outer boundary of the trimmed surface.
+  tol   - [in] Tolerance for fitting 3d edge curves.
 Returns:
   An ON_Brep representation of the trimmed surface with a single face.
 Remarks:
@@ -279,42 +280,43 @@ Remarks:
   functions responsibility to clean up the memory.
 */
 ON_Brep* ON_BrepFromSurfaceAndBoundary(
-  const ON_Surface& surface,
-  const ON_Curve& boundary
+  const ON_Surface& srf, 
+  const ON_Curve& crv2d, 
+  double tol
 )
 {
-  if (!surface.IsValid() ||
-    !boundary.IsValid() ||
-    !boundary.IsClosed() ||
-    2 != boundary.Dimension()
-    )
+  if (!srf.IsValid() || !crv2d.IsValid() || !crv2d.IsClosed() || 2 != crv2d.Dimension())
     return nullptr;
 
-  ON_Curve* curve = boundary.DuplicateCurve();
-  curve->ChangeDimension(3);
+  ON_PlaneSurface* s = new ON_PlaneSurface();
+  s->m_plane = ON_Plane::World_xy;
+  s->SetExtents(0, srf.Domain(0), true);
+  s->SetExtents(1, srf.Domain(1), true);
 
-  ON_SimpleArray<ON_Curve*> curves;
-  curves.Append(curve);
-  ON_Brep* brep = ON_BrepTrimmedPlane(ON_Plane::World_xy, curves, false, nullptr);
-  if (nullptr == brep)
+  ON_Brep* brep = ON_Brep::New();
+  const int si = brep->AddSurface(s);
+  ON_BrepFace& face = brep->NewFace(si);
+  face.DestroyRuntimeCache();
+
+  ON_Curve* crv3d = crv2d.DuplicateCurve();
+  crv3d->ChangeDimension(3);
+
+  ON_SimpleArray<ON_Curve*> boundary;
+  boundary.Append(crv3d);
+
+  if (brep->NewPlanarFaceLoop(face.m_face_index, ON_BrepLoop::outer, boundary, false))
   {
-    delete curve;
-    return nullptr;
+    int si = brep->AddSurface(srf.DuplicateSurface());
+    face.ChangeSurface(si);
+    brep->RebuildEdges(face, tol, true, true);
+    brep->SetTolerancesBoxesAndFlags();
+    brep->Compact();
   }
-
-  for (int ei = 0; ei < brep->m_E.Count(); ei++)
-    brep->SplitKinkyEdge(ei);
-  brep->Compact();
-
-  ON_Surface* brep_surface = surface.DuplicateSurface();
-  brep_surface->SetDomain(0, brep->m_F[0].Domain(0));
-  brep_surface->SetDomain(1, brep->m_F[0].Domain(1));
-
-  int si = brep->AddSurface(brep_surface);
-  brep->m_F[0].ChangeSurface(si, false);
-  for (int fi = 0; fi < brep->m_F.Count(); fi++)
-    brep->RebuildEdges(brep->m_F[fi], 1.0e-5, true, true);
-  brep->Compact();
+  else
+  {
+    delete brep;
+    brep = nullptr;
+  }
 
   return brep;
 }
