@@ -7,14 +7,14 @@ from scriptcontext import doc
 
 def RunCommand():
   rc, obj_refs = RhinoGet.GetMultipleObjects("Select hatches to replace", False, ObjectType.Hatch)
-  if rc <> Result.Success or obj_refs == None:
+  if rc != Result.Success or obj_refs == None:
     return rc
 
   gs = GetString()
   gs.SetCommandPrompt("Name of replacement hatch pattern")
   gs.AcceptNothing(False)
   gs.Get()
-  if gs.CommandResult() <> Result.Success:
+  if gs.CommandResult() != Result.Success:
     return gs.CommandResult()
   hatch_name = gs.StringResult()
 
@@ -26,7 +26,7 @@ def RunCommand():
 
   for obj_ref in obj_refs:
     hatch_object = obj_ref.Object()
-    if hatch_object.HatchGeometry.PatternIndex <> pattern_index:
+    if hatch_object.HatchGeometry.PatternIndex != pattern_index:
       hatch_object.HatchGeometry.PatternIndex = pattern_index
       hatch_object.CommitChanges()
 

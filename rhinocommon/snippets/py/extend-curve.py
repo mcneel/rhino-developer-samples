@@ -9,7 +9,7 @@ from scriptcontext import doc
 def RunCommand():
 
   rc, boundary_obj_refs = RhinoGet.GetMultipleObjects("Select boundary objects", False, ObjectType.AnyObject)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
   if boundary_obj_refs == None or boundary_obj_refs.Length == 0:
     return Result.Nothing
@@ -19,7 +19,7 @@ def RunCommand():
   gc.GeometryFilter = ObjectType.Curve
   gc.GeometryAttributeFilter = GeometryAttributeFilter.OpenCurve
   gc.Get()
-  if gc.CommandResult() <> Result.Success:
+  if gc.CommandResult() != Result.Success:
     return gc.CommandResult()
   curve_obj_ref = gc.Object(0)
 
@@ -31,7 +31,7 @@ def RunCommand():
 
   geometry = [obj.Geometry() for obj in boundary_obj_refs]
   extended_curve = curve.Extend(curve_end, CurveExtensionStyle.Line, geometry)
-  if extended_curve <> None and extended_curve.IsValid:
+  if extended_curve != None and extended_curve.IsValid:
     if not doc.Objects.Replace(curve_obj_ref.ObjectId, extended_curve):
       return Result.Failure
     doc.Views.Redraw()

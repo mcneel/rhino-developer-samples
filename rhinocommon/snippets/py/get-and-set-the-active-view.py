@@ -9,7 +9,7 @@ def RunCommand():
   active_view_name = doc.Views.ActiveView.ActiveViewport.Name
 
   non_active_views = [(view.ActiveViewport.Name, view) for view in doc.Views
-                      if view.ActiveViewport.Name <> active_view_name]
+                      if view.ActiveViewport.Name != active_view_name]
 
   # get name of view to set active
   gs = GetString()
@@ -23,10 +23,10 @@ def RunCommand():
     return gs.CommandResult()
 
   selected_view_name = "{0}".format(gs.StringResult())
-  if gs.Option() <> None:
+  if gs.Option() != None:
       selected_view_name = gs.Option().EnglishName
 
-  if selected_view_name <> active_view_name:
+  if selected_view_name != active_view_name:
     if selected_view_name in [seq[0] for seq in non_active_views]:
       doc.Views.ActiveView = [seq[1] for seq in non_active_views
                               if seq[0] == selected_view_name][0]

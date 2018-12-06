@@ -9,7 +9,7 @@ from scriptcontext import doc
 
 def RunCommand():
   rc, obj_ref = RhinoGet.GetOneObject("Select object", False, ObjectType.AnyObject)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
   rhino_object = obj_ref.Object()
   color = rhino_object.Attributes.ObjectColor

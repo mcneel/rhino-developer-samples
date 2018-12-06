@@ -20,7 +20,7 @@ def divide_curve():
     # get user input
     res, obj_refs = RhinoGet.GetMultipleObjects("Curves to divide",
         False, ObjectType.EdgeFilter | ObjectType.Curve)
-    if res <> Result.Success: return res
+    if res != Result.Success: return res
     curves = [obj_ref.Curve() for obj_ref in obj_refs]
 
     distance_between_divisions = rs.GetReal(

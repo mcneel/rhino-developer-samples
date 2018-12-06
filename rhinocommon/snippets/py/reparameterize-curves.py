@@ -9,7 +9,7 @@ from scriptcontext import doc
 def RunCommand():
 
   rc, obj_ref = RhinoGet.GetOneObject("Select curve to reparameterize", False, ObjectType.Curve)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
   curve = obj_ref.Curve()
   if curve == None:
@@ -17,12 +17,12 @@ def RunCommand():
 
   domain_start = 0
   rc, domain_start = RhinoGet.GetNumber("Domain start", False, domain_start)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
 
   domain_end = 100
   rc, domain_end = RhinoGet.GetNumber("Domain end", False, domain_end)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
 
   if Math.Abs(curve.Domain.T0 - domain_start) < RhinoMath.ZeroTolerance and \
