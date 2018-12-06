@@ -9,7 +9,7 @@ def RunCommand():
   gp = GetPoint()
   gp.SetCommandPrompt("Center point")
   gp.Get()
-  if gp.CommandResult() <> Result.Success:
+  if gp.CommandResult() != Result.Success:
     return gp.CommandResult()
   center_point = gp.Point()
   if center_point == Point3d.Unset:
@@ -21,7 +21,7 @@ def RunCommand():
   gcp.SetBasePoint(center_point, True)
   gcp.DrawLineFromPoint(center_point, True)
   gcp.Get()
-  if gcp.CommandResult() <> Result.Success:
+  if gcp.CommandResult() != Result.Success:
     return gcp.CommandResult()
 
   radius = center_point.DistanceTo(gcp.Point())

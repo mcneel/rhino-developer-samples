@@ -11,14 +11,14 @@ def RunCommand():
   go.GeometryFilter = ObjectType.Curve
   go.GeometryAttributeFilter = GeometryAttributeFilter.OpenCurve
   go.GetMultiple(2, 4)
-  if go.CommandResult() <> Result.Success:
+  if go.CommandResult() != Result.Success:
     return go.CommandResult()
 
   curves = [o.Curve() for o in go.Objects()]
 
   brep = Brep.CreateEdgeSurface(curves)
 
-  if brep <> None:
+  if brep != None:
     doc.Objects.AddBrep(brep)
     doc.Views.Redraw()
 

@@ -12,7 +12,7 @@ def RunCommand():
   gp = GetPoint()
   gp.SetCommandPrompt("Click for point")
   gp.Get()
-  if gp.CommandResult() <> Result.Success:
+  if gp.CommandResult() != Result.Success:
     return gp.CommandResult()
   point3d = gp.Point()
   doc.Objects.AddPoint(point3d)
@@ -30,7 +30,7 @@ def RunCommand():
   # using RhinoCommon
   rc, obj_ref = RhinoGet.GetOneObject(
     "Select point", False, ObjectType.Point)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
   point = obj_ref.Point()
   RhinoApp.WriteLine("Point: x:{0}, y:{1}, z:{2}",
@@ -46,11 +46,11 @@ def RunCommand():
   go.SetCommandPrompt("Select point")
   go.GeometryFilter = ObjectType.Point
   go.GetMultiple(1, 0)
-  if go.CommandResult() <> Result.Success:
+  if go.CommandResult() != Result.Success:
     return go.CommandResult()
   for o_ref in  go.Objects():
     point = o_ref.Point()
-    if point <> None:
+    if point != None:
       RhinoApp.WriteLine("Point: x:{0}, y:{1}, z:{2}",
         point.Location.X,
         point.Location.Y,
@@ -69,7 +69,7 @@ def RunCommand():
   # selects multiple points that already exist
   rc, obj_refs = RhinoGet.GetMultipleObjects(
     "Select point", False, ObjectType.Point)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
   for o_ref in obj_refs:
     point = o_ref.Point()

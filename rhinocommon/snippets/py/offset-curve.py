@@ -8,14 +8,14 @@ import rhinoscriptsyntax as rs
 
 def RunCommand():
   rs, obj_ref = RhinoGet.GetOneObject("Select Curve", False, ObjectType.Curve)
-  if rs <> Result.Success:
+  if rs != Result.Success:
     return rs
   curve = obj_ref.Curve()
   if curve == None:
     return Result.Nothing
 
   rs, point = RhinoGet.GetPoint("Select Side", False)
-  if rs <> Result.Success:
+  if rs != Result.Success:
     return rs
   if point == Point3d.Unset:
     return Result.Nothing

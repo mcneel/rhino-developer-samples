@@ -8,7 +8,7 @@ from scriptcontext import doc
 
 def RunCommand():
   rc, obj_ref = RhinoGet.GetOneObject("Select surface", False, ObjectType.Surface)
-  if rc <> Result.Success or obj_ref == None:
+  if rc != Result.Success or obj_ref == None:
     return rc
   surface = obj_ref.Surface()
 

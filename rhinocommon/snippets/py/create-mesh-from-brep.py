@@ -9,7 +9,7 @@ from scriptcontext import doc
 def RunCommand():
   rc, objRef = RhinoGet.GetOneObject("Select surface or polysurface to mesh", True,
                                      ObjectType.Surface | ObjectType.PolysrfFilter)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
   brep = objRef.Brep()
   if None == brep:

@@ -7,14 +7,14 @@ def RunCommand():
   gp = GetPoint()
   gp.SetCommandPrompt("Base point")
   gp.Get()
-  if gp.CommandResult() <> Result.Success:
+  if gp.CommandResult() != Result.Success:
     return gp.CommandResult()
   base_point = gp.Point()
 
   gp.SetCommandPrompt("First reference point")
   gp.DrawLineFromPoint(base_point, True)
   gp.Get()
-  if gp.CommandResult() <> Result.Success:
+  if gp.CommandResult() != Result.Success:
     return gp.CommandResult()
   first_point = gp.Point()
 

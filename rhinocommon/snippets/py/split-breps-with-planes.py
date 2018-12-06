@@ -8,12 +8,12 @@ from scriptcontext import doc
 def RunCommand():
   #First, collect all the breps to split
   rc, obj_refs = RhinoGet.GetMultipleObjects("Select breps to split", False, ObjectType.Brep)
-  if rc <> Result.Success or obj_refs == None:
+  if rc != Result.Success or obj_refs == None:
     return rc
 
   # Get the final plane
   rc, plane = RhinoGet.GetPlane()
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
 
   #Iterate over all object references

@@ -10,20 +10,20 @@ from scriptcontext import doc
 def RunCommand():
   filter = ObjectType.Surface | ObjectType.PolysrfFilter | ObjectType.Mesh
   rc, obj_refs = RhinoGet.GetMultipleObjects("Select objects to contour", False, filter)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
 
   gp = GetPoint()
   gp.SetCommandPrompt("Contour plane base point")
   gp.Get()
-  if gp.CommandResult() <> Result.Success:
+  if gp.CommandResult() != Result.Success:
     return gp.CommandResult()
   base_point = gp.Point()
 
   gp.DrawLineFromPoint(base_point, True)
   gp.SetCommandPrompt("Direction perpendicular to contour planes")
   gp.Get()
-  if gp.CommandResult() <> Result.Success:
+  if gp.CommandResult() != Result.Success:
     return gp.CommandResult()
   end_point = gp.Point()
 
@@ -32,7 +32,7 @@ def RunCommand():
 
   distance = 1.0
   rc, distance = RhinoGet.GetNumber("Distance between contours", False, distance)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
 
   interval = Math.Abs(distance)
@@ -51,7 +51,7 @@ def RunCommand():
       curve_object_id = doc.Objects.AddCurve(curve)
       doc.Objects.Select(curve_object_id)
 
-  if curves <> None:
+  if curves != None:
     doc.Views.Redraw()
   return Result.Success
 

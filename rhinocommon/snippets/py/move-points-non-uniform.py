@@ -6,7 +6,7 @@ from scriptcontext import doc
 
 def RunCommand():
   rc, obj_refs = RhinoGet.GetMultipleObjects("Select points to move", False, ObjectType.Point)
-  if rc <> Result.Success or obj_refs == None:
+  if rc != Result.Success or obj_refs == None:
     return rc
 
   for obj_ref in obj_refs:

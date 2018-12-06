@@ -8,7 +8,7 @@ from scriptcontext import doc
 
 def RunCommand():
   rc, objRef = RhinoGet.GetOneObject("Select curve", False, ObjectType.Curve)
-  if rc <> Result.Success:
+  if rc != Result.Success:
     return rc
   curve = objRef.Curve()
   if None == curve:

@@ -3,7 +3,7 @@ import rhinoscriptsyntax as rs
 
 def RunCommand():
   rc, corners = Rhino.Input.RhinoGet.GetRectangle()
-  if rc <> Rhino.Commands.Result.Success:
+  if rc != Rhino.Commands.Result.Success:
       return rc
 
   plane = Rhino.Geometry.Plane(corners[0], corners[1], corners[2])
