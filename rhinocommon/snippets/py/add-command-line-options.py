@@ -36,7 +36,7 @@ def CommandLineOptions():
             print " List =", listValues[listIndex]
         elif get_rc==Rhino.Input.GetResult.Option:
             if gp.OptionIndex()==opList:
-              listIndex = gp.Option().CurrentListOptionIndex
+                listIndex = gp.Option().CurrentListOptionIndex
             continue
         break
     return Rhino.Commands.Result.Success
