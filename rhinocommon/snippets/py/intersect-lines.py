@@ -7,7 +7,7 @@ def IntersectLines():
     go.GeometryFilter = Rhino.DocObjects.ObjectType.Curve
     go.GetMultiple( 2, 2)
     if go.CommandResult()!=Rhino.Commands.Result.Success:
-      return go.CommandResult()
+        return go.CommandResult()
     if go.ObjectCount!=2: return Rhino.Commands.Result.Failure
 
     crv0 = go.Object(0).Geometry()
