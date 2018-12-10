@@ -183,6 +183,7 @@
     <ClCompile Include="cmdSampleRotate.cpp" />
     <ClCompile Include="cmdSampleRotateCenter.cpp" />
     <ClCompile Include="cmdSampleRotateView.cpp" />
+    <ClCompile Include="cmdSampleRTree.cpp" />
     <ClCompile Include="cmdSampleSave3DS.cpp" />
     <ClCompile Include="cmdSampleScripter.cpp" />
     <ClCompile Include="cmdSampleSection.cpp" />
