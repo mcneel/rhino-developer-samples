@@ -10,6 +10,9 @@ public:
   CSampleObjectManagerDialog();
   virtual ~CSampleObjectManagerDialog();
 
+  // Returns the one and only CSampleObjectManagerDialog dialog pointer
+  static CSampleObjectManagerDialog* GetObjectManagerDialog(const CRhinoDoc& doc);
+
   // Required CRhinoTabbedDockBarDialog overrides
   const wchar_t* Caption() const override;
   ON_UUID TabId() const override;
@@ -58,6 +61,8 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX) override;
   virtual BOOL OnInitDialog() override;
   virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+  afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+  afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OSelChangeListBox();
   DECLARE_MESSAGE_MAP()
@@ -70,4 +75,7 @@ private:
   void DeselectHelper();
   void DeselectAllHelper();
   void FillListBox();
+
+private:
+  static CSampleObjectManagerDialog* m_TheOneAndOnly;
 };
