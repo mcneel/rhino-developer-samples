@@ -6,14 +6,19 @@
 // CSampleCirclePreviewConduit
 
 CSampleCirclePreviewConduit::CSampleCirclePreviewConduit()
-  : CRhinoDisplayConduit(CSupportChannels::SC_DRAWOVERLAY)
+  : CRhinoDisplayConduit(CSupportChannels::SC_CALCBOUNDINGBOX | CSupportChannels::SC_DRAWOVERLAY)
 {
 }
 
 bool CSampleCirclePreviewConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT nChannel, bool& bTerminate)
 {
   UNREFERENCED_PARAMETER(bTerminate);
-  if (nChannel == CSupportChannels::SC_DRAWOVERLAY)
+  if (nChannel == CSupportChannels::SC_CALCBOUNDINGBOX)
+  {
+    if (m_circle.IsValid())
+      m_pChannelAttrs->m_BoundingBox.Union(m_circle.BoundingBox());
+  }
+  else if (nChannel == CSupportChannels::SC_DRAWOVERLAY)
   {
     if (m_circle.IsValid())
       dp.DrawCircle(m_circle, RhinoApp().AppSettings().ActiveLayerColor());
