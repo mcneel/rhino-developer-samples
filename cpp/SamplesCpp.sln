@@ -80,6 +80,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleCustomRenderMesh", "S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkEffectsPanel", "SampleRdkEffectsPanel\SampleRdkEffectsPanel.vcxproj", "{43471328-4335-4429-9F06-B0AEA711D31B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleDockBarDialog", "SampleDockBarDialog\SampleDockBarDialog.vcxproj", "{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -358,6 +360,16 @@ Global
 		{43471328-4335-4429-9F06-B0AEA711D31B}.Release|x64.ActiveCfg = Release|x64
 		{43471328-4335-4429-9F06-B0AEA711D31B}.Release|x64.Build.0 = Release|x64
 		{43471328-4335-4429-9F06-B0AEA711D31B}.Release|x86.ActiveCfg = Release|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.Debug|x64.ActiveCfg = Debug|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.Debug|x64.Build.0 = Debug|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.Debug|x86.ActiveCfg = Debug|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.PseudoDebug|x64.ActiveCfg = Debug|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.PseudoDebug|x64.Build.0 = Debug|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.PseudoDebug|x86.ActiveCfg = Release|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.PseudoDebug|x86.Build.0 = Release|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.Release|x64.ActiveCfg = Release|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.Release|x64.Build.0 = Release|x64
+		{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

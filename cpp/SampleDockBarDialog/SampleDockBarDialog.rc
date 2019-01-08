@@ -1,0 +1,203 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#include ""res\\SampleDockBarDialog.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""      // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 6,0,0,0
+ PRODUCTVERSION 6,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "00000409"
+        BEGIN
+            VALUE "CompanyName", "Robert McNeel & Associates"
+            VALUE "FileDescription", "SampleDockBarDialog"
+            VALUE "FileVersion", "6.0.0.0"
+            VALUE "InternalName", "SampleDockBarDialog.rhp"
+            VALUE "LegalCopyright", "Copyright © 2019, Robert McNeel & Associates"
+            VALUE "OriginalFilename", "SampleDockBarDialog.rhp"
+            VALUE "ProductName", "SampleDockBarDialog"
+            VALUE "ProductVersion", "6.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1033
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON                ICON                    "res\\SampleDockBarDialog.ico"
+
+IDI_TREE_ARROW_COLLAPSED ICON                    "res\\ico_tree_arrow_collapsed.ico"
+
+IDI_TREE_ARROW_COLLAPSED_GRAY ICON                    "res\\ico_tree_arrow_collapsed_gray.ico"
+
+IDI_TREE_ARROW_EXPANDED ICON                    "res\\ico_tree_arrow_expanded.ico"
+
+IDI_TREE_ARROW_EXPANDED_GRAY ICON                    "res\\ico_tree_arrow_expanded_gray.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG DIALOGEX 0, 0, 218, 269
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VSCROLL | WS_HSCROLL
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Section One",IDC_STATIC1,7,7,193,8
+    CONTROL         "Check1",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,17,183,10
+    CONTROL         "Check2",IDC_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,29,183,10
+    CONTROL         "Check3",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,41,183,10
+    CONTROL         "Check4",IDC_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,53,183,10
+    LTEXT           "Section Two",IDC_STATIC2,7,65,193,8
+    CONTROL         "Check5",IDC_CHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,75,183,10
+    CONTROL         "Check6",IDC_CHECK6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,87,183,10
+    CONTROL         "Check7",IDC_CHECK7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,99,183,10
+    CONTROL         "Check8",IDC_CHECK8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,111,183,10
+    LTEXT           "Section Three",IDC_STATIC3,7,123,193,8
+    CONTROL         "Check9",IDC_CHECK9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,133,183,10
+    CONTROL         "Check10",IDC_CHECK10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,145,183,10
+    CONTROL         "Check11",IDC_CHECK11,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,157,183,10
+    CONTROL         "Check12",IDC_CHECK12,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,169,183,10
+    LTEXT           "Bottom",IDC_STATIC4,7,181,193,8,NOT WS_VISIBLE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 200
+        VERTGUIDE, 17
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 251
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#include "res\SampleDockBarDialog.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"      // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
