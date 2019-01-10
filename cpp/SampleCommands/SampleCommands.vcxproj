@@ -57,6 +57,7 @@
     <ClCompile Include="cmdSampleDrawArrowhead.cpp" />
     <ClCompile Include="cmdSampleDrawBitmap.cpp" />
     <ClCompile Include="cmdSampleDrawColorMesh.cpp" />
+    <ClCompile Include="cmdSampleDrawEdgeLabels.cpp" />
     <ClCompile Include="cmdSampleDrawPoints.cpp" />
     <ClCompile Include="cmdSampleDrawString.cpp" />
     <ClCompile Include="cmdSampleDrawWireframeMesh.cpp" />
