@@ -176,6 +176,7 @@
     <Compile Include="SampleCsSaveAs.cs" />
     <Compile Include="SampleCsScriptedSweep2.cs" />
     <Compile Include="SampleCsSelCircle.cs" />
+    <Compile Include="SampleCsSelectHoles.cs" />
     <Compile Include="SampleCsSelectLayerObjects.cs" />
     <Compile Include="SampleCsSerializeClass.cs" />
     <Compile Include="SampleCsSetCameraTarget.cs" />
