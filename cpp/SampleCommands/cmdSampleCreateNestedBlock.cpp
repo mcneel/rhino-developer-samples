@@ -3,30 +3,30 @@
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
 //
-// BEGIN CreateNestedBlock command
+// BEGIN SampleCreateNestedBlock command
 //
 
-#pragma region CreateNestedBlock command
+#pragma region SampleCreateNestedBlock command
 
-class CCommandCreateNestedBlock : public CRhinoCommand
+class CCommandSampleCreateNestedBlock : public CRhinoCommand
 {
 public:
-  CCommandCreateNestedBlock() = default;
+  CCommandSampleCreateNestedBlock() = default;
   UUID CommandUUID() override
   {
-    // {F93A8F1D-4C6C-4F81-B806-E10D1018F369}
-    static const GUID CreateNestedBlockCommand_UUID =
-    { 0xF93A8F1D, 0x4C6C, 0x4F81, { 0xB8, 0x06, 0xE1, 0x0D, 0x10, 0x18, 0xF3, 0x69 } };
-    return CreateNestedBlockCommand_UUID;
+    // {62EDBB73-ADA0-4F07-977A-DE5BE926F21A}
+    static const GUID SampleCreateNestedBlockCommand_UUID =
+    { 0x62EDBB73, 0xADA0, 0x4F07, { 0x97, 0x7A, 0xDE, 0x5B, 0xE9, 0x26, 0xF2, 0x1A } };
+    return SampleCreateNestedBlockCommand_UUID;
   }
-  const wchar_t* EnglishCommandName() override { return L"CreateNestedBlock"; }
+  const wchar_t* EnglishCommandName() override { return L"SampleCreateNestedBlock"; }
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 };
 
-// The one and only CCommandCreateNestedBlock object
-static class CCommandCreateNestedBlock theCreateNestedBlockCommand;
+// The one and only CCommandSampleCreateNestedBlock object
+static class CCommandSampleCreateNestedBlock theSampleCreateNestedBlockCommand;
 
-CRhinoCommand::result CCommandCreateNestedBlock::RunCommand(const CRhinoCommandContext& context)
+CRhinoCommand::result CCommandSampleCreateNestedBlock::RunCommand(const CRhinoCommandContext& context)
 {
   // Add a circle to the document as instance definition geometry
   ON_Circle circle(ON_Plane::World_xy, 5.0);
@@ -82,7 +82,7 @@ CRhinoCommand::result CCommandCreateNestedBlock::RunCommand(const CRhinoCommandC
 #pragma endregion
 
 //
-// END CreateNestedBlock command
+// END SampleCreateNestedBlock command
 //
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////

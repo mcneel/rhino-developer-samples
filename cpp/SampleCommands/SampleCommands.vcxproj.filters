@@ -702,13 +702,16 @@
     <ClCompile Include="SampleFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cmdCreateNestedBlock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cmdSampleRTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cmdSampleDrawEdgeLabels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cmdSamplePointsOnSurface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cmdSampleCreateNestedBlock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

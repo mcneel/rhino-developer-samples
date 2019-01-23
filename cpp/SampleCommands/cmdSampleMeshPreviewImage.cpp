@@ -94,10 +94,6 @@ bool SampleMeshPreviewImage(
   if (!dib.CreateDib(size.cx, size.cy, 32, true))
     return false;
 
-  HDC hDC = dib;
-  if (0 == hDC)
-    return false;
-
   // Create a dummy view
   CRhinoViewport vp;
   vp.SetToPerspectiveView();
@@ -145,7 +141,7 @@ bool SampleMeshPreviewImage(
     vp.SetVP(zoomed_vp, true);
 
   // Setup the pipeline
-  CRhinoDisplayPipeline_OGL dp(hDC, vp);
+  CRhinoDisplayPipeline_OGL dp(vp);
   CDisplayPipelineAttributes da(*dma);
 
   da.m_bUseDocumentGrid = false;

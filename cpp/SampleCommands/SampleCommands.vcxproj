@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cmdCreateNestedBlock.cpp" />
     <ClCompile Include="cmdSample2View.cpp" />
     <ClCompile Include="cmdSampleAddCage.cpp" />
     <ClCompile Include="cmdSampleAddGroup.cpp" />
@@ -40,6 +39,7 @@
     <ClCompile Include="cmdSampleCone.cpp" />
     <ClCompile Include="cmdSampleConvertQuadsToTriangles.cpp" />
     <ClCompile Include="cmdSampleCPlaneObject.cpp" />
+    <ClCompile Include="cmdSampleCreateNestedBlock.cpp" />
     <ClCompile Include="cmdSampleCreatePlanarMeshes.cpp" />
     <ClCompile Include="cmdSampleCurvature.cpp" />
     <ClCompile Include="cmdSampleCurveAreaCentroid.cpp" />
@@ -167,6 +167,7 @@
     <ClCompile Include="cmdSamplePointOnFace.cpp" />
     <ClCompile Include="cmdSamplePointOnSurface.cpp" />
     <ClCompile Include="cmdSamplePointsDeviation.cpp" />
+    <ClCompile Include="cmdSamplePointsOnSurface.cpp" />
     <ClCompile Include="cmdSamplePolyline.cpp" />
     <ClCompile Include="cmdSamplePrePostSelect.cpp" />
     <ClCompile Include="cmdSamplePrintGripLocations.cpp" />
