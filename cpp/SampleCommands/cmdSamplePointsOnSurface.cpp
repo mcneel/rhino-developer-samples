@@ -62,7 +62,7 @@ CRhinoCommand::result CCommandSamplePointsOnSurface::RunCommand(const CRhinoComm
   if (nullptr == face)
     return CRhinoCommand::failure;
 
-    // Create array of normalized u parameters
+  // Create array of normalized u parameters
   ON_SimpleArray<double> u_array(m_u_count);
   u_array.SetCount(m_u_count);
   for (int i = 0; i < m_u_count; i++)
