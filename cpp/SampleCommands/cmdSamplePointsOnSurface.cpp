@@ -95,7 +95,7 @@ CRhinoCommand::result CCommandSamplePointsOnSurface::RunCommand(const CRhinoComm
       // Convert normalized parameter to interval value
       double v = v_domain.ParameterAt(v_array[j]);
 
-      // Verify point is on face
+      // Verify point is in the active region of a face
       if (RhinoIsPointOnFace(*face, tol, false, u, v))
       {
         ON_3dPoint pt = face->PointAt(u, v);
