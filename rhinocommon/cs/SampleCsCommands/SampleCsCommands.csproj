@@ -68,6 +68,7 @@
     <Compile Include="SampleCsExportDXF.cs" />
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
     <Compile Include="SampleCsFairCurves.cs" />
+    <Compile Include="SampleCsFindUnweldedEdges.cs" />
     <Compile Include="SampleCsGuilloche.cs" />
     <Compile Include="SampleCsGumballCylinder.cs" />
     <Compile Include="SampleCsIntersectBreps.cs" />
