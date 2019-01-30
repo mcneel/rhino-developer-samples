@@ -72,6 +72,7 @@
     <Compile Include="SampleCsGuilloche.cs" />
     <Compile Include="SampleCsGumballCylinder.cs" />
     <Compile Include="SampleCsIntersectBreps.cs" />
+    <Compile Include="SampleCsIntersectCurveBrepFace.cs" />
     <Compile Include="SampleCsKeyboardHook.cs" />
     <Compile Include="SampleCsLayerOff.cs" />
     <Compile Include="SampleCsAddNurbsCircle.cs" />
