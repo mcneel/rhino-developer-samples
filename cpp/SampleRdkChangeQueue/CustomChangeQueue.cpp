@@ -48,7 +48,7 @@ void CustomChangeQueue::ApplyMeshChanges(const ON_SimpleArray<const UUID*>& dele
 		char* muuidstrp = ON_UuidToString(m->UuidId(), muuidstr);
 		char ouuidstr[37];
 		char* ouuidstrp = ON_UuidToString(m->Object()->Id(), ouuidstr);
-		RhinoApp().Print("\tmesh %s consists of %u meshes. Original object %s %s\n", muuidstrp, onmeshes.Count(), m->Object()->Name(), ouuidstrp);
+		RhinoApp().Print("\tmesh %s consists of %u meshes. Original object %s %s\n", muuidstrp, onmeshes.Count(), m->Object()->Name().Array(), ouuidstrp);
 		for (int mi = 0; mi < onmeshes.Count(); mi++) {
 			const ON_Mesh* amesh = onmeshes[mi];
 			// pull out all vertices, faces, normals, etc using the ON_Mesh API.
@@ -84,6 +84,10 @@ void CustomChangeQueue::ApplyMeshInstanceChanges(const ON_SimpleArray<ON__UINT32
 		ON_UUID mid = instance->MeshId();
 		int meshindex = instance->MeshIndex();
 		ON_Xform xform = instance->InstanceXform();
+		ON_3dPoint p = ON_3dPoint::Origin;
+
+		p.Transform(xform);
+
 		// the material ID can be used to query the actual material from the ChangeQueue. In Rhino you can have the situation where
 		// the same mesh has different materials. This happens especially with block instances. To illustrate: In Rhino add a _Box.
 		// Set the box material to "Use Object Parent". Now create a _Block out of the box. Duplicate the instance that is placed in
@@ -97,7 +101,11 @@ void CustomChangeQueue::ApplyMeshInstanceChanges(const ON_SimpleArray<ON__UINT32
 
 		char midstr[37];
 		char* midstrp = ON_UuidToString(mid, midstr);
-		RhinoApp().Print("\tMesh instance %u using mesh %s + %u with at world (%f,%f,%f), using material %u\n", iid, midstrp, meshindex, xform[0][0], xform[1][1], xform[2][2], materialId);
+		RhinoApp().Print("\tMesh instance %u using mesh %s + %u at world (%f,%f,%f), using material %u\n", iid, midstrp, meshindex, p.x, p.y, p.z, materialId);
+		RhinoApp().Print("\t\t%f %f %f %f\n", xform[0][0], xform[0][1], xform[0][2], xform[0][3]);
+		RhinoApp().Print("\t\t%f %f %f %f\n", xform[1][0], xform[1][1], xform[1][2], xform[1][3]);
+		RhinoApp().Print("\t\t%f %f %f %f\n", xform[2][0], xform[2][1], xform[2][2], xform[2][3]);
+		RhinoApp().Print("\t\t%f %f %f %f\n", xform[3][0], xform[3][1], xform[3][2], xform[3][3]);
 	}
 	RhinoApp().Print("End of ApplyMeshInstances");
 }
