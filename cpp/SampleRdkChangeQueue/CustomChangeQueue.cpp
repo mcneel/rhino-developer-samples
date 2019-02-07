@@ -85,9 +85,10 @@ void CustomChangeQueue::ApplyMeshInstanceChanges(const ON_SimpleArray<ON__UINT32
 		int meshindex = instance->MeshIndex();
 		ON_Xform xform = instance->InstanceXform();
 		ON_3dPoint p = ON_3dPoint::Origin;
+		ON_3dVector zup = ON_3dVector::ZAxis;
 
 		p.Transform(xform);
-
+		zup.Transform(xform);
 		// the material ID can be used to query the actual material from the ChangeQueue. In Rhino you can have the situation where
 		// the same mesh has different materials. This happens especially with block instances. To illustrate: In Rhino add a _Box.
 		// Set the box material to "Use Object Parent". Now create a _Block out of the box. Duplicate the instance that is placed in
@@ -101,7 +102,7 @@ void CustomChangeQueue::ApplyMeshInstanceChanges(const ON_SimpleArray<ON__UINT32
 
 		char midstr[37];
 		char* midstrp = ON_UuidToString(mid, midstr);
-		RhinoApp().Print("\tMesh instance %u using mesh %s + %u at world (%f,%f,%f), using material %u\n", iid, midstrp, meshindex, p.x, p.y, p.z, materialId);
+		RhinoApp().Print("\tMesh instance %u using mesh %s + %u at world (%f,%f,%f), zup (%f, %f, %f), using material %u\n", iid, midstrp, meshindex, p.x, p.y, p.z, zup.x, zup.y, zup.z, materialId);
 		RhinoApp().Print("\t\t%f %f %f %f\n", xform[0][0], xform[0][1], xform[0][2], xform[0][3]);
 		RhinoApp().Print("\t\t%f %f %f %f\n", xform[1][0], xform[1][1], xform[1][2], xform[1][3]);
 		RhinoApp().Print("\t\t%f %f %f %f\n", xform[2][0], xform[2][1], xform[2][2], xform[2][3]);
