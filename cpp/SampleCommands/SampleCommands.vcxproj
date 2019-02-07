@@ -82,12 +82,14 @@
     <ClCompile Include="cmdSampleExtractEdgeCurves.cpp" />
     <ClCompile Include="cmdSampleExtractFaceMesh.cpp" />
     <ClCompile Include="cmdSampleExtractIsoCurve.cpp" />
+    <ClCompile Include="cmdSampleExtractRenderMesh.cpp" />
     <ClCompile Include="cmdSampleExtrudeTapered.cpp" />
     <ClCompile Include="cmdSampleExtrusionBox.cpp" />
     <ClCompile Include="cmdSampleFaceWithHole.cpp" />
     <ClCompile Include="cmdSampleFalseColor.cpp" />
     <ClCompile Include="cmdSampleFindCrvOnSrf.cpp" />
     <ClCompile Include="cmdSampleFindCrvsOnSrf.cpp" />
+    <ClCompile Include="cmdSampleGetCurvesWithValues.cpp" />
     <ClCompile Include="cmdSampleGetFaceTriangles.cpp" />
     <ClCompile Include="cmdSampleGetPointOnMesh.cpp" />
     <ClCompile Include="cmdSampleGoldenRectangle.cpp" />
