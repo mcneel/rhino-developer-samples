@@ -137,6 +137,7 @@
     <ClCompile Include="cmdSampleMeshVolume.cpp" />
     <ClCompile Include="cmdSampleMirror.cpp" />
     <ClCompile Include="cmdSampleModifyBumpIntensity.cpp" />
+    <ClCompile Include="cmdSampleModifyText.cpp" />
     <ClCompile Include="cmdSampleMouseCallback.cpp" />
     <ClCompile Include="cmdSampleMove.cpp" />
     <ClCompile Include="cmdSampleMoveCPlane.cpp" />
