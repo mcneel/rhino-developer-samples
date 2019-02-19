@@ -111,6 +111,9 @@ CRhinoCommand::result CCommandSampleModifyText::RunCommand(const CRhinoCommandCo
   ON_Text* new_text = text->Duplicate();
   new_text->ReplaceTextString(static_cast<const wchar_t*>(rtf_string), &dimstyle);
 
+  ON_DimStyle* overrides = new ON_DimStyle(dimstyle);
+  new_text->SetOverrideDimensionStyle(overrides);
+
   CRhinoText* new_text_object = new CRhinoText();
   new_text_object->SetTextObject(new_text);
 
