@@ -182,6 +182,7 @@
     <ClCompile Include="cmdSampleQueryDiameterDimension.cpp" />
     <ClCompile Include="cmdSampleRailRevolve.cpp" />
     <ClCompile Include="cmdSampleRayShooter.cpp" />
+    <ClCompile Include="cmdSampleReadInstancesFromFile.cpp" />
     <ClCompile Include="cmdSampleReduceMesh.cpp" />
     <ClCompile Include="cmdSampleResetLayers.cpp" />
     <ClCompile Include="cmdSampleRevolve.cpp" />
