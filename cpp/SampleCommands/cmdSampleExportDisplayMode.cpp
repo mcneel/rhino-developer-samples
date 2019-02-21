@@ -122,7 +122,7 @@ CRhinoCommand::result CCommandSampleExportDisplayMode::RunCommand(const CRhinoCo
     gn.SetCommandPrompt(L"Display Mode file name");
     gn.GetString();
     if (gn.CommandResult() != CRhinoCommand::success)
-      return gs.CommandResult();
+      return gn.CommandResult();
 
     filename = gn.String();
   }
