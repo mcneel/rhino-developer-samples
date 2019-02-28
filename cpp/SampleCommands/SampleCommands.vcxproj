@@ -50,6 +50,7 @@
     <ClCompile Include="cmdSampleCustomRenderMesh.cpp" />
     <ClCompile Include="cmdSampleCylinder.cpp" />
     <ClCompile Include="cmdSampleDimStyleTextHeight.cpp" />
+    <ClCompile Include="cmdSampleDimStyleTextOrientation.cpp" />
     <ClCompile Include="cmdSampleDimTextHeight.cpp" />
     <ClCompile Include="cmdSampleDisableAllClippingPlanes.cpp" />
     <ClCompile Include="cmdSampleDisplayPrecision.cpp" />
