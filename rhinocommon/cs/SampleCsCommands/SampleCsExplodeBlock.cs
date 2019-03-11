@@ -3,35 +3,28 @@ using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
+using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
   public class SampleCsExplodeBlock : Command
   {
-    public SampleCsExplodeBlock()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsExplodeBlock"; }
-    }
+  public override string EnglishName => "SampleCsExplodeBlock";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new Rhino.Input.Custom.GetObject();
+      var go = new GetObject();
       go.SetCommandPrompt("Select block to explode");
       go.GeometryFilter = ObjectType.InstanceReference;
       go.Get();
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var iref = go.Object(0).Object() as Rhino.DocObjects.InstanceObject;
-      if (null == iref)
+      if (!(go.Object(0).Object() is InstanceObject iref))
         return Result.Failure;
 
       var xform = Transform.Identity;
-      bool rc = ExplodeBlockHelper(doc, iref, xform);
+      var rc = ExplodeBlockHelper(doc, iref, xform);
       if (rc)
       {
         doc.Objects.Delete(go.Object(0), false);
@@ -43,11 +36,8 @@ namespace SampleCsCommands
 
     protected bool ExplodeBlockHelper(RhinoDoc doc, InstanceObject iref, Transform xf)
     {
-      if (null == iref)
-        return false;
-
-      var idef = iref.InstanceDefinition;
-      if (null == idef)
+      var idef = iref?.InstanceDefinition;
+      if (idef == null)
         return false;
 
       var xform = xf * iref.InstanceXform;
@@ -62,8 +52,7 @@ namespace SampleCsCommands
         if (null == obj)
           continue;
 
-        var iref_obj = obj as InstanceObject;
-        if (null != iref_obj)
+        if (obj is InstanceObject iref_obj)
         {
           // Explode any nested instances...
           ExplodeBlockHelper(doc, iref_obj, xform);
@@ -78,11 +67,9 @@ namespace SampleCsCommands
           {
             if (!geom.MakeDeformable() && geom.ObjectType == ObjectType.Curve)
             {
-              var crv = geom as Curve;
-              if (null != crv)
+              if (geom is Curve crv)
                 geom = crv.ToNurbsCurve();
             }
-            
           }
 
           if (!geom.Transform(xform))
@@ -93,14 +80,12 @@ namespace SampleCsCommands
             if (geom.ObjectType == ObjectType.Brep)
             {
               var brep = geom as Brep;
-              if (null != brep)
-                brep.Flip();
+              brep?.Flip();
             }
             else if (geom.ObjectType == ObjectType.Mesh)
             {
               var mesh = geom as Mesh;
-              if (null != mesh)
-                mesh.Flip(true, true, true);
+              mesh?.Flip(true, true, true);
             }
           }
         }

@@ -1,6 +1,5 @@
 ﻿using Rhino;
 using Rhino.Commands;
-using Rhino.DocObjects;
 using Rhino.Geometry;
 
 namespace SampleCsCommands
@@ -35,7 +34,7 @@ namespace SampleCsCommands
       // Add another instance definition that uses the polyline curve
       // and the instance reference
       var geometry = new GeometryBase[] { curve1, iref0 };
-      var attributes = new ObjectAttributes[] { attrib, attrib };
+      var attributes = new[] { attrib, attrib };
       var idef1_index = doc.InstanceDefinitions.Add("Rectangle and Circle", "Rectangle and Circle", Point3d.Origin, geometry, attributes);
 
       // Add an instace of the new defintion to the document and redraw
