@@ -33,6 +33,7 @@
     <ClCompile Include="cmdSampleCageEdit.cpp" />
     <ClCompile Include="cmdSampleCameraTracker.cpp" />
     <ClCompile Include="cmdSampleCaptureFrameBuffer.cpp" />
+    <ClCompile Include="cmdSampleChangeUnitSystem.cpp" />
     <ClCompile Include="cmdSampleCircle.cpp" />
     <ClCompile Include="cmdSampleClassifyCurve.cpp" />
     <ClCompile Include="cmdSampleClosestAxisPoint.cpp" />
