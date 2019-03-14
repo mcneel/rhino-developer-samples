@@ -1,3 +1,5 @@
+#pragma once
+
 class CSampleObjectUserData : public ON_UserData
 {
   // Opennurbs classes that are saved in .3dm files require

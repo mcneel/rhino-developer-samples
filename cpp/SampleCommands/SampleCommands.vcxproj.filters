@@ -750,6 +750,12 @@
     <ClCompile Include="cmdSampleTrimWithBrep.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SampleDocumentUserData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cmdSampleReadDocumentUserData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SampleCommandsApp.h">
@@ -783,6 +789,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SampleDrawCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleDocumentUserData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

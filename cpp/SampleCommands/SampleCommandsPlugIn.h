@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SampleDocumentUserData.h"
 #include "SampleCommandsEventWatcher.h"
 
 class CSampleCommandsPlugIn : public CRhinoUtilityPlugIn
@@ -26,8 +27,8 @@ public:
 
   // Used by SampleDocumentUserData
   int StringTableCount() const;
-  ON_wString GetStringTableItem(int);
-  int FindStringTableItem(const wchar_t*);
+  ON_wString GetStringTableItem(int) const;
+  int FindStringTableItem(const wchar_t*)const;
   int AddStringTableItem(const wchar_t*);
   bool DeleteStringTableItem(const wchar_t*);
   void ClearStringTable();
@@ -38,10 +39,10 @@ public:
 private:
   ON_wString m_plugin_version;
 
-  // TODO: Add additional class information here
-
   // Used by SampleDocumentUserData
-  ON_ClassArray<ON_wString> m_string_table;
+  CSampleDocumentUserData m_string_table;
+
+  // Event watcher
   CSampleCommandsEventWatcher m_watcher;
 
   // Used by SampleObjectCursor and SamplePointCursor

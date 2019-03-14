@@ -185,6 +185,7 @@
     <ClCompile Include="cmdSampleQueryDiameterDimension.cpp" />
     <ClCompile Include="cmdSampleRailRevolve.cpp" />
     <ClCompile Include="cmdSampleRayShooter.cpp" />
+    <ClCompile Include="cmdSampleReadDocumentUserData.cpp" />
     <ClCompile Include="cmdSampleReadInstancesFromFile.cpp" />
     <ClCompile Include="cmdSampleReduceMesh.cpp" />
     <ClCompile Include="cmdSampleResetLayers.cpp" />
@@ -250,6 +251,7 @@
     <ClCompile Include="SampleCommandsApp.cpp" />
     <ClCompile Include="SampleCommandsEventWatcher.cpp" />
     <ClCompile Include="SampleCommandsPlugIn.cpp" />
+    <ClCompile Include="SampleDocumentUserData.cpp" />
     <ClCompile Include="SampleDrawCallback.cpp" />
     <ClCompile Include="cmdSampleDump3dmInstanceDefinitionsEx.cpp" />
     <ClCompile Include="SampleFunctions.cpp" />
@@ -267,6 +269,7 @@
     <ClInclude Include="SampleCommandsApp.h" />
     <ClInclude Include="SampleCommandsEventWatcher.h" />
     <ClInclude Include="SampleCommandsPlugIn.h" />
+    <ClInclude Include="SampleDocumentUserData.h" />
     <ClInclude Include="SampleDrawCallback.h" />
     <ClInclude Include="SampleObjectUserData.h" />
     <ClInclude Include="SampleRectangleObject.h" />
