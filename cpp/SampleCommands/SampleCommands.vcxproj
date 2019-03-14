@@ -228,6 +228,7 @@
     <ClCompile Include="cmdSampleToggleLayer.cpp" />
     <ClCompile Include="cmdSampleTriangulatePolygon.cpp" />
     <ClCompile Include="cmdSampleTrimmedPlane.cpp" />
+    <ClCompile Include="cmdSampleTrimWithBrep.cpp" />
     <ClCompile Include="cmdSampleTruncatedCone.cpp" />
     <ClCompile Include="cmdSampleTwistedCube.cpp" />
     <ClCompile Include="cmdSampleUngroup.cpp" />
