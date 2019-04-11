@@ -4,6 +4,22 @@
 
 IMPLEMENT_DYNCREATE(CSampleObjectManagerDialog, CRhinoTabbedDockBarDialog)
 
+CSampleObjectManagerDialog* CSampleObjectManagerDialog::m_TheOneAndOnly = nullptr;
+
+CSampleObjectManagerDialog* CSampleObjectManagerDialog::GetObjectManagerDialog(const CRhinoDoc& doc)
+{
+  CSampleObjectManagerDialog* rc = nullptr;
+  if (CRhinoTabbedDockBarDialog::IsTabVisible(doc, CSampleObjectManagerDialog::ID()))
+  {
+    if (nullptr != CSampleObjectManagerDialog::m_TheOneAndOnly)
+    {
+      if (::IsWindow(CSampleObjectManagerDialog::m_TheOneAndOnly->GetSafeHwnd()))
+        rc = CSampleObjectManagerDialog::m_TheOneAndOnly;
+    }
+  }
+  return rc;
+}
+
 CSampleObjectManagerDialog::CSampleObjectManagerDialog()
   : CRhinoTabbedDockBarDialog()
 {
@@ -62,9 +78,23 @@ void CSampleObjectManagerDialog::OnShowDockBar(IDockBarEventWatcher::ShowEventAr
 }
 
 BEGIN_MESSAGE_MAP(CSampleObjectManagerDialog, CRhinoTabbedDockBarDialog)
+  ON_WM_CREATE()
+  ON_WM_DESTROY()
   ON_WM_TIMER()
   ON_LBN_SELCHANGE(IDC_LISTBOX, &CSampleObjectManagerDialog::OSelChangeListBox)
 END_MESSAGE_MAP()
+
+int CSampleObjectManagerDialog::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+  CSampleObjectManagerDialog::m_TheOneAndOnly = this;
+  return CRhinoTabbedDockBarDialog::OnCreate(lpCreateStruct);
+}
+
+void CSampleObjectManagerDialog::OnDestroy()
+{
+  CSampleObjectManagerDialog::m_TheOneAndOnly = nullptr;
+  CRhinoTabbedDockBarDialog::OnDestroy();
+}
 
 BOOL CSampleObjectManagerDialog::PreTranslateMessage(MSG* pMsg)
 {

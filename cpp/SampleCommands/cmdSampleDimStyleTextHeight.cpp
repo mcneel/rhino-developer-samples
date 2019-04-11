@@ -53,7 +53,7 @@ CRhinoCommand::result CCommandSampleDimStyleTextHeight::RunCommand(const CRhinoC
   {
     int style_index = dimstyle.Index();
 
-    // Copy everything from the dimension's dimstyle
+    // Copy the dimstyle
     ON_DimStyle modified_dimstyle(context.m_doc.m_dimstyle_table[style_index]);
 
     // Modify the text height

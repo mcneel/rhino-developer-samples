@@ -1,18 +1,12 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
-using Rhino.FileIO;
 
 namespace SampleCsCommands
 {
   public class SampleCsDumpBlockTree : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsDumpBlockTree"; }
-    }
+    public override string EnglishName => "SampleCsDumpBlockTree";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -43,7 +37,7 @@ namespace SampleCsCommands
 
         var node = (0 == indent) ? line : corner;
         var str = new string(' ', indent * 2);
-        RhinoApp.WriteLine(string.Format("{0}{1} Instance definition {2} = {3}", str, node, idef.Index, idef.Name));
+        RhinoApp.WriteLine($"{str}{node} Instance definition {idef.Index} = {idef.Name}");
 
         var idef_object_count = idef.ObjectCount;
         if (idef_object_count > 0)
@@ -55,11 +49,10 @@ namespace SampleCsCommands
             var obj = idef.Object(i);
             if (null != obj)
             {
-              var iref = obj as InstanceObject;
-              if (null != iref)
+              if (obj is InstanceObject iref)
                 DumpInstanceDefinition(iref.InstanceDefinition, ref indent);
               else
-                RhinoApp.WriteLine(string.Format("{0}{1} Object {2} = {3}\n", str, corner, i, obj.ShortDescription(false)));
+                RhinoApp.WriteLine($"{str}{corner} Object {i} = {obj.ShortDescription(false)}\n");
             }
           }
           indent--;

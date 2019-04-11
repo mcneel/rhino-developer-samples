@@ -58,8 +58,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SampleCsAddAlignedDimension.cs" />
     <Compile Include="SampleCsAddRadialDimension.cs" />
+    <Compile Include="SampleCsClipboard.cs" />
     <Compile Include="SampleCsContour.cs" />
+    <Compile Include="SampleCsCreateNestedBlock.cs" />
     <Compile Include="SampleCsDrawArrow.cs" />
     <Compile Include="SampleCsDrawGrayscale.cs" />
     <Compile Include="SampleCsDrawPin.cs" />
@@ -67,9 +70,11 @@
     <Compile Include="SampleCsExportDXF.cs" />
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
     <Compile Include="SampleCsFairCurves.cs" />
+    <Compile Include="SampleCsFindUnweldedEdges.cs" />
     <Compile Include="SampleCsGuilloche.cs" />
     <Compile Include="SampleCsGumballCylinder.cs" />
     <Compile Include="SampleCsIntersectBreps.cs" />
+    <Compile Include="SampleCsIntersectCurveBrepFace.cs" />
     <Compile Include="SampleCsKeyboardHook.cs" />
     <Compile Include="SampleCsLayerOff.cs" />
     <Compile Include="SampleCsAddNurbsCircle.cs" />
@@ -175,6 +180,7 @@
     <Compile Include="SampleCsSaveAs.cs" />
     <Compile Include="SampleCsScriptedSweep2.cs" />
     <Compile Include="SampleCsSelCircle.cs" />
+    <Compile Include="SampleCsSelectHoles.cs" />
     <Compile Include="SampleCsSelectLayerObjects.cs" />
     <Compile Include="SampleCsSerializeClass.cs" />
     <Compile Include="SampleCsSetCameraTarget.cs" />
@@ -195,16 +201,19 @@
     <Compile Include="SampleCsSweep1.cs" />
     <Compile Include="SampleCsTestPlanarCurveContainment.cs" />
     <Compile Include="SampleCsText.cs" />
+    <Compile Include="SampleCsTextEntityBoundingBox.cs" />
     <Compile Include="SampleCsTrimmedPlane.cs" />
     <Compile Include="SampleCsTrimSurface.cs" />
     <Compile Include="SampleCsUnisolate.cs" />
     <Compile Include="SampleCsSetUserText.cs" />
     <Compile Include="SampleCsUnweldAll.cs" />
     <Compile Include="SampleCsViewCapture.cs" />
+    <Compile Include="SampleCsViewportSize.cs" />
     <Compile Include="SampleCsViewSize.cs" />
     <Compile Include="SampleCsWorldToPageTransform.cs" />
     <Compile Include="SampleCsWrite3dmFile.cs" />
     <Compile Include="SampleCsWritePdf.cs" />
+    <Compile Include="SampleCsWriteStl.cs" />
     <Compile Include="SampleCsZAnalysis.cs" />
     <Compile Include="SampleCsZebraAnalysis.cs" />
     <Compile Include="SampleCsZoom.cs" />

@@ -49,8 +49,14 @@ static class CCommandSampleCustomMeshObjects theSampleCustomMeshObjectsCommand;
 CRhinoCommand::result CCommandSampleCustomMeshObjects::RunCommand(const CRhinoCommandContext& context)
 {
   CRhinoGetObject go;
-  go.SetCommandPrompt(L"Select surface or polysurface to mesh");
-  go.SetGeometryFilter(CRhinoGetObject::surface_object | CRhinoGetObject::polysrf_object);
+  go.SetCommandPrompt(L"Select surfaces, polysurfaces and extrusions to mesh");
+  unsigned int geometry_filter = 0;
+  geometry_filter |= CRhinoGetObject::surface_object;
+  geometry_filter |= CRhinoGetObject::polysrf_object;
+  geometry_filter |= CRhinoGetObject::instance_reference;
+  geometry_filter |= CRhinoGetObject::extrusion_object;
+  go.SetGeometryFilter(geometry_filter);
+  go.EnableSubObjectSelect(false);
   go.GetObjects(1, 0);
   if (go.CommandResult() != CRhinoCommand::success)
     return go.CommandResult();
@@ -88,14 +94,12 @@ CRhinoCommand::result CCommandSampleCustomMeshObjects::RunCommand(const CRhinoCo
       CRhinoObjectMesh& mesh = meshes[i];
       if (mesh.m_mesh)
       {
-        mesh.m_mesh->ConvertQuadsToTriangles();
-
         if (mesh.m_mesh_attributes.GroupCount() > 0)
           mesh.m_mesh_attributes.RemoveFromAllGroups();
 
         CRhinoMeshObject* mesh_obj = new CRhinoMeshObject(mesh.m_mesh_attributes);
         mesh_obj->SetMesh(mesh.m_mesh);
-        mesh.m_mesh = 0;
+        mesh.m_mesh = nullptr;
 
         context.m_doc.AddObject(mesh_obj);
       }

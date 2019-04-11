@@ -86,11 +86,17 @@ public:
     return SampleCircleCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleCircle"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
+  void DoHelp() override;
 };
 
 // The one and only CCommandSampleCircle object
 static class CCommandSampleCircle theSampleCircleCommand;
+
+void CCommandSampleCircle::DoHelp()
+{
+  RhinoApp().Print(L"TODO: Add %s command help here\n", EnglishCommandName());
+}
 
 CRhinoCommand::result CCommandSampleCircle::RunCommand(const CRhinoCommandContext& context)
 {

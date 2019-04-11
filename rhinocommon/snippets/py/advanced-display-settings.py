@@ -23,7 +23,7 @@ def AdvancedDisplay():
     # Get the command option
     go.Get()
     if go.CommandResult()!=Rhino.Commands.Result.Success:
-      return go.CommandResult();
+        return go.CommandResult();
 
     selected_index = go.Option().Index
     selected_description = None
