@@ -166,6 +166,7 @@
     <ClCompile Include="cmdSamplePickColor.cpp" />
     <ClCompile Include="cmdSamplePickContext.cpp" />
     <ClCompile Include="cmdSamplePickTextDot.cpp" />
+    <ClCompile Include="cmdSamplePicture.cpp" />
     <ClCompile Include="cmdSamplePipe.cpp" />
     <ClCompile Include="cmdSamplePlaceCameraTarget.cpp" />
     <ClCompile Include="cmdSamplePlanarFaceLoops.cpp" />
