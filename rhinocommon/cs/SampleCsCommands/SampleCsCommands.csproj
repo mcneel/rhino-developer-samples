@@ -207,6 +207,7 @@
     <Compile Include="SampleCsUnisolate.cs" />
     <Compile Include="SampleCsSetUserText.cs" />
     <Compile Include="SampleCsUnweldAll.cs" />
+    <Compile Include="SampleCsUtilities.cs" />
     <Compile Include="SampleCsViewCapture.cs" />
     <Compile Include="SampleCsViewportSize.cs" />
     <Compile Include="SampleCsViewSize.cs" />
