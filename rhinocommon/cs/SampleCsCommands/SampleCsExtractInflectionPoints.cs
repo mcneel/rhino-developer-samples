@@ -96,13 +96,13 @@ namespace SampleCsCommands
       for (; ; )
       {
         var t = (t0 + t1) * 0.5;
-        pt = nurb.PointAt(t);
         var k = nurb.CurvatureAt(t);
         if (!k.IsValid)
           break;
 
         if (k.IsTiny() || t1 - t0 < epsilon)
         {
+          pt = nurb.PointAt(t);
           rc = true;
           break;
         }
