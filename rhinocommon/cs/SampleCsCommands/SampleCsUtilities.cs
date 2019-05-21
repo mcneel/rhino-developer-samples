@@ -97,14 +97,14 @@ namespace SampleCsCommands
           var kappa = nurb.CurvatureAt(t);
           if (nurb.TryGetPlane(out Plane plane))
           {
-            vDir = plane.ZAxis;
-            nDir = Vector3d.CrossProduct(uDir, vDir);
+            nDir = plane.ZAxis;
+            vDir = Vector3d.CrossProduct(nDir, uDir);
             vDir.Unitize();
           }
           else if (kappa.Unitize())
           {
-            nDir = kappa;
-            vDir = Vector3d.CrossProduct(nDir, uDir);
+            vDir = kappa;
+            nDir = Vector3d.CrossProduct(uDir, vDir);
             nDir.Unitize();
           }
           else
