@@ -68,6 +68,7 @@
     <Compile Include="SampleCsDrawPin.cs" />
     <Compile Include="SampleCsDuplicateObjectFromNameTag.cs" />
     <Compile Include="SampleCsExportDXF.cs" />
+    <Compile Include="SampleCsExtractInflectionPoints.cs" />
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
     <Compile Include="SampleCsFairCurves.cs" />
     <Compile Include="SampleCsFindUnweldedEdges.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="SampleCsUnisolate.cs" />
     <Compile Include="SampleCsSetUserText.cs" />
     <Compile Include="SampleCsUnweldAll.cs" />
+    <Compile Include="SampleCsUtilities.cs" />
     <Compile Include="SampleCsViewCapture.cs" />
     <Compile Include="SampleCsViewportSize.cs" />
     <Compile Include="SampleCsViewSize.cs" />

@@ -102,6 +102,7 @@
     <ClCompile Include="cmdSampleGumball.cpp" />
     <ClCompile Include="cmdSampleGumballCylinder.cpp" />
     <ClCompile Include="cmdSampleHatch.cpp" />
+    <ClCompile Include="cmdSampleHelixAroundCurve.cpp" />
     <ClCompile Include="cmdSampleHelloRhino.cpp" />
     <ClCompile Include="cmdSampleHideObjectsOnLayer.cpp" />
     <ClCompile Include="cmdSampleHightlightCurve.cpp" />
@@ -244,6 +245,7 @@
     <ClCompile Include="cmdSampleVolume.cpp" />
     <ClCompile Include="cmdSampleWriteBigModel.cpp" />
     <ClCompile Include="cmdSampleWriteCurve.cpp" />
+    <ClCompile Include="cmdSampleZebra.cpp" />
     <ClCompile Include="cmdSampleZoomExtents.cpp" />
     <ClCompile Include="cmdSampleZoomWindow.cpp" />
     <ClCompile Include="cmdSampleSaveCopy.cpp" />
