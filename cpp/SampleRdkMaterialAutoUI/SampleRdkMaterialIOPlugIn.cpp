@@ -119,7 +119,7 @@ bool CSampleRdkMaterialIOPlugIn::ParseBool(char*& p, bool& value) const
 	else
 	if (Parse(p, "false", true))
 	{
-		value = true;
+		value = false;
 		return true;
 	}
 
@@ -272,7 +272,12 @@ CRhRdkVariant CSampleRdkMaterialIOPlugIn::GetValue(char* p) const
 	return vValue;
 }
 
-CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc*, const wchar_t* wszFilename, CRhRdkContent::Kinds /*kind*/) const
+static void SetMaterialProperty(CRhRdkBasicMaterial& bm, const ON_wString& sName, const CRhRdkVariant& vValue)
+{
+	bm.SetParameter(sName, vValue);
+}
+
+CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc* pDoc, const wchar_t* wszFilename, CRhRdkContent::Kinds /*kind*/) const
 {
 	// Notes:
 	//
@@ -284,7 +289,8 @@ CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc*, const wchar_t*
 
 	m_sFilename = wszFilename;
 
-	auto pMaterial = new CSampleRdkMaterial;
+	ON_Material mat;
+	auto pMaterial = ::RhRdkNewBasicMaterial(mat, pDoc);
 	pMaterial->Initialize();
 
 	const ON_String sFilename = wszFilename;
@@ -345,8 +351,7 @@ CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc*, const wchar_t*
 
 			if (!sName.IsEmpty())
 			{
-				// Name is good so add a field to the material.
-				pMaterial->AddDynamicField(sName, vValue);
+				SetMaterialProperty(*pMaterial, sName, vValue);
 			}
 
 			// Search for end of line; stop if end of buffer.
