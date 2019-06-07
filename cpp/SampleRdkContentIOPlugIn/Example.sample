@@ -1,0 +1,16 @@
+alpha-transparency = false
+clarity-amount = 0.4
+diffuse = Color(1, 0.5, 0.5, 1)
+disable-lighting = false
+emission = Color(0.2, 0.3, 0.4, 1)
+fresnel-enabled = true
+gloss-color = Color(0.5, 1, 0.5, 1)
+gloss-color = Color(1, 0.5, 1, 1)
+ior = 1.24
+polish-amount = 0.5
+reflectivity = 0.2
+reflectivity-color = Color(0.5, 0.5, 1, 1)
+shine = 0.8
+specular = Color(0.2, 0.8, 1, 1)
+transparency = 0.5
+transparency-color = Color(1, 1, 0.5, 1)

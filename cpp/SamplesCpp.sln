@@ -86,7 +86,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleDockBarDialog", "Samp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkChangeQueue", "SampleRdkChangeQueue\SampleRdkChangeQueue.vcxproj", "{FE232237-9B56-4782-86C2-7359571B5D99}"
 EndProject
-
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkContentIOPlugIn", "SampleRdkContentIOPlugIn\SampleRdkContentIOPlugIn.vcxproj", "{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -395,6 +396,16 @@ Global
 		{FE232237-9B56-4782-86C2-7359571B5D99}.Release|x64.ActiveCfg = Release|x64
 		{FE232237-9B56-4782-86C2-7359571B5D99}.Release|x64.Build.0 = Release|x64
 		{FE232237-9B56-4782-86C2-7359571B5D99}.Release|x86.ActiveCfg = Release|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.Debug|x64.ActiveCfg = Debug|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.Debug|x64.Build.0 = Debug|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.Debug|x86.ActiveCfg = Debug|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.PseudoDebug|x64.ActiveCfg = Debug|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.PseudoDebug|x64.Build.0 = Debug|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.PseudoDebug|x86.ActiveCfg = Release|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.PseudoDebug|x86.Build.0 = Release|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.Release|x64.ActiveCfg = Release|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.Release|x64.Build.0 = Release|x64
+		{4D06FF1E-85B5-4A1E-8C2B-D4CC6F00F803}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
