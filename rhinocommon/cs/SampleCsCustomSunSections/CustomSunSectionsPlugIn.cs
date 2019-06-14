@@ -18,16 +18,9 @@ namespace CustomSunSections
 
   public class CustomSunSectionsPlugIn : Rhino.PlugIns.RenderPlugIn
   {
-    private CustomSunSection1 m_sun_section1;
-    private CustomSunSection2 m_sun_section2;
-
     public CustomSunSectionsPlugIn()
     {
       Instance = this;
-
-      // Create two custom sections
-      m_sun_section1 = new CustomSunSection1();
-      m_sun_section2 = new CustomSunSection2();
     }
 
     ///<summary>Gets the only instance of the CustomSunSectionsPlugIn plug-in.</summary>
@@ -43,8 +36,8 @@ namespace CustomSunSections
     // Return the custom sections that we want display in the sun dialog
     public override void SunCustomSections(List<ICollapsibleSection> sections)
     {
-      sections.Add(m_sun_section1);
-      sections.Add(m_sun_section2);
+      sections.Add(new CustomSunSection1());
+      sections.Add(new CustomSunSection2());
     }
 
     protected override Result Render(RhinoDoc doc, RunMode mode, bool fastPreview)

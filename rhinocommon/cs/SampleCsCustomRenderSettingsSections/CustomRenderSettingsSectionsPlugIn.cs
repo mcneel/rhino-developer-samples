@@ -27,15 +27,9 @@ namespace SampleCustomRenderSettingsSections
     private Guid m_uuidRenderSettingsSection_ColorAdjustment = new Guid("26126531-70c2-42bc-b50c-3368260dc0b4");
     private Guid m_uuidRenderSettingsSection_FocalBlur = new Guid("8035e79f-0b16-4b2a-ba0f-e277eda7007d");
 
-    private CustomRenderSection1 m_render_section1;
-
     public CustomRenderSettingsSectionsPlugIn()
     {
       Instance = this;
-
-      // Create custom section
-      m_render_section1 = new CustomRenderSection1();
-
     }
 
     ///<summary>Gets the only instance of the SampleCustomRenderSettingsSectionsPlugIn plug-in.</summary>
@@ -49,7 +43,7 @@ namespace SampleCustomRenderSettingsSections
     // and mantain plug-in wide options in a document.
     public override void RenderSettingsCustomSections(List<ICollapsibleSection> sections)
     {
-      sections.Add(m_render_section1);
+      sections.Add(new CustomRenderSection1());
     }
 
     /// <summary>

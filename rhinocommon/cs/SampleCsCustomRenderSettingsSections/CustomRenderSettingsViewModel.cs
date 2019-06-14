@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Rhino.UI.Controls;
-using Rhino.Render.DataSources;
+using Rhino.Render;
 using Rhino.Collections;
 
 
@@ -11,37 +11,37 @@ namespace SampleCustomRenderSettingsSections
   {
     public event PropertyChangedEventHandler PropertyChanged;
 
-    private RhinoSettings RhinoSettingsForRead()
+    private Rhino.Render.DataSources.RhinoSettings RenderSettingsForRead()
     {
-      return GetData(Rhino.UI.Controls.DataSource.ProviderIds.RhinoSettings, false, true) as RhinoSettings;
+      return GetData(Rhino.UI.Controls.DataSource.ProviderIds.RhinoSettings, false, true) as Rhino.Render.DataSources.RhinoSettings;
     }
 
-    private RhinoSettings RhinoSettingsForWrite()
+    private Rhino.Render.DataSources.RhinoSettings RenderSettingsForWrite()
     {
-      return GetData(Rhino.UI.Controls.DataSource.ProviderIds.RhinoSettings, true, true) as RhinoSettings;
+      return GetData(Rhino.UI.Controls.DataSource.ProviderIds.RhinoSettings, true, true) as Rhino.Render.DataSources.RhinoSettings;
     }
 
-    private void CommitRhinoSettings()
+    private void CommitRenderSettings()
     {
       Commit(Rhino.UI.Controls.DataSource.ProviderIds.RhinoSettings);
     }
 
-    // The CheckBoxValue is a custom boolean User Data 
+    // The CheckBoxValue is a custom boolean User Data
     // value for Render Settings
     public bool? CheckBoxValue
     {
       get
       {
+        var rs = RenderSettingsForRead();
+
         bool value = false;
-        var rhino_settings = RhinoSettingsForRead();
 
-        Rhino.Render.RenderSettings render_settings = rhino_settings.GetRenderSettings();
+        Rhino.Render.RenderSettings render_settings = rs.GetRenderSettings();
         ArchivableDictionary userdata = render_settings.UserDictionary;
-
         if (!userdata.TryGetBool("BoolValue", out value))
           return false;
 
-        return value; 
+        return value;
       }
 
       set
@@ -52,13 +52,14 @@ namespace SampleCustomRenderSettingsSections
           {
             using (var u = UndoHelper("Custom Render Section 1 BoolValue changed"))
             {
-              var rhino_settings = RhinoSettingsForWrite();
-              Rhino.Render.RenderSettings render_settings = rhino_settings.GetRenderSettings();
+              var rs = RenderSettingsForWrite();
+
+              Rhino.Render.RenderSettings render_settings = rs.GetRenderSettings();
               ArchivableDictionary userdata = render_settings.UserDictionary;
               userdata.Set("BoolValue", (bool)value);
-              rhino_settings.SetRenderSettings(render_settings);
+              rs.SetRenderSettings(render_settings);
 
-              CommitRhinoSettings();
+              CommitRenderSettings();
               OnPropertyChanged();
             }
           }
@@ -69,7 +70,7 @@ namespace SampleCustomRenderSettingsSections
     public CustomRenderSettingsViewModel(ICollapsibleSection section)
       : base(section)
     {
-      
+
     }
 
     void OnPropertyChanged([CallerMemberName] string memberName = null)

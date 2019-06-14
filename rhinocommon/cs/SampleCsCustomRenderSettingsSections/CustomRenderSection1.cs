@@ -147,7 +147,11 @@ namespace SampleCustomRenderSettingsSections
 
       // Setup the viewmodel for the section
       if (CustomRenderSettingsViewModel == null)
+      {
         CustomRenderSettingsViewModel = new CustomRenderSettingsViewModel(this);
+
+        DisplayData();
+      }
     }
 
     void OnDataChanged(object sender, Rhino.UI.Controls.DataSource.EventArgs args)
@@ -160,6 +164,8 @@ namespace SampleCustomRenderSettingsSections
     private void DisplayData()
     {
       m_checkbox.Checked = CustomRenderSettingsViewModel.CheckBoxValue;
+
+      m_checkbox_lb.Text = m_checkbox.Checked.ToString();
     }
 
 
