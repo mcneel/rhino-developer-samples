@@ -155,6 +155,7 @@
     <ClCompile Include="cmdSampleObjectEventWatcher.cpp" />
     <ClCompile Include="cmdSampleObjectPlotWeight.cpp" />
     <ClCompile Include="cmdSampleObjectUserData.cpp" />
+    <ClCompile Include="cmdSampleOffsetCrvOnSrf.cpp" />
     <ClCompile Include="cmdSampleOffsetCurve.cpp" />
     <ClCompile Include="cmdSampleOpenIges.cpp" />
     <ClCompile Include="cmdSampleOrientOnCrv.cpp" />
