@@ -119,6 +119,7 @@ namespace MockingBirdViewport
 				Thread.Sleep(10);
 				if (_shutdown) break;
 			}
+			cq.Dispose();
 		}
 
 		public event EventHandler RenderReset;
