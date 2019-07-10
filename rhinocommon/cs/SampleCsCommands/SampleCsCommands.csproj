@@ -69,6 +69,7 @@
     <Compile Include="SampleCsDuplicateObjectFromNameTag.cs" />
     <Compile Include="SampleCsExportDXF.cs" />
     <Compile Include="SampleCsExtractInflectionPoints.cs" />
+    <Compile Include="SampleCsExtractMinMaxRadiusPoints.cs" />
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
     <Compile Include="SampleCsFairCurves.cs" />
     <Compile Include="SampleCsFindUnweldedEdges.cs" />
