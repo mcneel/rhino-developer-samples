@@ -22,10 +22,35 @@ CRhinoCommand::result CSampleRdkAddRdkMaterials::RunCommand(const CRhinoCommandC
 	mat.SetDiffuse(col);
 	mat.SetName(L"Sample");
 
-	// Create a basic material using the ON_Material.
+	// Create a basic (custom) material using the ON_Material.
 	auto* pMaterial = ::RhRdkNewBasicMaterial(mat, pDoc);
 	if (nullptr == pMaterial)
 		return failure;
+
+	// This section is optional and demonstrates how to add a dib texture
+	// to the bitmap slot of the basic material.
+	{{{
+		const int width = 320, height = 240, depth = 32;
+		CRhinoDib dib(width, height, depth);
+
+		auto func = [](CRhinoDib::Pixel& pixel, void*)
+		{
+			// TODO: Fill the dib from your memory pixels.
+			pixel.Set(rand()&255, rand()&255, rand()&255, 255);
+			return true;
+		};
+
+		dib.ProcessPixels(func);
+
+		// Create a dib texture from the dib and set it as a child of the Basic Material
+		// in the bitmap texture slot.
+		auto* pTexture = ::RhRdkNewDibTexture(&dib, pDoc);
+		if (nullptr != pTexture)
+		{
+			pMaterial->SetChild(pTexture, CS_MAT_BITMAP_TEXTURE);
+			pMaterial->SetChildSlotOn(CS_MAT_BITMAP_TEXTURE, true);
+		}
+	}}}
 
 	// Attach the basic material to the document.
 	auto& contents = pDoc->Contents().BeginChange(RhRdkChangeContext::Program);
