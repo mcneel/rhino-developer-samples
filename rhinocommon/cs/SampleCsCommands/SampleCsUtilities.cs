@@ -144,5 +144,50 @@ namespace SampleCsCommands
 
       return rc;
     }
+
+    /// <summary>
+    /// Changes a surface so each control point affects the surface exactly the same way.
+    /// Makes the surface's knot vectors uniform without changing the control point locations.
+    /// This will change the surface's shape slightly.
+    /// </summary>
+    /// <param name="srf">The surface.</param>
+    /// <param name="direction">The direction, where 0 = U, 1 = V, 2 = Both.</param>
+    public static bool MakeSurfaceUniform(NurbsSurface srf, int direction = 2)
+    {
+      if (srf == null || direction < 0 || direction > 2)
+        return false;
+
+      for (int dir = 0; dir < 2; dir++)
+      {
+        if (dir == 0 && direction == 1)
+          continue;
+        else if (dir == 1 && direction == 0)
+          continue;
+
+        var index = 0.0;
+        var srf_knots = (dir == 0) ? srf.KnotsU : srf.KnotsV;
+        var old_knot = srf_knots[0];
+        srf_knots[0] = index;
+
+        for (var ki = 1; ki < srf_knots.Count; ki++)
+        {
+          var knot = srf_knots[ki];
+          if (Math.Abs(knot - old_knot) < RhinoMath.ZeroTolerance)
+          {
+            if (ki < srf.Degree(dir) || ki >= srf_knots.Count - srf.Degree(dir))
+            {
+              srf_knots[ki] = index;
+              continue;
+            }
+          }
+
+          index += 1.0;
+          srf_knots[ki] = index;
+          old_knot = knot;
+        }
+      }
+
+      return true;
+    }
   }
 }
