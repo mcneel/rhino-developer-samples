@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cmdSampleDrawZebraPreview.cpp" />
+    <ClCompile Include="cmdSampleFrameRails.cpp" />
     <ClCompile Include="cmdSampleOpen3dmFile.cpp" />
     <ClCompile Include="cmdSample2View.cpp" />
     <ClCompile Include="cmdSampleAddCage.cpp" />
