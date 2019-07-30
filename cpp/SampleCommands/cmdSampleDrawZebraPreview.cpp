@@ -33,7 +33,7 @@ public:
       if (m_brep)
       {
         const CRhinoZebraAnalysisSettings& zas = RhinoApp().AppSettings().ZebraAnalysisSettings();
-        dp.DrawZebraPreview(m_brep, zas, m_mp, m_color, nullptr);
+        dp.DrawZebraPreview(m_brep, zas, m_mp, m_color, &m_cache);
       }
     }
     break;
@@ -46,6 +46,7 @@ private:
   const ON_Brep* m_brep;
   const ON_MeshParameters& m_mp;
   const ON_Color m_color;
+  mutable CRhinoCacheHandle m_cache;
 };
 
 ////////////////////////////////////////////////////////////////
