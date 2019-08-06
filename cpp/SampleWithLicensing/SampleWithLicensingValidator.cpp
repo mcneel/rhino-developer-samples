@@ -186,11 +186,6 @@ void CSampleWithLicensingValidator::OnLeaseChanged(CRhinoLeaseChangedEventArgs& 
     // license. It is up to the plug-in to determine what that looks like.
     return;
   }
-
-  // Verify that pLease->ProductId is correct
-  // Verify that pLease->ProductEdition is correct
-  // Verify that pLease->ProductVersion is correct
-  // Verify that pLease->IsExpired() is false
 }
 
 // This member is obsolete.
