@@ -37,7 +37,6 @@ namespace SampleCsRhino
       return LoadReturnCode.Success;
     }
 
-
     /// <summary>
     /// Override this function if you want to return a COM visible object to
     /// RhinoScript or an external application that is automating Rhino.

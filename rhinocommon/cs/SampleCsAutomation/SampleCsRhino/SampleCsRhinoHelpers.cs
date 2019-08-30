@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Rhino.Geometry;
 
 namespace SampleCsRhino
 {
@@ -8,11 +9,10 @@ namespace SampleCsRhino
     /// <summary>
     /// Converts an object to a Rhino.Geometry.Point3d
     /// </summary>
-    public static bool ConvertToPoint3d(object pointObj, ref Rhino.Geometry.Point3d point)
+    public static bool ConvertToPoint3d(object pointObj, ref Point3d point)
     {
       var rc = false;
-      var point_arr = pointObj as Array;
-      if (null != point_arr && 3 == point_arr.Length)
+      if (pointObj is Array point_arr && 3 == point_arr.Length)
       {
         try
         {
@@ -32,7 +32,7 @@ namespace SampleCsRhino
         }
         catch
         {
-          // Suppress System.InvalidCastException
+          // ignored
         }
       }
       return rc;
@@ -41,16 +41,15 @@ namespace SampleCsRhino
     /// <summary>
     /// Converts an object to a list of Rhino.Geometry.Point3d 
     /// </summary>
-    public static bool ConvertToPoint3dList(object pointsObj, ref List<Rhino.Geometry.Point3d> points)
+    public static bool ConvertToPoint3dList(object pointsObj, ref List<Point3d> points)
     {
       var rc = false;
       var points_count = points.Count;
-      var point_arr = pointsObj as Array;
-      if (null != point_arr)
+      if (pointsObj is Array point_arr)
       {
-        for (int i = 0; i < point_arr.Length; i++)
+        for (var i = 0; i < point_arr.Length; i++)
         {
-          Rhino.Geometry.Point3d point = new Rhino.Geometry.Point3d();
+          var point = new Point3d();
           if (ConvertToPoint3d(point_arr.GetValue(i), ref point))
             points.Add(point);
         }

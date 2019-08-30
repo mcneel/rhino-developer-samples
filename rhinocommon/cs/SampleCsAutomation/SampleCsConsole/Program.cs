@@ -5,19 +5,19 @@ namespace SampleCsConsole
 {
   class Program
   {
-    static void Main(string[] args)
+    static void Main()
     {
       // Try creating an instance of Rhino
       dynamic rhino = null;
       try
       {
-        string rhinoId = "Rhino.Application";
-        //string rhinoId = "Rhino.Interface";
-        System.Type type = System.Type.GetTypeFromProgID(rhinoId);
-        rhino = System.Activator.CreateInstance(type);
+        const string rhino_id = "Rhino.Application";
+        var type = Type.GetTypeFromProgID(rhino_id);
+        rhino = Activator.CreateInstance(type);
       }
       catch
       {
+        // ignored
       }
 
       if (null == rhino)
@@ -28,7 +28,7 @@ namespace SampleCsConsole
 
       // Wait until Rhino is initialized before calling into it
       const int bail_milliseconds = 15 * 1000;
-      int time_waiting = 0;
+      var time_waiting = 0;
       while (0 == rhino.IsInitialized())
       {
         Thread.Sleep(100);
@@ -53,8 +53,8 @@ namespace SampleCsConsole
       try
       {
         // Guid is from SampleCsRhino assembly
-        string pluginId = "78d66fe1-1b04-4314-981c-5f260ad9c556";
-        plugin = rhino.GetPlugInObject(pluginId, pluginId);
+        const string plugin_id = "78d66fe1-1b04-4314-981c-5f260ad9c556";
+        plugin = rhino.GetPlugInObject(plugin_id, plugin_id);
       }
       catch
       {

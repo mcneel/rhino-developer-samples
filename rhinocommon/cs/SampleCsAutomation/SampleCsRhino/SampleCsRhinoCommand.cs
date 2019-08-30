@@ -15,10 +15,7 @@ namespace SampleCsRhino
     /// <returns>
     /// The command name as it appears on the Rhino command line.
     /// </returns>
-    public override string EnglishName
-    {
-      get { return "SampleCsRhinoCommand"; }
-    }
+    public override string EnglishName => "SampleCsRhinoCommand";
 
     /// <summary>
     /// Called by Rhino to run the command.

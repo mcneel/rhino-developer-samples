@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Rhino;
+using Rhino.Geometry;
 
 namespace SampleCsRhino
 {
@@ -68,10 +70,10 @@ namespace SampleCsRhino
     /// </summary>
     public object AddPoint(object pointObj)
     {
-      var point = new Rhino.Geometry.Point3d();
+      var point = new Point3d();
       if (SampleCsRhinoHelpers.ConvertToPoint3d(pointObj, ref point))
       {
-        var doc = Rhino.RhinoDoc.ActiveDoc;
+        var doc = RhinoDoc.ActiveDoc;
         if (null != doc)
         {
           var object_id = doc.Objects.AddPoint(point);
@@ -90,10 +92,10 @@ namespace SampleCsRhino
     /// </summary>
     public object AddPoints(object pointsObj)
     {
-      var points = new List<Rhino.Geometry.Point3d>();
+      var points = new List<Point3d>();
       if (SampleCsRhinoHelpers.ConvertToPoint3dList(pointsObj, ref points))
       {
-        var doc = Rhino.RhinoDoc.ActiveDoc;
+        var doc = RhinoDoc.ActiveDoc;
         if (null != doc)
         {
           var object_ids = new ArrayList();
@@ -119,7 +121,7 @@ namespace SampleCsRhino
     public bool RunScript(string script, bool echo)
     {
       script = script.TrimStart('!');
-      var rc = Rhino.RhinoApp.RunScript(script, echo);
+      var rc = RhinoApp.RunScript(script, echo);
       return rc;
     }
   }
