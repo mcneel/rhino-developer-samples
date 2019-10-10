@@ -58,6 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SampleCsCreateUVCurve.cs" />
     <Compile Include="SampleCsAddAlignedDimension.cs" />
     <Compile Include="SampleCsAddRadialDimension.cs" />
     <Compile Include="SampleCsClipboard.cs" />
