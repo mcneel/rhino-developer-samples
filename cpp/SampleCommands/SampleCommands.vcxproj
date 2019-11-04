@@ -167,6 +167,7 @@
     <ClCompile Include="cmdSampleOrientOnSrf.cpp" />
     <ClCompile Include="cmdSamplePan.cpp" />
     <ClCompile Include="cmdSamplePatch.cpp" />
+    <ClCompile Include="cmdSamplePerFaceMaterial.cpp" />
     <ClCompile Include="cmdSamplePerspectiveColors.cpp" />
     <ClCompile Include="cmdSamplePhantomObject.cpp" />
     <ClCompile Include="cmdSamplePickColor.cpp" />
