@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Rhino;
 using Rhino.Commands;
+using Rhino.Runtime;
 
 using System;
 
@@ -19,17 +20,36 @@ namespace SampleCustomRenderSettingsSections
   {
     // The build in Render Settings Sections in the RDK, These UUIDs start with the prefix
     // uuidRenderSettingsSection and they can be found in RhRdkUuids.h
-    private Guid m_uuidRenderSettingsSection_CurrentRenderer = new Guid("dbb37753-0cb3-4ebd-8afc-077ea9edd855");
-    private Guid m_uuidRenderSettingsSection_Resolution = new Guid("7d28112a-feee-4cfe-b820-674129dfc047");
-    private Guid m_uuidRenderSettingsSection_Background = new Guid("1c2f4520-58f7-4d74-a6b9-7985cecbfa0e");
-    private Guid m_uuidRenderSettingsSection_Lighting = new Guid("00cfff90-1e37-c20c-33c7-ffc0f201c0eb");
-    private Guid m_uuidRenderSettingsSection_Wireframe = new Guid("e4c4d19c-bd89-42dd-890d-4c44981fe518");
-    private Guid m_uuidRenderSettingsSection_ColorAdjustment = new Guid("26126531-70c2-42bc-b50c-3368260dc0b4");
-    private Guid m_uuidRenderSettingsSection_FocalBlur = new Guid("8035e79f-0b16-4b2a-ba0f-e277eda7007d");
+    private Guid m_uuidRenderSettingsSection_CurrentRenderer;
+    private Guid m_uuidRenderSettingsSection_Resolution;
+    private Guid m_uuidRenderSettingsSection_Background;
+    private Guid m_uuidRenderSettingsSection_Lighting;
+    private Guid m_uuidRenderSettingsSection_Wireframe;
+    private Guid m_uuidRenderSettingsSection_ColorAdjustment;
 
     public CustomRenderSettingsSectionsPlugIn()
     {
       Instance = this;
+
+      if (HostUtils.RunningOnWindows)
+      {
+        m_uuidRenderSettingsSection_CurrentRenderer = new Guid("dbb37753-0cb3-4ebd-8afc-077ea9edd855");
+        m_uuidRenderSettingsSection_Resolution = new Guid("7d28112a-feee-4cfe-b820-674129dfc047");
+        m_uuidRenderSettingsSection_Background = new Guid("1c2f4520-58f7-4d74-a6b9-7985cecbfa0e");
+        m_uuidRenderSettingsSection_Lighting = new Guid("00cfff90-1e37-c20c-33c7-ffc0f201c0eb");
+        m_uuidRenderSettingsSection_Wireframe = new Guid("e4c4d19c-bd89-42dd-890d-4c44981fe518");
+        m_uuidRenderSettingsSection_ColorAdjustment = new Guid("26126531-70c2-42bc-b50c-3368260dc0b4");
+      }
+
+      if(HostUtils.RunningOnOSX)
+      {
+        m_uuidRenderSettingsSection_CurrentRenderer = new Guid("5B1FAC38-CE66-4319-A05F-88185FC757EE");
+        m_uuidRenderSettingsSection_Resolution = new Guid("C3CF2B4A-5F0F-499E-8E95-364F8767B8DA");
+        m_uuidRenderSettingsSection_Background = new Guid("A0362ACB-C595-4501-A762-82E74A994ABA");
+        m_uuidRenderSettingsSection_Lighting = new Guid("B72F1B11-B24B-419D-BAB5-F8678CA0B99A");
+        m_uuidRenderSettingsSection_Wireframe = new Guid("8A2953EE-D5BE-4AC0-ACFC-205375F26D31");
+        m_uuidRenderSettingsSection_ColorAdjustment = new Guid("5CC91669-FD25-4898-8245-89EF0DE98FCE");
+      }
     }
 
     ///<summary>Gets the only instance of the SampleCustomRenderSettingsSectionsPlugIn plug-in.</summary>
