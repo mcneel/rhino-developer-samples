@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cmdSampleClosedCurveContainment.cpp" />
     <ClCompile Include="cmdSampleDrawZebraPreview.cpp" />
     <ClCompile Include="cmdSampleFrameRails.cpp" />
     <ClCompile Include="cmdSampleGetMultipleSpecial.cpp" />
