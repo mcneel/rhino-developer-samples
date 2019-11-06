@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Rhino;
 using Rhino.Geometry;
 
@@ -6,6 +8,43 @@ namespace SampleCsCommands
 {
   public static class SampleCsUtilities
   {
+    /// <summary>
+    /// Runs a Rhino command script.
+    /// </summary>
+    /// <param name="doc">The active document.</param>
+    /// <param name="script">The script to run.</param>
+    /// <param name="echo">Echo prompts to the command window.</param>
+    /// <returns>
+    /// The identifiers of the objects that were most recently created or changed
+    /// by the scripted command,
+    /// </returns>
+    public static Guid[] RunCommandScript(RhinoDoc doc, string script, bool echo)
+    {
+      var rc = new Guid[0];
+      try
+      {
+        var start_sn = Rhino.DocObjects.RhinoObject.NextRuntimeSerialNumber;
+        RhinoApp.RunScript(script, false);
+        var end_sn = Rhino.DocObjects.RhinoObject.NextRuntimeSerialNumber;
+        if (start_sn < end_sn)
+        {
+          var object_ids = new List<Guid>();
+          for (var sn = start_sn; sn < end_sn; sn++)
+          {
+            var obj = doc.Objects.Find(sn);
+            if (null != obj)
+              object_ids.Add(obj.Id);
+          }
+          rc = object_ids.Distinct().ToArray();
+        }
+      }
+      catch
+      {
+        // ignored
+      }
+      return rc;
+    }
+
     /// <summary>
     /// Tests if a Brep evaluates to a box.
     /// </summary>
