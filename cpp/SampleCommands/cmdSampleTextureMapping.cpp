@@ -12,16 +12,11 @@ class CCommandSampleTextureMapping : public CRhinoCommand
 {
 public:
   CCommandSampleTextureMapping() = default;
-  ~CCommandSampleTextureMapping() = default;
-  UUID CommandUUID() override
-  {
-    // {614743C0-A387-45FD-8E43-1C207EFDBB08}
-    static const GUID SampleTextureMappingCommand_UUID =
-    { 0x614743C0, 0xA387, 0x45FD,{ 0x8E, 0x43, 0x1C, 0x20, 0x7E, 0xFD, 0xBB, 0x08 } };
-    return SampleTextureMappingCommand_UUID;
-  }
-  const wchar_t* EnglishCommandName() override { return L"SampleTextureMapping"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+  virtual ~CCommandSampleTextureMapping() = default;
+
+  virtual UUID CommandUUID() override { static const UUID uuid = { 0x614743C0, 0xA387, 0x45FD,{ 0x8E, 0x43, 0x1C, 0x20, 0x7E, 0xFD, 0xBB, 0x08 } }; return uuid; }
+  virtual const wchar_t* EnglishCommandName() override { return L"SampleTextureMapping"; }
+  virtual CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleTextureMapping object
@@ -39,8 +34,8 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
   if (selection.Result() != CRhinoGet::object)
     return cancel;
 
-  const CRhinoObject* pObject = selection.Object(0).Object();
-  if (NULL == pObject)
+  const auto* pObject = selection.Object(0).Object();
+  if (nullptr == pObject)
     return cancel;
 
   CRhinoGetInteger get;
@@ -50,8 +45,8 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
     return cancel;
 
   // This is the mapping channel on the object we're going to look for.
-  const int iMappingChannel = get.Number();
-  const UUID uuidCurrentRenderingPlugIn = RhinoApp().GetDefaultRenderApp();
+  const auto iMappingChannel = get.Number();
+  const auto uuidCurrentRenderingPlugIn = RhinoApp().GetDefaultRenderApp();
 
   ON_TextureMapping mappingNew;
   mappingNew.SetSurfaceParameterMapping();
@@ -59,21 +54,21 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
   ON_Xform localXform(1);
   int iIndex = -1;
 
-  CRhinoDoc* pDoc = pObject->Document();
-  if (NULL == pDoc)
+  auto* pDoc = pObject->Document();
+  if (nullptr == pDoc)
     return cancel;
 
-  CRhinoTextureMappingTable& table = pDoc->m_texture_mapping_table;
-  const ON_MappingRef* pMR = pObject->Attributes().m_rendering_attributes.MappingRef(uuidCurrentRenderingPlugIn);
+  auto& table = pDoc->m_texture_mapping_table;
+  const auto* pMR = pObject->Attributes().m_rendering_attributes.MappingRef(uuidCurrentRenderingPlugIn);
 
   // If there's no mapping ref, we can assume that there's no custom mapping so use surface param mapping
-  if (pMR)
+  if (nullptr != pMR)
   {
-    // There are iCount mapping channels on this object.  Iterate through them looking for the channel
+    // There are iCount mapping channels on this object.  Iterate through them looking for the channel.
     const int iCount = pMR->m_mapping_channels.Count();
     for (int i = 0; i < iCount; i++)
     {
-      const ON_MappingChannel& mc = pMR->m_mapping_channels[i];
+      const auto& mc = pMR->m_mapping_channels[i];
       if (iMappingChannel == mc.m_mapping_channel_id)
       {
         // OK - this is the guy.
@@ -106,7 +101,7 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
   // OK - putting it back is a bit of a pain.  But here goes.
 
   // Copy the attributes
-  if (-1 != iIndex)
+  if (iIndex >= 0)
   {
     // This does everything.
     table.ModifyTextureMapping(mappingNew, iIndex);
@@ -118,25 +113,28 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
 
     // In this case, we're going to have to build new attributes for the object
     // because there's no existing custom texture mapping.
-    ON_3dmObjectAttributes attrNew = pObject->Attributes();
-    ON_MappingRef* pMRNew = const_cast<ON_MappingRef*>(attrNew.m_rendering_attributes.MappingRef(uuidCurrentRenderingPlugIn));
-    if (NULL == pMRNew)
+    auto attrNew = pObject->Attributes();
+    auto* pMRNew = const_cast<ON_MappingRef*>(attrNew.m_rendering_attributes.MappingRef(uuidCurrentRenderingPlugIn));
+    if (nullptr == pMRNew)
     {
       pMRNew = attrNew.m_rendering_attributes.AddMappingRef(uuidCurrentRenderingPlugIn);
     }
 
-    ASSERT(pMR);
+    ASSERT(pMRNew);
 
     bool bFound = false;
-    for (int i = 0; i < pMR->m_mapping_channels.Count(); i++)
+    if (nullptr != pMRNew)
     {
-      ON_MappingChannel& mc = const_cast<ON_MappingChannel&>(pMRNew->m_mapping_channels[i]);
-      if (mc.m_mapping_channel_id == iMappingChannel)
+      for (int i = 0; i < pMRNew->m_mapping_channels.Count(); i++)
       {
-        // We found one - we can just modify it.
-        mc.m_mapping_index = iIndex;
-        mc.m_object_xform = localXform;
-        bFound = true;
+        auto& mc = const_cast<ON_MappingChannel&>(pMRNew->m_mapping_channels[i]);
+        if (mc.m_mapping_channel_id == iMappingChannel)
+        {
+          // We found one - we can just modify it.
+          mc.m_mapping_index = iIndex;
+          mc.m_object_xform = localXform;
+          bFound = true;
+        }
       }
     }
 
@@ -146,29 +144,31 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
       pMRNew->AddMappingChannel(iMappingChannel, table[iIndex].Id());
     }
 
-    // Now just modify the attributes
+    // Now just modify the attributes.
     pDoc->ModifyObjectAttributes(CRhinoObjRef(pObject), attrNew);
 
     // And finally, regen the display to make sure everything updates.
     pDoc->DeferredRedraw();
   }
 
-  // Use the texture mapping to set up TCs on a mesh
+  // Use the texture mapping to set up TCs on a mesh.
 
   // Now - let's use the thing on another mesh...just some fun:
-  ON_Mesh* pMesh = ::RhinoMeshSphere(ON_Sphere(ON_origin, 10.0), 20, 20);
+  auto* pMesh = ::RhinoMeshSphere(ON_Sphere(ON_origin, 10.0), 20, 20);
+  if (nullptr != pMesh)
+  {
+    // This is how to set the texture coordinates on any mesh from the texture mapping on channel 0 of an object.
+    pMesh->SetTextureCoordinates(mappingNew, &localXform);
 
-  // This is how to set the texture coordinates on any mesh from the texture mapping on channel 0 of an object.
-  pMesh->SetTextureCoordinates(mappingNew, &localXform);
-
-  delete pMesh;
-  pMesh = NULL;
+    delete pMesh;
+    pMesh = nullptr;
+  }
 
   // Get the texture tiling on the material of an object using the old school ON_Material SDK
-  const CRhinoMaterial& existing_mat = pObject->ObjectMaterial(uuidCurrentRenderingPlugIn);
+  const auto& existing_mat = pObject->ObjectMaterial(uuidCurrentRenderingPlugIn);
   for (int i = 0; i < existing_mat.m_textures.Count(); i++)
   {
-    const ON_Texture& tex = existing_mat.m_textures[i];
+    const auto& tex = existing_mat.m_textures[i];
     if (tex.m_type == ON_Texture::TYPE::bitmap_texture)
     {
       //Texture tiling for the diffuse texture ("bitmap") is in tex.m_uvw;
@@ -176,26 +176,24 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
     }
   }
 
-  // Get the texture tiling on the material of an object using the RDK
-
-  const CRhRdkMaterial* pMaterial = pObject->ObjectRdkMaterial(ON_COMPONENT_INDEX());
-  if (pMaterial)
+  // Get the texture tiling on the material of an object using the RDK.
+  const auto* pMaterial = pObject->ObjectRdkMaterial(ON_COMPONENT_INDEX());
+  if (nullptr != pMaterial)
   {
     // There's a material - let's see if there's a texture.
-    const CRhRdkTexture* pTexture = dynamic_cast<const CRhRdkTexture*>(pMaterial->GetTextureForUsage(CRhRdkMaterial::ChildSlotUsage::Diffuse));
-    if (pTexture)
+    const auto* pTexture = dynamic_cast<const CRhRdkTexture*>(pMaterial->GetTextureForUsage(CRhRdkMaterial::ChildSlotUsage::Diffuse));
+    if (nullptr != pTexture)
     {
       //There's a texture in the diffuse slot.  Set the repeat value.
 
-      //Open the texture for writing using "BeginChange"
-      CRhRdkTexture& non_const_texture = dynamic_cast<CRhRdkTexture&>(pTexture->BeginChange(RhRdkChangeContext::Program));
-      non_const_texture.SetRepeat(ON_3dVector(0.1, 0.1, 0.1));
-      non_const_texture.Changed();
-      non_const_texture.EndChange();
+      //We need to open the texture for writing using BeginChange().
+      auto& tex = static_cast<CRhRdkTexture&>(pTexture->BeginChange(RhRdkChangeContext::Program));
+      tex.SetRepeat(ON_3dVector(0.1, 0.1, 0.1));
+      tex.EndChange(); // ...and close it again.
     }
   }
 
-  return CRhinoCommand::success;
+  return success;
 }
 
 #pragma endregion
@@ -205,4 +203,3 @@ CRhinoCommand::result CCommandSampleTextureMapping::RunCommand(const CRhinoComma
 //
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
-
