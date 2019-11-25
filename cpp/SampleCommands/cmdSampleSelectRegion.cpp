@@ -263,7 +263,7 @@ public:
     return SampleRegionPickCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleRegionPick"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 };
 
 // The one and only CCommandSampleRegionPick object
@@ -343,7 +343,7 @@ public:
     return SampleWindowPickCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleWindowPick"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 };
 
 // The one and only CCommandSampleWindowPick object
@@ -426,7 +426,7 @@ public:
     return SampleRemovePointsCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleRemovePoints"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 };
 
 // The one and only CCommandSampleRemovePoints object
@@ -470,6 +470,7 @@ CRhinoCommand::result CCommandSampleRemovePoints::RunCommand(const CRhinoCommand
   const CRhinoObjectAttributes& atts = obj->Attributes();
   bool bColors = cloud.HasPointColors();
   bool bNormals = cloud.HasPointNormals();
+  bool bValues = cloud.HasPointValues();
 
   ON_PointCloud new_cloud;
   new_cloud.m_P.SetCapacity(index_count);
@@ -484,37 +485,33 @@ CRhinoCommand::result CCommandSampleRemovePoints::RunCommand(const CRhinoCommand
     new_cloud.m_N.SetCapacity(index_count);
     new_cloud.m_N.SetCount(index_count);
   }
+  if (bValues)
+  {
+    new_cloud.m_V.SetCapacity(index_count);
+    new_cloud.m_V.SetCount(index_count);
+  }
 
   ON_PointCloud dup_cloud(cloud);
   dup_cloud.DestroyHiddenPointArray();
 
-  const int cloud_count = dup_cloud.PointCount();
-  int last_point_index = indices[indices.Count() - 1];
-  for (int i = cloud_count - 1; i >= 0; i--)
+  for (int i = index_count - 1; i >= 0; i--)
   {
-    if (i == last_point_index)
-    {
-      int last_array_index = indices.Count() - 1;
+    const int idx = indices[i];
+    new_cloud.m_P.Append(dup_cloud.m_P[idx]);
+    if (bColors)
+      new_cloud.m_C.Append(dup_cloud.m_C[idx]);
+    if (bNormals)
+      new_cloud.m_N.Append(dup_cloud.m_N[idx]);
+    if (bValues)
+      new_cloud.m_V.Append(dup_cloud.m_V[idx]);
 
-      new_cloud.m_P[last_array_index] = dup_cloud.m_P[i];
-      if (bColors)
-        new_cloud.m_C[last_array_index] = dup_cloud.m_C[i];
-      if (bNormals)
-        new_cloud.m_N[last_array_index] = dup_cloud.m_N[i];
-
-      dup_cloud.m_P.Remove(i);
-      if (bColors)
-        dup_cloud.m_C.Remove(i);
-      if (bNormals)
-        dup_cloud.m_N.Remove(i);
-
-      indices.Remove(last_array_index);
-
-      if (0 == indices.Count())
-        break;
-
-      last_point_index = indices[indices.Count() - 1];
-    }
+    dup_cloud.m_P.Remove(idx);
+    if (bColors)
+      dup_cloud.m_C.Remove(idx);
+    if (bNormals)
+      dup_cloud.m_N.Remove(idx);
+    if (bValues)
+      dup_cloud.m_V.Remove(idx);
   }
 
   CRhinoPointCloudObject* new_cloud_obj = new CRhinoPointCloudObject(atts);
