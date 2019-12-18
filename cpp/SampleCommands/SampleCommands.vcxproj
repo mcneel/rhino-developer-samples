@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cmdSampleClosedCurveContainment.cpp" />
+    <ClCompile Include="cmdSampleCopyInPlace.cpp" />
     <ClCompile Include="cmdSampleDrawZebraPreview.cpp" />
     <ClCompile Include="cmdSampleDump3dmMaterialTextures.cpp" />
     <ClCompile Include="cmdSampleFrameRails.cpp" />
