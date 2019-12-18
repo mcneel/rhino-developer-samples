@@ -27,9 +27,9 @@
       IsChecked="{Binding Path=UseMultipleCounters}"
       Margin="0,4,0,0"
     />
-    <Button Content="Button 1" Grid.Row="2" Margin="0,4,0,0" Click="Button_Click"/>
-    <Button Content="Button 2" Grid.Row="3" Margin="0,4,0,0"/>
-    <Button Content="Button 3" Grid.Row="4" Margin="0,4,0,0"/>
+    <Button Content="Button 1" Grid.Row="2" Margin="0,4,0,0" Click="Button1_Click"/>
+    <Button Content="Button 2" Grid.Row="3" Margin="0,4,0,0" Click="Button2_Click"/>
+    <Button Content="Button 3" Grid.Row="4" Margin="0,4,0,0" Click="Button3_Click"/>
     <Button Content="Button 4" Grid.Row="5" Margin="0,4,0,0"/>
     <TextBox
       Text="{Binding Path=Message}"
