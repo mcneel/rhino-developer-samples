@@ -76,6 +76,7 @@
     <Compile Include="SampleCsFindUnweldedEdges.cs" />
     <Compile Include="SampleCsGuilloche.cs" />
     <Compile Include="SampleCsGumballCylinder.cs" />
+    <Compile Include="SampleCsHideInDetail.cs" />
     <Compile Include="SampleCsIntersectBreps.cs" />
     <Compile Include="SampleCsIntersectCurveBrepFace.cs" />
     <Compile Include="SampleCsKeyboardHook.cs" />
