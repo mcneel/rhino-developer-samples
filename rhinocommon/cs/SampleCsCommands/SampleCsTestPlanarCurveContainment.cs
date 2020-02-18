@@ -28,13 +28,13 @@ namespace SampleCsCommands
 
       var tol = doc.ModelAbsoluteTolerance;
 
-      if (!curve_a.IsPlanar(tol) || !curve_a.TryGetPlane(out var plane_a, tol))
+      if (!curve_a.TryGetPlane(out var plane_a, tol))
       {
         RhinoApp.WriteLine("The first curve is not planar.");
         return Result.Success;
       }
 
-      if (!curve_b.IsPlanar(tol) || !curve_b.TryGetPlane(out var plane_b, tol))
+      if (!curve_b.TryGetPlane(out var plane_b, tol))
       {
         RhinoApp.WriteLine("The second curve is not planar.");
         return Result.Success;
