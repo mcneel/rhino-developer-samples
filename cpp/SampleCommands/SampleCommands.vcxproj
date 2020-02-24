@@ -248,6 +248,7 @@
     <ClCompile Include="cmdSampleUserStrings.cpp" />
     <ClCompile Include="cmdSampleUserText.cpp" />
     <ClCompile Include="cmdSampleUVMesh.cpp" />
+    <ClCompile Include="cmdSampleViewCapturePenMode.cpp" />
     <ClCompile Include="cmdSampleViewCaptureToFile.cpp" />
     <ClCompile Include="cmdSampleViewLock.cpp" />
     <ClCompile Include="cmdSampleViewportDecoration.cpp" />
