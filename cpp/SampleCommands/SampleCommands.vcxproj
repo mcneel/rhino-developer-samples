@@ -15,6 +15,7 @@
     <ClCompile Include="cmdSampleCopyInPlace.cpp" />
     <ClCompile Include="cmdSampleDrawZebraPreview.cpp" />
     <ClCompile Include="cmdSampleDump3dmMaterialTextures.cpp" />
+    <ClCompile Include="cmdSampleDupEdge.cpp" />
     <ClCompile Include="cmdSampleFrameRails.cpp" />
     <ClCompile Include="cmdSampleGetMultipleSpecial.cpp" />
     <ClCompile Include="cmdSampleOpen3dmFile.cpp" />
