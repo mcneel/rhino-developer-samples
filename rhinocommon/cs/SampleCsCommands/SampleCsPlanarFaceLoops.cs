@@ -8,10 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsPlanarFaceLoops : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsPlanarFaceLoops"; }
-    }
+    public override string EnglishName => "SampleCsPlanarFaceLoops";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -9,14 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsExtrusion : Command
   {
-    public SampleCsExtrusion()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsExtrusion"; }
-    }
+    public override string EnglishName => "SampleCsExtrusion";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

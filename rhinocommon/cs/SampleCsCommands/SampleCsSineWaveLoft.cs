@@ -8,14 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsSineWaveLoft : Command
   {
-    public SampleCsSineWaveLoft()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsSineWaveLoft"; }
-    }
+    public override string EnglishName => "SampleCsSineWaveLoft";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

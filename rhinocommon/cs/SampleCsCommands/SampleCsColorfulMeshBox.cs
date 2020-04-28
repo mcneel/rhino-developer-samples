@@ -6,17 +6,14 @@ namespace SampleCsCommands
 {
   public class SampleCsColorfulMeshBox : Command
   {
-    private Random m_random;
+    private readonly Random m_random;
 
     public SampleCsColorfulMeshBox()
     {
       m_random = new Random();
     }
 
-    public override string EnglishName
-    {
-      get { return "SampleCsColorfulMeshBox"; }
-    }
+    public override string EnglishName => "SampleCsColorfulMeshBox";
 
     private System.Drawing.Color GetRandomColor()
     {

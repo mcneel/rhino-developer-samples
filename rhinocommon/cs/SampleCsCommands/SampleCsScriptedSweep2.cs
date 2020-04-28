@@ -11,10 +11,7 @@ namespace SampleCsCommands
   [CommandStyle(Style.ScriptRunner)]
   public class SampleCsScriptedSweep2 : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsScriptedSweep2"; }
-    }
+    public override string EnglishName => "SampleCsScriptedSweep2";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

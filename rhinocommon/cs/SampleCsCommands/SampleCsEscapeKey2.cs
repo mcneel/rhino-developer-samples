@@ -46,10 +46,7 @@ namespace SampleCsCommands
       m_random = new Random();
     }
 
-    public override string EnglishName
-    {
-      get { return "SampleCsEscapeKey2"; }
-    }
+    public override string EnglishName => "SampleCsEscapeKey2";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

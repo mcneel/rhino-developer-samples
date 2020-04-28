@@ -10,14 +10,7 @@ namespace SampleCsCommands
 {
   public class SampleCsDrawDistance : Command
   {
-    public SampleCsDrawDistance()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsDrawDistance"; }
-    }
+    public override string EnglishName => "SampleCsDrawDistance";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

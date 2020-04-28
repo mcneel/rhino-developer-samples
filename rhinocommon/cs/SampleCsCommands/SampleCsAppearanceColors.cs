@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Windows.Forms;
 using Rhino;
 using Rhino.ApplicationSettings;
 using Rhino.Commands;
@@ -8,10 +7,7 @@ namespace SampleCsCommands
 {
   public class SampleCsAppearanceColors : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsAppearanceColors"; }
-    }
+    public override string EnglishName => "SampleCsAppearanceColors";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

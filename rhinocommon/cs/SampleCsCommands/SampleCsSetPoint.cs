@@ -59,19 +59,11 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsSetPoint : TransformCommand
   {
-    public SampleCsSetPoint()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsSetPoint"; }
-    }
+    public override string EnglishName => "SampleCsSetPoint";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       Result rc = Result.Nothing;
-      GetResult res = GetResult.Nothing;
 
       // Select objects to rotate
       TransformObjectList list = new TransformObjectList();
@@ -94,7 +86,7 @@ namespace SampleCsCommands
         gx.AddOptionToggle("YSet", ref opt_yset);
         gx.AddOptionToggle("ZSet", ref opt_zset);
 
-        res = gx.GetXform();
+        var res = gx.GetXform();
 
         if (res == GetResult.Point)
         {

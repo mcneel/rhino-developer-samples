@@ -8,14 +8,7 @@ namespace SampleCsCommands
   {
     static int _historyVersion = 20121101; 
 
-    public SampleCsHistoryDivide()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsHistoryDivide"; }
-    }
+    public override string EnglishName => "SampleCsHistoryDivide";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

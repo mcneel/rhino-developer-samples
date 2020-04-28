@@ -33,14 +33,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsCustomLine : Command
   {
-    public SampleCsCustomLine()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsCustomLine"; }
-    }
+    public override string EnglishName => "SampleCsCustomLine";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

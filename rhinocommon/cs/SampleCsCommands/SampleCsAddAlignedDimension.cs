@@ -6,10 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsAddAlignedDimension : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsAddAlignedDimension"; }
-    }
+    public override string EnglishName => "SampleCsAddAlignedDimension";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

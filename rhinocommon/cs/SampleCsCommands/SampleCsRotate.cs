@@ -54,8 +54,8 @@ namespace SampleCsCommands
   internal class GetRotationTransform : GetTransform
   {
     private Plane m_plane;
-    private Point3d m_base_point;
-    private Point3d m_ref_point;
+    private readonly Point3d m_base_point;
+    private readonly Point3d m_ref_point;
     private double m_angle;
     private Arc m_arc;
 
@@ -71,13 +71,7 @@ namespace SampleCsCommands
       ConstrainDistanceFromBasePoint(m_base_point.DistanceTo(m_ref_point));
     }
 
-    public double Angle
-    {
-      get
-      {
-        return m_angle;
-      }
-    }
+    public double Angle => m_angle;
 
     public override Transform CalculateTransform(RhinoViewport viewport, Point3d point)
     {
@@ -175,10 +169,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsRotate : TransformCommand
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsRotate"; }
-    }
+    public override string EnglishName => "SampleCsRotate";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

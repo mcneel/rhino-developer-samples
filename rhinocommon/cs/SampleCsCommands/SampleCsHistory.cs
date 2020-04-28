@@ -34,18 +34,12 @@ namespace SampleCsCommands
     /// <summary>
     /// Returns the only instance of the SampleCsHistory command.
     /// </summary>
-    public static SampleCsHistory Instance
-    {
-      get { return g_command_instance; }
-    }
+    public static SampleCsHistory Instance => g_command_instance;
 
     /// <summary>
     /// Returns the English name of this command.
     /// </summary>
-    public override string EnglishName
-    {
-      get { return "SampleCsHistory"; }
-    }
+    public override string EnglishName => "SampleCsHistory";
 
     /// <summary>
     /// Rhino calls this function to run the command.

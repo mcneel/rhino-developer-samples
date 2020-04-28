@@ -16,14 +16,7 @@ namespace SampleCsCommands
     /// </summary>
     private const int HISTORY_VERSION = 20140805;
 
-    public SampleCsSweep1()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsSweep1"; }
-    }
+    public override string EnglishName => "SampleCsSweep1";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

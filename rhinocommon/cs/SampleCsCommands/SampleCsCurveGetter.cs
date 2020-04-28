@@ -8,10 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsCurveGetter : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsCurveGetter"; }
-    }
+    public override string EnglishName => "SampleCsCurveGetter";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -6,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsMeshBrep : Command
   {
-    public SampleCsMeshBrep()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsMeshBrep"; }
-    }
+    public override string EnglishName => "SampleCsMeshBrep";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

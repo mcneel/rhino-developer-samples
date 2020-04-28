@@ -5,14 +5,7 @@ namespace SampleCsCommands
 {
   public class SampleCsBooleanDifference : Command
   {
-    public SampleCsBooleanDifference()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsBooleanDifference"; }
-    }
+    public override string EnglishName => "SampleCsBooleanDifference";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

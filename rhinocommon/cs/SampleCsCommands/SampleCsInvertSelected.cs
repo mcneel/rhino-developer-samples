@@ -8,10 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsInvertSelected : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsInverteSelected"; }
-    }
+    public override string EnglishName => "SampleCsInverteSelected";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -32,10 +32,7 @@ namespace SampleCsCommands
     /// <summary>
     /// EnglishName
     /// </summary>
-    public override string EnglishName
-    {
-      get { return "SampleCsOverCut"; }
-    }
+    public override string EnglishName => "SampleCsOverCut";
 
     /// <summary>
     /// RunCommand
@@ -384,7 +381,7 @@ namespace SampleCsCommands
   /// </summary>
   internal class SampleCsOverCutConduit : DisplayConduit
   {
-    private Color TrackingColor { get; set; }
+    private Color TrackingColor { get; }
     public List<Circle> Circles { get; set; } 
 
     /// <summary>
@@ -417,7 +414,7 @@ namespace SampleCsCommands
   /// </summary>
   internal class GetClosedPlanarPolyline : GetObject
   {
-    private double Tolerance { get; set; }
+    private double Tolerance { get; }
 
     /// <summary>
     /// Constructor

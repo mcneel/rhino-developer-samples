@@ -8,16 +8,9 @@ namespace SampleCsCommands
 {
   public class SampleCsBoundingBox : Command
   {
-    private bool m_use_cplane = false;
+    private bool m_use_cplane;
 
-    public SampleCsBoundingBox()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsBoundingBox"; }
-    }
+    public override string EnglishName => "SampleCsBoundingBox";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -142,7 +135,7 @@ namespace SampleCsCommands
       return BoundingBoxClassification.Invalid;
     }
 
-    private BoundingBoxClassification ClassifyBoundingBox(Point3d[] box_corners, out Point3d[] rect)
+    private BoundingBoxClassification ClassifyBoundingBox(Point3d[] boxCorners, out Point3d[] rect)
     {
       rect = new Point3d[5];
 
@@ -154,21 +147,21 @@ namespace SampleCsCommands
       const float flt_epsilon = 1.192092896e-07F;
 
       // flat in box x-direction?
-      if (flt_epsilon > box_corners[0].DistanceTo(box_corners[1]))
+      if (flt_epsilon > boxCorners[0].DistanceTo(boxCorners[1]))
       {
         num_flat++;
         xflat = true;
       }
 
       // flat in box y-direction?
-      if (flt_epsilon > box_corners[0].DistanceTo(box_corners[3]))
+      if (flt_epsilon > boxCorners[0].DistanceTo(boxCorners[3]))
       {
         num_flat++;
         yflat = true;
       }
 
       // flat in box z-direction?
-      if (flt_epsilon > box_corners[0].DistanceTo(box_corners[4]))
+      if (flt_epsilon > boxCorners[0].DistanceTo(boxCorners[4]))
       {
         num_flat++;
         //zflat = true;
@@ -176,24 +169,24 @@ namespace SampleCsCommands
 
       if (num_flat == 1)
       {
-        rect[0] = rect[4] = box_corners[0];
+        rect[0] = rect[4] = boxCorners[0];
         if (xflat)
         {
-          rect[1] = box_corners[4];
-          rect[2] = box_corners[7];
-          rect[3] = box_corners[3];
+          rect[1] = boxCorners[4];
+          rect[2] = boxCorners[7];
+          rect[3] = boxCorners[3];
         }
         else if (yflat)
         {
-          rect[1] = box_corners[1];
-          rect[2] = box_corners[5];
-          rect[3] = box_corners[4];
+          rect[1] = boxCorners[1];
+          rect[2] = boxCorners[5];
+          rect[3] = boxCorners[4];
         }
         else // zflat
         {
-          rect[1] = box_corners[1];
-          rect[2] = box_corners[2];
-          rect[3] = box_corners[3];
+          rect[1] = boxCorners[1];
+          rect[2] = boxCorners[2];
+          rect[3] = boxCorners[3];
         }
       }
 

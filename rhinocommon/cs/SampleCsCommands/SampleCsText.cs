@@ -14,10 +14,7 @@ namespace SampleCsCommands
   {
     private TextJustification m_justification = TextJustification.None;
 
-    public override string EnglishName
-    {
-      get { return "SampleCsText"; }
-    }
+    public override string EnglishName => "SampleCsText";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

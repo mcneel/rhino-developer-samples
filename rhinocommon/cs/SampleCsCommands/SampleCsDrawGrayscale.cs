@@ -9,10 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsDrawGrayscale : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsDrawGrayscale"; }
-    }
+    public override string EnglishName => "SampleCsDrawGrayscale";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -52,7 +49,7 @@ namespace SampleCsCommands
     /// <summary>
     /// The ID of the viewport to be drawn grayscale
     /// </summary>
-    protected Guid ViewportId { get; private set; }
+    protected Guid ViewportId { get; }
 
     /// <summary>
     /// Called before every object in the scene is drawn

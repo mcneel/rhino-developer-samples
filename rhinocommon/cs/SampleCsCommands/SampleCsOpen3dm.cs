@@ -9,10 +9,7 @@ namespace SampleCsCommands
   [CommandStyle(Style.ScriptRunner)]
   public class SampleCsOpen3dm : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsOpen3dm"; }
-    }
+    public override string EnglishName => "SampleCsOpen3dm";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -241,7 +241,6 @@ namespace SampleCsCommands
     /// </summary>
     private static Color ColorFromFractionalArgb(double alpha, double red, double green, double blue)
     {
-      int r, g, b, a;
       if (red < 0.0) red = 0.0; else if (red > 1.0) red = 1.0;
       if (green < 0.0) green = 0.0; else if (green > 1.0) green = 1.0;
       if (blue < 0.0) blue = 0.0; else if (blue > 1.0) blue = 1.0;
@@ -252,10 +251,10 @@ namespace SampleCsCommands
       blue *= 255.0;
       alpha *= 255.0;
 
-      r = (int)red;
-      g = (int)green;
-      b = (int)blue;
-      a = (int)alpha;
+      var r = (int)red;
+      var g = (int)green;
+      var b = (int)blue;
+      var a = (int)alpha;
 
       if (red - r >= 0.5) r++;
       if (green - g >= 0.5) g++;

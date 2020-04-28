@@ -10,14 +10,7 @@ namespace SampleCsCommands
 {
   public class SampleCsCurveEditPoints : Command
   {
-    public SampleCsCurveEditPoints()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsCurveEditPoints"; }
-    }
+    public override string EnglishName => "SampleCsCurveEditPoints";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

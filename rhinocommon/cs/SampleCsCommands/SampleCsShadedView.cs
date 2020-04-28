@@ -7,14 +7,7 @@ namespace SampleCsCommands
 {
   public class SampleCsShadedView : Command
   {
-    public SampleCsShadedView()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsShadedView"; }
-    }
+    public override string EnglishName => "SampleCsShadedView";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

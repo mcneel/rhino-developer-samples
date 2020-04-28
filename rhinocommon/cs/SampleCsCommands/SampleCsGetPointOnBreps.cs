@@ -15,14 +15,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsGetPointOnBreps : Command
   {
-    public SampleCsGetPointOnBreps()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsGetPointOnBreps"; }
-    }
+    public override string EnglishName => "SampleCsGetPointOnBreps";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

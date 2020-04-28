@@ -6,10 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsTrimmedPlane : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsTrimmedPlane"; }
-    }
+    public override string EnglishName => "SampleCsTrimmedPlane";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

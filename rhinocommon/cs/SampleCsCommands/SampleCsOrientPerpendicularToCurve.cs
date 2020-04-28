@@ -10,19 +10,9 @@ namespace SampleCsCommands
   public class SampleCsOrientPerpendicularToCurve : Command
   {
     /// <summary>
-    /// Constructor
-    /// </summary>
-    public SampleCsOrientPerpendicularToCurve()
-    {
-    }
-
-    /// <summary>
     /// Command name
     /// </summary>
-    public override string EnglishName
-    {
-      get { return "SampleCsOrientPerpendicularToCurve"; }
-    }
+    public override string EnglishName => "SampleCsOrientPerpendicularToCurve";
 
     /// <summary>
     /// Runs the command

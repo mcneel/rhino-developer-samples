@@ -8,10 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsZebraAnalysis : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsZebraAnalysis"; }
-    }
+    public override string EnglishName => "SampleCsZebraAnalysis";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

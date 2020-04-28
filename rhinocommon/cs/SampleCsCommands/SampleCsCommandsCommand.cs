@@ -20,10 +20,7 @@ namespace SampleCsCommands
     }
 
     ///<returns>The command name as it appears on the Rhino command line.</returns>
-    public override string EnglishName
-    {
-      get { return "SampleCsCommandsCommand"; }
-    }
+    public override string EnglishName => "SampleCsCommandsCommand";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -7,14 +7,7 @@ namespace SampleCsCommands
 {
   public class SampleCsZoom : Command
   {
-    public SampleCsZoom()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsZoom"; }
-    }
+    public override string EnglishName => "SampleCsZoom";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

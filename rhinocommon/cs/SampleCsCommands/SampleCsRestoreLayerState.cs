@@ -6,10 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsRestoreLayerState : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsRestoreLayerState"; }
-    }
+    public override string EnglishName => "SampleCsRestoreLayerState";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

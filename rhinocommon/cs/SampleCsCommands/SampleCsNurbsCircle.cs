@@ -8,14 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsNurbsCircle : Command
   {
-    public SampleCsNurbsCircle()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsNurbsCircle"; }
-    }
+    public override string EnglishName => "SampleCsNurbsCircle";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

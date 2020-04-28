@@ -14,10 +14,7 @@ namespace SampleCsCommands
     /// <summary>
     /// EnglishName override
     /// </summary>
-    public override string EnglishName
-    {
-      get { return "SampleCsPersistentSettings"; }
-    }
+    public override string EnglishName => "SampleCsPersistentSettings";
 
     /// <summary>
     /// RunCommand override

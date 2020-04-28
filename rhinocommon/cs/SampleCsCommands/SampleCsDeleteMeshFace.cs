@@ -11,26 +11,19 @@ namespace SampleCsCommands
 {
   public class SampleCsDeleteMeshFace : Command
   {
-    public SampleCsDeleteMeshFace()
+    public override string EnglishName => "SampleCsDeleteMeshFace";
+
+    private struct FaceInfo
     {
+      public MeshObject MeshObject;
+      public int FaceIndex;
     }
 
-    public override string EnglishName
+    private static int CompareFaceInfo(FaceInfo a, FaceInfo b)
     {
-      get { return "SampleCsDeleteMeshFace"; }
-    }
-
-    struct FaceInfo
-    {
-      public MeshObject m_obj;
-      public int m_idx;
-    }
-
-    static int CompareFaceInfo(FaceInfo a, FaceInfo b)
-    {
-      if (a.m_obj.RuntimeSerialNumber < b.m_obj.RuntimeSerialNumber)
+      if (a.MeshObject.RuntimeSerialNumber < b.MeshObject.RuntimeSerialNumber)
         return -1;
-      if (a.m_obj.RuntimeSerialNumber > b.m_obj.RuntimeSerialNumber)
+      if (a.MeshObject.RuntimeSerialNumber > b.MeshObject.RuntimeSerialNumber)
         return 1;
       return 0;
     }
@@ -53,8 +46,8 @@ namespace SampleCsCommands
           return Result.Failure;
 
         FaceInfo fi = new FaceInfo();
-        fi.m_obj = obj;
-        fi.m_idx = obj_ref.GeometryComponentIndex.Index;
+        fi.MeshObject = obj;
+        fi.FaceIndex = obj_ref.GeometryComponentIndex.Index;
         face_list.Add(fi);
       }
 
@@ -64,16 +57,15 @@ namespace SampleCsCommands
       int idx = 1;
 
       Mesh new_mesh = null;
-      MeshObject next_obj = null;
 
-      MeshObject curr_obj = face_list[0].m_obj;
-      face_indices.Add(face_list[0].m_idx);
+      MeshObject curr_obj = face_list[0].MeshObject;
+      face_indices.Add(face_list[0].FaceIndex);
       while (idx < face_list.Count)
       {
-        next_obj = face_list[idx].m_obj;
+        var next_obj = face_list[idx].MeshObject;
         if (curr_obj.RuntimeSerialNumber == next_obj.RuntimeSerialNumber)
         {
-          face_indices.Add(face_list[idx].m_idx);
+          face_indices.Add(face_list[idx].FaceIndex);
           curr_obj = next_obj;
           idx++;
           continue;
@@ -86,7 +78,7 @@ namespace SampleCsCommands
         doc.Objects.Replace(curr_obj.Id, new_mesh);
 
         face_indices.Clear();
-        face_indices.Add(face_list[idx].m_idx);
+        face_indices.Add(face_list[idx].FaceIndex);
         curr_obj = next_obj;
         idx++;
       }

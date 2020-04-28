@@ -51,7 +51,7 @@ namespace SampleCsCommands
   [System.Runtime.InteropServices.Guid("23A7FA3D-74F6-4578-9059-B5E3611CD406")]
   public class SampleCsCustomUserData : UserData
   {
-    public SampleCsCustomClass Data { get; private set; }
+    public SampleCsCustomClass Data { get; }
 
     public SampleCsCustomUserData()
     {

@@ -67,16 +67,9 @@ namespace SampleCsCommands
   /// </summary>
   internal class GetThirdArcPoint : GetPoint
   {
-    private ArcArguments m_args;
+    private readonly ArcArguments m_args;
     private Arc m_arc;
-    private bool m_have_arc = false;
-
-    /// <summary>
-    /// Private constructor
-    /// </summary>
-    private GetThirdArcPoint()
-    {
-    }
+    private bool m_have_arc;
 
     /// <summary>
     /// Public consttructor

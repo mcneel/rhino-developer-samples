@@ -9,10 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsIntersectCurves : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsIntersectCurves"; }
-    }
+    public override string EnglishName => "SampleCsIntersectCurves";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -35,11 +35,11 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Rhino.UI">
-      <HintPath>C:\Program Files\Rhino 6\System\Rhino.UI.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7 WIP\System\Rhino.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RhinoWindows">
-      <HintPath>C:\Program Files\Rhino 6\System\RhinoWindows.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7 WIP\System\RhinoWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -49,12 +49,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="RhinoCommon">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 6\System\rhinocommon.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7 WIP\System\rhinocommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Eto">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 6\System\Eto.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7 WIP\System\Eto.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Windows" />

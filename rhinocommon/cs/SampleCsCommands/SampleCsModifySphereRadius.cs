@@ -5,10 +5,7 @@ namespace SampleCsCommands
 {
   public class SampleCsModifySphereRadius : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsModifySphereRadius"; }
-    }
+    public override string EnglishName => "SampleCsModifySphereRadius";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

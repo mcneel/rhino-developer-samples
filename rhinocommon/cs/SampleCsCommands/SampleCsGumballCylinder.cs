@@ -19,10 +19,7 @@ namespace SampleCsCommands
       m_height = 1.0;
     }
 
-    public override string EnglishName
-    {
-      get { return "SampleCsGumballCylinder"; }
-    }
+    public override string EnglishName => "SampleCsGumballCylinder";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -190,36 +187,18 @@ namespace SampleCsCommands
       return rc;
     }
 
-    public Point3d Center
-    {
-      get
-      {
-        return m_circle.Center;
-      }
-    }
+    public Point3d Center => m_circle.Center;
 
     public double Radius
     {
-      get
-      {
-        return m_circle.Radius;
-      }
-      set
-      {
-        Create(m_circle.Plane, value, m_cylinder.TotalHeight);
-      }
+      get => m_circle.Radius;
+      set => Create(m_circle.Plane, value, m_cylinder.TotalHeight);
     }
 
     public double Height
     {
-      get
-      {
-        return m_cylinder.TotalHeight;
-      }
-      set
-      {
-        Create(m_circle.Plane, m_circle.Radius, value);
-      }
+      get => m_cylinder.TotalHeight;
+      set => Create(m_circle.Plane, m_circle.Radius, value);
     }
 
     public Plane RadiusPlane
@@ -247,21 +226,9 @@ namespace SampleCsCommands
       }
     }
 
-    public double BaseRadius
-    {
-      get
-      {
-        return m_radius;
-      }
-    }
+    public double BaseRadius => m_radius;
 
-    public double BaseHeight
-    {
-      get
-      {
-        return m_height;
-      }
-    }
+    public double BaseHeight => m_height;
 
     public void Draw(DisplayPipeline display)
     {

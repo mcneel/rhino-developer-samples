@@ -9,14 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsGetPoint : Command
   {
-    public SampleCsGetPoint()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsGetPoint"; }
-    }
+    public override string EnglishName => "SampleCsGetPoint";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

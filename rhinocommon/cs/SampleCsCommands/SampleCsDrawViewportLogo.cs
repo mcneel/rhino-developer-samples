@@ -11,14 +11,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsDrawViewportLogo : Command
   {
-    public SampleCsDrawViewportLogo()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsDrawViewportLogo"; }
-    }
+    public override string EnglishName => "SampleCsDrawViewportLogo";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -45,7 +38,7 @@ namespace SampleCsCommands
   {
     private float m_sprite_size = 64;
     private System.Drawing.Bitmap m_logo;
-    private Rhino.Display.DisplayBitmap m_bitmap;
+    private readonly Rhino.Display.DisplayBitmap m_bitmap;
     
     public SampleCsDrawViewportLogoConduit()
     {

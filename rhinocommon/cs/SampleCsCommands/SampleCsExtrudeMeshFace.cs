@@ -9,10 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsExtrudeMeshFace : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsExtrudeMeshFace"; }
-    }
+    public override string EnglishName => "SampleCsExtrudeMeshFace";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

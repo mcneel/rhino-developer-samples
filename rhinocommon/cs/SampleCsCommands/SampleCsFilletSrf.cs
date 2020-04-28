@@ -15,10 +15,7 @@ namespace SampleCsCommands
       Radius = 1.0;
     }
 
-    public override string EnglishName
-    {
-      get { return "SampleCsFilletSrf"; }
-    }
+    public override string EnglishName => "SampleCsFilletSrf";
 
     private double Radius { get; set; }
 

@@ -34,14 +34,7 @@ namespace SampleCsCommands
 
   public class SampleCsDrawMesh : Command
   {
-    public SampleCsDrawMesh()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsDrawMesh"; }
-    }
+    public override string EnglishName => "SampleCsDrawMesh";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -9,10 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsCylinderTest : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsCylinderTest"; }
-    }
+    public override string EnglishName => "SampleCsCylinderTest";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

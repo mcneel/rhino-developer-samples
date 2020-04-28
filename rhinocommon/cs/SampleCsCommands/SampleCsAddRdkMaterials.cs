@@ -9,10 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsAddRdkMaterials : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsAddRdkMaterials"; }
-    }
+    public override string EnglishName => "SampleCsAddRdkMaterials";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

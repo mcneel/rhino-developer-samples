@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
 
@@ -7,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsAddNurbsSurface : Command
   {
-    public SampleCsAddNurbsSurface()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsAddNurbsSurface"; }
-    }
+    public override string EnglishName => "SampleCsAddNurbsSurface";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -25,8 +17,8 @@ namespace SampleCsCommands
       const int u_cv_count = 3;
       const int v_cv_count = 5;
       
-      var i = 0;
-      var j = 0;
+      int i;
+      int j;
 
       // The knot vectors do NOT have the 2 superfluous knots
       // at the start and end of the knot vector.  If you are

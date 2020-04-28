@@ -6,10 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsRestoreNamedView : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsRestoreNamedView"; }
-    }
+    public override string EnglishName => "SampleCsRestoreNamedView";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -10,14 +10,7 @@ namespace SampleCsCommands
 {
   public class SampleCsDeleteSubCurve : Command
   {
-    public SampleCsDeleteSubCurve()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsDeleteSubCurve"; }
-    }
+    public override string EnglishName => "SampleCsDeleteSubCurve";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

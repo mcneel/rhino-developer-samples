@@ -9,14 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsCurveSeam : Command
   {
-    public SampleCsCurveSeam()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsCurveSeam"; }
-    }
+    public override string EnglishName => "SampleCsCurveSeam";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

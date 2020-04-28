@@ -6,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsCustomRenderMeshSettings : Command
   {
-    public SampleCsCustomRenderMeshSettings()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsCustomRenderMeshSettings"; }
-    }
+    public override string EnglishName => "SampleCsCustomRenderMeshSettings";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

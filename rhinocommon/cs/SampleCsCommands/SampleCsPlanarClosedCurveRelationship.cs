@@ -8,14 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsPlanarClosedCurveRelationship : Command
   {
-    public SampleCsPlanarClosedCurveRelationship()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsPlanarClosedCurveRelationship"; }
-    }
+    public override string EnglishName => "SampleCsPlanarClosedCurveRelationship";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

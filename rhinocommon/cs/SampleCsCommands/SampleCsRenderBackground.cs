@@ -6,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsRenderBackground : Command
   {
-    public SampleCsRenderBackground()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsRenderBackground"; }
-    }
+    public override string EnglishName => "SampleCsRenderBackground";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

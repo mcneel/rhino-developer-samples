@@ -8,10 +8,7 @@ namespace SampleCsCommands
   [CommandStyle(Style.ScriptRunner)]
   public class SampleCsLastCreatedObjects : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsLastCreatedObjects"; }
-    }
+    public override string EnglishName => "SampleCsLastCreatedObjects";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

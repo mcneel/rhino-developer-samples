@@ -7,14 +7,7 @@ namespace SampleCsCommands
 {
   public class SampleCsIntersectCircles : Command
   {
-    public SampleCsIntersectCircles()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsIntersectCircles"; }
-    }
+    public override string EnglishName => "SampleCsIntersectCircles";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

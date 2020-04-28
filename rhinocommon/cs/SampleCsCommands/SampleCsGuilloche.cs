@@ -166,7 +166,7 @@ namespace SampleCsCommands
       Args = new Guilloche();
     }
 
-    public Guilloche Args { get; private set; }
+    public Guilloche Args { get; }
 
     public void UpdateCurve()
     {

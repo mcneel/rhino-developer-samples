@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
 
@@ -7,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsAddNurbsCurve : Command
   {
-    public SampleCsAddNurbsCurve()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsAddNurbsCurve"; }
-    }
+    public override string EnglishName => "SampleCsAddNurbsCurve";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

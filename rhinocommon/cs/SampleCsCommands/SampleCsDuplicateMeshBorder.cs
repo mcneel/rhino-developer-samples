@@ -7,14 +7,7 @@ namespace SampleCsCommands
 {
   public class SampleCsDuplicateMeshBorder : Command
   {
-    public SampleCsDuplicateMeshBorder()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsDuplicateMeshBorder"; }
-    }
+    public override string EnglishName => "SampleCsDuplicateMeshBorder";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

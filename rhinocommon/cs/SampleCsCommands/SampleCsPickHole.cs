@@ -8,10 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsPickHole : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsPickHole"; }
-    }
+    public override string EnglishName => "SampleCsPickHole";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

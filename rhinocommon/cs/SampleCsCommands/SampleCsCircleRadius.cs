@@ -1,7 +1,5 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
-using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
 
@@ -9,10 +7,7 @@ namespace SampleCsCommands
 {
   public class SampleCsCircleRadius : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsCircleRadius"; }
-    }
+    public override string EnglishName => "SampleCsCircleRadius";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -47,9 +42,9 @@ namespace SampleCsCommands
 
   internal class GetRadiusPoint : GetPoint
   {
-    private Plane BasePlane { get; set; }
+    private Plane BasePlane { get; }
     private bool CanDraw { get; set; }
-    private System.Drawing.Color DrawColor { get; set; }
+    private System.Drawing.Color DrawColor { get; }
     
     public Circle Circle { get; private set; }
 

@@ -9,10 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsEditPolyline : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsEditPolyline"; }
-    }
+    public override string EnglishName => "SampleCsEditPolyline";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

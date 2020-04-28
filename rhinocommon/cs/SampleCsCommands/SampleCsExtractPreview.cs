@@ -9,20 +9,11 @@ namespace SampleCsCommands
 {
   public class SampleCsExtractPreview : Command
   {
-    public SampleCsExtractPreview()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsExtractPreview"; }
-    }
+    public override string EnglishName => "SampleCsExtractPreview";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      OpenFileDialog dialog = new OpenFileDialog();
-      dialog.Filter = "Rhino 3D Models (*.3dm)|*.3dm";
-      dialog.DefaultExt = "3dm";
+      OpenFileDialog dialog = new OpenFileDialog { Filter = @"Rhino 3D Models (*.3dm)|*.3dm", DefaultExt = "3dm" };
       DialogResult rc = dialog.ShowDialog();
       if (rc != DialogResult.OK)
         return Result.Cancel;

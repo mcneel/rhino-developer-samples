@@ -42,14 +42,7 @@ namespace SampleCsCommands
 
   public class SampleCsDrawText : Command
   {
-    public SampleCsDrawText()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsDrawText"; }
-    }
+    public override string EnglishName => "SampleCsDrawText";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

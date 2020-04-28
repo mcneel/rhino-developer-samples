@@ -11,14 +11,7 @@ namespace SampleCsCommands
 {
   public class SampleCsProjectPointToMesh : Command
   {
-    public SampleCsProjectPointToMesh()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsProjectPointToMesh"; }
-    }
+    public override string EnglishName => "SampleCsProjectPointToMesh";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

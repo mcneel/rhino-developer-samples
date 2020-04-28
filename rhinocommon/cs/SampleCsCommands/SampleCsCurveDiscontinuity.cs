@@ -12,10 +12,7 @@ namespace SampleCsCommands
 {
   public class SampleCsCurveDiscontinuity : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsCurveDiscontinuity"; }
-    }
+    public override string EnglishName => "SampleCsCurveDiscontinuity";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

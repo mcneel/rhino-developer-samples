@@ -18,19 +18,9 @@ namespace SampleCsCommands
     private double m_angle_tolerance;
 
     /// <summary>
-    /// Public constructor
-    /// </summary>
-    public SampleCsClassifyCurve()
-    {
-    }
-
-    /// <summary>
     /// EnglishName override
     /// </summary>
-    public override string EnglishName
-    {
-      get { return "SampleCsClassifyCurve"; }
-    }
+    public override string EnglishName => "SampleCsClassifyCurve";
 
     /// <summary>
     /// RunCommand override
@@ -206,23 +196,19 @@ namespace SampleCsCommands
         return false;
 
       // Is the curve a line curve?
-      LineCurve line_curve = curve as LineCurve;
-      if (null != line_curve)
+      if (curve is LineCurve line_curve)
         return true;
 
       // Is the curve a polyline that looks like a line?
       // (Should never need to test for this...)
-      PolylineCurve polyline_curve = curve as PolylineCurve;
-      if (null != polyline_curve && 2 == polyline_curve.PointCount)
+      if (curve is PolylineCurve polyline_curve && 2 == polyline_curve.PointCount)
         return true;
 
       // Is the curve a polycurve that looks like a line?
       // (Should never need to test for this...)
-      PolyCurve poly_curve = curve as PolyCurve;
-      if (null != poly_curve)
+      if (curve is PolyCurve poly_curve)
       {
-        Polyline polyline;
-        if (poly_curve.TryGetPolyline(out polyline))
+        if (poly_curve.TryGetPolyline(out var polyline))
         {
           if (2 == polyline.Count)
             return true;
@@ -230,11 +216,9 @@ namespace SampleCsCommands
       }
 
       // Is the curve a NURBS curve that looks like a line?
-      NurbsCurve nurbs_curve = curve as NurbsCurve;
-      if (null != nurbs_curve)
+      if (curve is NurbsCurve nurbs_curve)
       {
-        Polyline polyline;
-        if (nurbs_curve.TryGetPolyline(out polyline))
+        if (nurbs_curve.TryGetPolyline(out var polyline))
         {
           if (2 == polyline.Count)
             return true;
@@ -253,8 +237,7 @@ namespace SampleCsCommands
         return false;
 
       // Is the curve an arc curve?
-      ArcCurve arc_curve = curve as ArcCurve;
-      if (null != arc_curve)
+      if (curve is ArcCurve arc_curve)
       {
         bCircle = arc_curve.IsCompleteCircle;
         return true;
@@ -262,11 +245,9 @@ namespace SampleCsCommands
 
       // Is the curve a polycurve that looks like an arc?
       // (Should never need to test for this...)
-      PolyCurve poly_curve = curve as PolyCurve;
-      if (null != poly_curve)
+      if (curve is PolyCurve poly_curve)
       {
-        Arc arc;
-        if (poly_curve.TryGetArc(out arc))
+        if (poly_curve.TryGetArc(out var arc))
         {
           bCircle = arc.IsCircle;
           return true;
@@ -274,11 +255,9 @@ namespace SampleCsCommands
       }
 
       // Is the curve a NURBS curve that looks like an arc?
-      NurbsCurve nurbs_curve = curve as NurbsCurve;
-      if (null != nurbs_curve)
+      if (curve is NurbsCurve nurbs_curve)
       {
-        Arc arc;
-        if (nurbs_curve.TryGetArc(out arc))
+        if (nurbs_curve.TryGetArc(out var arc))
         {
           bCircle = arc.IsCircle;
           return true;
@@ -298,11 +277,9 @@ namespace SampleCsCommands
 
       // Is the curve a polycurve that looks like an ellipse?
       // (Should never need to test for this...)
-      PolyCurve poly_curve = curve as PolyCurve;
-      if (null != poly_curve)
+      if (curve is PolyCurve poly_curve)
       {
-        Ellipse ellipse;
-        if (poly_curve.TryGetEllipse(out ellipse))
+        if (poly_curve.TryGetEllipse(out var ellipse))
         {
           bEllipticalArc = !ellipse.ToNurbsCurve().IsClosed;
           return true;
@@ -310,11 +287,9 @@ namespace SampleCsCommands
       }
 
       // Is the curve a NURBS curve that looks like an ellipse?
-      NurbsCurve nurbs_curve = curve as NurbsCurve;
-      if (null != nurbs_curve)
+      if (curve is NurbsCurve nurbs_curve)
       {
-        Ellipse ellipse;
-        if (nurbs_curve.TryGetEllipse(out ellipse))
+        if (nurbs_curve.TryGetEllipse(out var ellipse))
         {
           bEllipticalArc = !nurbs_curve.IsClosed;
           return true;
@@ -327,7 +302,7 @@ namespace SampleCsCommands
     /// <summary>
     /// Test for a curve that is a polyline (or looks like a polyline).
     /// </summary>
-    bool IsPolyline(Curve curve, ref int point_count, ref bool bClosed, ref bool bPlanar, ref bool bLength, ref bool bAngle, ref bool bIntersect)
+    bool IsPolyline(Curve curve, ref int pointCount, ref bool bClosed, ref bool bPlanar, ref bool bLength, ref bool bAngle, ref bool bIntersect)
     {
       if (null == curve)
         return false;
@@ -335,8 +310,7 @@ namespace SampleCsCommands
       List<Point3d> points = new List<Point3d>();
 
       // Is the curve a polyline curve?
-      PolylineCurve polyline_curve = curve as PolylineCurve;
-      if (null != polyline_curve)
+      if (curve is PolylineCurve polyline_curve)
       {
         if (polyline_curve.PointCount <= 2)
           return false;
@@ -346,31 +320,27 @@ namespace SampleCsCommands
       }
 
       // Is the curve a polycurve that looks like an polyline?
-      PolyCurve poly_curve = curve as PolyCurve;
-      if (null != poly_curve)
+      if (curve is PolyCurve poly_curve)
       {
-        Polyline polyline;
-        if (poly_curve.TryGetPolyline(out polyline))
+        if (poly_curve.TryGetPolyline(out var polyline))
         {
           if (polyline.Count <= 2)
             return false;
 
-          for (int i = 0; i < polyline.Count; i++)
+          for (var i = 0; i < polyline.Count; i++)
             points.Add(polyline[i]);
         }
       }
 
       // Is the curve a NURBS curve that looks like an polyline?
-      NurbsCurve nurbs_curve = curve as NurbsCurve;
-      if (null != nurbs_curve)
+      if (curve is NurbsCurve nurbs_curve)
       {
-        Polyline polyline;
-        if (nurbs_curve.TryGetPolyline(out polyline))
+        if (nurbs_curve.TryGetPolyline(out var polyline))
         {
           if (polyline.Count <= 2)
             return false;
 
-          for (int i = 0; i < polyline.Count; i++)
+          for (var i = 0; i < polyline.Count; i++)
             points.Add(polyline[i]);
         }
       }
@@ -385,73 +355,70 @@ namespace SampleCsCommands
       bPlanar = curve.IsPlanar();
 
       // Get the point (vertex) count.
-      point_count = (bClosed ? points.Count - 1 : points.Count);
+      pointCount = (bClosed ? points.Count - 1 : points.Count);
 
       // Test for self-intersection.
-      CurveIntersections intesections = Intersection.CurveSelf(curve, m_tolerance);
-      bIntersect = (intesections.Count > 0) ? true : false;
+      var intesections = Intersection.CurveSelf(curve, m_tolerance);
+      bIntersect = intesections.Count > 0;
 
       // If the curve is not closed, no reason to continue...
       if (!bClosed)
         return true;
 
       // Test if the distance between each point is identical.
-      double distance = 0.0;
-      for (int i = 1; i < points.Count; i++)
+      var distance = 0.0;
+      for (var i = 1; i < points.Count; i++)
       {
-        Point3d p0 = points[i - 1];
-        Point3d p1 = points[i];
-        Vector3d v = p0 - p1;
+        var p0 = points[i - 1];
+        var p1 = points[i];
+        var v = p0 - p1;
 
-        double d = v.Length;
+        var d = v.Length;
         if (i == 1)
         {
           distance = d;
           continue;
         }
-        else if (Math.Abs(distance - d) < m_tolerance)
+        if (Math.Abs(distance - d) < m_tolerance)
         {
           continue;
         }
-        else
-        {
-          distance = RhinoMath.UnsetValue;
-          break;
-        }
+
+        distance = RhinoMath.UnsetValue;
+        break;
       }
 
       // Set return value.
       bLength = RhinoMath.IsValidDouble(distance);
 
       // Test if the angle between each point is identical.
-      double angle = 0.0;
-      for (int i = 1; i < points.Count - 1; i++)
+      var angle = 0.0;
+      for (var i = 1; i < points.Count - 1; i++)
       {
-        Point3d p0 = points[i - 1];
-        Point3d p1 = points[i];
-        Point3d p2 = points[i + 1];
+        var p0 = points[i - 1];
+        var p1 = points[i];
+        var p2 = points[i + 1];
 
-        Vector3d v0 = p1 - p0;
-        Vector3d v1 = p1 - p2;
+        var v0 = p1 - p0;
+        var v1 = p1 - p2;
 
         v0.Unitize();
         v1.Unitize();
 
-        double a = Vector3d.VectorAngle(v0, v1);
+        var a = Vector3d.VectorAngle(v0, v1);
         if (i == 1)
         {
           angle = a;
           continue;
         }
-        else if (Math.Abs(angle - a) < m_angle_tolerance)
+
+        if (Math.Abs(angle - a) < m_angle_tolerance)
         {
           continue;
         }
-        else
-        {
-          angle = RhinoMath.UnsetValue;
-          break;
-        }
+
+        angle = RhinoMath.UnsetValue;
+        break;
       }
 
       // Set return value.

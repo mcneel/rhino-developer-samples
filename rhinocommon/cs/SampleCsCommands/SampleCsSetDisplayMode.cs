@@ -6,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsSetDisplayMode : Command
   {
-    public SampleCsSetDisplayMode()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsSetDisplayMode"; }
-    }
+    public override string EnglishName => "SampleCsSetDisplayMode";
 
     /// <summary>
     /// Remove characters that are invalid for command options display

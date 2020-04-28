@@ -31,14 +31,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsExplodePolyCurve : Command
   {
-    public SampleCsExplodePolyCurve()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsExplodePolyCurve"; }
-    }
+    public override string EnglishName => "SampleCsExplodePolyCurve";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

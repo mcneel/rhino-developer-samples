@@ -6,8 +6,8 @@ namespace SampleCsCommands
 {
   internal static class SampleCsUserStringData
   {
-    public static string Key { get { return "SampleCsUserStringData"; }}
-    public static string Value { get { return "Hello Rhino!"; } }
+    public static string Key => "SampleCsUserStringData";
+    public static string Value => "Hello Rhino!";
   }
 
   /// <summary>
@@ -15,10 +15,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsSetUserText : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsSetUserText"; }
-    }
+    public override string EnglishName => "SampleCsSetUserText";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -46,10 +43,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsGetUserText : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsGetUserText"; }
-    }
+    public override string EnglishName => "SampleCsGetUserText";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -81,10 +75,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsClearUserText : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsClearUserText"; }
-    }
+    public override string EnglishName => "SampleCsClearUserText";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -13,14 +13,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsCurveDirection : Command
   {
-    public SampleCsCurveDirection()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsCurveDirection"; }
-    }
+    public override string EnglishName => "SampleCsCurveDirection";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -63,7 +56,7 @@ namespace SampleCsCommands
   public class SampleCsCurveDirectionConduit : Rhino.Display.DisplayConduit
   {
     private const int CURVE_ARROW_COUNT = 3;
-    private List<Curve> m_curves;
+    private readonly List<Curve> m_curves;
 
     public SampleCsCurveDirectionConduit(GetObject go)
     {

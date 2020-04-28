@@ -27,10 +27,7 @@ namespace SampleCsCommands
       m_iterations = 20; // Use 20 iterations as part of getting Fair to stay within stated tolerance
     }
 
-    public override string EnglishName
-    {
-      get { return "SampleCsFairCurves"; }
-    }
+    public override string EnglishName => "SampleCsFairCurves";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

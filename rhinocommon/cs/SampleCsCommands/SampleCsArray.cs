@@ -9,7 +9,7 @@ namespace SampleCsCommands
   /// <summary>
   /// Utility class to handle array arguments and calculate offsets.
   /// </summary>
-  class SampleCsArrayArgs
+  internal class SampleCsArrayArgs
   {
     // Object counts
     public int CountX { get; set; }
@@ -65,7 +65,7 @@ namespace SampleCsCommands
     public void ResetOffsets()
     {
       ValidateOffsets();
-      for (int i = 0; i < Offsets.Count; i++)
+      for (var i = 0; i < Offsets.Count; i++)
         Offsets[i] = Rhino.Geometry.Vector3d.Zero;
     }
 
@@ -102,9 +102,9 @@ namespace SampleCsCommands
             else
             {
               Rhino.Geometry.Vector3d offset = new Rhino.Geometry.Vector3d(
-                vx.X * (double)x + vy.X * (double)y + vz.X * (double)z,
-                vx.Y * (double)x + vy.Y * (double)y + vz.Y * (double)z,
-                vx.Z * (double)x + vy.Z * (double)y + vz.Z * (double)z
+                vx.X * x + vy.X * y + vz.X * z,
+                vx.Y * x + vy.Y * y + vz.Y * z,
+                vx.Z * x + vy.Z * y + vz.Z * z
                 );
 
               Offsets[index++] = (offset.IsValid) ? offset : Rhino.Geometry.Vector3d.Zero;
@@ -117,14 +117,7 @@ namespace SampleCsCommands
 
   public class SampleCsArray : Command
   {
-    public SampleCsArray()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsArray"; }
-    }
+    public override string EnglishName => "SampleCsArray";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -138,18 +131,20 @@ namespace SampleCsCommands
       doc.Objects.AddBrep(brep);
 
       // Create and define the arguments of the array
-      SampleCsArrayArgs args = new SampleCsArrayArgs();
-      args.CountX = 10;
-      args.CountY = 10;
-      args.CountZ = 10;
-      args.DistanceX = 1.0;
-      args.DistanceY = 1.0;
-      args.DistanceZ = 1.0;
+      SampleCsArrayArgs args = new SampleCsArrayArgs
+      {
+        CountX = 10,
+        CountY = 10,
+        CountZ = 10,
+        DistanceX = 1.0,
+        DistanceY = 1.0,
+        DistanceZ = 1.0
+      };
       // Calculate the offsets
       args.CalculateOffsets();
 
       // Array the unit Brep box
-      for (int i = 0; i < args.Offsets.Count; i++)
+      for (var i = 0; i < args.Offsets.Count; i++)
       {
         // Skip the first one...
         if (!args.Offsets[i].IsZero)

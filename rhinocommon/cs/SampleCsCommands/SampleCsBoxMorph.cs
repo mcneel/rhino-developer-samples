@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 
 namespace SampleCsCommands
@@ -9,14 +8,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsBoxMorph : Command
   {
-    public SampleCsBoxMorph()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsBoxMorph"; }
-    }
+    public override string EnglishName => "SampleCsBoxMorph";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -26,7 +18,7 @@ namespace SampleCsCommands
       go.GeometryFilter = Rhino.DocObjects.ObjectType.Surface | Rhino.DocObjects.ObjectType.Brep;
       go.SubObjectSelect = false;
       go.Get();
-      if (go.CommandResult() != Rhino.Commands.Result.Success)
+      if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
       Rhino.Geometry.Brep brep = go.Object(0).Brep();
@@ -76,8 +68,8 @@ namespace SampleCsCommands
   /// </summary>
   class BoxMorph : Rhino.Geometry.SpaceMorph
   {
-    private Rhino.Geometry.Point3d[] m_box;
-    private Rhino.Geometry.Point3d[] m_corners;
+    private readonly Rhino.Geometry.Point3d[] m_box;
+    private readonly Rhino.Geometry.Point3d[] m_corners;
     private Rhino.Geometry.Line m_ref_x;
     private Rhino.Geometry.Line m_ref_y;
     private Rhino.Geometry.Line m_ref_z;
@@ -87,7 +79,7 @@ namespace SampleCsCommands
       if (8 == box.Length)
       {
         m_box = new Rhino.Geometry.Point3d[8];
-        for (int i = 0; i < 8; i++)
+        for (var i = 0; i < 8; i++)
           m_box[i] = box[i];
       }
 

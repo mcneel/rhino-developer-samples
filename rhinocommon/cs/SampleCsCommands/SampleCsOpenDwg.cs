@@ -9,10 +9,7 @@ namespace SampleCsCommands
   [CommandStyle(Style.ScriptRunner)]
   public class SampleCsOpenDwg : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsOpenDwg"; }
-    }
+    public override string EnglishName => "SampleCsOpenDwg";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

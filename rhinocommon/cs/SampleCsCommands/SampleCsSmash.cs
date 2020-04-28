@@ -6,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsSmash : Command
   {
-    public SampleCsSmash()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsSmash"; }
-    }
+    public override string EnglishName => "SampleCsSmash";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -15,19 +15,9 @@ namespace SampleCsCommands
     private readonly Guid m_gh_guid = new Guid("b45a29b1-4343-4035-989e-044e8580d9cf");
 
     /// <summary>
-    /// Constructor
-    /// </summary>
-    public SampleCsAutomateGrasshopper()
-    {
-    }
-
-    /// <summary>
     /// EnglishName override
     /// </summary>
-    public override string EnglishName
-    {
-      get { return "SampleCsAutomateGrasshopper"; }
-    }
+    public override string EnglishName => "SampleCsAutomateGrasshopper";
 
     /// <summary>
     /// RunCommand override

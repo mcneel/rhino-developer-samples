@@ -6,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsSpiral : Command
   {
-    public SampleCsSpiral()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsSpiral"; }
-    }
+    public override string EnglishName => "SampleCsSpiral";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

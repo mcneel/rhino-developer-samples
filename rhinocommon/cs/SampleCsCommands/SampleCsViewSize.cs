@@ -10,14 +10,7 @@ namespace SampleCsCommands
 {
   public class SampleCsViewSize : Command
   {
-    public SampleCsViewSize()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsViewSize"; }
-    }
+    public override string EnglishName => "SampleCsViewSize";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

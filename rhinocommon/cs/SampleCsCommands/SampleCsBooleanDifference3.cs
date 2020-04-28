@@ -8,10 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsBooleanDifference3 : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsBooleanDifference3"; }
-    }
+    public override string EnglishName => "SampleCsBooleanDifference3";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

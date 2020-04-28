@@ -10,10 +10,7 @@ namespace SampleCsCommands
 {
   public class SampleCsProjectCurvesToBrep : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsProjectCurvesToBrep"; }
-    }
+    public override string EnglishName => "SampleCsProjectCurvesToBrep";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

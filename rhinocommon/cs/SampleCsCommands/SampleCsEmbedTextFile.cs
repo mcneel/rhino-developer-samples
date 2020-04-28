@@ -12,10 +12,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsEmbedTextFile : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsEmbedTextFile"; }
-    }
+    public override string EnglishName => "SampleCsEmbedTextFile";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -81,10 +78,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsExtractTextFile : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsExtractTextFile"; }
-    }
+    public override string EnglishName => "SampleCsExtractTextFile";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

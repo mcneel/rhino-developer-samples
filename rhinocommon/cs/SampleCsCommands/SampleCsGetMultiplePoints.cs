@@ -37,15 +37,9 @@ namespace SampleCsCommands
         m_points.RemoveAt(point_count - 1);
     }
 
-    public List<Point3d> Points
-    {
-      get { return m_points; }
-    }
+    public List<Point3d> Points => m_points;
 
-    public int PointCount
-    {
-      get { return m_points.Count; }
-    }
+    public int PointCount => m_points.Count;
 
     protected override void CalculateBoundingBox(CalculateBoundingBoxEventArgs e)
     {
@@ -69,10 +63,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsGetMultiplePoints : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsGetMultiplePoints"; }
-    }
+    public override string EnglishName => "SampleCsGetMultiplePoints";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

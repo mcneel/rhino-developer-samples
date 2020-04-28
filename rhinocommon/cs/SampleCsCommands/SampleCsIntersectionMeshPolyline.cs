@@ -8,10 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsIntersectionMeshPolyline : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsIntersectionMeshPolyline"; }
-    }
+    public override string EnglishName => "SampleCsIntersectionMeshPolyline";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

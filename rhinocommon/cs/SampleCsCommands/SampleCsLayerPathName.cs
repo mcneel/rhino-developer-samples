@@ -9,10 +9,7 @@ namespace SampleCsCommands
 {
   public class SampleCsLayerPathName : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsLayerPathName"; }
-    }
+    public override string EnglishName => "SampleCsLayerPathName";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

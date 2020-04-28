@@ -6,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsSubCurve : Command
   {
-    public SampleCsSubCurve()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsSubCurve"; }
-    }
+    public override string EnglishName => "SampleCsSubCurve";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

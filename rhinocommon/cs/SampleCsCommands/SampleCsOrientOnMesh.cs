@@ -13,10 +13,7 @@ namespace SampleCsCommands
     /// <summary>
     /// The command name
     /// </summary>
-    public override string EnglishName
-    {
-      get { return "SampleCsOrientOnMesh"; }
-    }
+    public override string EnglishName => "SampleCsOrientOnMesh";
 
     /// <summary>
     /// Called by Rhino to 'run' this command
@@ -87,14 +84,14 @@ namespace SampleCsCommands
   /// </summary>
   class GetPointOnMesh : GetPoint
   {
-    private Mesh m_mesh;
-    private Plane m_object_plane;
+    private readonly Mesh m_mesh;
+    private readonly Plane m_object_plane;
     private bool m_draw;
     private Transform m_xform;
     private List<RhinoObject> m_objects;
 
     // Mesh face plane cache
-    private Dictionary<int, Plane> m_face_planes; 
+    private readonly Dictionary<int, Plane> m_face_planes; 
 
     /// <summary>
     /// Public constructor

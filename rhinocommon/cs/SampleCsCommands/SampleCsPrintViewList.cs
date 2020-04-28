@@ -6,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsPrintViewList : Command
   {
-    public SampleCsPrintViewList()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsPrintViewList"; }
-    }
+    public override string EnglishName => "SampleCsPrintViewList";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

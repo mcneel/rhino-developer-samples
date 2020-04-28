@@ -7,10 +7,7 @@ namespace SampleCsCommands
 {
   public class SampleCsGetDirection : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsGetDirection"; }
-    }
+    public override string EnglishName => "SampleCsGetDirection";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -10,14 +10,7 @@ namespace SampleCsCommands
 {
   public class SampleCsPointOnMesh : Command
   {
-    public SampleCsPointOnMesh()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsPointOnMesh"; }
-    }
+    public override string EnglishName => "SampleCsPointOnMesh";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -112,7 +112,6 @@ namespace SampleCsCommands
     {
       pt = Point3d.Unset;
 
-      Vector3d k;
       var done = false;
 
       if (null == nurb)
@@ -120,6 +119,7 @@ namespace SampleCsCommands
 
       for (var i = 0; i < 1000; i++)
       {
+        Vector3d k;
         if (done || t1 - t0 < epsilon)
         {
           var t = (t0 + t1) * 0.5;

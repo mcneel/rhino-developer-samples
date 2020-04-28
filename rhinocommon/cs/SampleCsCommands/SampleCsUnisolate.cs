@@ -7,14 +7,7 @@ namespace SampleCsCommands
 {
   public class SampleCsUnisolate : Command
   {
-    public SampleCsUnisolate()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsUnisolate"; }
-    }
+    public override string EnglishName => "SampleCsUnisolate";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

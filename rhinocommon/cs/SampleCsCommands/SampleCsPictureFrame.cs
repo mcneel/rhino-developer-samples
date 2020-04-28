@@ -8,14 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsPictureFrame : Command
   {
-    public SampleCsPictureFrame()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsPictureFrame"; }
-    }
+    public override string EnglishName => "SampleCsPictureFrame";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

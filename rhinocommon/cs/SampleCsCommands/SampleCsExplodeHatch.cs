@@ -6,14 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsExplodeHatch : Command
   {
-    public SampleCsExplodeHatch()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsExplodeHatch"; }
-    }
+    public override string EnglishName => "SampleCsExplodeHatch";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

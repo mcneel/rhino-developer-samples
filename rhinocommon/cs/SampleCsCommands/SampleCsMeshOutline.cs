@@ -12,14 +12,7 @@ namespace SampleCsCommands
 {
   public class SampleCsMeshOutline : Command
   {
-    public SampleCsMeshOutline()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsMeshOutline"; }
-    }
+    public override string EnglishName => "SampleCsMeshOutline";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -49,10 +42,9 @@ namespace SampleCsCommands
         }
       }
 
-      ObjRef[] meshRefs = null;
       if (InObjects.Count > 0)
       {
-        meshRefs = RhinoObject.GetRenderMeshes(InObjects, true, false);
+        var meshRefs = RhinoObject.GetRenderMeshes(InObjects, true, false);
         if (null != meshRefs)
         {
           for (int i = 0; i < meshRefs.Length; i++)

@@ -22,7 +22,7 @@ namespace SampleCsCommands
 
     public Brep BrepGeometry
     {
-      get { return m_brep; }
+      get => m_brep;
       set 
       { 
         m_brep = value;
@@ -64,14 +64,7 @@ namespace SampleCsCommands
   /// </summary>
   public class SampleCsShadedBrep : Command
   {
-    public SampleCsShadedBrep()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsShadedBrep"; }
-    }
+    public override string EnglishName => "SampleCsShadedBrep";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

@@ -13,10 +13,7 @@ namespace SampleCsCommands
       m_escape_key_pressed = false;
     }
 
-    public override string EnglishName
-    {
-      get { return "SampleCsEscapeKey"; }
-    }
+    public override string EnglishName => "SampleCsEscapeKey";
 
     void RhinoApp_EscapeKeyPressed(object sender, EventArgs e)
     {

@@ -35,15 +35,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Rhino.UI">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 6\System\Rhino.UI.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7 WIP\System\Rhino.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RhinoCommon">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 6\System\RhinoCommon.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7 WIP\System\RhinoCommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RhinoWindows">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 6\System\RhinoWindows.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7 WIP\System\RhinoWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -52,7 +52,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Xfinium.Pdf.Win">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 6\Plug-ins\Xfinium.Pdf.Win.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7 WIP\Plug-ins\Xfinium.Pdf.Win.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -63,6 +63,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="SampleCsArc.cs" />
+    <Compile Include="SampleCsCreateBooleanRegions.cs" />
     <Compile Include="SampleCsCreateUVCurve.cs" />
     <Compile Include="SampleCsAddAlignedDimension.cs" />
     <Compile Include="SampleCsAddRadialDimension.cs" />

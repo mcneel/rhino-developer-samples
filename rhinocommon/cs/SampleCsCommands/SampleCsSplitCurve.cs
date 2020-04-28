@@ -11,14 +11,7 @@ namespace SampleCsCommands
 {
   public class SampleCsSplitCurve : Command
   {
-    public SampleCsSplitCurve()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsSplitCurve"; }
-    }
+    public override string EnglishName => "SampleCsSplitCurve";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

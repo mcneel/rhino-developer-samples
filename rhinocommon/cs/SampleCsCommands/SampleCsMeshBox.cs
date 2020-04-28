@@ -11,10 +11,7 @@ namespace SampleCsCommands
 {
   public class SampleCsMeshBox : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsMeshBox"; }
-    }
+    public override string EnglishName => "SampleCsMeshBox";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

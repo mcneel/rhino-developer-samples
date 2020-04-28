@@ -10,14 +10,7 @@ namespace SampleCsCommands
 {
   public class SampleCsTrimSurface : Command
   {
-    public SampleCsTrimSurface()
-    {
-    }
-
-    public override string EnglishName
-    {
-      get { return "SampleCsTrimSurface"; }
-    }
+    public override string EnglishName => "SampleCsTrimSurface";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

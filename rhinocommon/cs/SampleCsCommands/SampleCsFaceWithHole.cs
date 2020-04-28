@@ -6,10 +6,7 @@ namespace SampleCsCommands
 {
   public class SampleCsFaceWithHole : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsFaceWithHole"; }
-    }
+    public override string EnglishName => "SampleCsFaceWithHole";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {

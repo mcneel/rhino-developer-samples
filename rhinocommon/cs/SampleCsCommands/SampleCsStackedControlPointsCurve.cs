@@ -8,10 +8,7 @@ namespace SampleCsCommands
 {
   public class SampleCsStackedControlPointsCurve : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsStackedControlPointsCurve"; }
-    }
+    public override string EnglishName => "SampleCsStackedControlPointsCurve";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
