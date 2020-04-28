@@ -35,11 +35,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RhinoCommon">
-      <HintPath>C:\Program Files\Rhino 6\System\RhinoCommon.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino WIP\System\RhinoCommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RhinoWindows">
-      <HintPath>C:\Program Files\Rhino 6\System\RhinoWindows.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino WIP\System\RhinoWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -48,7 +48,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Xfinium.Pdf.Win">
-      <HintPath>C:\Program Files\Rhino 6\Plug-ins\Xfinium.Pdf.Win.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino WIP\Plug-ins\Xfinium.Pdf.Win.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -253,7 +253,7 @@ Erase "$(TargetPath)"</PostBuildEvent>
     <FallbackCulture>en-US</FallbackCulture>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <StartProgram>C:\Program Files\Rhino 6\System\Rhino.exe</StartProgram>
+    <StartProgram>C:\Program Files\Rhino WIP\System\Rhino.exe</StartProgram>
     <StartArguments>
     </StartArguments>
     <StartAction>Program</StartAction>
