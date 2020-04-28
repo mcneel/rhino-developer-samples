@@ -9,8 +9,7 @@
 class CCommandSampleLoft : public CRhinoCommand
 {
 public:
-  CCommandSampleLoft() = default;
-  ~CCommandSampleLoft() = default;
+  CCommandSampleLoft();
   UUID CommandUUID() override
   {
     // {EB83F47-D94A-4F5B-95F6-743C4C1D830B}
@@ -19,11 +18,46 @@ public:
     return SampleLoftCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleLoft"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
+  CRhinoObject* ReplayHistory(const CRhinoHistoryRecord& history_record) override;
+
+private:
+  void ProcessInput(
+    CArgsRhinoLoft& args, 
+    const CRhinoObjRef& ref, 
+    ON_ClassArray<CRhinoObjRef>* in_curves
+  );
+
+  CRhinoCommand::result CreateOutput(
+    CRhinoDoc& doc, 
+    CArgsRhinoLoft& args, 
+    bool bInReplayHistory, 
+    ON_SimpleArray<ON_Brep*>& out_breps
+  );
+
+  bool WriteHistory(
+    CRhinoHistory& history, 
+    const ON_ClassArray<CRhinoObjRef>& in_curves, 
+    bool bSplitCreasedSurfaces
+  );
+
+  bool ReadHistory(
+    const CRhinoHistoryRecord& history_record, 
+    ON_ClassArray<CRhinoObjRef>& in_curves,
+    bool& bSplitCreasedSurfaces
+  );
+
+private:
+  const int m_history_version;
 };
 
 // The one and only CCommandSampleLoft object
 static class CCommandSampleLoft theSampleLoftCommand;
+
+CCommandSampleLoft::CCommandSampleLoft()
+  :m_history_version(20200221)
+{
+}
 
 CRhinoCommand::result CCommandSampleLoft::RunCommand(const CRhinoCommandContext& context)
 {
@@ -38,36 +72,21 @@ CRhinoCommand::result CCommandSampleLoft::RunCommand(const CRhinoCommandContext&
     return go.CommandResult();
 
   // Create loft arguments object
-  const int obj_count = go.ObjectCount();
+  const int crv_count = go.ObjectCount();
+  if (crv_count < 2)
+    return CRhinoCommand::failure;
+
   CArgsRhinoLoft args;
-  args.m_loftcurves.SetCapacity(obj_count);
+  args.m_loftcurves.SetCapacity(crv_count);
+
+  // For history
+  ON_ClassArray<CRhinoObjRef> in_curves(32);
 
   // Add curves to loft arguments object
-  int i;
-  for (i = 0; i < obj_count; i++)
+  for (int i = 0; i < crv_count; i++)
   {
     const CRhinoObjRef& ref = go.Object(i);
-    const ON_Curve* crv = ref.Curve();
-    if (crv)
-    {
-      // New loft curve
-      CRhinoLoftCurve* lc = new CRhinoLoftCurve;
-
-      // Duplicate the selected curve. Note,
-      // the loft curve will delete this curve.
-      lc->m_curve = crv->DuplicateCurve();
-      lc->m_curve->RemoveShortSegments(ON_ZERO_TOLERANCE);
-
-      // Set other loft curve parameters
-      lc->m_bPlanar = (lc->m_curve->IsPlanar(&lc->m_plane) ? true : false);
-
-      // If referenced geometry is a surface edge,
-      // assign associated brep trim.
-      lc->m_trim = ref.Trim();
-
-      // Append loft curve to loft argument
-      args.m_loftcurves.Append(lc);
-    }
+    ProcessInput(args, ref, &in_curves);
   }
 
   // If we do not have enough loft curves,
@@ -75,7 +94,7 @@ CRhinoCommand::result CCommandSampleLoft::RunCommand(const CRhinoCommandContext&
   const int lc_count = args.m_loftcurves.Count();
   if (lc_count < 2)
   {
-    for (i = 0; i < lc_count; i++)
+    for (int i = 0; i < lc_count; i++)
       delete args.m_loftcurves[i];
     return CRhinoCommand::failure;
   }
@@ -97,78 +116,263 @@ CRhinoCommand::result CCommandSampleLoft::RunCommand(const CRhinoCommandContext&
   }
 
   // Do the loft calculation
-  ON_SimpleArray<ON_NurbsSurface*> srf_list;
-  bool rc = RhinoSdkLoftSurface(args, srf_list);
+  ON_SimpleArray<ON_Brep*> out_breps;
+  CRhinoCommand::result rc = CreateOutput(context.m_doc, args, false, out_breps);
 
   // Delete the loft curves so we do not leak memory.
-  for (i = 0; i < args.m_loftcurves.Count(); i++)
+  for (int i = 0; i < args.m_loftcurves.Count(); i++)
     delete args.m_loftcurves[i];
   args.m_loftcurves.Empty();
 
   // If the loft operation failed, bail.
-  if (!rc)
+  const int out_brep_count = out_breps.Count();
+  if (rc != CRhinoCommand::success || 0 == out_brep_count)
     return CRhinoCommand::failure;
 
-  // If only one surface was calculated, add it to Rhino
-  if (srf_list.Count() == 1)
+  CRhinoBrepObject* brep_obj = nullptr;
+  for (int i = 0; i < out_brep_count; i++)
   {
-    context.m_doc.AddSurfaceObject(*srf_list[0]);
+    brep_obj = new CRhinoBrepObject();
+    brep_obj->SetBrep(out_breps[i]);
+    out_breps[i] = nullptr;
+    context.m_doc.AddObject(brep_obj);
+  }
 
-    // CRhinoDoc::AddSurfaceObject() make a copy.
-    // So, delete original so memory is not leaked.
-    delete srf_list[0];
+  if (1 == out_brep_count && nullptr != brep_obj)
+  {
+    CRhinoHistory history(*this);
+    bool bSplitCreasedSurfaces = RhinoApp().AppSettings().GeneralSettings().m_bSplitCreasedSurfaces;
+    if (WriteHistory(history, in_curves, bSplitCreasedSurfaces))
+      context.m_doc.m_history_record_table.CreateObjectHistory(brep_obj, history);
+  }
+
+  context.m_doc.Redraw();
+
+  return rc;
+}
+
+void CCommandSampleLoft::ProcessInput(
+  CArgsRhinoLoft& args, 
+  const CRhinoObjRef& ref, 
+  ON_ClassArray<CRhinoObjRef>* in_curves
+)
+{
+  const ON_Curve* crv = ref.Curve();
+  if (nullptr == crv)
+    return;
+
+  // New loft curve
+  CRhinoLoftCurve* lc = new CRhinoLoftCurve();
+
+  // Duplicate the selected curve. Note,
+  // the loft curve will delete this curve.
+  lc->m_curve = crv->DuplicateCurve();
+  lc->m_curve->RemoveShortSegments(ON_ZERO_TOLERANCE);
+
+  // Set other loft curve parameters
+  lc->m_bPlanar = (lc->m_curve->IsPlanar(&lc->m_plane) ? true : false);
+
+  if (ref.SelectionPoint(
+    lc->m_pick_point) &&
+    lc->m_pick_point.IsValid() &&
+    crv == ref.CurveParameter(&lc->m_pick_t) &&
+    ON_IsValid(lc->m_pick_t)
+    )
+  {
+    lc->m_pick_point = crv->PointAt(lc->m_pick_t);
   }
   else
   {
-    // If more than one surface was calculated, 
-    // create a list of breps.
-    ON_SimpleArray<ON_Brep*> brep_list;
-    for (i = 0; i < srf_list.Count(); i++)
+    lc->m_pick_point = ON_UNSET_POINT;
+    lc->m_pick_t = ON_UNSET_VALUE;
+  }
+
+  // If referenced geometry is a surface edge,
+  // assign associated brep trim.
+  lc->m_trim = ref.Trim();
+
+  // Append loft curve to loft argument
+  args.m_loftcurves.Append(lc);
+
+  // Append objref for history
+  if (nullptr != in_curves)
+    in_curves->Append(ref);
+}
+
+CRhinoCommand::result CCommandSampleLoft::CreateOutput(
+  CRhinoDoc& doc, 
+  CArgsRhinoLoft& args, 
+  bool bInReplayHistory, 
+  ON_SimpleArray<ON_Brep*>& out_breps
+)
+{
+  CRhinoCommand::result rc = CRhinoCommand::success;
+
+  // Make the final surface
+  ON_SimpleArray<ON_NurbsSurface*> srf;
+  RhinoSdkLoftSurface(args, srf);
+
+  if (srf.Count() <= 0)
+  {
+    rc = CRhinoCommand::failure;
+  }
+  else
+  {
+    double tol = doc.AbsoluteTolerance();
+    ON_Brep* brep = nullptr;
+    ON_SimpleArray<ON_Brep*> breparray;
+    for (int i = 0; i < srf.Count(); i++)
     {
-      if (srf_list[i]->IsValid())
+      if (srf[i])
       {
-        ON_Brep* brep = ON_Brep::New();
-        brep->NewFace(*srf_list[i]);
-
-        // ON_Brep::NewFace() make a copy.
-        // So, delete original so memory is not leaked.
-        delete srf_list[i];
-
-        brep_list.Append(brep);
+        if (srf[i]->IsValid())
+        {
+          brep = ON_Brep::New();
+          brep->NewFace(*srf[i]);
+          breparray.Append(brep);
+        }
+        delete srf[i];
+        srf[i] = nullptr;
       }
     }
 
-    // Try joining all breps
-    double tol = context.m_doc.AbsoluteTolerance();
-    ON_Brep* brep = RhinoJoinBreps(brep_list, tol);
-    if (brep)
-    {
-      context.m_doc.AddBrepObject(*brep);
+    ON_Brep* result = nullptr;
+    if (breparray.Count() > 1)
+      result = RhinoJoinBreps(breparray, tol);
 
-      // CRhinoDoc::AddBrepObject() make a copy.
-      // So, delete original so memory is not leaked.
-      delete brep;
+    if (result)
+    {
+      out_breps.Append(result);
+      for (int i = 0; i < breparray.Count(); i++)
+      {
+        if (0 != breparray[i])
+          delete breparray[i];
+      }
     }
     else
     {
-      // Othewise just add the individual breps to Rhino.
-      for (i = 0; i < brep_list.Count(); i++)
+      out_breps.Reserve(breparray.Count());
+      for (int i = 0; i < breparray.Count(); i++)
       {
-        if (brep_list[i])
-        {
-          context.m_doc.AddBrepObject(*brep_list[i]);
+        if (breparray[i])
+          out_breps.Append(breparray[i]);
+      }
+    }
+  }
 
-          // CRhinoDoc::AddBrepObject() make a copy.
-          // So, delete original so memory is not leaked.
-          delete brep_list[i];
+  return rc;
+}
+
+bool CCommandSampleLoft::WriteHistory(
+  CRhinoHistory& history, 
+  const ON_ClassArray<CRhinoObjRef>& in_curves,
+  bool bSplitCreasedSurfaces
+)
+{
+  bool rc = (in_curves.Count() >= 2);
+  if (rc)
+    rc = history.SetObjRefValues(1, in_curves.Count(), in_curves.Array());
+  if (rc)
+    rc = history.SetBoolValue(2, bSplitCreasedSurfaces);
+  if (rc)
+    rc = history.SetHistoryVersion(m_history_version);
+  return rc;
+}
+
+bool CCommandSampleLoft::ReadHistory(
+  const CRhinoHistoryRecord& history_record, 
+  ON_ClassArray<CRhinoObjRef>& in_curves,
+  bool& bSplitCreasedSurfaces
+)
+{
+  bool rc = (m_history_version == history_record.HistoryVersion());
+  if (rc)
+  {
+    in_curves.SetCount(0);
+    rc = history_record.GetRhinoObjRefList(1, in_curves);
+  }
+  if (rc)
+    rc = history_record.m_hr.GetBoolValue(2, &bSplitCreasedSurfaces);
+  return rc;
+}
+
+CRhinoObject* CCommandSampleLoft::ReplayHistory(
+  const CRhinoHistoryRecord& history_record
+)
+{
+  if (m_history_version != history_record.HistoryVersion())
+    return nullptr;
+
+  CRhinoBrepObject* brep_obj = nullptr;
+  CRhinoDoc& doc = history_record.Document();
+
+  // Rerun command
+  ON_ClassArray<CRhinoObjRef> in_curves;
+  bool bSplitCreasedSurfaces = false;
+  if (ReadHistory(history_record, in_curves, bSplitCreasedSurfaces))
+  {
+    const int crv_count = in_curves.Count();
+    if (crv_count >= 2)
+    {
+      // Create loft arguments object
+      CArgsRhinoLoft args;
+      args.m_loftcurves.SetCapacity(crv_count);
+
+      // Add curves to loft arguments object
+      for (int i = 0; i < crv_count; i++)
+      {
+        const CRhinoObjRef& ref = in_curves[i];
+        ProcessInput(args, ref, nullptr);
+      }
+
+      const int lc_count = args.m_loftcurves.Count();
+      if (lc_count != crv_count)
+        return nullptr;
+
+      // If the starting loft curve has a trim, 
+      // set the start condition to tangent.
+      if (args.m_loftcurves[0] && args.m_loftcurves[0]->m_trim)
+      {
+        args.m_start_condition = CArgsRhinoLoft::leTangent;
+        args.m_bAllowStartTangent = TRUE;
+      }
+
+      // If the ending loft curve has a trim, 
+      // set the end condition to tangent.
+      if (args.m_loftcurves[lc_count - 1] && args.m_loftcurves[lc_count - 1]->m_trim)
+      {
+        args.m_end_condition = CArgsRhinoLoft::leTangent;
+        args.m_bAllowEndTangent = TRUE;
+      }
+
+      // Do the loft calculation
+      ON_SimpleArray<ON_Brep*> out_breps;
+      CRhinoCommand::result rc = CreateOutput(doc, args, true, out_breps);
+      if (
+        rc == CRhinoCommand::success && 
+        1 == out_breps.Count() &&
+        nullptr != out_breps[0]
+        )
+      {
+        if (bSplitCreasedSurfaces)
+          out_breps[0]->SplitKinkyFaces();
+
+        brep_obj = new CRhinoBrepObject();
+        brep_obj->SetBrep(out_breps[0]);
+        out_breps[0] = nullptr;
+      }
+      else
+      {
+        for (int i = 0; i < out_breps.Count(); i++)
+        {
+          delete out_breps[i];
+          out_breps[i] = nullptr;
         }
       }
     }
   }
 
-  context.m_doc.Redraw();
-
-  return CRhinoCommand::success;
+  return brep_obj;
 }
 
 //

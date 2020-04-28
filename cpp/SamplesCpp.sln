@@ -107,6 +107,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleSharedXformClient2", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedXformOwner", "SampleSharedXform\SampleSharedXformOwner\SampleSharedXformOwner.csproj", "{1E1CB813-3331-43C0-8E9A-E26525C25134}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleConsoleRedirect", "SampleConsoleRedirect\SampleConsoleRedirect.vcxproj", "{CBB4A661-91CF-465D-A5A0-B2841116FC03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -326,6 +328,12 @@ Global
 		{1E1CB813-3331-43C0-8E9A-E26525C25134}.PseudoDebug|x64.Build.0 = Debug|x64
 		{1E1CB813-3331-43C0-8E9A-E26525C25134}.Release|x64.ActiveCfg = Release|x64
 		{1E1CB813-3331-43C0-8E9A-E26525C25134}.Release|x64.Build.0 = Release|x64
+		{CBB4A661-91CF-465D-A5A0-B2841116FC03}.Debug|x64.ActiveCfg = Debug|x64
+		{CBB4A661-91CF-465D-A5A0-B2841116FC03}.Debug|x64.Build.0 = Debug|x64
+		{CBB4A661-91CF-465D-A5A0-B2841116FC03}.PseudoDebug|x64.ActiveCfg = Debug|x64
+		{CBB4A661-91CF-465D-A5A0-B2841116FC03}.PseudoDebug|x64.Build.0 = Debug|x64
+		{CBB4A661-91CF-465D-A5A0-B2841116FC03}.Release|x64.ActiveCfg = Release|x64
+		{CBB4A661-91CF-465D-A5A0-B2841116FC03}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

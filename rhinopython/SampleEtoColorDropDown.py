@@ -1,6 +1,6 @@
 ################################################################################
 # SampleEtoColorDropDown.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2020 Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
 import System
@@ -40,15 +40,26 @@ class SampleEtoColorDropDownDialog(forms.Dialog):
         
         self.m_dropdown = SampleEtoColorDropDown(colors)
         self.m_dropdown.SelectedIndex = 0
+        self.m_dropdown.SelectedIndexChanged += self.OnSelectedIndexChanged
+        
+        self.m_label = forms.Label()
+        self.m_label.Text = self.m_dropdown.Items[0].Text
         
         layout = forms.DynamicLayout()
         layout.Padding = drawing.Padding(10)
         layout.Spacing = drawing.Size(5, 5)
+        layout.AddRow("Name:", self.m_label, None)
         layout.AddRow("Color:", self.m_dropdown, None)
         layout.Add(None, None, True)
         
         self.Content = layout
-    
+        
+    def OnSelectedIndexChanged(self, sender, e):
+        idx = self.m_dropdown.SelectedIndex
+        self.m_label.Text = self.m_dropdown.Items[idx].Text
+        msg = "DropDown.SelectedIndexChanged, Value: {0}".format(idx)
+        print(msg)
+        
 ################################################################################
 # Function to test the dialog
 ################################################################################

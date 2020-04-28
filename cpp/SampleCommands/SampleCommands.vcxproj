@@ -11,9 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cmdSampleClosedCurveContainment.cpp" />
+    <ClCompile Include="cmdSampleCopyInPlace.cpp" />
     <ClCompile Include="cmdSampleDrawZebraPreview.cpp" />
+    <ClCompile Include="cmdSampleDump3dmMaterialTextures.cpp" />
+    <ClCompile Include="cmdSampleDupEdge.cpp" />
     <ClCompile Include="cmdSampleFrameRails.cpp" />
     <ClCompile Include="cmdSampleGetMultipleSpecial.cpp" />
+    <ClCompile Include="cmdSampleMappingUvwTransform.cpp" />
     <ClCompile Include="cmdSampleOpen3dmFile.cpp" />
     <ClCompile Include="cmdSample2View.cpp" />
     <ClCompile Include="cmdSampleAddCage.cpp" />
@@ -245,6 +250,7 @@
     <ClCompile Include="cmdSampleUserStrings.cpp" />
     <ClCompile Include="cmdSampleUserText.cpp" />
     <ClCompile Include="cmdSampleUVMesh.cpp" />
+    <ClCompile Include="cmdSampleViewCapturePenMode.cpp" />
     <ClCompile Include="cmdSampleViewCaptureToFile.cpp" />
     <ClCompile Include="cmdSampleViewLock.cpp" />
     <ClCompile Include="cmdSampleViewportDecoration.cpp" />

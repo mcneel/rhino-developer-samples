@@ -157,8 +157,8 @@ void CSampleBlockWalkDialog::OnSelChangeBlockTree(NMHDR* pNMHDR, LRESULT* pResul
   if (hItem)
   {
     // Reset
-    m_idef = 0;
-    const CRhinoObject* idef_obj = 0;
+    m_idef = nullptr;
+    const CRhinoObject* idef_obj = nullptr;
     ON_Xform idef_xf(1);
 
     // Get the item data
@@ -196,7 +196,7 @@ void CSampleBlockWalkDialog::OnSelChangeBlockTree(NMHDR* pNMHDR, LRESULT* pResul
 
     // Update the control, only redraw once
     m_preview.SetInstanceDefinitionObject(idef_obj, idef_xf, false);
-    m_preview.SetInstanceDefinition(m_idef);
+    m_preview.SetInstanceDefinition(m_idef, true);
   }
 
   *pResult = 0;

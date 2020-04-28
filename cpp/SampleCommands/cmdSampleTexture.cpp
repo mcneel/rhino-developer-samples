@@ -10,16 +10,11 @@ class CCommandSampleTexture : public CRhinoCommand
 {
 public:
   CCommandSampleTexture() = default;
-  ~CCommandSampleTexture() = default;
-  UUID CommandUUID() override
-  {
-    // {50B79DB6-D2B7-4696-89D7-0BA711D5E8DE}
-    static const GUID SampleTextureCommand_UUID =
-    { 0x50B79DB6, 0xD2B7, 0x4696, { 0x89, 0xD7, 0x0B, 0xA7, 0x11, 0xD5, 0xE8, 0xDE } };
-    return SampleTextureCommand_UUID;
-  }
-  const wchar_t* EnglishCommandName() override { return L"SampleTexture"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+  virtual ~CCommandSampleTexture() = default;
+
+  virtual UUID CommandUUID() override { static const UUID uuid = { 0x50B79DB6, 0xD2B7, 0x4696, { 0x89, 0xD7, 0x0B, 0xA7, 0x11, 0xD5, 0xE8, 0xDE } }; return uuid; }
+  virtual const wchar_t* EnglishCommandName() override { return L"SampleTexture"; }
+  virtual CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSampleTexture object
@@ -27,6 +22,10 @@ static class CCommandSampleTexture theSampleTextureCommand;
 
 CRhinoCommand::result CCommandSampleTexture::RunCommand(const CRhinoCommandContext& context)
 {
+  const auto* pDoc = context.Document();
+  if (nullptr == pDoc)
+    return failure;
+
   unsigned int geometry_filter =
     CRhinoGetObject::surface_object |
     CRhinoGetObject::polysrf_object |
@@ -41,60 +40,65 @@ CRhinoCommand::result CCommandSampleTexture::RunCommand(const CRhinoCommandConte
   if (go.CommandResult() != CRhinoCommand::success)
     return go.CommandResult();
 
-  const CRhinoObjRef& object_ref = go.Object(0);
-  const CRhinoObject* object = object_ref.Object();
-  if (0 == object)
+  const auto& object_ref = go.Object(0);
+  const auto* object = object_ref.Object();
+  if (nullptr == object)
     return CRhinoCommand::failure;
 
-  int material_index = object->Attributes().m_material_index;
-  if (material_index >= 0)
+  if (object->Attributes().m_material_index >= 0)
   {
     RhinoApp().Print(L"Object already has a material assigned.\n");
-    return CRhinoCommand::nothing;
+    return nothing;
   }
 
   CRhinoGetFileDialog gf;
   gf.SetScriptMode(context.IsInteractive() ? FALSE : TRUE);
-  BOOL bResult = gf.DisplayFileDialog(CRhinoGetFileDialog::open_bitmap_dialog);
+  const auto bResult = gf.DisplayFileDialog(CRhinoGetFileDialog::open_bitmap_dialog);
   if (!bResult)
-    return CRhinoCommand::cancel;
+    return cancel;
 
   ON_wString filename = gf.FileName();
   filename.TrimLeftAndRight();
   if (filename.IsEmpty())
-    return CRhinoCommand::nothing;
+    return nothing;
 
   if (!CRhinoFileUtilities::FileExists(filename))
   {
     RhinoApp().Print(L"The specified file cannot be found.\n");
-    return CRhinoCommand::nothing;
+    return nothing;
   }
 
   CRhinoDib dib;
-  if (!dib.ReadFromFile(context.m_doc.RuntimeSerialNumber(), filename))
+  if (!dib.ReadFromFile(pDoc->RuntimeSerialNumber(), filename))
   {
     RhinoApp().Print(L"The specified file cannot be identifed as a supported type.\n");
-    return CRhinoCommand::nothing;
+    return nothing;
   }
 
-  ON_Material material;
-  material.AddTexture(filename, ON_Texture::TYPE::bitmap_texture);
+  // Create a material and add the texture to it.
+  ON_Material mat;
+  mat.AddTexture(filename, ON_Texture::TYPE::bitmap_texture);
 
-  material_index = context.m_doc.m_material_table.AddMaterial(material);
-  if (material_index < 0)
-  {
-    RhinoApp().Print(L"Failed to add material to material table.\n");
-    return CRhinoCommand::nothing;
-  }
+  // Create an RDK material from the material.
+  auto* pMaterial = ::RhRdkNewBasicMaterial(mat, pDoc);
+  if (nullptr == pMaterial)
+    return nothing;
 
-  CRhinoObjectAttributes attributes(object->Attributes());
-  attributes.SetMaterialSource(ON::material_from_object);
-  attributes.m_material_index = material_index;
+  // Set the name of the material from the file name.
+  ON_wString sName;
+  ON_FileSystemPath::SplitPath(filename, nullptr, nullptr, &sName, nullptr);
+  pMaterial->SetInstanceName(sName);
 
-  context.m_doc.ModifyObjectAttributes(object_ref, attributes);
-  context.m_doc.Regen();
+  // Attach the material to the document's render content collection.
+  auto& contents = pDoc->Contents().BeginChange(RhRdkChangeContext::Program);
+  contents.Attach(*pMaterial);
+  contents.EndChange();
 
-  return CRhinoCommand::success;
+  // Assign the material to the object.
+  CRhRdkObjectDataAccess da(object);
+  da.SetMaterialInstanceId(pMaterial);
+
+  return success;
 }
 
 //

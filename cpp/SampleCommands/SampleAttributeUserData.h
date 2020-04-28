@@ -33,21 +33,22 @@ public:
   CSampleAttributeUserData& operator=(const CSampleAttributeUserData& src);
 
   // override virtual ON_UserData::GetDescription()
-  bool GetDescription(ON_wString& description);
+  bool GetDescription(ON_wString& description) override;
 
   // override virtual ON_UserData::Archive()
-  bool Archive() const;
+  bool Archive() const override;
 
   // override virtual ON_UserData::Write()
   bool Write(
     ON_BinaryArchive& binary_archive
-  ) const;
+  ) const override;
 
   // override virtual ON_UserData::Read()
   bool Read(
     ON_BinaryArchive& binary_archive
-  );
+  ) override;
 
+public:
   ON_wString m_my_string;
   ON_3dPoint m_my_point;
 };

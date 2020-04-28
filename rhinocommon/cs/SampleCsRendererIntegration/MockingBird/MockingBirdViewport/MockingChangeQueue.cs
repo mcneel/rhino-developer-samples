@@ -35,9 +35,9 @@ namespace MockingBirdViewport
 			var vp = viewInfo.Viewport;
 			int near, far;
 			var screenport = vp.GetScreenPort(out near, out far);
-			RhinoApp.WriteLine($"Camera @ {vp.CameraLocation}, direction {vp.CameraDirection}");
-			RhinoApp.WriteLine($"\twith near {near} and far {far}");
-			RhinoApp.WriteLine($"\tand {screenport}");
+			MyWriteLine($"Camera @ {vp.CameraLocation}, direction {vp.CameraDirection}");
+			MyWriteLine($"\twith near {near} and far {far}");
+			MyWriteLine($"\tand {screenport}");
 		}
 
 		protected override void ApplyEnvironmentChanges(RenderEnvironment.Usage usage)
@@ -46,7 +46,7 @@ namespace MockingBirdViewport
 			// skylight - image-based lighting
 			// reflection - what is seen in reflections
 			var env = EnvironmentForid(EnvironmentIdForUsage(usage));
-			RhinoApp.WriteLine(env != null ? $"{usage} {env.Name}" : $"No env for {usage}");
+			MyWriteLine(env != null ? $"{usage} {env.Name}" : $"No env for {usage}");
 			// retrieving textures is with RenderMaterial, refer to HandleRenderMaterial()
 		}
 
@@ -59,13 +59,13 @@ namespace MockingBirdViewport
 		{
 			foreach (var light in lightChanges)
 			{
-				RhinoApp.WriteLine($"A {light.ChangeType} light. {light.Data.Name}, {light.Data.LightStyle}");
+				MyWriteLine($"A {light.ChangeType} light. {light.Data.Name}, {light.Data.LightStyle}");
 				if (light.Data.LightStyle == LightStyle.CameraDirectional)
 				{
-					RhinoApp.WriteLine("Use ChangeQueue.ConvertCameraBasedLightToWorld() to convert light transform to world");
-					RhinoApp.WriteLine($"\told location {light.Data.Location}, direction {light.Data.Direction}");
+					MyWriteLine("Use ChangeQueue.ConvertCameraBasedLightToWorld() to convert light transform to world");
+					MyWriteLine($"\told location {light.Data.Location}, direction {light.Data.Direction}");
 					ConvertCameraBasedLightToWorld(this, light, GetQueueView());
-					RhinoApp.WriteLine($"\tnew location {light.Data.Location}, direction {light.Data.Direction}");
+					MyWriteLine($"\tnew location {light.Data.Location}, direction {light.Data.Direction}");
 				}
 			}
 		}
@@ -77,24 +77,24 @@ namespace MockingBirdViewport
 		/// <param name="added">List of <code>Mesh</code>es to add</param>
 		protected override void ApplyMeshChanges(Guid[] deleted, List<Mesh> added)
 		{
-			RhinoApp.WriteLine($"Received {added.Count} new meshes, {deleted.Length} for deletion");
+			MyWriteLine($"Received {added.Count} new meshes, {deleted.Length} for deletion");
 			foreach (var m in added)
 			{
 				var totalVerts = 0;
 				var totalFaces = 0;
 				var totalQuads = 0;
 				var meshIndex = 0;
-				RhinoApp.WriteLine($"\t{m.Id()} with {m.GetMeshes().Length} submeshes");
+				MyWriteLine($"\t{m.Id()} with {m.GetMeshes().Length} submeshes");
 				foreach (var sm in m.GetMeshes())
 				{
-					RhinoApp.WriteLine($"\t\tmesh index {meshIndex} mesh with {sm.Vertices.Count} verts, {sm.Faces.Count} faces ({sm.Faces.QuadCount} quads).");
+					MyWriteLine($"\t\tmesh index {meshIndex} mesh with {sm.Vertices.Count} verts, {sm.Faces.Count} faces ({sm.Faces.QuadCount} quads).");
 					totalVerts += sm.Vertices.Count;
 					totalFaces += sm.Faces.Count;
 					totalQuads += sm.Faces.QuadCount;
-					RhinoApp.WriteLine($"\t\tFor material we remember ({m.Id()},{meshIndex}) as identifier. Connect dots in ApplyMeshInstanceChanged");
+					MyWriteLine($"\t\tFor material we remember ({m.Id()},{meshIndex}) as identifier. Connect dots in ApplyMeshInstanceChanged");
 					meshIndex++;
 				}
-				RhinoApp.WriteLine($"\t{totalVerts} verts, {totalFaces} faces (of which {totalQuads} quads)");
+				MyWriteLine($"\t{totalVerts} verts, {totalFaces} faces (of which {totalQuads} quads)");
 			}
 		}
 
@@ -108,11 +108,11 @@ namespace MockingBirdViewport
 		/// <param name="addedOrChanged">List of MeshInstances (objects)</param>
 		protected override void ApplyMeshInstanceChanges(List<uint> deleted, List<MeshInstance> addedOrChanged)
 		{
-			RhinoApp.WriteLine($"Received {addedOrChanged.Count} mesh instances to be either added or changed");
+			MyWriteLine($"Received {addedOrChanged.Count} mesh instances to be either added or changed");
 			foreach (var mi in addedOrChanged)
 			{
 				var mat = MaterialFromId(mi.MaterialId);
-				RhinoApp.WriteLine($"\tAdd or change object {mi.InstanceId} uses mesh <{mi.MeshId}, {mi.MeshIndex}>, and material {mi.MaterialId}, named {mat.Name})");
+				MyWriteLine($"\tAdd or change object {mi.InstanceId} uses mesh <{mi.MeshId}, {mi.MeshIndex}>, and material {mi.MaterialId}, named {mat.Name})");
 				HandleRenderMaterial(mat);
 
 			}
@@ -121,15 +121,15 @@ namespace MockingBirdViewport
 
 		private void HandleRenderMaterial(RenderMaterial material)
 		{
-			RhinoApp.WriteLine($"\t\tMaterial {material.Name} is a {material.TypeName} ({material.TypeDescription})");
+			MyWriteLine($"\t\tMaterial {material.Name} is a {material.TypeName} ({material.TypeDescription})");
 			
 			var diffchan = material.TextureChildSlotName(RenderMaterial.StandardChildSlots.Diffuse);
 			var difftex = material.FindChild(diffchan) as RenderTexture;
 			if (difftex != null)
 			{
-				RhinoApp.WriteLine($"\t\t\ta diffuse texture was found {difftex.Name}, hash {difftex.RenderHashWithoutLocalMapping}");
-				RhinoApp.WriteLine($"\t\t\tprojection {difftex.GetProjectionMode()}, env mapping {difftex.GetInternalEnvironmentMappingMode()}");
-				RhinoApp.WriteLine($"\t\t\tlocal mapping xform {difftex.LocalMappingTransform}");
+				MyWriteLine($"\t\t\ta diffuse texture was found {difftex.Name}, hash {difftex.RenderHashWithoutLocalMapping}");
+				MyWriteLine($"\t\t\tprojection {difftex.GetProjectionMode()}, env mapping {difftex.GetInternalEnvironmentMappingMode()}");
+				MyWriteLine($"\t\t\tlocal mapping xform {difftex.LocalMappingTransform}");
 				var texeval = difftex.CreateEvaluator(RenderTexture.TextureEvaluatorFlags.DisableLocalMapping);
 				int u, v, w;
 				difftex.PixelSize(out u, out v, out w);
@@ -138,7 +138,7 @@ namespace MockingBirdViewport
 				if (u == 0) u = 1024;
 				if (v == 0) v = 1024;
 				if (w == 0) w = 1;
-				RhinoApp.WriteLine($"\t\t\tTexture size {u}x{v}x{w}");
+				MyWriteLine($"\t\t\tTexture size {u}x{v}x{w}");
 			}
 
 		}
@@ -147,6 +147,15 @@ namespace MockingBirdViewport
 		protected override void NotifyEndUpdates()
 		{
 			ChangesReady?.Invoke(this, EventArgs.Empty);
+		}
+
+		public void MyWriteLine(string str)
+		{
+			object[] args =  new object[1];
+			args[0] = str;
+			Action<string> printit = (x) => RhinoApp.WriteLine(x);
+
+			RhinoApp.InvokeOnUiThread(printit, args);
 		}
 	}
 }
