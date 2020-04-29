@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reflection;
 using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
@@ -491,42 +490,40 @@ namespace SampleCsEventWatcher
     /// </summary>
     public static void OnUndoRedo(object sender, UndoRedoEventArgs e)
     {
-      DebugWriteMethod();
+      RhinoApp.WriteLine("> Undo/Redo");
 
-      //RhinoApp.WriteLine("> Undo/Redo");
+      string event_type = "None";
+      if (e.IsBeginRecording)
+        event_type = "Begin Recording";
+      else if (e.IsEndRecording)
+        event_type = "End Recording";
+      else if (e.IsBeginUndo)
+        event_type = "Begin Undo";
+      else if (e.IsEndUndo)
+        event_type = "End Undo";
+      else if (e.IsBeginRedo)
+        event_type = "Begin Redo";
+      else if (e.IsEndRedo)
+        event_type = "End Redo";
+      else if (e.IsPurgeRecord)
+        event_type = "Purge Record";
 
-      //string event_type = "None";
-      //if (e.IsBeginRecording)
-      //  event_type = "Begin Recording";
-      //else if (e.IsEndRecording)
-      //  event_type = "End Recording";
-      //else if (e.IsBeginUndo)
-      //  event_type = "Begin Undo";
-      //else if (e.IsEndUndo)
-      //  event_type = "End Undo";
-      //else if (e.IsBeginRedo)
-      //  event_type = "Begin Redo";
-      //else if (e.IsEndRedo)
-      //  event_type = "End Redo";
-      //else if (e.IsPurgeRecord)
-      //  event_type = "Purge Record";
-
-      //RhinoApp.WriteLine("    EventType = {0}", event_type);
+      RhinoApp.WriteLine("    EventType = {0}", event_type);
     }
 
     #endregion
 
     private static void DebugWriteMethod()
     {
-      //try
-      //{
-      //  var method_name = new StackTrace().GetFrame(1).GetMethod().Name;
-      //  RhinoApp.WriteLine("> {0}", method_name);
-      //}
-      //catch
-      //{
-      //  // ignored
-      //}
+      try
+      {
+        var method_name = new StackTrace().GetFrame(1).GetMethod().Name;
+        RhinoApp.WriteLine("> {0}", method_name);
+      }
+      catch
+      {
+        // ignored
+      }
     }
   }
 }
