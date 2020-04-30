@@ -109,6 +109,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSharedXformOwner", "S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleConsoleRedirect", "SampleConsoleRedirect\SampleConsoleRedirect.vcxproj", "{CBB4A661-91CF-465D-A5A0-B2841116FC03}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleModelessCancel", "SampleModelessCancel\SampleModelessCancel.vcxproj", "{3E8C092F-7AF9-4498-90BE-912CF9E5E103}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -334,6 +336,12 @@ Global
 		{CBB4A661-91CF-465D-A5A0-B2841116FC03}.PseudoDebug|x64.Build.0 = Debug|x64
 		{CBB4A661-91CF-465D-A5A0-B2841116FC03}.Release|x64.ActiveCfg = Release|x64
 		{CBB4A661-91CF-465D-A5A0-B2841116FC03}.Release|x64.Build.0 = Release|x64
+		{3E8C092F-7AF9-4498-90BE-912CF9E5E103}.Debug|x64.ActiveCfg = Debug|x64
+		{3E8C092F-7AF9-4498-90BE-912CF9E5E103}.Debug|x64.Build.0 = Debug|x64
+		{3E8C092F-7AF9-4498-90BE-912CF9E5E103}.PseudoDebug|x64.ActiveCfg = Debug|x64
+		{3E8C092F-7AF9-4498-90BE-912CF9E5E103}.PseudoDebug|x64.Build.0 = Debug|x64
+		{3E8C092F-7AF9-4498-90BE-912CF9E5E103}.Release|x64.ActiveCfg = Release|x64
+		{3E8C092F-7AF9-4498-90BE-912CF9E5E103}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
