@@ -18,6 +18,7 @@
     <ClCompile Include="cmdSampleDupEdge.cpp" />
     <ClCompile Include="cmdSampleFrameRails.cpp" />
     <ClCompile Include="cmdSampleGetMultipleSpecial.cpp" />
+    <ClCompile Include="cmdSampleGrid.cpp" />
     <ClCompile Include="cmdSampleMappingUvwTransform.cpp" />
     <ClCompile Include="cmdSampleOpen3dmFile.cpp" />
     <ClCompile Include="cmdSample2View.cpp" />
