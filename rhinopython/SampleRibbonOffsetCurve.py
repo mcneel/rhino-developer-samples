@@ -3,11 +3,9 @@
 # Copyright (c) 2020 Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
-import clr
 import Rhino
 import scriptcontext
-import System.Drawing.Color
-import System.Collections.Generic.IEnumerable as IEnumerable
+
 
 def SampleCreateRibbon():
     
