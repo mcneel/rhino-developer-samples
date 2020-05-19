@@ -53,7 +53,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Xfinium.Pdf.Win">
       <HintPath>C:\Program Files\Rhino 7 WIP\Plug-ins\Xfinium.Pdf.Win.dll</HintPath>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +180,7 @@
     <Compile Include="SampleCsPrintViewList.cs" />
     <Compile Include="SampleCsProjectCurvesToBrep.cs" />
     <Compile Include="SampleCsProjectPointToMesh.cs" />
+    <Compile Include="SampleCsQuadRemesh.cs" />
     <Compile Include="SampleCsRenderBackground.cs" />
     <Compile Include="SampleCsRestoreLayerState.cs" />
     <Compile Include="SampleCsRestoreNamedView.cs" />
