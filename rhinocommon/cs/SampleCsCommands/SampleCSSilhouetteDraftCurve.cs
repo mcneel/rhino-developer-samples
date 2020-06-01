@@ -9,23 +9,23 @@ using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
-  public class SampleCSSilhouetteDraftCurve : Command
+  public class SampleCsSilhouetteDraftCurve : Command
   {
-    static SampleCSSilhouetteDraftCurve _instance;
-    public SampleCSSilhouetteDraftCurve()
+    static SampleCsSilhouetteDraftCurve _instance;
+    public SampleCsSilhouetteDraftCurve()
     {
       _instance = this;
     }
 
     ///<summary>The only instance of the SampleCSShilhouetteDraftCurve command.</summary>
-    public static SampleCSSilhouetteDraftCurve Instance
+    public static SampleCsSilhouetteDraftCurve Instance
     {
       get { return _instance; }
     }
 
     public override string EnglishName
     {
-      get { return "SampleCSSilhouetteDraftCurve"; }
+      get { return "SampleCsSilhouetteDraftCurve"; }
     }
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)

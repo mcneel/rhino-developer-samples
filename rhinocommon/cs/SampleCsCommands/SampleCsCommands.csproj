@@ -169,6 +169,7 @@
     <Compile Include="SampleCsOrientOnMesh.cs" />
     <Compile Include="SampleCsOrientPerpendicularToCurve.cs" />
     <Compile Include="SampleCsOverCut.cs" />
+    <Compile Include="SampleCsParseTextFields.cs" />
     <Compile Include="SampleCsPersistentSettings.cs" />
     <Compile Include="SampleCsPickHole.cs" />
     <Compile Include="SampleCsPictureFrame.cs" />
@@ -200,7 +201,7 @@
     <Compile Include="SampleCsSetPoint.cs" />
     <Compile Include="SampleCsShadedBrep.cs" />
     <Compile Include="SampleCsShadedView.cs" />
-    <Compile Include="SampleCSSilhouetteDraftCurve.cs" />
+    <Compile Include="SampleCsSilhouetteDraftCurve.cs" />
     <Compile Include="SampleCsSineWaveLoft.cs" />
     <Compile Include="SampleCsSketch.cs" />
     <Compile Include="SampleCsSmash.cs" />
