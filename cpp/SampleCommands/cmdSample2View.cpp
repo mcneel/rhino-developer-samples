@@ -19,7 +19,7 @@ public:
     return Sample2ViewCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"Sample2View"; }
- CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+ CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 };
 
 // The one and only CCommandSample2View object
