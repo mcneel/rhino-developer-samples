@@ -320,3 +320,106 @@ ON_Brep* ON_BrepFromSurfaceAndBoundary(
 
   return brep;
 }
+
+/// <summary>
+/// CRhinoHatchPatternTable helpers for system hatch patterns
+/// </summary>
+class CRhinoHatchTableHelper
+{
+public:
+  /// <summary>
+  /// Returns the Solid hatch pattern
+  /// </summary>
+  static const CRhinoHatchPattern* Solid(CRhinoHatchPatternTable& table);
+  /// <summary>
+  /// Returns the Hatch1 hatch pattern
+  /// </summary>
+  static const CRhinoHatchPattern* Hatch1(CRhinoHatchPatternTable& table);
+  /// <summary>
+  /// Returns the Hatch2 hatch pattern
+  /// </summary>
+  static const CRhinoHatchPattern* Hatch2(CRhinoHatchPatternTable& table);
+  /// <summary>
+  /// Returns the Hatch3 hatch pattern
+  /// </summary>
+  static const CRhinoHatchPattern* Hatch3(CRhinoHatchPatternTable& table);
+  /// <summary>
+  /// Returns the HatchDash hatch pattern
+  /// </summary>
+  static const CRhinoHatchPattern* HatchDash(CRhinoHatchPatternTable& table);
+  /// <summary>
+  /// Returns the Grid hatch pattern
+  /// </summary>
+  static const CRhinoHatchPattern* Grid(CRhinoHatchPatternTable& table);
+  /// <summary>
+  /// Returns the Grid60 hatch pattern
+  /// </summary>
+  static const CRhinoHatchPattern* Grid60(CRhinoHatchPatternTable& table);
+  /// <summary>
+  /// Returns the Plus hatch pattern
+  /// </summary>
+  static const CRhinoHatchPattern* Plus(CRhinoHatchPatternTable& table);
+  /// <summary>
+  /// Returns the Squares hatch pattern
+  /// </summary>
+  static const CRhinoHatchPattern* Squares(CRhinoHatchPatternTable& table);
+
+private:
+  static const CRhinoHatchPattern* FindOrCreateHatchPattern(CRhinoHatchPatternTable& table, const ON_HatchPattern& hatch_pattern);
+};
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::Solid(CRhinoHatchPatternTable& table)
+{
+  return FindOrCreateHatchPattern(table, CRhinoHatchPattern::Solid);
+}
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::Hatch1(CRhinoHatchPatternTable& table)
+{
+  return FindOrCreateHatchPattern(table, CRhinoHatchPattern::Hatch1);
+}
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::Hatch2(CRhinoHatchPatternTable& table)
+{
+  return FindOrCreateHatchPattern(table, CRhinoHatchPattern::Hatch2);
+}
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::Hatch3(CRhinoHatchPatternTable& table)
+{
+  return FindOrCreateHatchPattern(table, CRhinoHatchPattern::Hatch3);
+}
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::HatchDash(CRhinoHatchPatternTable& table)
+{
+  return FindOrCreateHatchPattern(table, CRhinoHatchPattern::HatchDash);
+}
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::Grid(CRhinoHatchPatternTable& table)
+{
+  return FindOrCreateHatchPattern(table, CRhinoHatchPattern::Grid);
+}
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::Grid60(CRhinoHatchPatternTable& table)
+{
+  return FindOrCreateHatchPattern(table, CRhinoHatchPattern::Grid60);
+}
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::Plus(CRhinoHatchPatternTable& table)
+{
+  return FindOrCreateHatchPattern(table, CRhinoHatchPattern::Plus);
+}
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::Squares(CRhinoHatchPatternTable& table)
+{
+  return FindOrCreateHatchPattern(table, CRhinoHatchPattern::Squares);
+}
+
+const CRhinoHatchPattern* CRhinoHatchTableHelper::FindOrCreateHatchPattern(CRhinoHatchPatternTable& table, const ON_HatchPattern& hatch_pattern)
+{
+  const CRhinoHatchPattern* rc = table.HatchPatternFromName(hatch_pattern.Name(), false);
+  if (nullptr == rc)
+  {
+    const ON_ComponentManifestItem& manifest_item = table.CreateHatchPattern(hatch_pattern, 0, 0);
+    rc = table.HatchPattern(manifest_item);
+  }
+  return rc;
+}
