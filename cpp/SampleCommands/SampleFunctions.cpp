@@ -1,46 +1,39 @@
 #include "stdafx.h"
 
-/*
-Description:
-  Evaluate torsion of a curve at a parmeter.
-Parameters:
-  curve [in] - curve to evaluate.
-  t     [in] - evaluation parameter.
-Returns:
-  The torsion.
-Remarks:
-  See Barrett O'Neill, Elementary Differential Geometry, page 69.
-*/
-
+/// <summary>
+/// Evaluate torsion of a curve at a parmeter.
+/// </summary>
+/// <param name="curve">Curve to evaluate.</param>
+/// <param name="t">Evaluation parameter.</param>
+/// <returns>The torsion if successful.</returns>
+/// <remarks>See Barrett O'Neill, Elementary Differential Geometry, page 69.</remarks>
 double ON_CurveTorsion(const ON_Curve& curve, double t)
 {
-  ON_3dVector deriv[4];
-  curve.Evaluate(t, 3, 3, deriv[0]);
+  ON_3dVector der[4];
+  curve.Evaluate(t, 3, 3, der[0]);
 
-  ON_3dVector b = ON_CrossProduct(deriv[1], deriv[2]);
+  ON_3dVector b = ON_CrossProduct(der[1], der[2]);
   double len2 = b * b;
 
   double torsion = 0.0;
   if (len2 > 0)
-    torsion = b * deriv[3] / len2;
+    torsion = b * der[3] / len2;
 
   return torsion;
 }
 
-/*
-Description:
-  Create a Blend curve with G1 continuity between two existing curves.
-Parameters:
-  curveA [in] - Curve to blend from (blending will occur at curve end point).
-  curveB [in] - Curve to blend to (blending will occur at curve start point).
-  bulgeA [in] - Bulge factor at curveA end of blend. Values near 1.0 work best.
-  bulgeB [in] Bulge factor at curveB end of blend. Values near 1.0 work best.
-Returns:
-  A curve representing the blend between A and B or nullptr on failure.
-Remarks:
-  CRITICAL: Memory for the resulting curve is allocated. It is the calling
-  functions responsibility to clean up the memory.
-*/
+/// <summary>
+/// Create a blend curve with G1 continuity between two existing curves.
+/// </summary>
+/// <param name="crvA">Curve to blend from (blending will occur at curve end point).</param>
+/// <param name="crvB">Curve to blend to (blending will occur at curve start point).</param>
+/// <param name="bulgeA">Bulge factor at curveA end of blend. Values near 1.0 work best.</param>
+/// <param name="bulgeB">Bulge factor at curveB end of blend. Values near 1.0 work best.</param>
+/// <returns>An ON_Curve representing the blend between A and B.</returns>
+/// <remarks>
+/// CRITICAL: Memory for the resulting curve is allocated. It is the calling
+/// functions responsibility to clean up the memory.
+/// </remarks>
 ON_Curve* ON_BlendG1Curve(
   const ON_Curve* crvA, 
   const ON_Curve* crvB, 
@@ -84,20 +77,18 @@ ON_Curve* ON_BlendG1Curve(
   return rc;
 }
 
-/*
-Description:
-  Create a Blend curve with G2 continuity between two existing curves.
-Parameters:
-  curveA [in] - Curve to blend from (blending will occur at curve end point).
-  curveB [in] - Curve to blend to (blending will occur at curve start point).
-  bulgeA [in] - Bulge factor at curveA end of blend. Values near 1.0 work best.
-  bulgeB [in] Bulge factor at curveB end of blend. Values near 1.0 work best.
-Returns:
-  A curve representing the blend between A and B or nullptr on failure.
-Remarks:
-  CRITICAL: Memory for the resulting curve is allocated. It is the calling
-  functions responsibility to clean up the memory.
-*/
+/// <summary>
+/// Create a blend curve with G2 continuity between two existing curves.
+/// </summary>
+/// <param name="crvA">Curve to blend from (blending will occur at curve end point).</param>
+/// <param name="crvB">Curve to blend to (blending will occur at curve start point).</param>
+/// <param name="bulgeA">Bulge factor at curveA end of blend. Values near 1.0 work best.</param>
+/// <param name="bulgeB">Bulge factor at curveB end of blend. Values near 1.0 work best.</param>
+/// <returns>An ON_Curve representing the blend between A and B.</returns>
+/// <remarks>
+/// CRITICAL: Memory for the resulting curve is allocated. It is the calling
+/// functions responsibility to clean up the memory.
+/// </remarks>
 ON_Curve* ON_BlendG2Curve(
   const ON_Curve* crvA, 
   const ON_Curve* crvB, 
@@ -156,18 +147,15 @@ ON_Curve* ON_BlendG2Curve(
   return rc;
 }
 
-/*
-Description:
-  Dolly the camera location and so that the view frustum contains
-  camcoord_bbox and the volume of camcoord_bbox fills the frustum.
-  If the projection is perspective, the camera angle is not changed.
-Parameters:
-  current_vp    - [in]  current projection, must be valid.
-  camcoord_bbox - [in]  valid bounding box in current_vp camera coordinates.
-  zoomed_vp     - [out] can be the same as current_vp projection.
-Returns:
-  True if successful.
-*/
+/// <summary>
+/// Dolly the camera location and so that the view frustum contains
+/// camcoord_bbox and the volume of camcoord_bbox fills the frustum.
+/// If the projection is perspective, the camera angle is not changed.
+/// </summary>
+/// <param name="current_vp">Current projection, must be valid.</param>
+/// <param name="camcoord_bbox">Valid bounding box in current_vp camera coordinates.</param>
+/// <param name="zoomed_vp">Can be the same as current_vp projection.</param>
+/// <returns>True if successful.</returns>
 bool ON_DollyExtents(
   const ON_Viewport& current_vp,
   ON_BoundingBox camcoord_bbox,
@@ -265,23 +253,25 @@ bool ON_DollyExtents(
   return rc;
 }
 
-/*
-Description:
-  Get the Brep definition of a trimmed surface.
-Parameters:
-  srf   - [in] Surface that will be trimmed.
-  crv2d - [in] Closed, 2d parameter space boundary curve that
-               defines the outer boundary of the trimmed surface.
-  tol   - [in] Tolerance for fitting 3d edge curves.
-Returns:
-  An ON_Brep representation of the trimmed surface with a single face.
-Remarks:
-  CRITICAL: Memory for the resulting Brep is allocated. It is the calling
-  functions responsibility to clean up the memory.
-*/
+/// <summary>
+/// Get the BRep definition of a trimmed surface.
+/// </summary>
+/// <param name="srf">Surface that will be trimmed.</param>
+/// <param name="crv2d">
+/// Closed, 2d parameter space boundary curve that defines the
+/// outer boundary of the trimmed surface.
+/// </param>
+/// <param name="tol">Tolerance for fitting 3d edge curves.</param>
+/// <returns>
+/// An ON_Brep representation of the trimmed surface with a single face.
+/// </returns>
+/// <remarks>
+/// CRITICAL: Memory for the resulting BRep is allocated. It is the calling
+/// functions responsibility to clean up the memory.
+/// </remarks>
 ON_Brep* ON_BrepFromSurfaceAndBoundary(
-  const ON_Surface& srf, 
-  const ON_Curve& crv2d, 
+  const ON_Surface& srf,
+  const ON_Curve& crv2d,
   double tol
 )
 {
