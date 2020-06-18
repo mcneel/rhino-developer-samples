@@ -1,140 +1,156 @@
-﻿// ***********************************************************************
-// ModelessTabFix class
-//
-// Robert McNeel & Associates
-// John Morse, October 2012
-//
-// C# Implementation of the following MSDN article:
-//   http://support.microsoft.com/kb/233263
-// ***********************************************************************
-
-using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
-namespace SampleCsWinForms.Forms
+namespace SampleCsWinForms
 {
   /// <summary>
-  /// Simple class that use the WH_GETMESSAGE hook to capture the keystroke
-  /// messages and call the IsDialogMessage API. If IsDialogMessage returns
-  /// TRUE, then do not pass the message on to the message pump. The hook is
-  /// set when the controls window is created and unset when the control
-  /// window is destroyed.
-  /// 
-  /// See http://support.microsoft.com/kb/233263 for details.
-  /// 
-  /// Example usage:
+  /// Helper class to handle WinForm form control focus when user presses 'Tab' key.
   /// </summary>
-  class ModelessTabFix
+  /// <remarks>
+  /// When displaying a custom WinForm form, you may have noticed than your form will
+  /// not honor the tab indices you may have defined when designing the form in the 
+  /// Visual Studio editor. Actually pressing the Tab key will have no effect.
+  /// 
+  /// The reason is that Rhino is setting some low level hook mechanism to intercept
+  /// keypress events such as Tab or Enter, so you won’t be able to directly redirect
+  /// those events to your controls unless you use some low level workarounds.
+  /// 
+  /// The code  below illustrates a way to handle and respond to Tab keypress events
+  /// with some custom logic. Just instantiate the FormTabKeyHelper class and let it
+  /// initialize an internal dictionary with the controls tab indices you defined at
+  /// design time using Control.TabIndex property.
+  /// </remarks>
+  /// <example>
+  /// public partial class MyForm : Form
+  /// {
+  ///   private SampleModelessTabFix m_tab_fix;
+  ///
+  ///   public MyForm()
+  ///   {
+  ///     InitializeComponent();
+  ///     m_tab_fix = new SampleModelessTabFix(this);
+  ///   }
+  ///
+  ///   // The rest of MyForm class implementation...
+  /// }
+  /// </example>
+  public class SampleModelessTabFix
   {
-    #region Private members
-    private LocalWindowsHook m_LocalWindowsHook = new LocalWindowsHook(HookType.WH_GETMESSAGE);
-    private Control m_Control;
-    #endregion Private members
+    private readonly Form m_form;
+    private readonly SortedDictionary<int, Control> m_controls;
+    private SortedDictionary<int, Control>.Enumerator m_enumerator;
 
     /// <summary>
-    /// Constructor
+    /// Public constructor
     /// </summary>
-    /// <param name="control">Control to hook</param>
-    public ModelessTabFix(Control control)
+    /// <param name="form">The form to manage.</param>
+    public SampleModelessTabFix(Form form)
     {
-      m_Control = control;
-      m_Control.HandleCreated += ControlHandleCreated;
-      m_Control.HandleDestroyed += ControlHandleDestroyed;
-      m_LocalWindowsHook.HookInvoked += LocalWindowsHook_HookInvoked;
-    }
-
-    #region Control event callbacks
-    /// <summary>
-    /// Install the hook when the control window handle is created
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    void ControlHandleCreated(object sender, EventArgs e)
-    {
-      m_LocalWindowsHook.Install();
-    }
-    /// <summary>
-    /// Uninstall the hook when the control window is destroyed
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    void ControlHandleDestroyed(object sender, EventArgs e)
-    {
-      m_LocalWindowsHook.Uninstall();
-    }
-    #endregion Control event callbacks
-
-    /// <summary>
-    /// LocalWindowsHook.HookInvoked event callback, called by LocalWindowsHook
-    /// when a message is received.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    void LocalWindowsHook_HookInvoked(object sender, HookEventArgs e)
-    {
-      if (e.HookCode >= 0 && new IntPtr(WindowMessage.PM_REMOVE) == e.wParam)
+      m_form = form;
+      m_form.KeyPreview = true;
+      m_controls = new SortedDictionary<int, Control>();
+      if (LoadControlsTabIndices(form.Controls))
       {
-        // Copy the message to a local int variable
-        var msg = (uint)Marshal.ReadInt32(e.lParam, Marshal.OffsetOf(typeof(WindowsInterop.MSG), "Msg").ToInt32());
-        // Don't translate non-input events.
-        if (msg >= WindowMessage.WM_KEYFIRST && msg <= WindowMessage.WM_KEYLAST)
+        m_form.KeyPress += OnKeyPress;
+        m_enumerator = m_controls.GetEnumerator();
+      }
+    }
+
+    /// <summary>
+    /// Loads tab indices recursively if form contains container controls.
+    /// </summary>
+    private bool LoadControlsTabIndices(IEnumerable controls)
+    {
+      try
+      {
+        foreach (Control ctrl in controls)
         {
-          if (WindowsInterop.IsDialogMessage(m_Control.Handle, e.lParam) != 0)
+          if (!(ctrl is ContainerControl) && !(ctrl is GroupBox) && !(ctrl is Panel))
           {
-            // The value returned from this hook is ignored, 
-            // and it cannot be used to tell Windows the message has been handled.
-            // To avoid further processing, convert the message to WM_NULL 
-            // before returning.
-            var type = typeof (WindowsInterop.MSG);
-            Marshal.WriteInt32(e.lParam, Marshal.OffsetOf(type, "Msg").ToInt32(), WindowMessage.WM_NULL);
-            Marshal.WriteInt32(e.lParam,Marshal.OffsetOf(type, "wParam").ToInt32(), 0);
-            Marshal.WriteInt32(e.lParam, Marshal.OffsetOf(type, "lParam").ToInt32(), 0);
+            var index = ctrl.TabIndex;
+            while (m_controls.ContainsKey(index))
+              ++index;
+            m_controls.Add(index, ctrl);
           }
+          LoadControlsTabIndices(ctrl.Controls);
+        }
+        return true;
+      }
+      catch
+      {
+        return false;
+      }
+    }
+
+    /// <summary>
+    /// Finds the nested control with focus. In case of container controls,
+    /// iterate to find the control that really has focus,such as a TextBox
+    /// inside a GroupBox.
+    /// </summary>
+    private Control GetActiveControl()
+    {
+      if (null != m_form.ActiveControl)
+      {
+        var ctrl = m_form.ActiveControl;
+        while (ctrl is ContainerControl container)
+          ctrl = container.ActiveControl;
+        return ctrl;
+      }
+      return null;
+    }
+
+    /// <summary>
+    /// Initializes the control enumerator to the active control.
+    /// </summary>
+    private void InitializeControlEnumerator(Control ctrl)
+    {
+      if (null != ctrl)
+      {
+        m_enumerator = m_controls.GetEnumerator();
+        m_enumerator.MoveNext();
+        while (null != m_enumerator.Current.Value)
+        {
+          if (m_enumerator.Current.Value == ctrl)
+            return;
+          m_enumerator.MoveNext();
         }
       }
     }
 
     /// <summary>
-    /// Windows message Id constants
+    /// Returns the next control based on the TabIndex initialized
+    /// in the member dictionary.
     /// </summary>
-    class WindowMessage
+    private Control NextControl
     {
-      public const int WM_NULL = 0;
-      public const int WM_KEYFIRST = 0x0100;
-      public const int WM_KEYLAST = 0x0109;
-      public const int PM_REMOVE = 0x0001;
+      get
+      {
+        var ctrl = GetActiveControl();
+        if (m_enumerator.Current.Value != ctrl)
+          InitializeControlEnumerator(ctrl);
+
+        m_enumerator.MoveNext();
+
+        if (null == m_enumerator.Current.Value)
+        {
+          m_enumerator = m_controls.GetEnumerator();
+          m_enumerator.MoveNext();
+        }
+
+        return m_enumerator.Current.Value;
+      }
     }
 
     /// <summary>
-    /// Windows imports
+    /// Tab key pressed event handler
     /// </summary>
-    static class WindowsInterop
+    private void OnKeyPress(object sender, KeyPressEventArgs e)
     {
-      /// <summary>
-      /// Windows MSG structure definition
-      /// </summary>
-      [StructLayout(LayoutKind.Sequential)]
-      public struct MSG
+      if (e.KeyChar == '\t')
       {
-        IntPtr hwnd;
-        uint Msg;
-        IntPtr wParam;
-        IntPtr lParam;
-        int time;
-        //POINT pt
-        int x;
-        int y;
+        NextControl.Focus();
       }
-
-      /// <summary>
-      /// See: http://support.microsoft.com/kb/71450 
-      /// </summary>
-      /// <param name="hDlg"></param>
-      /// <param name="lpMsg"></param>
-      /// <returns></returns>
-      [DllImport("user32.dll")]
-      public static extern int IsDialogMessage(IntPtr hDlg, IntPtr lpMsg);
     }
   }
 }

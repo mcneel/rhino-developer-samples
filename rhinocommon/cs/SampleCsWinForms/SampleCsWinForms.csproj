@@ -111,7 +111,6 @@
     <Compile Include="Forms\SampleCsPanelUserControl.designer.cs">
       <DependentUpon>SampleCsPanelUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinHooks.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

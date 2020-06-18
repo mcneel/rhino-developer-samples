@@ -4,15 +4,12 @@ namespace SampleCsWinForms.Forms
 {
   public partial class SampleCsModelessTabForm : Form
   {
+    private SampleModelessTabFix m_tab_fix;
+
     public SampleCsModelessTabForm()
     {
       InitializeComponent();
-
-      // Create an instance of the ModelessTabFix class passing this Form to the constructor
-      m_tab_fix = new ModelessTabFix(this);
+      m_tab_fix = new SampleModelessTabFix(this);
     }
-
-    // Class to handle the message hooking and forwarding
-    private ModelessTabFix m_tab_fix;
   }
 }
