@@ -6,7 +6,7 @@ ON_OBJECT_IMPLEMENT(CSampleMarkerUserData, ON_UserData, "6504DAED-D3F3-4246-A1D9
 
 ON_UUID CSampleMarkerUserData::Id()
 {
-  return CSampleMarkerUserData::m_CSampleMarkerUserData_class_rtti.Uuid();
+  return ON_CLASS_ID(CSampleMarkerUserData);
 }
 
 ON_UUID CSampleMarkerUserData::PlugInId()

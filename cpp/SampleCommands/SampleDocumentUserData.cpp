@@ -9,7 +9,7 @@ ON_OBJECT_IMPLEMENT(CSampleDocumentUserData, ON_UserData, "31BDF571-8C94-4A49-8C
 
 ON_UUID CSampleDocumentUserData::Id()
 {
-  return CSampleDocumentUserData::m_CSampleDocumentUserData_class_rtti.Uuid();
+  return ON_CLASS_ID(CSampleDocumentUserData);
 }
 
 ON_UUID CSampleDocumentUserData::PlugInId()

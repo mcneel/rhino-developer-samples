@@ -12,7 +12,7 @@ ON_OBJECT_IMPLEMENT(CSampleAttributeUserData, ON_UserData, "4DFFA5FA-8E0D-4427-8
 
 ON_UUID CSampleAttributeUserData::Id()
 {
-  return CSampleAttributeUserData::m_CSampleAttributeUserData_class_rtti.Uuid();
+  return ON_CLASS_ID(CSampleAttributeUserData);
 }
 
 CSampleAttributeUserData::CSampleAttributeUserData()

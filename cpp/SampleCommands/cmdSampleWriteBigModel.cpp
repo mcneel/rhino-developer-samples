@@ -66,7 +66,7 @@ ON__UINT64 CSampleBloat::AddBloat(const ON_Object* obj, size_t mb)
 CSampleBloat::CSampleBloat()
   : m_sizeof_bloat(1024 * 1024 * 256)
 {
-  m_userdata_uuid = m_userdata_uuid = ON_CLASS_ID(CSampleBloat);
+  m_userdata_uuid = ON_CLASS_ID(CSampleBloat);
   m_application_uuid = ON_rhino5_id;
   m_userdata_copycount = CSampleBloat::m_bEnableBloat ? 1 : 0;
 }

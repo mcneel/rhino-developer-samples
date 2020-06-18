@@ -8,7 +8,7 @@ ON_OBJECT_IMPLEMENT(CSampleSharedUserData, ON_UserData, "E97E9314-899A-4045-BF9D
 
 ON_UUID CSampleSharedUserData::Id()
 {
-  return CSampleSharedUserData::m_CSampleSharedUserData_class_rtti.Uuid();
+  return ON_CLASS_ID(CSampleSharedUserData);
 }
 
 ON_UUID CSampleSharedUserData::PlugInId()

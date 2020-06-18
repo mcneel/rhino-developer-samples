@@ -6,7 +6,7 @@ ON_OBJECT_IMPLEMENT(CSampleClippingPlaneUserData, ON_UserData, "2E3D9ECD-22CC-49
 
 ON_UUID CSampleClippingPlaneUserData::Id()
 {
-  return CSampleClippingPlaneUserData::m_CSampleClippingPlaneUserData_class_rtti.Uuid();
+  return ON_CLASS_ID(CSampleClippingPlaneUserData);
 }
 
 ON_UUID CSampleClippingPlaneUserData::PlugInId()
