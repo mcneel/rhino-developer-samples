@@ -45,7 +45,7 @@ CRhinoCommand::result CCommandSampleAttributeUserDataAdd::RunCommand(const CRhin
   const CRhinoObjectAttributes& attribs = obj->Attributes();
 
   // See if our user data is already attached
-  CSampleAttributeUserData* ud = CSampleAttributeUserData::Cast(attribs.GetUserData(ud->Id()));
+  CSampleAttributeUserData* ud = CSampleAttributeUserData::Cast(attribs.GetUserData(CSampleAttributeUserData::Id()));
   if (ud)
   {
     RhinoApp().Print(L"User data already attached.\n");
@@ -120,7 +120,7 @@ CRhinoCommand::result CCommandSampleAttributeUserDataGet::RunCommand(const CRhin
   const CRhinoObjectAttributes& attribs = obj->Attributes();
 
   // See if our user data is attached
-  CSampleAttributeUserData* ud = CSampleAttributeUserData::Cast(attribs.GetUserData(ud->Id()));
+  CSampleAttributeUserData* ud = CSampleAttributeUserData::Cast(attribs.GetUserData(CSampleAttributeUserData::Id()));
   if (ud)
   {
     // Print data members

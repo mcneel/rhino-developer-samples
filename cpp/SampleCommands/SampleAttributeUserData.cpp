@@ -29,7 +29,8 @@ CSampleAttributeUserData::~CSampleAttributeUserData()
 {
 }
 
-CSampleAttributeUserData::CSampleAttributeUserData(const CSampleAttributeUserData& src) : ON_UserData(src)
+CSampleAttributeUserData::CSampleAttributeUserData(const CSampleAttributeUserData& src) 
+  : ON_UserData(src)
 {
   m_userdata_uuid = CSampleAttributeUserData::Id();
   m_application_uuid = SampleCommandsPlugIn().PlugInID();
