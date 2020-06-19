@@ -34,11 +34,10 @@ namespace SampleViewportPropertiesETOUI
     // You can override methods here to change the plug-in behavior on
     // loading and shut down, add options pages to the Rhino _Option command
     // and mantain plug-in wide options in a document.
-    protected override void ObjectPropertiesPages(List<ObjectPropertiesPage> pages)
+    protected override void ObjectPropertiesPages(ObjectPropertiesPageCollection collection)
     {
       // Add our own Viewport properties page
-      pages.Add(m_page);
-      base.ObjectPropertiesPages(pages);
+      collection.Add(m_page);
     }
 
     protected override Result Render(RhinoDoc doc, RunMode mode, bool fastPreview)

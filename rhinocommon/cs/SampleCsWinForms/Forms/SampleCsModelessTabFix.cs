@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace SampleCsWinForms
+namespace SampleCsWinForms.Forms
 {
   /// <summary>
   /// Helper class to handle WinForm form control focus when user presses 'Tab' key.
@@ -16,10 +16,10 @@ namespace SampleCsWinForms
   /// keypress events such as Tab or Enter, so you won’t be able to directly redirect
   /// those events to your controls unless you use some low level workarounds.
   /// 
-  /// The code  below illustrates a way to handle and respond to Tab keypress events
-  /// with some custom logic. Just instantiate the FormTabKeyHelper class and let it
-  /// initialize an internal dictionary with the controls tab indices you defined at
-  /// design time using Control.TabIndex property.
+  /// The code below illustrates a way to handle and respond to Tab keypress events
+  /// with some custom logic. Just instantiate the  class and let it initialize an
+  /// internal dictionary with the controls tab indices you defined at design time
+  /// using Control.TabIndex property.
   /// </remarks>
   /// <example>
   /// public partial class MyForm : Form

@@ -29,10 +29,10 @@ namespace SampleCsEto
       pages.Add(page);
     }
 
-    protected override void ObjectPropertiesPages(List<ObjectPropertiesPage> pages)
+    protected override void ObjectPropertiesPages(ObjectPropertiesPageCollection collection)
     {
       var page = new Views.SampleCsEtoPropertiesPage();
-      pages.Add(page);
+      collection.Add(page);
     }
   }
 }
