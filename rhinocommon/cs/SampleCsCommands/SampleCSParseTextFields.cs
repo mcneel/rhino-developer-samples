@@ -65,12 +65,16 @@ namespace SampleCsCommands
         {
           if (user_string_value.StartsWith("%<") && user_string_value.EndsWith(">%"))
           {
+            //RhinoApp.ParseTextField will try to automatically parse any string that looks like a valid textfield containing
+            //a formula. %<ObjectName("E3D64B7C-3AE7-4390-B983-82730091B8CD")>% for example and return the results.
+            //The parent object parameter is required for block instances. 
             var parsed_string = RhinoApp.ParseTextField(user_string_value, obj_ref.Object(), null);
             RhinoApp.WriteLine($"Parsed TextField: {parsed_string}");
           }
         }
 
-        //Direct method call to TextField ObjectName
+        //Direct method call to TextField ObjectName Example
+        //You can also call the ObjectName and other TextField functions directly instead of using ParseTextField should you wish to do so.
         var direct_string = Rhino.Runtime.TextFields.ObjectName(obj_ref.ObjectId.ToString());
         var direct_area = Rhino.Runtime.TextFields.Area(obj_ref.ObjectId.ToString(), UnitSystem.Millimeters.ToString());
         RhinoApp.WriteLine($"Direct ObjectName call: {direct_string}");
