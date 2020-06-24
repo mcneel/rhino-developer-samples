@@ -55,6 +55,7 @@
     <Compile Include="Commands\SampleCsEtoCommand.cs" />
     <Compile Include="Commands\SampleCsEtoModalDialogCommand.cs" />
     <Compile Include="Commands\SampleCsEtoModelessFormCommand.cs" />
+    <Compile Include="Commands\SampleCsEtoOrderCurvesCommand.cs" />
     <Compile Include="Commands\SampleCsEtoPanelCommand.cs" />
     <Compile Include="Commands\SampleCsEtoSemiModalDialogCommand.cs" />
     <Compile Include="Commands\SampleCsEtoViewportCommand.cs" />

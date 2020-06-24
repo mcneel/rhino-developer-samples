@@ -153,4 +153,31 @@ namespace SampleCsWinForms.Forms
       }
     }
   }
+
+  /// <summary>
+  /// Yet another fix for modeless dialog displayed in assemblies
+  /// </summary>
+  public class SampleAnotherModelessTabFix
+  {
+    protected Form ManagedForm { get; set; }
+
+    public SampleAnotherModelessTabFix(Form managedForm)
+    {
+      ManagedForm = managedForm;
+      ManagedForm.KeyPreview = true;
+      ManagedForm.KeyPress += OnKeyPress;
+    }
+
+    private void OnKeyPress(object sender, KeyPressEventArgs e)
+    {
+      if (ManagedForm == null)
+        return;
+
+      if (e.KeyChar == '\t')
+      {
+        ManagedForm.Activate();
+        ManagedForm.SelectNextControl(ManagedForm.ActiveControl, true, true, true, true);
+      }
+    }
+  }
 }

@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Commands\SampleCsWpfPanelCommand.cs" />
     <Compile Include="Commands\SampleCsWpfSemiModalDialogCommand.cs" />
+    <Compile Include="Commands\SampleCsWpfViewportCommand.cs" />
     <Compile Include="ViewModels\SampleCsWpfPaneViewModel.cs" />
     <Compile Include="Views\SampleCsWpfDialog.xaml.cs">
       <DependentUpon>SampleCsWpfDialog.xaml</DependentUpon>
@@ -77,6 +78,9 @@
     </Compile>
     <Compile Include="SampleCsWpfPlugIn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\SampleCsWpfViewportDialog.xaml.cs">
+      <DependentUpon>SampleCsWpfViewportDialog.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -90,6 +94,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SampleCsWpfPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SampleCsWpfViewportDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
