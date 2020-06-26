@@ -67,7 +67,7 @@ namespace SampleCsCommands
           {
             //RhinoApp.ParseTextField will try to automatically parse any string that looks like a valid textfield containing
             //a formula. %<ObjectName("E3D64B7C-3AE7-4390-B983-82730091B8CD")>% for example and return the results.
-            //The parent object parameter is required for block instances. 
+            //The parent object parameter is required only for page objects such as detail object viewport info. 
             var parsed_string = RhinoApp.ParseTextField(user_string_value, obj_ref.Object(), null);
             RhinoApp.WriteLine($"Parsed TextField: {parsed_string}");
           }
