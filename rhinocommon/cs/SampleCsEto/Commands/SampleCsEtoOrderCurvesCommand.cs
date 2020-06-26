@@ -62,7 +62,6 @@ namespace SampleCsEto.Commands
   internal sealed class OrderCurvesDialog : Rhino.UI.Forms.CommandDialog
   {
     private readonly ObservableCollection<CurveItem> m_curves;
-    private int[] m_source_rows;
     private GridView m_grid;
     private PointF? m_mousedown_point;
     private bool m_dragging;
@@ -163,9 +162,8 @@ namespace SampleCsEto.Commands
         var cell = m_grid.GetCellAt(e.Location);
         if (cell.Item != null)
         {
-          m_source_rows = m_grid.SelectedRows.ToArray();
           var data = new DataObject();
-          data.SetString(g_drag_type, g_drag_type);
+          data.SetObject(m_grid.SelectedRows.ToArray(), g_drag_type);
           m_grid.DoDragDrop(data, DragEffects.Move);
           m_dragging = true;
           e.Handled = true;
@@ -217,10 +215,10 @@ namespace SampleCsEto.Commands
       if (info != null && e.Data.Contains(g_drag_type))
       {
         var index = info.InsertIndex;
-        if (index >= 0 && m_source_rows != null && m_source_rows.Length > 0)
+        if (index >= 0 && e.Data.GetObject(g_drag_type) is int[] source_rows)
         {
           var data = new List<CurveItem>();
-          foreach (var row in m_source_rows.OrderByDescending(r => r))
+          foreach (var row in source_rows.OrderByDescending(r => r))
           {
             var item = m_curves[row];
             data.Add(item);
@@ -234,8 +232,6 @@ namespace SampleCsEto.Commands
             m_curves.Insert(index++, item);
 
           m_grid.SelectedRow = selectedIndex;
-
-          m_source_rows = null;
         }
       }
     }
