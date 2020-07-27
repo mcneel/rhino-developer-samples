@@ -192,6 +192,7 @@
     <Compile Include="SampleCsSelectHoles.cs" />
     <Compile Include="SampleCsSelectLayerObjects.cs" />
     <Compile Include="SampleCsSerializeClass.cs" />
+    <Compile Include="SampleCsSetBrepFaceMaterial.cs" />
     <Compile Include="SampleCsSetCameraTarget.cs" />
     <Compile Include="SampleCsSetDisplayMode.cs" />
     <Compile Include="SampleCsSetDocumentUserText.cs" />
