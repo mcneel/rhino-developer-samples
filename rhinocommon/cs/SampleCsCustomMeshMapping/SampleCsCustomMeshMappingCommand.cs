@@ -75,9 +75,9 @@ namespace SampleCsCustomMeshMapping
 
           TextureMapping textureMapping = TextureMapping.CreateCustomMeshMapping(mappingMesh);
 
-          // Apply mapping to object
+          // Apply mapping to object and set mapping object transform to identity
 
-          rhinoObject.SetTextureMapping(1, textureMapping);
+          rhinoObject.SetTextureMapping(1, textureMapping, Transform.Identity);
         }
       }
       return Result.Success;
