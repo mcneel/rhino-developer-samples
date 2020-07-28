@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="cmdSampleChangeDimStyle.cpp" />
     <ClCompile Include="cmdSampleClosedCurveContainment.cpp" />
+    <ClCompile Include="cmdSampleCloseTabbedPanels.cpp" />
     <ClCompile Include="cmdSampleCopyInPlace.cpp" />
     <ClCompile Include="cmdSampleDrawZebraPreview.cpp" />
     <ClCompile Include="cmdSampleDump3dmMaterialTextures.cpp" />
