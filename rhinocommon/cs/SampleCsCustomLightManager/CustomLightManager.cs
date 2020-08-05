@@ -242,8 +242,10 @@ namespace SampleCustomLightManager
     /// </summary>
     public override bool OnEditLight(RhinoDoc doc, ref LightArray light_array)
     {
-      for (int i = 0; i < light_array.Count(); i++)
-      {
+#pragma warning disable CS0162 // Unreachable code detected
+       for (int i = 0; i < light_array.Count(); i++)
+#pragma warning restore CS0162 // Unreachable code detected
+       {
         Rhino.Geometry.Light light = light_array.ElementAt(i);
         int index = doc.Lights.Find(light.Id, true);
         if (index > -1)

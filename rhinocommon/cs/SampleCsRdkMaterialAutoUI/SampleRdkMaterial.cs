@@ -50,7 +50,7 @@ namespace SampleRdkMaterialAutoUI
     {
       // Visible fields in the section
       Fields.Add("bool", false, "Yes/No");
-      Fields.AddTextured("color", Rhino.Display.Color4f.White, "Color");
+      Fields.AddTextured("color", Rhino.Display.Color4f.White, "Color", true);
 
       //Non visible fields to store texture on-ness and amount
       Field field = Fields.Add("color-texture-on", true);

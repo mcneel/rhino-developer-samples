@@ -376,13 +376,13 @@ namespace SampleCsRdk
     protected override void RegisterRenderPanels(RenderPanels panels)
     {
       var type = typeof (CustomRenderPanel);
-      panels.RegisterPanel(this, RenderPanelType.RenderWindow, type, "Custom Panel", true, true);
+      panels.RegisterPanel(this, RenderPanelType.RenderWindow, type, this.Id, "Custom Panel", true, true);
     }
 
     protected override void RegisterRenderTabs(RenderTabs tabs)
     {
       var type = typeof(CustomRenderPanel);
-      tabs.RegisterTab(this, type, "Custom Panel", SystemIcons.Exclamation);
+      tabs.RegisterTab(this, type, this.Id, "Custom Panel", SystemIcons.Exclamation);
     }
 
     protected override Rhino.Commands.Result RenderWindow(RhinoDoc doc, Rhino.Commands.RunMode modes, bool fastPreview, Rhino.Display.RhinoView view, System.Drawing.Rectangle rect, bool inWindow)
