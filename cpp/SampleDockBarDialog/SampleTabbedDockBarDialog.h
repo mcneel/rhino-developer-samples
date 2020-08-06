@@ -1,7 +1,6 @@
 #pragma once
 
 #include "rhinoSdkUiSectionSeparator.h"
-#include "rhinoSdkUiDialogScrollHelper.h"
 #include "resource.h"
 
 // CSampleTabbedDockBarDialog dialog

@@ -30,9 +30,6 @@
     <ClCompile Include="SampleTabbedDockBarDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RhinoUiDialogScrollHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RhinoUiSectionSeparator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,9 +51,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SampleTabbedDockBarDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="rhinoSdkUiDialogScrollHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rhinoSdkUiSectionSeparator.h">

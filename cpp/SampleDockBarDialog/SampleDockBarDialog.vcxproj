@@ -12,7 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cmdSampleDockBarDialog.cpp" />
-    <ClCompile Include="RhinoUiDialogScrollHelper.cpp" />
     <ClCompile Include="RhinoUiSectionSeparator.cpp" />
     <ClCompile Include="SampleTabbedDockBarDialog.cpp" />
     <ClCompile Include="SampleDockBarDialogApp.cpp" />
@@ -23,7 +22,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="rhinoSdkUiDialogScrollHelper.h" />
     <ClInclude Include="rhinoSdkUiSectionSeparator.h" />
     <ClInclude Include="SampleTabbedDockBarDialog.h" />
     <ClInclude Include="Resource.h" />
