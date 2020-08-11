@@ -79,7 +79,7 @@ void CMarmaladeNewMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::Te
 	mat.m_index_of_refraction = m_IOR;
 
 	bool bTextureOn = m_Color.TextureOn();
-	double dTextureAmount = m_Color.TextureAmount();
+	double dTextureAmount = m_Color.TextureDoubleAmount();
 
 	const CRhRdkContent* pChild = nullptr;
 	if (bTextureOn && (dTextureAmount > 0.0) && (nullptr != (pChild = FindChild(MARM_SHADER_COLOR_CSN))))
@@ -140,7 +140,7 @@ void* CMarmaladeNewMaterial::GetShader(const UUID& uuidRenderEngine, void* pvDat
 
 	pParam = paramBlock.FindParameter(MARM_SHADER_TEXTURE_AMOUNT);
 	ASSERT(nullptr != pParam);
-	pParam->m_vValue = m_Color.TextureAmount();
+	pParam->m_vValue = m_Color.TextureDoubleAmount();
 
 	return (void*)pShader;
 }
