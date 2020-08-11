@@ -1,5 +1,8 @@
+
 #include "stdafx.h"
 #include "SampleChangeQueue.h"
+
+#pragma warning(disable : 4189) // local variable is initialized but not referenced
 
 SampleChangeQueue::SampleChangeQueue
 (const CRhinoDoc& doc,
@@ -89,7 +92,7 @@ void SampleChangeQueue::ApplyLightChanges(const ON_SimpleArray<const Light*>& li
 	m_pImpl->m_iLightCount += lightChanges.Count();
 	for (int i = 0; i < lightChanges.Count(); i++) {
 		const ChangeQueue::Light* light = lightChanges[i];
-		
+
 		// this tells us whether a light was added, deleted or otherwise modified
 		const CRhinoEventWatcher::light_event event = light->Event();
 		// this is the actual light data as ON_Light
@@ -106,7 +109,7 @@ void SampleChangeQueue::ApplyMaterialChanges(const ON_SimpleArray<const Material
 		const int matid = mat->MaterialId();
 		// get the render material for the id
 		const CRhRdkMaterial* rmat = MaterialFromId(matid);
-		
+
 		// This rmat is to be assigned to mesh identified by
 		// the tuple (meshid, meshindex)
 		const int meshid = mat->MeshInstanceId();

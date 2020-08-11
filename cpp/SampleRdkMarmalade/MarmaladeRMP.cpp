@@ -68,9 +68,9 @@ static void SetTextureSlot(CRhRdkBasicMaterial* pBasicMaterial, const ON_Materia
 	{
 		const ON_Texture& tex = mat.m_textures[iIndex];
 		CRhRdkBasicMaterial::CTextureSlot slot = pBasicMaterial->TextureSlot(usage);
-		slot.m_bOn = tex.m_bOn;
-		slot.m_bFilterOn = (tex.m_magfilter == ON_Texture::FILTER::linear_filter) && (tex.m_minfilter == ON_Texture::FILTER::linear_filter);
-		slot.m_dAmount = (tex.m_mode == ON_Texture::MODE::decal_texture) ? 1.0 : tex.m_blend_constant_A;
+		slot.SetOn(tex.m_bOn);
+		slot.SetFilterOn((tex.m_magfilter == ON_Texture::FILTER::linear_filter) && (tex.m_minfilter == ON_Texture::FILTER::linear_filter));
+		slot.SetAmount((tex.m_mode == ON_Texture::MODE::decal_texture) ? 1.0 : tex.m_blend_constant_A);
 		pBasicMaterial->SetTextureSlot(usage, slot);
 	}
 }
@@ -126,7 +126,7 @@ bool CMarmaladeRMP::BuildCustomMeshes(const ON_Viewport& vp, const UUID& uuidReq
 	const auto usage = CRhRdkMaterial::ChildSlotUsage::Diffuse;
 
 	auto ts = pBasicMaterial->TextureSlot(usage);
-	ts.m_bOn = true;
+	ts.SetOn(true);
 	pBasicMaterial->SetTextureSlot(usage, ts);
 
 	crmInOut.Add(pMesh, pBasicMaterial);

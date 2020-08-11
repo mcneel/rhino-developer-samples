@@ -303,7 +303,7 @@ void CMarmaladeNewMaterialSection::OnSubnodeAmount(void)
 	for (int i = 0; i < aContent.Count(); i++)
 	{
 		const CRhRdkContent::Change<CRhRdkContent> c(*aContent[i], RhRdkChangeContext::UI);
-		c().SetParameter(MARM_SHADER_TEXTURE_AMOUNT, int(m_SubNode.GetAmount() * 100.0));
+		c().SetParameter(MARM_SHADER_TEXTURE_AMOUNT, m_SubNode.GetAmount() * 100.0);
 	}
 }
 

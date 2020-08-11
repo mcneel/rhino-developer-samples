@@ -1,5 +1,8 @@
+
 #include "stdafx.h"
 #include "CustomChangeQueue.h"
+
+#pragma warning(disable : 4189) // local variable is initialized but not referenced
 
 // we are not posing as a render plug-in, nor are we interested in tracking changes to
 // display attributes
