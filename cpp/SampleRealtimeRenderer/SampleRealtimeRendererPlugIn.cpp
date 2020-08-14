@@ -7,6 +7,9 @@
 #include "SampleDisplayMode.h"
 #include "Resource.h"
 
+// RhRdk::Realtime::DisplayMode::Factory is missing its virtual destructor and to fix this would break the RDK SDK. So...
+#pragma warning(disable : 5205) // delete of an abstract class that has a non-virtual destructor results in undefined behavior
+
 // The plug-in object must be constructed before any plug-in classes derived
 // from CRhinoCommand. The #pragma init_seg(lib) ensures that this happens.
 #pragma warning( push )
