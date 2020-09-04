@@ -61,6 +61,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SampleCsApplyCrv.cs" />
     <Compile Include="SampleCsArc.cs" />
     <Compile Include="SampleCsCreateBooleanRegions.cs" />
     <Compile Include="SampleCsCreateUVCurve.cs" />
