@@ -90,7 +90,7 @@ namespace SampleCsCommands
         if (null != curve2d)
         {
           curve2d.Transform(xform);
-          var curve3d = surface.Pushup(curve, tol);
+          var curve3d = surface.Pushup(curve2d, tol);
           if (null != curve3d)
             doc.Objects.AddCurve(curve3d);
         }
