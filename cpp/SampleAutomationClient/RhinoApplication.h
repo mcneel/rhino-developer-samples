@@ -1,6 +1,6 @@
 // Machine generated IDispatch wrapper class(es) created with Add Class from Typelib Wizard
 
-#import "C:\\Program Files\\Rhino 6\\System\\Rhino.tlb" no_namespace
+#import "C:\\Program Files\\Rhino 7 WIP\\System\\Rhino.tlb" no_namespace
 // CRhinoApplication wrapper class
 
 class CRhinoApplication : public COleDispatchDriver
