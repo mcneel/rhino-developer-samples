@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleCommands", "SampleCommands\SampleCommands.vcxproj", "{2AE01DAD-D283-4ADA-861C-6F0B2BFAF11C}"
 EndProject
@@ -110,6 +110,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleConsoleRedirect", "SampleConsoleRedirect\SampleConsoleRedirect.vcxproj", "{CBB4A661-91CF-465D-A5A0-B2841116FC03}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleModelessCancel", "SampleModelessCancel\SampleModelessCancel.vcxproj", "{3E8C092F-7AF9-4498-90BE-912CF9E5E103}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkContentTask", "SampleRdkContentTask\SampleRdkContentTask.vcxproj", "{9DCA70EE-EAF5-4F2E-B714-19D00BE1EEE6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -342,6 +344,12 @@ Global
 		{3E8C092F-7AF9-4498-90BE-912CF9E5E103}.PseudoDebug|x64.Build.0 = Debug|x64
 		{3E8C092F-7AF9-4498-90BE-912CF9E5E103}.Release|x64.ActiveCfg = Release|x64
 		{3E8C092F-7AF9-4498-90BE-912CF9E5E103}.Release|x64.Build.0 = Release|x64
+		{9DCA70EE-EAF5-4F2E-B714-19D00BE1EEE6}.Debug|x64.ActiveCfg = Debug|x64
+		{9DCA70EE-EAF5-4F2E-B714-19D00BE1EEE6}.Debug|x64.Build.0 = Debug|x64
+		{9DCA70EE-EAF5-4F2E-B714-19D00BE1EEE6}.PseudoDebug|x64.ActiveCfg = Debug|x64
+		{9DCA70EE-EAF5-4F2E-B714-19D00BE1EEE6}.PseudoDebug|x64.Build.0 = Debug|x64
+		{9DCA70EE-EAF5-4F2E-B714-19D00BE1EEE6}.Release|x64.ActiveCfg = Release|x64
+		{9DCA70EE-EAF5-4F2E-B714-19D00BE1EEE6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
