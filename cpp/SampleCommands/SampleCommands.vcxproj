@@ -243,6 +243,7 @@
     <ClCompile Include="cmdSampleTextureMapping.cpp" />
     <ClCompile Include="cmdSampleTextureMappingEval.cpp" />
     <ClCompile Include="cmdSampleToggleLayer.cpp" />
+    <ClCompile Include="cmdSampleTriangleMesh.cpp" />
     <ClCompile Include="cmdSampleTriangulatePolygon.cpp" />
     <ClCompile Include="cmdSampleTrimmedPlane.cpp" />
     <ClCompile Include="cmdSampleTrimWithBrep.cpp" />
