@@ -75,7 +75,7 @@ namespace SampleCsRdk
 			if (obj == null)
 			{
 				Sphere sphere = new Sphere(new Point3d(0.0, 0.0, 0.0), 10.0);
-				objMeshes.Add(Rhino.Geometry.Mesh.CreateFromSphere(sphere, 100, 100), RenderMaterial.CreateBasicMaterial(Rhino.DocObjects.Material.DefaultMaterial));
+				objMeshes.Add(Rhino.Geometry.Mesh.CreateFromSphere(sphere, 100, 100), RenderMaterial.CreateBasicMaterial(Rhino.DocObjects.Material.DefaultMaterial, doc));
 			}
 			else
 			{

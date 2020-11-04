@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MockingBirdIntro</RootNamespace>
     <AssemblyName>MockingBirdIntro</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
 		<TargetExt>.rhp</TargetExt>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -39,17 +39,17 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="RhinoCommon">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7 WIP\System\RhinoCommon.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7\System\RhinoCommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Eto">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7 WIP\System\Eto.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7\System\Eto.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Rhino.UI">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7 WIP\System\Rhino.UI.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7\System\Rhino.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -70,7 +70,7 @@
     <FallbackCulture>en-US</FallbackCulture>
   </PropertyGroup>
   <PropertyGroup>
-    <StartProgram>C:\Program Files\Rhino 7 WIP\System\Rhino.exe</StartProgram>
+    <StartProgram>C:\Program Files\Rhino 7\System\Rhino.exe</StartProgram>
     <StartArguments>
     </StartArguments>
     <StartAction>Program</StartAction>

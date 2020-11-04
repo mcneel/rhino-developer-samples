@@ -47,9 +47,9 @@ namespace SampleCsCommands
       };
 
       // 2.) Create basic Render materials from Rhino materials
-      var red_render_material = RenderMaterial.CreateBasicMaterial(red_material);
-      var green_render_material = RenderMaterial.CreateBasicMaterial(green_material);
-      var blue_render_material = RenderMaterial.CreateBasicMaterial(blue_material);
+      var red_render_material = RenderMaterial.CreateBasicMaterial(red_material, doc);
+      var green_render_material = RenderMaterial.CreateBasicMaterial(green_material, doc);
+      var blue_render_material = RenderMaterial.CreateBasicMaterial(blue_material, doc);
 
       // 3.) Add basic Render materials to the render material table
       doc.RenderMaterials.Add(red_render_material);

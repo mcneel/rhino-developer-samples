@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,18 +9,19 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SampleCsRdk</RootNamespace>
     <AssemblyName>SampleCsRdk</AssemblyName>
-		<TargetExt>.rhp</TargetExt>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetExt>.rhp</TargetExt>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\bin\</OutputPath>
-		<TargetExt>.rhp</TargetExt>
+    <TargetExt>.rhp</TargetExt>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +30,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\bin\</OutputPath>
-		<TargetExt>.rhp</TargetExt>
+    <TargetExt>.rhp</TargetExt>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -53,27 +54,27 @@
     <Reference Include="WindowsFormsIntegration" />
     <Reference Include="RhinoCommon">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7 WIP\System\rhinocommon.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7\System\rhinocommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Eto">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7 WIP\System\Eto.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7\System\Eto.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Eto.Wpf">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7 WIP\System\Eto.Wpf.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7\System\Eto.Wpf.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Rhino.UI">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7 WIP\System\Rhino.UI.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7\System\Rhino.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RhinoWindows">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7 WIP\System\RhinoWindows.dll</HintPath>
+      <HintPath>C:\Program Files\Rhino 7\System\RhinoWindows.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -156,4 +157,3 @@
   </Target>
   -->
 </Project>
-
