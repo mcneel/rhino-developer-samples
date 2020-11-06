@@ -180,6 +180,7 @@
     <ClCompile Include="cmdSamplePhantomObject.cpp" />
     <ClCompile Include="cmdSamplePickColor.cpp" />
     <ClCompile Include="cmdSamplePickContext.cpp" />
+    <ClCompile Include="cmdSamplePickEdges.cpp" />
     <ClCompile Include="cmdSamplePickTextDot.cpp" />
     <ClCompile Include="cmdSamplePicture.cpp" />
     <ClCompile Include="cmdSamplePipe.cpp" />
