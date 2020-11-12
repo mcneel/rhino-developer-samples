@@ -94,10 +94,10 @@ void CGetAngleSecondPoint::OnMouseMove(CRhinoViewport& vp, UINT flags, const ON_
     m_dir = dir;
   }
 
-  RhinoApp().SetStatusBarPointPane(point);
-  RhinoApp().SetStatusBarDistancePane(m_arc.AngleDegrees() * m_dir);
-
   CRhinoGetPoint::OnMouseMove(vp, flags, point, view_wnd_point);
+
+  RhinoApp().SetStatusBarPointPane(point);
+  RhinoApp().SetStatusBarNumberPane(m_arc.AngleDegrees());
 }
 
 void CGetAngleSecondPoint::DynamicDraw(CRhinoDisplayPipeline& dp, const ON_3dPoint& point)
