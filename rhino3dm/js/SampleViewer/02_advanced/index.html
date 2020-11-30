@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>PBR Material Example</title>
+        <style>
+            body { margin: 0; }
+            canvas { width: 100%; height: 100%; }
+            #container {position: relative;}
+            #container canvas, #overlay { position: absolute;}
+            #overlay {z-index: 1; width: 100%}
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="canvas"></div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/three@0.118.1/build/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.118.1/examples/js/controls/OrbitControls.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/rhino3dm/rhino3dm.min.js"></script> <!-- latest -->
+        <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.7/build/dat.gui.min.js"></script>
+        <script type="module">
+          let scene, camera, renderer, controls, composer, material;
+          let url = '../../resources/models/hello_mesh.3dm';
+          let fetchPromise = fetch(url);
+
+          rhino3dm().then(async m => {
+            console.log('Loaded rhino3dm');
+            let rhino = m;
+
+            let res = await fetchPromise;
+            let buffer = await res.arrayBuffer();
+            let arr = new Uint8Array(buffer);
+            let doc = rhino.File3dm.fromByteArray(arr);
+
+            init();
+            material = new THREE.MeshPhysicalMaterial();
+
+            loadPBRMaterial(material, 'chipped-paint-metal');
+            material.metalness = 0.75;
+            material.roughness = 0.15;
+            material.normalScale.x = 1.0;
+            material.normalScale.y = 1.0;
+            material.envMap = scene.background;
+            let objects = doc.objects();
+            for (let i = 0; i < objects.count; i++) {
+              // assume model contains only meshes
+              let mesh = objects.get(i).geometry();
+
+              console.log(mesh);
+              let threeMesh = meshToThreejs(mesh, material);
+              scene.add(threeMesh);
+            }
+          });
+
+          function loadPBRMaterial(material, name) {
+            let tl = new THREE.TextureLoader();
+
+            tl.setPath('../../resources/materials/PBR/' + name + '/');
+            material.map          = tl.load(name + '_base.png');
+            material.aoMmap       = tl.load(name + '_ao.png');
+            material.normalMap    = tl.load(name + '_normal.png');
+            material.metalnessMap = tl.load(name + '_metallic.png');
+          }
+
+          function loadCubeMap(name, prefix, format) {
+            let ctl = new THREE.CubeTextureLoader();
+
+            ctl.setPath('../../resources/textures/cube/' + name + '/');
+            return ctl.load([prefix + 'px.' + format, prefix + 'nx.' + format, prefix + 'py.' + format,
+                             prefix + 'ny.' + format, prefix + 'pz.' + format, prefix + 'nz.' + format]);
+          }
+
+          function init() {
+            scene = new THREE.Scene();
+            scene.background = loadCubeMap('Park2', '', 'jpg');
+            camera = new THREE.PerspectiveCamera( 35, window.innerWidth/window.innerHeight, 1, 10000 );
+
+            var light = new THREE.DirectionalLight(0xffffff, 1.150);
+            light.position.set(-10, 10, 0);
+            camera.add( light );
+            scene.add(camera);
+
+            renderer = new THREE.WebGLRenderer({antialias: true});
+            renderer.setPixelRatio( window.devicePixelRatio );
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            var canvas = document.getElementById("canvas");
+            canvas.appendChild( renderer.domElement );
+            renderer.shadowMap.enabled = true;
+            controls = new THREE.OrbitControls( camera, renderer.domElement  );
+		  
+            camera.position.z = 50;
+		  
+            window.addEventListener('resize', onWindowResize, false);
+
+            var UserInterfaceControls = function() {
+              this.lightColor = [light.color.r*255, light.color.g*255, light.color.b*255];
+              this.cubemap = 'Park2';
+              this.metalness = 0.75;
+              this.roughness = 0.15;
+              this.textures = 'chipped-paint-metal';
+            };
+            var ui_callbacks = new UserInterfaceControls();
+            var gui = new dat.GUI();
+            gui.addColor(ui_callbacks, 'lightColor').onChange(function(value) {
+              light.color.r = value[0]/255.0;
+              light.color.g = value[1]/255.0;
+              light.color.b = value[2]/255.0;
+             });
+            gui.add(ui_callbacks, 'cubemap',[ 'Bridge2', 'MilkyWay', 'Park2', 'Park3Med', 'pisa', 'skyboxsun25deg', 'SwedishRoyalCastle' ]).onChange(function(value){
+              scene.background = loadCubeMap(value, '', 'jpg');
+              material.envMap = scene.background;
+            });
+            let matFolder = gui.addFolder('Material');
+            matFolder.add(ui_callbacks, 'metalness', 0.0, 1.0).onChange(function(value) {
+              material.metalness = value;
+            });
+            matFolder.add(ui_callbacks, 'roughness', 0.0, 1.0).onChange(function(value) {
+              material.roughness = value;
+            });
+            matFolder.add(ui_callbacks, 'textures',
+              [ 'carbon-fiber', 'chipped-paint-metal', 'copper-rock1', 'grimy-metal',
+                'metalgrid2', 'ornate-brass2', 'rust-coated', 'rust-panel', 'scuffed-plastic',
+                'streaked-metal1' ]).onChange(function(value){
+                  loadPBRMaterial(material, value);
+            });
+
+            matFolder.open();
+            animate();
+          }
+
+          var animate = function (){
+              requestAnimationFrame( animate );
+              controls.update();
+              renderer.render( scene, camera );
+          };
+
+          function onWindowResize(){
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            animate();
+          }
+
+          function meshToThreejs(mesh, material){
+            let loader = new THREE.BufferGeometryLoader();
+            var geometry = loader.parse(mesh.toThreejsJSON(true));
+            return new THREE.Mesh(geometry, material);
+          }
+        </script>
+    </body>
+</html>

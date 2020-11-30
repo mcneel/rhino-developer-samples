@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/rhino3dm/rhino3dm.min.js"></script> <!-- latest -->
+    <script src="https://cdn.jsdelivr.net/npm/compute-rhino3d/compute.rhino3d.min.js"></script> <!-- latest -->
+    <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+    <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+  </head>
+
+  <body style='margin : 0px; overflow: hidden;'>
+    <a-scene embedded arjs='sourceType: webcam;'>
+        <a-marker preset='hiro'>
+          <a-entity></a-entity>
+        </a-marker>
+    <a-entity camera>
+    </a-entity>
+    </a-scene>
+
+    <script>
+      const getRhinoLogoMeshes = (Rhino) => {
+        RhinoCompute.authToken = RhinoCompute.getAuthToken()
+
+        var xhr = new XMLHttpRequest()
+        xhr.open("GET", "https://files.mcneel.com/rhino3dm/models/RhinoLogo.3dm", true)
+        xhr.responseType = "arraybuffer"
+        xhr.onload = function (e) {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              //console.log(xhr.responseText);
+              console.log("Got the model!");
+              longInt8View = new Uint8Array(xhr.response)
+              var model = Rhino.File3dm.fromByteArray(longInt8View)
+              console.log(model)
+              // get breps
+              var objecttable = model.objects()
+              var breps = []
+              for(var i=0; i<objecttable.count; i++) {
+                var geometry = objecttable.get(i).geometry()
+                geometry.rotate(-1.571, [1,0,0], [0,0,0]);
+                geometry.scale(0.1)
+                breps.push(geometry)
+              }
+              computeBrepMeshes(breps, Rhino)
+            } else {
+              console.error(xhr.statusText);
+            }
+          }
+        };
+        xhr.onerror = function (e) {
+          console.error(xhr.statusText);
+        };
+        xhr.send(null)
+      }
+
+      const computeBrepMeshes = (breps, Rhino, callback) => {
+        console.log("Meshing the breps!")
+        for(var i=0; i<breps.length; i++) {
+          var brep = breps[i]
+
+          const fetchFunc = (brep, i) => {
+            RhinoCompute.Mesh.createFromBrep(brep)
+            .then(result => {
+              var meshes = result.map(r=>Rhino.CommonObject.decode(r));
+              console.log(meshes)
+              //m.breps[index]["meshes"] = meshes;
+              //callback(this);
+              //mesh_list.push(meshes)
+              var mat = new THREE.MeshPhongMaterial({color: 0xffffff})
+              for (var j=0; j<meshes.length; j++) {
+                var three_mesh = meshToThreejs(meshes[j], mat)
+                console.log(three_mesh)
+                //var scene = document.querySelector('a-entity').object3D
+                //scene.add(three_mesh)
+                //var entity = document.querySelector('a-entity')
+                //entity.setObject3D('mesh', three_mesh)
+                var entity = document.querySelector('a-entity');
+                var name = "mesh_" + i + "_" + j
+                entity.setObject3D(name, three_mesh);
+              }
+            });
+          };
+          fetchFunc(brep, i);
+        }
+      }
+
+      meshToThreejs = (mesh, material) => {
+        var geometry = new THREE.BufferGeometry();
+        var vertices = mesh.vertices();
+        var vertexbuffer = new Float32Array(3 * vertices.count);
+        for( var i=0; i<vertices.count; i++) {
+          pt = vertices.get(i);
+          vertexbuffer[i*3] = pt[0];
+          vertexbuffer[i*3+1] = pt[1];
+          vertexbuffer[i*3+2] = pt[2];
+        }
+        // itemSize = 3 because there are 3 values (components) per vertex
+        geometry.addAttribute( 'position', new THREE.BufferAttribute( vertexbuffer, 3 ) );
+        indices = [];
+        var faces = mesh.faces();
+        for( var i=0; i<faces.count; i++) {
+          face = faces.get(i);
+          indices.push(face[0], face[1], face[2]);
+          if( face[2] != face[3] ) {
+            indices.push(face[2], face[3], face[0]);
+          }
+        }
+        geometry.setIndex(indices);
+        var normals = mesh.normals();
+        var normalBuffer = new Float32Array(3*normals.count);
+        for( var i=0; i<normals.count; i++) {
+          pt = normals.get(i);
+          normalBuffer[i*3] = pt[0];
+          normalBuffer[i*3+1] = pt[1];
+          normalBuffer[i*3+2] = pt[1];
+        }
+        geometry.addAttribute( 'normal', new THREE.BufferAttribute( normalBuffer, 3 ) );
+        return new THREE.Mesh( geometry, material );
+      }
+
+      rhino3dm().then((Module) => {
+        console.log("runtime loaded!")
+        getRhinoLogoMeshes(Module)
+      })
+    </script>
+  </body>
+</html>

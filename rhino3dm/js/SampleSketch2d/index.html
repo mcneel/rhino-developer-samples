@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>2D NURBS curves sketcher</title>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css'>
+        <link rel="stylesheet" href="style.css">
+      </head>
+    <body>
+        <div id="description" class="markdown-body">
+          Click on the canvas to create a NURBS curve and hit <kbd>Enter</kbd> to save and start a new one!
+        </div>
+        <div>
+            <canvas class="rhino3dm" id="canvas" width="500" height="500"></canvas>
+        </div>
+        <div style='margin:auto; width:100; display:block; padding:10'>
+          <button onClick="download3dm()" >Save to 3dm</button>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/rhino3dm/rhino3dm.min.js"></script> <!-- latest -->
+        <script  src="app.js"></script>
+    </body>
+</html>
