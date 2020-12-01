@@ -18,7 +18,8 @@
 
     <script>
       const getRhinoLogoMeshes = (Rhino) => {
-        RhinoCompute.authToken = RhinoCompute.getAuthToken()
+        RhinoCompute.url = 'http://localhost:8081/'
+        //RhinoCompute.apiKey = 'your-compute-apikey'
 
         var xhr = new XMLHttpRequest()
         xhr.open("GET", "https://files.mcneel.com/rhino3dm/models/RhinoLogo.3dm", true)

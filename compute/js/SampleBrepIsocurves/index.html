@@ -59,7 +59,10 @@
        * be loaded into the scene through a separate routine.
        */
       function init() {
-        RhinoCompute.authToken = RhinoCompute.getAuthToken();
+        
+        RhinoCompute.url = 'http://localhost:8081/'
+        //RhinoCompute.apiKey = 'your-compute-apikey'
+
         RHINOLOGO.scene = new THREE.Scene();
 
         RHINOLOGO.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );

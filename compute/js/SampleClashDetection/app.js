@@ -17,13 +17,7 @@ rhino3dm().then( async m => {
     *  Variables for Rhino.Compute
     */
 
-    // if calling McNeel's public Rhino.Compute Server, get an auth token:
-    RhinoCompute.authToken = RhinoCompute.getAuthToken();
-
-    // if calling your own compute server, comment the RhinoCompute.authToken line
-    // and uncomment the following two lines:
-
-    //RhinoCompute.url = 'http://your-compute-server-address/'
+    RhinoCompute.url = 'http://localhost:8081/'
     //RhinoCompute.apiKey = 'your-compute-apikey'
 
     init();
