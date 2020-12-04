@@ -4,7 +4,7 @@ This sample uses rhino3dm to create a brep from a sphere and then sends it to Co
 
 ```commandline
 $ python3 -m venv venv
-$ source venv/bin/activate
+$ source venv/scripts/activate
 $ pip install rhino3dm compute-rhino3d
 $ python makemesh.py
 ```

@@ -4,21 +4,9 @@ import time
 import compute_rhino3d.Mesh
 import compute_rhino3d.Util
 
-auth_token = ""
-top = Tkinter.Tk()
-def onClickOk():
-    global auth_token
-    auth_token = auth.get()
-    top.destroy()
-lbl = Tkinter.Label(top, text="Rhino Accounts auth token")
-lbl.grid(row=0, column=0)
-auth = Tkinter.Entry(top)
-auth.grid(row=0, column=1)
-btn = Tkinter.Button(top, text='Ok', command=onClickOk)
-btn.grid(row=1, column=1)
-top.mainloop()
 
-compute_rhino3d.Util.authToken = auth_token
+top = Tkinter.Tk()
+
 center = Point3d(250, 250, 0)
 sphere = Sphere(center, 100)
 

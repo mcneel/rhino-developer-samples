@@ -6,7 +6,6 @@ Sample showing how to start Rhino and Grasshopper from a winforms app with a CEF
 
 ## Requirements
 - [Rhino 7 for Windows](https://www.rhino3d.com/download/rhino-for-windows/7/latest)
-- [node.js and npm](https://nodejs.org/en/) (tested on node version 12.18.0 and npm 6.14.4)
 
 ## Dependencies
 - [CEFSharp](https://github.com/cefsharp/CefSharp) - [version 86.0.241] Used to host the UI, and javascript.
