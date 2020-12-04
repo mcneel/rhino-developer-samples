@@ -10,8 +10,12 @@
     "edge-js": "14.3.2",
     "rhino3dm": "0.13.0"
   },
+  "engines": {
+    "node": ">=12.18.0",
+    "npm": ">=6.14.0"
+  },
   "scripts": {
-    "start": "node app.js"
+    "start": "node ."
   },
   "keywords": [
     "rhino3d",
