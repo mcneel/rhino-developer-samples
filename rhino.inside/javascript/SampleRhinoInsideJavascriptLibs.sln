@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleRhinoInsideJavascriptMethodsLib", "SampleRhinoInsideJavascriptMethodsLib\SampleRhinoInsideJavascriptMethodsLib.csproj", "{835C8259-31B9-481F-9CAF-4D5A07084A9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleRhinoInsideJavascriptTaskManagerLib", "SampleRhinoInsideJavascriptTaskManagerLib\SampleRhinoInsideJavascriptTaskManagerLib.csproj", "{B70ABEBE-DF8A-4960-82E4-97959F353738}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{D493F377-527B-418B-8BBE-00FCC8CBCF34}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{835C8259-31B9-481F-9CAF-4D5A07084A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{835C8259-31B9-481F-9CAF-4D5A07084A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{835C8259-31B9-481F-9CAF-4D5A07084A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{835C8259-31B9-481F-9CAF-4D5A07084A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B70ABEBE-DF8A-4960-82E4-97959F353738}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B70ABEBE-DF8A-4960-82E4-97959F353738}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B70ABEBE-DF8A-4960-82E4-97959F353738}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B70ABEBE-DF8A-4960-82E4-97959F353738}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5377F361-B743-4022-85D1-CBE83762B9BF}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>rhino3dm.js sample</title>
+    <style>
+      /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+      canvas.rhino3dm { margin-left: auto; margin-right: auto;
+         display: block; border: 0px none; background-color: darkslategray; }
+      .slidecontainer {margin-left: auto; margin-right: auto;
+         display: block;}
+    </style>
+  </head>
+  <body>
+    <div>
+      <canvas class="rhino3dm" id="canvas" width="500" height="500" ></canvas>
+    </div>
+    <div class="slidecontainer">
+      <button type="button" onclick="runMeshMaker()">Run Script</button>
+      <input type="range" min="0" max="255" value="0" class="slider" id="rangeSlider" oninput="rotateMesh(this.value)">
+    </div>
+    <script type='text/javascript'>
+      var Module = {
+        canvas: (function() {
+          var canvas = document.getElementById('canvas');
+          return canvas;
+        }())
+      };
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/rhino3dm/rhino3dm.min.js"></script> <!-- latest -->
+    <script src="https://cdn.jsdelivr.net/npm/compute-rhino3d/compute.rhino3d.min.js"></script> <!-- latest -->
+
+    <script>
+    RhinoCompute.url = 'http://localhost:8081/'
+    //RhinoCompute.apiKey = 'your-compute-apikey'
+    var mesh;
+
+    // load rhino3dm
+    var Module;
+    rhino3dm().then((m) => {
+      Module = m;
+      console.log("rhino3dm loaded!");
+    });
+
+    function runMeshMaker() {
+      // First test of rhinocommon.js
+      sphere = new Module.Sphere([250, 250, 0], 100);
+      brep = sphere.toBrep();
+      RhinoCompute.Mesh.createFromBrep(brep)
+      .then(result=>{
+        var meshes = result.map(r=>Module.CommonObject.decode(r));
+        mesh = meshes[0];
+        drawMesh();
+      });
+
+      // Don't need the sphere and brep anymore
+      sphere.delete();
+      brep.delete();
+    }
+
+    function drawMesh() {
+      var ctx=canvas.getContext("2d");
+      // Create gradient
+      var grd=ctx.createLinearGradient(0,0,0,500);
+      grd.addColorStop(0,"slategray");
+      grd.addColorStop(1,"black");
+      // Fill with gradient
+      ctx.fillStyle=grd;
+      ctx.fillRect(0,0,500,500);
+
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'red';
+
+      verts = mesh.vertices();
+      faces = mesh.faces();
+
+      ctx.beginPath();
+      for (i = 0; i < faces.count; i++) {
+        face = faces.get(i);
+        pts = [verts.get(face[0]), verts.get(face[1]), verts.get(face[2]), verts.get(face[3])];
+        ctx.moveTo(pts[0][0], pts[0][1]);
+        ctx.lineTo(pts[1][0], pts[1][1]);
+        ctx.lineTo(pts[2][0], pts[2][1]);
+        ctx.lineTo(pts[3][0], pts[3][1]);
+      }
+      ctx.stroke();
+    }
+
+
+    function rotateMesh() {
+      mesh.rotate(.1, [1,1,0], [250,250,0]);
+      drawMesh();
+    }
+    </script>
+  </body>
+</html>

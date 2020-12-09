@@ -1,0 +1,14 @@
+{
+  "name": "simple-3dm-reader",
+  "version": "1.0.0",
+  "description": "An example cli tool that reads a 3dm file and prints some stuff about it!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luis Fraguada",
+  "license": "MIT",
+  "dependencies": {
+    "rhino3dm": "0.13.0"
+  }
+}

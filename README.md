@@ -9,7 +9,7 @@ The source of this repository will be used to populate the [Samples](http://deve
 Much like the Rhino Developer website, the version of Rhino that these samples are compatible with are determined by which branch of this repository one is viewing:
 
 - The `master` branch corresponds to the version of Rhino currently in active development (the WIP branch).
-- The `6` branch corresponds to Rhino 6.
+- The `7` branch correspondes to Rhino 7, the `6` branch corresponds to Rhino 6, etc.
 - Older versions of Rhino will be archived into version-specific branches (for example: `5`).
 
 ## Samples by SDK or Language
@@ -28,6 +28,15 @@ The samples in this repository are organized by folders that correspond to the d
   - [C#](rhinocommon/cs)
   - [Python](rhinocommon/py)
   - [VB.NET](rhinocommon/vb)
+- [rhino3dm](rhino3dm)
+  - [C#](rhino3dm/cs)
+  - [Python](rhino3dm/py)
+  - [JS](rhino3dm/js)
+- [Compute](compute)
+  - [C#](compute/cs)
+  - [Python](compute/py)
+  - [JS](compute/js)
+- [Rhino.Inside](rhino.inside)
 - [RhinoMobile](rhinomobile) (C#)
 - [RhinoPython](rhinopython)
 - [RhinoScript](rhinoscript) (VBScript)

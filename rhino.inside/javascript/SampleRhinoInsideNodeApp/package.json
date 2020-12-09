@@ -1,0 +1,26 @@
+{
+  "name": "samplerhinoinsidenodeapp",
+  "version": "0.1.0",
+  "description": "Sample app which runs Rhino inside node.js.",
+  "main": "app.js",
+  "author": {
+    "name": "Luis E. Fraguada (McNeel EU)"
+  },
+  "dependencies": {
+    "edge-js": "14.3.2",
+    "rhino3dm": "0.13.0"
+  },
+  "engines": {
+    "node": ">=12.18.0",
+    "npm": ">=6.14.0"
+  },
+  "scripts": {
+    "start": "node ."
+  },
+  "keywords": [
+    "rhino3d",
+    "rhino3dm",
+    "node.js",
+    "rhino.inside"
+  ]
+}

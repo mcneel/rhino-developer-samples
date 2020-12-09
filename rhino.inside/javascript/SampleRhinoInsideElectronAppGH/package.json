@@ -1,0 +1,25 @@
+{
+  "name": "samplerhinoinsideelectronapp",
+  "version": "0.1.0",
+  "description": "Sample app which runs Rhino inside Electron",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "rhino3d",
+    "rhino3dm",
+    "electron",
+    "threejs"
+  ],
+  "author": "Luis E. Fraguada (McNeel EU)",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "5.0.13",
+    "electron-edge-js": "12.16.3"
+  },
+  "engines": {
+    "node": ">=12.18.0",
+    "npm": ">=6.14.0"
+  }
+}
