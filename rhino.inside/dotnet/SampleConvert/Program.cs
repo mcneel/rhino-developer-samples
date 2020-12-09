@@ -20,6 +20,7 @@ namespace HelloWorld
     [System.STAThread]
     static void Main(string[] args)
     {
+      Console.WriteLine("Please wait while Rhino is starting...");  
       try
       {
         using (new RhinoCore(new string[] { "/NOSPLASH" }, WindowStyle.Hidden ))
