@@ -1,5 +1,5 @@
-import * as THREE from 'https://unpkg.com/three@0.122.0/build/three.module.js'
-import { OrbitControls } from 'https://unpkg.com/three@0.122.0/examples/jsm/controls/OrbitControls.js'
+import * as THREE from 'https://unpkg.com/three@0.123.0/build/three.module.js'
+import { OrbitControls } from 'https://unpkg.com/three@0.123.0/examples/jsm/controls/OrbitControls.js'
 
 let args = {
     algo : null, 
@@ -58,7 +58,7 @@ async function compute(){
         let data = JSON.parse(result.values[0].InnerTree['{ 0; }'][0].data)
         let mesh = rhino.CommonObject.decode(data)
 
-        let material = new THREE.MeshBasicMaterial( { vertexColors: true, side:2 } )
+        let material = new THREE.MeshBasicMaterial( { vertexColors: true, side:2, wireframe: true } )
         let threeMesh = meshToThreejs(mesh, material)
 
         scene.add(threeMesh)
