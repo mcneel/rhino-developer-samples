@@ -17,7 +17,7 @@
 #pragma warning( pop )
 
 // rhinoSdkPlugInDeclare.h defines the RHINO_PLUG_IN_DECLARE macro
-#include "C:/Program Files/Rhino 6 SDK/Inc/rhinoSdkPlugInDeclare.h"
+#include "C:/Program Files/Rhino 7 SDK/Inc/rhinoSdkPlugInDeclare.h"
 RHINO_PLUG_IN_DECLARE
 
 RHINO_PLUG_IN_DEVELOPER_ORGANIZATION(L"Robert McNeel & Associates");
