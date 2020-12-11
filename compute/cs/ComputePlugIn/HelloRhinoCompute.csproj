@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <TargetExt>.rhp</TargetExt>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="RhinoCommon" Version="7.0.20314.3001" />
+  </ItemGroup>
+
+</Project>
