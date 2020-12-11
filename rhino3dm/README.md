@@ -20,6 +20,7 @@ Functionality includes
   [![image](https://user-images.githubusercontent.com/1014562/68938619-05feca80-079f-11ea-8d15-354c3e82a261.png)](js/SampleViewer/01_basic)
   - [Sample Viewer (Advanced)](js/SampleViewer/02_advanced) - Loads a .3dm file and renders the geometry and material with [Three.js](https://threejs.org).
   [![image](https://user-images.githubusercontent.com/1014562/68938708-30e91e80-079f-11ea-9ad8-0de304d87327.jpg)](js/SampleViewer/02_advanced)
+  - [Sample3dmReader (node.js)](js/node/Sample3dmReader) - Shows how to read a file with node.js.
 - [Python](py)
   - [SampleSimple](py/SampleSimple.py)
   - [SampleGetMeshes](py/SampleGetMeshes.py)
