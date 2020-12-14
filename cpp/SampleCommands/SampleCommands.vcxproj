@@ -205,6 +205,7 @@
     <ClCompile Include="cmdSampleReadDocumentUserData.cpp" />
     <ClCompile Include="cmdSampleReadInstancesFromFile.cpp" />
     <ClCompile Include="cmdSampleReduceMesh.cpp" />
+    <ClCompile Include="cmdSampleRemoveMeshVertices.cpp" />
     <ClCompile Include="cmdSampleResetLayers.cpp" />
     <ClCompile Include="cmdSampleRevolve.cpp" />
     <ClCompile Include="cmdSampleRotate.cpp" />
