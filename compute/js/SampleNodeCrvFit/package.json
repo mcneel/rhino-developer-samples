@@ -1,0 +1,19 @@
+{
+  "name": "samplenodecrvfit",
+  "version": "0.1.0",
+  "description": "Compute curve fitting with Rhino.Compute",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rhino3dm",
+    "rhino.compute"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "compute-rhino3d": "0.12.1",
+    "rhino3dm": "0.13.0"
+  }
+}
