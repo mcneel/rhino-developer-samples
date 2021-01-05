@@ -46,6 +46,7 @@
       this.viewportControl1.Size = new System.Drawing.Size(776, 411);
       this.viewportControl1.TabIndex = 0;
       this.viewportControl1.Text = "viewportControl1";
+      this.viewportControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnViewportMouseDown);
       // 
       // menuStrip1
       // 

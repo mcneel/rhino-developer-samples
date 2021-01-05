@@ -50,9 +50,36 @@ namespace WinFormsApp
         UseWaitCursor = true;
         Rhino.RhinoDoc.Open(ofd.FileName, out bool alreadyOpen);
         Text = $"Rhino.Inside ({ofd.FileName})";
+        // temporary hack. The viewport control needs to be adjusted to
+        // handle cases when the active doc changes
+        this.Controls.Remove(viewportControl1);
+        viewportControl1.MouseDown -= OnViewportMouseDown;
+        var ctrl = new RhinoWindows.Forms.Controls.ViewportControl();
+        ctrl.Location = viewportControl1.Location;
+        ctrl.Size = viewportControl1.Size;
+        ctrl.Dock = ctrl.Dock = DockStyle.Fill;
+        ctrl.MouseDown += OnViewportMouseDown;
+        viewportControl1.Dispose();
+        this.Controls.Add(ctrl);
+        viewportControl1 = ctrl;
         viewportControl1.Viewport.ZoomExtents();
         viewportControl1.Refresh();
         UseWaitCursor = false;
+      }
+    }
+
+    private void OnViewportMouseDown(object sender, MouseEventArgs e)
+    {
+      var doc = Rhino.RhinoDoc.ActiveDoc;
+      using (var pick = new Rhino.Input.Custom.PickContext())
+      {
+        var pickTransform = viewportControl1.Viewport.GetPickTransform(e.Location);
+        pick.SetPickTransform(pickTransform);
+        pick.PickStyle = Rhino.Input.Custom.PickStyle.PointPick;
+        var objects = doc.Objects.PickObjects(pick);
+        doc.Objects.UnselectAll();
+        doc.Objects.Select(objects);
+        viewportControl1.Refresh();
       }
     }
   }
