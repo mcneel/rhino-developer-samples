@@ -17,7 +17,7 @@ namespace WinFormsApp
       RhinoInside.Resolver.Initialize();
 
       // Used by McNeel devs to debug against internal debug builds
-      // RhinoInside.Resolver.RhinoSystemDirectory = @"C:\dev\github\mcneel\rhino\src4\bin\Debug";
+      //RhinoInside.Resolver.RhinoSystemDirectory = @"C:\dev\github\mcneel\rhino\src4\bin\Debug";
 
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
