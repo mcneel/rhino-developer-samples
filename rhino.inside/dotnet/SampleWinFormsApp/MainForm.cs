@@ -47,21 +47,26 @@ namespace WinFormsApp
       ofd.Filter = "Rhino file (*.3dm) | *.3dm";
       if (ofd.ShowDialog(this) == DialogResult.OK)
       {
+        // Make sure Rhino doesn't attempt to show a "save modified" UI
+        Rhino.RhinoDoc.ActiveDoc.Modified = false;
         UseWaitCursor = true;
         Rhino.RhinoDoc.Open(ofd.FileName, out bool alreadyOpen);
         Text = $"Rhino.Inside ({ofd.FileName})";
-        // temporary hack. The viewport control needs to be adjusted to
-        // handle cases when the active doc changes
-        this.Controls.Remove(viewportControl1);
-        viewportControl1.MouseDown -= OnViewportMouseDown;
-        var ctrl = new RhinoWindows.Forms.Controls.ViewportControl();
-        ctrl.Location = viewportControl1.Location;
-        ctrl.Size = viewportControl1.Size;
-        ctrl.Dock = ctrl.Dock = DockStyle.Fill;
-        ctrl.MouseDown += OnViewportMouseDown;
-        viewportControl1.Dispose();
-        this.Controls.Add(ctrl);
-        viewportControl1 = ctrl;
+        // Temporary hack. The viewport control needs to be adjusted to
+        // handle cases when the active doc changes. This has been fixed in 7.3
+        if (Rhino.RhinoApp.Version.Major == 7 && Rhino.RhinoApp.Version.Minor < 3)
+        {
+          this.Controls.Remove(viewportControl1);
+          viewportControl1.MouseDown -= OnViewportMouseDown;
+          var ctrl = new RhinoWindows.Forms.Controls.ViewportControl();
+          ctrl.Location = viewportControl1.Location;
+          ctrl.Size = viewportControl1.Size;
+          ctrl.Dock = ctrl.Dock = DockStyle.Fill;
+          ctrl.MouseDown += OnViewportMouseDown;
+          viewportControl1.Dispose();
+          this.Controls.Add(ctrl);
+          viewportControl1 = ctrl;
+        }
         viewportControl1.Viewport.ZoomExtents();
         viewportControl1.Refresh();
         UseWaitCursor = false;
