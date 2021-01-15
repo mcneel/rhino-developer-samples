@@ -78,12 +78,26 @@ namespace WinFormsApp
       var doc = Rhino.RhinoDoc.ActiveDoc;
       using (var pick = new Rhino.Input.Custom.PickContext())
       {
+        bool subObjects = ModifierKeys.HasFlag(Keys.Control);
+        if (subObjects)
+          pick.SubObjectSelectionEnabled = true;
         var pickTransform = viewportControl1.Viewport.GetPickTransform(e.Location);
         pick.SetPickTransform(pickTransform);
         pick.PickStyle = Rhino.Input.Custom.PickStyle.PointPick;
         var objects = doc.Objects.PickObjects(pick);
         doc.Objects.UnselectAll();
-        doc.Objects.Select(objects);
+
+        if (subObjects)
+        {
+          foreach (var obj in objects)
+          {
+            obj.Object().SelectSubObject(obj.GeometryComponentIndex, true, true);
+          }
+        }
+        else
+        {
+          doc.Objects.Select(objects);
+        }
         viewportControl1.Refresh();
       }
     }
