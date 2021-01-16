@@ -97,9 +97,6 @@ function create () {
 
     const nurbsCurve = rhino.NurbsCurve.create( false, 3, curvePoints )
 
-    // to send to compute:
-    // const curveData = JSON.stringify( nurbsCurve.encode() )
-
     let cPts = []
     let domain = nurbsCurve.domain
     let pointCount = 20
@@ -134,27 +131,6 @@ function create () {
 
     // hide spinner
     document.getElementById('loader').style.display = 'none'
-
-}
-
-
-function pointsToThreejs ( points ) {
-
-    let pts = []
-
-    for ( let i = 0; i < points.length; i ++ ) {
-
-        pts.push( points[i][0] )
-        pts.push( points[i][1] )
-        pts.push( points[i][2] )
-
-    }
-
-    const geometry = new THREE.BufferGeometry();
-    const vertices = new Float32Array( pts );
-    geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-    const material = new THREE.PointsMaterial( { color: 0xff0000 } );
-    return new THREE.Points( geometry, material );
 
 }
 
