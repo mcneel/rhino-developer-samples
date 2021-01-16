@@ -13,7 +13,7 @@ rhino3dm().then(async m => {
 function create () {
 
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/three@0.124.0/examples/jsm/libs/rhino3dm/' )
+    loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.13.0/' )
 
     let doc = new rhino.File3dm()
 
