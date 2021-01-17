@@ -1,19 +1,19 @@
 import * as THREE from 'https://unpkg.com/three@0.124.0/build/three.module.js'
 import { OrbitControls } from 'https://unpkg.com/three@0.124.0/examples/jsm/controls/OrbitControls.js'
 import { Rhino3dmLoader } from 'https://unpkg.com/three@0.124.0/examples/jsm/loaders/3DMLoader.js'
+import rhino3dm from './rhino3dm.module.js'
 
-let rhino
-rhino3dm().then(async m => {
-    console.log('Loaded rhino3dm.')
-    rhino = m // global
-    init()
-    create()
-})
+let rhino, loader
+(async () => {
+  loader = new Rhino3dmLoader()
+  loader.setLibraryPath( './' )
+  rhino = await rhino3dm()
 
-function create () {
+  init()
+  create()
+})()
 
-    const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.13.0/' )
+async function create () {
 
     let doc = new rhino.File3dm()
 
@@ -137,7 +137,7 @@ function init () {
   animate()
 }
 
-let animate = function () {
+function animate () {
   requestAnimationFrame( animate )
   controls.update()
   renderer.render( scene, camera )
