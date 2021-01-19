@@ -22,7 +22,7 @@
         <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.7/build/dat.gui.min.js"></script>
         <script type="module">
           let scene, camera, renderer, controls, composer, material;
-          let url = '../../resources/models/hello_mesh.3dm';
+          let url = 'hello_mesh.3dm';
           let fetchPromise = fetch(url);
 
           rhino3dm().then(async m => {
@@ -57,7 +57,7 @@
           function loadPBRMaterial(material, name) {
             let tl = new THREE.TextureLoader();
 
-            tl.setPath('../../resources/materials/PBR/' + name + '/');
+            tl.setPath('materials/PBR/' + name + '/');
             material.map          = tl.load(name + '_base.png');
             material.aoMmap       = tl.load(name + '_ao.png');
             material.normalMap    = tl.load(name + '_normal.png');
@@ -67,7 +67,7 @@
           function loadCubeMap(name, prefix, format) {
             let ctl = new THREE.CubeTextureLoader();
 
-            ctl.setPath('../../resources/textures/cube/' + name + '/');
+            ctl.setPath('textures/cube/' + name + '/');
             return ctl.load([prefix + 'px.' + format, prefix + 'nx.' + format, prefix + 'py.' + format,
                              prefix + 'ny.' + format, prefix + 'pz.' + format, prefix + 'nz.' + format]);
           }
