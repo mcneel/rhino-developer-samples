@@ -23,7 +23,6 @@
           import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/libs/dat.gui.module.js'
 
           let scene, camera, renderer, controls, composer, material;
-          let url = 'hello_mesh.3dm';
 
           init();
           material = new THREE.MeshPhysicalMaterial();
@@ -37,6 +36,8 @@
 
           const loader = new Rhino3dmLoader()
           loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.13.0/' )
+
+          const url = 'hello_mesh.3dm';
 
           // load 3dm file into three.js scene
           loader.load( url, function ( object ) {
