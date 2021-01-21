@@ -16,43 +16,43 @@
             <div id="canvas"></div>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/three@0.118.1/build/three.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/three@0.118.1/examples/js/controls/OrbitControls.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/rhino3dm/rhino3dm.min.js"></script> <!-- latest -->
-        <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.7/build/dat.gui.min.js"></script>
         <script type="module">
+          import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.124.0/build/three.module.js'
+          import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/controls/OrbitControls.js'
+          import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/loaders/3DMLoader.js'
+          import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/libs/dat.gui.module.js'
+
           let scene, camera, renderer, controls, composer, material;
           let url = 'hello_mesh.3dm';
-          let fetchPromise = fetch(url);
 
-          rhino3dm().then(async m => {
-            console.log('Loaded rhino3dm');
-            let rhino = m;
+          init();
+          material = new THREE.MeshPhysicalMaterial();
 
-            let res = await fetchPromise;
-            let buffer = await res.arrayBuffer();
-            let arr = new Uint8Array(buffer);
-            let doc = rhino.File3dm.fromByteArray(arr);
+          loadPBRMaterial(material, 'chipped-paint-metal');
+          material.metalness = 0.75;
+          material.roughness = 0.15;
+          material.normalScale.x = 1.0;
+          material.normalScale.y = 1.0;
+          material.envMap = scene.background;
 
-            init();
-            material = new THREE.MeshPhysicalMaterial();
+          const loader = new Rhino3dmLoader()
+          loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.13.0/' )
 
-            loadPBRMaterial(material, 'chipped-paint-metal');
-            material.metalness = 0.75;
-            material.roughness = 0.15;
-            material.normalScale.x = 1.0;
-            material.normalScale.y = 1.0;
-            material.envMap = scene.background;
-            let objects = doc.objects();
-            for (let i = 0; i < objects.count; i++) {
-              // assume model contains only meshes
-              let mesh = objects.get(i).geometry();
+          // load 3dm file into three.js scene
+          loader.load( url, function ( object ) {
 
-              console.log(mesh);
-              let threeMesh = meshToThreejs(mesh, material);
-              scene.add(threeMesh);
-            }
-          });
+            object.traverse( function (child) {
+              // rotate each child object to match three.js default coordinate system (y = up)
+              // normally we'd update the camera but this messes with the cubemaps
+              child.rotateX( - Math.PI / 4 )
+
+              // apply initial pbr material
+              child.material = material
+            })
+            scene.add( object )
+            console.log( object )
+
+          } )
 
           function loadPBRMaterial(material, name) {
             let tl = new THREE.TextureLoader();
@@ -65,7 +65,7 @@
           }
 
           function loadCubeMap(name, prefix, format) {
-            let ctl = new THREE.CubeTextureLoader();
+            const ctl = new THREE.CubeTextureLoader();
 
             ctl.setPath('textures/cube/' + name + '/');
             return ctl.load([prefix + 'px.' + format, prefix + 'nx.' + format, prefix + 'py.' + format,
@@ -88,7 +88,7 @@
             var canvas = document.getElementById("canvas");
             canvas.appendChild( renderer.domElement );
             renderer.shadowMap.enabled = true;
-            controls = new THREE.OrbitControls( camera, renderer.domElement  );
+            controls = new OrbitControls( camera, renderer.domElement  );
 		  
             camera.position.z = 50;
 		  
@@ -102,7 +102,7 @@
               this.textures = 'chipped-paint-metal';
             };
             var ui_callbacks = new UserInterfaceControls();
-            var gui = new dat.GUI();
+            var gui = new GUI();
             gui.addColor(ui_callbacks, 'lightColor').onChange(function(value) {
               light.color.r = value[0]/255.0;
               light.color.g = value[1]/255.0;
@@ -130,7 +130,7 @@
             animate();
           }
 
-          var animate = function (){
+          function animate() {
               requestAnimationFrame( animate );
               controls.update();
               renderer.render( scene, camera );
