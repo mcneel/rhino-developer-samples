@@ -59,7 +59,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="ZooPlugin">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Zoo 6\ZooPlugin.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Zoo 7\ZooPlugin.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
