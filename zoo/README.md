@@ -1,15 +1,15 @@
-Zoo Developer Samples
+LAN Zoo Developer Samples
 =========================
 
 About Samples
 --------------------
-This repository contains the source code to sample Zoo plug-in.
+This repository contains the source code to sample LAN Zoo plug-in.
 
-For more information on the Zoo and Zoo development, see the
+For more information on the LAN Zoo and LAN Zoo development, see the
 following links:
 
-* [Zoo](http://www.rhino3d.com/zoo)
-* [Creating Zoo Plugins](http://developer.rhino3d.com/guides/rhinocommon/creating-zoo-plugins/)
+* [LAN Zoo](http://www.rhino3d.com/zoo)
+* [Creating LAN Zoo Plugins](http://developer.rhino3d.com/guides/rhinocommon/creating-zoo-plugins/)
 
 Sample Projects
 --------------------
@@ -26,7 +26,7 @@ To build the samples, you are going to need:
 
 Legal Stuff
 -----------
-Copyright © 2015-17 Robert McNeel & Associates. All Rights Reserved.
+Copyright © 2015-21 Robert McNeel & Associates. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
