@@ -1,4 +1,11 @@
-let rhino
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125.0/build/three.module.js'
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/controls/OrbitControls.js'
+import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
+
+const downloadButton = document.getElementById("downloadButton")
+downloadButton.onclick = download
+
+let rhino, doc
 rhino3dm().then(async m => {
     console.log('Loaded rhino3dm.')
     rhino = m // global
@@ -8,6 +15,7 @@ rhino3dm().then(async m => {
 
 function create () {
 
+    doc = new rhino.File3dm()
     const loader = new THREE.BufferGeometryLoader();
 
     // -- POINTS / POINTCLOUDS -- //
@@ -23,6 +31,7 @@ function create () {
     const threejsPoint = new THREE.Points( geometry, pointsMaterial )
 
     scene.add(threejsPoint)
+    doc.objects().addPoint(ptA)
 
     // POINTCLOUD
 
@@ -36,45 +45,49 @@ function create () {
     const ptI = [45, 5, 0]
     const ptJ = [50, 0, 0]
 
+    const red = { r: 255, g: 0, b: 0, a: 0 }
+
     const pointCloud = new rhino.PointCloud()
-    pointCloud.add( ptA )
-    pointCloud.add( ptB )
-    pointCloud.add( ptC )
-    pointCloud.add( ptD )
-    pointCloud.add( ptE )
-    pointCloud.add( ptF )
-    pointCloud.add( ptG )
-    pointCloud.add( ptH )
-    pointCloud.add( ptI )
-    pointCloud.add( ptJ )
+    pointCloud.add( ptA, red )
+    pointCloud.add( ptB, red )
+    pointCloud.add( ptC, red )
+    pointCloud.add( ptD, red )
+    pointCloud.add( ptE, red )
+    pointCloud.add( ptF, red )
+    pointCloud.add( ptG, red )
+    pointCloud.add( ptH, red )
+    pointCloud.add( ptI, red )
+    pointCloud.add( ptJ, red )
     
     const threejsPointsGeometry = loader.parse ( pointCloud.toThreejsJSON() )
     const threejsPoints = new THREE.Points( threejsPointsGeometry, pointsMaterial )
 
     scene.add( threejsPoints )
+    doc.objects().add(pointCloud, null)
 
     // -- CURVES -- //
 
     // LINE //
 
-    const line = new rhino.Line( ptA, ptE) 
+    const line = new rhino.LineCurve( ptA, ptE )
 
     const lineGeometry = new THREE.BufferGeometry()
-    const lineVertices = new Float32Array( line.from.concat( line.to ) )
+    const lineVertices = new Float32Array( line.line.from.concat( line.line.to ) )
     lineGeometry.setAttribute( 'position', new THREE.BufferAttribute( lineVertices, 3 ) )
     const lineMaterial = new THREE.LineBasicMaterial( { color: 0x0000ff } )
     const lineObject = new THREE.Line( lineGeometry, lineMaterial )
     scene.add( lineObject )
+    doc.objects().add( line.toNurbsCurve(), null )
 
     // CIRCLE //
 
     const circle = new rhino.Circle( 10 )
-    circle.center = ptC
 
     const circleGeometry = new THREE.RingBufferGeometry( circle.radius, circle.radius, 32 )
     const circleObject = new THREE.Line( circleGeometry, lineMaterial )
     circleObject.position.fromArray( circle.center )
     scene.add( circleObject )
+    doc.objects().add(circle.toNurbsCurve(), null)
 
     // ARC //
 
@@ -83,6 +96,7 @@ function create () {
     const arcObject = new THREE.Line( arcGeometry, lineMaterial )
 
     scene.add( arcObject )
+    doc.objects().add(arc.toNurbsCurve(), null)
 
     // ELLIPSE //
 
@@ -120,18 +134,50 @@ function create () {
     const curveObject = new THREE.Line( curveGeometry, lineMaterial )
 
     scene.add( curveObject )
+    doc.objects().add( nurbsCurve, null )
 
     // -- MESHES -- //
 
-    // -- BREPS -- //
+    const mesh = new rhino.Mesh()
+    mesh.vertices().add( ptA[0], ptA[1], ptA[2] )
+    mesh.vertices().add( ptB[0], ptB[1], ptB[2] )
+    mesh.vertices().add( ptC[0], ptC[1], ptC[2] )
 
-    // -- EXTRUSIONS -- //
+    mesh.faces().addFace( 0, 1, 2 )
 
-    // -- SUBD -- //
+    mesh.vertexColors().add( 255, 0, 255 )
+    mesh.vertexColors().add( 0, 255, 255 )
+    mesh.vertexColors().add( 255, 255, 255 )
+
+    mesh.normals().computeNormals()
+
+    const meshGeometry = loader.parse ( mesh.toThreejsJSON() )
+    const threejsMesh = new THREE.Mesh( meshGeometry, new THREE.MeshStandardMaterial( { vertexColors: true } ) )
+    scene.add( threejsMesh )
+    doc.objects().add( mesh, null )
 
     // hide spinner
     document.getElementById('loader').style.display = 'none'
 
+    // enable download button
+    downloadButton.disabled = false
+
+    console.log(scene)
+
+}
+
+// download button handler
+function download () {
+  let buffer = doc.toByteArray()
+  saveByteArray( 'rhinoObjects.3dm', buffer )
+}
+
+function saveByteArray ( fileName, byte ) {
+  let blob = new Blob( [ byte ], {type: 'application/octect-stream'} )
+  let link = document.createElement( 'a' )
+  link.href = window.URL.createObjectURL( blob )
+  link.download = fileName
+  link.click()
 }
 
 // BOILERPLATE //
@@ -139,6 +185,10 @@ function create () {
 let scene, camera, renderer, controls
 
 function init () {
+
+  // Rhino models are z-up, so set this as the default
+  THREE.Object3D.DefaultUp = new THREE.Vector3( 0, 0, 1 )
+
   scene = new THREE.Scene()
   scene.background = new THREE.Color(1,1,1)
   camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 1, 1000 )
@@ -146,10 +196,12 @@ function init () {
   renderer = new THREE.WebGLRenderer({antialias: true})
   renderer.setPixelRatio( window.devicePixelRatio )
   renderer.setSize( window.innerWidth, window.innerHeight )
-  let canvas = document.getElementById('canvas')
-  canvas.appendChild( renderer.domElement )
+  document.body.appendChild( renderer.domElement )
 
-  controls = new THREE.OrbitControls( camera, renderer.domElement  )
+  controls = new OrbitControls( camera, renderer.domElement  )
+
+  const light = new THREE.DirectionalLight()
+  scene.add( light )
 
   camera.position.z = 50
 
