@@ -21,17 +21,22 @@
 
 using F = CRhRdkContentField::Filter;
 
+static CRhRdkVariant nullVariant;
+
 CSampleRdkMaterial::CSampleRdkMaterial()
 	:
 	// Construct static fields. A .sample file must never contain an entry with the
 	// same name as a static field's internal name. If you only want to load
 	// dynamic fields, you can delete these static fields.
 	m_diffuse_color (*this, L"diffuse-color",  L"Color",          L"Color",          F::All, F::All),
-	m_emission_color(*this, L"emission-color", L"Emission color", L"Emission color", F::All, F::All),
 	m_ambient_color (*this, L"ambient-color",  L"Ambient color",  L"Ambient color",  F::All, F::All),
 	m_glossiness    (*this, L"glossiness",     L"Glossiness",     L"Glossiness",     F::All, F::All),
-	m_description   (*this, L"description",    L"Description",    L"Description",    F::All, F::All)
-	//m_sun           (*this, L"sun",            L"Sun",            L"Sun",            F::All, F::All)
+	m_description   (*this, L"description",    L"Description",    L"Description",    F::All, F::All),
+
+	// This field demonstrates how to hide the 'on' check box and 'amount' edit box.
+	// This is accomplished by passing null variants for vTextureOn and vTextureAmount.
+	m_emission_color(*this, L"emission-color", L"Emission color", L"Emission color", F::All, F::All, 0,
+	                 false, nullVariant, nullVariant)
 {
 	// Initialize static fields. This is necessary even if the default value is
 	// zero or an empty string, because it sets the field type as well as the value.
@@ -46,8 +51,6 @@ CSampleRdkMaterial::CSampleRdkMaterial()
 	m_glossiness.SetLimits(0.0f, 1.0f);
 
 	m_description = L"";
-
-	// m_sun is initialized to 'zenith'.
 }
 
 UUID CSampleRdkMaterial::RenderEngineId(void) const

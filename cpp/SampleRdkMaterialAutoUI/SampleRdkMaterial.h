@@ -31,7 +31,6 @@ private:
 	CRhRdkContentField m_ambient_color;
 	CRhRdkContentField m_glossiness;
 	CRhRdkContentField m_description;
-	//CRhRdkSolarContentField m_sun;
 };
 
 class CSampleRdkMaterialFactory : public CRhRdkMaterialFactory
