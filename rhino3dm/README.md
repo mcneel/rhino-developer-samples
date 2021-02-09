@@ -14,11 +14,12 @@ Functionality includes
 
 - [C#](https://github.com/mcneel/rhino-developer-samples/tree/7/opennurbs/cs)
 - [JavaScript](js)
-  - [SampleSketch2d](js/SampleSketch2d) - Sketch NURBS curves on a canvas. Also shows how to download the resulting 3dm file.
-  - [SampleObjectTypes](js/SampleObjectTypes) - Sample shows the creation of various object types.
-  - [SampleViewer (Basic)](js/SampleViewer/01_basic) - Loads a .3dm file and renders the geometry with [Three.js](https://threejs.org).
+  - [SampleSketch2d](js/SampleSketch2d) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleSketch2d/)] Sketch NURBS curves on a canvas. Also shows how to download the resulting 3dm file.
+  - [SampleObjectTypes](js/SampleObjectTypes) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleObjectTypes/)] Sample shows the creation of various object types.
+  - [SampleParse3dmObjects](js/SampleObjectTypes) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleParse3dmObjects/)] Sample shows the creation of various object types and parsing with the Rhino3dmLoader for three.js.
+  - [SampleViewer (Basic)](js/SampleViewer/01_basic) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/01_basic/)] Loads a .3dm file and renders the geometry with [Three.js](https://threejs.org).
   [![image](https://user-images.githubusercontent.com/1014562/68938619-05feca80-079f-11ea-8d15-354c3e82a261.png)](js/SampleViewer/01_basic)
-  - [Sample Viewer (Advanced)](js/SampleViewer/02_advanced) - Loads a .3dm file and renders the geometry and material with [Three.js](https://threejs.org).
+  - [Sample Viewer (Advanced)](js/SampleViewer/02_advanced) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/02_advanced/)] Loads a .3dm file and renders the geometry and material with [Three.js](https://threejs.org).
   [![image](https://user-images.githubusercontent.com/1014562/68938708-30e91e80-079f-11ea-9ad8-0de304d87327.jpg)](js/SampleViewer/02_advanced)
   - [Sample3dmReader (node.js)](js/node/Sample3dmReader) - Shows how to read a file with node.js.
 - [Python](py)
