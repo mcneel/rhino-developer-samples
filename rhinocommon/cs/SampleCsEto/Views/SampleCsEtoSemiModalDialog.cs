@@ -3,6 +3,8 @@ using Eto.Forms;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.UI;
+using System;
+using System.ComponentModel;
 
 namespace SampleCsEto.Views
 {
@@ -49,6 +51,18 @@ namespace SampleCsEto.Views
           new TableRow(defaults_layout)
         }
       };
+    }
+
+    protected override void OnLoadComplete(EventArgs e)
+    {
+      base.OnLoadComplete(e);
+      this.RestorePosition();
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+      this.SavePosition();
+      base.OnClosing(e);
     }
 
     protected void PickFunction()
