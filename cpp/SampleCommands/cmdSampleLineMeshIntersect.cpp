@@ -15,9 +15,9 @@ public:
   ~CCommandSampleLineMeshIntersect() = default;
   UUID CommandUUID() override
   {
-    // {6353A345-E93D-4863-B574-185FB17059E2}
+    // {1E5AA5F5-F802-4243-8C37-DF80418CEAF4}
     static const GUID SampleLineMeshIntersectCommand_UUID =
-    { 0x6353A345, 0xE93D, 0x4863, { 0xB5, 0x74, 0x18, 0x5F, 0xB1, 0x70, 0x59, 0xE2 } };
+    { 0x1e5aa5f5, 0xf802, 0x4243, { 0x8c, 0x37, 0xdf, 0x80, 0x41, 0x8c, 0xea, 0xf4 } };
     return SampleLineMeshIntersectCommand_UUID;
   }
   const wchar_t* EnglishCommandName() override { return L"SampleLineMeshIntersect"; }

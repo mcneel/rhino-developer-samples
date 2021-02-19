@@ -176,6 +176,7 @@
     <ClCompile Include="cmdSampleOrientOnMesh.cpp" />
     <ClCompile Include="cmdSampleOrientOnSrf.cpp" />
     <ClCompile Include="cmdSamplePan.cpp" />
+    <ClCompile Include="cmdSamplePaste.cpp" />
     <ClCompile Include="cmdSamplePatch.cpp" />
     <ClCompile Include="cmdSamplePerFaceMaterial.cpp" />
     <ClCompile Include="cmdSamplePerspectiveColors.cpp" />
