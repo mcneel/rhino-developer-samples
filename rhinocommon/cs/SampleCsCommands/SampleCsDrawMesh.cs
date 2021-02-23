@@ -1,13 +1,22 @@
 ﻿using System;
 using Rhino;
 using Rhino.Commands;
+using Rhino.Display;
+using Rhino.DocObjects;
 using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
   public class SampleCsDrawMeshConduit : Rhino.Display.DisplayConduit
   {
-    public Rhino.Geometry.Mesh Mesh { get; set; }
+    public Mesh Mesh { get; private set; }
+    public DisplayMaterial Material { get; private set; }
+    
+    public SampleCsDrawMeshConduit(Mesh mesh, Material material)
+    {
+      Mesh = mesh;
+      Material = new DisplayMaterial(material);
+    }
 
     protected override void CalculateBoundingBox(Rhino.Display.CalculateBoundingBoxEventArgs e)
     {
@@ -21,12 +30,7 @@ namespace SampleCsCommands
     {
       if (null != Mesh)
       {
-        Rhino.Display.DisplayMaterial material = new Rhino.Display.DisplayMaterial();
-        material.IsTwoSided = true;
-        material.Diffuse = System.Drawing.Color.Blue;
-        material.BackDiffuse = System.Drawing.Color.Red;
-        e.Display.EnableLighting(true);
-        e.Display.DrawMeshShaded(Mesh, material);
+        e.Display.DrawMeshShaded(Mesh, Material);
         e.Display.DrawMeshWires(Mesh, System.Drawing.Color.Black);
       }
     }
@@ -38,26 +42,18 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      Rhino.Geometry.Point3d[] corners;
-      Result rc = Rhino.Input.RhinoGet.GetRectangle(out corners);
-      if (rc != Result.Success)
-        return rc;
+      var sphere = new Sphere(new Point3d(0.0, 0.0, 0.0), 10.0);
+      var mesh = Mesh.CreateFromSphere(sphere, 10, 10);
+      var material = doc.Materials[-1];
 
-      Rhino.Geometry.Plane plane = new Rhino.Geometry.Plane(corners[0], corners[1], corners[2]);
-      Rhino.Geometry.Interval x_interval = new Rhino.Geometry.Interval(0, corners[0].DistanceTo(corners[1]));
-      Rhino.Geometry.Interval y_interval = new Rhino.Geometry.Interval(0, corners[1].DistanceTo(corners[2]));
-
-      Rhino.Geometry.Mesh mesh = Rhino.Geometry.Mesh.CreateFromPlane(plane, x_interval, y_interval, 10, 10);
-      //mesh.FaceNormals.ComputeFaceNormals();
-      //mesh.Normals.ComputeNormals();
-
-      SampleCsDrawMeshConduit conduit = new SampleCsDrawMeshConduit();
-      conduit.Mesh = mesh;
-      conduit.Enabled = true;
+      SampleCsDrawMeshConduit conduit = new SampleCsDrawMeshConduit(mesh, material)
+      {
+        Enabled = true
+      };
       doc.Views.Redraw();
 
       string out_str = null;
-      rc = Rhino.Input.RhinoGet.GetString("Press <Enter> to continue", true, ref out_str);
+      Rhino.Input.RhinoGet.GetString("Press <Enter> to continue", true, ref out_str);
 
       conduit.Enabled = false;
 
