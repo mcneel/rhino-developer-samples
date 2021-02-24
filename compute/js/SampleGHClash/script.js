@@ -14,8 +14,8 @@ rhino3dm().then( async m => {
     console.log('Loaded rhino3dm.')
     rhino = m // global
 
-    RhinoCompute.url = 'http://localhost:8081/' // Rhino.Compute server url
-    //RhinoCompute.apiKey = '' // your Rhino.Compute server api key
+    RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
+    RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
 
     // source a .gh / .ghx file in the same directory
     let url = definitionName
@@ -31,7 +31,7 @@ async function compute() {
 
     // create meshes
     const mainSphere = new THREE.SphereBufferGeometry( 10, 32, 32 )
-    const material = new THREE.MeshBasicMaterial( { wireframe:true, color: 0x00ff00 } )
+    const material = new THREE.MeshBasicMaterial( { wireframe:true, color: 0x111111 } )
     const mainMesh = new THREE.Mesh( mainSphere, material )
     scene.add(mainMesh)
 
@@ -131,7 +131,7 @@ function collectResults(responseJson) {
     const loader = new Rhino3dmLoader()
     loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' )
 
-    const resMaterial = new THREE.MeshBasicMaterial( {wireframe: true, color: 0xff00ff} )
+    const resMaterial = new THREE.MeshBasicMaterial( {wireframe: true, color: 0x00ff00} )
     // load rhino doc into three.js scene
     const buffer = new Uint8Array(doc.toByteArray()).buffer
     loader.parse( buffer, function ( object ) 
@@ -167,16 +167,16 @@ function decodeItem(item) {
     return null
   }
 
-function getApiKey() {
-    let auth = null
-    auth = localStorage['compute_api_key']
-    if (auth == null) {
-        auth = window.prompt('RhinoCompute Server API Key')
-        if (auth != null) {
-            localStorage.setItem('compute_api_key', auth)
+function getAuth( key ) {
+    let value = localStorage[key]
+    if ( value === undefined ) {
+        const prompt = key.includes('URL') ? 'Server URL' : 'Server API Key'
+        value = window.prompt('RhinoCompute ' + prompt)
+        if ( value !== null ) {
+            localStorage.setItem( key, value )
         }
     }
-    return auth
+    return value
 }
 
 /**
