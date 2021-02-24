@@ -18,9 +18,7 @@ namespace SampleCsEto.Commands
       if (mode == RunMode.Interactive)
       {
         var dialog = new Views.SampleCsEtoModalDialog();
-        dialog.RestorePosition();
         var dialog_rc = dialog.ShowModal(RhinoEtoApp.MainWindow);
-        dialog.SavePosition();
         if (dialog_rc == Eto.Forms.DialogResult.Ok)
           rc = Result.Success;
       }

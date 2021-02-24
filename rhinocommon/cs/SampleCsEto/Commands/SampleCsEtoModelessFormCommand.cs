@@ -26,7 +26,6 @@ namespace SampleCsEto.Commands
       if (null == Form)
       {
         Form = new Views.SampleCsEtoModelessForm { Owner = RhinoEtoApp.MainWindow };
-        Form.RestorePosition();
         Form.Closed += OnFormClosed;
         Form.Show();
       }
@@ -38,7 +37,6 @@ namespace SampleCsEto.Commands
     /// </summary>
     private void OnFormClosed(object sender, EventArgs e)
     {
-      Form.SavePosition();
       Form.Dispose();
       Form = null;
     }

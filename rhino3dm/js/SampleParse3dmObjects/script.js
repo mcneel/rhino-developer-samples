@@ -21,13 +21,48 @@ function create () {
 
     doc = new rhino.File3dm()
 
+    // Create layers
+    const layer_points = new rhino.Layer()
+    layer_points.name = 'Points'
+    layer_points.color = { r: 255, g: 0, b: 0, a: 255 }
+    doc.layers().add( layer_points )
+
+    const layer_curves = new rhino.Layer()
+    layer_curves.name = 'Curves'
+    layer_curves.color = { r: 0, g: 0, b: 0, a: 255 }
+    doc.layers().add( layer_curves )
+
+    const layer_meshes = new rhino.Layer()
+    layer_meshes.name = 'Meshes'
+    layer_meshes.color = { r: 255, g: 255, b: 0, a: 255 }
+    doc.layers().add( layer_meshes )
+
+    const layer_breps = new rhino.Layer()
+    layer_breps.name = 'Breps'
+    layer_breps.color = { r: 255, g: 255, b: 255, a: 255 }
+    doc.layers().add( layer_breps )
+
+    const layer_extrusions = new rhino.Layer()
+    layer_extrusions.name = 'Extrusions'
+    layer_extrusions.color = { r: 0, g: 255, b: 255, a: 255 }
+    doc.layers().add( layer_extrusions )
+
+    const layer_dots = new rhino.Layer()
+    layer_dots.name = 'TextDots'
+    layer_dots.color = { r: 0, g: 0, b: 255, a: 255 }
+    doc.layers().add( layer_dots )
+
     // -- POINTS / POINTCLOUDS -- //
+
+    const oa_points = new rhino.ObjectAttributes()
+    oa_points.layerIndex = 0
 
     // POINTS
 
-    let ptA = [0, 0, 0]
+    const ptA = [0, 0, 0]
+    const point = new rhino.Point( ptA )
 
-    doc.objects().addPoint(ptA)
+    doc.objects().add( point, oa_points )
 
     // POINTCLOUD
 
@@ -55,24 +90,27 @@ function create () {
     pointCloud.add( ptI, red )
     pointCloud.add( ptJ, red )
 
-    doc.objects().add( pointCloud, null )
+    doc.objects().add( pointCloud, oa_points )
 
     // -- CURVES -- //
+
+    const oa_curves = new rhino.ObjectAttributes()
+    oa_curves.layerIndex = 1
 
     // LINE //
 
     const line = new rhino.LineCurve( ptA, ptE )
-    doc.objects().add( line, null )
+    doc.objects().add( line, oa_curves )
 
     // CIRCLE //
 
     const circle = new rhino.Circle( 10 )
-    doc.objects().add( circle.toNurbsCurve(), null )
+    doc.objects().add( circle.toNurbsCurve(), oa_curves )
 
     // ARC //
 
     const arc = new rhino.Arc( circle, Math.PI )
-    doc.objects().add( arc.toNurbsCurve(), null )
+    doc.objects().add( arc.toNurbsCurve(), oa_curves )
 
     // ELLIPSE //
 
@@ -90,12 +128,15 @@ function create () {
     const nurbsCurveD3 = rhino.NurbsCurve.create( false, 3, curvePoints )
     const nurbsCurveD4 = rhino.NurbsCurve.create( false, 4, curvePoints )
 
-    doc.objects().add( nurbsCurveD1, null )
-    doc.objects().add( nurbsCurveD2, null )
-    doc.objects().add( nurbsCurveD3, null )
-    doc.objects().add( nurbsCurveD4, null )
+    doc.objects().add( nurbsCurveD1, oa_curves )
+    doc.objects().add( nurbsCurveD2, oa_curves )
+    doc.objects().add( nurbsCurveD3, oa_curves )
+    doc.objects().add( nurbsCurveD4, oa_curves )
 
     // -- MESHES -- //
+
+    const oa_meshes = new rhino.ObjectAttributes()
+    oa_meshes.layerIndex = 2
 
     const mesh = new rhino.Mesh()
     mesh.vertices().add( ptA[0], ptA[1], ptA[2] )
@@ -110,28 +151,38 @@ function create () {
 
     mesh.normals().computeNormals()
 
-    doc.objects().add( mesh, null )
+    doc.objects().add( mesh, oa_meshes )
 
     // -- BREPS -- //
+
+    const oa_breps = new rhino.ObjectAttributes()
+    oa_breps.layerIndex = 3
 
     // Rhino3dmLoader will warn you that there is no mesh geometry
     const sphere = new rhino.Sphere( ptA, 2.5 )
     const brep = rhino.Brep.createFromSphere( sphere )
-    doc.objects().add( brep, null )
+
+    doc.objects().add( brep, oa_breps )
 
     // -- EXTRUSIONS -- //
+
+    const oa_extrusions = new rhino.ObjectAttributes()
+    oa_extrusions.layerIndex = 4
 
     const extrusion = rhino.Extrusion.create( nurbsCurveD4, 10, false )
     // Rhino3dmLoader currently throws an error since 
     // there is no mesh geometry associated with this extrusion
-    //doc.objects().add( extrusion, null )
+    //doc.objects().add( extrusion, oa_extrusions )
 
     // -- SUBD -- //
 
     // -- TEXT DOT -- //
 
+    const oa_dots = new rhino.ObjectAttributes()
+    oa_dots.layerIndex = 5
+
     const dot = new rhino.TextDot( 'Hello!', ptD )
-    doc.objects().add( dot, null )
+    doc.objects().add( dot, oa_dots )
 
     // create a copy of the doc.toByteArray data to get an ArrayBuffer
     let arr = new Uint8Array( doc.toByteArray() ).buffer
