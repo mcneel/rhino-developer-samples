@@ -31,7 +31,7 @@ async function compute() {
 
     // create meshes
     const mainSphere = new THREE.SphereBufferGeometry( 10, 32, 32 )
-    const material = new THREE.MeshBasicMaterial( { wireframe:true, color: 0x111111 } )
+    const material = new THREE.MeshBasicMaterial( { wireframe:true, color: 0x555555 } )
     const mainMesh = new THREE.Mesh( mainSphere, material )
     scene.add(mainMesh)
 
@@ -165,7 +165,7 @@ function decodeItem(item) {
       return rhino.CommonObject.decode(data)
     }
     return null
-  }
+}
 
 function getAuth( key ) {
     let value = localStorage[key]
@@ -187,7 +187,7 @@ function showSpinner(enable) {
       document.getElementById('loader').style.display = 'block'
     else
       document.getElementById('loader').style.display = 'none'
-  }
+}
 
 // BOILERPLATE //
 // declare variables to store scene, camera, and renderer
