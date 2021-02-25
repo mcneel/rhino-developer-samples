@@ -2,9 +2,21 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>2D NURBS curves sketcher</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="data:;base64,=">
+        <title>rhino3dm: 2D NURBS curves sketcher</title>
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css'>
-        <link rel="stylesheet" href="style.css">
+        <style>
+          canvas.rhino3dm {
+            margin-left: auto; margin-right: auto;
+            display: block; border: 0px none; background-color: lightgray;
+          }
+
+          #description {
+            text-align: center;
+            padding: 10px;
+          }
+        </style>
       </head>
     <body>
         <div id="description" class="markdown-body">
@@ -13,10 +25,7 @@
         <div>
             <canvas class="rhino3dm" id="canvas" width="500" height="500"></canvas>
         </div>
-        <div style='margin:auto; width:100; display:block; padding:10'>
-          <button onClick="download3dm()" >Save to 3dm</button>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/rhino3dm/rhino3dm.min.js"></script> <!-- latest -->
-        <script  src="app.js"></script>
+        <button id="downloadButton" disabled>Download</button> 
+        <script type="module" src="script.js"></script>
     </body>
 </html>
