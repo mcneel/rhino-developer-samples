@@ -81,7 +81,6 @@ function init() {
     renderer.shadowMap.enabled = true
     document.body.appendChild( renderer.domElement )
 
-
     const controls = new OrbitControls( camera, renderer.domElement  )
 
     window.addEventListener('resize', onWindowResize, false)

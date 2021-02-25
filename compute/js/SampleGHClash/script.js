@@ -1,7 +1,7 @@
 // Import libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/controls/OrbitControls.js'
-import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/loaders/3DMLoader.js'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
+import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/loaders/3DMLoader.js'
 import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
 import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
 
@@ -31,8 +31,9 @@ async function compute() {
 
     // create meshes
     const mainSphere = new THREE.SphereBufferGeometry( 10, 32, 32 )
-    const material = new THREE.MeshBasicMaterial( { wireframe:true, color: 0x555555 } )
+    const material = new THREE.MeshBasicMaterial( { wireframe:true, color: 0x000000 } )
     const mainMesh = new THREE.Mesh( mainSphere, material )
+    mainMesh.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.Math.degToRad(-90));
     scene.add(mainMesh)
 
     // create 3dm sphere
@@ -67,6 +68,7 @@ async function compute() {
     //vizualize the position of the clash spheres
     pointsGeometry.setAttribute( 'position', new THREE.BufferAttribute( positionBuffer, 3 ) )
     const points = new THREE.Points(pointsGeometry, new THREE.PointsMaterial( { color: 0xff0000, sizeAttenuation: false, size: 3 } ))
+    points.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.Math.degToRad(-90))
     scene.add(points)
 
     // format data
@@ -132,6 +134,7 @@ function collectResults(responseJson) {
     loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' )
 
     const resMaterial = new THREE.MeshBasicMaterial( {wireframe: true, color: 0x00ff00} )
+
     // load rhino doc into three.js scene
     const buffer = new Uint8Array(doc.toByteArray()).buffer
     loader.parse( buffer, function ( object ) 
@@ -140,6 +143,7 @@ function collectResults(responseJson) {
         // add material to resulting meshes
         object.traverse( child => {
             child.material = resMaterial
+            child.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.Math.degToRad(-90))
         } )
 
         // add object graph from rhino model to three.js scene
@@ -207,7 +211,8 @@ function init() {
 
     // create the renderer and add it to the html
     renderer = new THREE.WebGLRenderer( { antialias: true } )
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio( window.devicePixelRatio )
+    renderer.setSize( window.innerWidth, window.innerHeight )
     document.body.appendChild(renderer.domElement)
 
     // add some controls to orbit the camera

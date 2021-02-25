@@ -96,6 +96,7 @@ function init () {
 
     // create the renderer and add it to the html
     renderer = new THREE.WebGLRenderer( { antialias: true } )
+    renderer.setPixelRatio( window.devicePixelRatio )
     renderer.setSize( window.innerWidth, window.innerHeight )
     document.body.appendChild( renderer.domElement )
 
