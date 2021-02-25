@@ -1,8 +1,7 @@
 // Import libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/controls/OrbitControls.js'
-// The changes in this version of the 3dmLoader have not yet been released in three.js
-import { Rhino3dmLoader } from 'https://rawcdn.githack.com/mrdoob/three.js/9522135fdab2a64c8df61d16c2d5282266ea6c8f/examples/jsm/loaders/3DMLoader.js'//'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/loaders/3DMLoader.js'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
+import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/loaders/3DMLoader.js'
 import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
 
 const model = 'RectifiedArchimedeanSolids.3dm'
@@ -10,10 +9,9 @@ let rotation = 0.01
 const selectMaterial = new THREE.MeshStandardMaterial( { metalness: 1, roughness: 0.7, color: 0xffff00 } )
 const material = new THREE.MeshStandardMaterial( { metalness: 1, roughness: 0.7, color: 0xadd8e6 } )
 
-// decrease rotation as mouse.x gets closer to center
-onmousemove = function(e) { 
-    rotation = Math.abs( 1 - ( e.clientX / ( window.innerWidth / 2 ) ) ) / 10
-}
+window.addEventListener( 'click', handleInteraction, false)
+window.addEventListener( 'mousemove', handleInteraction, false)
+window.addEventListener( 'touchstart', handleInteraction, false)
 
 // globals
 let rhino, doc, meshes, parsedDoc
@@ -35,7 +33,7 @@ async function load() {
 
     // Get User Strings from Attributes and Object straight from the Rhino file:
 
-    console.group( 'User Strings' )
+    console.group( 'User Strings from .3dm' )
 
     for ( var i = 0; i < cnt; i ++ ) {
 
@@ -82,7 +80,6 @@ async function load() {
 
 // declare variables to store scene, camera, and renderer
 let scene, camera, renderer, mouse, raycaster
-window.addEventListener( 'click', onClick, false);
 
 // function to setup the scene, camera, renderer, and load 3d model
 function init () {
@@ -125,15 +122,37 @@ function init () {
 
 }
 
-function onClick( event ) {
+function handleInteraction( event ) {
 
-    // console.log( `click! (${event.clientX}, ${event.clientY})`)
+    // console.log( event )
+
+    let coordinates = null
+    if ( event instanceof MouseEvent ) {
+        if ( event.type === 'click' ) {
+            coordinates =  { x: event.clientX, y: event.clientY }
+        }
+        else if ( event.type === 'mousemove' ) {
+            rotation = Math.abs( 1 - ( event.clientX / ( window.innerWidth / 2 ) ) ) / 10
+            return
+        }
+    } else if ( event instanceof TouchEvent ) {
+        if ( event.type === 'touchstart' ) {
+            coordinates =  { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY }
+            rotation = Math.abs( 1 - ( event.changedTouches[0].clientX / ( window.innerWidth / 2 ) ) ) / 10
+        }
+    }
+    onClick( coordinates )
+}
+
+function onClick( coo ) {
+
+    console.log( `click! (${coo.x}, ${coo.y})`)
 
 	// calculate mouse position in normalized device coordinates
     // (-1 to +1) for both components
 
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1
-    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1
+	mouse.x = ( coo.x / window.innerWidth ) * 2 - 1
+    mouse.y = - ( coo.y / window.innerHeight ) * 2 + 1
     
     raycaster.setFromCamera( mouse, camera )
 
@@ -154,7 +173,7 @@ function onClick( event ) {
 
     if (intersects.length > 0) {
 
-        console.group( 'Selected Object' )
+        console.group( 'User Strings from threejs (parsed 3dm)' )
 
         // get closest object
         const object = intersects[0].object

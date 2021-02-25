@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="data:;base64,=">
 		<title>rhino3dm: User Data</title>
 		<style>
@@ -32,13 +33,18 @@
                 top: 0;
                 margin: 10px;
                 padding: 10px;
-                background-color: black;
+                background-color: rgba(0, 0, 0, 0.5);
                 color: white;
                 width: 50%;
                 font-family: monospace;
             }
 
-            table { border: none; border-collapse: collapse; }
+            table { 
+                border: none; 
+                border-collapse: collapse;
+                font-size: 2vw;
+            }
+            
             table td {
                 border-left: 1px solid white;
                 padding: 10px;
@@ -46,6 +52,16 @@
             table td:first-child { 
                 border-left: none;
                 white-space: nowrap;
+            }
+
+            /* Handle mobile screens */
+            @media screen and (max-width: 600px) {
+                table{
+                    font-size: 3vw;
+                }
+                #container {
+                    width: 90%;
+                }
             }
 
 		</style>
