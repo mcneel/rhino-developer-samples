@@ -1,6 +1,6 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/controls/OrbitControls.js'
-import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/loaders/3DMLoader.js'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
+import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/loaders/3DMLoader.js'
 import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
 
 const downloadButton = document.getElementById("downloadButton")
@@ -217,7 +217,7 @@ function saveByteArray ( fileName, byte ) {
 
 // BOILERPLATE //
 
-let scene, camera, renderer, controls
+let scene, camera, renderer
 
 function init () {
 
@@ -227,27 +227,25 @@ function init () {
   scene = new THREE.Scene()
   scene.background = new THREE.Color( 1,1,1 )
   camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 1, 1000 )
+  camera.position.z = 50
 
   renderer = new THREE.WebGLRenderer( { antialias: true } )
   renderer.setPixelRatio( window.devicePixelRatio )
   renderer.setSize( window.innerWidth, window.innerHeight )
   document.body.appendChild( renderer.domElement )
 
-  controls = new OrbitControls( camera, renderer.domElement  )
+  const controls = new OrbitControls( camera, renderer.domElement  )
 
   const light = new THREE.DirectionalLight()
   scene.add( light )
-
-  camera.position.z = 50
 
   window.addEventListener( 'resize', onWindowResize, false )
 
   animate()
 }
 
-let animate = function () {
+function animate () {
   requestAnimationFrame( animate )
-  controls.update()
   renderer.render( scene, camera )
 }
   

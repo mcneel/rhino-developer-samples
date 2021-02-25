@@ -235,10 +235,8 @@ function onWindowResize() {
 
 // function to continuously render the scene
 function animate() {
-
     requestAnimationFrame( animate )
     if (parsedDoc !== undefined)
         parsedDoc.rotation.z += rotation
     renderer.render( scene, camera )
-
 }
