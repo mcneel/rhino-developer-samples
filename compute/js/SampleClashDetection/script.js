@@ -1,3 +1,9 @@
+// Import libraries
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
+import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
+import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+
 let model = {
     // main sphere
     sphere: null,
@@ -9,6 +15,7 @@ let model = {
     num: 200,
   };
 
+let rhino
 rhino3dm().then( async m => {
     console.log('Loaded rhino3dm.');
     rhino = m; // global
@@ -17,22 +24,34 @@ rhino3dm().then( async m => {
     *  Variables for Rhino.Compute
     */
 
-    RhinoCompute.url = 'http://localhost:8081/'
-    //RhinoCompute.apiKey = 'your-compute-apikey'
+    RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
+    RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
 
     init();
     compute();
 
 });
 
+function getAuth( key ) {
+    let value = localStorage[key]
+    if ( value === undefined ) {
+        const prompt = key.includes('URL') ? 'Server URL' : 'Server API Key'
+        value = window.prompt('RhinoCompute ' + prompt)
+        if ( value !== null ) {
+            localStorage.setItem( key, value )
+        }
+    }
+    return value
+}
+
 function compute() {
 
     console.log('Creating main sphere');
 
     // create and render 3js sphere
-    let mainSphere = new THREE.SphereBufferGeometry(model.sphereRadius, 32, 32);
-    let material = new THREE.MeshStandardMaterial({wireframe:true});
-    let mainMesh = new THREE.Mesh(mainSphere, material);
+    const mainSphere = new THREE.SphereBufferGeometry(model.sphereRadius, 32, 32);
+    const material = new THREE.MeshStandardMaterial({wireframe:true});
+    const mainMesh = new THREE.Mesh(mainSphere, material);
     mainMesh.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.Math.degToRad(-90));
     scene.add(mainMesh);
 
@@ -112,36 +131,36 @@ function doMeshClash() {
 
 // BOILERPLATE //
 
-var scene, camera, renderer, controls;
+let scene, camera, renderer
 
 function init(){
+
     scene = new THREE.Scene();
     scene.background = new THREE.Color(1,1,1);
-    camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 1, 1000 );
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+    camera.position.y = 30
+    camera.position.z = 30
 
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
-    controls = new THREE.OrbitControls( camera, renderer.domElement );
-
-    camera.position.z = 50;
+    const controls = new OrbitControls( camera, renderer.domElement );
 
     window.addEventListener( 'resize', onWindowResize, false );
 
     animate();
 }
 
-var animate = function () {
-    requestAnimationFrame( animate );
-    controls.update();
-    renderer.render( scene, camera );
-};
+function animate () {
+    requestAnimationFrame( animate )
+    renderer.render( scene, camera )
+}
   
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    animate();
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize( window.innerWidth, window.innerHeight )
+    animate()
 }
