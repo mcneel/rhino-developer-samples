@@ -52,7 +52,7 @@ async function compute() {
     scene.add(sph)
   }
 
-  const param1 = new RhinoCompute.Grasshopper.DataTree( 'RH_IN:points' )
+  const param1 = new RhinoCompute.Grasshopper.DataTree( 'points' )
   param1.append( [ 0 ], points )
 
   // clear values

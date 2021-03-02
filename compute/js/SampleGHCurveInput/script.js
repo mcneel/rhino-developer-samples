@@ -41,7 +41,7 @@ async function compute(){
 
     const crvData = JSON.stringify( nCrv.encode() )
 
-    const param1 = new RhinoCompute.Grasshopper.DataTree('RH_IN:curve')
+    const param1 = new RhinoCompute.Grasshopper.DataTree('curve')
     param1.append([0], [ crvData ] )
 
     // clear values
