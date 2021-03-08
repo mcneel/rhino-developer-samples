@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBrepBooleanOperation"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleNurbsTesselation", "SampleNurbsTesselation\SampleNurbsTesselation.csproj", "{455CE382-5BB7-476A-9B6F-5B24CBD3261F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGHSolve", "SampleGHSolve\SampleGHSolve.csproj", "{6F0C1947-E343-4565-AF89-DAD47EEA3914}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{455CE382-5BB7-476A-9B6F-5B24CBD3261F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{455CE382-5BB7-476A-9B6F-5B24CBD3261F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{455CE382-5BB7-476A-9B6F-5B24CBD3261F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F0C1947-E343-4565-AF89-DAD47EEA3914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F0C1947-E343-4565-AF89-DAD47EEA3914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F0C1947-E343-4565-AF89-DAD47EEA3914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F0C1947-E343-4565-AF89-DAD47EEA3914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
