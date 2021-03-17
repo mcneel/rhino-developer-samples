@@ -9,8 +9,8 @@ rhino3dm().then(function(m) {
 function pointToString(pt) {
   var str = pt[0] + ',';
   str = str + pt[1] + ',';
-  str = str + pt[1] + ',';
-  str = str + pt[1];
+  str = str + pt[2] + ',';
+  str = str + pt[3];
   return str;
 }
 
