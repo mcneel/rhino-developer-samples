@@ -70,6 +70,7 @@
     <Compile Include="SampleCsClipboard.cs" />
     <Compile Include="SampleCsContour.cs" />
     <Compile Include="SampleCsCreateNestedBlock.cs" />
+    <Compile Include="SampleCsDetailLock.cs" />
     <Compile Include="SampleCsDrawArrow.cs" />
     <Compile Include="SampleCsDrawGrayscale.cs" />
     <Compile Include="SampleCsDrawPin.cs" />
