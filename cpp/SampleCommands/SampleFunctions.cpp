@@ -312,6 +312,56 @@ ON_Brep* ON_BrepFromSurfaceAndBoundary(
 }
 
 /// <summary>
+/// Returns the  bitmap preview image from a 3dm file.
+/// </summary>
+/// <param name="pszFilePath">The full path to the 3dm file.</param>
+/// <returns>An HBITMAP if successful, or nullptr if the 3dm file does not 
+/// contain a preview image or if there was an error reading the file.
+/// </returns>
+/// <remarks>
+/// CRITICAL: Memory for the bitmap is allocated. It is the calling
+/// functions responsibility to clean up the memory by calling the
+/// Win32 DeleteObject() function.
+/// </remarks>
+HBITMAP ON_ReadBitmapPreviewImage(const wchar_t* pszFilePath)
+{
+  HBITMAP hBitmap = nullptr;
+
+  if (nullptr == pszFilePath || 0 == pszFilePath[0])
+    return hBitmap;
+
+  FILE* archive_fp = ON::OpenFile(pszFilePath, L"rb");
+  if (archive_fp)
+  {
+    ON_BinaryFile archive(ON::archive_mode::read3dm, archive_fp);
+    int version = 0;
+    ON_String comments;
+    if (archive.Read3dmStartSection(&version, comments))
+    {
+      ON_3dmProperties properties;
+      if (archive.Read3dmProperties(properties))
+      {
+        if (properties.m_PreviewImage.IsValid())
+        {
+          HDC hdc = ::GetDC(nullptr);
+          hBitmap = ::CreateDIBitmap(
+            hdc,                                           // handle to DC
+            &properties.m_PreviewImage.m_bmi->bmiHeader,   // bitmap data
+            CBM_INIT,                                      // initialization option
+            (const void*)properties.m_PreviewImage.m_bits, // initialization data
+            properties.m_PreviewImage.m_bmi,               // color-format data
+            DIB_RGB_COLORS                                 // color-data usage
+          );
+          ::ReleaseDC(nullptr, hdc);
+        }
+      }
+    }
+    ON::CloseFile(archive_fp);
+  }
+  return hBitmap;
+}
+
+/// <summary>
 /// CRhinoHatchPatternTable helpers for system hatch patterns
 /// </summary>
 class CRhinoHatchTableHelper
