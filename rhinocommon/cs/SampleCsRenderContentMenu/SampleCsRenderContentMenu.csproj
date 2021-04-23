@@ -34,15 +34,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Eto">
-      <HintPath>..\..\..\..\..\Program Files\Rhino 7\System\Eto.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7\System\Eto.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Rhino.UI">
-      <HintPath>..\..\..\..\..\Program Files\Rhino 7\System\Rhino.UI.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7\System\Rhino.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RhinoCommon">
-      <HintPath>..\..\..\..\..\Program Files\Rhino 7\System\RhinoCommon.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Rhino 7\System\RhinoCommon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
