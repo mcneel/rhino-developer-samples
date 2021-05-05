@@ -32,6 +32,18 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
+  
+      //Grab a bounding box off of the scenes normal objects.. 
+      var normal_objects = doc.Objects.Where(c => c.IsNormal).ToList();
+      if (!normal_objects.Any()) return Result.Cancel;
+
+      //Figure out the bounding box of the normal objects in the scene.
+      var scene_bounding_box = BoundingBox.Unset;
+      foreach (var ro in normal_objects)
+        scene_bounding_box.Union(ro.Geometry.GetBoundingBox(true));
+      
+      if (!scene_bounding_box.IsValid) {return Result.Cancel;}
+
       //By default Zoom commands have a 1.1 padding around them.
       //We can temporarily override this padding by setting it to 0
       //Make sure we set it back when finished. 
@@ -40,15 +52,6 @@ namespace SampleCsCommands
       //Disable view drawing while we work
       doc.Views.RedrawEnabled = false;
 
-      //Grab a bounding box off of the scenes normal objects.. 
-      var normal_objects = doc.Objects.Where(c => c.IsNormal);
-      
-      //Figure out the bounding box of the normal objects in the scene.
-      var scene_bounding_box = BoundingBox.Unset;
-      foreach (var ro in normal_objects)
-        scene_bounding_box.Union(ro.Geometry.GetBoundingBox(true));
-      
-      if (!scene_bounding_box.IsValid) return Result.Cancel;
 
       //Find a view to base our grab off of and establish a scale. 
       var top_view = doc.Views.Find("top", false);
