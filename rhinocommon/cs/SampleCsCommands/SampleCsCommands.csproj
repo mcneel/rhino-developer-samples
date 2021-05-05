@@ -34,6 +34,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Eto">
+      <HintPath>C:\Program Files\Rhino 7\System\Eto.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Rhino.UI">
       <HintPath>C:\Program Files\Rhino 7\System\Rhino.UI.dll</HintPath>
       <Private>False</Private>
@@ -228,6 +232,7 @@
     <Compile Include="SampleCsUnweldAll.cs" />
     <Compile Include="SampleCsUtilities.cs" />
     <Compile Include="SampleCsViewCapture.cs" />
+    <Compile Include="SampleCsViewCaptureBoundingBox.cs" />
     <Compile Include="SampleCsViewportSize.cs" />
     <Compile Include="SampleCsViewSize.cs" />
     <Compile Include="SampleCsWorldToPageTransform.cs" />
