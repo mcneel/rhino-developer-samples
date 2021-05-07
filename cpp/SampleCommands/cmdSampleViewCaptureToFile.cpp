@@ -55,9 +55,9 @@ CRhinoCommand::result CCommandSampleViewCaptureToFile::RunCommand(const CRhinoCo
   if (!dib.CreateDib(rect.Width(), rect.Height(), 24, true))
     return CRhinoCommand::failure;
 
-  const CDisplayPipelineAttributes* pDA = CRhinoDisplayAttrsMgr::StdWireframeAttrs();
-  //const CDisplayPipelineAttributes* pDA = CRhinoDisplayAttrsMgr::StdShadedAttrs();
-  //const CDisplayPipelineAttributes* pDA = CRhinoDisplayAttrsMgr::StdShadedAttrs();
+  const CDisplayPipelineAttributes* pDA = dp->DisplayAttrs();
+  if (nullptr == pDA)
+    pDA = CRhinoDisplayAttrsMgr::StdWireframeAttrs();
 
   CDisplayPipelineAttributes da(*pDA);
   da.m_contextDrawToDC = CDisplayPipelineAttributes::ContextsForDrawToDC::kUIPreview;
