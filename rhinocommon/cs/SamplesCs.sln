@@ -73,6 +73,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsMouseCallback", "Sa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsCustomMeshMapping", "SampleCsCustomMeshMapping\SampleCsCustomMeshMapping.csproj", "{2D0B8209-C708-4CEB-A79E-01E988AA88DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleCsRenderContentMenu", "SampleCsRenderContentMenu\SampleCsRenderContentMenu.csproj", "{CA313AB3-2FAC-42DE-A8D9-029FE518E110}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -207,6 +209,10 @@ Global
 		{2D0B8209-C708-4CEB-A79E-01E988AA88DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D0B8209-C708-4CEB-A79E-01E988AA88DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D0B8209-C708-4CEB-A79E-01E988AA88DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA313AB3-2FAC-42DE-A8D9-029FE518E110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA313AB3-2FAC-42DE-A8D9-029FE518E110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA313AB3-2FAC-42DE-A8D9-029FE518E110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA313AB3-2FAC-42DE-A8D9-029FE518E110}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

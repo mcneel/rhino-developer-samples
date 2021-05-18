@@ -52,6 +52,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\SampleCsEtoCoffee.cs" />
     <Compile Include="Commands\SampleCsEtoCommand.cs" />
     <Compile Include="Commands\SampleCsEtoModalDialogCommand.cs" />
     <Compile Include="Commands\SampleCsEtoModelessFormCommand.cs" />

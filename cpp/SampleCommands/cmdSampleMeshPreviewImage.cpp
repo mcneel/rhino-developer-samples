@@ -6,26 +6,33 @@
 // BEGIN SampleMeshPreviewImage command
 //
 
-const static UINT PREVIEW_IMAGE_CHANNELS = 
-  CSupportChannels::SC_CALCBOUNDINGBOX |
-  CSupportChannels::SC_PREDRAWOBJECTS  |
-  CSupportChannels::SC_DRAWOBJECT      |
-  CSupportChannels::SC_POSTDRAWOBJECTS |
-  CSupportChannels::SC_PREOBJECTDRAW   |
-  CSupportChannels::SC_POSTOBJECTDRAW;
-
 class CSampleMeshPreviewConduit : public CRhinoDisplayConduit
 {
 public:
-  CSampleMeshPreviewConduit(const ON_SimpleArray<const ON_Mesh*>& meshes, const ON_SimpleArray<ON_Color>& colors, ON_BoundingBox bbox);
-  bool ExecConduit(CRhinoDisplayPipeline& dp, UINT nActiveChannel, bool& bTerminateChannel);
+  CSampleMeshPreviewConduit(
+    const ON_SimpleArray<const ON_Mesh*>& meshes, 
+    const ON_SimpleArray<ON_Color>& colors, 
+    ON_BoundingBox bbox
+  );
+
+  bool ExecConduit(
+    CRhinoDisplayPipeline& dp, 
+    UINT nActiveChannel, 
+    bool& bTerminateChannel
+  );
+
+public:
   const ON_SimpleArray<const ON_Mesh*>& m_meshes;
   const ON_SimpleArray<ON_Color>& m_colors;
   ON_BoundingBox m_bbox;
 };
 
-CSampleMeshPreviewConduit::CSampleMeshPreviewConduit(const ON_SimpleArray<const ON_Mesh*>& meshes, const ON_SimpleArray<ON_Color>& colors, ON_BoundingBox bbox)
-  : CRhinoDisplayConduit(PREVIEW_IMAGE_CHANNELS)
+CSampleMeshPreviewConduit::CSampleMeshPreviewConduit(
+  const ON_SimpleArray<const ON_Mesh*>& meshes, 
+  const ON_SimpleArray<ON_Color>& colors, 
+  ON_BoundingBox bbox
+)
+  : CRhinoDisplayConduit(CSupportChannels::SC_CALCBOUNDINGBOX | CSupportChannels::SC_ALL_DRAW_CHANNELS)
   , m_meshes(meshes)
   , m_colors(colors)
   , m_bbox(bbox)
@@ -33,7 +40,11 @@ CSampleMeshPreviewConduit::CSampleMeshPreviewConduit(const ON_SimpleArray<const 
   EnableConstantBinding(false);
 }
 
-bool CSampleMeshPreviewConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT nActiveChannel, bool& bTerminateChannel)
+bool CSampleMeshPreviewConduit::ExecConduit(
+  CRhinoDisplayPipeline& dp, 
+  UINT nActiveChannel, 
+  bool& bTerminateChannel
+)
 {
   switch (nActiveChannel)
   {
@@ -62,11 +73,15 @@ bool CSampleMeshPreviewConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT nAct
   case CSupportChannels::SC_DRAWOBJECT:
   {
     m_pChannelAttrs->m_bDrawObject = false;
+    bTerminateChannel = true;
   }
   break;
   }
 
-  // Disallow any and all other conduits from executing.
+  // Disallow any and all other conduits from executing...
+  // Note: We can do this here because the pipeline only executes the channels we've registered
+  //       for...and we've registered for ALL drawing channels...we only process a couple of 
+  //       them, but the rest will just end up here and terminate the channel...
   bTerminateChannel = true;
 
   return true;
@@ -76,13 +91,16 @@ bool CSampleMeshPreviewConduit::ExecConduit(CRhinoDisplayPipeline& dp, UINT nAct
 ////////////////////////////////////////////////////////////////
 
 bool SampleMeshPreviewImage(
+  CRhinoDoc* pDoc,
   const ON_SimpleArray<const ON_Mesh*>& meshes,
   const ON_SimpleArray<ON_Color>& colors,
   CSize size,
   CRhinoDib& dib
 )
 {
-  // Validate input
+  if (nullptr == pDoc)
+    return false;
+
   const int mesh_count = meshes.Count();
   const int color_count = colors.Count();
   if (0 == mesh_count || 0 == color_count || mesh_count != color_count)
@@ -91,7 +109,13 @@ bool SampleMeshPreviewImage(
   if (size.cx < 1 || size.cy < 1)
     return false;
 
+  CRhinoDpi::ScaleSize(&size);
+
   if (!dib.CreateDib(size.cx, size.cy, 32, true))
+    return false;
+
+  HDC hDC = dib;
+  if (0 == hDC)
     return false;
 
   // Create a dummy view
@@ -144,15 +168,20 @@ bool SampleMeshPreviewImage(
   CRhinoDisplayPipeline_OGL dp(vp);
   CDisplayPipelineAttributes da(*dma);
 
+  dp.SetGeometrySource(pDoc);
   da.m_bUseDocumentGrid = false;
   da.m_bDrawGrid = false;
   da.m_bDrawAxes = false;
   da.m_bDrawWorldAxes = false;
+  da.m_groundPlaneUsage = CDisplayPipelineAttributes::GroundPlaneUsages::Custom;
+  da.m_customGroundPlaneSettings.on = false;
+  da.m_bCastShadows = false;
 
   // Create the conduit
   CSampleMeshPreviewConduit conduit(meshes, colors, world_bbox);
   conduit.Bind(vp);
-  conduit.Enable(CRhinoDoc::NullRuntimeSerialNumber);
+  conduit.Enable(pDoc->RuntimeSerialNumber());
+  conduit.EnableConstantBinding(false);
 
   // Render
   da.m_contextDrawToDC = CDisplayPipelineAttributes::ContextsForDrawToDC::kUIPreview;
@@ -202,7 +231,7 @@ CRhinoCommand::result CCommandSampleMeshPreviewImage::RunCommand(const CRhinoCom
   colors.Append(ON_Color(RGB(100, 149, 237)));
 
   CRhinoDib dib;
-  bool success = SampleMeshPreviewImage(meshes, colors, CSize(1024, 768), dib);
+  bool success = SampleMeshPreviewImage(context.Document(), meshes, colors, CSize(1024, 768), dib);
   if (success)
   {
     const wchar_t* file_name = L"\\sample_mesh_preview_image.png";

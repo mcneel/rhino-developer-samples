@@ -1,0 +1,68 @@
+// Import libraries
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
+import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/loaders/3DMLoader.js'
+
+const model = 'hello_mesh.3dm'
+
+// BOILERPLATE //
+let scene, camera, renderer
+
+init()
+load()
+
+function init () {
+
+    THREE.Object3D.DefaultUp = new THREE.Vector3(0,0,1)
+
+    scene = new THREE.Scene()
+    scene.background = new THREE.Color(1,1,1)
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 1, 1000 )
+    camera.position.set(26,-40,5)
+
+    renderer = new THREE.WebGLRenderer({antialias: true})
+    renderer.setPixelRatio( window.devicePixelRatio )
+    renderer.setSize( window.innerWidth, window.innerHeight )
+    document.body.appendChild( renderer.domElement )
+
+    const controls = new OrbitControls( camera, renderer.domElement )
+
+    window.addEventListener( 'resize', onWindowResize, false )
+
+    animate()
+}
+
+function load() {
+
+    const loader = new Rhino3dmLoader()
+    loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' )
+
+    const material = new THREE.MeshNormalMaterial()
+    loader.load( model, function ( object ) {
+
+        // hide spinner
+        document.getElementById('loader').style.display = 'none'
+
+        console.log( object )
+
+        object.traverse( child => {
+            child.material = material
+        })
+
+        scene.add( object )
+    
+    } )
+
+}
+
+function animate () {
+    requestAnimationFrame( animate )
+    renderer.render( scene, camera )
+}
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize( window.innerWidth, window.innerHeight )
+    animate()
+}

@@ -87,7 +87,7 @@ static bool SetAmount(CRhinoDoc& doc, GUID objectId, double amount)
     return false;
   }
 
-  if (!doc.ModifyObjectAttributes(CRhinoObjRef(objectId), newAttrs))
+  if (!doc.ModifyObjectAttributes(CRhinoObjRef(doc.RuntimeSerialNumber(), objectId), newAttrs))
     return false;
 
   return true;
@@ -107,6 +107,7 @@ CRhinoCommand::result CCommandSampleCustomRenderMesh::RunCommand(const CRhinoCom
 {
   if (context.Document() == nullptr)
     return CRhinoCommand::failure;
+
   CRhinoDoc& doc = *context.Document();
 
   CRhinoGetObject go;

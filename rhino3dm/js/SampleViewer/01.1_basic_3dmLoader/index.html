@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="data:;base64,=">
+        <title>rhino3dm: Basic 3dm Viewer with 3dmLoader</title>
+        <style>
+            body { margin: 0; }
+            
+            /* CSS for a spinning animation */ 
+			#loader {
+                border: 5px solid #f3f3f3; /* Light grey */
+                border-top: 5px solid #3d3d3d; /* Grey */
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+    </head>
+    <body>
+        <a class="github-fork-ribbon left-top" href="https://github.com/mcneel/rhino3dm/blob/master/docs/javascript/samples/viewer/01_basic/index.html" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+        <div id="loader"></div>
+        <script type="module" src="./script.js"></script>
+    </body>
+</html>

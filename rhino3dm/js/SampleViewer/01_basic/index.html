@@ -2,90 +2,16 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Hello Mesh!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="data:;base64,=">
+        <title>rhino3dm: Basic 3dm Viewer</title>
         <style>
             body { margin: 0; }
-            canvas { width: 100%; height: 100%; }
-            #container {position: relative;}
-            #container canvas { position: absolute;}
-            #overlay {z-index: 1; width: 100%}
         </style>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
     </head>
     <body>
-        <div id="container">
-            <a class="github-fork-ribbon left-top" href="https://github.com/mcneel/rhino3dm/blob/master/docs/javascript/samples/viewer/01_basic/index.html" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
-            <div id="canvas"></div>
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/three@0.118.1/build/three.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/three@0.118.1/examples/js/controls/OrbitControls.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/rhino3dm/rhino3dm.min.js"></script> <!-- latest -->
-        <script>
-            let fetchPromise = fetch('hello_mesh.3dm');
-
-            rhino3dm().then(async m => {
-                console.log('Loaded rhino3dm.');
-                let rhino = m;
-
-                let res = await fetchPromise;
-                let buffer = await res.arrayBuffer();
-                let arr = new Uint8Array(buffer);
-                let doc = rhino.File3dm.fromByteArray(arr);
-
-                THREE.Object3D.DefaultUp = new THREE.Vector3(0,0,1)
-                init();
-                let material = new THREE.MeshNormalMaterial();
-
-                let objects = doc.objects();
-                for (let i = 0; i < objects.count; i++) {
-                    let mesh = objects.get(i).geometry();
-                    if(mesh instanceof rhino.Mesh) {
-                        // convert all meshes in 3dm model into threejs objects
-                        let threeMesh = meshToThreejs(mesh, material);
-                        scene.add(threeMesh);
-                    }
-                }
-            });
-
-            // BOILERPLATE //
-            var scene, camera, renderer, controls;
-
-            function init(){
-                scene = new THREE.Scene();
-                scene.background = new THREE.Color(1,1,1);
-                camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 1, 1000 );
-                camera.position.set(26,-40,5)
-
-                renderer = new THREE.WebGLRenderer({antialias: true});
-                renderer.setPixelRatio( window.devicePixelRatio );
-                renderer.setSize( window.innerWidth, window.innerHeight );
-                var canvas = document.getElementById("canvas");
-                canvas.appendChild( renderer.domElement );
-
-                controls = new THREE.OrbitControls( camera, renderer.domElement  );
-
-                window.addEventListener( 'resize', onWindowResize, false );
-                animate();
-            }
-
-            var animate = function () {
-                requestAnimationFrame( animate );
-                controls.update();
-                renderer.render( scene, camera );
-            };
-
-            function onWindowResize() {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize( window.innerWidth, window.innerHeight );
-                animate();
-            }
-
-            function meshToThreejs(mesh, material) {
-                let loader = new THREE.BufferGeometryLoader();
-                var geometry = loader.parse(mesh.toThreejsJSON());
-                return new THREE.Mesh(geometry, material);
-            }
-        </script>
+        <a class="github-fork-ribbon left-top" href="https://github.com/mcneel/rhino3dm/blob/master/docs/javascript/samples/viewer/01_basic/index.html" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+        <script type="module" src="./script.js"></script>
     </body>
 </html>
