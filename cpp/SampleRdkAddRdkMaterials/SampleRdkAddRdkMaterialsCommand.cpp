@@ -18,17 +18,37 @@ CRhinoCommand::result CSampleRdkAddRdkMaterials::RunCommand(const CRhinoCommandC
 
 	// Create an ON_Material.
 	ON_Material mat;
-	ON_Color col(255, 0, 0);
+	ON_Color col(255, 0, 0); // Initial color.
 	mat.SetDiffuse(col);
 	mat.SetName(L"Sample");
 
-	// Create a basic (custom) material using the ON_Material.
+	// Create a Basic (Custom) Material using the ON_Material.
 	auto* pMaterial = ::RhRdkNewBasicMaterial(mat, pDoc);
 	if (nullptr == pMaterial)
 		return failure;
 
-	// This section is optional and demonstrates how to add a dib texture
-	// to the bitmap slot of the basic material.
+	// Optionally set the diffuse color again.
+	pMaterial->SetDiffuse(RGB(0, 255, 0));
+
+	// Add a bitmap texture to the bitmap slot of the Basic Material.
+	CRhRdkSimulatedTexture tex;
+	tex.SetFilename(L"C:\\example_image.jpg", pDoc, false); // TODO: Set the full path to the file.
+	auto* pBitmap = ::RhRdkNewBitmapTexture(tex, pDoc);
+	if (nullptr != pBitmap)
+	{
+		pMaterial->SetChild(pBitmap, CS_MAT_BITMAP_TEXTURE);
+		pMaterial->SetChildSlotOn(CS_MAT_BITMAP_TEXTURE, true);
+	}
+
+	// Add a wood texture to the transparency slot of the Basic Material.
+	auto* pWood =	::RhRdkContentFactoriesEx().NewContentFromTypeEx(uuidWoodTextureType, pDoc);
+	if (nullptr != pWood)
+	{
+		pMaterial->SetChild(pWood, CS_MAT_TRANSPARENCY_TEXTURE);
+		pMaterial->SetChildSlotOn(CS_MAT_TRANSPARENCY_TEXTURE, true);
+	}
+
+	// This section is optional and demonstrates how to add a dib texture to the bump slot of the Basic Material.
 	{{{
 		const int width = 320, height = 240, depth = 32;
 		CRhinoDib dib(width, height, depth);
@@ -42,17 +62,16 @@ CRhinoCommand::result CSampleRdkAddRdkMaterials::RunCommand(const CRhinoCommandC
 
 		dib.ProcessPixels(func);
 
-		// Create a dib texture from the dib and set it as a child of the Basic Material
-		// in the bitmap texture slot.
+		// Create a dib texture from the dib and set it as a child of the Basic Material in the bump texture slot.
 		auto* pTexture = ::RhRdkNewDibTexture(&dib, pDoc);
 		if (nullptr != pTexture)
 		{
-			pMaterial->SetChild(pTexture, CS_MAT_BITMAP_TEXTURE);
-			pMaterial->SetChildSlotOn(CS_MAT_BITMAP_TEXTURE, true);
+			pMaterial->SetChild(pTexture, CS_MAT_BUMP_TEXTURE);
+			pMaterial->SetChildSlotOn(CS_MAT_BUMP_TEXTURE, true);
 		}
 	}}}
 
-	// Attach the basic material to the document.
+	// Attach the Basic Material to the document.
 	auto& contents = pDoc->Contents().BeginChange(RhRdkChangeContext::Program);
 	contents.Attach(*pMaterial);
 	contents.EndChange();
