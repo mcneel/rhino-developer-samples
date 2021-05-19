@@ -27,54 +27,43 @@ static class CCommandSampleModifyBumpIntensity theSampleModifyBumpIntensityComma
 
 CRhinoCommand::result CCommandSampleModifyBumpIntensity::RunCommand(const CRhinoCommandContext& context)
 {
+  auto* pDoc = context.Document();
+  if (nullptr == pDoc)
+    return failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select object to modify bump intensity");
   go.GetObjects(1, 1);
   if (go.CommandResult() != CRhinoCommand::success)
     return go.CommandResult();
 
-  const CRhinoObjRef& ref = go.Object(0);
-  const CRhinoObject* obj = ref.Object();
-  if (0 == obj)
+  const auto* obj = go.Object(0).Object();
+  if (nullptr == obj)
     return CRhinoCommand::failure;
 
-  ON_Material material = obj->ObjectMaterial();
-  if (material.Index() < 0)
+  const auto* pContent = pDoc->Contents().Find(obj->ObjectMaterial().RdkMaterialInstanceId());
+  if (nullptr == pContent)
   {
-    // I'm assuming the object already has a material. That is,
-    // it is not just using the default material.
+    // I'm assuming the object already has a material. That is, it is not just using the default material.
     RhinoApp().Print(L"Object does not have a material.\n");
-    return CRhinoCommand::nothing;
+    return CRhinoCommand::failure;
   }
 
-  int texture_index = material.FindTexture(0, ON_Texture::TYPE::bump_texture);
-  if (texture_index < 0)
-  {
-    // I'm assuming the object's material already has a bump.
-    RhinoApp().Print(L"Object does not have a bump texture.\n");
-    return CRhinoCommand::nothing;
-  }
-
-  ON_Texture& texture = material.m_textures[texture_index];
-  int blend_constant = ON_Round(texture.m_blend_constant_A * 100.0);
-
+  const auto amount = pContent->ChildSlotAmount(CS_MAT_BUMP_TEXTURE).AsInteger();
   CRhinoGetInteger gi;
   gi.SetCommandPrompt(L"New bump intensity");
-  gi.SetDefaultInteger(blend_constant);
+  gi.SetDefaultInteger(amount);
   gi.SetLowerLimit(0, false);
   gi.SetUpperLimit(100, false);
   gi.GetInteger();
   if (gi.CommandResult() != CRhinoCommand::success)
     return gi.CommandResult();
 
-  texture.m_blend_constant_A = (double)gi.Number() / 100.0;
-  if (texture.m_blend_constant_A < 1.0)
-    texture.m_mode = ON_Texture::MODE::blend_texture;
-  else
-    texture.m_mode = ON_Texture::MODE::decal_texture;
+  auto& c = pContent->BeginChange(RhRdkChangeContext::UI);
+  c.SetChildSlotAmount(CS_MAT_BUMP_TEXTURE, double(gi.Number()));
+  c.EndChange();
 
-  context.m_doc.m_material_table.ModifyMaterial(material, material.Index());
-  context.m_doc.Redraw();
+  pDoc->Redraw();
 
   return success;
 }

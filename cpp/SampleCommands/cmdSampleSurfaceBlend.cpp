@@ -28,6 +28,10 @@ static class CCommandSampleSurfaceBlend theSampleSurfaceBlendCommand;
 
 CRhinoCommand::result CCommandSampleSurfaceBlend::RunCommand(const CRhinoCommandContext& context)
 {
+  auto* pDoc = context.Document();
+  if (nullptr == pDoc)
+    return failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface edges to blend");
   go.SetGeometryFilter(CRhinoGetObject::edge_object);
@@ -35,15 +39,15 @@ CRhinoCommand::result CCommandSampleSurfaceBlend::RunCommand(const CRhinoCommand
   if (go.CommandResult() != CRhinoCommand::success)
     return go.CommandResult();
 
-  const ON_BrepFace* faces[2];
-  const ON_BrepEdge* edges[2];
+  const ON_BrepFace* faces[2] = { 0 };
+  const ON_BrepEdge* edges[2] = { 0 };
   ON_Interval domains[2];
-  bool revs[2];
+  bool revs[2] = { 0 };
 
   for (int i = 0; i < 2; i++)
   {
     const CRhinoObjRef& obj_ref = go.Object(i);
-    
+
     const ON_BrepTrim* trim = obj_ref.Trim();
     if (nullptr == trim)
       return CRhinoCommand::failure;
@@ -76,7 +80,7 @@ CRhinoCommand::result CCommandSampleSurfaceBlend::RunCommand(const CRhinoCommand
   int continuity[] = { 2, 2 };
 
   ON_SimpleArray<ON_Brep*> output;
-  bool rc = RhinoSdkBlend::SurfaceBlend(
+  bool rc = RhinoSdkBlend::SurfaceBlend(*pDoc,
     faces[0], edges[0], domains[0], revs[0], continuity[0],
     faces[1], edges[1], domains[1], revs[1], continuity[1],
     output
@@ -91,12 +95,12 @@ CRhinoCommand::result CCommandSampleSurfaceBlend::RunCommand(const CRhinoCommand
         CRhinoBrepObject* brep_obj = new CRhinoBrepObject();
         brep_obj->SetBrep(output[0]);
         output[0] = nullptr;
-        context.m_doc.AddObject(brep_obj);
+        pDoc->AddObject(brep_obj);
       }
     }
   }
 
-    context.m_doc.Redraw();
+  pDoc->Redraw();
 
   return CRhinoCommand::success;
 }
