@@ -32,7 +32,7 @@ namespace SampleRdkMaterialAutoUI
     {
       get
       {
-        return "Sample Automatic UI Material";
+        return "Sample Render Content Serializer";
       }
     }
 
