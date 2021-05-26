@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
@@ -42,11 +42,11 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var sphere = new Sphere(new Point3d(0.0, 0.0, 0.0), 10.0);
+      var sphere = new Sphere(Plane.WorldXY, 10.0);
       var mesh = Mesh.CreateFromSphere(sphere, 10, 10);
-      var material = doc.Materials[-1];
+      var material = doc.Materials[-1]; // -1 is out of range; the current material is returned.
 
-      SampleCsDrawMeshConduit conduit = new SampleCsDrawMeshConduit(mesh, material)
+      var conduit = new SampleCsDrawMeshConduit(mesh, material)
       {
         Enabled = true
       };
@@ -60,7 +60,6 @@ namespace SampleCsCommands
       doc.Views.Redraw();
 
       return Result.Success;
-
     }
   }
 }
