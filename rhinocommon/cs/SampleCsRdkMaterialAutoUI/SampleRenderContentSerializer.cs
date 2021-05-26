@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Rhino.Render;
 using Rhino.Render.Fields;
 
@@ -30,23 +27,19 @@ namespace SampleRdkMaterialAutoUI
 
     public override string EnglishDescription
     {
-      get
-      {
-        return "Sample Render Content Serializer";
-      }
+      get { return "Sample Render Content Serializer"; }
     }
 
-    // 
     public override RenderContent Read(string pathToFile)
     {
       // Create new Sample Material without fields.
       // We will read the fields from the file and
       // add them to the material
-      SampleRdkMaterial material = new SampleRdkMaterial();
-      string line;
+      var material = new SampleRdkMaterial();
 
       // Read values from file and set values
-      System.IO.StreamReader file = new System.IO.StreamReader(pathToFile);
+      string line;
+      var file = new System.IO.StreamReader(pathToFile);
       while ((line = file.ReadLine()) != null)
       {
         string[] type_prompt_key_and_value = line.Split(',');
@@ -72,17 +65,16 @@ namespace SampleRdkMaterialAutoUI
                 {
                   // Get field value
                   string value = value_text[1];
-                  bool b_value = false;
-                  Boolean.TryParse(value, out b_value);
+                  Boolean.TryParse(value, out bool bool_value);
 
-                  string[] promt_value = type_prompt_key_and_value[3].Split('=');
-                  if (promt_value.Length == 2)
+                  string[] prompt_value = type_prompt_key_and_value[3].Split('=');
+                  if (prompt_value.Length == 2)
                   {
                     // Get field prompt (text shown in UI)
-                    string prompt = promt_value[1];
+                    string prompt = prompt_value[1];
 
                     // Finally add the bool field
-                    material.Fields.Add(key, b_value, prompt);
+                    material.Fields.Add(key, bool_value, prompt);
                   }
                 }
               }
@@ -90,44 +82,44 @@ namespace SampleRdkMaterialAutoUI
           }
         }
       }
+
       file.Close();
 
       // Return material to rdk
       return material;
     }
 
-    // Write sample material to .sample file (only bool values )
+    // Write sample material to .sample file (only bool values)
     public override bool Write(string pathToFile, RenderContent renderContent, CreatePreviewEventArgs previewArgs)
     {
-      List<string> lines = new List<string>();
+      var lines = new List<string>();
 
-      foreach (Field field in renderContent.Fields)
+      foreach (var field in renderContent.Fields)
       {
-        Type type = field.GetType();
+        var type = field.GetType();
 
         // Bool fields
         if (type == typeof(BoolField))
         {
           string key = field.Name;
           string prompt = field.Name;
-          bool bool_value = false;
-          renderContent.Fields.TryGetValue(key, out bool_value);
+          renderContent.Fields.TryGetValue(key, out bool bool_value);
           string value = bool_value.ToString();
-
           lines.Add("type=bool," + "key=" + key + ",value=" + value + "," + "prompt=" + prompt);
         }
       }
 
       // Write all lines to .sample file
-      using (System.IO.StreamWriter file =
-      new System.IO.StreamWriter(pathToFile))
+      using (var file = new System.IO.StreamWriter(pathToFile))
       {
         foreach (string line in lines)
         {
           file.WriteLine(line);
         }
+
         file.Close();
       }
+
       return true;
     }
   }
