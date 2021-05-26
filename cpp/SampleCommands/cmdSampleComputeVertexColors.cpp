@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 
 ////////////////////////////////////////////////////////////////
@@ -12,15 +13,10 @@ class CCommandSampleComputeVertexColors : public CRhinoCommand
 {
 public:
   CCommandSampleComputeVertexColors() = default;
-  UUID CommandUUID() override
-  {
-    // {466BAD98-CAB8-4DA1-85E0-96EF0AE61DFB}
-    static const GUID SampleComputeVertexColorsCommand_UUID =
-    { 0x466BAD98, 0xCAB8, 0x4DA1, { 0x85, 0xE0, 0x96, 0xEF, 0x0A, 0xE6, 0x1D, 0xFB } };
-    return SampleComputeVertexColorsCommand_UUID;
-  }
-  const wchar_t* EnglishCommandName() override { return L"SampleComputeVertexColors"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
+
+  virtual UUID CommandUUID() override { static const UUID uuid = { 0x466BAD98, 0xCAB8, 0x4DA1, { 0x85, 0xE0, 0x96, 0xEF, 0x0A, 0xE6, 0x1D, 0xFB } }; return uuid; }
+  virtual const wchar_t* EnglishCommandName() override { return L"SampleComputeVertexColors"; }
+  virtual CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 
 private:
   ON_Mesh* ComputeVertexColors(CRhinoDoc& doc, const CRhinoMeshObject* mesh_obj);
@@ -31,6 +27,10 @@ static class CCommandSampleComputeVertexColors theSampleComputeVertexColorsComma
 
 CRhinoCommand::result CCommandSampleComputeVertexColors::RunCommand(const CRhinoCommandContext& context)
 {
+  auto* pDoc = context.Document();
+  if (nullptr == pDoc)
+    return failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select mesh with texture map assigned");
   go.SetGeometryFilter(CRhinoGetObject::mesh_object);
@@ -38,26 +38,27 @@ CRhinoCommand::result CCommandSampleComputeVertexColors::RunCommand(const CRhino
   if (go.CommandResult() != CRhinoCommand::success)
     return go.CommandResult();
 
-  const CRhinoObjRef& obj_ref = go.Object(0);
-  const CRhinoMeshObject* mesh_obj = CRhinoMeshObject::Cast(obj_ref.Object());
+  const auto& obj_ref = go.Object(0);
+  const auto* mesh_obj = CRhinoMeshObject::Cast(obj_ref.Object());
   if (nullptr == mesh_obj)
     return CRhinoCommand::failure;
 
-  ON_Mesh* mesh_with_colors = ComputeVertexColors(context.m_doc, mesh_obj);
+  auto* mesh_with_colors = ComputeVertexColors(*pDoc, mesh_obj);
   if (nullptr == mesh_with_colors)
     return CRhinoCommand::failure;
 
-  CRhinoMeshObject* mesh_with_colors_obj = new CRhinoMeshObject(mesh_obj->Attributes());
+  auto* mesh_with_colors_obj = new CRhinoMeshObject(mesh_obj->Attributes());
   mesh_with_colors_obj->SetMesh(mesh_with_colors);
-  context.m_doc.ReplaceObject(obj_ref, mesh_with_colors_obj);
-  context.m_doc.Redraw();
+  pDoc->ReplaceObject(obj_ref, mesh_with_colors_obj);
+
+  pDoc->Redraw();
 
   return CRhinoCommand::success;
 }
 
 static int Round(double value)
 {
-  double d = fabs(value);
+  const double d = fabs(value);
   int n = (int)d;
   if (0.5 <= d - n)
     n = (int)ceil(d);
@@ -69,7 +70,7 @@ ON_Mesh* CCommandSampleComputeVertexColors::ComputeVertexColors(CRhinoDoc& doc, 
   if (nullptr == mesh_obj)
     return nullptr;
 
-  const ON_Mesh* mesh = mesh_obj->Mesh();
+  const auto* mesh = mesh_obj->Mesh();
   if (nullptr == mesh || false == mesh->HasTextureCoordinates())
     return nullptr;
 
@@ -87,16 +88,16 @@ ON_Mesh* CCommandSampleComputeVertexColors::ComputeVertexColors(CRhinoDoc& doc, 
   }
 
   if (filename.IsEmpty())
-    nullptr;
+    return nullptr;
 
   CRhinoDib dib;
   if (!dib.ReadFromFile(doc.RuntimeSerialNumber(), filename))
-    nullptr;
+    return nullptr;
 
   int size_x = dib.Width() - 1;
   int size_y = dib.Height() - 1;
 
-  ON_Mesh* mesh_with_colors = new ON_Mesh(*mesh);
+  auto* mesh_with_colors = new ON_Mesh(*mesh);
 
   const int tc_count = mesh_with_colors->m_T.Count();
   mesh_with_colors->m_C.Reserve(tc_count);
