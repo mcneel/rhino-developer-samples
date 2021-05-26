@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 
 ////////////////////////////////////////////////////////////////
@@ -12,15 +13,10 @@ class CCommandSamplePerFaceMaterial : public CRhinoCommand
 {
 public:
   CCommandSamplePerFaceMaterial() = default;
-  UUID CommandUUID() override
-  {
-    // {5B02BE51-25C9-4C83-95C6-E5562E599C31}
-    static const GUID SamplePerFaceMaterialCommand_UUID =
-    { 0x5B02BE51, 0x25C9, 0x4C83, { 0x95, 0xC6, 0xE5, 0x56, 0x2E, 0x59, 0x9C, 0x31 } };
-    return SamplePerFaceMaterialCommand_UUID;
-  }
-  const wchar_t* EnglishCommandName() override { return L"SamplePerFaceMaterial"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
+
+  virtual UUID CommandUUID() override { static const UUID uuid = { 0x5B02BE51, 0x25C9, 0x4C83, { 0x95, 0xC6, 0xE5, 0x56, 0x2E, 0x59, 0x9C, 0x31 } }; return uuid; }
+  virtual const wchar_t* EnglishCommandName() override { return L"SamplePerFaceMaterial"; }
+  virtual CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 };
 
 // The one and only CCommandSamplePerFaceMaterial object
@@ -28,13 +24,18 @@ static class CCommandSamplePerFaceMaterial theSamplePerFaceMaterialCommand;
 
 CRhinoCommand::result CCommandSamplePerFaceMaterial::RunCommand(const CRhinoCommandContext& context)
 {
-  ON_UUID render_plugin_id = RhinoApp().GetDefaultRenderApp();
-  ON_UuidIndex idi;
+  auto* pDoc = context.Document();
+  if (nullptr == pDoc)
+    return failure;
 
-  for (int count = 0; count < 1000; count++)
+  const auto render_plugin_id = RhinoApp().GetDefaultRenderApp();
+
+  ON_UuidIndex idi;
+  int count = 0;
+  while (true)
   {
-    memset(&idi, 0, sizeof(idi));
     idi.m_i = -1;
+    idi.m_id = ON_nil_uuid;
 
     CRhinoGetObject go;
     go.SetCommandPrompt(L"Select object with the rendering material you want to assign");
@@ -43,38 +44,45 @@ CRhinoCommand::result CCommandSamplePerFaceMaterial::RunCommand(const CRhinoComm
       go.EnablePreSelect(false);
       go.EnablePostSelect(true);
     }
+
     go.GetObjects(1, 1);
     if (CRhinoCommand::success != go.CommandResult())
       return go.CommandResult();
-    
-    const CRhinoObject* obj = go.Object(0).Object();
-    if (nullptr == obj)
-      return CRhinoCommand::failure;
 
-    const ON_3dmObjectAttributes& att = obj->Attributes();
+    const auto* obj = go.Object(0).Object();
+    if (nullptr == obj)
+      return failure;
+
+    const auto& att = obj->Attributes();
     if ((idi.m_i = att.m_material_index) >= 0)
     {
-      idi.m_id = context.m_doc.m_material_table[idi.m_i].Id();
+      idi.m_id = pDoc->m_material_table[idi.m_i].Id();
     }
     else
     {
-      const ON_MaterialRef* mat_ref = att.m_rendering_attributes.MaterialRef(render_plugin_id);
+      const auto* mat_ref = att.m_rendering_attributes.MaterialRef(render_plugin_id);
       if (nullptr == mat_ref)
+      {
         mat_ref = att.m_rendering_attributes.MaterialRef(ON_nil_uuid);
+      }
+
       if (nullptr != mat_ref)
       {
         idi.m_id = mat_ref->m_material_id;
-        idi.m_i = context.m_doc.m_material_table.FindMaterial(idi.m_id);
+        idi.m_i = pDoc->m_material_table.FindMaterial(idi.m_id);
       }
     }
-    
-    if (idi.m_i >= 0 && !ON_UuidIsNil(idi.m_id))
+
+    if ((idi.m_i >= 0) && ON_UuidIsNotNil(idi.m_id))
       break;
 
-    RhinoApp().Print(L"This object does not have a rendering material.\n");
+    RhinoApp().Print(L"The selected object does not have a rendering material.\n");
+    count++;
   }
 
-  if (idi.m_i >= 0) for (int count = 0; count < 1000; count++)
+  UUID uuidInstance = ON_nil_uuid;
+
+  while (true)
   {
     CRhinoGetObject go;
     go.SetGeometryFilter(ON::surface_object);
@@ -89,76 +97,99 @@ CRhinoCommand::result CCommandSamplePerFaceMaterial::RunCommand(const CRhinoComm
     if (CRhinoGet::nothing == go.Result())
       break;
 
-    const CRhinoBrepObject* brep_object = CRhinoBrepObject::Cast(go.Object(0).Object());
-    if (nullptr == brep_object)
-      continue;
+    const auto& obj_ref = go.Object(0);
 
-    const ON_Brep* brep = brep_object->Brep();
+    const auto* brep_object = CRhinoBrepObject::Cast(obj_ref.Object());
+    if (nullptr == brep_object)
+    {
+      RhinoApp().Print(L"The selected item is not a brep object\n");
+      continue;
+    }
+
+    const auto* brep = brep_object->Brep();
     if (nullptr == brep)
       continue;
 
-    const ON_BrepFace* brep_face = ON_BrepFace::Cast(go.Object(0).Surface());
-    if (0 == brep_face)
+    const auto* brep_face = ON_BrepFace::Cast(obj_ref.Surface());
+    if (nullptr == brep_face)
       continue;
-
-    int face_index = brep_face->m_face_index;
 
     const CRhinoMaterial* front_mat = nullptr;
     const CRhinoMaterial* back_mat = nullptr;
-    const ON_3dmObjectAttributes& object_attributes = brep_object->Attributes();
-    context.m_doc.m_material_table.GetMaterials(render_plugin_id, object_attributes, front_mat, back_mat);
+    const auto& object_attributes = brep_object->Attributes();
+    pDoc->m_material_table.GetMaterials(render_plugin_id, object_attributes, front_mat, back_mat);
     if (nullptr == front_mat)
       continue;
 
     ON_Material mat = *front_mat;
     int mc = -1;
-    if (front_mat->Id() != idi.m_id)
+    if (mat.Id() != idi.m_id)
     {
       for (mc = 0; mc < mat.m_material_channel.Count(); mc++)
       {
         if (idi.m_id == mat.m_material_channel[mc].m_id)
           break;
       }
+
       if (mc >= mat.m_material_channel.Count())
       {
         mc = mat.m_material_channel.Count();
         mat.m_material_channel.Append(idi);
         if (mat.Index() >= 0)
         {
-          context.m_doc.m_material_table.ModifyMaterial(mat, mat.Index());
+          pDoc->m_material_table.ModifyMaterial(mat, mat.Index());
         }
         else
         {
-          mat.SetIndex(context.m_doc.m_material_table.AddMaterial(mat));
+          if (ON_UuidIsNil(uuidInstance))
+          {
+            // The main object material is not yet in the document material table. Add it.
+            auto* pBM = ::RhRdkNewBasicMaterial(mat, pDoc);
+            if (nullptr != pBM)
+            {
+              auto& contents = pDoc->Contents().BeginChange(RhRdkChangeContext::Program);
+              contents.Attach(*pBM);
+              contents.EndChange();
+
+              uuidInstance = pBM->InstanceId();
+            }
+          }
+
+          mat.SetRdkMaterialInstanceId(uuidInstance);
+          mat.SetMaterialPlugInId(uuidUniversalRenderEngine);
+
+          const auto newMatIndex = pDoc->m_material_table.AddMaterial(mat);
+          mat.SetIndex(newMatIndex);
         }
       }
     }
 
-    ON_Brep* new_brep = ON_Brep::New(*brep);
-    if (new_brep->m_F.Count() > face_index)
+    const int face_index = brep_face->m_face_index;
+    if (face_index >= brep->m_F.Count())
+      return failure;
+
+    auto* new_brep = ON_Brep::New(*brep);
+    if (nullptr == new_brep)
+      return failure;
+
+    new_brep->m_F[face_index].m_face_material_channel = mc + 1;
+
+    auto* new_brep_object = new CRhinoBrepObject(object_attributes);
+    new_brep_object->SetBrep(new_brep);
+
+    if (pDoc->ReplaceObject(CRhinoObjRef(brep_object), new_brep_object) && front_mat->Index() != mat.Index())
     {
-      new_brep->m_F[face_index].m_face_material_channel = mc + 1;
-      CRhinoBrepObject* new_brep_object = new CRhinoBrepObject(object_attributes);
-      new_brep_object->SetBrep(new_brep);
-      if (context.m_doc.ReplaceObject(CRhinoObjRef(brep_object), new_brep_object) && front_mat->Index() != mat.Index())
-      {
-        // modify attributes to use new material
-        ON_3dmObjectAttributes new_attributes = new_brep_object->Attributes();
-        new_attributes.m_material_index = mat.Index();
-        new_attributes.SetMaterialSource(ON::material_from_object);
-        new_brep_object->ModifyAttributes(new_attributes);
-      }
+      // modify attributes to use new material
+      auto new_attributes = new_brep_object->Attributes();
+      new_attributes.m_material_index = mat.Index();
+      new_attributes.SetMaterialSource(ON::material_from_object);
+      new_brep_object->ModifyAttributes(new_attributes);
     }
-    else
-    {
-      delete new_brep;
-    }
-    context.m_doc.Redraw();
+
+    pDoc->Redraw();
   }
 
-  context.m_doc.Redraw();
-
-  return CRhinoCommand::success;
+  return success;
 }
 
 #pragma endregion
