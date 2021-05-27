@@ -47,7 +47,7 @@ def SampleAddRenderMaterials():
     sphere = Rhino.Geometry.Sphere(Rhino.Geometry.Plane.WorldXY, 5.0)
     id = sc.doc.Objects.AddSphere(sphere);
     obj = sc.doc.Objects.Find(id);
-    if obj != None:
+    if obj is not None:
         obj.RenderMaterial = render_material;
         obj.CommitChanges();
 

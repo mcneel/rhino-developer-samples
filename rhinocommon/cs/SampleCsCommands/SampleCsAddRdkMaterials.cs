@@ -36,7 +36,7 @@ namespace SampleCsCommands
       // 2.) Create a basic Render material from the Rhino material.
       var render_material = RenderMaterial.CreateBasicMaterial(rhino_material, doc);
 
-      // 3.) Add a basic Render material to the document.
+      // 3.) Add the basic Render material to the document.
       doc.RenderMaterials.Add(render_material);
 
       // At this point, you will see a Render material appear in Rhino's
