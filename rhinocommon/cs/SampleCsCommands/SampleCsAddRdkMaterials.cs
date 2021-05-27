@@ -52,7 +52,7 @@ namespace SampleCsCommands
       // 4.) Now we will create a sphere and assign the Render material to it.
       var sphere = new Sphere(Plane.WorldXY, 5);
       var id = doc.Objects.AddSphere(sphere);
-      var obj = doc.Objects.Find(id);
+      var obj = doc.Objects.FindId(id);
       if (obj != null)
       {
         obj.RenderMaterial = render_material;
