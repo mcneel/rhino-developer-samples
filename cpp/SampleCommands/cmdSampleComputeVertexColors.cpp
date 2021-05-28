@@ -32,7 +32,7 @@ CRhinoCommand::result CCommandSampleComputeVertexColors::RunCommand(const CRhino
     return failure;
 
   CRhinoGetObject go;
-  go.SetCommandPrompt(L"Select mesh with texture map assigned");
+  go.SetCommandPrompt(L"Select a mesh with a texture map assigned");
   go.SetGeometryFilter(CRhinoGetObject::mesh_object);
   go.GetObjects(1, 1);
   if (go.CommandResult() != CRhinoCommand::success)
@@ -71,33 +71,67 @@ ON_Mesh* CCommandSampleComputeVertexColors::ComputeVertexColors(CRhinoDoc& doc, 
     return nullptr;
 
   const auto* mesh = mesh_obj->Mesh();
-  if (nullptr == mesh || false == mesh->HasTextureCoordinates())
+  if ((nullptr == mesh) || !mesh->HasTextureCoordinates())
     return nullptr;
 
-  const ON_Material& material = doc.m_material_table[mesh_obj->Attributes().m_material_index];
-  const int texture_count = material.m_textures.Count();
-  if (0 == texture_count)
-    return nullptr;
-
-  ON_wString filename;
-  for (int ti = 0; ti < texture_count; ti++)
+  // Find the render material assigned to the mesh.
+  const auto& material = doc.m_material_table[mesh_obj->Attributes().m_material_index];
+  const auto* pContent = doc.Contents().Find(material.RdkMaterialInstanceId());
+  if (nullptr == pContent)
   {
-    filename = material.m_textures[ti].m_image_file_reference.FullPath();
-    if (!filename.IsEmpty())
-      break;
+    RhinoApp().Print(L"The mesh does not have a render material\n");
+    return nullptr;
   }
 
-  if (filename.IsEmpty())
+  // Get the texture in the bitmap slot.
+  const auto* pTexture = pContent->FindChild(CS_MAT_BITMAP_TEXTURE);
+  auto* pFileBased = dynamic_cast<const IRhRdkFileBasedContent*>(pTexture);
+  if (nullptr == pFileBased)
+  {
+    RhinoApp().Print(L"The mesh's render material does not have a file-based texture in the bitmap slot\n");
     return nullptr;
+  }
 
+  // Get the texture's filename.
+  auto filename = pFileBased->Filename();
+  if (!CRhinoFileUtilities::FileExists(filename))
+  {
+    ON_wString found;
+    if (::RhRdkFindFile(doc.RuntimeSerialNumber(), filename, found))
+      filename = found;
+  }
+
+  if (!CRhinoFileUtilities::FileExists(filename))
+  {
+    RhinoApp().Print(L"The mesh's bitmap texture file was not found\n");
+    return nullptr;
+  }
+
+  // Read the texture file into a dib.
   CRhinoDib dib;
   if (!dib.ReadFromFile(doc.RuntimeSerialNumber(), filename))
+  {
+    RhinoApp().Print(L"The mesh's bitmap texture file could not be loaded\n");
     return nullptr;
+  }
 
+  // Turn the bitmap slot off so the user can see the vertex colors in the viewport.
+  const auto* pMaterial = dynamic_cast<const CRhRdkMaterial*>(pContent);
+  if (nullptr != pMaterial)
+  {
+    CRhRdkContentUndo cu(doc);
+    cu.ModifyContent(*pMaterial);
+    auto& m = pMaterial->BeginChange(RhRdkChangeContext::Program);
+    m.SetChildSlotOn(CS_MAT_BITMAP_TEXTURE, false);
+    m.EndChange();
+  }
+
+  // Make a new mesh to set vertex colors on.
+  auto* mesh_with_colors = new ON_Mesh(*mesh);
+
+  // Calculate the vertex colors for the new mesh and set them.
   int size_x = dib.Width() - 1;
   int size_y = dib.Height() - 1;
-
-  auto* mesh_with_colors = new ON_Mesh(*mesh);
 
   const int tc_count = mesh_with_colors->m_T.Count();
   mesh_with_colors->m_C.Reserve(tc_count);
