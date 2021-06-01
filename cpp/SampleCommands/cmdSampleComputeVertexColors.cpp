@@ -75,16 +75,16 @@ ON_Mesh* CCommandSampleComputeVertexColors::ComputeVertexColors(CRhinoDoc& doc, 
     return nullptr;
 
   // Find the render material assigned to the mesh.
-  const auto& material = doc.m_material_table[mesh_obj->Attributes().m_material_index];
-  const auto* pContent = doc.Contents().Find(material.RdkMaterialInstanceId());
-  if (nullptr == pContent)
+  ON_COMPONENT_INDEX ci; // Not needed to get the whole object material.
+  auto* pMaterial = mesh_obj->ObjectRdkMaterial(ci);
+  if (nullptr == pMaterial)
   {
     RhinoApp().Print(L"The mesh does not have a render material\n");
     return nullptr;
   }
 
   // Get the texture in the bitmap slot.
-  const auto* pTexture = pContent->FindChild(CS_MAT_BITMAP_TEXTURE);
+  const auto* pTexture = pMaterial->FindChild(CS_MAT_BITMAP_TEXTURE);
   auto* pFileBased = dynamic_cast<const IRhRdkFileBasedContent*>(pTexture);
   if (nullptr == pFileBased)
   {
@@ -116,15 +116,11 @@ ON_Mesh* CCommandSampleComputeVertexColors::ComputeVertexColors(CRhinoDoc& doc, 
   }
 
   // Turn the bitmap slot off so the user can see the vertex colors in the viewport.
-  const auto* pMaterial = dynamic_cast<const CRhRdkMaterial*>(pContent);
-  if (nullptr != pMaterial)
-  {
-    CRhRdkContentUndo cu(doc);
-    cu.ModifyContent(*pMaterial);
-    auto& m = pMaterial->BeginChange(RhRdkChangeContext::Program);
-    m.SetChildSlotOn(CS_MAT_BITMAP_TEXTURE, false);
-    m.EndChange();
-  }
+  CRhRdkContentUndo cu(doc);
+  cu.ModifyContent(*pMaterial);
+  auto& m = pMaterial->BeginChange(RhRdkChangeContext::Program);
+  m.SetChildSlotOn(CS_MAT_BITMAP_TEXTURE, false);
+  m.EndChange();
 
   // Make a new mesh to set vertex colors on.
   auto* mesh_with_colors = new ON_Mesh(*mesh);
