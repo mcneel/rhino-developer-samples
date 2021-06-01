@@ -44,9 +44,13 @@ namespace SampleCsCommands
     {
       var sphere = new Sphere(Plane.WorldXY, 10.0);
       var mesh = Mesh.CreateFromSphere(sphere, 10, 10);
-      var material = doc.Materials[-1]; // -1 is out of range; the current material is returned.
 
-      var conduit = new SampleCsDrawMeshConduit(mesh, material)
+      var mat = new Material
+      {
+        DiffuseColor = System.Drawing.Color.Red
+      };
+
+      var conduit = new SampleCsDrawMeshConduit(mesh, mat)
       {
         Enabled = true
       };
