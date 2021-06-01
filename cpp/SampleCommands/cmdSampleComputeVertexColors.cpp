@@ -76,7 +76,7 @@ ON_Mesh* CCommandSampleComputeVertexColors::ComputeVertexColors(CRhinoDoc& doc, 
 
   // Find the render material assigned to the mesh.
   ON_COMPONENT_INDEX ci; // Not needed to get the whole object material.
-  auto* pMaterial = mesh_obj->ObjectRdkMaterial(ci);
+  const auto* pMaterial = mesh_obj->ObjectRdkMaterial(ci);
   if (nullptr == pMaterial)
   {
     RhinoApp().Print(L"The mesh does not have a render material\n");
