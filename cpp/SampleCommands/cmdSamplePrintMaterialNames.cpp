@@ -27,8 +27,12 @@ static class CCommandSamplePrintMaterialNames theSamplePrintMaterialNamesCommand
 
 CRhinoCommand::result CCommandSamplePrintMaterialNames::RunCommand(const CRhinoCommandContext& context)
 {
-  PrintMaterialTable(context.m_doc);
-  PrintRdkMaterialTable(context.m_doc);
+  auto* pDoc = context.Document();
+  if (nullptr == pDoc)
+    return failure;
+
+  PrintMaterialTable(*pDoc);
+  PrintRdkMaterialTable(*pDoc);
 
   return CRhinoCommand::success;
 }
