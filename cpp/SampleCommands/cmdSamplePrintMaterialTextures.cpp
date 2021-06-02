@@ -23,23 +23,47 @@ public:
 // The one and only CCommandSamplePrintMaterialTextures object
 static class CCommandSamplePrintMaterialTextures theSamplePrintMaterialTexturesCommand;
 
-static void PrintTexture(int num, const wchar_t* slot, const CRhRdkContent* pChild)
+static void PrintChild(const CRhRdkContent& child)
 {
-  if (nullptr != pChild)
+  RhinoApp().Print(L"Child slot: '%s'", static_cast<const wchar_t*>(child.ChildSlotName()));
+
+  if (child.IsKind(CRhRdkContent::Kinds::Texture))
   {
-    auto* pFileBased = dynamic_cast<const IRhRdkFileBasedContent*>(pChild);
+    auto sDesc = ON_wString(L"'") + child.TypeDescription() + L"'";
+
+    auto* pFileBased = dynamic_cast<const IRhRdkFileBasedContent*>(&child);
     if (nullptr != pFileBased)
     {
-      RhinoApp().Print(L"Material(%d) %s texture is '%s'\n", num, slot, static_cast<const wchar_t*>(pFileBased->Filename()));
+      sDesc = sDesc + L", Filename: '" + pFileBased->Filename() + L"'";
     }
-    else
+
+    RhinoApp().Print(L", Description: %s\n", static_cast<const wchar_t*>(sDesc));
+  }
+  else
+  {
+    RhinoApp().Print(L" is not a texture\n");
+  }
+}
+
+static void PrintContent(const CRhRdkContent& c, int count)
+{
+  auto it = c.GetChildIterator();
+
+  const auto* pChild = it.GetNextChild();
+  if (nullptr != pChild)
+  {
+    while (nullptr != pChild)
     {
-      RhinoApp().Print(L"Material(%d) %s texture is not file-based\n", num, slot);
+      RhinoApp().Print(L"Material[%d]: ", count);
+
+      PrintChild(*pChild);
+
+      pChild = it.GetNextChild();
     }
   }
   else
   {
-    RhinoApp().Print(L"Material(%d) %s slot is empty\n", num, slot);
+    RhinoApp().Print(L"Material[%d]: No textures found\n", count);
   }
 }
 
@@ -49,18 +73,22 @@ CRhinoCommand::result CCommandSamplePrintMaterialTextures::RunCommand(const CRhi
   if (nullptr == pDoc)
     return failure;
 
+  int count = 0;
   auto* pIt = pDoc->Contents().NewIterator(CRhRdkContent::Kinds::Material, CRhRdkDocument::it_Normal);
 
-  int index = 0;
-  const CRhRdkContent* pContent = nullptr;
-  while (nullptr != (pContent = pIt->Next()))
+  const auto* pContent = pIt->Next();
+  if (nullptr != pContent)
   {
-    PrintTexture(index, L"bitmap"      , pContent->FindChild(CS_MAT_BITMAP_TEXTURE));
-    PrintTexture(index, L"bump"        , pContent->FindChild(CS_MAT_BUMP_TEXTURE));
-    PrintTexture(index, L"transparency", pContent->FindChild(CS_MAT_TRANSPARENCY_TEXTURE));
-    PrintTexture(index, L"environment" , pContent->FindChild(CS_MAT_ENVIRONMENT_TEXTURE));
+    while (nullptr != pContent)
+    {
+      PrintContent(*pContent, count++);
 
-    index++;
+      pContent = pIt->Next();
+    }
+  }
+  else
+  {
+    RhinoApp().Print(L"No materials found\n");
   }
 
   delete pIt;
