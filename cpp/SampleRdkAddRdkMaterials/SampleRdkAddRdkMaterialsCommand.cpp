@@ -1,16 +1,16 @@
 ﻿
 #include "stdafx.h"
 
-static class CSampleRdkAddRdkMaterials : public CRhinoCommand
+static class CSampleRdkAddRdkMaterialsCmd : public CRhinoCommand
 {
 protected:
   virtual UUID CommandUUID() override { static const UUID uuid = { 0x43991fff, 0x967a, 0x44d8, { 0x86, 0x60, 0x2f, 0x66, 0xc7, 0x40, 0xf2, 0x12 } }; return uuid; }
   virtual const wchar_t* EnglishCommandName() override { return L"SampleRdkAddRdkMaterials"; }
   virtual CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 }
-theSampleRdkAddRdkMaterials;
+theSampleRdkAddRdkMaterialsCmd;
 
-CRhinoCommand::result CSampleRdkAddRdkMaterials::RunCommand(const CRhinoCommandContext& context)
+CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoCommandContext& context)
 {
   auto* pDoc = context.Document();
   if (nullptr == pDoc)

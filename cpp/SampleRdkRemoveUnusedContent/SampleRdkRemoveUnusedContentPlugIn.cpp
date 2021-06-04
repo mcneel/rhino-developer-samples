@@ -1,8 +1,8 @@
 
 #include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
-#include "SampleRdkAddRdkMaterialsPlugIn.h"
-#include "SampleRdkAddRdkMaterialsRdkPlugIn.h"
+#include "SampleRdkRemoveUnusedContentPlugIn.h"
+#include "SampleRdkRemoveUnusedContentRdkPlugIn.h"
 #include "Resource.h"
 
 // The plug-in object must be constructed before any plug-in classes derived
@@ -17,11 +17,11 @@ RHINO_PLUG_IN_DECLARE
 
 // Rhino plug-in name
 // Provide a short, friendly name for this plug-in.
-RHINO_PLUG_IN_NAME( L"SampleRdkAddRdkMaterials" );
+RHINO_PLUG_IN_NAME( L"SampleRdkRemoveUnusedContent" );
 
 // Rhino plug-in id
 // Provide a unique uuid for this plug-in
-RHINO_PLUG_IN_ID( L"137F94AD-675A-44D7-860E-0F6C860071E1" );
+RHINO_PLUG_IN_ID( L"E0C7669C-EE93-4260-A3D5-366BDA9ACAFB" );
 
 // Rhino plug-in version
 // Provide a version number string for this plug-in
@@ -29,7 +29,7 @@ RHINO_PLUG_IN_VERSION( __DATE__ "  " __TIME__ )
 
 // Rhino plug-in description
 // Provide a description of this plug-in
-RHINO_PLUG_IN_DESCRIPTION(L"SampleRdkAddRdkMaterials plug-in for Rhinoceros®");
+RHINO_PLUG_IN_DESCRIPTION(L"SampleRdkRemoveUnusedContent plug-in for Rhinoceros®");
 
 // Rhino plug-in icon resource id
 // Provide an icon resource this plug-in.
@@ -46,34 +46,34 @@ RHINO_PLUG_IN_DEVELOPER_EMAIL(L"devsupport@mcneel.com");
 RHINO_PLUG_IN_DEVELOPER_WEBSITE(L"http://www.rhino3d.com");
 RHINO_PLUG_IN_UPDATE_URL(L"https://github.com/mcneel/rhino-developer-samples");
 
-// The one and only CSampleRdkAddRdkMaterialsPlugIn object
-static CSampleRdkAddRdkMaterialsPlugIn thePlugIn;
+// The one and only CSampleRdkRemoveUnusedContentPlugIn object
+static CSampleRdkRemoveUnusedContentPlugIn thePlugIn;
 
-CSampleRdkAddRdkMaterialsPlugIn& SampleRdkAddRdkMaterialsPlugIn()
+CSampleRdkRemoveUnusedContentPlugIn& SampleRdkRemoveUnusedContentPlugIn()
 {
-  // Return a reference to the one and only CSampleRdkAddRdkMaterialsPlugIn object
+  // Return a reference to the one and only CSampleRdkRemoveUnusedContentPlugIn object
   return thePlugIn;
 }
 
-CSampleRdkAddRdkMaterialsPlugIn::CSampleRdkAddRdkMaterialsPlugIn()
+CSampleRdkRemoveUnusedContentPlugIn::CSampleRdkRemoveUnusedContentPlugIn()
 {
 	// Description:
-	//   CSampleRdkAddRdkMaterialsPlugIn constructor. The constructor is called when the
+	//   CSampleRdkRemoveUnusedContentPlugIn constructor. The constructor is called when the
 	//   plug-in is loaded and "thePlugIn" is constructed. Once the plug-in
-	//   is loaded, CSampleRdkAddRdkMaterialsPlugIn::OnLoadPlugIn() is called. The
+	//   is loaded, CSampleRdkRemoveUnusedContentPlugIn::OnLoadPlugIn() is called. The
 	//   constructor should be simple and solid. Do anything that might fail in
-	//   CSampleRdkAddRdkMaterialsPlugIn::OnLoadPlugIn().
+	//   CSampleRdkRemoveUnusedContentPlugIn::OnLoadPlugIn().
 
 	// TODO: Add construction code here
 	m_plugin_version = RhinoPlugInVersion();
 }
 
-CSampleRdkAddRdkMaterialsPlugIn::~CSampleRdkAddRdkMaterialsPlugIn()
+CSampleRdkRemoveUnusedContentPlugIn::~CSampleRdkRemoveUnusedContentPlugIn()
 {
 	// Description:
-	//   CSampleRdkAddRdkMaterialsPlugIn destructor. The destructor is called to destroy
+	//   CSampleRdkRemoveUnusedContentPlugIn destructor. The destructor is called to destroy
 	//   "thePlugIn" when the plug-in is unloaded. Immediately before the
-	//   DLL is unloaded, CSampleRdkAddRdkMaterialsPlugIn::OnUnloadPlugin() is called. Do
+	//   DLL is unloaded, CSampleRdkRemoveUnusedContentPlugIn::OnUnloadPlugin() is called. Do
 	//   not do too much here. Be sure to clean up any memory you have allocated
 	//   with onmalloc(), onrealloc(), oncalloc(), or onstrdup().
 
@@ -83,7 +83,7 @@ CSampleRdkAddRdkMaterialsPlugIn::~CSampleRdkAddRdkMaterialsPlugIn()
 /////////////////////////////////////////////////////////////////////////////
 // Required overrides
 
-const wchar_t* CSampleRdkAddRdkMaterialsPlugIn::PlugInName() const
+const wchar_t* CSampleRdkRemoveUnusedContentPlugIn::PlugInName() const
 {
 	// Description:
 	//   Plug-in name display string.  This name is displayed by Rhino when
@@ -94,7 +94,7 @@ const wchar_t* CSampleRdkAddRdkMaterialsPlugIn::PlugInName() const
 	return RhinoPlugInName();
 }
 
-const wchar_t* CSampleRdkAddRdkMaterialsPlugIn::PlugInVersion() const
+const wchar_t* CSampleRdkRemoveUnusedContentPlugIn::PlugInVersion() const
 {
 	// Description:
 	//   Plug-in version display string. This name is displayed by Rhino
@@ -105,7 +105,7 @@ const wchar_t* CSampleRdkAddRdkMaterialsPlugIn::PlugInVersion() const
 	return m_plugin_version;
 }
 
-GUID CSampleRdkAddRdkMaterialsPlugIn::PlugInID() const
+GUID CSampleRdkRemoveUnusedContentPlugIn::PlugInID() const
 {
 	// Description:
 	//   Plug-in unique identifier. The identifier is used by Rhino to
@@ -116,7 +116,7 @@ GUID CSampleRdkAddRdkMaterialsPlugIn::PlugInID() const
 	return ON_UuidFromString( RhinoPlugInId() );
 }
 
-BOOL CSampleRdkAddRdkMaterialsPlugIn::OnLoadPlugIn()
+BOOL CSampleRdkRemoveUnusedContentPlugIn::OnLoadPlugIn()
 {
 	// Description:
 	//   Called after the plug-in is loaded and the constructor has been
@@ -143,7 +143,7 @@ BOOL CSampleRdkAddRdkMaterialsPlugIn::OnLoadPlugIn()
 
 	// TODO: Add render plug-in initialization code here.
 
-	m_pRdkPlugIn = new CSampleRdkAddRdkMaterialsRdkPlugIn;
+	m_pRdkPlugIn = new CSampleRdkRemoveUnusedContentRdkPlugIn;
 
 	ON_wString wStr;
 
@@ -171,7 +171,7 @@ BOOL CSampleRdkAddRdkMaterialsPlugIn::OnLoadPlugIn()
   return CRhinoRenderPlugIn::OnLoadPlugIn();
 }
 
-void CSampleRdkAddRdkMaterialsPlugIn::OnUnloadPlugIn()
+void CSampleRdkRemoveUnusedContentPlugIn::OnUnloadPlugIn()
 {
 	// Description:
 	//    Called one time when plug-in is about to be unloaded. By this time,
@@ -190,7 +190,7 @@ void CSampleRdkAddRdkMaterialsPlugIn::OnUnloadPlugIn()
 	CRhinoRenderPlugIn::OnUnloadPlugIn();
 }
 
-CRhinoCommand::result CSampleRdkAddRdkMaterialsPlugIn::Render(const CRhinoCommandContext&, bool)
+CRhinoCommand::result CSampleRdkRemoveUnusedContentPlugIn::Render(const CRhinoCommandContext&, bool)
 {
 	return CRhinoCommand::failure;
 }
@@ -198,7 +198,7 @@ CRhinoCommand::result CSampleRdkAddRdkMaterialsPlugIn::Render(const CRhinoComman
 /////////////////////////////////////////////////////////////////////////////
 // Online help overrides
 
-BOOL CSampleRdkAddRdkMaterialsPlugIn::AddToPlugInHelpMenu() const
+BOOL CSampleRdkRemoveUnusedContentPlugIn::AddToPlugInHelpMenu() const
 {
 	// Description:
 	//   Return true to have your plug-in name added to the Rhino help menu.
@@ -207,12 +207,12 @@ BOOL CSampleRdkAddRdkMaterialsPlugIn::AddToPlugInHelpMenu() const
 	return FALSE;
 }
 
-BOOL CSampleRdkAddRdkMaterialsPlugIn::OnDisplayPlugInHelp( HWND hWnd ) const
+BOOL CSampleRdkRemoveUnusedContentPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
 	// Description:
 	//   Called when the user requests help about your plug-in.
 	//   It should display a standard Windows Help file (.hlp or .chm).
 
 	// TODO: Add support for online help here.
-	return CRhinoRenderPlugIn::OnDisplayPlugInHelp( hWnd );
+	return CRhinoRenderPlugIn::OnDisplayPlugInHelp(hWnd);
 }

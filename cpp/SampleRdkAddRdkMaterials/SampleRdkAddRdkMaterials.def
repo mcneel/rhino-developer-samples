@@ -1,4 +1,4 @@
-; SampleRdkMaterialWithChildren.def : Declares the module parameters for the DLL.
+; SampleRdkAddRdkMaterials.def : Declares the module parameters for the DLL.
 
 LIBRARY
 
