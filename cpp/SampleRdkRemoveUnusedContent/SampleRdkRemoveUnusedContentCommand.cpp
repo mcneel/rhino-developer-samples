@@ -1,6 +1,16 @@
 
 #include "stdafx.h"
 
+/** \class CSampleRdkRemoveUnusedContentCmd 
+
+  To remove all unused render materials programatically you can run the RenderRemoveUnusedMaterials command.
+
+    const auto doc_sn = doc.RuntimeSerialNumber();
+    RhinoApp().RunScript(doc_sn, L"RenderRemoveUnusedMaterials", 0);
+
+  However, you may only want to remove a specific unused render content. This command demonstrates how to do that.
+
+*/
 static class CSampleRdkRemoveUnusedContentCmd : public CRhinoCommand
 {
 protected:
@@ -16,7 +26,7 @@ CRhinoCommand::result CSampleRdkRemoveUnusedContentCmd::RunCommand(const CRhinoC
   if (nullptr == pDoc)
     return failure;
 
-  // This example finds and deletes the material called 'Custom'.
+  // This example finds and deletes a material called 'Custom'.
   const wchar_t* name = L"Custom";
 
   // Find the content by name.
@@ -36,13 +46,13 @@ CRhinoCommand::result CSampleRdkRemoveUnusedContentCmd::RunCommand(const CRhinoC
     return failure;
   }
 
-#ifdef RHINO_7_8_UPWARDS // The following is only supported from Rhino 7.8 onwards due to a bug.
+#ifdef RHINO_7_8_UPWARDS // The following is only supported from Rhino 7.8 onwards due to a bug in earlier versions.
   // Detach the content from the document.
   auto& contents = pDoc->Contents().BeginChange(RhRdkChangeContext::Program);
   auto* pDetach = contents.Detach(c);
   contents.EndChange();
 #else
-  // This method is not recomended but is the only way until Rhino 7.8 if you want undo support.
+  // This method is not recommended but is the only way until Rhino 7.8 if you want undo support.
   auto& rdkDoc = CRhRdkDocument::Get(*pDoc).BeginChange(RhRdkChangeContext::Program);
   auto* pDetach = rdkDoc.DetachContent(c, CRhRdkEventWatcher::DetachReason::Delete);
   rdkDoc.EndChange();
