@@ -189,6 +189,7 @@
     <Compile Include="SampleCsPrintViewList.cs" />
     <Compile Include="SampleCsProjectCurvesToBrep.cs" />
     <Compile Include="SampleCsProjectPointToMesh.cs" />
+    <Compile Include="SampleCsPullGripsToMesh.cs" />
     <Compile Include="SampleCsQuadRemesh.cs" />
     <Compile Include="SampleCsRenderBackground.cs" />
     <Compile Include="SampleCsRestoreLayerState.cs" />
