@@ -220,6 +220,7 @@
     <ClCompile Include="cmdSampleScaleTextHeight.cpp" />
     <ClCompile Include="cmdSampleScripter.cpp" />
     <ClCompile Include="cmdSampleSection.cpp" />
+    <ClCompile Include="cmdSampleSelAdjacentSubDFaces.cpp" />
     <ClCompile Include="cmdSampleSelectByName.cpp" />
     <ClCompile Include="cmdSampleSelectPolylineSegment.cpp" />
     <ClCompile Include="cmdSampleSelectRegion.cpp" />
