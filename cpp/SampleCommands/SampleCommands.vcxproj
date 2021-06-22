@@ -220,6 +220,7 @@
     <ClCompile Include="cmdSampleScaleTextHeight.cpp" />
     <ClCompile Include="cmdSampleScripter.cpp" />
     <ClCompile Include="cmdSampleSection.cpp" />
+    <ClCompile Include="cmdSampleSelAdjacentSubDFaces.cpp" />
     <ClCompile Include="cmdSampleSelectByName.cpp" />
     <ClCompile Include="cmdSampleSelectPolylineSegment.cpp" />
     <ClCompile Include="cmdSampleSelectRegion.cpp" />
@@ -282,6 +283,7 @@
     <ClCompile Include="SampleFunctions.cpp" />
     <ClCompile Include="SampleObjectUserData.cpp" />
     <ClCompile Include="SampleRectangleObject.cpp" />
+    <ClCompile Include="cmdSampleRTreeTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

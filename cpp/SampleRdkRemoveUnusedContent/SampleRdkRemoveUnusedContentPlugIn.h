@@ -1,11 +1,11 @@
 
 #pragma once
 
-class CSampleRdkAddRdkMaterialsPlugIn : public CRhinoRenderPlugIn
+class CSampleRdkRemoveUnusedContentPlugIn : public CRhinoRenderPlugIn
 {
 public:
-  CSampleRdkAddRdkMaterialsPlugIn();
-  virtual ~CSampleRdkAddRdkMaterialsPlugIn();
+  CSampleRdkRemoveUnusedContentPlugIn();
+  virtual ~CSampleRdkRemoveUnusedContentPlugIn();
 
   // Required overrides
   virtual const wchar_t* PlugInName() const override;
@@ -22,9 +22,9 @@ public:
 
 private:
   ON_wString m_plugin_version;
-  class CSampleRdkAddRdkMaterialsRdkPlugIn* m_pRdkPlugIn = nullptr;
+  class CSampleRdkRemoveUnusedContentRdkPlugIn* m_pRdkPlugIn = nullptr;
 
   // TODO: Add additional class information here
 };
 
-CSampleRdkAddRdkMaterialsPlugIn& SampleRdkAddRdkMaterialsPlugIn();
+CSampleRdkRemoveUnusedContentPlugIn& SampleRdkRemoveUnusedContentPlugIn();

@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 
 ////////////////////////////////////////////////////////////////
@@ -12,15 +13,9 @@ class CCommandSamplePrintMaterialNames : public CRhinoCommand
 {
 public:
   CCommandSamplePrintMaterialNames() = default;
-  UUID CommandUUID() override
-  {
-    // {8B3D01CD-56F7-49DC-B9D2-0297D80D29FF}
-    static const GUID SamplePrintMaterialNamesCommand_UUID =
-    { 0x8B3D01CD, 0x56F7, 0x49DC, { 0xB9, 0xD2, 0x02, 0x97, 0xD8, 0x0D, 0x29, 0xFF } };
-    return SamplePrintMaterialNamesCommand_UUID;
-  }
-  const wchar_t* EnglishCommandName() override { return L"SamplePrintMaterialNames"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
+  virtual UUID CommandUUID() override { static const UUID uuid = { 0x8B3D01CD, 0x56F7, 0x49DC, { 0xB9, 0xD2, 0x02, 0x97, 0xD8, 0x0D, 0x29, 0xFF } }; return uuid; }
+  virtual const wchar_t* EnglishCommandName() override { return L"SamplePrintMaterialNames"; }
+  virtual CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
 
 private:
   void PrintMaterialTable(CRhinoDoc& doc);
@@ -32,18 +27,22 @@ static class CCommandSamplePrintMaterialNames theSamplePrintMaterialNamesCommand
 
 CRhinoCommand::result CCommandSamplePrintMaterialNames::RunCommand(const CRhinoCommandContext& context)
 {
-  PrintMaterialTable(context.m_doc);
-  PrintRdkMaterialTable(context.m_doc);
+  auto* pDoc = context.Document();
+  if (nullptr == pDoc)
+    return failure;
+
+  PrintMaterialTable(*pDoc);
+  PrintRdkMaterialTable(*pDoc);
+
   return CRhinoCommand::success;
 }
 
 void CCommandSamplePrintMaterialNames::PrintMaterialTable(CRhinoDoc& doc)
 {
-  const CRhinoMaterialTable& material_table = doc.m_material_table;
   int index = 0;
-  for (int i = 0; i < material_table.MaterialCount(); i++)
+  for (int i = 0; i < doc.m_material_table.MaterialCount(); i++)
   {
-    const CRhinoMaterial& material = material_table[i];
+    const auto& material = doc.m_material_table[i];
     if (!material.IsDeleted())
     {
       ON_wString name = material.Name();
@@ -54,27 +53,16 @@ void CCommandSamplePrintMaterialNames::PrintMaterialTable(CRhinoDoc& doc)
 
 void CCommandSamplePrintMaterialNames::PrintRdkMaterialTable(CRhinoDoc& doc)
 {
-  const CRhRdkDocument& rdk_doc = CRhRdkDocument::Get(doc);
-  const IRhRdkContentList& material_list = rdk_doc.MaterialList();
-
-  IRhRdkContentList::Iterator* iterator = material_list.NewIterator();
-  if (nullptr == iterator)
-    return;
+  auto* pIt = doc.Contents().NewIterator(CRhRdkContent::Kinds::Material, CRhRdkDocument::it_Normal);
 
   int index = 0;
-  const CRhRdkContent* content = nullptr;
-  while (nullptr != (content = iterator->Next()))
+  const CRhRdkContent* pContent = nullptr;
+  while (nullptr != (pContent = pIt->Next()))
   {
-    if (content->IsKind(CRhRdkContent::Kinds::Material))
-    {
-      const CRhRdkMaterial* material = static_cast<const CRhRdkMaterial*>(content);
-      if (nullptr != material)
-      {
-        ON_wString name = material->InstanceName();
-        RhinoApp().Print(L"RDK Material(%d) = %s\n", index++, static_cast<const wchar_t*>(name));
-      }
-    }
+    RhinoApp().Print(L"RDK Material(%d) = %s\n", index++, static_cast<const wchar_t*>(pContent->DisplayName()));
   }
+
+  delete pIt;
 }
 
 #pragma endregion
