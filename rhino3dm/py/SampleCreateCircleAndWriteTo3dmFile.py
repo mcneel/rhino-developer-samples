@@ -8,4 +8,4 @@ for i in range(20):
 	circle = rhino3dm.Circle(pt, random.uniform(1,4))
 	model.Objects.AddCircle(circle)
 	
-model.Write("circle.3dm", 7)
+model.Write("circle.3dm")
