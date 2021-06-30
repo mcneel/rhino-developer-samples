@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SampleGhPlatonics.Properties {
+namespace SampleGhTools.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SampleGhPlatonics.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SampleGhPlatonics.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SampleGhTools.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,9 +63,9 @@ namespace SampleGhPlatonics.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Cube_24x24 {
+        internal static System.Drawing.Bitmap ExtrudePlanarCurve_24x24 {
             get {
-                object obj = ResourceManager.GetObject("Cube_24x24", resourceCulture);
+                object obj = ResourceManager.GetObject("ExtrudePlanarCurve_24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace SampleGhPlatonics.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Dodecahedron_24x24 {
+        internal static System.Drawing.Bitmap FilterInstanceDefinitions_24x24 {
             get {
-                object obj = ResourceManager.GetObject("Dodecahedron_24x24", resourceCulture);
+                object obj = ResourceManager.GetObject("FilterInstanceDefinitions_24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace SampleGhPlatonics.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Icosahedron_24x24 {
+        internal static System.Drawing.Bitmap InstanceDefinitionGeometry_24x24 {
             get {
-                object obj = ResourceManager.GetObject("Icosahedron_24x24", resourceCulture);
+                object obj = ResourceManager.GetObject("InstanceDefinitionGeometry_24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace SampleGhPlatonics.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Octahedron_24x24 {
+        internal static System.Drawing.Bitmap InstanceDefinitionProperties_24x24 {
             get {
-                object obj = ResourceManager.GetObject("Octahedron_24x24", resourceCulture);
+                object obj = ResourceManager.GetObject("InstanceDefinitionProperties_24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace SampleGhPlatonics.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SampleGhPlatonics_24x24 {
+        internal static System.Drawing.Bitmap InstanceDefinitions_24x24 {
             get {
-                object obj = ResourceManager.GetObject("SampleGhPlatonics_24x24", resourceCulture);
+                object obj = ResourceManager.GetObject("InstanceDefinitions_24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,29 @@ namespace SampleGhPlatonics.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Tetrahedron_24x24 {
+        internal static System.Drawing.Bitmap InstanceObjectProperties_24x24 {
             get {
-                object obj = ResourceManager.GetObject("Tetrahedron_24x24", resourceCulture);
+                object obj = ResourceManager.GetObject("InstanceObjectProperties_24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap RectangleCenter_24x24 {
+            get {
+                object obj = ResourceManager.GetObject("RectangleCenter_24x24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SampleGhTools_24x24 {
+            get {
+                object obj = ResourceManager.GetObject("SampleGhTools_24x24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

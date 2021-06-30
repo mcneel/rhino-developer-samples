@@ -41,7 +41,6 @@ namespace SampleCsEto.Views
       Content = layout;
     }
 
-    private readonly uint m_document_sn;
 
     public string Title { get; }
 

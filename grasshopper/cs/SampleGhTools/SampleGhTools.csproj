@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F0AD165F-8155-44D8-93E1-6FE4E618E4AD}</ProjectGuid>
+    <ProjectGuid>{AC229544-4832-4DB6-8DC3-91755F41DFE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SampleGhOnLoad</RootNamespace>
-    <AssemblyName>SampleGhOnLoad</AssemblyName>
+    <RootNamespace>SampleGhTools</RootNamespace>
+    <AssemblyName>SampleGhTools</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -42,14 +42,32 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Blocks\FilterInstanceDefinitions.cs" />
+    <Compile Include="Components\Blocks\InstanceComponentBase.cs" />
+    <Compile Include="Components\Blocks\InstanceDefinitionGeometry.cs" />
+    <Compile Include="Components\Blocks\InstanceDefinitionProperties.cs" />
+    <Compile Include="Components\Blocks\InstanceDefinitions.cs" />
+    <Compile Include="Components\Blocks\InstanceObjectProperties.cs" />
+    <Compile Include="Components\Geometry\ExrudePlanarCurveComponent.cs" />
+    <Compile Include="Components\Geometry\RectangleCenterComponent.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SampleGhOnLoadAssemblyPriority.cs" />
-    <Compile Include="SampleGhOnLoadInfo.cs" />
+    <Compile Include="SampleGhToolsInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\ExtrudePlanarCurve_24x24.png" />
+    <None Include="Resources\SampleGhTools_24x24.png" />
+    <None Include="Resources\FilterInstanceDefinitions_24x24.png" />
+    <None Include="Resources\InstanceDefinitionGeometry_24x24.png" />
+    <None Include="Resources\InstanceDefinitionProperties_24x24.png" />
+    <None Include="Resources\InstanceDefinitions_24x24.png" />
+    <None Include="Resources\InstanceObjectProperties_24x24.png" />
+    <Content Include="Resources\RectangleCenter_24x24.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -58,15 +76,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SampleGhOnLoad_24x24.png" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Grasshopper">
       <Version>7.7.21160.5001</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

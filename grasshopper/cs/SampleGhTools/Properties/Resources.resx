@@ -118,16 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SampleGhFibonacciComponent_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SampleGhFibonacciComponent_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ExtrudePlanarCurve_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExtrudePlanarCurve_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SampleGhTaskCapableComponent_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SampleGhTaskCapableComponent_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="FilterInstanceDefinitions_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FilterInstanceDefinitions_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SampleGhTaskFibonacciComponent_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SampleGhTaskFibonacciComponent_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="InstanceDefinitionGeometry_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InstanceDefinitionGeometry_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SampleGhTaskVolumeComponent_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SampleGhTaskVolumeComponent_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="InstanceDefinitionProperties_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InstanceDefinitionProperties_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InstanceDefinitions_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InstanceDefinitions_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InstanceObjectProperties_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InstanceObjectProperties_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RectangleCenter_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RectangleCenter_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SampleGhTools_24x24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SampleGhTools_24x24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
