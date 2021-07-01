@@ -89,7 +89,8 @@ namespace SampleGhTaskCapable.Components
             AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Curve must be planar for Area calculation");
             return null;
           }
-          mp = AreaMassProperties.Compute(curve, DocumentTolerance());
+          var geom = new GeometryBase[] { curve };
+          mp = AreaMassProperties.Compute(geom, true, false, false, false);
         }
         if (null != mp)
           return new SolveResults { Area = mp.Area };
