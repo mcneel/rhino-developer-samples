@@ -78,6 +78,8 @@ namespace SampleGhTaskCapable.Components
         }
         if (null != mp)
           return new SolveResults { Volume = mp.Volume };
+        else
+          AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Volume could not be computed.");
       }
 
       return null;

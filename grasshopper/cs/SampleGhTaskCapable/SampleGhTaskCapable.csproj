@@ -42,6 +42,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\SampleGhTaskAreaComponent.cs" />
     <Compile Include="Components\SampleGhTaskVolumeComponent.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -76,6 +77,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SampleGhTaskVolumeComponent_24x24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SampleGhTaskAreaComponent_24x24.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
