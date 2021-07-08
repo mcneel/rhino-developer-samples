@@ -25,6 +25,7 @@
     <ClCompile Include="cmdSampleHidePoints.cpp" />
     <ClCompile Include="cmdSampleMappingUvwTransform.cpp" />
     <ClCompile Include="cmdSampleMergeSrf.cpp" />
+    <ClCompile Include="cmdSampleMeshPolygon.cpp" />
     <ClCompile Include="cmdSampleOpen3dmFile.cpp" />
     <ClCompile Include="cmdSample2View.cpp" />
     <ClCompile Include="cmdSampleAddCage.cpp" />
