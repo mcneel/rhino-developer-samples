@@ -11,6 +11,8 @@ namespace SampleCsEto.Views
   [System.Runtime.InteropServices.Guid("0E7780CA-F004-4AE7-B918-19E68BF7C7C9")]
   public class SampleCsEtoPanel : Panel, IPanel
   {
+    readonly uint m_document_sn = 0;
+
     /// <summary>
     /// Provide easy access to the SampleCsEtoPanel.GUID
     /// </summary>
