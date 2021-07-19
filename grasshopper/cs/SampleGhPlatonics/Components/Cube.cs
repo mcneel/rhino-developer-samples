@@ -12,7 +12,7 @@ namespace SampleGhPlatonics.Components
     /// Constructor
     /// </summary>
     public Cube()
-      : base("Cube", "U6", "Platonic solid with 6 faces", "Platonics")
+      : base("Cube", "U6", "Platonic solid with 6 faces")
     {
     }
 

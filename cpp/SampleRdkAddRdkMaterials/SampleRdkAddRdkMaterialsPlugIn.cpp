@@ -49,7 +49,7 @@ RHINO_PLUG_IN_UPDATE_URL(L"https://github.com/mcneel/rhino-developer-samples");
 // The one and only CSampleRdkAddRdkMaterialsPlugIn object
 static CSampleRdkAddRdkMaterialsPlugIn thePlugIn;
 
-CSampleRdkAddRdkMaterialsPlugIn& SampleRdkMaterialAutoUIPlugIn()
+CSampleRdkAddRdkMaterialsPlugIn& SampleRdkAddRdkMaterialsPlugIn()
 {
   // Return a reference to the one and only CSampleRdkAddRdkMaterialsPlugIn object
   return thePlugIn;
@@ -63,7 +63,7 @@ CSampleRdkAddRdkMaterialsPlugIn::CSampleRdkAddRdkMaterialsPlugIn()
 	//   is loaded, CSampleRdkAddRdkMaterialsPlugIn::OnLoadPlugIn() is called. The
 	//   constructor should be simple and solid. Do anything that might fail in
 	//   CSampleRdkAddRdkMaterialsPlugIn::OnLoadPlugIn().
-	
+
 	// TODO: Add construction code here
 	m_plugin_version = RhinoPlugInVersion();
 }
@@ -76,7 +76,7 @@ CSampleRdkAddRdkMaterialsPlugIn::~CSampleRdkAddRdkMaterialsPlugIn()
 	//   DLL is unloaded, CSampleRdkAddRdkMaterialsPlugIn::OnUnloadPlugin() is called. Do
 	//   not do too much here. Be sure to clean up any memory you have allocated
 	//   with onmalloc(), onrealloc(), oncalloc(), or onstrdup().
-	
+
 	// TODO: Add destruction code here
 }
 
@@ -89,7 +89,7 @@ const wchar_t* CSampleRdkAddRdkMaterialsPlugIn::PlugInName() const
 	//   Plug-in name display string.  This name is displayed by Rhino when
 	//   loading the plug-in, in the plug-in help menu, and in the Rhino
 	//   interface for managing plug-ins.
-	
+
 	// TODO: Return a short, friendly name for the plug-in.
 	return RhinoPlugInName();
 }
@@ -100,7 +100,7 @@ const wchar_t* CSampleRdkAddRdkMaterialsPlugIn::PlugInVersion() const
 	//   Plug-in version display string. This name is displayed by Rhino
 	//   when loading the plug-in and in the Rhino interface for managing
 	//   plug-ins.
-	
+
 	// TODO: Return the version number of the plug-in.
 	return m_plugin_version;
 }
@@ -110,7 +110,7 @@ GUID CSampleRdkAddRdkMaterialsPlugIn::PlugInID() const
 	// Description:
 	//   Plug-in unique identifier. The identifier is used by Rhino to
 	//   manage the plug-ins.
-	
+
 	// TODO: Return a unique identifier for the plug-in.
 	// {F4B670E4-C5CF-4FAE-A77A-E1BBE6764017}
 	return ON_UuidFromString( RhinoPlugInId() );
@@ -123,7 +123,7 @@ BOOL CSampleRdkAddRdkMaterialsPlugIn::OnLoadPlugIn()
 	//   run. This is a good place to perform any significant initialization,
 	//   license checking, and so on.  This function must return TRUE for
 	//   the plug-in to continue to load.
-	
+
 	// Remarks:
 	//    Plug-ins are not loaded until after Rhino is started and a default document
 	//    is created.  Because the default document already exists

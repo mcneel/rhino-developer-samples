@@ -11,7 +11,6 @@ def SampleQuadRemesh():
     
     go = Rhino.Input.Custom.GetObject()
     go.GeometryFilter = Rhino.DocObjects.ObjectType.Mesh
-    go.GeometryAttributeFilter = Rhino.Input.Custom.GeometryAttributeFilter.ClosedCurve
     go.SetCommandPrompt("Select Mesh to QuadRemesh")
     go.Get()
     if(go.CommandResult() != Rhino.Commands.Result.Success):

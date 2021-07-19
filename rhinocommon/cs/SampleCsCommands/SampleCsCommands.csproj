@@ -34,6 +34,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Eto">
+      <HintPath>C:\Program Files\Rhino 7\System\Eto.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Rhino.UI">
       <HintPath>C:\Program Files\Rhino 7\System\Rhino.UI.dll</HintPath>
       <Private>False</Private>
@@ -61,6 +65,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SampleCsAlignProfiles.cs" />
     <Compile Include="SampleCsApplyCrv.cs" />
     <Compile Include="SampleCsArc.cs" />
     <Compile Include="SampleCsCreateBooleanRegions.cs" />
@@ -70,6 +75,7 @@
     <Compile Include="SampleCsClipboard.cs" />
     <Compile Include="SampleCsContour.cs" />
     <Compile Include="SampleCsCreateNestedBlock.cs" />
+    <Compile Include="SampleCsDetailLock.cs" />
     <Compile Include="SampleCsDrawArrow.cs" />
     <Compile Include="SampleCsDrawGrayscale.cs" />
     <Compile Include="SampleCsDrawPin.cs" />
@@ -183,6 +189,7 @@
     <Compile Include="SampleCsPrintViewList.cs" />
     <Compile Include="SampleCsProjectCurvesToBrep.cs" />
     <Compile Include="SampleCsProjectPointToMesh.cs" />
+    <Compile Include="SampleCsPullGripsToMesh.cs" />
     <Compile Include="SampleCsQuadRemesh.cs" />
     <Compile Include="SampleCsRenderBackground.cs" />
     <Compile Include="SampleCsRestoreLayerState.cs" />
@@ -226,6 +233,7 @@
     <Compile Include="SampleCsUnweldAll.cs" />
     <Compile Include="SampleCsUtilities.cs" />
     <Compile Include="SampleCsViewCapture.cs" />
+    <Compile Include="SampleCsViewCaptureBoundingBox.cs" />
     <Compile Include="SampleCsViewportSize.cs" />
     <Compile Include="SampleCsViewSize.cs" />
     <Compile Include="SampleCsWorldToPageTransform.cs" />

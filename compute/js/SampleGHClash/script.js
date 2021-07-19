@@ -72,9 +72,9 @@ async function compute() {
     scene.add(points)
 
     // format data
-    let param1 = new RhinoCompute.Grasshopper.DataTree('RH_IN:mainMesh')
+    let param1 = new RhinoCompute.Grasshopper.DataTree('mainMesh')
     param1.append([0], [rhinoMeshData] )
-    let param2 = new RhinoCompute.Grasshopper.DataTree('RH_IN:collisionMeshes')
+    let param2 = new RhinoCompute.Grasshopper.DataTree('collisionMeshes')
     param2.append([0], rhinoCollisionMeshData)
 
     // Add all params to an array
@@ -98,7 +98,6 @@ async function compute() {
 function collectResults(responseJson) {
 
     const values = responseJson.values
-    console.log( responseJson )
 
     // clear doc
     if( doc !== undefined)

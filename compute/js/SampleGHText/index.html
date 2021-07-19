@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="data:;base64,=">
+        <title>RhinoCompute: GH Text</title>
+        <style>
+            body { margin: 0; font-family: Arial, Helvetica, sans-serif; }
+            input {width: 90%;}
+            #container {position: relative;}
+            #overlay {z-index: 1; width: 100%; }
+
+            #loader {
+                border: 5px solid #f3f3f3; /* Light grey */
+                border-top: 5px solid #3d3d3d; /* Grey */
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                z-index: 2;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loader"></div> 
+        <div id="container">
+            <div id="overlay">
+                <div>
+                    <input type="range" id="height" name="height" min="0" max="10" value="0.5" step="0.1">
+                    <label for="height">Height</label>
+                    <input type="text" id="text" name="text" size="25" placeholder="Enter some text">
+                    <label for="height">Text</label>
+                </div>
+            </div>
+            <button id="downloadButton" disabled>Download</button>
+        </div>
+        <script type="module" src="script.js"></script>
+    </body>
+</html>

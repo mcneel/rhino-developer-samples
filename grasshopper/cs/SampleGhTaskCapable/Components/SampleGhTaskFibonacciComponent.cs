@@ -10,7 +10,7 @@ namespace SampleGhTaskCapable.Components
   public class SampleGhTaskFibonacciComponent : GH_TaskCapableComponent<SampleGhTaskFibonacciComponent.SolveResults>
   {
     public SampleGhTaskFibonacciComponent()
-      : base("Sample Task Fibonacci", "SampleTFib", "Task computes a Fibonacci number.", "Sample", "C#")
+      : base("Task Fibonacci", "TFib", "Task computes a Fibonacci number.", "Sample", "Task")
     {
     }
 

@@ -41,13 +41,12 @@ async function compute(){
 
     const crvData = JSON.stringify( nCrv.encode() )
 
-    const param1 = new RhinoCompute.Grasshopper.DataTree('RH_IN:curve')
+    const param1 = new RhinoCompute.Grasshopper.DataTree('curve')
     param1.append([0], [ crvData ] )
 
     // clear values
     let trees = []
     trees.push(param1)
-    console.log(param1)
 
     // Call RhinoCompute
 
@@ -64,7 +63,6 @@ async function compute(){
 function collectResults(responseJson) {
 
   const values = responseJson.values
-  console.log( responseJson )
 
   // clear doc
   if( doc !== undefined)
@@ -169,9 +167,9 @@ function init () {
   scene.background = new THREE.Color(1,1,1)
   camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 )
 
-  camera.position.x = 50
+  camera.position.x = 100
   camera.position.y = 50
-  camera.position.z = 50
+  camera.position.z = 25
 
   renderer = new THREE.WebGLRenderer({antialias: true})
   renderer.setPixelRatio( window.devicePixelRatio )

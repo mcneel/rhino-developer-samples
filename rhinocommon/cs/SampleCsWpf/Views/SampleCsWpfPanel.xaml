@@ -6,6 +6,7 @@
              mc:Ignorable="d"
              Height="Auto"
              Width="Auto"
+             IsVisibleChanged="Control_VisibleChanged"
 >
   <Grid
     Margin="4"

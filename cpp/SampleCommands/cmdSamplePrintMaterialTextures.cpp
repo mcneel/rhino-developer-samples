@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 
 ////////////////////////////////////////////////////////////////
@@ -13,36 +14,85 @@ class CCommandSamplePrintMaterialTextures : public CRhinoCommand
 public:
   CCommandSamplePrintMaterialTextures() = default;
   ~CCommandSamplePrintMaterialTextures() = default;
-  UUID CommandUUID() override
-  {
-    // {515DCFC6-A4F9-42D1-95A0-16FD1923E339}
-    static const GUID SamplePrintMaterialTexturesCommand_UUID =
-    { 0x515DCFC6, 0xA4F9, 0x42D1, { 0x95, 0xA0, 0x16, 0xFD, 0x19, 0x23, 0xE3, 0x39 } };
-    return SamplePrintMaterialTexturesCommand_UUID;
-  }
-  const wchar_t* EnglishCommandName() override { return L"SamplePrintMaterialTextures"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+
+  virtual UUID CommandUUID() override { static const UUID uuid = { 0x515DCFC6, 0xA4F9, 0x42D1, { 0x95, 0xA0, 0x16, 0xFD, 0x19, 0x23, 0xE3, 0x39 } }; return uuid; }
+  virtual const wchar_t* EnglishCommandName() override { return L"SamplePrintMaterialTextures"; }
+  virtual CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 };
 
 // The one and only CCommandSamplePrintMaterialTextures object
 static class CCommandSamplePrintMaterialTextures theSamplePrintMaterialTexturesCommand;
 
-CRhinoCommand::result CCommandSamplePrintMaterialTextures::RunCommand(const CRhinoCommandContext& context)
+static void PrintChild(const CRhRdkContent& child)
 {
-  const int material_count = context.m_doc.m_material_table.MaterialCount();
-  for (int mi = 0; mi < material_count; mi++)
+  RhinoApp().Print(L"Child slot: '%s'", static_cast<const wchar_t*>(child.ChildSlotName()));
+
+  if (child.IsKind(CRhRdkContent::Kinds::Texture))
   {
-    const CRhinoMaterial& material = context.m_doc.m_material_table[mi];
-    int ti = material.FindTexture(0, ON_Texture::TYPE::bitmap_texture);
-    if (ti >= 0)
+    auto sDesc = ON_wString(L"'") + child.TypeDescription() + L"'";
+
+    auto* pFileBased = dynamic_cast<const IRhRdkFileBasedContent*>(&child);
+    if (nullptr != pFileBased)
     {
-      if (material.m_textures[ti].m_image_file_reference.IsSet())
-      {
-        ON_wString filename = material.m_textures[ti].m_image_file_reference.FullPath();
-        RhinoApp().Print(L"Material[%d] = %ls\n", mi, static_cast<const wchar_t*>(filename));
-      }
+      sDesc = sDesc + L", Filename: '" + pFileBased->Filename() + L"'";
+    }
+
+    RhinoApp().Print(L", Description: %s\n", static_cast<const wchar_t*>(sDesc));
+  }
+  else
+  {
+    RhinoApp().Print(L" is not a texture\n");
+  }
+}
+
+static void PrintContent(const CRhRdkContent& c, int count)
+{
+  auto it = c.GetChildIterator();
+
+  const auto* pChild = it.GetNextChild();
+  if (nullptr != pChild)
+  {
+    while (nullptr != pChild)
+    {
+      RhinoApp().Print(L"Material[%d]: ", count);
+
+      PrintChild(*pChild);
+
+      pChild = it.GetNextChild();
     }
   }
+  else
+  {
+    RhinoApp().Print(L"Material[%d]: No textures found\n", count);
+  }
+}
+
+CRhinoCommand::result CCommandSamplePrintMaterialTextures::RunCommand(const CRhinoCommandContext& context)
+{
+  auto* pDoc = context.Document();
+  if (nullptr == pDoc)
+    return failure;
+
+  int count = 0;
+  auto* pIt = pDoc->Contents().NewIterator(CRhRdkContent::Kinds::Material, CRhRdkDocument::it_Normal);
+
+  const auto* pContent = pIt->Next();
+  if (nullptr != pContent)
+  {
+    while (nullptr != pContent)
+    {
+      PrintContent(*pContent, count++);
+
+      pContent = pIt->Next();
+    }
+  }
+  else
+  {
+    RhinoApp().Print(L"No materials found\n");
+  }
+
+  delete pIt;
+
   return CRhinoCommand::success;
 }
 

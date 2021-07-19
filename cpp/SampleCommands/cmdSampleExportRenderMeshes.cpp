@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 
 ////////////////////////////////////////////////////////////////
@@ -13,15 +14,10 @@ class CCommandSampleExportRenderMeshes : public CRhinoCommand
 public:
   CCommandSampleExportRenderMeshes() = default;
   ~CCommandSampleExportRenderMeshes() = default;
-  UUID CommandUUID() override
-  {
-    // {5DDA7654-1B65-4664-BFAB-A0E3BD03F62D}
-    static const GUID SampleExportRenderMeshesCommand_UUID =
-    { 0x5DDA7654, 0x1B65, 0x4664, { 0xBF, 0xAB, 0xA0, 0xE3, 0xBD, 0x03, 0xF6, 0x2D } };
-    return SampleExportRenderMeshesCommand_UUID;
-  }
-  const wchar_t* EnglishCommandName() override { return L"SampleExportRenderMeshes"; }
-  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
+
+  virtual UUID CommandUUID() override { static const UUID uuid = { 0x5DDA7654, 0x1B65, 0x4664, { 0xBF, 0xAB, 0xA0, 0xE3, 0xBD, 0x03, 0xF6, 0x2D } }; return uuid; }
+  virtual const wchar_t* EnglishCommandName() override { return L"SampleExportRenderMeshes"; }
+  virtual CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
   bool DoExport(CRhinoDoc& doc, const CRhinoObjRef& obj_ref, const ON_Mesh* mesh, const CRhinoMaterial* front_material, const CRhinoMaterial* back_material);
@@ -32,51 +28,56 @@ static class CCommandSampleExportRenderMeshes theSampleExportRenderMeshesCommand
 
 CRhinoCommand::result CCommandSampleExportRenderMeshes::RunCommand(const CRhinoCommandContext& context)
 {
-  ON_SimpleArray<const CRhinoObject*> objects(100);
-  CRhinoObjectIterator it(context.m_doc, CRhinoObjectIterator::normal_or_locked_objects, CRhinoObjectIterator::active_and_reference_objects);
+  auto* pDoc = context.Document();
+  if (nullptr == pDoc)
+    return failure;
 
-  const CRhinoObject* obj = 0;
-  for (obj = it.First(); obj; obj = it.Next())
+  ON_SimpleArray<const CRhinoObject*> objects;
+  CRhinoObjectIterator it(*pDoc, CRhinoObjectIterator::normal_or_locked_objects, CRhinoObjectIterator::active_and_reference_objects);
+  for (const CRhinoObject* obj = obj = it.First(); nullptr != obj; obj = it.Next())
   {
     if (obj->IsMeshable(ON::render_mesh))
       objects.Append(obj);
   }
 
   if (0 == objects.Count())
-    return CRhinoCommand::nothing;
+    return nothing;
 
   ON_ClassArray<CRhinoObjRef> render_meshes(objects.Count());
-  int render_mesh_count = RhinoGetRenderMeshes(objects, render_meshes, true, true);
-  if (0 == render_mesh_count || 0 == render_meshes.Count())
-    return CRhinoCommand::failure;
 
-  ON_UUID render_plugin_id = RhinoApp().GetDefaultRenderApp();
+  ::RhinoGetRenderMeshes(objects, render_meshes, true, true);
+  if (0 == render_meshes.Count())
+    return failure;
+
+  const auto render_plugin_id = RhinoApp().GetDefaultRenderApp();
   ON_SimpleArray<CRhinoObjRef::CNestedIRef> nested_iref;
+
   ON_Xform xform(1); // unused
 
-  for (int i = 0; i < render_mesh_count; i++)
+  for (int i = 0; i < render_meshes.Count(); i++)
   {
-    const CRhinoObjRef& obj_ref = render_meshes[i];
-    obj = obj_ref.Object();
-    if (0 == obj)
+    const auto& obj_ref = render_meshes[i];
+    const auto* obj = obj_ref.Object();
+    if (nullptr == obj)
       continue;
 
-    const CRhinoObjectAttributes* attributes = &(obj->Attributes());
-    ON::object_material_source material_source = ON::material_from_object;
-    const ON_MaterialRef* material_ref = attributes->m_rendering_attributes.MaterialRef(render_plugin_id);
-    material_source = material_ref ? material_ref->MaterialSource() : attributes->MaterialSource();
+    const auto* attributes = &(obj->Attributes());
+    const auto* material_ref = attributes->m_rendering_attributes.MaterialRef(render_plugin_id);
+
+    auto material_source = material_ref ? material_ref->MaterialSource() : attributes->MaterialSource();
     if (ON::material_from_parent == material_source)
     {
       nested_iref.SetCount(0);
-      const CRhinoInstanceObject* top_iref = obj_ref.GetInstanceTransformation(xform, &nested_iref);
-      if (top_iref)
+
+      const auto* top_iref = obj_ref.GetInstanceTransformation(xform, &nested_iref);
+      if (nullptr != top_iref)
       {
         for (int j = nested_iref.Count(); j >= 0; j--)
         {
           if (j)
           {
-            const CRhinoInstanceObject* parent_iref = nested_iref[j - 1].m_iref;
-            if (0 == parent_iref)
+            const auto* parent_iref = nested_iref[j - 1].m_iref;
+            if (nullptr == parent_iref)
               break;
 
             attributes = &parent_iref->Attributes();
@@ -86,29 +87,37 @@ CRhinoCommand::result CCommandSampleExportRenderMeshes::RunCommand(const CRhinoC
               break;
           }
           else
+          {
             attributes = &top_iref->Attributes();
+          }
         }
       }
     }
 
-    const CRhinoMaterial* front_material = 0;
-    const CRhinoMaterial* back_material = 0;
-    context.m_doc.m_material_table.GetMaterials(render_plugin_id, *attributes, front_material, back_material);
+    const CRhinoMaterial* front_material = nullptr;
+    const CRhinoMaterial* back_material  = nullptr;
+    pDoc->m_material_table.GetMaterials(render_plugin_id, *attributes, front_material, back_material);
 
-    if (0 == front_material)
-      front_material = &(context.m_doc.m_material_table[-1]); // default material
-    if (0 == back_material)
-      back_material = &(context.m_doc.m_material_table[-1]); // default material
+    if ((nullptr == front_material) || (nullptr == back_material))
+    {
+      const auto& default_material = pDoc->m_material_table[-1];
 
-    DoExport(context.m_doc, obj_ref, obj_ref.Mesh(), front_material, back_material);
+      if (nullptr == front_material)
+        front_material = &default_material;
+
+      if (nullptr == back_material)
+        back_material = &default_material;
+    }
+
+    DoExport(*pDoc, obj_ref, obj_ref.Mesh(), front_material, back_material);
   }
 
-  return CRhinoCommand::success;
+  return success;
 }
 
 bool CCommandSampleExportRenderMeshes::DoExport(CRhinoDoc& doc, const CRhinoObjRef& obj_ref, const ON_Mesh* mesh, const CRhinoMaterial* front_material, const CRhinoMaterial* back_material)
 {
-  // TODO.: Add export code here.
+  // TODO: Add export code here.
 
   UNREFERENCED_PARAMETER(doc);
   UNREFERENCED_PARAMETER(obj_ref);

@@ -27,4 +27,4 @@ private:
   // TODO: Add additional class information here
 };
 
-CSampleRdkAddRdkMaterialsPlugIn& SampleRdkMaterialAutoUIPlugIn();
+CSampleRdkAddRdkMaterialsPlugIn& SampleRdkAddRdkMaterialsPlugIn();

@@ -12,7 +12,7 @@ namespace SampleGhPlatonics.Components
     /// Constructor
     /// </summary>
     public Dodecahedron()
-      : base("Dodecahedron", "U23", "Platonic solid with 12 faces", "Platonics")
+      : base("Dodecahedron", "U23", "Platonic solid with 12 faces")
     {
     }
 

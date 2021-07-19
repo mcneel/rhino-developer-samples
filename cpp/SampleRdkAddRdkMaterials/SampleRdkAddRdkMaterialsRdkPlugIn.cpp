@@ -6,12 +6,12 @@
 
 CRhinoPlugIn& CSampleRdkAddRdkMaterialsRdkPlugIn::RhinoPlugIn(void) const
 {
-	return ::SampleRdkMaterialAutoUIPlugIn();
+	return ::SampleRdkAddRdkMaterialsPlugIn();
 }
 
 UUID CSampleRdkAddRdkMaterialsRdkPlugIn::RhinoPlugInId(void) // Static.
 {
-	return ::SampleRdkMaterialAutoUIPlugIn().PlugInID();
+	return ::SampleRdkAddRdkMaterialsPlugIn().PlugInID();
 }
 
 UUID CSampleRdkAddRdkMaterialsRdkPlugIn::RdkPlugInId(void) // Static.

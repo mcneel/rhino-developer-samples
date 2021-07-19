@@ -10,7 +10,7 @@ namespace SampleCsWpf.Commands
   [Guid("0874C691-A083-4C05-9E31-96C2C63F7C7E")]
   public class SampleCsWpfPanelHost : RhinoWindows.Controls.WpfElementHost
   {
-    public SampleCsWpfPanelHost(uint docSn) 
+    public SampleCsWpfPanelHost(uint docSn)
       : base(new SampleCsWpfPanel(docSn), null)
     {
     }
@@ -21,7 +21,13 @@ namespace SampleCsWpf.Commands
     public SampleCsWpfPanelCommand()
     {
       Instance = this;
-      Panels.RegisterPanel(SampleCsWpfPlugIn.Instance, typeof(SampleCsWpfPanelHost), "SampleWpfPanel", System.Drawing.SystemIcons.WinLogo);
+      Panels.RegisterPanel(
+        SampleCsWpfPlugIn.Instance, 
+        typeof(SampleCsWpfPanelHost), 
+        "SampleWpfPanel", 
+        System.Drawing.SystemIcons.WinLogo,
+        PanelType.System
+        );
     }
 
     public static SampleCsWpfPanelCommand Instance
@@ -34,6 +40,13 @@ namespace SampleCsWpf.Commands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       var panel_id = typeof(SampleCsWpfPanelHost).GUID;
+
+      if (mode == RunMode.Interactive)
+      {
+        Panels.OpenPanel(panel_id);
+        return Result.Success;
+      }
+
       var panel_visible = Panels.IsPanelVisible(panel_id);
 
       var prompt = (panel_visible)
