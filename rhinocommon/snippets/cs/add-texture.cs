@@ -1,57 +1,60 @@
+
+using Rhino.Commands;
+using Rhino.DocObjects;
+using Rhino.Render;
+using System.Drawing;
+
 partial class Examples
 {
-  public static Rhino.Commands.Result AddTexture(Rhino.RhinoDoc doc)
+  public static Result AddTexture(Rhino.RhinoDoc doc)
   {
-    // Select object to add texture
-    const ObjectType filter = Rhino.DocObjects.ObjectType.Surface |
-                              Rhino.DocObjects.ObjectType.PolysrfFilter |
-                              Rhino.DocObjects.ObjectType.Mesh;
-    Rhino.DocObjects.ObjRef objref;
-    Rhino.Commands.Result rc = Rhino.Input.RhinoGet.GetOneObject("Select object to add texture", false, filter, out objref);
-    if( rc!= Rhino.Commands.Result.Success )
+    // This example shows how to assign a render texture to an object. The texture is created as a child
+    // of a material in the bitmap-texture child slot. The texture slot is also switched on, and a blend
+    // amount of 80% is set on the texture slot. This last part is optional; the default is 100%.
+
+    // Select object to add texture.
+    const ObjectType filter = ObjectType.Surface | ObjectType.PolysrfFilter | ObjectType.Mesh;
+    var rc = Rhino.Input.RhinoGet.GetOneObject("Select object to add texture", false, filter, out ObjRef objref);
+    if (rc != Result.Success)
       return rc;
 
-    Rhino.DocObjects.RhinoObject rhino_object = objref.Object();
+    var rhino_object = objref.Object();
     if (rhino_object == null)
-      return Rhino.Commands.Result.Failure;
+      return Result.Failure;
 
-    // Select texture
-    Rhino.UI.OpenFileDialog fd = new Rhino.UI.OpenFileDialog();
-    fd.Filter = "Image Files (*.bmp;*.png;*.jpg)|*.bmp;*.png;*.jpg";
-    if (!fd.ShowDialog())
-      return Rhino.Commands.Result.Cancel;
-
-    // Verify texture
-    string bitmap_filename = fd.FileName;
-    if( string.IsNullOrEmpty(bitmap_filename) || !System.IO.File.Exists(bitmap_filename) )
-      return Rhino.Commands.Result.Nothing;
-
-    // Make sure the object has it's material source set to "material_from_object"
-    rhino_object.Attributes.MaterialSource = Rhino.DocObjects.ObjectMaterialSource.MaterialFromObject;
-
-    // Make sure the object has a material assigned
-    int material_index = rhino_object.Attributes.MaterialIndex;
-    if (material_index < 0)
+    // Create a Rhino material.
+    var rhino_material = new Material
     {
-      // Create a new material based on Rhino's default material
-      material_index = doc.Materials.Add();
-      // Assign the new material (index) to the object.
-      rhino_object.Attributes.MaterialIndex = material_index;
-    }
+      Name = "Material",
+      DiffuseColor = Color.White
+    };
 
-    if (material_index >= 0)
-    {
-      Rhino.DocObjects.Material mat = doc.Materials[material_index];
-      mat.SetBumpTexture(bitmap_filename);
-      mat.CommitChanges();
+    // Create a basic Render material from the Rhino material.
+    var render_material = RenderMaterial.CreateBasicMaterial(rhino_material, doc);
 
-      //Don't forget to update the object, if necessary
-      rhino_object.CommitChanges();
+    // Add the basic Render material to the document.
+    doc.RenderMaterials.Add(render_material);
 
-      doc.Views.Redraw();
-      return Rhino.Commands.Result.Success;
-    }
+    // We will be adding a texture to the material's bitmap-texture child slot.
+    var child_slot_name = "bitmap-texture";
+    var cc = RenderContent.ChangeContexts.Program;
 
-    return Rhino.Commands.Result.Failure;
+    // Create a bitmap texture. This will also prompt for a file name.
+    RenderContent.Create(doc, ContentUuids.BitmapTextureType, render_material, child_slot_name);
+
+    // Turn on the bitmap-texture child slot of the render material and set a blend amount of 80%.
+    render_material.BeginChange(cc);
+    render_material.SetChildSlotOn(child_slot_name, true, cc);
+    render_material.SetChildSlotAmount(child_slot_name, 80.0, cc);
+    render_material.EndChange();
+
+    // Assign the render material to the object.
+    rhino_object.RenderMaterial = render_material;
+    rhino_object.CommitChanges();
+
+    // Uodate the viewports.
+    doc.Views.Redraw();
+
+    return Result.Success;
   }
 }
