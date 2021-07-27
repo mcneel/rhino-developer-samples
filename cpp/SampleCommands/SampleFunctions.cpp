@@ -9,17 +9,20 @@
 /// <remarks>See Barrett O'Neill, Elementary Differential Geometry, page 69.</remarks>
 double ON_CurveTorsion(const ON_Curve& curve, double t)
 {
-  ON_3dVector der[4];
-  curve.Evaluate(t, 3, 3, der[0]);
-
-  ON_3dVector b = ON_CrossProduct(der[1], der[2]);
-  double len2 = b * b;
-
-  double torsion = 0.0;
-  if (len2 > 0)
-    torsion = b * der[3] / len2;
-
-  return torsion;
+  double tau = ON_UNSET_VALUE;
+  double v[12] = {};
+  if (curve.Evaluate(t, 3, 3, v))
+  {
+    tau = 0.0;
+    ON_3dVector d1(&v[3]);
+    ON_3dVector d2(&v[6]);
+    ON_3dVector d3(&v[9]);
+    ON_3dVector b = ON_CrossProduct(d1, d2);
+    double len2 = b * b;
+    if (len2 > 0.0)
+      tau = b * d3 / len2;
+  }
+  return tau;
 }
 
 /// <summary>
