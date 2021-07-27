@@ -22,7 +22,7 @@ namespace SampleGhTaskCapable.Components
     /// new tabs/panels will automatically be created.
     /// </summary>
     public SampleGhTaskCapableComponent()
-      : base("Sample Dash Pattern", "SampleDash", "Convert a curve to a dash pattern.", "Sample", "C#")
+      : base("Dash Pattern", "Dash", "Convert a curve to a dash pattern.", "Sample", "Task")
     {
     }
 

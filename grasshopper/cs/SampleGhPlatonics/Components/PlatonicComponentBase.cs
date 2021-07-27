@@ -11,8 +11,8 @@ namespace SampleGhPlatonics.Components
     /// <summary>
     /// Constructor
     /// </summary>
-    protected PlatonicComponentBase(string name, string nickname, string description, string subCategory)
-      : base(name, nickname, description, "Sample", subCategory)
+    protected PlatonicComponentBase(string name, string nickname, string description)
+      : base(name, nickname, description, "Sample", "Platonics")
     {
     }
 

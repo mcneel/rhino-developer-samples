@@ -30,57 +30,44 @@ CRhinoCommand::result CCommandSampleTriangulatePolygon::RunCommand(const CRhinoC
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select closed planar polygon to triangulate");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
-  go.SetGeometryFilter(CRhinoGetObject::closed_curve);
+  go.SetGeometryAttributeFilter(CRhinoGetObject::closed_curve);
   go.EnableSubObjectSelect(FALSE);
   go.GetObjects(1, 1);
   if (go.CommandResult() != CRhinoCommand::success)
     return go.CommandResult();
 
-  const CRhinoObjRef& ref = go.Object(0);
+  const ON_Curve* curve = go.Object(0).Curve();
+  if (nullptr == curve || !curve->IsClosed())
+    return CRhinoCommand::failure;
 
-  ON_3dPointArray vertices;
+  ON_SimpleArray<ON_3dPoint> points;
+  if (0 == curve->IsPolyline(&points, nullptr))
+    return CRhinoCommand::failure;
 
-  const ON_PolylineCurve* pc = ON_PolylineCurve::Cast(ref.Curve());
-  if (pc)
+  context.m_doc.UnselectAll();
+
+  if (points[0] == points[points.Count() - 1])
+    points.SetCount(points.Count() - 1);
+
+  const int point_count = points.Count();
+  ON_SimpleArray<int> triangles((point_count - 2) * 3);
+  triangles.SetCount(triangles.Capacity());
+
+  int rc = RhinoTriangulate3dPolygon(point_count, 3, (const double*)points.Array(), 3, triangles.Array());
+  if (rc != 0)
+    return CRhinoCommand::failure;
+
+  const int triangle_count = triangles.Count() / 3;
+  for (int i = 0; i < triangle_count; i++)
   {
-    vertices = pc->m_pline;
+    ON_Polyline pline;
+    pline.Append(points[triangles[3 * i]]);
+    pline.Append(points[triangles[(3 * i) + 1]]);
+    pline.Append(points[triangles[(3 * i) + 2]]);
+    pline.Append(pline[0]);
+    context.m_doc.AddCurveObject(pline);
   }
-  else
-  {
-    const ON_NurbsCurve* nc = ON_NurbsCurve::Cast(ref.Curve());
-    if (nc)
-      nc->IsPolyline(&vertices);
-  }
-
-  if (vertices.Count() < 5)
-  {
-    RhinoApp().Print(L"Curve not polygon with at least four sides.\n");
-    return CRhinoCommand::nothing;
-  }
-
-  int* triangles = (int*)onmalloc((vertices.Count() - 3) * sizeof(int) * 3);
-  if (0 == triangles)
-    return CRhinoCommand::failure; // out of memory
-
-  memset(triangles, 0, (vertices.Count() - 3) * sizeof(int) * 3);
-
-  int rc = RhinoTriangulate3dPolygon(vertices.Count() - 1, 3, (const double*)vertices.Array(), 3, triangles);
-  if (0 == rc)
-  {
-    int i;
-    for (i = 0; i < vertices.Count() - 3; i++)
-    {
-      ON_Polyline pline;
-      pline.Append(vertices[triangles[i * 3]]);
-      pline.Append(vertices[triangles[i * 3 + 1]]);
-      pline.Append(vertices[triangles[i * 3 + 2]]);
-      pline.Append(pline[0]);
-      context.m_doc.AddCurveObject(pline);
-    }
-    context.m_doc.Redraw();
-  }
-
-  onfree(triangles);
+  context.m_doc.Redraw();
 
   return CRhinoCommand::success;
 }

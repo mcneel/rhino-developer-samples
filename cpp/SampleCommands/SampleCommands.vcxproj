@@ -25,6 +25,7 @@
     <ClCompile Include="cmdSampleHidePoints.cpp" />
     <ClCompile Include="cmdSampleMappingUvwTransform.cpp" />
     <ClCompile Include="cmdSampleMergeSrf.cpp" />
+    <ClCompile Include="cmdSampleMeshPolygon.cpp" />
     <ClCompile Include="cmdSampleOpen3dmFile.cpp" />
     <ClCompile Include="cmdSample2View.cpp" />
     <ClCompile Include="cmdSampleAddCage.cpp" />
@@ -220,6 +221,7 @@
     <ClCompile Include="cmdSampleScaleTextHeight.cpp" />
     <ClCompile Include="cmdSampleScripter.cpp" />
     <ClCompile Include="cmdSampleSection.cpp" />
+    <ClCompile Include="cmdSampleSelAdjacentSubDFaces.cpp" />
     <ClCompile Include="cmdSampleSelectByName.cpp" />
     <ClCompile Include="cmdSampleSelectPolylineSegment.cpp" />
     <ClCompile Include="cmdSampleSelectRegion.cpp" />
