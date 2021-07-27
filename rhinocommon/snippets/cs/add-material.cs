@@ -1,26 +1,42 @@
+
+using Rhino.Commands;
+using Rhino.DocObjects;
+using Rhino.Render;
+using System.Drawing;
+
 partial class Examples
 {
-  public static Rhino.Commands.Result AddMaterial(Rhino.RhinoDoc doc)
+  public static Result AddMaterial(Rhino.RhinoDoc doc)
   {
-    // materials are stored in the document's material table
-    int index = doc.Materials.Add();
-    Rhino.DocObjects.Material mat = doc.Materials[index];
-    mat.DiffuseColor = System.Drawing.Color.Chocolate;
-    mat.SpecularColor = System.Drawing.Color.CadetBlue;
-    mat.CommitChanges();
+    // This example demonstrates how to create a basic Render material.
+    // This material will appear in Rhino's Materials panel. It it called a
+    // basic material because it does not target any particular rendering plug-in.
 
-    // set up object attributes to say they use a specific material
-    Rhino.Geometry.Sphere sp = new Rhino.Geometry.Sphere(Rhino.Geometry.Plane.WorldXY, 5);
-    Rhino.DocObjects.ObjectAttributes attr = new Rhino.DocObjects.ObjectAttributes();
-    attr.MaterialIndex = index;
-    attr.MaterialSource = Rhino.DocObjects.ObjectMaterialSource.MaterialFromObject;
-    doc.Objects.AddSphere(sp, attr);
+    // Create a Rhino material.
+    var rhino_material = new Material
+    {
+      Name = "Material",
+      DiffuseColor  = Color.Chocolate,
+      SpecularColor = Color.CadetBlue,
+    };
 
-    // add a sphere without the material attributes set
-    sp.Center = new Rhino.Geometry.Point3d(10, 10, 0);
-    doc.Objects.AddSphere(sp);
+    // Create a basic Render material from the Rhino material.
+    var render_material = RenderMaterial.CreateBasicMaterial(rhino_material, doc);
+
+    // Add the basic Render material to the document.
+    doc.RenderMaterials.Add(render_material);
+
+    // Create a sphere with the Render material assigned to it.
+    var sphere = new Rhino.Geometry.Sphere(Rhino.Geometry.Plane.WorldXY, 5);
+    var attr = new ObjectAttributes { RenderMaterial = render_material };
+    doc.Objects.AddSphere(sphere, attr);
+
+    // Add a sphere without the material attributes set.
+    sphere.Center = new Rhino.Geometry.Point3d(10, 10, 0);
+    doc.Objects.AddSphere(sphere);
 
     doc.Views.Redraw();
-    return Rhino.Commands.Result.Success;
+
+    return Result.Success;
   }
 }
