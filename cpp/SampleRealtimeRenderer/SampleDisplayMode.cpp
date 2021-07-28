@@ -87,25 +87,12 @@ bool CSampleDisplayMode::IsFrameBufferAvailable(const ON_3dmView& vp) const
 
 bool CSampleDisplayMode::DrawOrLockRendererFrameBuffer(const FRAME_BUFFER_INFO_INPUTS& input, FRAME_BUFFER_INFO_OUTPUTS& outputs)
 {
-	if(!outputs.client_render_success)
-	{
-		if (nullptr == m_Renderer.RenderWindow())
-			return false;
-
-		const CRhinoDib* pDib = m_Renderer.RenderWindow()->LockDib();
-		if (nullptr == pDib)
-			return false;
-
-		outputs.pointer_to_dib = pDib;
-	}
-
-	return true;
+	return DrawOrLockRendererFrameBufferImpl(*this, *m_Renderer.RenderWindow(), input, outputs);
 }
 
 void CSampleDisplayMode::UnlockRendererFrameBuffer()
 {
-	if (nullptr != m_Renderer.RenderWindow())
-		m_Renderer.RenderWindow()->UnlockDib();
+	UnlockRendererFrameBufferImpl(*this, *m_Renderer.RenderWindow());
 }
 
 bool CSampleDisplayMode::UseFastDraw()
