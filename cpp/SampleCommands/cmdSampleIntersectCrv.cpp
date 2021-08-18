@@ -27,56 +27,59 @@ static class CCommandSampleIntersectCrv theSampleIntersectCrvCommand;
 
 CRhinoCommand::result CCommandSampleIntersectCrv::RunCommand(const CRhinoCommandContext& context)
 {
-  // Select two curves to intersect
   CRhinoGetObject go;
-  go.SetCommandPrompt(L"Select two curves");
+  go.SetCommandPrompt(L"Select two curves to intersect");
   go.SetGeometryFilter(ON::curve_object);
   go.GetObjects(2, 2);
   if (go.CommandResult() != CRhinoCommand::success)
     return go.CommandResult();
 
-  // Validate input
   const ON_Curve* curveA = go.Object(0).Curve();
   const ON_Curve* curveB = go.Object(1).Curve();
-  if (0 == curveA || 0 == curveB)
+  if (nullptr == curveA || nullptr == curveB)
     return CRhinoCommand::failure;
 
-  // Intersection tolerance
-  CRhinoGetNumber gn;
-  gn.SetCommandPrompt(L"Intersection tolerance");
-  gn.SetDefaultNumber(context.m_doc.AbsoluteTolerance());
-  gn.SetLowerLimit(0.0, FALSE);
-  gn.GetNumber();
-  if (gn.CommandResult() != CRhinoCommand::success)
-    return go.CommandResult();
+  const double tolerance = context.m_doc.AbsoluteTolerance();
 
-  // Calculate the intersection
-  double intersection_tolerance = gn.Number();
-  ON_SimpleArray<ON_X_EVENT> events;
-  int count = curveA->IntersectCurve(
-    curveB,
-    events,
-    intersection_tolerance,
-    0.0
-  );
-
-  // Process the results
-  if (count > 0)
+  ON_SimpleArray<ON_X_EVENT> ccx_events;
+  int ccx_count = curveA->IntersectCurve(curveB, ccx_events, tolerance, tolerance);
+  if (0 == ccx_count)
   {
-    int i;
-    for (i = 0; i < events.Count(); i++)
+    RhinoApp().Print(L"No intersections found.\n");
+    return CRhinoCommand::success;
+  }
+
+  if (1 == ccx_count)
+    RhinoApp().Print(L"Found 1 intersections.\n");
+  else
+    RhinoApp().Print(L"Found %d intersections.\n", ccx_count);
+
+  for (int i = 0; i < ccx_events.Count(); i++)
+  {
+    const ON_X_EVENT& ccx = ccx_events[i];
+    if (ccx.IsPointEvent())
     {
-      const ON_X_EVENT& e = events[i];
-      context.m_doc.AddPointObject(e.m_A[0]);
-      if (e.m_A[0].DistanceTo(e.m_B[0]) > ON_EPSILON)
+      CRhinoPointObject* point_obj = context.m_doc.AddPointObject(ccx.m_A[0]);
+      if (point_obj)
+        point_obj->Select(true);
+    }
+    else
+    {
+      ON_Interval interval(ccx.m_a[0], ccx.m_a[1]);
+      ON_Curve* trim = ON_TrimCurve(*curveA, interval);
+      if (trim)
       {
-        context.m_doc.AddPointObject(e.m_B[0]);
-        context.m_doc.AddCurveObject(ON_Line(e.m_A[0], e.m_B[0]));
+        CRhinoCurveObject* curve_obj = new CRhinoCurveObject();
+        curve_obj->SetCurve(trim);
+        if (context.m_doc.AddObject(curve_obj))
+          curve_obj->Select(true);
+        else
+          delete curve_obj;
       }
     }
-
-    context.m_doc.Redraw();
   }
+
+  context.m_doc.Redraw();
 
   return CRhinoCommand::success;
 }
