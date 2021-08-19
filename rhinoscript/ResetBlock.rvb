@@ -14,7 +14,7 @@ Option Explicit
 Sub ResetBlock
 	
 	Const RH_BLOCK = &h1000
-	Dim arrBlocks, strBlock, arrPoint, arrVector
+	Dim arrBlocks, strBlock, arrPoint, arrVector, arrXform
 	
 	arrBlocks = Rhino.GetObjects("Select block instances to reset", RH_BLOCK, True, True)
 	If IsNull(arrBlocks) Then Exit Sub
