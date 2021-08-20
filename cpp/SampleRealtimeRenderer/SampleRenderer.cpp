@@ -135,7 +135,7 @@ unsigned int CSampleRenderer::RenderProcess(void* pData)
 				pRenderProcess->m_pSignalUpdateInterface->SignalUpdate();
 
 			// Invalidate the drawn area so that the dib will be updated.
-			ON_4iRect rect(0, py-sz.cy-1, sz.cx, py+1);
+			ON_4iRect rect(0, py, sz.cx, py+1);
 			pRenderProcess->m_pRenderWnd->InvalidateArea(rect);
 		}
 
