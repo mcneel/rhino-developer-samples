@@ -12,11 +12,11 @@
 #define RHINO_V6_READY
 
 // If you want to use Rhino's MFC UI classes, then
-// uncomment the #define RHINO_SDK_MFC statement below. 
-// Note, doing so will requrie that your plug-in is
+// uncomment the #define RHINO_SDK_MFC statement below.
+// Note, doing so will require that your plug-in is
 // built with the same version of Visual Studio as was
 // used to build Rhino.
-//#define RHINO_SDK_MFC
+#define RHINO_SDK_MFC // This is defined so we can use MFC UI sections.
 
 // Plug-ins must use the release version of MFC used by Rhino.
 // Plug-ins that require debugging information need to be built with

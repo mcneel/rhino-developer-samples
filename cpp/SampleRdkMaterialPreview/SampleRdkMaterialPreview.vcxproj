@@ -14,6 +14,7 @@
     <ClCompile Include="SampleRdkMaterialPreviewApp.cpp" />
     <ClCompile Include="SampleRdkMaterialPreviewPlugIn.cpp" />
     <ClCompile Include="SampleRdkMaterialPreviewRdkPlugIn.cpp" />
+    <ClCompile Include="SampleRdkMaterialWithPreview.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -24,6 +25,7 @@
     <ClInclude Include="SampleRdkMaterialPreviewApp.h" />
     <ClInclude Include="SampleRdkMaterialPreviewPlugIn.h" />
     <ClInclude Include="SampleRdkMaterialPreviewRdkPlugIn.h" />
+    <ClInclude Include="SampleRdkMaterialWithPreview.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -37,13 +39,14 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
-    <ProjectGuid>{9DCA70EE-EAF5-4F2E-B714-19D00BE1EEE6}</ProjectGuid>
+    <ProjectGuid>{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>

@@ -27,6 +27,9 @@
     <ClCompile Include="SampleRdkMaterialPreviewRdkPlugIn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SampleRdkMaterialWithPreview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SampleRdkMaterialPreviewApp.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SampleRdkMaterialPreviewRdkPlugIn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleRdkMaterialWithPreview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

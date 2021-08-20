@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "SampleRdkMaterialPreviewRdkPlugIn.h"
 #include "SampleRdkMaterialPreviewPlugIn.h"
+#include "SampleRdkMaterialWithPreview.h"
 
 UUID CSampleRdkMaterialPreviewRdkPlugIn::PlugInId() const
 {
@@ -29,7 +30,9 @@ void CSampleRdkMaterialPreviewRdkPlugIn::Uninitialize()
 
 void CSampleRdkMaterialPreviewRdkPlugIn::RegisterExtensions() const
 {
-	// TODO: Add material/environment/texture factories.
+	AddExtension(new CSampleRdkMaterialWithPreviewFactory);
+
+	// TODO: Add further material/environment/texture factories by calling AddExtension(new MyFactory);
 
 	__super::RegisterExtensions();
 }
@@ -56,10 +59,31 @@ bool CSampleRdkMaterialPreviewRdkPlugIn::CreatePreview(const ON_2iSize& sizeImag
                                                        OUT CRhinoDib& dibOut)
 {
 	// TODO: Create a rendered preview of the specified scene at the specified size and quality.
-	UNREFERENCED_PARAMETER(pSceneServer);
+	if (nullptr == pSceneServer)
+		return false;
+
+	CRhRdkColor colTarget;
+
+	// The scene server contains one or more objects that have materials associated with them.
+	// A real renderer would render those objects using their materials, but we just try to find
+	// our customized material and use that directly.
+	const IRhRdkPreviewSceneServer::IObject* pObject = nullptr;
+	while (nullptr != (pObject = pSceneServer->NextObject()))
+	{
+		const auto* pMaterial = dynamic_cast<const CSampleRdkMaterialWithPreview*>(pObject->Material());
+		if (nullptr != pMaterial)
+		{
+			// Found it, so get the diffuse color as the target color.
+			colTarget = pMaterial->GetParameter(DIFFUSE_PARAM_NAME).AsRdkColor();
+			break;
+		}
+	}
 
 	CCancelPreview cp(m_bCancelPreview);
-	pNotify->SetCancelCallback(&cp);
+	if (nullptr != pNotify)
+	{
+		pNotify->SetCancelCallback(&cp);
+	}
 
 	ASSERT(PreviewRenderType() == PreviewRenderTypes::Progressive);
 
@@ -71,27 +95,30 @@ bool CSampleRdkMaterialPreviewRdkPlugIn::CreatePreview(const ON_2iSize& sizeImag
 	// Create the dib at the requested size.
 	CRhinoDib dib(sizeImage.cx, sizeImage.cy, 24);
 
-	// Target color is red.
-	const CRhRdkColor colTarget(RGB(255, 0, 0));
-
-	// This loop generates progressively better previews where 'better' means 'more red'.
+	// This loop generates progressively better previews where 'better' means 'more like colTarget'.
 	float amount = 0.0f;
-	while ((amount < 1.001f) && !m_bCancelPreview)
+	while ((amount < 1.01f) && !m_bCancelPreview)
 	{
-		// Fake a long rendering time.
-		::Sleep(700);
-
 		CRhRdkColor col(RGB(255, 255, 255));
 		col.BlendTo(amount, colTarget);
 		dib.FillSolid(col.ColorRef());
 
-		// This updates the preview in the material editor.
-		pNotify->NotifyIntermediateUpdate(dib);
+		if (nullptr != pNotify)
+		{
+			// This updates the preview in the material editor.
+			pNotify->NotifyIntermediateUpdate(dib);
+
+			// Fake a long rendering time.
+			::Sleep(300);
+		}
 
 		amount += 0.1f;
 	}
 
-	pNotify->SetCancelCallback(nullptr);
+	if (nullptr != pNotify)
+	{
+		pNotify->SetCancelCallback(nullptr);
+	}
 
 	// Output the final version of the preview.
 	dibOut = dib;
