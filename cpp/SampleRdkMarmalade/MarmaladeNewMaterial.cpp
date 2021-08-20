@@ -88,9 +88,9 @@ void CMarmaladeNewMaterial::SimulateMaterial(ON_Material& mat, CRhRdkTexture::Te
 		const auto* pTexture = dynamic_cast<const CRhRdkTexture*>(pChild);
 		if (nullptr != pTexture)
 		{
-			CRhRdkSimulatedTexture onTexture;
-			pTexture->SimulateTexture(onTexture, tg);
-			mat.AddTexture(onTexture.Filename(), ON_Texture::TYPE::bitmap_texture);
+			CRhRdkSimulatedTexture tex(pTexture->DocumentAssoc());
+			pTexture->SimulateTexture(tex, tg);
+			mat.AddTexture(tex.Filename(), ON_Texture::TYPE::bitmap_texture);
 
 			if (1 == mat.m_textures.Count())
 			{

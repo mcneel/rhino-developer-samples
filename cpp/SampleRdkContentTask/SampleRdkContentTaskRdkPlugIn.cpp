@@ -32,7 +32,7 @@ void CSampleRdkContentTaskRdkPlugIn::RegisterExtensions() const
 {
 	AddExtension(new CContentTask);
 
-	// TODO: Add material/environment/texture factories.
+	// TODO: Add further material/environment/texture factories by calling AddExtension(new MyFactory);
 
 	__super::RegisterExtensions();
 }

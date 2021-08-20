@@ -34,7 +34,7 @@ void CSampleRdkMaterialCustomUIRdkPlugIn::RegisterExtensions() const
 {
 	AddExtension(new CSampleRdkMaterialCustomUIMaterialFactory);
 
-	// TODO: Add further material/environment/texture factories.
+	// TODO: Add further material/environment/texture factories by calling AddExtension(new MyFactory);
 
 	__super::RegisterExtensions();
 }

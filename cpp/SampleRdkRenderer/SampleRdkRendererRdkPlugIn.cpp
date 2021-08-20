@@ -29,7 +29,7 @@ void CSampleRdkRendererRdkPlugIn::Uninitialize()
 
 void CSampleRdkRendererRdkPlugIn::RegisterExtensions() const
 {
-	// TODO: Add material/environment/texture factories.
+	// TODO: Add material/environment/texture factories by calling AddExtension(new MyFactory);
 	// See SampleRdkMaterialCustomUI project.
 
 	__super::RegisterExtensions();
