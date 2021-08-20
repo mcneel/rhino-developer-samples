@@ -2,10 +2,10 @@
 #include "stdafx.h"
 #include "SampleDisplayMode.h"
 
-
 CSampleDisplayMode::CSampleDisplayMode(const CRhinoDisplayPipeline& pipeline)
-: RhRdk::Realtime::DisplayMode(pipeline),
-  m_Renderer(this)
+	:
+	m_Renderer(this),
+	RhRdk::Realtime::DisplayMode(pipeline)
 {
 }
 
@@ -52,7 +52,6 @@ bool CSampleDisplayMode::RendererIsAvailable(void) const
 
 void CSampleDisplayMode::CreateWorld(const CRhinoDoc& doc, const ON_3dmView& view, const CDisplayPipelineAttributes& attributes)
 {
-
 }
 
 int CSampleDisplayMode::LastRenderedPass(void) const
@@ -87,12 +86,20 @@ bool CSampleDisplayMode::IsFrameBufferAvailable(const ON_3dmView& vp) const
 
 bool CSampleDisplayMode::DrawOrLockRendererFrameBuffer(const FRAME_BUFFER_INFO_INPUTS& input, FRAME_BUFFER_INFO_OUTPUTS& outputs)
 {
-	return DrawOrLockRendererFrameBufferImpl(*this, *m_Renderer.RenderWindow(), input, outputs);
+	auto* pRW = m_Renderer.RenderWindow();
+	if (nullptr == pRW)
+		return false;
+
+	return DrawOrLockRendererFrameBufferImpl(*this, *pRW, input, outputs);
 }
 
 void CSampleDisplayMode::UnlockRendererFrameBuffer()
 {
-	UnlockRendererFrameBufferImpl(*this, *m_Renderer.RenderWindow());
+	auto* pRW = m_Renderer.RenderWindow();
+	if (nullptr != pRW)
+	{
+		UnlockRendererFrameBufferImpl(*this, *pRW);
+	}
 }
 
 bool CSampleDisplayMode::UseFastDraw()
