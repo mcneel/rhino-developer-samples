@@ -133,6 +133,10 @@ unsigned int CSampleRenderer::RenderProcess(void* pData)
 			// Signal redraw
 			if (nullptr != pRenderProcess->m_pSignalUpdateInterface)
 				pRenderProcess->m_pSignalUpdateInterface->SignalUpdate();
+
+			// Invalidate the drawn area so that the dib will be updated.
+			ON_4iRect rect(0, py-sz.cy-1, sz.cx, py+1);
+			pRenderProcess->m_pRenderWnd->InvalidateArea(rect);
 		}
 
 		iScanline--;
