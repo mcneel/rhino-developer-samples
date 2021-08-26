@@ -156,51 +156,113 @@ BOOL CCustomContentSection::OnInitDialog()
 	return FALSE; // Prevent focus being set to a control; this would interfere with the RDK UI.
 }
 
-#if 0
-
 class CPreviewGeometry : public CRhRdkPreviewGeometry
 {
 public:
-	virtual UUID TypeId(void) const;
-	virtual const wchar_t* XmlTag(void) const { return SS_PG_SPHERE; }
+	virtual UUID TypeId(void) const { static const UUID uuid = { 0xff3dce7b, 0xb305, 0x421a, { 0xb1, 0x76, 0xb4, 0xee, 0xb7, 0xf4, 0xf9, 0x31 } }; return uuid; }
+	virtual const wchar_t* XmlTag(void) const { return L"my-geometry"; }
 	virtual CRhRdkPreviewSceneElement* Duplicate(void) const { return new CPreviewGeometry; }
-	virtual void SetUpPreview(CRhRdkPreviewSceneServer& ss, const CRhRdkContent& c, bool bCopy) const;
+	virtual void SetUpPreview(IRhRdkPreviewSceneServerEx& ss, const CRhRdkContent& c, bool bCopy) const;
 };
 
-UUID CPreviewGeometry::TypeId(void) const
+void CPreviewGeometry::SetUpPreview(IRhRdkPreviewSceneServerEx& ss, const CRhRdkContent& c, bool bCopy) const
 {
-	static const UUID uuid = 
+	auto* pMat = dynamic_cast<const CRhRdkMaterial*>(&c);
+	if (nullptr == pMat)
+		return;
+
+	// Add a sphere to the preview scene.
+	ss.AddObject(IRhRdkPreviewSceneServer::geomSphere, *pMat, bCopy);
+
+	// Add a distant torus to the preview scene.
+	auto* pObject = ss.AddObject(IRhRdkPreviewSceneServer::geomTorus, *pMat, bCopy);
+
+	// In order to set the location, cast to IObjectEx. This was added after the SDK freeze.
+	auto* pObjectEx = dynamic_cast<IRhRdkPreviewSceneServerEx::IObjectEx*>(pObject);
+	if (nullptr != pObjectEx)
 	{
-		0xff3dce7b, 0xb305, 0x421a, { 0xb1, 0x76, 0xb4, 0xee, 0xb7, 0xf4, 0xf9, 0x31 }
-	};
-
-	return uuid;
-}
-
-void CPreviewGeometry::SetUpPreview(CRhRdkPreviewSceneServer& ss, const CRhRdkContent& c, bool bCopy) const
-{
-	ss.AddObject(CRhRdkPreviewSceneServer::geomSphere, c, bCopy);
+		ON_3dPoint loc(10.0, 10.0, 0.0);
+		pObjectEx->SetLocation(loc);
+	}
 }
 
 class CPreviewBackground : public CRhRdkPreviewBackground
 {
 public:
-	virtual UUID TypeId(void) const override;
-	virtual const wchar_t* XmlTag(void) const override { return SS_PB_NONE; }
+	virtual UUID TypeId(void) const override { static const UUID uuid = { 0x418f54ba, 0x7c96, 0x4638, { 0xb3, 0xd9, 0x3e, 0x6a, 0xea, 0x11, 0x40, 0x86 } }; return uuid; }
+	virtual const wchar_t* XmlTag(void) const override { return L"my-background"; }
 	virtual CRhRdkPreviewSceneElement* Duplicate(void) const override { return new CPreviewBackground; }
-	virtual void SetUpPreview(CRhRdkPreviewSceneServer& ss, const UUID uuidRdkDoc) const override;
+	virtual void SetUpPreview(IRhRdkPreviewSceneServerEx& ss, const UUID uuidRdkDoc) const override;
 };
+
+void CPreviewBackground::SetUpPreview(IRhRdkPreviewSceneServerEx& ss, const UUID uuidRdkDoc) const
+{
+	auto* pRdkDoc = CRhRdkDocument::Get(uuidRdkDoc);
+	if (nullptr == pRdkDoc)
+		return;
+
+	auto* pEnv = ::RhRdkNewBasicEnvironment(pRdkDoc->RhinoDoc());
+	pEnv->Initialize();
+	pEnv->SetParameter(FS_ENV_BACKGROUND_COLOR, CRhRdkColor(20, 20, 20));
+
+	const bool bCopyEnvironment = false;
+	ss.SetEnvironment(pEnv, bCopyEnvironment, uuidRdkDoc);
+}
 
 class CPreviewLighting : public CRhRdkPreviewLighting
 {
 public:
-	virtual UUID TypeId(void) const override;
-	virtual const wchar_t* XmlTag(void) const override { return SS_PL_SIMPLE; }
+	virtual UUID TypeId(void) const override { static const UUID uuid = { 0x80d847ac, 0x20e7, 0x417d, { 0x92, 0x33, 0xb1, 0x36, 0x3d, 0x5c, 0x47, 0xd3 } }; return uuid; }
+	virtual const wchar_t* XmlTag(void) const override { return L"my-lighting"; }
 	virtual CRhRdkPreviewSceneElement* Duplicate(void) const override { return new CPreviewLighting; }
-	virtual void SetUpPreview(CRhRdkPreviewSceneServer& ss) const override;
+	virtual void SetUpPreview(IRhRdkPreviewSceneServerEx& ss) const override;
 };
 
+//#define SIMPLE_LIGHTING
+
+void CPreviewLighting::SetUpPreview(IRhRdkPreviewSceneServerEx& ss) const
+{
+	ON_Light light;
+
+	light.SetStyle(ON::world_directional_light);
+	light.SetIntensity(1.2);
+
+#ifdef SIMPLE_LIGHTING
+	light.SetDirection(-ON_3dVector::XAxis);
+	ss.AddLight(light);
+#else
+	const auto az = ON_PI * 0.375;
+	const auto ax = ON_PI * -0.25;
+
+	ON_3dVector v1(ON_3dVector::XAxis);
+	v1.Rotate( az, ON_3dVector::ZAxis);
+	v1.Rotate( ax, ON_3dVector::XAxis);
+	light.SetDirection(v1);
+	light.SetDiffuse(ON_Color(255, 0, 0));
+	ss.AddLight(light);
+
+	ON_3dVector v2(ON_3dVector::XAxis);
+	v2.Rotate( az, ON_3dVector::ZAxis);
+	light.SetDirection(v2);
+	light.SetDiffuse(ON_Color(0, 255, 0));
+	ss.AddLight(light);
+
+	ON_3dVector v3(ON_3dVector::XAxis);
+	v3.Rotate( az, ON_3dVector::ZAxis);
+	v3.Rotate(-ax, ON_3dVector::XAxis);
+	light.SetDirection(v3);
+	light.SetDiffuse(ON_Color(0, 0, 255));
+	ss.AddLight(light);
+
+	ON_3dVector v4(ON_3dVector::XAxis);
+	v4.Rotate(ON_PI*-0.65, ON_3dVector::ZAxis);
+	light.SetDirection(v4);
+	light.SetDiffuse(ON_Color(255, 255, 255));
+	ss.AddLight(light);
 #endif
+
+	ss.SetSkylighting(false);
+}
 
 void CCustomContentSection::DisplayData(void)
 {
@@ -236,18 +298,20 @@ void CCustomContentSection::DisplayData(void)
 
 	const auto* pContent = aContent[0];
 
-//	CPreviewGeometry g;
-//	CPreviewBackground b;
-//	CPreviewLighting l;
-//	CRhRdkSSData data(&g, &b, &l, CRhRdkSSData::Usage::Synchronous);
-//	auto* pSS = pContent->NewPreviewSceneServer(data);
+	CPreviewGeometry g;
+	CPreviewBackground b;
+	CPreviewLighting l;
+	CRhRdkSSData data(&g, &b, &l, CRhRdkSSData::Usage::Synchronous);
+	auto* pSS = pContent->NewPreviewSceneServer(data);
 
-	if (pContent->CreatePreview(*pPlugIn, size, RhRdkPreviewQuality::Quick, nullptr, nullptr, dib))
+	if (pContent->CreatePreview(*pPlugIn, size, RhRdkPreviewQuality::Quick, pSS, nullptr, dib))
 	{
 		m_dib = dib;
 
 		Invalidate();
 	}
+
+	delete pSS;
 }
 
 void CCustomContentSection::OnPaint()
