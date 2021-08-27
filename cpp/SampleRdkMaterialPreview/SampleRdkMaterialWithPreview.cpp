@@ -172,16 +172,27 @@ void CPreviewGeometry::SetUpPreview(IRhRdkPreviewSceneServerEx& ss, const CRhRdk
 		return;
 
 	// Add a sphere to the preview scene.
-	ss.AddObject(IRhRdkPreviewSceneServer::geomSphere, *pMat, bCopy);
+	auto* pObject = ss.AddObject(IRhRdkPreviewSceneServer::geomSphere, *pMat, bCopy);
 
-	// Add a distant torus to the preview scene.
-	auto* pObject = ss.AddObject(IRhRdkPreviewSceneServer::geomTorus, *pMat, bCopy);
+	// Add a torus to the preview scene.
+	pObject = ss.AddObject(IRhRdkPreviewSceneServer::geomTorus, *pMat, bCopy);
 
 	// In order to set the location, cast to IObjectEx. This was added after the SDK freeze.
 	auto* pObjectEx = dynamic_cast<IRhRdkPreviewSceneServerEx::IObjectEx*>(pObject);
 	if (nullptr != pObjectEx)
 	{
-		ON_3dPoint loc(10.0, 10.0, 0.0);
+		ON_3dPoint loc(-10.0, 17.0, 0.0);
+		pObjectEx->SetLocation(loc);
+	}
+
+	// Add a cube to the preview scene.
+	pObject = ss.AddObject(IRhRdkPreviewSceneServer::geomCuboid, *pMat, bCopy);
+
+	// In order to set the location, cast to IObjectEx. This was added after the SDK freeze.
+	pObjectEx = dynamic_cast<IRhRdkPreviewSceneServerEx::IObjectEx*>(pObject);
+	if (nullptr != pObjectEx)
+	{
+		ON_3dPoint loc(-10.0, -17.0, 0.0);
 		pObjectEx->SetLocation(loc);
 	}
 }
@@ -203,7 +214,7 @@ void CPreviewBackground::SetUpPreview(IRhRdkPreviewSceneServerEx& ss, const UUID
 
 	auto* pEnv = ::RhRdkNewBasicEnvironment(pRdkDoc->RhinoDoc());
 	pEnv->Initialize();
-	pEnv->SetParameter(FS_ENV_BACKGROUND_COLOR, CRhRdkColor(20, 20, 20));
+	pEnv->SetParameter(FS_ENV_BACKGROUND_COLOR, CRhRdkColor(80, 20, 130));
 
 	const bool bCopyEnvironment = false;
 	ss.SetEnvironment(pEnv, bCopyEnvironment, uuidRdkDoc);
@@ -289,10 +300,7 @@ void CCustomContentSection::DisplayData(void)
 	CRect r;
 	m_placeholder.GetWindowRect(r);
 
-	// This creates the preview. For this simple demo, we pass a null scene server because we don't want to
-	// be concerned with the complexity of custom scene servers here. Passing null causes the RDK to get a
-	// default scene server by calling the content's NewPreviewSceneServer() method.
-	// We also pass a null callback and render only one full-quality preview.
+	// This creates the preview.
 	CRhinoDib dib;
 	ON_2iSize size(r.Width(), r.Height());
 
@@ -303,6 +311,9 @@ void CCustomContentSection::DisplayData(void)
 	CPreviewLighting l;
 	CRhRdkSSData data(&g, &b, &l, CRhRdkSSData::Usage::Synchronous);
 	auto* pSS = pContent->NewPreviewSceneServer(data);
+
+	// If you want the RDK to get use default scene server by calling the content's NewPreviewSceneServer()
+	// method, you can pass null instead of pSS. Here, we create our own custom scene server.
 
 	if (pContent->CreatePreview(*pPlugIn, size, RhRdkPreviewQuality::Quick, pSS, nullptr, dib))
 	{
