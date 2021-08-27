@@ -306,14 +306,14 @@ void CCustomContentSection::DisplayData(void)
 
 	const auto* pContent = aContent[0];
 
+	// Here, we create our own custom scene server, but if you wanted the RDK to use a default scene
+	// server (by calling the content's NewPreviewSceneServer() method), you could skip this and just
+	// pass null instead of pSS.
 	CPreviewGeometry g;
 	CPreviewBackground b;
 	CPreviewLighting l;
 	CRhRdkSSData data(&g, &b, &l, CRhRdkSSData::Usage::Synchronous);
 	auto* pSS = pContent->NewPreviewSceneServer(data);
-
-	// If you want the RDK to get use default scene server by calling the content's NewPreviewSceneServer()
-	// method, you can pass null instead of pSS. Here, we create our own custom scene server.
 
 	if (pContent->CreatePreview(*pPlugIn, size, RhRdkPreviewQuality::Quick, pSS, nullptr, dib))
 	{
