@@ -16,95 +16,61 @@
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
-#ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
-//
-// TEXTINCLUDE
-//
-
-1 TEXTINCLUDE
-BEGIN
-    "resource.h\0"
-END
-
-2 TEXTINCLUDE
-BEGIN
-    "#ifndef APSTUDIO_INVOKED\r\n"
-    "#include ""targetver.h""\r\n"
-    "#endif\r\n"
-    "#include ""afxres.h""\r\n"
-    "#include ""verrsrc.h""\r\n"
-    "\0"
-END
-
-3 TEXTINCLUDE
-BEGIN
-    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
-    "#define _AFX_NO_OLE_RESOURCES\r\n"
-    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
-    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
-    "\r\n"
-    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
-    "LANGUAGE 9, 1\r\n"    
-    "#include ""res\\SampleRdkMaterialPreview.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
-#ifndef _AFXDLL
-    "#include ""afxres.rc""      // Standard components\r\n"
-#endif
-    "#endif\r\n"
-    "\0"
-END
-
-/////////////////////////////////////////////////////////////////////////////
-#endif    // APSTUDIO_INVOKED
-
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-LANGUAGE 9, 1
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
 //
 
-VS_VERSION_INFO     VERSIONINFO
-  FILEVERSION       1,0,0,1
-  PRODUCTVERSION    1,0,0,1
- FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
- FILEFLAGS VS_FF_DEBUG
+ FILEFLAGS 0x1L
 #else
  FILEFLAGS 0x0L
 #endif
- FILEOS VOS_NT_WINDOWS32
- FILETYPE VFT_DLL
- FILESUBTYPE VFT2_UNKNOWN
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
 BEGIN
-	BLOCK "StringFileInfo"
-	BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
         BLOCK "0409"
-		BEGIN
+        BEGIN
             VALUE "CompanyName", "My Company Name"
             VALUE "FileDescription", "SampleRdkMaterialPreview"
-			VALUE "FileVersion",     "1.0.0.0"
-			VALUE "InternalName",    "SampleRdkMaterialPreview.rhp"
+            VALUE "FileVersion", "1.0.0.0"
+            VALUE "InternalName", "SampleRdkMaterialPreview.rhp"
             VALUE "LegalCopyright", "Copyright © 2018, My Company Name"
-			VALUE "OriginalFilename","SampleRdkMaterialPreview.rhp"
+            VALUE "OriginalFilename", "SampleRdkMaterialPreview.rhp"
             VALUE "ProductName", "SampleRdkMaterialPreview"
-			VALUE "ProductVersion",  "1.0.0.0"
-		END
-	END
-	BLOCK "VarFileInfo"
-	BEGIN
-		VALUE "Translation", 0x0409, 1252
+            VALUE "ProductVersion", "1.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
     END
 END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Icon
 //
 
-IDI_ICON ICON                    "res\\SampleRdkMaterialPreview.ico"
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON                ICON                    "res\\SampleRdkMaterialPreview.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -112,17 +78,19 @@ IDI_ICON ICON                    "res\\SampleRdkMaterialPreview.ico"
 //
 
 IDD_MATERIAL_SECTION DIALOGEX 0, 0, 211, 75
-STYLE DS_SETFONT | WS_CHILD
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
+    CONTROL         "",IDC_PICTURE,"Static",SS_BLACKFRAME,12,10,149,56
 END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-IDR_RENDER MENU DISCARDABLE
+IDR_RENDER MENU
 BEGIN
     POPUP "&File"
     BEGIN
@@ -165,9 +133,87 @@ BEGIN
     END
 END
 
-#endif
-#ifndef APSTUDIO_INVOKED
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_MATERIAL_SECTION, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_MATERIAL_SECTION AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United Kingdom) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#include ""res\\SampleRdkMaterialPreview.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""      // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United Kingdom) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
 // Generated from the TEXTINCLUDE 3 resource.
@@ -179,10 +225,8 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE 9, 1
-#include "res\\SampleRdkMaterialPreview.rc2"  // non-Microsoft Visual C++ edited resources
-#ifndef _AFXDLL
+#include "res\SampleRdkMaterialPreview.rc2"  // non-Microsoft Visual C++ edited resources
 #include "afxres.rc"      // Standard components
-#endif
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

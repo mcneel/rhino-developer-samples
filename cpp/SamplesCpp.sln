@@ -115,6 +115,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkContentTask", "Sam
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkRemoveUnusedContent", "SampleRdkRemoveUnusedContent\SampleRdkRemoveUnusedContent.vcxproj", "{A84F2AC9-69F1-4C59-BD7C-137F46F5CB3E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkMaterialPreview", "SampleRdkMaterialPreview\SampleRdkMaterialPreview.vcxproj", "{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -358,6 +360,12 @@ Global
 		{A84F2AC9-69F1-4C59-BD7C-137F46F5CB3E}.PseudoDebug|x64.Build.0 = Debug|x64
 		{A84F2AC9-69F1-4C59-BD7C-137F46F5CB3E}.Release|x64.ActiveCfg = Release|x64
 		{A84F2AC9-69F1-4C59-BD7C-137F46F5CB3E}.Release|x64.Build.0 = Release|x64
+		{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}.Debug|x64.ActiveCfg = Debug|x64
+		{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}.Debug|x64.Build.0 = Debug|x64
+		{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}.PseudoDebug|x64.ActiveCfg = Debug|x64
+		{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}.PseudoDebug|x64.Build.0 = Debug|x64
+		{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}.Release|x64.ActiveCfg = Release|x64
+		{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
