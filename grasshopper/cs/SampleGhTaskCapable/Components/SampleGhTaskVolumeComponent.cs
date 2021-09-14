@@ -61,6 +61,22 @@ namespace SampleGhTaskCapable.Components
           mesh = gh_mesh.Value;
       }
 
+      if (!rc)
+      {
+        var gh_box = geometry as GH_Box;
+        if (null != gh_box)
+        {
+          var box = gh_box.Value;
+          return new SolveResults { Volume = Math.Abs(box.X.Length * box.Y.Length * box.Z.Length) };
+        }
+      }
+
+      // Indirect casts
+      if (!rc)
+        rc = GH_Convert.ToBrep(geometry, ref brep, GH_Conversion.Both);
+      if (!rc)
+        rc = GH_Convert.ToMesh(geometry, ref mesh, GH_Conversion.Both);
+
       if (rc)
       {
         VolumeMassProperties mp = null;
@@ -76,6 +92,7 @@ namespace SampleGhTaskCapable.Components
             AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Volume cannot be reliably computed for an open mesh.");
           mp = VolumeMassProperties.Compute(mesh, true, false, false, false);
         }
+
         if (null != mp)
           return new SolveResults { Volume = mp.Volume };
         else
@@ -90,11 +107,8 @@ namespace SampleGhTaskCapable.Components
       if (InPreSolve)
       {
         IGH_GeometricGoo geometry = null;
-        if (!data.GetData(0, ref geometry))
-          return;
-
-        Task<SolveResults> task = Task.Run(() => ComputeVolume(geometry), CancelToken);
-        TaskList.Add(task);
+        data.GetData(0, ref geometry);
+        TaskList.Add(Task.Run(() => ComputeVolume(geometry), CancelToken));
         return;
       }
 
@@ -103,7 +117,6 @@ namespace SampleGhTaskCapable.Components
         IGH_GeometricGoo geometry = null;
         if (!data.GetData(0, ref geometry))
           return;
-
         result = ComputeVolume(geometry);
       }
 
@@ -115,6 +128,6 @@ namespace SampleGhTaskCapable.Components
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.SampleGhTaskVolumeComponent_24x24;
 
-    public override Guid ComponentGuid => new Guid("828ccaf1-440d-4712-921e-0fc82962c1b4");
+    public override Guid ComponentGuid => new Guid("BB0B960D-E438-4769-B704-E47EC148986B");
   }
 }

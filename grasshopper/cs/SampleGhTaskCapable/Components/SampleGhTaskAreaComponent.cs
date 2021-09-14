@@ -9,7 +9,7 @@ namespace SampleGhTaskCapable.Components
   public class SampleGhTaskAreaComponent : GH_TaskCapableComponent<SampleGhTaskAreaComponent.SolveResults>
   {
     public SampleGhTaskAreaComponent()
-      : base("Task Area", "TArea", "Task compute the area reps, meshes and planar closed curves.", "Sample", "Task")
+      : base("Task Area", "TArea", "Task compute the area breps, meshes and planar closed curves.", "Sample", "Task")
     {
     }
 
@@ -34,6 +34,7 @@ namespace SampleGhTaskCapable.Components
         return null;
 
       bool rc = false;
+
       Brep brep = null;
       Mesh mesh = null;
       Curve curve = null;
@@ -70,13 +71,46 @@ namespace SampleGhTaskCapable.Components
           curve = gh_curve.Value;
       }
 
+      if (!rc)
+      {
+        var gh_circle = geometry as GH_Circle;
+        if (null != gh_circle)
+        {
+          var circle = gh_circle.Value;
+          return new SolveResults { Area = Math.PI * circle.Radius * circle.Radius };
+        }
+      }
+
+      if (!rc)
+      {
+        var gh_rectangle = geometry as GH_Rectangle;
+        if (null != gh_rectangle)
+        {
+          var rectangle = gh_rectangle.Value;
+          return new SolveResults { Area = Math.Abs(rectangle.Width * rectangle.Height) };
+        }
+      }
+
+      // Indirect casts
+      if (!rc)
+        rc = GH_Convert.ToBrep(geometry, ref brep, GH_Conversion.Both);
+      if (!rc)
+        rc = GH_Convert.ToCurve(geometry, ref curve, GH_Conversion.Both);
+      if (!rc)
+        rc = GH_Convert.ToMesh(geometry, ref mesh, GH_Conversion.Both);
+
       if (rc)
       {
         AreaMassProperties mp = null;
+        
         if (null != brep)
+        {
           mp = AreaMassProperties.Compute(brep, true, false, false, false);
+        }
         else if (null != mesh)
+        {
           mp = AreaMassProperties.Compute(mesh, true, false, false, false);
+        }
         else if (null != curve)
         {
           if (!curve.IsClosed)
@@ -92,6 +126,7 @@ namespace SampleGhTaskCapable.Components
           var geom = new GeometryBase[] { curve };
           mp = AreaMassProperties.Compute(geom, true, false, false, false);
         }
+
         if (null != mp)
           return new SolveResults { Area = mp.Area };
         else
@@ -106,11 +141,8 @@ namespace SampleGhTaskCapable.Components
       if (InPreSolve)
       {
         IGH_GeometricGoo geometry = null;
-        if (!data.GetData(0, ref geometry))
-          return;
-
-        Task<SolveResults> task = Task.Run(() => ComputeArea(geometry), CancelToken);
-        TaskList.Add(task);
+        data.GetData(0, ref geometry);
+        TaskList.Add(Task.Run(() => ComputeArea(geometry), CancelToken));
         return;
       }
 
@@ -119,7 +151,6 @@ namespace SampleGhTaskCapable.Components
         IGH_GeometricGoo geometry = null;
         if (!data.GetData(0, ref geometry))
           return;
-
         result = ComputeArea(geometry);
       }
 
@@ -131,6 +162,6 @@ namespace SampleGhTaskCapable.Components
 
     protected override System.Drawing.Bitmap Icon => Properties.Resources.SampleGhTaskAreaComponent_24x24;
 
-    public override Guid ComponentGuid => new Guid("cee043dc-8806-416c-9e24-095fcf0e00fc");
+    public override Guid ComponentGuid => new Guid("689C4320-BA81-4D6A-92D5-053CFA2F7CB4");
   }
 }
