@@ -15,7 +15,7 @@ Sub BatchRender
 
   WScript.Echo "Creating Rhino object..."
   On Error Resume Next
-  Set oRhino = CreateObject("Rhino4.Application")
+  Set oRhino = CreateObject("Rhino.Application")
   If (Err.Number <> 0) Then
     WScript.Echo "Failed to create Rhino object."
     Exit Sub
