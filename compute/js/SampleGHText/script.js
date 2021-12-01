@@ -95,7 +95,7 @@ function collectResults(responseJson) {
   const values = responseJson.values
   console.log(responseJson)
 
-  const str = values[0].InnerTree['{ 0; }'][0].data
+  const str = values[0].InnerTree['{0}'][0].data
   const data = JSON.parse(str)
   const arr = _base64ToArrayBuffer(data)
   doc = rhino.File3dm.fromByteArray(arr)

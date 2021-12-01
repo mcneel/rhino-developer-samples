@@ -62,7 +62,7 @@ async function compute() {
     // hide spinner
     document.getElementById('loader').style.display = 'none'
 
-    const data = JSON.parse(res.values[0].InnerTree['{ 0; }'][0].data)
+    const data = JSON.parse(res.values[0].InnerTree['{0}'][0].data)
     const mesh = rhino.DracoCompression.decompressBase64String(data)
 
     const material = new THREE.MeshNormalMaterial()

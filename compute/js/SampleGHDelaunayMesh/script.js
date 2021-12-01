@@ -68,7 +68,7 @@ async function compute() {
   // remove spinner
   document.getElementById('loader').remove()
 
-  const data = JSON.parse( res.values[0].InnerTree['{ 0; }'][0].data )
+  const data = JSON.parse( res.values[0].InnerTree['{0}'][0].data )
   const mesh = rhino.CommonObject.decode( data )
 
   const material = new THREE.MeshBasicMaterial( { wireframe: true, color: 0x00ff00 } )
