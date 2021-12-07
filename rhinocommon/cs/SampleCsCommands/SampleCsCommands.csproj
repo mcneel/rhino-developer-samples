@@ -232,6 +232,7 @@
     <Compile Include="SampleCsSetUserText.cs" />
     <Compile Include="SampleCsUnweldAll.cs" />
     <Compile Include="SampleCsUtilities.cs" />
+    <Compile Include="SampleCsViewBoundingBox.cs" />
     <Compile Include="SampleCsViewCapture.cs" />
     <Compile Include="SampleCsViewCaptureBoundingBox.cs" />
     <Compile Include="SampleCsViewportSize.cs" />
