@@ -6,8 +6,7 @@ using Rhino.Input;
 using Rhino.Input.Custom;
 using Rhino.Render;
 
-// This sample will only work in Rhino 7.13 upwards because the RenderMaterial.AssignTo()
-// function was only added to the Rhino SDK in 7.13.
+// This sample will only work in Rhino 7.15 upwards.
 
 namespace SampleCsCommands
 {
@@ -29,7 +28,7 @@ namespace SampleCsCommands
       var obj = go.Object(0).Object();
       if (obj is ExtrusionObject)
       {
-        RhinoApp.WriteLine("The selected object is an extrusion. Try running Explode and then try this command again");
+        RhinoApp.WriteLine("The selected object is an extrusion. Try running ConvertExtrusion and then run this command again");
         return Result.Failure;
       }
 
@@ -55,14 +54,6 @@ namespace SampleCsCommands
         blue_render_material.AssignTo(brepref);
       }
 
-      //#######################################################################################
-      //#######################################################################################
-      //#######################################################################################
-      // This doesn't work yet -- possibly because of https://mcneel.myjetbrains.com/youtrack/issue/RH-66614
-      //#######################################################################################
-      //#######################################################################################
-      //#######################################################################################
-
       // Set every second face material to the red material.
       var brep = brepObject.BrepGeometry;
       for (int i = 0; i < brep.Faces.Count; i++)
@@ -71,9 +62,9 @@ namespace SampleCsCommands
 
         if ((i % 2) == 0)
         {
-          using (var faceref = new ObjRef(doc, brepObject.Id, face.ComponentIndex()))
+          using (var faceRef = new ObjRef(doc, brepObject.Id, face.ComponentIndex()))
           {
-            red_render_material.AssignTo(faceref);
+            red_render_material.AssignTo(faceRef);
           }
         }
         else
@@ -81,9 +72,6 @@ namespace SampleCsCommands
           face.ClearMaterialChannelIndex();
         }
       }
-
-      // Commit the changes.
-//      brepObject.CommitChanges();
 
       return Result.Success;
     }
