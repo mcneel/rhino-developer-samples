@@ -13,15 +13,13 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      ObjRef objref;
-      var rc = RhinoGet.GetOneObject("Select object to move", false, ObjectType.AnyObject, out objref);
+      var rc = RhinoGet.GetOneObject("Select object to move", false, ObjectType.AnyObject, out ObjRef objref);
       if (rc != Result.Success)
         return rc;
       if (null == objref)
         return Result.Failure;
 
-      Point3d first_point;
-      rc = RhinoGet.GetPoint("Point to move from", false, out first_point);
+      rc = RhinoGet.GetPoint("Point to move from", false, out Point3d first_point);
       if (rc != Result.Success)
         return rc;
 
