@@ -27,9 +27,6 @@ CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoComma
   if (nullptr == pMaterial)
     return failure;
 
-  // Optionally set the diffuse color again.
-  pMaterial->SetDiffuse(RGB(0, 255, 0));
-
   // Add a bitmap texture to the bitmap slot of the Basic Material.
   CRhRdkSimulatedTexture tex(pDoc);
   tex.SetFilename(L"C:\\example_image.jpg", pDoc, false); // TODO: Set the full path to the file.
