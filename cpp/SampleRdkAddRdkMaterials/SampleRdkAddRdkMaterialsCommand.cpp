@@ -23,7 +23,7 @@ CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoComma
   mat.SetName(L"Sample");
 
   // Create a Basic (Custom) Material using the ON_Material.
-  auto* pMaterial = ::RhRdkNewBasicMaterial(mat, pDoc);
+  auto* pMaterial = CRhRdkMaterial::FromOnMaterial(mat, pDoc);
   if (nullptr == pMaterial)
     return failure;
 
