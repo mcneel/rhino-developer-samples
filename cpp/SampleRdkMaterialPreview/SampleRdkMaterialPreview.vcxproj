@@ -40,7 +40,7 @@
   <PropertyGroup Label="Globals">
     <Keyword>MFCDLLProj</Keyword>
     <ProjectGuid>{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}</ProjectGuid>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
