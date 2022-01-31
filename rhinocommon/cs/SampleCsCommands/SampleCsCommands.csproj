@@ -172,6 +172,7 @@
     <Compile Include="SampleCsMeshOutline.cs" />
     <Compile Include="SampleCsModifySphereRadius.cs" />
     <Compile Include="SampleCsNamedPlaneSurface.cs" />
+    <Compile Include="SampleCsObjectEnumerator.cs" />
     <Compile Include="SampleCsOpen3dm.cs" />
     <Compile Include="SampleCsOpenDwg.cs" />
     <Compile Include="SampleCsOptionsList.cs" />
