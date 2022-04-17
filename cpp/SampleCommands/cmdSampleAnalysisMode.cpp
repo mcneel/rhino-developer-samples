@@ -270,7 +270,7 @@ CRhinoCommand::result CCommandZAnalysisOn::RunCommand(const CRhinoCommandContext
     if (rhino_object->InAnalysisMode(theZAnalysisVAM.m_am_id))
       continue;
 
-    const_cast<CRhinoObject*>(rhino_object)->DestroyMeshes(ON::analysis_mesh, true);
+    const_cast<CRhinoObject*>(rhino_object)->DestroyMeshes(ON::analysis_mesh);
 
     if (rhino_object->EnableAnalysisMode(theZAnalysisVAM.m_am_id, true))
       count++;
