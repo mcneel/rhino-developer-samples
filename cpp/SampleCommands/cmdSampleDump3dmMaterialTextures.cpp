@@ -63,7 +63,7 @@ CRhinoCommand::result CCommandSampleDump3dmMaterialTextures::RunCommand(const CR
       const ON_3dmObjectAttributes* attributes = model_geometry->Attributes(nullptr);
       if (nullptr != attributes)
       {
-        const ON_ModelComponentReference& render_material_ref = model.RenderMaterialFromAttributes(*attributes);
+        const ON_ModelComponentReference& render_material_ref = model.MaterialFromAttributes(*attributes);
         const ON_Material* material = ON_Material::FromModelComponentRef(render_material_ref, nullptr);
         if (nullptr != material)
         {
