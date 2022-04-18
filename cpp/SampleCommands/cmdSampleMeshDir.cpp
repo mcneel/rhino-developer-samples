@@ -174,9 +174,6 @@ CRhinoCommand::result CCommandSampleMeshDir::RunCommand(const CRhinoCommandConte
   //For view dependent custom render primitives.
   const ON_Viewport vp = context.m_doc.ActiveView() ? context.m_doc.ActiveView()->ActiveViewport().VP() : ON_Viewport();
 
-  std::bitset<32> flags = 0;
-  flags.set(RhRdk::CustomRenderMeshes::IManager::Flags::Recursive);
-
   CMeshDirDrawCallback callback;
 
   int count = 0;
@@ -186,7 +183,7 @@ CRhinoCommand::result CCommandSampleMeshDir::RunCommand(const CRhinoCommandConte
     const CRhinoObject* pObject = go.Object(i).Object();
     if (pObject)
     {
-      auto render_meshes = pObject->RenderMeshes(ON::render_mesh, vp, CRhRdkObjectAncestry::empty, flags);
+      auto render_meshes = pObject->RenderMeshes(ON::render_mesh, true, &vp);
 
       if (render_meshes)
       {
