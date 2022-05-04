@@ -38,6 +38,9 @@ CRhinoCommand::result CCommandSampleExportRenderMeshes::RunCommand(const CRhinoC
     vp = context.m_doc.ActiveView()->ActiveViewport().View().m_vp;
   }
 
+  std::bitset<32> flags;
+  flags.set(RhRdk::CustomRenderMeshes::IManager::Flags::Recursive);
+
   int count = 0;
 
   CRhinoObjectIterator it(*pDoc, CRhinoObjectIterator::normal_or_locked_objects, CRhinoObjectIterator::active_and_reference_objects);
@@ -45,7 +48,7 @@ CRhinoCommand::result CCommandSampleExportRenderMeshes::RunCommand(const CRhinoC
   {
     const CRhinoObjRef objref(obj);
 
-    const auto render_meshes_for_object = obj->RenderMeshes(ON::render_mesh, true);
+    const auto render_meshes_for_object = obj->RenderMeshes(ON::render_mesh, vp, CRhRdkObjectAncestry::empty, flags);
     if (render_meshes_for_object)
     {
       for (const auto& mesh_instance : *render_meshes_for_object)

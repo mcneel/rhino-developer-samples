@@ -28,8 +28,10 @@ static class CCommandSampleExtractRenderMesh theSampleExtractRenderMeshCommand;
 
 static bool ExtractObjectMeshHelper_Recursive(ON::mesh_type mt, const ON_Viewport& vp, CRhinoDoc& doc, const CRhinoObject& object, const ON_Xform& xform)
 {
+  std::bitset<32> flags = 0;
+
   const auto* pBlockRef = CRhinoInstanceObject::Cast(&object);
-  if (pBlockRef && !object.HasCustomRenderMeshes(mt, &vp))
+  if (pBlockRef && !::RhRdkCustomRenderMeshManager2().HasCustomRenderMeshes(mt, vp, doc, object.ModelObjectId(), flags, nullptr, nullptr))
   {
     //Recurse - this is a block definition.
     if (const auto* pDef = pBlockRef->InstanceDefinition())
@@ -50,7 +52,7 @@ static bool ExtractObjectMeshHelper_Recursive(ON::mesh_type mt, const ON_Viewpor
 
   //Otherwise, actually get the meshes for this concrete object and make the mesh object.
   //First do the meshes - because if it makes something.
-  auto object_primitives = object.RenderMeshes(mt, false, &vp);
+  auto object_primitives = object.RenderMeshes(mt, vp, CRhRdkObjectAncestry::empty, flags, nullptr, nullptr);
 
   if (object_primitives)
   {
