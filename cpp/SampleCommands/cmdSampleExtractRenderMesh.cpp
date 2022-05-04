@@ -26,71 +26,128 @@ public:
 // The one and only CCommandSampleExtractRenderMesh object
 static class CCommandSampleExtractRenderMesh theSampleExtractRenderMeshCommand;
 
+static bool ExtractObjectMeshHelper_Recursive(ON::mesh_type mt, const ON_Viewport& vp, CRhinoDoc& doc, const CRhinoObject& object, const ON_Xform& xform)
+{
+  const auto* pBlockRef = CRhinoInstanceObject::Cast(&object);
+  if (pBlockRef && !object.HasCustomRenderMeshes(mt, &vp))
+  {
+    //Recurse - this is a block definition.
+    if (const auto* pDef = pBlockRef->InstanceDefinition())
+    {
+      const auto count = pDef->ObjectCount();
+
+      for (int i = 0; i < count; i++)
+      {
+        const auto* pObject = pDef->Object(i);
+        if (pObject)
+        {
+          ExtractObjectMeshHelper_Recursive(mt, vp, doc, *pObject, xform * pBlockRef->InstanceXform());
+        }
+      }
+    }
+    return true;
+  }
+
+  //Otherwise, actually get the meshes for this concrete object and make the mesh object.
+  //First do the meshes - because if it makes something.
+  auto object_primitives = object.RenderMeshes(mt, false, &vp);
+
+  if (object_primitives)
+  {
+    ON_3dmObjectAttributes object_attribs;
+    std::vector<std::shared_ptr<const ON_Mesh>> object_meshes;
+
+    for (const auto& instance : *object_primitives)
+    {
+      if (instance)
+      {
+        const auto* pObject = doc.LookupObject(instance->Object());
+
+        if (pObject)
+        {
+          if (pObject->IsReference() && pObject->ObjectLayer().IsReference())
+          {
+            doc.GetDefaultObjectAttributes(object_attribs);
+          }
+          else
+          {
+            object_attribs = pObject->Attributes();
+          }
+
+          object_attribs.RemoveFromAllGroups();
+          object_attribs.m_uuid = ON_nil_uuid;
+          object_attribs.PurgeUserData();
+
+          const ON_Xform xform_this = instance->Xform() * xform;
+
+          //Transform the mesh if it's not identity
+          if (xform_this.IsIdentity())
+          {
+            object_meshes.push_back(instance->Geometry().Mesh());
+          }
+          else
+          {
+            auto pMesh = new ON_Mesh(*instance->Geometry().Mesh());
+            pMesh->Transform(xform_this);
+            object_meshes.push_back(std::shared_ptr<const ON_Mesh>(pMesh));
+            object_attribs.Transform(xform);
+          }
+        }
+      }
+    }
+
+    ON_Mesh* new_mesh = new ON_Mesh;
+    new_mesh->Append(object_meshes);
+
+    if (!new_mesh->HasVertexNormals())
+    {
+      new_mesh->ComputeVertexNormals();
+    }
+
+    if (new_mesh->IsValid())
+    {
+      CRhinoMeshObject* mesh_object = new CRhinoMeshObject(object_attribs);
+      mesh_object->SetMesh(new_mesh);
+      doc.AddObject(mesh_object);
+    }
+    else
+    {
+      delete new_mesh;
+    }
+  }
+
+  return true;
+}
+
 CRhinoCommand::result CCommandSampleExtractRenderMesh::RunCommand(const CRhinoCommandContext& context)
 {
-  const ON::mesh_type mt = ON::render_mesh;
-  const bool bOkToCreate = true;
-
   CRhinoGetObject go;
-  go.SetCommandPrompt(L"Select surfaces, polysurfaces, meshes, extrusions and block instances");
-  go.EnableGroupSelect();
-  go.EnableSubObjectSelect(false);
-
-  unsigned int gf = 0;
-  gf |= CRhinoObject::surface_object;
-  gf |= CRhinoObject::polysrf_object;
-  gf |= CRhinoObject::mesh_object;
-  gf |= CRhinoObject::instance_reference;
-  gf |= CRhinoObject::extrusion_object;
-  go.SetGeometryFilter(gf);
-
+  go.EnableGroupSelect(TRUE);
+  go.EnableSubObjectSelect(FALSE);
+  go.SetCommandPrompt(L"Select objects to extract render mesh");
   go.GetObjects(1, 0);
+
   if (go.Result() != CRhinoGet::object)
     return CRhinoCommand::cancel;
 
-  ON_SimpleArray<const CRhinoObject*> object_list;
+  //For view dependent custom render primitives.
+  const ON_Viewport vp = context.m_doc.ActiveView() ? context.m_doc.ActiveView()->ActiveViewport().VP() : ON_Viewport();
+
+  auto rc = CRhinoCommand::success;
+
   for (int i = 0; i < go.ObjectCount(); i++)
-    object_list.Append(go.Object(i).Object());
-
-  ON_ClassArray<CRhinoObjRef> render_meshes;
-  if (ON::analysis_mesh == mt)
-    RhinoGetAnalysisMeshes(object_list, render_meshes, bOkToCreate);
-  else
-    RhinoGetRenderMeshes(object_list, render_meshes, bOkToCreate);
-
-  for (int i = 0; i < render_meshes.Count(); i++)
   {
-    const CRhinoObjRef& objref = render_meshes[i];
-    const ON_Mesh* mesh = objref.Mesh();
-    if (nullptr != mesh && mesh->m_V.Count() >= 3 || mesh->m_F.Count() > 0)
+    const auto* pTopLevelObject = go.Object(i).Object();
+    if (pTopLevelObject)
     {
-      const CRhinoObject* rhino_object = objref.Object();
-      if (nullptr != rhino_object)
-      {
-        ON_Xform xform(ON_Xform::IdentityTransformation);
-        const CRhinoInstanceObject* iref = objref.GetInstanceTransformation(xform);
-        bool bApplyInstanceXform = (nullptr != iref && xform.IsValid() && false == xform.IsIdentity());
-
-        ON_3dmObjectAttributes attribs = rhino_object->Attributes();
-        attribs.m_uuid = ON_nil_uuid;
-        attribs.RemoveFromAllGroups();
-        if (bApplyInstanceXform)
-          attribs.Transform(xform);
-
-        ON_Mesh* new_mesh = new ON_Mesh(*mesh);
-        if (!new_mesh->HasVertexNormals())
-          new_mesh->ComputeVertexNormals();
-
-        CRhinoMeshObject* mesh_object = new CRhinoMeshObject(attribs);
-        mesh_object->SetMesh(new_mesh);
-        context.m_doc.AddObject(mesh_object);
-      }
+      if (!ExtractObjectMeshHelper_Recursive(ON::render_mesh, vp, context.m_doc, *pTopLevelObject, ON_Xform::IdentityTransformation))
+        rc = CRhinoCommand::failure;
     }
   }
 
   context.m_doc.Redraw();
 
-  return CRhinoCommand::success;
+  return rc;
 }
 
 #pragma endregion
