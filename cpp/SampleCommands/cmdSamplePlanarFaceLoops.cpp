@@ -56,7 +56,7 @@ CRhinoCommand::result CCommandSamplePlanarFaceLoops::RunCommand(const CRhinoComm
   ON_SimpleArray<ON_Curve*> boundary;
 
   ON_Brep* new_brep = brep->Duplicate();
-  new_brep->DestroyMesh(ON::any_mesh);
+  new_brep->DestroyMesh(ON::any_mesh, true);
 
   for (int i = 0; i < curve_count; i++)
   {

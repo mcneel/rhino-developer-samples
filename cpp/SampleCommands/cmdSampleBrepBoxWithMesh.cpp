@@ -58,7 +58,7 @@ CRhinoCommand::result CCommandSampleBrepBoxWithMesh::RunCommand(const CRhinoComm
   {
     // Remove an previous values of this type of mesh.
     // Note, not necessary with new ON_Brep objects.
-    brep->DestroyMesh(ON::render_mesh);
+    brep->DestroyMesh(ON::render_mesh, true);
 
     // Transfer meshes from meshes[] array to brep->m_F[].
     // Note, brep will delete meshes.
@@ -68,7 +68,7 @@ CRhinoCommand::result CCommandSampleBrepBoxWithMesh::RunCommand(const CRhinoComm
       {
         ON_BrepFace& face = brep->m_F[i];
         // Again, not necessary with new ON_Brep objects
-        face.DestroyMesh(ON::render_mesh);
+        face.DestroyMesh(ON::render_mesh, true);
         face.SetMesh(ON::render_mesh, meshes[i]);
       }
     }

@@ -7,19 +7,16 @@
 // BEGIN SampleMeshDir command
 //
 
-#include <memory>
-#include <vector>
-
 class CMeshDir
 {
 public:
   CMeshDir();
-  CMeshDir(std::shared_ptr<const ON_Mesh>);
-  void SetMesh(std::shared_ptr<const ON_Mesh>);
+  CMeshDir(const ON_Mesh*);
+  void SetMesh(const ON_Mesh*);
 
   ON_SimpleArray<ON_3dPoint> m_face_center;
   ON_SimpleArray<ON_3dVector> m_face_normal;
-  std::shared_ptr<const ON_Mesh> m_mesh;
+  const ON_Mesh* m_mesh;
 };
 
 CMeshDir::CMeshDir()
@@ -27,12 +24,12 @@ CMeshDir::CMeshDir()
   m_mesh = NULL;
 }
 
-CMeshDir::CMeshDir(std::shared_ptr<const ON_Mesh> mesh)
+CMeshDir::CMeshDir(const ON_Mesh* mesh)
 {
   SetMesh(mesh);
 }
 
-void CMeshDir::SetMesh(std::shared_ptr<const ON_Mesh> mesh)
+void CMeshDir::SetMesh(const ON_Mesh* mesh)
 {
   m_mesh = mesh;
   m_face_center.Destroy();
@@ -41,7 +38,7 @@ void CMeshDir::SetMesh(std::shared_ptr<const ON_Mesh> mesh)
   {
     if (!m_mesh->HasFaceNormals())
     {
-      std::const_pointer_cast<ON_Mesh>(m_mesh)->ComputeFaceNormals();
+      const_cast<ON_Mesh*>(m_mesh)->ComputeFaceNormals();
     }
     if (m_mesh->HasFaceNormals())
     {
@@ -80,7 +77,7 @@ public:
   CMeshDirDrawCallback();
   void DrawForeground(CRhinoViewport& vp, CRhinoDoc& doc) override;
 
-  std::vector<CMeshDir> m_mesh_list;
+  ON_ClassArray<CMeshDir> m_mesh_list;
   ON_Color m_face_normal_color;
   ON_Color m_vertex_normal_color;
   bool m_draw_face_normals;
@@ -101,19 +98,18 @@ void CMeshDirDrawCallback::DrawForeground(CRhinoViewport& vp, CRhinoDoc&)
   if (nullptr == dp)
     return;
 
-  const auto mcnt = m_mesh_list.size();
-
-  for (int mi = 0; mi < mcnt; mi++)
+  int mi, mcnt, fi, fcnt, vi, vcnt;
+  mcnt = m_mesh_list.Count();
+  for (mi = 0; mi < mcnt; mi++)
   {
     ON_Color saved_color = dp->ObjectColor();
     CMeshDir& md = m_mesh_list[mi];
 
     if (m_draw_face_normals)
     {
-      const auto fcnt = md.m_face_center.Count();
-
+      fcnt = md.m_face_center.Count();
       dp->SetObjectColor(m_face_normal_color);
-      for (int fi = 0; fi < fcnt; fi++)
+      for (fi = 0; fi < fcnt; fi++)
       {
         dp->DrawDirectionArrow(md.m_face_center[fi], md.m_face_normal[fi]);
       }
@@ -124,10 +120,8 @@ void CMeshDirDrawCallback::DrawForeground(CRhinoViewport& vp, CRhinoDoc&)
       if (md.m_mesh->HasVertexNormals())
       {
         dp->SetObjectColor(m_vertex_normal_color);
-        
-        const auto vcnt = md.m_mesh->m_V.Count();
-
-        for (int vi = 0; vi < vcnt; vi++)
+        vcnt = md.m_mesh->m_V.Count();
+        for (vi = 0; vi < vcnt; vi++)
         {
           dp->DrawDirectionArrow(ON_3dPoint(md.m_mesh->m_V[vi]), ON_3dVector(md.m_mesh->m_N[vi]));
         }
@@ -160,8 +154,6 @@ public:
 // The one and only CCommandSampleMeshDir object
 static class CCommandSampleMeshDir theSampleMeshDirCommand;
 
-
-
 CRhinoCommand::result CCommandSampleMeshDir::RunCommand(const CRhinoCommandContext& context)
 {
   CRhinoGetObject go;
@@ -171,40 +163,24 @@ CRhinoCommand::result CCommandSampleMeshDir::RunCommand(const CRhinoCommandConte
   if (go.Result() != CRhinoGet::object)
     return CRhinoCommand::cancel;
 
-  //For view dependent custom render primitives.
-  const ON_Viewport vp = context.m_doc.ActiveView() ? context.m_doc.ActiveView()->ActiveViewport().VP() : ON_Viewport();
-
-  std::bitset<32> flags = 0;
-  flags.set(RhRdk::CustomRenderMeshes::IManager::Flags::Recursive);
-
-  CMeshDirDrawCallback callback;
-
-  int count = 0;
-
+  ON_SimpleArray<const CRhinoObject*> objects(go.ObjectCount());
   for (int i = 0; i < go.ObjectCount(); i++)
-  {
-    const CRhinoObject* pObject = go.Object(i).Object();
-    if (pObject)
-    {
-      auto render_meshes = pObject->RenderMeshes(ON::render_mesh, vp, CRhRdkObjectAncestry::empty, flags);
+    objects.Append(go.Object(i).Object());
 
-      if (render_meshes)
-      {
-        for (const auto& instance : *render_meshes)
-        {
-          if (instance)
-          {
-            callback.m_mesh_list.push_back(instance->Geometry().Mesh());
-            count++;
-          }
-        }
-      }
-
-    }
-  }
-
+  ON_ClassArray<CRhinoObjRef> render_meshes;
+  const int count = RhinoGetRenderMeshes(objects, render_meshes, true, false);
   if (0 == count)
     return CRhinoCommand::failure;
+
+  CMeshDirDrawCallback callback;
+  callback.m_mesh_list.Reserve(count);
+
+  for (int i = 0; i < render_meshes.Count(); i++)
+  {
+    const ON_Mesh* mesh = render_meshes[i].Mesh();
+    if (mesh)
+      callback.m_mesh_list.AppendNew().SetMesh(mesh);
+  }
 
   // Get persistent settings
   const wchar_t* psz_draw_face_normals = L"DrawFaceNormals";
