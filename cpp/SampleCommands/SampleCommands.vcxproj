@@ -14,6 +14,7 @@
     <ClCompile Include="cmdSampleChangeDimStyle.cpp" />
     <ClCompile Include="cmdSampleClosedCurveContainment.cpp" />
     <ClCompile Include="cmdSampleCloseTabbedPanels.cpp" />
+    <ClCompile Include="cmdSampleCommandName.cpp" />
     <ClCompile Include="cmdSampleComputeVertexColors.cpp" />
     <ClCompile Include="cmdSampleCopyInPlace.cpp" />
     <ClCompile Include="cmdSampleCPlaneWorld.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="cmdSampleMappingUvwTransform.cpp" />
     <ClCompile Include="cmdSampleMergeSrf.cpp" />
     <ClCompile Include="cmdSampleMeshPolygon.cpp" />
+    <ClCompile Include="cmdSampleObjectIterator.cpp" />
     <ClCompile Include="cmdSampleOpen3dmFile.cpp" />
     <ClCompile Include="cmdSample2View.cpp" />
     <ClCompile Include="cmdSampleAddCage.cpp" />
@@ -215,6 +217,7 @@
     <ClCompile Include="cmdSampleResetLayers.cpp" />
     <ClCompile Include="cmdSampleRevolve.cpp" />
     <ClCompile Include="cmdSampleRotate.cpp" />
+    <ClCompile Include="cmdSampleRotateCamera.cpp" />
     <ClCompile Include="cmdSampleRotateCenter.cpp" />
     <ClCompile Include="cmdSampleRotateView.cpp" />
     <ClCompile Include="cmdSampleRTree.cpp" />
@@ -230,6 +233,7 @@
     <ClCompile Include="cmdSampleSelFilter.cpp" />
     <ClCompile Include="cmdSampleShortPath.cpp" />
     <ClCompile Include="cmdSampleShowMyStuff.cpp" />
+    <ClCompile Include="cmdSampleSnapToPoint.cpp" />
     <ClCompile Include="cmdSampleSphere.cpp" />
     <ClCompile Include="cmdSampleSplitBrep.cpp" />
     <ClCompile Include="cmdSampleSplitCurve.cpp" />
