@@ -65,6 +65,15 @@ CRhinoCommand::result CCommandSampleImportMeshes::RunCommand(const CRhinoCommand
     return CRhinoCommand::failure;
   }
 
+  const ON_UnitSystem& from_model_units = model.m_settings.m_ModelUnitsAndTolerances.m_unit_system;
+  const ON_UnitSystem& to_model_units = context.m_doc.ModelUnits();
+  double scale = ON::UnitScale(from_model_units, to_model_units);
+
+  bool bScale = (0.0 != scale || 1.0 != scale);
+  ON_Xform xform = ON_Xform::IdentityTransformation;
+  if (bScale)
+    xform = ON_Xform::DiagonalTransformation(scale);
+
   int num_imported = 0;
 
   ONX_ModelComponentIterator it(model, ON_ModelComponent::Type::ModelGeometry);
@@ -74,11 +83,18 @@ CRhinoCommand::result CCommandSampleImportMeshes::RunCommand(const CRhinoCommand
     const ON_ModelGeometryComponent* model_geometry = ON_ModelGeometryComponent::Cast(model_component);
     if (nullptr != model_geometry)
     {
-      const ON_Mesh* mesh = ON_Mesh::Cast(model_geometry->Geometry(nullptr));
-      if (nullptr != mesh)
+      const ON_Mesh* const_mesh = ON_Mesh::Cast(model_geometry->Geometry(nullptr));
+      if (nullptr != const_mesh)
       {
-        // CRhinoDoc::AddMeshObject makes a copy of the input mesh
-        context.m_doc.AddMeshObject(*mesh);
+        ON_Mesh* mesh = new ON_Mesh(*const_mesh);
+        if (bScale)
+          mesh->Transform(xform);
+
+        CRhinoMeshObject* mesh_obj = new CRhinoMeshObject();
+        mesh_obj->SetMesh(mesh);
+        mesh = nullptr;
+
+        context.m_doc.AddObject(mesh_obj);
         num_imported++;
       }
     }
