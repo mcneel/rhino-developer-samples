@@ -1,12 +1,15 @@
 ﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
+using Rhino.Input;
 using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
   public class SampleCsCircleRadius : Command
   {
+    private double m_radius = 1.0;
+
     public override string EnglishName => "SampleCsCircleRadius";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
@@ -24,17 +27,44 @@ namespace SampleCsCommands
       var plane = view.ActiveViewport.ConstructionPlane();
       plane.Origin = gp.Point();
 
-      var gr = new GetRadiusPoint(plane);
-      gr.SetCommandPrompt("Radius");
-      gr.Get();
-      if (gr.CommandResult() != Result.Success)
-        return gr.CommandResult();
-
-      if (gr.CalculateCircle(gr.Point()))
+      while (true)
       {
-        doc.Objects.AddCircle(gr.Circle);
-        doc.Views.Redraw();
+        var gr = new GetRadiusPoint(plane);
+        gr.SetCommandPrompt("Radius");
+        gr.AcceptNumber(true, false);
+        gr.SetDefaultNumber(m_radius);
+        gr.SetBasePoint(plane.Origin, true);
+        gr.DrawLineFromPoint(plane.Origin, true);
+        var result = gr.Get();
+        if (result == GetResult.Point)
+        {
+          if (!gr.CalculateCircle(gr.Point()))
+            continue;
+
+          var circle = gr.Circle;
+          m_radius = circle.Radius;
+          doc.Objects.AddCircle(circle);
+          break;
+        }
+        if (result == GetResult.Number)
+        {
+          var radius = gr.Number();
+          if (radius <= 0.0)
+          {
+            RhinoApp.WriteLine("Radius must be greater than zero.");
+            continue;
+          }
+
+          var circle = new Circle(plane, radius);
+          m_radius = circle.Radius;
+          doc.Objects.AddCircle(circle);
+          break;
+        }
+
+        return Result.Cancel;
       }
+
+      doc.Views.Redraw();
 
       return Result.Success;
     }
