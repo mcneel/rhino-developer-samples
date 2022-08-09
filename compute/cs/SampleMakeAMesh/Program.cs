@@ -8,10 +8,10 @@ namespace MakeAMesh
         static void Main(string[] args)
         {
 
-            ComputeServer.WebAddress = "http://localhost:8081/";
+            ComputeServer.WebAddress = "http://localhost:5000/";
             // ComputeServer.ApiKey = "";
 
-            // Use standard Rhino3dm methods locally
+            // Use standard rhino3dm methods locally
             var sphere = new Rhino.Geometry.Sphere(Rhino.Geometry.Point3d.Origin, 12);
             var sphereAsBrep = sphere.ToBrep();
 
@@ -19,7 +19,7 @@ namespace MakeAMesh
             // available in Rhino3dm
             var meshes = MeshCompute.CreateFromBrep(sphereAsBrep);
 
-            // Back to regular Rhino3dmIO local calls
+            // Back to regular rhino3dm local calls
             Console.WriteLine($"Got {meshes.Length} meshes");
             for (int i = 0; i < meshes.Length; i++)
             {

@@ -13,7 +13,7 @@ namespace SampleGHSolve
     {
         static void Main(string[] args)
         {
-            ComputeServer.WebAddress = "http://localhost:8081/";
+            ComputeServer.WebAddress = "http://localhost:5000/"; // port 5000 is rhino.compute, 8081 is compute.geometry
             // ComputeServer.ApiKey = "";
 
             var definitionName = "SpikyThing.gh";
