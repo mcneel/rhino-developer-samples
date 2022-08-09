@@ -1,1 +1,1 @@
-This sample opens a 3dm file with some curves in it and calls the `Curve.JoinCurves()` method. Then it sames this as a new file.
+This sample opens a 3dm file with some curves in it and calls the `Curve.JoinCurves()` method. Then it saves this as a new file.
