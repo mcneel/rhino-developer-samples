@@ -355,3 +355,5 @@ MigrationBackup/
 # python
 venv/
 *.rhl
+
+.DS_Store
