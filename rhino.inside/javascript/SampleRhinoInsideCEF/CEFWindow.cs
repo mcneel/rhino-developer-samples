@@ -40,7 +40,7 @@ namespace SampleRhinoInsideCEF
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
             var assemblyPath = Path.GetDirectoryName(assemblyLocation);
             var pathSubprocess = Path.Combine(assemblyPath, "CefSharp.BrowserSubprocess.exe");
-            CefSharpSettings.LegacyJavascriptBindingEnabled = true;
+            //CefSharpSettings.LegacyJavascriptBindingEnabled = true;
             CefSharpSettings.ConcurrentTaskExecution = true;
             var settings = new CefSettings
             {
@@ -52,6 +52,7 @@ namespace SampleRhinoInsideCEF
 
             settings.CefCommandLineArgs.Add("allow-file-access-from-files", "1");
             settings.CefCommandLineArgs.Add("disable-web-security", "1");
+            settings.CefCommandLineArgs.Add("allow-universal-access-from-files");
             Cef.Initialize(settings);
         }
 
@@ -66,14 +67,18 @@ namespace SampleRhinoInsideCEF
             // Allow the use of local resources in the browser
             Browser.BrowserSettings = new BrowserSettings
             {
-                FileAccessFromFileUrls = CefState.Enabled,
-                UniversalAccessFromFileUrls = CefState.Enabled
+                
+                //FileAccessFromFileUrls = CefState.Enabled,
+                //UniversalAccessFromFileUrls = CefState.Enabled
             };
+
+
 
             Browser.Dock = System.Windows.Forms.DockStyle.Fill;
 
             Interop = new Interop(Browser);
             // Browser.RegisterAsyncJsObject("Interop", Interop);
+            Browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
             Browser.JavascriptObjectRepository.Register("Interop", Interop, isAsync: true, options: BindingOptions.DefaultBinder);
             Browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
             Browser.LoadingStateChanged += Browser_LoadingStateChanged;
