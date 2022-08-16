@@ -1,6 +1,69 @@
 #include "stdafx.h"
 
 /// <summary>
+/// Gets the sub-curves of a Rhino curve object.
+/// </summary>
+/// <param name="curve_obj">The curve object.</param>
+/// <param name="bIncludeSingle">
+/// If true and the curve does not have sub-curves, then
+/// add a copy of the input curve to the output array.
+/// If false and the curve does not have sub-curves, the
+/// do nothing.
+/// </param>
+/// <param name="sub_curves">The output curve array.</param>
+/// <returns>The number of curves added to the output curve array.</returns>
+/// <remarks>
+/// CRITICAL: Memory for the curves in the output array is allocated and
+/// becomes the responsibility of the caller.
+/// </remarks>
+int RhinoGetSubCurves(
+  const CRhinoCurveObject* curve_obj,
+  bool bIncludeSingle,
+  ON_SimpleArray<ON_Curve*>& sub_curves
+)
+{
+  const int sub_curve_count = sub_curves.Count();
+  if (nullptr != curve_obj)
+  {
+    ON_SimpleArray<CRhinoObject*> sub_objects;
+    const int sub_object_count = curve_obj->GetSubObjects(sub_objects);
+    if (sub_object_count > 0)
+    {
+      for (int i = 0; i < sub_object_count; i++)
+      {
+        CRhinoCurveObject* sub_curve_obj = CRhinoCurveObject::Cast(sub_objects[i]);
+        if (nullptr == sub_curve_obj)
+          continue;
+
+        const ON_Curve* sub_curve = sub_curve_obj->Curve();
+        if (nullptr != sub_curve)
+        {
+          ON_Curve* duplicate = sub_curve->DuplicateCurve();
+          if (nullptr != duplicate)
+            sub_curves.Append(duplicate);
+        }
+
+        delete sub_objects[i]; // Don't leak...
+        sub_objects[i] = nullptr;
+      }
+    }
+    else if (bIncludeSingle)
+    {
+      const ON_Curve* curve = curve_obj->Curve();
+      if (nullptr != curve)
+      {
+        ON_Curve* duplicate = curve->DuplicateCurve();
+        if (nullptr != duplicate)
+          sub_curves.Append(duplicate);
+      }
+    }
+  }
+
+  // Return number added
+  return sub_curves.Count() - sub_curve_count;
+}
+
+/// <summary>
 /// Evaluate torsion of a curve at a parmeter.
 /// </summary>
 /// <param name="curve">Curve to evaluate.</param>
@@ -23,6 +86,32 @@ double ON_CurveTorsion(const ON_Curve& curve, double t)
       tau = b * d3 / len2;
   }
   return tau;
+}
+
+/// <summary>
+/// Sets a polyline curve to use arc length parameterization
+/// for higher quality geometry.
+/// </summary>
+/// <param name="curve">The polyline curve to modify.</param>
+/// <param name="tolerance">Minimum distance tolerance.</param>
+void ON_PolylineCurve_SetArcLengthParameterization(
+  ON_PolylineCurve& curve,
+  double tolerance
+)
+{
+  ON_Polyline& polyline = curve.m_pline;
+  double d, mind = tolerance;
+  curve.m_t[0] = 0;
+  const int count = polyline.Count();
+  for (int i = 1; i < count; i++)
+  {
+    d = (polyline[i] - polyline[i - 1]).Length();
+    if (d < mind)
+      d = mind;
+    if (d < fabs(curve.m_t[i - 1]) * 1e-5)
+      d = fabs(curve.m_t[i - 1]) * 1e-5;
+    curve.m_t[i] = curve.m_t[i - 1] + d;
+  }
 }
 
 /// <summary>
@@ -252,6 +341,86 @@ bool ON_DollyExtents(
       double frus_far = frus_near + dz;
       rc = zoomed_vp.SetFrustum(-dx, dx, -dy, dy, frus_near, frus_far);
     }
+  }
+  return rc;
+}
+
+/// <summary>
+/// Gets the indices of all the Brep faces that use a specified Brep edge.
+/// </summary>
+/// <param name="pBrep">The Brep.</param>
+/// <param name="edge_index">The edge index to query.</param>
+/// <param name="face_indices">The indices of the faces that use the edge.</param>
+/// <returns>The number indices in face_indices.</returns>
+int ON_Brep_EdgeFaceIndices(
+  const ON_Brep* pBrep,
+  int edge_index,
+  ON_SimpleArray<int>& face_indices
+)
+{
+  int rc = 0;
+  if (pBrep)
+  {
+    const ON_BrepEdge* pEdge = pBrep->Edge(edge_index);
+    if (pEdge)
+    {
+      const int trim_count = pEdge->TrimCount();
+      for (int i = 0; i < trim_count; i++)
+      {
+        const ON_BrepTrim* pTrim = pEdge->Trim(i);
+        if (pTrim)
+        {
+          const ON_BrepFace* pFace = pTrim->Face();
+          if (pFace)
+            face_indices.Append(pFace->m_face_index);
+        }
+      }
+    }
+    rc = face_indices.Count();
+  }
+  return rc;
+}
+
+/// <summary>
+/// Gets the indices of all the Brep edges that delineate a specified Brep face.
+/// </summary>
+/// <param name="pBrep">The Brep.</param>
+/// <param name="face_index">The index of the Brep face to query.</param>
+/// <param name="edge_indices">The indices of the edges that use the face.</param>
+/// <returns>The number indices in edge_indices.</returns>
+int ON_Brep_FaceEdgeIndices(
+  const ON_Brep* pBrep,
+  int face_index,
+  ON_SimpleArray<int>& edge_indices
+)
+{
+  int rc = 0;
+  if (pBrep)
+  {
+    const ON_BrepFace* pFace = pBrep->Face(face_index);
+    if (pFace)
+    {
+      int loop_count = pFace->LoopCount();
+      for (int i = 0; i < loop_count; i++)
+      {
+        const ON_BrepLoop* pLoop = pFace->Loop(i);
+        if (pLoop)
+        {
+          int trim_count = pLoop->TrimCount();
+          for (int j = 0; j < trim_count; j++)
+          {
+            const ON_BrepTrim* pTrim = pLoop->Trim(j);
+            if (pTrim)
+            {
+              const ON_BrepEdge* pEdge = pTrim->Edge();
+              if (pEdge)
+                edge_indices.Append(pEdge->m_edge_index);
+            }
+          }
+        }
+      }
+    }
+    rc = edge_indices.Count();
   }
   return rc;
 }
