@@ -15,8 +15,10 @@ function createWindow () {
     width: 1052,
     height: 600,
     webPreferences:{
+      //note: there are security issues in setting these flags
       nodeIntegration: true,
-      nodeIntegrationInWorker: true
+      nodeIntegrationInWorker: true,
+      contextIsolation: false,
     }
   });
 

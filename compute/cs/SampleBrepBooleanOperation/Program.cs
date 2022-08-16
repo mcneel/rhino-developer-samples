@@ -13,7 +13,7 @@ namespace BrepBooleanOperation
     {
         static void Main(string[] args)
         {
-            ComputeServer.WebAddress = "http://localhost:8081/";
+            ComputeServer.WebAddress = "http://localhost:5000/";
             // ComputeServer.ApiKey = "";
 
             var cube = new Box(new BoundingBox(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5));

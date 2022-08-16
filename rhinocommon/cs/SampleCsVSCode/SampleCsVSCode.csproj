@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <Version>1.0</Version>
+    <Title>SampleCsVSCode</Title>
+    <Description>Description of SampleCsVSCode</Description>
+    <TargetExt>.rhp</TargetExt>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="EmbeddedResources\**\*" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="RhinoCommon" Version="7.20.22193.9001" IncludeAssets="compile;build" />
+  </ItemGroup>
+  
+  <PropertyGroup Condition="$(Configuration) == 'Debug' AND $([MSBuild]::IsOSPlatform(Windows))">
+    <StartProgram>C:\Program Files\Rhino 7\System\Rhino.exe</StartProgram>
+    <StartArguments></StartArguments>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
+
+  <Target Name="_RenamePdbFile" AfterTargets="AfterBuild" Condition="$([MSBuild]::IsOSPlatform(osx))">
+    <!-- Copy debug file to '[Assembly].rhp.pdb' for mono to recognize it for debugging. -->
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFiles="$(OutputPath)$(AssemblyName).rhp.pdb" />
+  </Target>  
+  
+</Project>

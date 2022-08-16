@@ -9,7 +9,7 @@ namespace CircleIntersection
     {
         static void Main(string[] args)
         {
-            ComputeServer.WebAddress = "http://localhost:8081/";
+            ComputeServer.WebAddress = "http://localhost:5000/";
             // ComputeServer.ApiKey = "";
 
             // Create a couple circles using a local copy of Rhino3dmIo

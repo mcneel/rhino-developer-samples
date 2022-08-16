@@ -13,7 +13,7 @@ namespace NurbsTesselation
     {
         static void Main(string[] args)
         {
-            ComputeServer.WebAddress = "http://localhost:8081/";
+            ComputeServer.WebAddress = "http://localhost:5000/";
             // ComputeServer.ApiKey = "";
 
             Curve curveA = Curve.CreateControlPointCurve(new Point3d[] {

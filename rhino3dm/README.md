@@ -12,7 +12,8 @@ Functionality includes
 
 ## Samples
 
-- [C#](https://github.com/mcneel/rhino-developer-samples/tree/7/opennurbs/cs)
+- [C#](https://github.com/mcneel/rhino-developer-samples/tree/7/opennurbs/cs) and [rhino3dm](cs)
+  - [SampleCSJoinCurves](cs/SampleCSJoinCurves/) - Opens a 3dm file with curves and runs the `Curve.JoinCurves()` method. Saves the resulting curve into a new file.
 - [JavaScript](js)
   - [SampleSketch2d](js/SampleSketch2d) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleSketch2d/)] Sketch NURBS curves on a canvas. Also shows how to download the resulting 3dm file.
   - [SampleObjectTypes](js/SampleObjectTypes) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleObjectTypes/)] Sample shows the creation of various object types.
