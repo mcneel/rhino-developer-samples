@@ -4,16 +4,25 @@ using Rhino.Geometry;
 
 namespace SampleGHTests
 {
-  public class PrimitiveFixture : Rhino.Test.GrasshopperFixture
+//  [CollectionDefinition("Primitives.gh collection")]
+  public class PrimitivesCollection : ICollectionFixture<PrimitivesFixture>
   {
-    public PrimitiveFixture() : base("Primitives.gh") { }
+    // This class has no code, and is never created. Its purpose is simply
+    // to be the place to apply [CollectionDefinition] and all the
+    // ICollectionFixture<> interfaces.
   }
 
-  public class TestPrimitives : IClassFixture<PrimitiveFixture>
+  public class PrimitivesFixture : Rhino.Test.GHFileFixture
   {
-    PrimitiveFixture fixture { get; set; }
+    public PrimitivesFixture() : base("Primitives.gh") { }
+  }
 
-    public TestPrimitives(PrimitiveFixture fixture)
+//  [Collection("Primitives.gh collection")]
+  public class TestPrimitives : IClassFixture<PrimitivesFixture>
+  {
+    PrimitivesFixture fixture { get; set; }
+
+    public TestPrimitives(PrimitivesFixture fixture)
     {
       this.fixture = fixture;
     }
