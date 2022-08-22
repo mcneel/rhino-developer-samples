@@ -4,7 +4,7 @@ using Rhino.Geometry;
 
 namespace SampleGHTests
 {
-//  [CollectionDefinition("Primitives.gh collection")]
+  [CollectionDefinition("Primitives.gh collection")]
   public class PrimitivesCollection : ICollectionFixture<PrimitivesFixture>
   {
     // This class has no code, and is never created. Its purpose is simply
@@ -17,8 +17,8 @@ namespace SampleGHTests
     public PrimitivesFixture() : base("Primitives.gh") { }
   }
 
-//  [Collection("Primitives.gh collection")]
-  public class TestPrimitives : IClassFixture<PrimitivesFixture>
+  [Collection("Primitives.gh collection")]
+  public class TestPrimitives //: IClassFixture<PrimitivesFixture>
   {
     PrimitivesFixture fixture { get; set; }
 
