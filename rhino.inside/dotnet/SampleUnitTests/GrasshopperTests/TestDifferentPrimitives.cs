@@ -1,28 +1,20 @@
-using System;
+﻿using System;
 using Xunit;
 using Rhino.Geometry;
 
-namespace SampleGHTests
+
+namespace GrasshopperTests
 {
-  [CollectionDefinition("Primitives.gh collection")]
-  public class PrimitivesCollection : ICollectionFixture<PrimitivesFixture>
+  public class DifferentPrimitivesFixture : Rhino.Test.GHFileFixture
   {
-    // This class has no code, and is never created. Its purpose is simply
-    // to be the place to apply [CollectionDefinition] and all the
-    // ICollectionFixture<> interfaces.
+    public DifferentPrimitivesFixture() : base("DifferentPrimitives.gh") { }
   }
 
-  public class PrimitivesFixture : Rhino.Test.GHFileFixture
+  public class TestDifferentPrimitives : IClassFixture<DifferentPrimitivesFixture>
   {
-    public PrimitivesFixture() : base("Primitives.gh") { }
-  }
+    DifferentPrimitivesFixture fixture { get; set; }
 
-  [Collection("Primitives.gh collection")]
-  public class TestPrimitives 
-  {
-    PrimitivesFixture fixture { get; set; }
-
-    public TestPrimitives(PrimitivesFixture fixture)
+    public TestDifferentPrimitives(DifferentPrimitivesFixture fixture)
     {
       this.fixture = fixture;
     }
@@ -32,7 +24,7 @@ namespace SampleGHTests
     {
       foreach (var obj in (fixture.Doc.Objects))
         if (obj is Grasshopper.Kernel.IGH_Param param)
-          if (param.NickName == "TestCircleOutput")
+          if (param.NickName == "TestCircleOutput2")
           {
             param.CollectData();
             param.ComputeData();
@@ -43,8 +35,8 @@ namespace SampleGHTests
             data.MoveNext();
             var theCircle = data.Current;
             Assert.True(theCircle.CastTo(out Circle circle));
-            Assert.Equal(1.0, circle.Radius);
-            Assert.Equal(Math.PI * 2.0, circle.Circumference);
+            Assert.Equal(5.0, circle.Radius);
+            Assert.Equal(Math.PI * 2.0 * 5.0, circle.Circumference);
             return;
           }
       Assert.True(false, "Did not find oputput");
@@ -55,7 +47,7 @@ namespace SampleGHTests
     {
       foreach (var obj in (fixture.Doc.Objects))
         if (obj is Grasshopper.Kernel.IGH_Param param)
-          if (param.NickName == "TestLineOutput")
+          if (param.NickName == "TestLineOutput2")
           {
             param.CollectData();
             param.ComputeData();
@@ -66,10 +58,11 @@ namespace SampleGHTests
             data.MoveNext();
             var theLine = data.Current;
             Assert.True(theLine.CastTo(out Line line));
-            Assert.Equal(Math.Sqrt(1.0*1.0 + -5.0*-5.0 + 3.0*3.0), line.Length);
+            Assert.Equal(Math.Sqrt(-3.0 * -3.0 + 8.0 * 8.0 + -4.0 * -4.0), line.Length);
             return;
           }
       Assert.True(false, "Did not find oputput");
     }
+
   }
 }

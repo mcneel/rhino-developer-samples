@@ -27,9 +27,7 @@ namespace Rhino.Test
     {
       get
       {
-        if (null == _Doc && null != FilePath)
-          _Doc = LoadGrasshopperDoc(FilePath);
-        return _Doc as Grasshopper.Kernel.GH_Document;
+        return LoadGrasshopperDoc(FilePath);
       }
     }
 
@@ -42,7 +40,7 @@ namespace Rhino.Test
         FilePath = null;
       }
       if (null != _Doc)
-        return Doc;
+        return _Doc as Grasshopper.Kernel.GH_Document;
       if (!GH.DocIO.Open(filePath))
         throw new InvalidOperationException("File Loading Failed");
       else
