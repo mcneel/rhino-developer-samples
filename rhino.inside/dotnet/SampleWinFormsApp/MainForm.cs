@@ -15,7 +15,7 @@ namespace WinFormsApp
     {
       // This is a good spot to start Rhino.Inside as we now have a
       // handle to the top level parent window for Rhino
-      _rhinoCore = new Rhino.Runtime.InProcess.RhinoCore(new string[] { "-appmode" }, Rhino.Runtime.InProcess.WindowStyle.Hidden, Handle);
+      _rhinoCore = new Rhino.Runtime.InProcess.RhinoCore(null, Rhino.Runtime.InProcess.WindowStyle.Hidden, Handle);
       base.OnHandleCreated(e);
     }
 
