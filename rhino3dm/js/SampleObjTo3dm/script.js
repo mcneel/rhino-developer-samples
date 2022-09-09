@@ -1,7 +1,7 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
-import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/loaders/OBJLoader.js';
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import rhino3dm from 'rhino3dm'
 
 const downloadButton = document.getElementById("downloadButton")
 downloadButton.onclick = download
@@ -19,7 +19,11 @@ function convert () {
     doc = new rhino.File3dm()
     
     const loader = new OBJLoader( )
-    loader.load( 'Rhino_Logo.obj', function ( obj ) {
+
+    loader.load( 'Rhino_Logo.obj', 
+    
+    //onLoad
+    ( obj ) => {
 
       scene.add( obj )
 
@@ -27,7 +31,10 @@ function convert () {
       const rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: mesh.geometry } )
       doc.objects().add( rhinoMesh, null )
 
-    }, function ( xhr ) {
+    }, 
+    
+    //onProgress
+    ( xhr ) => {
 
       if ( xhr.lengthComputable ) {
 
@@ -36,7 +43,10 @@ function convert () {
 
       }
 
-    }, function () {
+    }, 
+    
+    //onError
+    () => {
       console.log( 'Error' )
     })
 
