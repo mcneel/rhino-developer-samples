@@ -21,8 +21,11 @@ Functionality includes
   - [SampleUserStrings](js/SampleUserStrings) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleUserStrings/)] Sample loads objects from a Rhino file and shows how to access the attribute and geometry user strings from the loaded 3dm directly and after it has been loaded by the Rhino3dmLoader for three.js.
   - [SampleViewer (Basic)](js/SampleViewer/01_basic) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/01_basic/)] Loads a .3dm file and renders the geometry with [Three.js](https://threejs.org).
   [![image](https://user-images.githubusercontent.com/1014562/68938619-05feca80-079f-11ea-8d15-354c3e82a261.png)](js/SampleViewer/01_basic)
-  - [Sample Viewer (Advanced)](js/SampleViewer/02_advanced) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/02_advanced/)] Loads a .3dm file and renders the geometry and material with [Three.js](https://threejs.org).
+  - [SampleViewer (Advanced)](js/SampleViewer/02_advanced) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/02_advanced/)] Loads a .3dm file and renders the geometry and material with [Three.js](https://threejs.org).
   [![image](https://user-images.githubusercontent.com/1014562/68938708-30e91e80-079f-11ea-9ad8-0de304d87327.jpg)](js/SampleViewer/02_advanced)
+
+  - [SampleViewer - 3dmLoader](js/SampleViewer/01.1_basic_3dmLoader/) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/01.1_basic_3dmLoader/)] Uses the 3dmLoader for Three.js to load a 3dm file.
+
   - [SampleViewer Multiple Files](js/SampleViewer/01.2_multipleFiles) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/01.2_multipleFiles/)] Select dropdown input to load different files. Renders the geometry with [Three.js](https://threejs.org).
   ![rhino3dm_multifile](https://user-images.githubusercontent.com/1014562/133775084-9910570c-5bc2-47b3-a8d4-0b7d245ccd1e.gif)
 
