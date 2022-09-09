@@ -26,7 +26,7 @@ Functionality includes
   - [SampleViewer Multiple Files](js/SampleViewer/01.2_multipleFiles) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/01.2_multipleFiles/)] Select dropdown input to load different files. Renders the geometry with [Three.js](https://threejs.org).
   ![rhino3dm_multifile](https://user-images.githubusercontent.com/1014562/133775084-9910570c-5bc2-47b3-a8d4-0b7d245ccd1e.gif)
 
-  - [SampleViewer Load Local Files](js/SampleViewer/01.3_uploadFiles/) - [[Live]](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/01.3_uploadFiles/) Load local 3dm files.
+  - [SampleViewer Load Local Files](js/SampleViewer/01.3_uploadFiles/) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/01.3_uploadFiles/)] Load local 3dm files.
 
   - [Sample OBJ to 3DM conversion](js/SampleObjTo3dm) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleObjTo3dm/)] Loads an .obj file via Three.js and converts the object to a 3dm.
   - [Sample3dmReader (node.js)](js/node/Sample3dmReader) - Shows how to read a file with node.js.
