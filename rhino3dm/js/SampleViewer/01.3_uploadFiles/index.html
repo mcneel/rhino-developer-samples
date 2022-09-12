@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="data:;base64,=">
-        <title>rhino3dm: Basic 3dm Viewer with 3dmLoader</title>
+        <title>rhino3dm: Loading local files</title>
         <style>
             body { margin: 0; }
             
@@ -21,16 +21,24 @@
                 left: 50%;
             }
 
+            #container {position: relative;}
+            #overlay {z-index: 1; width: 100%}
+
             @keyframes spin {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
         </style>
-        
     </head>
     <body>
-        
         <div id="loader"></div>
+        <div id="container">
+            <div id="overlay">
+                <label for="file-upload">Choose a file:</label>
+                <input type="file" accept=".3dm" id="file-upload">
+            </div>
+        </div>
+        
         <!-- Import maps polyfill -->
         <!-- Remove this when import maps will be widely supported -->
         <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
