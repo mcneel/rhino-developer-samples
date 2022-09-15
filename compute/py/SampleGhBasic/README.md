@@ -2,6 +2,8 @@
 
 This sample uses [Rhino.Compute](https://developer.rhino3d.com/guides/compute) to solve a grasshopper graph. The inputs for the graph are a curve -- created from a circle in this case, using `rhino3dm` -- and an angle of rotation. The output, a list of lines, is written to a 3DM file.
 
+You may need to update `lines.py` to use your rhino url and api key
+
 ## macOS
 
 ```commandline
