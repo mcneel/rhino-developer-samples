@@ -635,3 +635,65 @@ const CRhinoHatchPattern* CRhinoHatchTableHelper::FindOrCreateHatchPattern(CRhin
   }
   return rc;
 }
+
+/// <summary>
+/// Helper funtions for converting between angular scales.
+/// </summary>
+class CRhinoAngleHelper
+{
+public:
+  static double DegreesToGradians(double angle)
+  {
+    return angle * 10.0 / 9.0;
+  }
+
+  static double DegreesToRadians(double angle)
+  {
+    return angle * ON_PI / 180.0;
+  }
+
+  static double GradiansToDegrees(double angle)
+  {
+    return angle * 9.0 / 10.0;
+  }
+
+  static double GradiansToRadians(double angle)
+  {
+    return angle * ON_PI / 200.0;
+  }
+
+  static double RadiansToDegrees(double angle)
+  {
+    return angle * 180.0 / ON_PI;
+  }
+
+  double RadiansToGradians(double angle)
+  {
+    return angle * 200.0 / ON_PI;
+  }
+
+  static double NormalizeDegrees(double angle)
+  {
+    return Normalize(angle, 360.0);
+  }
+
+  static double NormalizeGradians(double angle)
+  {
+    return Normalize(angle, 400.0);
+  }
+
+  static double NormalizeRadians(double angle)
+  {
+    Normalize(angle, 2.0 * ON_PI);
+  }
+
+private:
+  static double Normalize(double angle, double value)
+  {
+    while (angle <= -value)
+      angle += value;
+    while (angle >= value)
+      angle -= value;
+    return angle;
+  }
+};
