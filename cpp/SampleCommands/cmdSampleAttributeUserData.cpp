@@ -140,3 +140,97 @@ CRhinoCommand::result CCommandSampleAttributeUserDataGet::RunCommand(const CRhin
 //
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
+//
+// BEGIN SampleAttributeUserDataUpdate command
+//
+
+#pragma region SampleAttributeUserDataUpdate command
+
+class CCommandSampleAttributeUserDataUpdate : public CRhinoCommand
+{
+public:
+  CCommandSampleAttributeUserDataUpdate();
+  UUID CommandUUID() override
+  {
+    // {C255C46A-1B8C-4485-AEB7-EA7C965189E0}
+    static const GUID SampleAttributeUserDataUpdateCommand_UUID =
+    { 0xC255C46A, 0x1B8C, 0x4485, { 0xAE, 0xB7, 0xEA, 0x7C, 0x96, 0x51, 0x89, 0xE0 } };
+    return SampleAttributeUserDataUpdateCommand_UUID;
+  }
+  const wchar_t* EnglishCommandName() override { return L"SampleAttributeUserDataUpdate"; }
+  CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override;
+
+private:
+  ON_RandomNumberGenerator m_gen;
+};
+
+// The one and only CCommandSampleAttributeUserDataUpdate object
+static class CCommandSampleAttributeUserDataUpdate theSampleAttributeUserDataUpdateCommand;
+
+CCommandSampleAttributeUserDataUpdate::CCommandSampleAttributeUserDataUpdate()
+{
+  m_gen.Seed();
+}
+
+CRhinoCommand::result CCommandSampleAttributeUserDataUpdate::RunCommand(const CRhinoCommandContext& context)
+{
+  // Select object to update user data
+  CRhinoGetObject go;
+  go.SetCommandPrompt(L"Select object to update user data");
+  go.GetObjects(1, 1);
+  if (go.CommandResult() != success)
+    return go.CommandResult();
+
+  // Validate the selection
+  const CRhinoObjRef& ref = go.Object(0);
+  const CRhinoObject* obj = ref.Object();
+  if (!obj)
+    return CRhinoCommand::failure;
+
+  // Get the selected object's attributes
+  const CRhinoObjectAttributes& attribs = obj->Attributes();
+
+  // See if our user data is attached
+  CSampleAttributeUserData* ud = CSampleAttributeUserData::Cast(attribs.GetUserData(CSampleAttributeUserData::Id()));
+  if (!ud)
+  {
+    RhinoApp().Print(L"No user data attached.\n");
+    return CRhinoCommand::nothing;
+  }
+
+  // Make a copy of the object's attributes
+  ON_3dmObjectAttributes new_attribs(attribs);
+  // Get the user data from the copy
+  ud = CSampleAttributeUserData::Cast(new_attribs.GetUserData(CSampleAttributeUserData::Id()));
+  if (!ud)
+  {
+    // Shouldn't get here, but worth checking
+    return CRhinoCommand::failure;
+  }
+
+  // Cook up a random point
+  ON_Interval range(0.0, 100.0);
+  ud->m_my_point = ON_3dPoint(
+    m_gen.RandomDouble(range),
+    m_gen.RandomDouble(range),
+    m_gen.RandomDouble(range)
+  );
+
+  RhinoApp().Print(L"Point = %f,%f,%f\n", ud->m_my_point.x, ud->m_my_point.y, ud->m_my_point.z);
+
+  // Replace the selected object's attributes
+  context.m_doc.ModifyObjectAttributes(ref, new_attribs);
+
+  return CRhinoCommand::success;
+}
+
+#pragma endregion
+
+//
+// END SampleAttributeUserDataUpdate command
+//
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
