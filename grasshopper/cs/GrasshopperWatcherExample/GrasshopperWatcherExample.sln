@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrasshopperWatcherExample", "GrasshopperWatcherExample.csproj", "{0F025773-CB69-42E4-B342-A1E1FF06CAC1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F025773-CB69-42E4-B342-A1E1FF06CAC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F025773-CB69-42E4-B342-A1E1FF06CAC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F025773-CB69-42E4-B342-A1E1FF06CAC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F025773-CB69-42E4-B342-A1E1FF06CAC1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38B02F4D-FCA6-4864-A877-2D61982D7DF2}
+	EndGlobalSection
+EndGlobal
