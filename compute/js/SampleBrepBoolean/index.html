@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 <head>
     <meta charset="utf-8">
-    <title>rhino3dm Sample - Rhino Logo</title>
+    <link rel="icon" href="data:;base64,=">
+    <title>Rhino Compute Sample - Brep Boolean</title>
     <style>
         body {
             margin: 0px;
@@ -34,8 +36,10 @@
         }
 
         #loader {
-            border: 5px solid #f3f3f3; /* Light grey */
-            border-top: 5px solid #3d3d3d; /* Grey */
+            border: 5px solid #f3f3f3;
+            /* Light grey */
+            border-top: 5px solid #3d3d3d;
+            /* Grey */
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -48,512 +52,569 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+            0% {
+                transform: rotate(0deg);
+            }
 
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
 <body>
-<div id="loader"></div> 
-<script src="https://cdn.jsdelivr.net/npm/three@0.118.1/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.118.1/examples/js/controls/OrbitControls.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/rhino3dm/rhino3dm.min.js"></script> <!-- latest -->
-<script src="https://cdn.jsdelivr.net/npm/compute-rhino3d/compute.rhino3d.min.js"></script> <!-- latest -->
+    <div id="loader"></div>
 
-<div id="glcanvas"></div>
-<div id="controls">
-    <button id="load_model" class="inner">Fetch Rhino Logo</button>
-    <button id="load_cutters" class="inner">Fetch Cutters</button>
-    <button id="diff" class="inner">BooleanDifference</button>
-    <button class="inner" onclick="RhinoCompute.getAuthToken(false)">Set Authorization</button>
-</div>
+    <div id="glcanvas"></div>
+    <div id="controls">
+        <button id="load_model" class="inner">Fetch Rhino Logo</button>
+        <button id="load_cutters" class="inner">Fetch Cutters</button>
+        <button id="diff" class="inner">BooleanDifference</button>
+        <button class="inner" onclick="RhinoCompute.getAuthToken(false)">Set Authorization</button>
+    </div>
 
-<script>
-    // holds top level variables
-    var RHINOLOGO = {};
-    let logo, cutters, difference;
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script async src="https://unpkg.com/es-module-shims@1.7.0/dist/es-module-shims.js"></script>
 
-    // load rhino3dm
-    var Module;
-    rhino3dm().then((m) => {
-      Module = m;
-      console.log("rhino3dm loaded!")
-    });
-
-    init();
-    animate();
-
-    /**
-     * Set up empty GL canvas with a gradient background. The geomtry will
-     * be loaded into the scene through a separate routine.
-     */
-    function init() {
-        RhinoCompute.url = 'http://localhost:8081/';
-        // RhinoCompute.apiKey = '';
-        RHINOLOGO.scene = new THREE.Scene();
-
-        RHINOLOGO.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-        RHINOLOGO.camera.position.z = 40;
-        RHINOLOGO.wireMaterial = new THREE.LineBasicMaterial({color: 0x000000});
-        RHINOLOGO.wireHighlightMaterial = new THREE.LineBasicMaterial({color: 0xf4a142});
-        RHINOLOGO.meshMaterial = new THREE.MeshPhongMaterial({color: 0xffffff});
-        RHINOLOGO.meshHighlightMaterial = new THREE.MeshPhongMaterial({color: 0xffff00});
-
-
-        // create a gradient background
-        var canvas = document.createElement('canvas');
-        canvas.width = 128;
-        canvas.height = 128;
-        var context = canvas.getContext('2d');
-        var gradient = context.createLinearGradient(0, 0, 0, canvas.height);
-        gradient.addColorStop(1, 'rgba(79,198,237,1');
-        gradient.addColorStop(0.1, 'rgba(112,137,212,1)');
-        context.fillStyle = gradient;
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        RHINOLOGO.scene.background = new THREE.CanvasTexture(canvas);
-
-        //  add a couple lights
-        var light = new THREE.DirectionalLight(0xffffff);
-        light.position.set(0, 0, 1);
-        RHINOLOGO.scene.add(light);
-        var light2 = new THREE.DirectionalLight(0x666666);
-        light2.position.set(0.2, 0.2, -1);
-        RHINOLOGO.scene.add(light2);
-
-        RHINOLOGO.renderer = new THREE.WebGLRenderer({antialias: true});
-
-        // orbit controls help with mouse/trackpad interaction
-        controls = new THREE.OrbitControls(RHINOLOGO.camera, RHINOLOGO.renderer.domElement);
-        controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-        controls.dampingFactor = 0.25;
-        controls.screenSpacePanning = false;
-        controls.minDistance = 10;
-        controls.maxDistance = 500;
-
-        RHINOLOGO.renderer.setPixelRatio(window.devicePixelRatio);
-        RHINOLOGO.renderer.setSize(window.innerWidth / 2, window.innerHeight);
-        var glcanvas = document.getElementById('glcanvas');
-        glcanvas.appendChild(RHINOLOGO.renderer.domElement);
-
-        window.addEventListener('resize', onWindowResize, false);
-        document.getElementById('load_model').addEventListener('click', async () => { logo = await loadBrepsFromUrl('https://files.mcneel.com/rhino3dm/models/RhinoLogo.3dm', true) });
-        document.getElementById('load_cutters').addEventListener('click', async () => { cutters = await loadBrepsFromUrl('https://files.mcneel.com/rhino3dm/models/Cutters.3dm', false) });
-        document.getElementById('diff').addEventListener('click', performDifference);
-        onWindowResize();
-    }
-
-    function onWindowResize() {
-        RHINOLOGO.camera.aspect = window.innerWidth / window.innerHeight;
-        RHINOLOGO.camera.updateProjectionMatrix();
-        RHINOLOGO.renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        RHINOLOGO.renderer.render(RHINOLOGO.scene, RHINOLOGO.camera);
-    }
-
-    async function load3dmFromUrl(url)
+    <script type="importmap">
     {
-        let three3m = await fetch(url);
-        let buffer = await three3m.arrayBuffer();
-        let arr = new Uint8Array(buffer);
-        return Module.File3dm.fromByteArray(arr);
-    }
-
-    async function performDifference()
-    {
-        // show spinner
-        document.getElementById('loader').style.display = 'block';
-
-        let cutObjects = await RhinoCompute.Brep.createBooleanDifference(logo, cutters, 0.01);
-        difference = cutObjects.map(r => Module.CommonObject.decode(r));
-        clearScene();
-        RHINOLOGO.doc = new jsDoc();
-        RHINOLOGO.doc.setBreps(difference);
-        RHINOLOGO.doc.computeBrepMeshes();
-
-        // hide spinner
-        //document.getElementById('loader').style.display = 'block';
-    }
-
-    async function performDifferenceFanOut()
-    {
-        clearScene();
-        let queue = [];
-        let breps = [];
-        for (let b of logo) {
-            queue.push(RhinoCompute.Brep.createBooleanDifference([b], cutters, 0.01));
+        "imports": {
+            "three": "https://unpkg.com/three@0.144.0/build/three.module.js",
+            "three/examples/jsm/controls/OrbitControls": "https://unpkg.com/three@0.144.0/examples/jsm/controls/OrbitControls.js",
+            "rhino3dm":"https://unpkg.com/rhino3dm@7.15.0/rhino3dm.module.js",
+            "rhinocompute": "https://www.unpkg.com/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js"
         }
-        for (let promise of queue) {
-            let result = await promise;
-            console.log("Got Boolean Difference");
-            let new_breps = result.map(r => Module.CommonObject.decode(r));
-            RHINOLOGO.doc.setBreps(new_breps);
-            await RHINOLOGO.doc.computeBrepMeshes();
-        }
-        // await RHINOLOGO.doc.computeBrepMeshes();
     }
+</script>
 
-    async function loadBrepsFromUrl(url, bDrawMeshes) {
+    <script type="module">
 
-        // show spinner
-        document.getElementById('loader').style.display = 'block';
+        import * as THREE from 'three'
+        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+        import rhino3dm from 'rhino3dm'
+        import { RhinoCompute } from 'rhinocompute'
 
-        let model = await load3dmFromUrl(url);
+        // holds top level variables
+        var RHINOLOGO = {};
+        let logo, cutters, difference;
 
-        let objecttable = model.objects();
-        let breps = [];
-        for (let i = 0; i < objecttable.count; i++) {
-            let brep = objecttable.get(i).geometry();
-            brep.rotate(-1.571, [1, 0, 0], [0, 0, 0]);
-            breps.push(brep);
+        // load rhino3dm
+        var Module;
+        rhino3dm().then((m) => {
+            Module = m;
+            console.log("rhino3dm loaded!")
+        });
+
+        init();
+        animate();
+
+        /**
+         * Set up empty GL canvas with a gradient background. The geomtry will
+         * be loaded into the scene through a separate routine.
+         */
+        function init() {
+
+            RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081/ if debugging locally.
+            RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+
+            RHINOLOGO.scene = new THREE.Scene();
+
+            RHINOLOGO.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+            RHINOLOGO.camera.position.z = 40;
+            RHINOLOGO.wireMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+            RHINOLOGO.wireHighlightMaterial = new THREE.LineBasicMaterial({ color: 0xf4a142 });
+            RHINOLOGO.meshMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+            RHINOLOGO.meshHighlightMaterial = new THREE.MeshPhongMaterial({ color: 0xffff00 });
+
+
+            // create a gradient background
+            var canvas = document.createElement('canvas');
+            canvas.width = 128;
+            canvas.height = 128;
+            var context = canvas.getContext('2d');
+            var gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(1, 'rgba(79,198,237,1');
+            gradient.addColorStop(0.1, 'rgba(112,137,212,1)');
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            RHINOLOGO.scene.background = new THREE.CanvasTexture(canvas);
+
+            //  add a couple lights
+            var light = new THREE.DirectionalLight(0xffffff);
+            light.position.set(0, 0, 1);
+            RHINOLOGO.scene.add(light);
+            var light2 = new THREE.DirectionalLight(0x666666);
+            light2.position.set(0.2, 0.2, -1);
+            RHINOLOGO.scene.add(light2);
+
+            RHINOLOGO.renderer = new THREE.WebGLRenderer({ antialias: true });
+
+            // orbit controls help with mouse/trackpad interaction
+            controls = new OrbitControls(RHINOLOGO.camera, RHINOLOGO.renderer.domElement);
+            controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+            controls.dampingFactor = 0.25;
+            controls.screenSpacePanning = false;
+            controls.minDistance = 10;
+            controls.maxDistance = 500;
+
+            RHINOLOGO.renderer.setPixelRatio(window.devicePixelRatio);
+            RHINOLOGO.renderer.setSize(window.innerWidth / 2, window.innerHeight);
+            var glcanvas = document.getElementById('glcanvas');
+            glcanvas.appendChild(RHINOLOGO.renderer.domElement);
+
+            window.addEventListener('resize', onWindowResize, false);
+            document.getElementById('load_model').addEventListener('click', async () => { logo = await loadBrepsFromUrl('https://files.mcneel.com/rhino3dm/models/RhinoLogo.3dm', true) });
+            document.getElementById('load_cutters').addEventListener('click', async () => { cutters = await loadBrepsFromUrl('https://files.mcneel.com/rhino3dm/models/Cutters.3dm', false) });
+            document.getElementById('diff').addEventListener('click', performDifference);
+            onWindowResize();
         }
-        RHINOLOGO.doc = new jsDoc();
-        RHINOLOGO.doc.setBreps(breps);
-        if (bDrawMeshes) {
+
+        function getAuth(key) {
+            let value = localStorage[key]
+            if (value === undefined) {
+                const prompt = key.includes('URL') ? 'Server URL' : 'Server API Key'
+                value = window.prompt('RhinoCompute ' + prompt)
+                if (value !== null) {
+                    localStorage.setItem(key, value)
+                }
+            }
+            return value
+        }
+
+        function onWindowResize() {
+            RHINOLOGO.camera.aspect = window.innerWidth / window.innerHeight;
+            RHINOLOGO.camera.updateProjectionMatrix();
+            RHINOLOGO.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            RHINOLOGO.renderer.render(RHINOLOGO.scene, RHINOLOGO.camera);
+        }
+
+        async function load3dmFromUrl(url) {
+            let three3m = await fetch(url);
+            let buffer = await three3m.arrayBuffer();
+            let arr = new Uint8Array(buffer);
+            return Module.File3dm.fromByteArray(arr);
+        }
+
+        async function performDifference() {
+            // show spinner
+            document.getElementById('loader').style.display = 'block';
+
+            let cutObjects = await RhinoCompute.Brep.createBooleanDifference(logo, cutters, 0.01);
+            difference = cutObjects.map(r => Module.CommonObject.decode(r));
+            clearScene();
+            RHINOLOGO.doc = new jsDoc();
+            RHINOLOGO.doc.setBreps(difference);
             RHINOLOGO.doc.computeBrepMeshes();
-        }
-        else {
-            RHINOLOGO.doc.computeBrepWires();
-        }
-        return breps;
-    }
 
-    function clearScene() {
-        let scene = RHINOLOGO.scene;
-        scene.remove.apply(scene, scene.children);
-        var light = new THREE.DirectionalLight(0xffffff);
-        light.position.set(0, 0, 1);
-        scene.add(light);
-        var light2 = new THREE.DirectionalLight(0x666666);
-        light2.position.set(0.2, 0.2, -1);
-        scene.add(light2);
-    }
-
-    /*
-     * Loads the 'Rhino Logo.3dm' model and computes meshes for each of
-     * breps in the model.
-     */
-    async function getRhinoLogoMeshes() {
-        let model = await load3dmFromUrl("RhinoLogo.3dm");
-        let cutters = await load3dmFromUrl("Cutters.3dm");
-
-        let objecttable = model.objects();
-        let modelBreps = [];
-        for (let i = 0; i < objecttable.count; i++) {
-            modelBreps.push(objecttable.get(i).geometry());
-        }
-        objecttable = cutters.objects();
-        let cutterBreps = [];
-        for (let i = 0; i < objecttable.count; i++) {
-            cutterBreps.push(objecttable.get(i).geometry());
+            // hide spinner
+            //document.getElementById('loader').style.display = 'block';
         }
 
-
-        //let logoDoc = new jsDoc(model);
-        //let cutterDoc = new jsDoc(cutters);
-        let cutObjects = await RhinoCompute.Brep.createBooleanDifference(modelBreps, cutterBreps, 0.01);
-
-        let cutBreps = cutObjects.map(r => Module.CommonObject.decode(r));
-        RHINOLOGO.doc = new jsDoc();
-        RHINOLOGO.doc.setBreps(cutBreps);
-        for (let geom of RHINOLOGO.doc.breps) {
-            geom.geometry.rotate(-1.571, [1, 0, 0], [0, 0, 0]);
+        async function performDifferenceFanOut() {
+            clearScene();
+            let queue = [];
+            let breps = [];
+            for (let b of logo) {
+                queue.push(RhinoCompute.Brep.createBooleanDifference([b], cutters, 0.01));
+            }
+            for (let promise of queue) {
+                let result = await promise;
+                console.log("Got Boolean Difference");
+                let new_breps = result.map(r => Module.CommonObject.decode(r));
+                RHINOLOGO.doc.setBreps(new_breps);
+                await RHINOLOGO.doc.computeBrepMeshes();
+            }
+            // await RHINOLOGO.doc.computeBrepMeshes();
         }
 
-        //onModelLoaded(RHINOLOGO.doc);
-        let d = document.getElementById('model_data');
-        //var objects = model.objects();
-        for (let i = 0; i < RHINOLOGO.doc.breps.length; i++) {
-            let row = d.insertRow();
-            let cell1 = row.insertCell(0);
-            cell1.innerHTML = "<button class='btn_select' type='button' onclick='RHINOLOGO.doc.highlightMesh(" + i + ");'>" + i + "</button>";
-            let cell2 = row.insertCell(1);
-            cell2.innerHTML = "<button class='btn_mesh' type='button' onclick='RHINOLOGO.doc.computeBrepMesh(" + i + "); this.style.display = \"none\";'>M</button>";
-            let cell3 = row.insertCell(2);
-            cell3.innerHTML = "<button class='btn_wires' type='button' onclick='RHINOLOGO.doc.computeBrepWire(" + i + "); this.style.display = \"none\";'>W</button>";
-            //console.Log()
-        }
-        // let breps = doc.computeBrepWires();
-        // let wires = doc.computeBrepMeshes();
-        // await breps;
-        // await wires;
-    }
+        async function loadBrepsFromUrl(url, bDrawMeshes) {
 
+            // show spinner
+            document.getElementById('loader').style.display = 'block';
 
-    /**
-     * Create a THREE.LineSegments class representing the face edges of a
-     * rhino3dm.Mesh class. This is not the best way to get the edges as the
-     * topology edges are not exposed in rhino3dm yet.
-     *
-     * @param {rhino3dm.Mesh} mesh - the mesh geometry to extract wires from
-     * @param {THREE.Material} material - material to associate with the wires
-     *   for drawing.
-     * @return {THREE.LineSegments} line segments geometry for a scene
-     */
-    function meshToLineSegments(mesh, material) {
+            let model = await load3dmFromUrl(url);
 
-        function tovec3(pt) {
-            return new THREE.Vector3(pt[0], pt[1], pt[2]);
+            let objecttable = model.objects();
+            let breps = [];
+            for (let i = 0; i < objecttable.count; i++) {
+                let brep = objecttable.get(i).geometry();
+                brep.rotate(-1.571, [1, 0, 0], [0, 0, 0]);
+                breps.push(brep);
+            }
+            RHINOLOGO.doc = new jsDoc();
+            RHINOLOGO.doc.setBreps(breps);
+            if (bDrawMeshes) {
+                RHINOLOGO.doc.computeBrepMeshes();
+            }
+            else {
+                RHINOLOGO.doc.computeBrepWires();
+            }
+            return breps;
         }
 
-        var verts = mesh.vertices();
-        var faces = mesh.faces();
+        function clearScene() {
+            let scene = RHINOLOGO.scene;
+            scene.remove.apply(scene, scene.children);
+            var light = new THREE.DirectionalLight(0xffffff);
+            light.position.set(0, 0, 1);
+            scene.add(light);
+            var light2 = new THREE.DirectionalLight(0x666666);
+            light2.position.set(0.2, 0.2, -1);
+            scene.add(light2);
+        }
 
-        var geometry = new THREE.Geometry();
-        for (var i = 0; i < faces.count; i++) {
-            var face = faces.get(i);
-            var pts = [verts.get(face[0]), verts.get(face[1]), verts.get(face[2]), verts.get(face[3])];
-            geometry.vertices.push(
-                tovec3(pts[0]), tovec3(pts[1]),
-                tovec3(pts[1]), tovec3(pts[2]),
-                tovec3(pts[2]), tovec3(pts[3])
-            );
-            if (face[2] != face[3]) {
-                geometry.vertices.push(tovec3(pts[3]), tovec3(pts[0]));
+        /*
+         * Loads the 'Rhino Logo.3dm' model and computes meshes for each of
+         * breps in the model.
+         */
+        async function getRhinoLogoMeshes() {
+            let model = await load3dmFromUrl("RhinoLogo.3dm");
+            let cutters = await load3dmFromUrl("Cutters.3dm");
+
+            let objecttable = model.objects();
+            let modelBreps = [];
+            for (let i = 0; i < objecttable.count; i++) {
+                modelBreps.push(objecttable.get(i).geometry());
+            }
+            objecttable = cutters.objects();
+            let cutterBreps = [];
+            for (let i = 0; i < objecttable.count; i++) {
+                cutterBreps.push(objecttable.get(i).geometry());
+            }
+
+
+            //let logoDoc = new jsDoc(model);
+            //let cutterDoc = new jsDoc(cutters);
+            let cutObjects = await RhinoCompute.Brep.createBooleanDifference(modelBreps, cutterBreps, 0.01);
+
+            let cutBreps = cutObjects.map(r => Module.CommonObject.decode(r));
+            RHINOLOGO.doc = new jsDoc();
+            RHINOLOGO.doc.setBreps(cutBreps);
+            for (let geom of RHINOLOGO.doc.breps) {
+                geom.geometry.rotate(-1.571, [1, 0, 0], [0, 0, 0]);
+            }
+
+            //onModelLoaded(RHINOLOGO.doc);
+            let d = document.getElementById('model_data');
+            //var objects = model.objects();
+            for (let i = 0; i < RHINOLOGO.doc.breps.length; i++) {
+                let row = d.insertRow();
+                let cell1 = row.insertCell(0);
+                cell1.innerHTML = "<button class='btn_select' type='button' onclick='RHINOLOGO.doc.highlightMesh(" + i + ");'>" + i + "</button>";
+                let cell2 = row.insertCell(1);
+                cell2.innerHTML = "<button class='btn_mesh' type='button' onclick='RHINOLOGO.doc.computeBrepMesh(" + i + "); this.style.display = \"none\";'>M</button>";
+                let cell3 = row.insertCell(2);
+                cell3.innerHTML = "<button class='btn_wires' type='button' onclick='RHINOLOGO.doc.computeBrepWire(" + i + "); this.style.display = \"none\";'>W</button>";
+                //console.Log()
+            }
+            // let breps = doc.computeBrepWires();
+            // let wires = doc.computeBrepMeshes();
+            // await breps;
+            // await wires;
+        }
+
+
+        /**
+         * Create a THREE.LineSegments class representing the face edges of a
+         * rhino3dm.Mesh class. This is not the best way to get the edges as the
+         * topology edges are not exposed in rhino3dm yet.
+         *
+         * @param {rhino3dm.Mesh} mesh - the mesh geometry to extract wires from
+         * @param {THREE.Material} material - material to associate with the wires
+         *   for drawing.
+         * @return {THREE.LineSegments} line segments geometry for a scene
+         */
+        function meshToLineSegments(mesh, material) {
+
+            function tovec3(pt) {
+                return new THREE.Vector3(pt[0], pt[1], pt[2]);
+            }
+
+            var verts = mesh.vertices();
+            var faces = mesh.faces();
+
+            //var geometry = new THREE.Geometry();
+
+            var points = []
+            for (var i = 0; i < faces.count; i++) {
+                var face = faces.get(i);
+                var pts = [verts.get(face[0]), verts.get(face[1]), verts.get(face[2]), verts.get(face[3])];
+
+                let p0 = verts.get(face[0])
+                let p1 = verts.get(face[1])
+                let p2 = verts.get(face[2])
+                let p3 = verts.get(face[3])
+
+                points.push(new THREE.Vector3(p0[0], p0[1], p0[2]))
+                points.push(new THREE.Vector3(p1[0], p1[1], p1[2]))
+                points.push(new THREE.Vector3(p1[0], p1[1], p1[2]))
+                points.push(new THREE.Vector3(p2[0], p2[1], p2[2]))
+                points.push(new THREE.Vector3(p2[0], p2[1], p2[2]))
+                points.push(new THREE.Vector3(p3[0], p3[1], p3[2]))
+                /* 
+                 geometry.vertices.push(
+                     tovec3(pts[0]), tovec3(pts[1]),
+                     tovec3(pts[1]), tovec3(pts[2]),
+                     tovec3(pts[2]), tovec3(pts[3])
+                 );*/
+
+                if (face[2] != face[3]) {
+                    // geometry.vertices.push(tovec3(pts[3]), tovec3(pts[0]));
+                    points.push(new THREE.Vector3(p3[0], p3[1], p3[2]))
+                    points.push(new THREE.Vector3(p0[0], p0[1], p0[2]))
+
+                }
+            }
+
+            const bufferGeometry = new THREE.BufferGeometry().setFromPoints(points);
+            return new THREE.LineSegments(bufferGeometry, material);
+        }
+
+        function curveToLineSegments(curve, material) {
+
+            var domain = curve.domain;
+            var start = domain[0];
+            var range = domain[1] - domain[0];
+            var interval = range / 50.0;
+            const points = []
+            for (var i = 0; i < 51; i++) {
+                let t = start + i * interval;
+                var pt = curve.pointAt(t);
+                //geometry.vertices.push(new THREE.Vector3(pt[0], pt[1], pt[2]));
+                points.push(new THREE.Vector3(pt[0], pt[1], pt[2]))
+            }
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            return new THREE.Line(geometry, material);
+
+        }
+
+        /**
+         * Create a THREE.Mesh class representing a rhino3dm.Mesh class.
+         *
+         * @param {rhino3dm.Mesh} mesh - the mesh geometry to extract triangles from
+         * @param {THREE.Material} material - material to associate with the mesh
+         *   for drawing.
+         * @return {THREE.Mesh} mesh geometry for a scene
+         */
+        function meshToThreejs(mesh, material) {
+            var geometry = new THREE.BufferGeometry();
+            var vertices = mesh.vertices();
+            var vertexbuffer = new Float32Array(3 * vertices.count);
+            for (var i = 0; i < vertices.count; i++) {
+                let pt = vertices.get(i);
+                vertexbuffer[i * 3] = pt[0];
+                vertexbuffer[i * 3 + 1] = pt[1];
+                vertexbuffer[i * 3 + 2] = pt[2];
+            }
+            // itemSize = 3 because there are 3 values (components) per vertex
+            geometry.setAttribute('position', new THREE.BufferAttribute(vertexbuffer, 3));
+
+            let indices = [];
+            var faces = mesh.faces();
+            for (var i = 0; i < faces.count; i++) {
+                let face = faces.get(i);
+                indices.push(face[0], face[1], face[2]);
+                if (face[2] != face[3]) {
+                    indices.push(face[2], face[3], face[0]);
+                }
+            }
+            geometry.setIndex(indices);
+
+            var normals = mesh.normals();
+            var normalBuffer = new Float32Array(3 * normals.count);
+            for (var i = 0; i < normals.count; i++) {
+                let pt = normals.get(i);
+                normalBuffer[i * 3] = pt[0];
+                normalBuffer[i * 3 + 1] = pt[1];
+                normalBuffer[i * 3 + 2] = pt[1];
+            }
+            geometry.setAttribute('normal', new THREE.BufferAttribute(normalBuffer, 3));
+            let newmesh = new THREE.Mesh(geometry, material);
+            return newmesh;
+
+        }
+
+        /**
+         * Called every time compute.rhino3d.com returns a set of meshes for a brep
+         * This is a good time to convert the rhino3dm.Mesh geometry into geometry
+         * used in three.js
+         *
+         * @param(SampleDoc) model - the model being computed
+         */
+        function addMeshToScene(brep) {
+            if (brep["meshes"].length > 0 && brep["threejs"] == null) {
+                let meshes = brep["meshes"];
+                brep["threejs"] = [];
+
+                for (let mesh of meshes) {
+                    let lines = null;
+                    let threemesh = meshToThreejs(mesh, RHINOLOGO.meshMaterial);
+                    console.log("Drawing mesh");
+                    RHINOLOGO.scene.add(threemesh);
+
+                    brep["threejs"].push([lines, threemesh]);
+                }
+
             }
         }
-        return new THREE.LineSegments(geometry, material);
-    }
 
-    function curveToLineSegments(curve, material) {
-        var geometry = new THREE.Geometry();
-        var domain = curve.domain;
-        var start = domain[0];
-        var range = domain[1] - domain[0];
-        var interval = range / 50.0;
-        for (var i = 0; i < 51; i++) {
-            t = start + i * interval;
-            var pt = curve.pointAt(t);
-            geometry.vertices.push(new THREE.Vector3(pt[0], pt[1], pt[2]));
-        }
-        return new THREE.Line(geometry, material);
+        function addWireframeToScene(brep) {
+            if (brep["wires"].length > 0 && brep["threejswires"] == null) {
+                let curves = brep["wires"];
+                brep["threejswires"] = [];
 
-    }
-
-    /**
-     * Create a THREE.Mesh class representing a rhino3dm.Mesh class.
-     *
-     * @param {rhino3dm.Mesh} mesh - the mesh geometry to extract triangles from
-     * @param {THREE.Material} material - material to associate with the mesh
-     *   for drawing.
-     * @return {THREE.Mesh} mesh geometry for a scene
-     */
-    function meshToThreejs(mesh, material) {
-        var geometry = new THREE.BufferGeometry();
-        var vertices = mesh.vertices();
-        var vertexbuffer = new Float32Array(3 * vertices.count);
-        for (var i = 0; i < vertices.count; i++) {
-            pt = vertices.get(i);
-            vertexbuffer[i * 3] = pt[0];
-            vertexbuffer[i * 3 + 1] = pt[1];
-            vertexbuffer[i * 3 + 2] = pt[2];
-        }
-        // itemSize = 3 because there are 3 values (components) per vertex
-        geometry.setAttribute('position', new THREE.BufferAttribute(vertexbuffer, 3));
-
-        indices = [];
-        var faces = mesh.faces();
-        for (var i = 0; i < faces.count; i++) {
-            face = faces.get(i);
-            indices.push(face[0], face[1], face[2]);
-            if (face[2] != face[3]) {
-                indices.push(face[2], face[3], face[0]);
+                for (let curveindex = 0; curveindex < curves.length; curveindex++) {
+                    let curve = curves[curveindex];
+                    let lines = curveToLineSegments(curve, RHINOLOGO.wireMaterial);
+                    RHINOLOGO.scene.add(lines);
+                    console.log("Drawing wire");
+                    brep["threejswires"].push(lines);
+                }
             }
         }
-        geometry.setIndex(indices);
 
-        var normals = mesh.normals();
-        var normalBuffer = new Float32Array(3 * normals.count);
-        for (var i = 0; i < normals.count; i++) {
-            pt = normals.get(i);
-            normalBuffer[i * 3] = pt[0];
-            normalBuffer[i * 3 + 1] = pt[1];
-            normalBuffer[i * 3 + 2] = pt[1];
-        }
-        geometry.setAttribute('normal', new THREE.BufferAttribute(normalBuffer, 3));
-        let newmesh = new THREE.Mesh(geometry, material);
-        return newmesh;
-
-    }
-
-    /**
-     * Called every time compute.rhino3d.com returns a set of meshes for a brep
-     * This is a good time to convert the rhino3dm.Mesh geometry into geometry
-     * used in three.js
-     *
-     * @param(SampleDoc) model - the model being computed
-     */
-    function addMeshToScene(brep) {
-        if (brep["meshes"].length > 0 && brep["threejs"] == null) {
-            let meshes = brep["meshes"];
-            brep["threejs"] = [];
-
-            for (let mesh of meshes) {
-                let lines = null;
-                let threemesh = meshToThreejs(mesh, RHINOLOGO.meshMaterial);
-                console.log("Drawing mesh");
-                RHINOLOGO.scene.add(threemesh);
-
-                brep["threejs"].push([lines, threemesh]);
-            }
-            
-        }
-    }
-
-    function addWireframeToScene(brep) {
-        if (brep["wires"].length > 0 && brep["threejswires"] == null) {
-            let curves = brep["wires"];
-            brep["threejswires"] = [];
-
-            for (curveindex = 0; curveindex < curves.length; curveindex++) {
-                let curve = curves[curveindex];
-                let lines = curveToLineSegments(curve, RHINOLOGO.wireMaterial);
-                RHINOLOGO.scene.add(lines);
-                console.log("Drawing wire");
-                brep["threejswires"].push(lines);
+        /**
+         * called once the "Rhino Logo.3dm" file has been downloaded and converted
+         * into an instance of a rhino3dm.File3dm class.
+         *
+         * @param(SampleDoc) model - the model just loaded
+         */
+        function onModelLoaded(doc) {
+            RHINOLOGO.doc = doc;
+            // the Rhino Logo works better when rotated on to the XY plane
+            var objects = doc.model.objects();
+            for (var i = 0; i < objects.count; i++) {
+                var geometry = objects.get(i).geometry();
+                geometry.rotate(-1.571, [1, 0, 0], [0, 0, 0]);
             }
         }
-    }
-
-    /**
-     * called once the "Rhino Logo.3dm" file has been downloaded and converted
-     * into an instance of a rhino3dm.File3dm class.
-     *
-     * @param(SampleDoc) model - the model just loaded
-     */
-    function onModelLoaded(doc) {
-        RHINOLOGO.doc = doc;
-        // the Rhino Logo works better when rotated on to the XY plane
-        var objects = doc.model.objects();
-        for (var i = 0; i < objects.count; i++) {
-            var geometry = objects.get(i).geometry();
-            geometry.rotate(-1.571, [1, 0, 0], [0, 0, 0]);
-        }
-    }
 
 
-    class jsDoc {
-        constructor(model) {
-            this.breps = [];
-            if (model) {
-                this.model = model;
-                var objecttable = model.objects();
-                for (var i = 0; i < objecttable.count; i++) {
-                    var modelobject = objecttable.get(i);
+        class jsDoc {
+            constructor(model) {
+                this.breps = [];
+                if (model) {
+                    this.model = model;
+                    var objecttable = model.objects();
+                    for (var i = 0; i < objecttable.count; i++) {
+                        var modelobject = objecttable.get(i);
+                        this.breps.push({
+                            "geometry": modelobject.geometry(),
+                            "meshes": [],
+                            "wires": [],
+                            "threejs": null,
+                            "threejswires": null
+                        });
+                    }
+                }
+            }
+
+            setBreps(breps) {
+                for (let brep of breps) {
                     this.breps.push({
-                        "geometry": modelobject.geometry(),
+                        "geometry": brep,
                         "meshes": [],
+                        "meshing": false,
                         "wires": [],
                         "threejs": null,
                         "threejswires": null
                     });
                 }
             }
-        }
 
-        setBreps(breps) {
-            for (let brep of breps) {
-                this.breps.push({
-                    "geometry": brep,
-                    "meshes": [],
-                    "meshing": false,
-                    "wires": [],
-                    "threejs": null,
-                    "threejswires": null
-                });
-            }
-        }
+            async computeBrepMesh(index) {
+                let brep = this.breps[index]["geometry"];
+                let meshes = this.breps[index]["meshes"];
+                if (meshes.length === 0) {
+                    let promise = RhinoCompute.Mesh.createFromBrep(brep);
+                    let result = await promise;
+                    console.log("Got mesh for one brep");
+                    brep["meshes"] = result.map(r => Module.CommonObject.decode(r));
+                    addMeshToScene(brep);
+                }
 
-        async computeBrepMesh(index) {
-            let brep = this.breps[index]["geometry"];
-            let meshes = this.breps[index]["meshes"];
-            if(meshes.length === 0) {
-                let promise = RhinoCompute.Mesh.createFromBrep(brep);
-                let result = await promise;
-                console.log("Got mesh for one brep");
-                brep["meshes"] = result.map(r => Module.CommonObject.decode(r));
-                addMeshToScene(brep);
+                // hide spinner
+                document.getElementById('loader').style.display = 'none';
             }
 
-            // hide spinner
-            document.getElementById('loader').style.display = 'none';
-        }
-
-        highlightMesh(index) {
-            if (this.breps[index].geometry.threejs !== undefined) {
-                for (let srf of this.breps[index].geometry.threejs) {
-                    if (srf[1] !== null) {
-                        if (srf[1].material == RHINOLOGO.meshHighlightMaterial)
-                            srf[1].material = RHINOLOGO.meshMaterial;
-                        else
-                            srf[1].material = RHINOLOGO.meshHighlightMaterial;
+            highlightMesh(index) {
+                if (this.breps[index].geometry.threejs !== undefined) {
+                    for (let srf of this.breps[index].geometry.threejs) {
+                        if (srf[1] !== null) {
+                            if (srf[1].material == RHINOLOGO.meshHighlightMaterial)
+                                srf[1].material = RHINOLOGO.meshMaterial;
+                            else
+                                srf[1].material = RHINOLOGO.meshHighlightMaterial;
+                        }
+                    }
+                }
+                if (this.breps[index].geometry.threejswires !== undefined) {
+                    for (let srf of this.breps[index].geometry.threejswires) {
+                        if (srf != null) {
+                            if (srf.material == RHINOLOGO.wireHighlightMaterial)
+                                srf.material = RHINOLOGO.wireMaterial;
+                            else
+                                srf.material = RHINOLOGO.wireHighlightMaterial;
+                        }
                     }
                 }
             }
-            if (this.breps[index].geometry.threejswires !== undefined) {
-                for (let srf of this.breps[index].geometry.threejswires) {
-                    if (srf != null) {
-                        if (srf.material == RHINOLOGO.wireHighlightMaterial)
-                            srf.material = RHINOLOGO.wireMaterial;
-                        else
-                            srf.material = RHINOLOGO.wireHighlightMaterial;
+
+            async computeBrepMeshes() {
+                let queue = [];
+                for (let b of this.breps) {
+                    let brep = b.geometry;
+                    if (!b.meshing) {
+                        b.meshing = true;
+                        queue.push([RhinoCompute.Mesh.createFromBrep(brep), brep]);
                     }
                 }
-            }
-        }
-
-        async computeBrepMeshes() {
-            let queue = [];
-            for (let b of this.breps) {
-                let brep = b.geometry;
-                if (!b.meshing) {
-                    b.meshing = true;
-                    queue.push([RhinoCompute.Mesh.createFromBrep(brep), brep]);
+                for (let [promise, brep] of queue) {
+                    let result = await promise;
+                    console.log("Got mesh for one brep");
+                    brep["meshes"] = result.map(r => Module.CommonObject.decode(r));
+                    addMeshToScene(brep);
                 }
-            }
-            for (let [promise, brep] of queue) {
-                let result = await promise;
-                console.log("Got mesh for one brep");
-                brep["meshes"] = result.map(r => Module.CommonObject.decode(r));
-                addMeshToScene(brep);
+
+                // hide spinner
+                document.getElementById('loader').style.display = 'none';
             }
 
-            // hide spinner
-            document.getElementById('loader').style.display = 'none';
-        }
-
-        async computeBrepWire(index) {
-            let brep = this.breps[index]["geometry"];
-            let promise = RhinoCompute.Brep.getWireframe(brep, 1);
-            let result = await promise;
-            console.log("Got wires for one brep");
-            brep["wires"] = result.map(r => Module.CommonObject.decode(r));
-            addWireframeToScene(brep);
-        }
-
-        async computeBrepWires() {
-            let queue = [];
-            for (let b of this.breps) {
-                let brep = b["geometry"];
-                queue.push([RhinoCompute.Brep.getWireframe(brep, 1), brep]);
-            }
-            for (let [promise, brep] of queue) {
+            async computeBrepWire(index) {
+                let brep = this.breps[index]["geometry"];
+                let promise = RhinoCompute.Brep.getWireframe(brep, 1);
                 let result = await promise;
                 console.log("Got wires for one brep");
                 brep["wires"] = result.map(r => Module.CommonObject.decode(r));
                 addWireframeToScene(brep);
             }
-            // hide spinner
-            document.getElementById('loader').style.display = 'none';
+
+            async computeBrepWires() {
+                let queue = [];
+                for (let b of this.breps) {
+                    let brep = b["geometry"];
+                    queue.push([RhinoCompute.Brep.getWireframe(brep, 1), brep]);
+                }
+                for (let [promise, brep] of queue) {
+                    let result = await promise;
+                    console.log("Got wires for one brep");
+                    brep["wires"] = result.map(r => Module.CommonObject.decode(r));
+                    addWireframeToScene(brep);
+                }
+                // hide spinner
+                document.getElementById('loader').style.display = 'none';
+            }
         }
-    }
 
 
-</script>
+    </script>
 </body>
+
 </html>

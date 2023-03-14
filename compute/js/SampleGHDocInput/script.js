@@ -1,20 +1,16 @@
 // #region IMPORTS //
-
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
 import rhino3dm from 'rhino3dm'
-import { RhinoCompute } from 'rhino_compute'
-
-//import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@7.14.0/rhino3dm.module.js'
-//import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+import { RhinoCompute } from 'rhinocompute'
 
 // #endregion IMPORTS //
 
 // #region VARS //
 
-RhinoCompute.url = 'http://localhost:5000/' //getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
-RhinoCompute.apiKey = ''//getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081/ if debugging locally.
+RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
 
 
 const data = {}
@@ -133,7 +129,7 @@ async function compute() {
   
     // set up loader for converting the results to threejs
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@7.15.0/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@7.15.0/' )
   
     loader.parse( buffer, ( object )  =>
     {
@@ -239,6 +235,18 @@ function animate() {
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
 
+}
+
+function getAuth(key) {
+  let value = localStorage[key]
+  if (value === undefined) {
+    const prompt = key.includes('URL') ? 'Server URL' : 'Server API Key'
+    value = window.prompt('RhinoCompute ' + prompt)
+    if (value !== null) {
+      localStorage.setItem(key, value)
+    }
+  }
+  return value
 }
 
 // #endregion INIT //

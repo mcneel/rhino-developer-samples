@@ -1,9 +1,9 @@
 // Import libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
-import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/loaders/3DMLoader.js'
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.16.1/rhino3dm.module.js'
-import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
+import rhino3dm from 'rhino3dm'
+import { RhinoCompute } from 'rhinocompute'
 
 // reference the definition
 const definitionName = 'SampleGHDocMaterialTexture.gh'
@@ -46,7 +46,7 @@ async function compute() {
   // format data
   let param1 = new RhinoCompute.Grasshopper.DataTree('radius')
   param1.append([0], [radius_input])
-  let param2 = new RhinoCompute.Grasshopper.DataTree('RH_IN:dataURI')
+  let param2 = new RhinoCompute.Grasshopper.DataTree('dataURI')
   param2.append([0], [dataURI_input])
 
   // Add all params to an array
@@ -99,7 +99,7 @@ function collectResults(responseJson) {
 
   // set up loader for converting the results to threejs
   const loader = new Rhino3dmLoader()
-  loader.setLibraryPath('https://cdn.jsdelivr.net/npm/rhino3dm@0.16.1/')
+  loader.setLibraryPath('https://unpkg.com/rhino3dm@7.15.0/')
 
   // load rhino doc into three.js scene
   loader.parse(arr, function (object) {

@@ -1,7 +1,7 @@
 const fs = require('fs')
 const rhino3dm = require('rhino3dm')
 
-let file3dmpath = ""
+let file3dmpath = 'Rhino_Logo_Mesh.3dm'
 
 process.argv.forEach(function (val, index, array) {
     if (index === 2) {

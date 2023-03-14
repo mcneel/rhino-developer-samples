@@ -2,8 +2,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@7.14.0/rhino3dm.module.js'
-import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+import rhino3dm from 'rhino3dm'
+import { RhinoCompute } from 'rhinocompute'
 
 let data = {}
 data.definition = 'SampleGHConvertTo3dm.gh'
@@ -45,8 +45,9 @@ rhino3dm().then(async m => {
   console.log('Loaded rhino3dm.')
   rhino = m // global
 
-  RhinoCompute.url = 'http://localhost:8081/' //getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
-  RhinoCompute.apiKey = ''//getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+  RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081/ if debugging locally.
+  RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+
 
   // source a .gh / .ghx file in the same directory
   let url = data.definition
@@ -128,7 +129,7 @@ async function compute() {
 
   // set up loader for converting the results to threejs
   const loader = new Rhino3dmLoader()
-  loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@7.14.0/' )
+  loader.setLibraryPath( 'https://unpkg.com/rhino3dm@7.15.0/' )
 
   loader.parse( buffer, function ( object ) 
   {

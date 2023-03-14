@@ -1,8 +1,8 @@
 // Import libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
-import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import rhino3dm from 'rhino3dm'
+import { RhinoCompute } from 'rhinocompute'
 
 const definitionName = 'BranchNodeRnd.gh'
 
@@ -62,7 +62,8 @@ async function compute() {
     // hide spinner
     document.getElementById('loader').style.display = 'none'
 
-    const data = JSON.parse(res.values[0].InnerTree['{0}'][0].data)
+    //get the b64 mesh output
+    const data = JSON.parse(res.values[1].InnerTree['{0}'][0].data)
     const mesh = rhino.DracoCompression.decompressBase64String(data)
 
     const material = new THREE.MeshNormalMaterial()

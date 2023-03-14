@@ -35,7 +35,7 @@ function init () {
 function load() {
 
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@7.15.0/' )
 
     const material = new THREE.MeshNormalMaterial()
     loader.load( model, function ( object ) {

@@ -36,9 +36,9 @@ rhino3dm().then(async m => {
     doc.objects().add(rhinoMesh, null)
 
     let opts = new rhino.File3dmWriteOptions();
-    opts.version = 6;
+    opts.version = 8;
     let buffer = doc.toByteArray(opts)
-    fs.writeFileSync('Rhino_Logo_Mesh.3dm', buffer)
+    fs.writeFileSync('Rhino_Logo_Mesh_'+opts.version+'.3dm', buffer)
 
 
 })

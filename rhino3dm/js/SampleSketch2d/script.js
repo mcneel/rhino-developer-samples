@@ -1,4 +1,4 @@
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
+import rhino3dm from 'rhino3dm'
 
 const downloadButton = document.getElementById("downloadButton")
 downloadButton.onclick = download
@@ -47,9 +47,9 @@ function download() {
   }
 
   let options = new rhino.File3dmWriteOptions()
-  options.version = 6
+  options.version = 7
   let buffer = doc.toByteArray(options)
-  saveByteArray("sketch2d.3dm", buffer)
+  saveByteArray("sketch2d"+ options.version +".3dm", buffer)
   doc.delete()
 }
 

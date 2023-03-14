@@ -62,8 +62,10 @@ function convert () {
 
 // download button handler
 function download () {
-  let buffer = doc.toByteArray()
-  saveByteArray( 'rhinoObjects.3dm', buffer )
+  const options = new rhino.File3dmWriteOptions()
+  options.version = 7
+  let buffer = doc.toByteArray(options)
+  saveByteArray( 'rhinoObjects'+options.version+'.3dm', buffer )
 }
 
 function saveByteArray ( fileName, byte ) {

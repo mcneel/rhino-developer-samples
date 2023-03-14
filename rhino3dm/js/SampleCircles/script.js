@@ -1,3 +1,5 @@
+import rhino3dm from 'rhino3dm'
+
 var rhino = null;
 
 // Wait for the rhino3dm web assembly to load asynchronously

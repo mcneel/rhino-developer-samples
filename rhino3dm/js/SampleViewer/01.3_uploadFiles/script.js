@@ -9,7 +9,7 @@ import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
 // #region GLOBALS //
 
 const loader = new Rhino3dmLoader()
-loader.setLibraryPath('https://cdn.jsdelivr.net/npm/rhino3dm@7.15.0/')
+loader.setLibraryPath('https://unpkg.com/rhino3dm@7.15.0/')
 
 const upload = document.getElementById("file-upload")
 
