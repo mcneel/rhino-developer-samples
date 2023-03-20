@@ -697,3 +697,27 @@ private:
     return angle;
   }
 };
+
+/// <summary>
+/// Returns the angle, in radians, between two 3-D vectors.
+/// </summary>
+/// <param name="v0">The first 3-D vector.</param>
+/// <param name="v1">The second 3-D vector.</param>
+/// <returns>The angle in radians if successful, ON_UNSET_VALUE on failure.</returns>
+double ON_VectorAngle(ON_3dVector v0, ON_3fVector v1)
+{
+  double angle = ON_UNSET_VALUE;
+  if (
+    v0.IsValid()
+    && v1.IsValid()
+    && !v0.IsZero()
+    && !v1.IsZero()
+    )
+  {
+    v0.Unitize();
+    v1.Unitize();
+    double dot = RHINO_CLAMP(ON_DotProduct(v0, v1), -1.0, 1.0);
+    angle = acos(dot);
+  }
+  return angle;
+}
