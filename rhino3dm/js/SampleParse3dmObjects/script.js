@@ -6,13 +6,14 @@ import rhino3dm from 'rhino3dm'
 const downloadButton = document.getElementById("downloadButton")
 downloadButton.onclick = download
 
-let rhino, doc
-rhino3dm().then(async m => {
-    console.log('Loaded rhino3dm.')
-    rhino = m // global
-    init()
-    create()
-})
+let doc
+let scene, camera, renderer
+
+const rhino = await rhino3dm()
+console.log('Loaded rhino3dm.')
+
+init()
+create()
 
 function create () {
 
@@ -216,8 +217,6 @@ function saveByteArray ( fileName, byte ) {
 }
 
 // BOILERPLATE //
-
-let scene, camera, renderer
 
 function init () {
 

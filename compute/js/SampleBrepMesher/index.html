@@ -1,59 +1,110 @@
 <!doctype html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>rhino3dm.js sample</title>
-    <style>
-      /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
-      canvas.rhino3dm { margin-left: auto; margin-right: auto;
-         display: block; border: 0px none; background-color: darkslategray; }
-      .slidecontainer {margin-left: auto; margin-right: auto;
-         display: block;}
-    </style>
-  </head>
-  <body>
-    <div>
-      <canvas class="rhino3dm" id="canvas" width="500" height="500" ></canvas>
-    </div>
-    <div class="slidecontainer">
-      <button type="button" onclick="runMeshMaker()">Run Script</button>
-      <input type="range" min="0" max="255" value="0" class="slider" id="rangeSlider" oninput="rotateMesh(this.value)">
-    </div>
-    <script type='text/javascript'>
-      var Module = {
-        canvas: (function() {
-          var canvas = document.getElementById('canvas');
-          return canvas;
-        }())
-      };
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="icon" href="data:;base64,=">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rhino Compute Sample - Brep Mesher</title>
+  <style>
+    /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+    canvas.rhino3dm {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      border: 0px none;
+      background-color: darkslategray;
+    }
+
+    .slidecontainer {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <canvas class="rhino3dm" id="canvas" width="500" height="500"></canvas>
+  </div>
+  <div class="slidecontainer">
+    <button type="button" id="btn-run">Run Script</button>
+    <input type="range" min="0" max="255" value="0" class="slider" id="rangeSlider">
+  </div>
+  <script type='text/javascript'>
+    var Module = {
+      canvas: (function () {
+        var canvas = document.getElementById('canvas');
+        return canvas;
+      }())
+    };
+  </script>
+
+  <!-- Import maps polyfill -->
+  <!-- Remove this when import maps will be widely supported -->
+  <script async src="https://unpkg.com/es-module-shims@1.7.0/dist/es-module-shims.js"></script>
+
+  <script type="importmap">
+        {
+            "imports": {
+                "rhino3dm":"https://unpkg.com/rhino3dm@8.0.0-beta/rhino3dm.module.js",
+                "rhinocompute": "https://www.unpkg.com/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js"
+            }
+        }
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/rhino3dm/rhino3dm.min.js"></script> <!-- latest -->
-    <script src="https://cdn.jsdelivr.net/npm/compute-rhino3d/compute.rhino3d.min.js"></script> <!-- latest -->
+  <script type="module">
 
-    <script>
-    RhinoCompute.url = 'http://localhost:8081/'
-    //RhinoCompute.apiKey = 'your-compute-apikey'
+    import rhino3dm from 'rhino3dm'
+    import { RhinoCompute } from 'rhinocompute'
+
+    const btn = document.getElementById('btn-run')
+    btn.addEventListener('click', (event) => {
+      runMeshMaker()
+    })
+
+    const slider = document.getElementById('rangeSlider')
+    slider.addEventListener('input', (event) => {
+
+      rotateMesh(slider.value)
+
+    })
+
+    RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081/ if debugging locally.
+    RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+
     var mesh;
 
     // load rhino3dm
-    var Module;
-    rhino3dm().then((m) => {
-      Module = m;
-      console.log("rhino3dm loaded!");
-    });
+
+    const rhino = await rhino3dm()
+    console.log("rhino3dm loaded!");
+
+    function getAuth( key ) {
+    let value = localStorage[key]
+    if ( value === undefined ) {
+        const prompt = key.includes('URL') ? 'Server URL' : 'Server API Key'
+        value = window.prompt('RhinoCompute ' + prompt)
+        if ( value !== null ) {
+            localStorage.setItem( key, value )
+        }
+    }
+    return value
+}
 
     function runMeshMaker() {
       // First test of rhinocommon.js
-      sphere = new Module.Sphere([250, 250, 0], 100);
-      brep = sphere.toBrep();
+      let sphere = new rhino.Sphere([250, 250, 0], 100);
+      let brep = sphere.toBrep();
       RhinoCompute.Mesh.createFromBrep(brep)
-      .then(result=>{
-        var meshes = result.map(r=>Module.CommonObject.decode(r));
-        mesh = meshes[0];
-        drawMesh();
-      });
+        .then(result => {
+          var meshes = result.map(r => rhino.CommonObject.decode(r));
+          mesh = meshes[0];
+          drawMesh();
+        });
 
       // Don't need the sphere and brep anymore
       sphere.delete();
@@ -61,25 +112,25 @@
     }
 
     function drawMesh() {
-      var ctx=canvas.getContext("2d");
+      var ctx = canvas.getContext("2d");
       // Create gradient
-      var grd=ctx.createLinearGradient(0,0,0,500);
-      grd.addColorStop(0,"slategray");
-      grd.addColorStop(1,"black");
+      var grd = ctx.createLinearGradient(0, 0, 0, 500);
+      grd.addColorStop(0, "slategray");
+      grd.addColorStop(1, "black");
       // Fill with gradient
-      ctx.fillStyle=grd;
-      ctx.fillRect(0,0,500,500);
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, 500, 500);
 
       ctx.lineWidth = 1;
       ctx.strokeStyle = 'red';
 
-      verts = mesh.vertices();
-      faces = mesh.faces();
+      let verts = mesh.vertices();
+      let faces = mesh.faces();
 
       ctx.beginPath();
-      for (i = 0; i < faces.count; i++) {
-        face = faces.get(i);
-        pts = [verts.get(face[0]), verts.get(face[1]), verts.get(face[2]), verts.get(face[3])];
+      for (let i = 0; i < faces.count; i++) {
+        let face = faces.get(i);
+        let pts = [verts.get(face[0]), verts.get(face[1]), verts.get(face[2]), verts.get(face[3])];
         ctx.moveTo(pts[0][0], pts[0][1]);
         ctx.lineTo(pts[1][0], pts[1][1]);
         ctx.lineTo(pts[2][0], pts[2][1]);
@@ -90,9 +141,10 @@
 
 
     function rotateMesh() {
-      mesh.rotate(.1, [1,1,0], [250,250,0]);
+      mesh.rotate(.1, [1, 1, 0], [250, 250, 0]);
       drawMesh();
     }
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>

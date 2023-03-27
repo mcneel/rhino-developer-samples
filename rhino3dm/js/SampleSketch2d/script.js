@@ -15,12 +15,12 @@ let _model = {
 
 
 // wait for the rhino3dm web assembly to load asynchronously
-let rhino
-rhino3dm().then(async m => {
-  console.log('Loaded rhino3dm.')
-  rhino = m // global
-  run()
-})
+const rhino = await rhino3dm()
+
+console.log('Loaded rhino3dm.')
+
+run()
+
 
 // initialize canvas and model
 function run() {

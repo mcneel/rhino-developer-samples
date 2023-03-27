@@ -13,12 +13,15 @@ window.addEventListener( 'mousemove', handleInteraction, false)
 window.addEventListener( 'touchstart', handleInteraction, false)
 
 // globals
-let rhino, doc, meshes, parsedDoc
-rhino3dm().then(async m => {
-    rhino = m
-    init()
-    load()
-})
+let doc, meshes, parsedDoc
+// declare variables to store scene, camera, and renderer
+let scene, camera, renderer, mouse, raycaster
+
+const rhino = await rhino3dm()
+
+init()
+load()
+
 
 async function load() {
 
@@ -76,9 +79,6 @@ async function load() {
 
 
 }
-
-// declare variables to store scene, camera, and renderer
-let scene, camera, renderer, mouse, raycaster
 
 // function to setup the scene, camera, renderer, and load 3d model
 function init () {

@@ -4,34 +4,33 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import rhino3dm from 'rhino3dm'
 
 const file = 'hello_mesh.3dm'
+let scene, camera, renderer
 
 // wait until the rhino3dm library is loaded, then load the 3dm file
-rhino3dm().then(async m => {
-    console.log('Loaded rhino3dm.')
-    let rhino = m
+const rhino = await rhino3dm()
+console.log('Loaded rhino3dm.')
 
-    let res = await fetch(file)
-    let buffer = await res.arrayBuffer()
-    let arr = new Uint8Array(buffer)
-    let doc = rhino.File3dm.fromByteArray(arr)
+let res = await fetch(file)
+let buffer = await res.arrayBuffer()
+let arr = new Uint8Array(buffer)
+let doc = rhino.File3dm.fromByteArray(arr)
 
-    init()
+init()
 
-    let material = new THREE.MeshNormalMaterial()
+let material = new THREE.MeshNormalMaterial()
 
-    let objects = doc.objects()
-    for (let i = 0; i < objects.count; i++) {
-        let mesh = objects.get(i).geometry()
-        if(mesh instanceof rhino.Mesh) {
-            // convert all meshes in 3dm model into threejs objects
-            let threeMesh = meshToThreejs(mesh, material)
-            scene.add(threeMesh)
-        }
+let objects = doc.objects()
+for (let i = 0; i < objects.count; i++) {
+    let mesh = objects.get(i).geometry()
+    if(mesh instanceof rhino.Mesh) {
+        // convert all meshes in 3dm model into threejs objects
+        let threeMesh = meshToThreejs(mesh, material)
+        scene.add(threeMesh)
     }
-})
+}
+
 
 // BOILERPLATE //
-let scene, camera, renderer
 
 function init(){
 

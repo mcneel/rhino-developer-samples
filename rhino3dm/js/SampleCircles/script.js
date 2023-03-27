@@ -1,11 +1,9 @@
 import rhino3dm from 'rhino3dm'
-let rhino
 
 // Wait for the rhino3dm web assembly to load asynchronously
-rhino3dm().then(function(m) {
-  rhino = m; // global
-  run();
-});
+const rhino = await rhino3dm()
+run()
+
 
 function pointToString(pt) {
   var str = pt[0] + ',';

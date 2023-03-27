@@ -1,40 +1,40 @@
 // Import libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/controls/OrbitControls.js'
-import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.125.0/examples/jsm/loaders/3DMLoader.js'
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
-import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
+import rhino3dm from 'rhino3dm'
+import { RhinoCompute } from 'rhinocompute'
 
 // reference the definition
 const definitionName = 'worm.gh'
 
 // globals
-let rhino, definition, doc
-rhino3dm().then( async m => {
-  console.log('Loaded rhino3dm.')
-  rhino = m // global
+let definition, doc
+let scene, camera, renderer
 
-  RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
-  RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+const rhino = await rhino3dm()
+console.log('Loaded rhino3dm.')
 
-  // source a .gh / .ghx file in the same directory
-  let url = definitionName
-  let res = await fetch(url)
-  let buffer = await res.arrayBuffer()
-  definition = new Uint8Array(buffer)
+RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081/ if debugging locally.
+RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
 
-  init()
-  compute()
-})
+// source a .gh / .ghx file in the same directory
+let url = definitionName
+let res = await fetch(url)
+let buffer = await res.arrayBuffer()
+definition = new Uint8Array(buffer)
+
+init()
+compute()
 
 async function compute(){
     
     const crvPoints = new rhino.Point3dList()
     crvPoints.add( 0, 0, 0,)
-    crvPoints.add( 10, 10, 0,)
-    crvPoints.add( 20, -10, 0,)
-    crvPoints.add( 30, 10, 20,)
-    crvPoints.add( 40, -10, -20,)
+    crvPoints.add( Math.random() * 10, Math.random() * 10, 0,)
+    crvPoints.add( Math.random() * 20, Math.random() * -10, 0,)
+    crvPoints.add( Math.random() * 30, Math.random() * 10, Math.random() * 20,)
+    crvPoints.add( Math.random() * 40, Math.random() * -10, Math.random() * -20,)
     crvPoints.add( 50, 0, 0,)
 
     const nCrv = rhino.NurbsCurve.create( false, 3, crvPoints)
@@ -95,7 +95,7 @@ function collectResults(responseJson) {
 
   // set up loader for converting the results to threejs
   const loader = new Rhino3dmLoader()
-  loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' )
+  loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta/' )
 
   const resMaterial = new THREE.MeshBasicMaterial( {vertexColors: true, wireframe: true} )
   // load rhino doc into three.js scene
@@ -156,8 +156,6 @@ function getAuth( key ) {
 }
 
 // BOILERPLATE //
-
-var scene, camera, renderer
 
 function init () {
   // Rhino models are z-up, so set this as the default

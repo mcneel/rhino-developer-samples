@@ -1,29 +1,29 @@
 // Import libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
-import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import rhino3dm from 'rhino3dm'
+import { RhinoCompute } from 'rhinocompute'
 
 // reference the definition
 const definitionName = 'delaunay.gh'
 
-let rhino, definition
-rhino3dm().then(async m => {
-  console.log('Loaded rhino3dm.')
-  rhino = m // global
+let definition
+let scene, camera, renderer, controls 
 
-  RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
-  RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+const rhino = await rhino3dm()
+console.log('Loaded rhino3dm.')
 
-  // source a .gh/.ghx file in the same directory
-  let url = definitionName
-  let res = await fetch(url)
-  let buffer = await res.arrayBuffer()
-  definition = new Uint8Array(buffer)
+RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081/ if debugging locally.
+RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
 
-  init()
-  compute()
-})
+// source a .gh/.ghx file in the same directory
+let url = definitionName
+let res = await fetch(url)
+let buffer = await res.arrayBuffer()
+definition = new Uint8Array(buffer)
+
+init()
+compute()
 
 async function compute() {
 
@@ -91,8 +91,6 @@ function getAuth(key) {
 }
 
 // BOILERPLATE //
-
-let scene, camera, renderer, controls
 
 function init() {
 

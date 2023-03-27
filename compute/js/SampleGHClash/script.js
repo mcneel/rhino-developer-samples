@@ -1,39 +1,42 @@
 // Import libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
-import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/loaders/3DMLoader.js'
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
-import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
+import rhino3dm from 'rhino3dm'
+import { RhinoCompute } from 'rhinocompute'
 
 // reference the definition
 const definitionName = 'SampleGHClash.gh'
 
 // globals
-let rhino, definition, doc
-rhino3dm().then( async m => {
-    console.log('Loaded rhino3dm.')
-    rhino = m // global
+let definition, doc
+// declare variables to store scene, camera, and renderer
+let scene, camera, renderer
 
-    RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
-    RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+const rhino = await rhino3dm()
 
-    // source a .gh / .ghx file in the same directory
-    let url = definitionName
-    let res = await fetch(url)
-    let buffer = await res.arrayBuffer()
-    definition = new Uint8Array(buffer)
+console.log('Loaded rhino3dm.')
 
-    init()
-    compute()
-})
+RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081/ if debugging locally.
+RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+
+// source a .gh / .ghx file in the same directory
+let url = definitionName
+let res = await fetch(url)
+let buffer = await res.arrayBuffer()
+definition = new Uint8Array(buffer)
+
+init()
+compute()
+
 
 async function compute() {
 
     // create meshes
-    const mainSphere = new THREE.SphereBufferGeometry( 10, 32, 32 )
+    const mainSphere = new THREE.SphereGeometry( 10, 32, 32 )
     const material = new THREE.MeshBasicMaterial( { wireframe:true, color: 0x000000 } )
     const mainMesh = new THREE.Mesh( mainSphere, material )
-    mainMesh.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.Math.degToRad(-90));
+    mainMesh.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-90));
     scene.add(mainMesh)
 
     // create 3dm sphere
@@ -51,7 +54,7 @@ async function compute() {
         const z = Math.random() * (20 - -20) + -20
 
         //create 3js clash sphere
-        const clashSphere = new THREE.SphereBufferGeometry( 2, 10, 10 )
+        const clashSphere = new THREE.SphereGeometry( 2, 10, 10 )
         clashSphere.translate(x, y, z)
 
         //create 3dm clash sphere
@@ -68,7 +71,7 @@ async function compute() {
     //vizualize the position of the clash spheres
     pointsGeometry.setAttribute( 'position', new THREE.BufferAttribute( positionBuffer, 3 ) )
     const points = new THREE.Points(pointsGeometry, new THREE.PointsMaterial( { color: 0xff0000, sizeAttenuation: false, size: 3 } ))
-    points.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.Math.degToRad(-90))
+    points.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-90))
     scene.add(points)
 
     // format data
@@ -130,19 +133,19 @@ function collectResults(responseJson) {
 
     // set up loader for converting the results to threejs
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta/' )
 
     const resMaterial = new THREE.MeshBasicMaterial( {wireframe: true, color: 0x00ff00} )
 
     // load rhino doc into three.js scene
     const buffer = new Uint8Array(doc.toByteArray()).buffer
-    loader.parse( buffer, function ( object ) 
+    loader.parse(buffer, function ( object ) 
     {
 
         // add material to resulting meshes
         object.traverse( child => {
             child.material = resMaterial
-            child.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.Math.degToRad(-90))
+            child.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-90))
         } )
 
         // add object graph from rhino model to three.js scene
@@ -151,6 +154,8 @@ function collectResults(responseJson) {
         // hide spinner
         showSpinner(false)
 
+    }, (error) => {
+      console.error( error )
     })
 }
 
@@ -193,8 +198,6 @@ function showSpinner(enable) {
 }
 
 // BOILERPLATE //
-// declare variables to store scene, camera, and renderer
-let scene, camera, renderer
 
 function init() {
 
@@ -246,4 +249,3 @@ function animate() {
     renderer.render(scene, camera)
 
 }
-

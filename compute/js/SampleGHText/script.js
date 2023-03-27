@@ -1,9 +1,9 @@
 // Import libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
-import { Rhino3dmLoader } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/loaders/3DMLoader.js'
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
-import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
+import rhino3dm from 'rhino3dm'
+import { RhinoCompute } from 'rhinocompute'
 
 // reference the definition
 const definitionName = 'SampleGHText.gh'
@@ -20,23 +20,25 @@ height_slider.addEventListener('mouseup', onChange, false)
 height_slider.addEventListener('touchend', onChange, false)
 
 // globals
-let rhino, definition, doc
-rhino3dm().then(async m => {
-  console.log('Loaded rhino3dm.')
-  rhino = m // global
+let definition, doc
+// declare variables to store scene, camera, and renderer
+let scene, camera, renderer, controls
 
-  RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
-  RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
+const rhino = await rhino3dm()
+console.log('Loaded rhino3dm.')
 
-  // source a .gh / .ghx file in the same directory
-  let url = definitionName
-  let res = await fetch(url)
-  let buffer = await res.arrayBuffer()
-  definition = new Uint8Array(buffer)
+RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081/ if debugging locally.
+RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
 
-  init()
-  compute()
-})
+// source a .gh / .ghx file in the same directory
+let url = definitionName
+let res = await fetch(url)
+let buffer = await res.arrayBuffer()
+definition = new Uint8Array(buffer)
+
+init()
+compute()
+
 
 async function compute() {
 
@@ -108,7 +110,7 @@ function collectResults(responseJson) {
 
   // set up loader for converting the results to threejs
   const loader = new Rhino3dmLoader()
-  loader.setLibraryPath('https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/')
+  loader.setLibraryPath('https://unpkg.com/rhino3dm@8.0.0-beta/')
 
   // const lineMat = new THREE.LineBasicMaterial({color: new THREE.Color('black')});
   // load rhino doc into three.js scene
@@ -174,8 +176,6 @@ function saveByteArray(fileName, byte) {
 }
 
 // BOILERPLATE //
-// declare variables to store scene, camera, and renderer
-let scene, camera, renderer, controls
 
 function init() {
 
@@ -263,4 +263,3 @@ function zoomCameraToSelection(camera, controls, selection, fitOffset = 1.1) {
   controls.update();
 
 }
-

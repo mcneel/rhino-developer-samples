@@ -1,8 +1,8 @@
 // Import libraries
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js'
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js'
-import rhino3dm from 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js'
-import { RhinoCompute } from 'https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import rhino3dm from 'rhino3dm'
+import { RhinoCompute } from 'rhinocompute'
 
 let model = {
     // main sphere
@@ -15,22 +15,15 @@ let model = {
     num: 200,
   };
 
-let rhino
-rhino3dm().then( async m => {
-    console.log('Loaded rhino3dm.');
-    rhino = m; // global
+let scene, camera, renderer
 
-    /* 
-    *  Variables for Rhino.Compute
-    */
+const rhino = await rhino3dm()
+console.log('Loaded rhino3dm.');
+RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081/ if debugging locally.
+RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
 
-    RhinoCompute.url = getAuth('RHINO_COMPUTE_URL') // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
-    RhinoCompute.apiKey = getAuth('RHINO_COMPUTE_KEY')  // RhinoCompute server api key. Leave blank if debugging locally.
-
-    init();
-    compute();
-
-});
+init();
+compute();
 
 function getAuth( key ) {
     let value = localStorage[key]
@@ -49,10 +42,10 @@ function compute() {
     console.log('Creating main sphere');
 
     // create and render 3js sphere
-    const mainSphere = new THREE.SphereBufferGeometry(model.sphereRadius, 32, 32);
+    const mainSphere = new THREE.SphereGeometry(model.sphereRadius, 32, 32);
     const material = new THREE.MeshStandardMaterial({wireframe:true});
     const mainMesh = new THREE.Mesh(mainSphere, material);
-    mainMesh.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.Math.degToRad(-90));
+    mainMesh.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-90));
     scene.add(mainMesh);
 
     // create 3dm sphere
@@ -77,7 +70,7 @@ function createClashSpheres() {
         let z = Math.random() * (20 - -20) + -20;
 
         //create 3js clash sphere
-        let clashSphere = new THREE.SphereBufferGeometry( model.spheresRadius, 10, 10 );
+        let clashSphere = new THREE.SphereGeometry( model.spheresRadius, 10, 10 );
         clashSphere.translate(x, y, z);
 
         //create 3dm clash sphere
@@ -120,7 +113,7 @@ function doMeshClash() {
                 let threemesh = new THREE.Mesh(geometry, material);
                 
                 //need to rotate these
-                threemesh.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.Math.degToRad(-90));
+                threemesh.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-90));
                 scene.add(threemesh);
 
                 m.delete();
@@ -131,7 +124,7 @@ function doMeshClash() {
 
 // BOILERPLATE //
 
-let scene, camera, renderer
+
 
 function init(){
 

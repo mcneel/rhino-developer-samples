@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" href="data:;base64,=">
-        <title>RhinoCompute: GH Document Materials</title>
+        <title>RhinoCompute: GH Convert STL to 3DMt</title>
         <style>
             body { margin: 0; font-family: Arial, Helvetica, sans-serif; }
             input {width: 90%;}
@@ -33,11 +33,16 @@
     <body>
         <div id="loader"></div> 
         <div id="container">
-            <label for="img_input">Choose an image:</label>
-            <input type="file" id="img_input" name="img_input" accept="image/png, image/jpeg" disabled>
-            <button id="downloadButton" disabled>Download</button>
+            <div id="overlay">
+                <div>
+                    <input id="upload" type="file" disabled>
+                </div>
+                <div>
+                    <button id="downloadButton" disabled>Download</button>
+                </div>
+                
+            </div>
         </div>
-
         <!-- Import maps polyfill -->
         <!-- Remove this when import maps will be widely supported -->
         <script async src="https://unpkg.com/es-module-shims@1.7.0/dist/es-module-shims.js"></script>
@@ -53,8 +58,6 @@
                 }
             }
         </script>
-
-        <script type="text/javascript" src="data.js"></script>
         <script type="module" src="script.js"></script>
     </body>
 </html>
