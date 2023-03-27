@@ -2,13 +2,14 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="data:;base64,=">
-        <title>rhino3dm: Create Objects and Parse</title>
+        <title>rhino3dm: Loading local files</title>
         <style>
             body { margin: 0; }
-
-            #loader {
+            
+            /* CSS for a spinning animation */ 
+			#loader {
                 border: 5px solid #f3f3f3; /* Light grey */
                 border-top: 5px solid #3d3d3d; /* Grey */
                 border-radius: 50%;
@@ -18,8 +19,10 @@
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                z-index: 2;
             }
+
+            #container {position: relative;}
+            #overlay {z-index: 1; width: 100%}
 
             @keyframes spin {
                 0% { transform: rotate(0deg); }
@@ -29,23 +32,25 @@
     </head>
     <body>
         <div id="loader"></div>
-        <button id="downloadButton" disabled>Download</button>
-
+        <div id="container">
+            <div id="overlay">
+                <label for="file-upload">Choose a file:</label>
+                <input type="file" accept=".3dm" id="file-upload">
+            </div>
+        </div>
+        
         <!-- Import maps polyfill -->
         <!-- Remove this when import maps will be widely supported -->
         <script async src="https://unpkg.com/es-module-shims@1.7.0/dist/es-module-shims.js"></script>
-
         <script type="importmap">
             {
                 "imports": {
                     "three": "https://unpkg.com/three@0.144.0/build/three.module.js",
                     "three/examples/jsm/controls/OrbitControls": "https://unpkg.com/three@0.144.0/examples/jsm/controls/OrbitControls.js",
-                    "three/examples/jsm/loaders/3DMLoader": "https://unpkg.com/three@0.144.0/examples/jsm/loaders/3DMLoader.js",
-                    "rhino3dm":"https://unpkg.com/rhino3dm@8.0.0-beta/rhino3dm.module.js"
+                    "three/examples/jsm/loaders/3DMLoader": "https://unpkg.com/three@0.144.0/examples/jsm/loaders/3DMLoader.js"
                 }
             }
         </script>
-
-        <script type="module" src="script.js"></script>
+        <script type="module" src="./script.js"></script>
     </body>
 </html>

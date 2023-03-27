@@ -1,4 +1,5 @@
-var rhino = null;
+import rhino3dm from 'rhino3dm'
+let rhino
 
 // Wait for the rhino3dm web assembly to load asynchronously
 rhino3dm().then(function(m) {
