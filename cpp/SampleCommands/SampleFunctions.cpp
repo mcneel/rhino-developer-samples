@@ -721,3 +721,108 @@ double ON_VectorAngle(ON_3dVector v0, ON_3fVector v1)
   }
   return angle;
 }
+
+static bool IsValidCorners(
+  const ON_3dPoint& a,
+  const ON_3dPoint& b,
+  const ON_3dPoint& c,
+  const ON_3dPoint& d
+)
+{
+  double d0 = a.DistanceTo(c);
+  double d1 = b.DistanceTo(d);
+  ON_3dVector n = ON_CrossProduct(c - a, d - b);
+  ON_3dVector n0, n1;
+  if (d0 <= d1)
+  {
+    n0.PerpendicularTo(a, b, c);
+    n1.PerpendicularTo(c, d, a);
+  }
+  else 
+  {
+    n0.PerpendicularTo(b, c, a);
+    n1.PerpendicularTo(d, b, c);
+  }
+  d0 = n * n0;
+  d1 = n * n1;
+  return (d0 >= 0.0 && d1 >= 0.0);
+}
+
+/// <summary>
+/// Make a NURBS from four corner points.
+/// </summary>
+/// <param name="a">The first point.</param>
+/// <param name="b">The second point.</param>
+/// <param name="c">The third point.</param>
+/// <param name="d">The forth point.</param>
+/// <param name="dtol">Minimum edge length without collapsing to a singularity.</param>
+/// <returns>The resulting NURBS surface, or nullptr.</returns>
+/// <remarks>
+/// Memory for the surface is allocated and becomes the responsibility of the caller.
+/// </remarks>
+ON_NurbsSurface* ON_NurbsSurface_CreateFromCornerPoints(
+  ON_3dPoint a,
+  ON_3dPoint b,
+  ON_3dPoint c,
+  ON_3dPoint d,
+  double dtol
+)
+{
+  int is_singular = 0;
+  if (a.DistanceTo(b) <= dtol)
+    is_singular++;
+  if (a.DistanceTo(c) <= dtol)
+    is_singular++;
+  if (a.DistanceTo(d) <= dtol)
+    is_singular++;
+  if (b.DistanceTo(c) <= dtol)
+    is_singular++;
+  if (b.DistanceTo(d) <= dtol)
+    is_singular++;
+  if (c.DistanceTo(d) <= dtol)
+    is_singular++;
+  if (is_singular > 1)
+    return nullptr;
+
+  if (!is_singular) 
+  {
+    // sort points
+    if (!IsValidCorners(a, b, c, d))
+    {
+      ON_3dPoint tmp = c;
+      c = d;
+      d = tmp;
+      if (!IsValidCorners(a, b, c, d))
+        return nullptr;
+    }
+  }
+
+  // get domain
+  double d0 = a.DistanceTo(b);
+  double x = c.DistanceTo(d);
+  if (x > d0)
+    d0 = x;
+  double d1 = a.DistanceTo(d);
+  x = b.DistanceTo(c);
+  if (x > d1)
+    d1 = x;
+  if (d0 <= 0.0 || d1 <= 0.0)
+    return nullptr;
+
+  ON_NurbsSurface* srf = ON_NurbsSurface::New();
+  srf->Create(3, false, 2, 2, 2, 2);
+  srf->SetCV(0, 0, a);
+  srf->SetCV(1, 0, b);
+  srf->SetCV(0, 1, d);
+  srf->SetCV(1, 1, c);
+  srf->m_knot[0][0] = 0.0;
+  srf->m_knot[0][1] = d0;
+  srf->m_knot[1][0] = 0.0;
+  srf->m_knot[1][1] = d1;
+  if (!srf->IsValid())
+  {
+    delete srf;
+    srf = nullptr;
+  }
+  return srf;
+}
