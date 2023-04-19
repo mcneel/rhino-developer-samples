@@ -212,6 +212,7 @@
     <ClCompile Include="cmdSampleRailRevolve.cpp" />
     <ClCompile Include="cmdSampleRayShooter.cpp" />
     <ClCompile Include="cmdSampleReadDocumentUserData.cpp" />
+    <ClCompile Include="cmdSampleReadGeometryFromFile.cpp" />
     <ClCompile Include="cmdSampleReadInstancesFromFile.cpp" />
     <ClCompile Include="cmdSampleReduceMesh.cpp" />
     <ClCompile Include="cmdSampleRemoveMeshVertices.cpp" />
