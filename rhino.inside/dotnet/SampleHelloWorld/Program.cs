@@ -1,7 +1,4 @@
 using System;
-using System.IO;
-using System.Reflection;
-
 using Rhino.Runtime.InProcess;
 using Rhino.Geometry;
 
