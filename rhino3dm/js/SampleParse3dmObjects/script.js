@@ -29,14 +29,22 @@ function create () {
     const pts_layer_id = doc.layers().findName( 'Points', '').id
 
     //because we want to nest this layer, we need to set the parent layer id
-    const ptObject_layer_index = doc.layers().addLayer( 'Point Objects', { r: 255, g: 0, b: 0, a: 255 } )
-    const layer_pointObjects = doc.layers().findIndex(ptObject_layer_index)
+    const layer_pointObjects = new rhino.Layer()
+    layer_pointObjects.name = 'Point Objects'
+    layer_pointObjects.color = { r: 255, g: 0, b: 0, a: 255 }
     layer_pointObjects.parentLayerId = pts_layer_id
+    const ptObject_layer_index = doc.layers().add( layer_pointObjects )
+    //const layer_pointObjects = doc.layers().findIndex(ptObject_layer_index)
+    //layer_pointObjects.parentLayerId = pts_layer_id
 
     //because we want to nest this layer, we need to set the parent layer id
-    const ptCloud_layer_index = doc.layers().addLayer( 'Point Clouds',  { r: 255, g: 0, b: 0, a: 255 })
-    const layer_pointCloud = doc.layers().findIndex(ptCloud_layer_index)
+    const layer_pointCloud = new rhino.Layer()
+    layer_pointCloud.name = 'Point Clouds'
+    layer_pointCloud.color = { r: 255, g: 0, b: 0, a: 255 }
     layer_pointCloud.parentLayerId = pts_layer_id
+    const ptCloud_layer_index = doc.layers().add( layer_pointCloud )
+    //const layer_pointCloud = doc.layers().findIndex(ptCloud_layer_index)
+    //layer_pointCloud.parentLayerId = pts_layer_id
 
     const curves_layer_index = doc.layers().addLayer( 'Curves',  { r: 0, g: 0, b: 0, a: 255 })
 
