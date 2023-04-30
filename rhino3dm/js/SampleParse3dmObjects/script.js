@@ -23,40 +23,38 @@ function create () {
     doc = new rhino.File3dm()
 
     // Create layers
-    const layer_points = new rhino.Layer()
-    layer_points.name = 'Points'
-    layer_points.color = { r: 255, g: 0, b: 0, a: 255 }
-    doc.layers().add( layer_points )
 
-    const layer_curves = new rhino.Layer()
-    layer_curves.name = 'Curves'
-    layer_curves.color = { r: 0, g: 0, b: 0, a: 255 }
-    doc.layers().add( layer_curves )
+    //parent layer for Point Objects and Point Clouds
+    const pt_index = doc.layers().addLayer( 'Points', { r: 255, g: 0, b: 0, a: 255 } )
+    const pts_layer_id = doc.layers().findName( 'Points', '').id
 
-    const layer_meshes = new rhino.Layer()
-    layer_meshes.name = 'Meshes'
-    layer_meshes.color = { r: 255, g: 255, b: 0, a: 255 }
-    doc.layers().add( layer_meshes )
+    //because we want to nest this layer, we need to set the parent layer id
+    const ptObject_layer_index = doc.layers().addLayer( 'Point Objects', { r: 255, g: 0, b: 0, a: 255 } )
+    const layer_pointObjects = doc.layers().findIndex(ptObject_layer_index)
+    layer_pointObjects.parentLayerId = pts_layer_id
 
-    const layer_breps = new rhino.Layer()
-    layer_breps.name = 'Breps'
-    layer_breps.color = { r: 255, g: 255, b: 255, a: 255 }
-    doc.layers().add( layer_breps )
+    //because we want to nest this layer, we need to set the parent layer id
+    const ptCloud_layer_index = doc.layers().addLayer( 'Point Clouds',  { r: 255, g: 0, b: 0, a: 255 })
+    const layer_pointCloud = doc.layers().findIndex(ptCloud_layer_index)
+    layer_pointCloud.parentLayerId = pts_layer_id
 
-    const layer_extrusions = new rhino.Layer()
-    layer_extrusions.name = 'Extrusions'
-    layer_extrusions.color = { r: 0, g: 255, b: 255, a: 255 }
-    doc.layers().add( layer_extrusions )
+    const curves_layer_index = doc.layers().addLayer( 'Curves',  { r: 0, g: 0, b: 0, a: 255 })
 
-    const layer_dots = new rhino.Layer()
-    layer_dots.name = 'TextDots'
-    layer_dots.color = { r: 0, g: 0, b: 255, a: 255 }
-    doc.layers().add( layer_dots )
+    const meshes_layer_index = doc.layers().addLayer( 'Meshes', { r: 255, g: 255, b: 0, a: 255 } )
+
+    const brep_layer_index = doc.layers().addLayer( 'Breps', { r: 255, g: 255, b: 255, a: 255 } )
+
+    const extrusion_layer_index = doc.layers().addLayer( 'Extrusions', { r: 0, g: 255, b: 255, a: 255 } )
+
+    const textdot_layer_index = doc.layers().addLayer( 'TextDots', { r: 0, g: 0, b: 255, a: 255 } )
 
     // -- POINTS / POINTCLOUDS -- //
 
     const oa_points = new rhino.ObjectAttributes()
-    oa_points.layerIndex = 0
+    oa_points.layerIndex = ptObject_layer_index
+
+    const oa_pointClouds = new rhino.ObjectAttributes()
+    oa_pointClouds.layerIndex = ptCloud_layer_index
 
     // POINTS
 
@@ -91,12 +89,12 @@ function create () {
     pointCloud.add( ptI, red )
     pointCloud.add( ptJ, red )
 
-    doc.objects().add( pointCloud, oa_points )
+    doc.objects().add( pointCloud, oa_pointClouds )
 
     // -- CURVES -- //
 
     const oa_curves = new rhino.ObjectAttributes()
-    oa_curves.layerIndex = 1
+    oa_curves.layerIndex = curves_layer_index
 
     // LINE //
 
@@ -137,7 +135,7 @@ function create () {
     // -- MESHES -- //
 
     const oa_meshes = new rhino.ObjectAttributes()
-    oa_meshes.layerIndex = 2
+    oa_meshes.layerIndex = meshes_layer_index
 
     const mesh = new rhino.Mesh()
     mesh.vertices().add( ptA[0], ptA[1], ptA[2] )
@@ -157,7 +155,7 @@ function create () {
     // -- BREPS -- //
 
     const oa_breps = new rhino.ObjectAttributes()
-    oa_breps.layerIndex = 3
+    oa_breps.layerIndex = brep_layer_index
 
     // Rhino3dmLoader will warn you that there is no mesh geometry
     const sphere = new rhino.Sphere( ptA, 2.5 )
@@ -168,7 +166,7 @@ function create () {
     // -- EXTRUSIONS -- //
 
     const oa_extrusions = new rhino.ObjectAttributes()
-    oa_extrusions.layerIndex = 4
+    oa_extrusions.layerIndex = extrusion_layer_index
 
     const extrusion = rhino.Extrusion.create( nurbsCurveD4, 10, false )
     // Rhino3dmLoader currently throws an error since 
@@ -180,7 +178,7 @@ function create () {
     // -- TEXT DOT -- //
 
     const oa_dots = new rhino.ObjectAttributes()
-    oa_dots.layerIndex = 5
+    oa_dots.layerIndex = textdot_layer_index
 
     const dot = new rhino.TextDot( 'Hello!', ptD )
     doc.objects().add( dot, oa_dots )
