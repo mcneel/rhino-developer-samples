@@ -248,7 +248,7 @@ ON_Curve* ON_BlendG2Curve(
 /// <param name="camcoord_bbox">Valid bounding box in current_vp camera coordinates.</param>
 /// <param name="zoomed_vp">Can be the same as current_vp projection.</param>
 /// <returns>True if successful.</returns>
-bool ON_DollyExtents(
+bool ON_DollyViewportExtents(
   const ON_Viewport& current_vp,
   ON_BoundingBox camcoord_bbox,
   ON_Viewport& zoomed_vp
