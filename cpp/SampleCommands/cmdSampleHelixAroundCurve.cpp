@@ -28,69 +28,67 @@ static class CCommandSampleHelixAroundCurve theSampleHelixAroundCurveCommand;
 
 CRhinoCommand::result CCommandSampleHelixAroundCurve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoGetObject go;
+  go.SetCommandPrompt(L"Select curve");
+  go.SetGeometryFilter(CRhinoGetObject::curve_object);
+  go.EnableSubObjectSelect(FALSE);
+  go.GetObjects(1, 1);
+  if (go.CommandResult() != CRhinoCommand::success)
+    return CRhinoCommand::cancel;
+
+  const CRhinoObjRef& objref = go.Object(0);
+  const ON_Curve* curve = objref.Curve();
+  if (nullptr == curve)
+    return CRhinoCommand::failure;
+
+  CArgsRhinoGetSpiral args;
+  args.SetAroundCurve(TRUE);
+
+  double t, t0, t1, tmid;
+  objref.CurveParameter(&t);
+  curve->GetDomain(&t0, &t1);
+  curve->GetNormalizedArcLengthPoint(0.5, &tmid);
+
+  args.SetRail(curve);
+
+  // flip rail and t's if necessary
+  if (t > tmid)
   {
-    CRhinoGetObject go;
-    go.SetCommandPrompt(L"Select curve");
-    go.SetGeometryFilter(CRhinoGetObject::curve_object);
-    go.EnableSubObjectSelect(FALSE);
-    go.GetObjects(1, 1);
-    if (go.CommandResult() != CRhinoCommand::success)
-      return CRhinoCommand::cancel;
-
-    const CRhinoObjRef& objref = go.Object(0);
-    const ON_Curve* curve = objref.Curve();
-    if (nullptr == curve)
-      return CRhinoCommand::failure;
-
-    CArgsRhinoGetSpiral args;
-    args.SetAroundCurve(TRUE);
-
-    double t, t0, t1, tmid;
-    objref.CurveParameter(&t);
-    curve->GetDomain(&t0, &t1);
-    curve->GetNormalizedArcLengthPoint(0.5, &tmid);
-
-    args.SetRail(curve);
-
-    // flip rail and t's if necessary
-    if (t > tmid)
-    {
-      args.Rail()->Reverse();
-      double d = t1; t1 = t0; t0 = d;
-    }
-
-    args.SetStartDir(curve->TangentAt(t0));
-    args.SetStartPoint(curve->PointAt(t0));
-    args.SetEndDir(curve->TangentAt(t1));
-    args.SetEndPoint(curve->PointAt(t1));
-
-    double d = ON_UNSET_VALUE;
-    curve->GetLength(&d);
-    args.SetLength(d);
-
-    args.SetPitchMode(FALSE);
-
-    if (args.PitchMode())
-      args.SetTurns(args.Length() / 2.4);
-    else
-      args.SetPitch(args.Length() / 12);
-
-    args.SetFirstRadius(0.5);
-    args.SetSecondRadius(0.5);
-
-    ON_NurbsCurve helix;
-
-    bool rc = RhinoCreateSpiral(args, helix);
-    if (rc)
-    {
-      context.m_doc.AddCurveObject(helix);
-      context.m_doc.Redraw();
-    }
-
-    return rc 
-      ? CRhinoCommand::success 
-      : CRhinoCommand::failure;
+    args.Rail()->Reverse();
+    double d = t1; t1 = t0; t0 = d;
   }
+
+  args.SetStartDir(curve->TangentAt(t0));
+  args.SetStartPoint(curve->PointAt(t0));
+  args.SetEndDir(curve->TangentAt(t1));
+  args.SetEndPoint(curve->PointAt(t1));
+
+  double d = ON_UNSET_VALUE;
+  curve->GetLength(&d);
+  args.SetLength(d);
+
+  args.SetPitchMode(FALSE);
+
+  if (args.PitchMode())
+    args.SetTurns(args.Length() / 2.4);
+  else
+    args.SetPitch(args.Length() / 12);
+
+  args.SetFirstRadius(0.5);
+  args.SetSecondRadius(0.5);
+
+  ON_NurbsCurve helix;
+
+  bool rc = RhinoCreateSpiral(args, helix);
+  if (rc)
+  {
+    context.m_doc.AddCurveObject(helix);
+    context.m_doc.Redraw();
+  }
+
+  return rc
+    ? CRhinoCommand::success
+    : CRhinoCommand::failure;
 }
 
 #pragma endregion

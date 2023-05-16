@@ -21,11 +21,13 @@ namespace SampleCsCommands
       if (null == brep)
         return Rhino.Commands.Result.Failure;
 
-      Rhino.Geometry.Unroller unroller = new Rhino.Geometry.Unroller(brep);
-      unroller.AbsoluteTolerance = doc.ModelAbsoluteTolerance;
-      unroller.RelativeTolerance = 1.0; // big relative tolerance for smash
-      unroller.ExplodeSpacing = 2.0;
-      unroller.ExplodeOutput = true;
+      Rhino.Geometry.Unroller unroller = new Rhino.Geometry.Unroller(brep)
+      {
+        AbsoluteTolerance = doc.ModelAbsoluteTolerance,
+        RelativeTolerance = 1.0, // big relative tolerance for smash
+        ExplodeSpacing = 2.0,
+        ExplodeOutput = true
+      };
 
       Rhino.Geometry.Curve[] unrolledCurves = null;
       Rhino.Geometry.Point3d[] unrolledPoints = null;
