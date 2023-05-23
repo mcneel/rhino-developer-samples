@@ -124,6 +124,7 @@
     <Compile Include="SampleCsLayerPathName.cs" />
     <Compile Include="SampleCsMake2D.cs" />
     <Compile Include="SampleCsMeshBox.cs" />
+    <Compile Include="SampleCsMirror.cs" />
     <Compile Include="SampleCsMove.cs" />
     <Compile Include="SampleCsMoveGrips.cs" />
     <Compile Include="SampleCsMoveNormal.cs" />
