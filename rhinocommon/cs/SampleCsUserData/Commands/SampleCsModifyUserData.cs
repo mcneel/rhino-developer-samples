@@ -26,7 +26,8 @@ namespace SampleCsUserData.Commands
       if (null == obj)
         return Result.Failure;
 
-      var ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
+      var attributes = obj.Attributes.Duplicate();
+      var ud = attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
       if (null != ud)
       {
         var gs = new GetString();
@@ -36,6 +37,9 @@ namespace SampleCsUserData.Commands
           return gs.CommandResult();
 
         ud.Notes = gs.StringResult();
+
+        attributes.UserData.Add(ud);
+        doc.Objects.ModifyAttributes(objref, attributes, false);
       }
 
       return Result.Success;

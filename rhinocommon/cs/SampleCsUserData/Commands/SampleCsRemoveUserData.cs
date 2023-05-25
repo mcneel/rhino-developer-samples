@@ -25,9 +25,13 @@ namespace SampleCsUserData.Commands
       if (null == obj)
         return Result.Failure;
 
+      var attributes = obj.Attributes.Duplicate();
       var ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
       if (null != ud)
-        obj.Attributes.UserData.Remove(ud);
+      {
+        attributes.UserData.Remove(ud);
+        doc.Objects.ModifyAttributes(objref, attributes, false);
+      }
 
       return Result.Success;
     }

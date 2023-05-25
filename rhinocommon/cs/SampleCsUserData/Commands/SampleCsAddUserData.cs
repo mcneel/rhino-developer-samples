@@ -36,7 +36,9 @@ namespace SampleCsUserData.Commands
           Notes = gs.StringResult()
         };
 
-        obj.Attributes.UserData.Add(ud);
+        var attributes = obj.Attributes.Duplicate();
+        attributes.UserData.Add(ud);
+        doc.Objects.ModifyAttributes(objref, attributes, false);
       }
       else
       {
