@@ -5,21 +5,19 @@ using Rhino.Input.Custom;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("38868ab0-cef1-4b61-ab53-45ef4d450027")]
   public class SampleCsAddBrepFaceUserData : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsAddBrepFaceUserData"; }
-    }
+    public override string EnglishName => "SampleCsAddBrepFaceUserData";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Allow for picking of either a surface or a brep face
-      var go = new GetObject();
+      var go = new GetObject
+      {
+        GeometryFilter = ObjectType.Surface,
+        SubObjectSelect = true
+      };
       go.SetCommandPrompt("Select surface to attach data");
-      go.GeometryFilter = ObjectType.Surface;
-      go.SubObjectSelect = true;
       go.Get();
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
@@ -35,8 +33,7 @@ namespace SampleCsUserData.Commands
 
       // Since the object reference only represents the picked surface or face, 
       // we need to get the owning brep from the Rhino object.
-      var brep_object = obj_ref.Object() as BrepObject;
-      if (null == brep_object)
+      if (!(obj_ref.Object() is BrepObject brep_object))
         return Result.Failure;
 
       // Get the brep object's brep geometry
@@ -51,8 +48,7 @@ namespace SampleCsUserData.Commands
         return Result.Failure;
 
       // Query the surface for user data
-      var ud = srf.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
-      if (null != ud)
+      if (srf.UserData.Find(typeof(SampleCsUserDataObject)) is SampleCsUserDataObject ud)
       {
         RhinoApp.WriteLine("{0} = {1}", ud.Description, ud.Notes);
         return Result.Success;

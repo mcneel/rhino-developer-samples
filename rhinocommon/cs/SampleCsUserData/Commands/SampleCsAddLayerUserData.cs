@@ -1,16 +1,13 @@
 ﻿using Rhino;
 using Rhino.Commands;
+using Rhino.DocObjects;
 using Rhino.Input.Custom;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("d8f14956-165c-4c22-9f2d-93db2b8e108d")]
   public class SampleCsAddLayerUserData : Command
   {
-    public override string EnglishName
-    {
-      get { return "SampleCsAddLayerUserData"; }
-    }
+    public override string EnglishName => "SampleCsAddLayerUserData";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -25,8 +22,7 @@ namespace SampleCsUserData.Commands
       if (null == layer)
         return Result.Failure;
 
-      var ud = layer.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
-      if (null == ud)
+      if (!(layer.UserData.Find(typeof(SampleCsUserDataObject)) is SampleCsUserDataObject ud))
       {
         var gs = new GetString();
         gs.SetCommandPrompt("Layer notes");
@@ -39,7 +35,10 @@ namespace SampleCsUserData.Commands
           Notes = gs.StringResult()
         };
 
-        layer.UserData.Add(ud);
+        var new_layer = new Layer();
+        new_layer.CopyAttributesFrom(layer);
+        new_layer.UserData.Add(ud);
+        doc.Layers.Modify(new_layer, layer.Index, false);
       }
       else
       {

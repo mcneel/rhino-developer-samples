@@ -4,19 +4,12 @@ using Rhino.Commands;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("2adff73e-30b1-4ded-80d0-6eae56d8a790")]
   public class SampleCsDocumentDictionary : Command
   {
-    private const string INTEGER_VALUE = "INT";
-    private const string DOUBLE_VALUE = "DBL";
+    private int IntegerValue { get; set; } = 1;
+    private double DoubleValue { get; set; } = 2.13;
 
-    private int m_integer_value = 1;
-    private double m_double_value = 2.13;
-
-    public override string EnglishName
-    {
-      get { return "SampleCsDocumentDictionary"; }
-    }
+    public override string EnglishName => "SampleCsDocumentDictionary";
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
@@ -32,23 +25,25 @@ namespace SampleCsUserData.Commands
 
       RhinoApp.WriteLine(dictionary.Name);
 
-      int integer_value;
-      if (dictionary.TryGetInteger(INTEGER_VALUE, out integer_value))
+      if (dictionary.TryGetInteger(nameof(IntegerValue), out var n))
       {
-        m_integer_value = integer_value;
-        RhinoApp.WriteLine("  Integer = {0}", m_integer_value);
+        IntegerValue = n;
+        RhinoApp.WriteLine("  Integer = {0}", IntegerValue);
       }
       else
+      {
         RhinoApp.WriteLine("  Integer = <none>");
+      }
 
-      double double_value;
-      if (dictionary.TryGetDouble(DOUBLE_VALUE, out double_value))
+      if (dictionary.TryGetDouble(nameof(DoubleValue), out var d))
       {
-        m_double_value = double_value;
-        RhinoApp.WriteLine("  Double = {0}", m_double_value);
+        DoubleValue = d;
+        RhinoApp.WriteLine("  Double = {0}", DoubleValue);
       }
       else
+      {
         RhinoApp.WriteLine("  Double = <none>");
+      }
     }
 
     private void SetValues(ArchivableDictionary dictionary)
@@ -56,11 +51,11 @@ namespace SampleCsUserData.Commands
       if (null == dictionary)
         return;
 
-      m_integer_value++;
-      m_double_value *= 1.57;
+      IntegerValue++;
+      DoubleValue *= 1.57;
 
-      dictionary.Set(INTEGER_VALUE, m_integer_value);
-      dictionary.Set(DOUBLE_VALUE, m_double_value);
+      dictionary.Set(nameof(IntegerValue), IntegerValue);
+      dictionary.Set(nameof(DoubleValue), DoubleValue);
     }
   }
 }
