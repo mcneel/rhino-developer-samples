@@ -76,6 +76,7 @@
     <Compile Include="SampleCsClipboard.cs" />
     <Compile Include="SampleCsContour.cs" />
     <Compile Include="SampleCsCreateNestedBlock.cs" />
+    <Compile Include="SampleCsCurveDeviation.cs" />
     <Compile Include="SampleCsDetailDisplayMode.cs" />
     <Compile Include="SampleCsDetailLock.cs" />
     <Compile Include="SampleCsDrawArrow.cs" />
