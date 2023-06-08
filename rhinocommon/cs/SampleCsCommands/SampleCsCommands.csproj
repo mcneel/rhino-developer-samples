@@ -127,6 +127,7 @@
     <Compile Include="SampleCsMeshBox.cs" />
     <Compile Include="SampleCsMirror.cs" />
     <Compile Include="SampleCsMove.cs" />
+    <Compile Include="SampleCsMoveFace.cs" />
     <Compile Include="SampleCsMoveGrips.cs" />
     <Compile Include="SampleCsMoveNormal.cs" />
     <Compile Include="SampleCsNurbsCircle.cs" />
