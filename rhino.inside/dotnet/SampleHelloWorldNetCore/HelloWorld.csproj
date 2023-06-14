@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -7,7 +7,7 @@
     <UseWinForms>true</UseWinForms>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.3" />
     <PackageReference Include="Rhino.Inside" Version="7.0.0" />
     <PackageReference Include="RhinoCommon" Version="7.20.22193.9001" IncludeAssets="build;compile" />
   </ItemGroup>
