@@ -50,16 +50,16 @@ function create() {
   const red = { r: 255, g: 0, b: 0, a: 0 }
 
   const pointCloud = new rhino.PointCloud()
-  pointCloud.add(ptA, red)
-  pointCloud.add(ptB, red)
-  pointCloud.add(ptC, red)
-  pointCloud.add(ptD, red)
-  pointCloud.add(ptE, red)
-  pointCloud.add(ptF, red)
-  pointCloud.add(ptG, red)
-  pointCloud.add(ptH, red)
-  pointCloud.add(ptI, red)
-  pointCloud.add(ptJ, red)
+  pointCloud.addPointColor(ptA, red)
+  pointCloud.addPointColor(ptB, red)
+  pointCloud.addPointColor(ptC, red)
+  pointCloud.addPointColor(ptD, red)
+  pointCloud.addPointColor(ptE, red)
+  pointCloud.addPointColor(ptF, red)
+  pointCloud.addPointColor(ptG, red)
+  pointCloud.addPointColor(ptH, red)
+  pointCloud.addPointColor(ptI, red)
+  pointCloud.addPointColor(ptJ, red)
 
   const threejsPointsGeometry = loader.parse(pointCloud.toThreejsJSON())
   const threejsPoints = new THREE.Points(threejsPointsGeometry, pointsMaterial)
@@ -145,7 +145,7 @@ function create() {
   mesh.vertices().add(ptB[0], ptB[1], ptB[2])
   mesh.vertices().add(ptC[0], ptC[1], ptC[2])
 
-  mesh.faces().addFace(0, 1, 2)
+  mesh.faces().addTriFace(0, 1, 2)
 
   mesh.vertexColors().add(255, 0, 255)
   mesh.vertexColors().add(0, 255, 255)
@@ -154,8 +154,10 @@ function create() {
   mesh.normals().computeNormals()
 
   const meshGeometry = loader.parse(mesh.toThreejsJSON())
-  const threejsMesh = new THREE.Mesh(meshGeometry, new THREE.MeshStandardMaterial({ vertexColors: true }))
+  console.log(meshGeometry)
+  const threejsMesh = new THREE.Mesh(meshGeometry, new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide }))
   scene.add(threejsMesh)
+
   doc.objects().add(mesh, null)
 
   // hide spinner
@@ -164,7 +166,7 @@ function create() {
   // enable download button
   downloadButton.disabled = false
 
-  console.log(scene)
+  //console.log(scene)
 
 }
 
@@ -204,6 +206,7 @@ function init() {
   const controls = new OrbitControls(camera, renderer.domElement)
 
   const light = new THREE.DirectionalLight()
+  light.position.set(0,0,1)
   scene.add(light)
 
   window.addEventListener('resize', onWindowResize, false)

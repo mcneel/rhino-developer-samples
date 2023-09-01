@@ -22,6 +22,10 @@ function create () {
 
     doc = new rhino.File3dm()
 
+    console.log(doc.settings().earthAnchorPoint.modelNorth)
+    doc.settings().earthAnchorPoint.modelNorth = [0,0,1]
+    console.log(doc.settings().earthAnchorPoint.modelNorth)
+
     // Create layers
 
     //parent layer for Point Objects and Point Clouds
@@ -78,20 +82,23 @@ function create () {
     const ptH = [ 40, -5, 0 ]
     const ptI = [ 45, 5, 0 ]
     const ptJ = [ 50, 0, 0 ]
+    const ptK = [ 50, 0, 0 ]
+    const ptL = [ 50, 0, 0 ]
+    const ptM = [ 50, 0, 0 ]
 
     const red = { r: 255, g: 0, b: 0, a: 0 }
+    const blue = { r: 0, g: 0, b: 255, a: 0 }
 
     const pointCloud = new rhino.PointCloud()
-    pointCloud.add( ptA, red )
-    pointCloud.add( ptB, red )
-    pointCloud.add( ptC, red )
-    pointCloud.add( ptD, red )
-    pointCloud.add( ptE, red )
-    pointCloud.add( ptF, red )
-    pointCloud.add( ptG, red )
-    pointCloud.add( ptH, red )
-    pointCloud.add( ptI, red )
-    pointCloud.add( ptJ, red )
+    pointCloud.add( ptA )
+    pointCloud.addPointColor( ptC, blue )
+    pointCloud.addPointNormalColor( ptD, [0,0,0], red )
+    pointCloud.addPointNormalColor( ptE, [0,0,0], blue )
+    pointCloud.addPointNormalColor( ptF, [0,0,0], red )
+    pointCloud.addPointNormalColor( ptG, [0,0,0], blue )
+    pointCloud.addPointNormalColor( ptH, [0,0,0], red )
+    pointCloud.addPointNormalColor( ptI, [0,0,0], red )
+    pointCloud.addPointNormalColor( ptJ, [0,0,0], red )
 
     doc.objects().add( pointCloud, oa_pointClouds )
 
@@ -136,6 +143,21 @@ function create () {
     doc.objects().add( nurbsCurveD3, oa_curves )
     doc.objects().add( nurbsCurveD4, oa_curves )
 
+    // PolyCurve
+
+    const polyCurve = new rhino.PolyCurve()
+
+    let xform = rhino.Transform.translationXYZ(20, 0, 20)
+    circle.transform(xform)
+    const arc2 = new rhino.Arc( circle, Math.PI )
+    const p1 = arc2.startPoint
+    const p2 = [ p1[0] + 10, p1[1], p1[2] + 10 ]
+    const line2 = new rhino.Line( p1, p2 )
+
+    let r1 = polyCurve.appendArc(arc2)
+    let r2 = polyCurve.appendLine(line2)
+    doc.objects().add( polyCurve, oa_curves )
+
     // -- MESHES -- //
 
     const oa_meshes = new rhino.ObjectAttributes()
@@ -146,13 +168,18 @@ function create () {
     mesh.vertices().add( ptB[0], ptB[1], ptB[2] )
     mesh.vertices().add( ptC[0], ptC[1], ptC[2] )
 
-    mesh.faces().addFace( 0, 1, 2 )
+    mesh.faces().addTriFace( 0, 1, 2 )
 
     mesh.vertexColors().add( 255, 0, 255 )
     mesh.vertexColors().add( 0, 255, 255 )
     mesh.vertexColors().add( 255, 255, 255 )
 
     mesh.normals().computeNormals()
+
+    xform = rhino.Transform.translationVector( [1,10,20] )
+    //const xform = rhino.Transform.rotation( [10, 10, 10], [3, 3, 3], [0,0,0] )
+    //xform = rhino.Transform.mirror([0,0,0])
+    mesh.transform(xform)
 
     doc.objects().add( mesh, oa_meshes )
 
@@ -173,9 +200,9 @@ function create () {
     oa_extrusions.layerIndex = extrusion_layer_index
 
     const extrusion = rhino.Extrusion.create( nurbsCurveD4, 10, false )
-    // Rhino3dmLoader currently throws an error since 
-    // there is no mesh geometry associated with this extrusion
-    //doc.objects().add( extrusion, oa_extrusions )
+
+    // Rhino3dmLoader will warn you that there is no mesh geometry
+    doc.objects().add( extrusion, oa_extrusions )
 
     // -- SUBD -- //
 
@@ -195,6 +222,12 @@ function create () {
       // hide spinner
       document.getElementById('loader').style.display = 'none'
       console.log( object )
+
+      object.traverse(child => {
+        if (child.isPoints) {
+          child.material.size = 10
+        }
+      }, false)
       scene.add( object )
 
       // enable download button
@@ -238,6 +271,7 @@ function init () {
   const controls = new OrbitControls( camera, renderer.domElement  )
 
   const light = new THREE.DirectionalLight()
+  light.position.set(0,0,1)
   scene.add( light )
 
   window.addEventListener( 'resize', onWindowResize, false )

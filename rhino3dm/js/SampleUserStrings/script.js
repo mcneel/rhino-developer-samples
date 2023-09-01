@@ -104,7 +104,7 @@ function init () {
 
     // add a directional light
     const directionalLight = new THREE.DirectionalLight( 0xffffff )
-    directionalLight.intensity = 2
+    directionalLight.intensity = 5
     scene.add( directionalLight )
 
     // add a directional light

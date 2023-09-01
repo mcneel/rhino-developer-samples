@@ -66,7 +66,7 @@ function convert () {
 function download () {
   const options = new rhino.File3dmWriteOptions()
   options.version = 7
-  let buffer = doc.toByteArray(options)
+  let buffer = doc.toByteArrayOptions(options)
   saveByteArray( 'rhinoObjects'+options.version+'.3dm', buffer )
 }
 
