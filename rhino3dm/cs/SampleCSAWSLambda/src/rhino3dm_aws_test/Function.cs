@@ -9,7 +9,7 @@ public class Function
 {
 
     /// <summary>
-    /// A simple function that takes creates a circle and returns its circumference
+    /// A function that creates a circle and returns its circumference
     /// </summary>
     /// <param name="input">A value for the radius as a string</param>
     /// <returns>The circle circumference as a string</returns>
