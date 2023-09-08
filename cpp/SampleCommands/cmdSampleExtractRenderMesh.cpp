@@ -90,7 +90,7 @@ static bool ExtractObjectMeshHelper_Recursive(ON::mesh_type mt, const ON_Viewpor
             auto pMesh = new ON_Mesh(*instance->Geometry().Mesh());
             pMesh->Transform(xform_this);
             object_meshes.push_back(std::shared_ptr<const ON_Mesh>(pMesh));
-            object_attribs.Transform(xform);
+            object_attribs.Transform(pMesh, xform);
           }
         }
       }
