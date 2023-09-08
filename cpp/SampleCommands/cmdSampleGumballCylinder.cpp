@@ -396,14 +396,14 @@ CRhinoCommand::result CCommandSampleGumballCylinder::RunCommand(const CRhinoComm
 
   CSampleGumballCylinder cylinder(plane, m_initial_radius, m_initial_height);
 
-  CRhinoGumball radius_go;
+  CRhinoGumball radius_go(ON::model_space);;
   radius_go.m_appearance = GumballAppearanceSettings();
 
-  CRhinoGumball height_go;
+  CRhinoGumball height_go(ON::model_space);;
   height_go.m_appearance = GumballAppearanceSettings();
 
-  CRhinoGumballDisplayConduit radius_dc;
-  CRhinoGumballDisplayConduit height_dc;
+  CRhinoGumballDisplayConduit radius_dc(ON::model_space);;
+  CRhinoGumballDisplayConduit height_dc(ON::model_space);;
 
   radius_dc.Enable();
   height_dc.Enable();

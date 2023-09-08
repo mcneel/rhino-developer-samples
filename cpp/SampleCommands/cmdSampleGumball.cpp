@@ -149,7 +149,7 @@ CRhinoCommand::result CCommandSampleGumball::RunCommand(const CRhinoCommandConte
   if (!bbox.IsValid())
     return CRhinoCommand::failure;
 
-  CRhinoGumball gb;
+  CRhinoGumball gb(ON::model_space);
   gb.SetFromBoundingBox(bbox);
 
   // Turn off rotation
@@ -162,7 +162,7 @@ CRhinoCommand::result CCommandSampleGumball::RunCommand(const CRhinoCommandConte
   gb.m_appearance.m_bEnableYScale = false;
   gb.m_appearance.m_bEnableZScale = false;
 
-  CRhinoGumballDisplayConduit dc;
+  CRhinoGumballDisplayConduit dc(ON::model_space);;
 
   while (true)
   {
