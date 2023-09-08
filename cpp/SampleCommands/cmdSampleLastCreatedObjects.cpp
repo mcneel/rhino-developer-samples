@@ -101,6 +101,10 @@ static class CCommandSampleLastCreatedObjects theSampleLastCreatedObjectsCommand
 
 CRhinoCommand::result CCommandSampleLastCreatedObjects::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select polysurfaces to explode
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select polysurfaces to explode");
@@ -123,7 +127,7 @@ CRhinoCommand::result CCommandSampleLastCreatedObjects::RunCommand(const CRhinoC
   unsigned int first = CRhinoObject::NextRuntimeObjectSerialNumber();
 
   // Run the Explode command
-  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), L"_-Explode", 0);
+  RhinoApp().RunScript(doc->RuntimeSerialNumber(), L"_-Explode", 0);
 
   // Get the runtime serial number that will be assigned to
   // the next CRhinoObject that is created.
@@ -133,7 +137,7 @@ CRhinoCommand::result CCommandSampleLastCreatedObjects::RunCommand(const CRhinoC
 
   // Get all of the CRhinoObject that were added to the document
   // by the Explode command
-  if (RhinoObjectIdsFromRuntimeSerialNumbers(context.m_doc, first, last, objects))
+  if (RhinoObjectIdsFromRuntimeSerialNumbers(*doc, first, last, objects))
   {
     for (i = 0; i < objects.Count(); i++)
     {
@@ -151,7 +155,7 @@ CRhinoCommand::result CCommandSampleLastCreatedObjects::RunCommand(const CRhinoC
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

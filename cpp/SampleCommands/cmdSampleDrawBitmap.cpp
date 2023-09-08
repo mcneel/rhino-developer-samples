@@ -86,6 +86,10 @@ static class CCommandSampleDrawBitmap theSampleDrawBitmapCommand;
 
 CRhinoCommand::result CCommandSampleDrawBitmap::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoCommandOptionValue enable_opts[] = { RHCMDOPTVALUE(L"Yes"), RHCMDOPTVALUE(L"No"), RHCMDOPTVALUE(L"Toggle") };
   for (;;)
   {
@@ -109,8 +113,8 @@ CRhinoCommand::result CCommandSampleDrawBitmap::RunCommand(const CRhinoCommandCo
       {
         if (!bEnable)
         {
-          m_conduit.Enable(context.m_doc.RuntimeSerialNumber());
-          context.m_doc.Regen();
+          m_conduit.Enable(doc->RuntimeSerialNumber());
+          doc->Regen();
         }
       }
       else if (1 == current_index)
@@ -118,7 +122,7 @@ CRhinoCommand::result CCommandSampleDrawBitmap::RunCommand(const CRhinoCommandCo
         if (bEnable)
         {
           m_conduit.Disable();
-          context.m_doc.Regen();
+          doc->Regen();
         }
       }
       else // if( 2 == current_index )
@@ -126,8 +130,8 @@ CRhinoCommand::result CCommandSampleDrawBitmap::RunCommand(const CRhinoCommandCo
         if (bEnable)
           m_conduit.Disable();
         else
-          m_conduit.Enable(context.m_doc.RuntimeSerialNumber());
-        context.m_doc.Regen();
+          m_conduit.Enable(doc->RuntimeSerialNumber());
+        doc->Regen();
       }
 
       continue;

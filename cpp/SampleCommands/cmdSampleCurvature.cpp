@@ -27,6 +27,10 @@ static class CCommandSampleCurvature theSampleCurvatureCommand;
 
 CRhinoCommand::result CCommandSampleCurvature::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curve for curvature measurement");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -77,9 +81,9 @@ CRhinoCommand::result CCommandSampleCurvature::RunCommand(const CRhinoCommandCon
     return CRhinoCommand::failure;
   }
 
-  context.m_doc.AddCurveObject(circle);
-  context.m_doc.AddPointObject(pt);
-  context.m_doc.Redraw();
+  doc->AddCurveObject(circle);
+  doc->AddPointObject(pt);
+  doc->Redraw();
 
   ON_wString wRadius;
   RhinoFormatNumber(circle.Radius(), wRadius);

@@ -141,6 +141,10 @@ CCommandSampleGrayscale::CCommandSampleGrayscale()
 
 CRhinoCommand::result CCommandSampleGrayscale::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoCommand::result rc = CRhinoCommand::success;
 
   CRhinoCommandOptionValue enable_opts[] = { RHCMDOPTVALUE(L"Yes"), RHCMDOPTVALUE(L"No"), RHCMDOPTVALUE(L"Toggle") };
@@ -194,13 +198,13 @@ CRhinoCommand::result CCommandSampleGrayscale::RunCommand(const CRhinoCommandCon
 
         if (bGrayScaleEnable && !bConduitEnabled)
         {
-          m_conduit.Enable(context.m_doc.RuntimeSerialNumber());
-          context.m_doc.Regen();
+          m_conduit.Enable(doc->RuntimeSerialNumber());
+          doc->Regen();
         }
         else if (!bGrayScaleEnable && bConduitEnabled)
         {
           m_conduit.Disable();
-          context.m_doc.Regen();
+          doc->Regen();
         }
       }
 
@@ -208,7 +212,7 @@ CRhinoCommand::result CCommandSampleGrayscale::RunCommand(const CRhinoCommandCon
       {
         m_conduit.SetGrayscale(m_bGrayscale);
         if (m_conduit.IsEnabled())
-          context.m_doc.Regen();
+          doc->Regen();
       }
     }
   }

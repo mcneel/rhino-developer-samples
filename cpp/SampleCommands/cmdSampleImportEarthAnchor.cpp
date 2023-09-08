@@ -29,6 +29,10 @@ static class CCommandSampleImportEarthAnchor theSampleImportEarthAnchorCommand;
 
 CRhinoCommand::result CCommandSampleImportEarthAnchor::RunCommand( const CRhinoCommandContext& context )
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetFileDialog gf;
   gf.SetScriptMode(context.IsInteractive() ? FALSE : TRUE);
   BOOL rc = gf.DisplayFileDialog(CRhinoGetFileDialog::open_rhino_3dm_file_dialog, 0, RhinoApp().MainWnd());
@@ -80,8 +84,8 @@ CRhinoCommand::result CCommandSampleImportEarthAnchor::RunCommand( const CRhinoC
 
   if (bSuccess)
   {
-    context.m_doc.Properties().SetEarthAnchorPoint(settings.m_earth_anchor_point);
-    context.m_doc.Redraw();
+    doc->Properties().SetEarthAnchorPoint(settings.m_earth_anchor_point);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

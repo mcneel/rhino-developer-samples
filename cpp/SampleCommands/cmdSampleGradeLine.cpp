@@ -101,6 +101,10 @@ static class CCommandSampleGradeLine theSampleGradeLineCommand;
 
 CRhinoCommand::result CCommandSampleGradeLine::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"Start of line");
   gp.GetPoint();
@@ -132,8 +136,8 @@ CRhinoCommand::result CCommandSampleGradeLine::RunCommand(const CRhinoCommandCon
     if (gg.CalculateGradePoint(view->ActiveViewport(), gg.Point()))
     {
       ON_Line line(base_pt, gg.GradePoint());
-      context.m_doc.AddCurveObject(line);
-      context.m_doc.Redraw();
+      doc->AddCurveObject(line);
+      doc->Redraw();
       m_grade = grade;
       return CRhinoCommand::success;
     }

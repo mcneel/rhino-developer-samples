@@ -31,6 +31,10 @@ static class CCommandSampleOffsetCrvOnSrf theSampleOffsetCrvOnSrfCommand;
 
 CRhinoCommand::result CCommandSampleOffsetCrvOnSrf::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface edge to offset");
   go.SetGeometryFilter(CRhinoGetObject::edge_object);
@@ -85,7 +89,7 @@ CRhinoCommand::result CCommandSampleOffsetCrvOnSrf::RunCommand(const CRhinoComma
   if (bFlip)
     dist = -dist;
 
-  double tol = context.m_doc.AbsoluteTolerance();
+  double tol = doc->AbsoluteTolerance();
   ON_SimpleArray<ON_Curve*> result_curves;
   CRhinoCommand::result offset_rc = RhinoOffsetCurveOnSrf(crv, brep, face->m_face_index, dist, tol, result_curves);
 
@@ -111,7 +115,7 @@ CRhinoCommand::result CCommandSampleOffsetCrvOnSrf::RunCommand(const CRhinoComma
 
         CRhinoCurveObject* crv_obj = new CRhinoCurveObject();
         crv_obj->SetCurve(joined_curves[i]);
-        context.m_doc.AddObject(crv_obj);
+        doc->AddObject(crv_obj);
         joined_curves[i] = nullptr;
       }
     }
@@ -125,7 +129,7 @@ CRhinoCommand::result CCommandSampleOffsetCrvOnSrf::RunCommand(const CRhinoComma
 
   m_distance = distance;
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

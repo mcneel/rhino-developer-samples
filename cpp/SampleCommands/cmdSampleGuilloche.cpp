@@ -43,10 +43,10 @@ public:
   bool CreatePolyline() const;
   void SetCreatePolyline(bool bPline, bool bCalculate = false);
 
-  // Calculates the Guilloché pattern points
+  // Calculates the GuillochÃ© pattern points
   bool Calculate();
 
-  // Returns the Guilloché pattern as a curve
+  // Returns the GuillochÃ© pattern as a curve
   const ON_Curve* Curve() const;
 
   // Take ownership of the curve. 
@@ -440,16 +440,20 @@ void CCommandSampleGuilloche::SaveProfile(LPCTSTR lpszSection, CRhinoProfileCont
 
 CRhinoCommand::result CCommandSampleGuilloche::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CSampleGuillocheConduit conduit;
   conduit.m_args = m_args;
   conduit.m_args.Calculate();
   conduit.Enable();
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   CSampleGuillocheArgs& args = conduit.m_args;
 
   CRhinoGetOption go;
-  go.SetCommandPrompt(L"Guilloché pattern options");
+  go.SetCommandPrompt(L"GuillochÃ© pattern options");
   go.AddCommandOptionNumber(RHCMDOPTNAME(L"Amplitude"), &args.m_amplitude, L"Amplitude", false, CSampleGuillocheArgs::MinAmplitude(), CSampleGuillocheArgs::MaxAmplitude());
   go.AddCommandOptionNumber(RHCMDOPTNAME(L"MajorRipple"), &args.m_major_ripple, L"MajorRipple", false, CSampleGuillocheArgs::MinMajorRipple(), CSampleGuillocheArgs::MaxMajorRipple());
   go.AddCommandOptionNumber(RHCMDOPTNAME(L"MinorRipple"), &args.m_minor_ripple, L"MinorRipple", false, CSampleGuillocheArgs::MinMinorRipple(), CSampleGuillocheArgs::MaxMinorRipple());
@@ -464,7 +468,7 @@ CRhinoCommand::result CCommandSampleGuilloche::RunCommand(const CRhinoCommandCon
     if (res == CRhinoGet::option)
     {
       conduit.m_args.Calculate();
-      context.m_doc.Redraw();
+      doc->Redraw();
       continue;
     }
 
@@ -472,15 +476,15 @@ CRhinoCommand::result CCommandSampleGuilloche::RunCommand(const CRhinoCommandCon
   }
 
   conduit.Disable();
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   CRhinoCommand::result rc = go.CommandResult();
   if (rc == CRhinoCommand::success)
   {
     CRhinoCurveObject* crv_obj = new CRhinoCurveObject();
     crv_obj->SetCurve(conduit.m_args.DetachCurve());
-    context.m_doc.AddObject(crv_obj);
-    context.m_doc.Redraw();
+    doc->AddObject(crv_obj);
+    doc->Redraw();
 
     m_args = conduit.m_args;
   }

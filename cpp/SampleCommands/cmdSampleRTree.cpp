@@ -54,6 +54,10 @@ static class CCommandSampleRTree theSampleRTreeCommand;
 
 CRhinoCommand::result CCommandSampleRTree::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Pick meshes");
   go.SetGeometryFilter(ON::mesh_object);
@@ -114,10 +118,10 @@ CRhinoCommand::result CCommandSampleRTree::RunCommand(const CRhinoCommandContext
     pMesh->ComputeFaceNormals();
     CRhinoMeshObject* mesh_object = new CRhinoMeshObject();
     mesh_object->SetMesh(pMesh);
-    context.m_doc.AddObject(mesh_object);
+    doc->AddObject(mesh_object);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

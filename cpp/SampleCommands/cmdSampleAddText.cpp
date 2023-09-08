@@ -85,6 +85,10 @@ static class CCommandSampleAddText theSampleAddTextCommand;
 
 CRhinoCommand::result CCommandSampleAddText::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"Text location");
   gp.GetPoint();
@@ -94,11 +98,11 @@ CRhinoCommand::result CCommandSampleAddText::RunCommand(const CRhinoCommandConte
   ON_3dPoint pt = gp.Point();
   ON_wString text = L"Hello Rhino!";
 
-  CRhinoText* text_obj = RhinoCreateText(context.m_doc, pt, text, L"Times New Roman", 1.0, 0, 0.0, ON::TextVerticalAlignment::Bottom, ON::TextHorizontalAlignment::Left);
+  CRhinoText* text_obj = RhinoCreateText(*doc, pt, text, L"Times New Roman", 1.0, 0, 0.0, ON::TextVerticalAlignment::Bottom, ON::TextHorizontalAlignment::Left);
   if (nullptr != text_obj)
   {
-    context.m_doc.AddObject(text_obj);
-    context.m_doc.Redraw();
+    doc->AddObject(text_obj);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;
@@ -141,6 +145,10 @@ static class CCommandSampleAddTextObject theSampleAddTextObjectCommand;
 
 CRhinoCommand::result CCommandSampleAddTextObject::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"Text object location");
   gp.GetPoint();
@@ -154,7 +162,7 @@ CRhinoCommand::result CCommandSampleAddTextObject::RunCommand(const CRhinoComman
   ON_3dPoint pt = gp.Point();
   ON_wString text = L"Hello Rhino!";
 
-  CRhinoText* text_obj = RhinoCreateText(context.m_doc, pt, text, L"Times New Roman", 1.0, 0, 0.0, ON::TextVerticalAlignment::Bottom, ON::TextHorizontalAlignment::Left);
+  CRhinoText* text_obj = RhinoCreateText(*doc, pt, text, L"Times New Roman", 1.0, 0, 0.0, ON::TextVerticalAlignment::Bottom, ON::TextHorizontalAlignment::Left);
   if (nullptr == text_obj)
     return CRhinoCommand::failure;
 
@@ -163,10 +171,10 @@ CRhinoCommand::result CCommandSampleAddTextObject::RunCommand(const CRhinoComman
     return CRhinoCommand::failure;
 
   const ON_DimStyle* dim_style = &annotation->DimensionStyle(
-    context.m_doc.m_dimstyle_table[context.m_doc.m_dimstyle_table.FindDimStyleFromId(annotation->DimensionStyleId(),
+    doc->m_dimstyle_table[doc->m_dimstyle_table.FindDimStyleFromId(annotation->DimensionStyleId(),
     true,
     true,
-    context.m_doc.m_dimstyle_table.CurrentDimStyleIndex())]);
+    doc->m_dimstyle_table.CurrentDimStyleIndex())]);
 
   ON_SimpleArray<ON_Object*> output;
   bool rc = RhinoCreateTextObjectGeometry(
@@ -175,7 +183,7 @@ CRhinoCommand::result CCommandSampleAddTextObject::RunCommand(const CRhinoComman
     dim_style,
     1.0,
     true,
-    context.m_doc.AbsoluteTolerance(),
+    doc->AbsoluteTolerance(),
     1.0,
     ON::object_type::extrusion_object,
     1.0,
@@ -191,11 +199,11 @@ CRhinoCommand::result CCommandSampleAddTextObject::RunCommand(const CRhinoComman
     {
       CRhinoExtrusionObject* extrusion_obj = new CRhinoExtrusionObject();
       extrusion_obj->SetExtrusion(ON_Extrusion::Cast(output[i]));
-      context.m_doc.AddObject(extrusion_obj);
+      doc->AddObject(extrusion_obj);
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

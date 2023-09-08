@@ -73,6 +73,10 @@ CCommandSampleDrawPoints::CCommandSampleDrawPoints()
 
 CRhinoCommand::result CCommandSampleDrawPoints::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   const int count = 100;
   const double min = -20.0;
   const double max = 20.0;
@@ -87,8 +91,8 @@ CRhinoCommand::result CCommandSampleDrawPoints::RunCommand(const CRhinoCommandCo
     conduit.m_points.Append(ON_3dPoint(x, y, z));
   }
 
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
-  context.m_doc.Regen();
+  conduit.Enable(doc->RuntimeSerialNumber());
+  doc->Regen();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -96,7 +100,7 @@ CRhinoCommand::result CCommandSampleDrawPoints::RunCommand(const CRhinoCommandCo
   gs.GetString();
 
   conduit.Disable();
-  context.m_doc.Regen();
+  doc->Regen();
 
   return CRhinoCommand::success;
 }

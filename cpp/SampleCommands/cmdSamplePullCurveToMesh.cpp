@@ -29,6 +29,10 @@ static class CCommandSamplePullCurveToMesh theSamplePullCurveToMeshCommand;
 
 CRhinoCommand::result CCommandSamplePullCurveToMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select open mesh");
   go.SetGeometryFilter(CRhinoGetObject::mesh_object);
@@ -40,7 +44,7 @@ CRhinoCommand::result CCommandSamplePullCurveToMesh::RunCommand(const CRhinoComm
   const CRhinoObjRef& ref = go.Object(0);
   const ON_Mesh* mesh = ref.Mesh();
   if (0 == mesh)
-    return failure;
+    return CRhinoCommand::failure;
 
   CRhinoGetObject go1;
   go1.SetCommandPrompt(L"Select curve on mesh");
@@ -54,7 +58,7 @@ CRhinoCommand::result CCommandSamplePullCurveToMesh::RunCommand(const CRhinoComm
     return CRhinoCommand::failure;
 
   CRhinoPolylineOnMeshUserData ud;
-  ON_PolylineCurve* polyline = RhinoPullCurveToMesh(crv, mesh, context.m_doc.AbsoluteTolerance(), &ud);
+  ON_PolylineCurve* polyline = RhinoPullCurveToMesh(crv, mesh, doc->AbsoluteTolerance(), &ud);
 
   for (int i = 0; i < ud.m_P.Count(); i++)
   {
@@ -71,7 +75,7 @@ CRhinoCommand::result CCommandSamplePullCurveToMesh::RunCommand(const CRhinoComm
       break;
     }
 
-    context.m_doc.AddPointObject(ud.m_P[i].m_P);
+    doc->AddPointObject(ud.m_P[i].m_P);
 
     ON_wString wstr;
     wstr.Format(L"%d", i);
@@ -80,13 +84,13 @@ CRhinoCommand::result CCommandSamplePullCurveToMesh::RunCommand(const CRhinoComm
     CRhinoTextDot* obj = new CRhinoTextDot();
     obj->SetDot(dot);
 
-    context.m_doc.AddObject(obj);
+    doc->AddObject(obj);
   }
 
   if (0 != polyline)
     delete polyline; // Don't leak...
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

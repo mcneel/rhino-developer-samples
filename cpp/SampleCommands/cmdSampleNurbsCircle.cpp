@@ -31,6 +31,10 @@ CRhinoCommand::result CCommandSampleNurbsCircle::RunCommand(const CRhinoCommandC
 {
   // Adds a degree = 2 NURBS circle
 
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   int dimension = 3;
   bool bIsRational = true;
   int degree = 2;
@@ -81,8 +85,8 @@ CRhinoCommand::result CCommandSampleNurbsCircle::RunCommand(const CRhinoCommandC
 
   if (nc.IsValid())
   {
-    context.m_doc.AddCurveObject(nc);
-    context.m_doc.Redraw();
+    doc->AddCurveObject(nc);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

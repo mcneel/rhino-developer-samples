@@ -175,6 +175,10 @@ static class CCommandSampleSweep2Point theSampleSweep2PointCommand;
 
 CRhinoCommand::result CCommandSampleSweep2Point::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select first rail curve
   CRhinoGetObject go0;
   go0.SetCommandPrompt(L"Select first rail");
@@ -236,7 +240,7 @@ CRhinoCommand::result CCommandSampleSweep2Point::RunCommand(const CRhinoCommandC
   // Call RhinoSweep2Helper
   ON_SimpleArray<ON_Brep*> out_breps;
   bool rc = RhinoSweep2Helper(
-    context.m_doc,
+    *doc,
     rails,
     curves,
     out_breps,
@@ -247,7 +251,7 @@ CRhinoCommand::result CCommandSampleSweep2Point::RunCommand(const CRhinoCommandC
   if (rc)
   {
     CRhinoObjectAttributes attribs;
-    context.m_doc.GetDefaultObjectAttributes(attribs);
+    doc->GetDefaultObjectAttributes(attribs);
     attribs.m_wire_density = -1;
 
     // Add results to doucment
@@ -259,11 +263,11 @@ CRhinoCommand::result CCommandSampleSweep2Point::RunCommand(const CRhinoCommandC
         CRhinoBrepObject* brep_obj = new CRhinoBrepObject(attribs);
         brep_obj->SetBrep(brep);
         brep = 0;
-        context.m_doc.AddObject(brep_obj);
+        doc->AddObject(brep_obj);
       }
     }
 
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

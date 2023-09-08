@@ -99,6 +99,10 @@ static class CCommandSampleInsert theSampleInsertCommand;
 
 CRhinoCommand::result CCommandSampleInsert::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Prompt for a block to insert
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Name of block to insert");
@@ -113,7 +117,7 @@ CRhinoCommand::result CCommandSampleInsert::RunCommand(const CRhinoCommandContex
     return CRhinoCommand::cancel;
 
   // Find the specified block
-  CRhinoInstanceDefinitionTable& block_table = context.m_doc.m_instance_definition_table;
+  CRhinoInstanceDefinitionTable& block_table = doc->m_instance_definition_table;
   int block_index = block_table.FindInstanceDefinition(block_name);
   if (block_index < 0)
   {
@@ -145,7 +149,7 @@ CRhinoCommand::result CCommandSampleInsert::RunCommand(const CRhinoCommandContex
   CRhinoInstanceObject* obj = block_table.AddInstanceObject(block_index, xform);
   if (obj)
   {
-    context.m_doc.Redraw();
+    doc->Redraw();
     return CRhinoCommand::success;
   }
 

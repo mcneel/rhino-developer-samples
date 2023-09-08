@@ -260,6 +260,10 @@ static class CCommandSampleCameraTracker theSampleCameraTrackerCommand;
 
 CRhinoCommand::result CCommandSampleCameraTracker::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Are we already tracking a view? ...
   if (!m_Conduit.IsEnabled())
   {
@@ -276,7 +280,7 @@ CRhinoCommand::result CCommandSampleCameraTracker::RunCommand(const CRhinoComman
     m_Conduit.StopTracking();
 
   // Force redraw of all views...
-  context.m_doc.Regen();
+  doc->Regen();
 
   return CRhinoCommand::success;
 }

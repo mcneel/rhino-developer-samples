@@ -113,6 +113,10 @@ bool CCommandSampleHistoryDivide::ReplayHistory(const class CRhinoHistoryRecord&
 
 CRhinoCommand::result CCommandSampleHistoryDivide::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   static int num = 10;
 
   CRhinoGetObject go;
@@ -136,13 +140,13 @@ CRhinoCommand::result CCommandSampleHistoryDivide::RunCommand(const CRhinoComman
   CRhinoObjRef CObj = go.Object(0);
   const ON_Curve* crv = CObj.Curve();
   if (!crv)
-    return failure;
+    return CRhinoCommand::failure;
 
   ON_SimpleArray<ON_3dPoint> crv_pts;
   crv_pts.SetCount(0);
 
   if (!RhinoDivideCurve(*crv, num, 0, false, true, &crv_pts, 0))
-    return failure;
+    return CRhinoCommand::failure;
 
   // ADD POINTS TO CONTEXT
   CRhinoHistory history(*this);
@@ -150,7 +154,7 @@ CRhinoCommand::result CCommandSampleHistoryDivide::RunCommand(const CRhinoComman
 
   for (int j = 0; j < crv_pts.Count(); j++)
   {
-    context.m_doc.AddPointObject(crv_pts[j], 0, &history);
+    doc->AddPointObject(crv_pts[j], 0, &history);
   }
 
   return CRhinoCommand::success;

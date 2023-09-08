@@ -192,12 +192,12 @@ CRhinoCommand::result CSampleRdkRendererPlugIn::Render(const CRhinoCommandContex
 	//   context [in] Command paramaters passed to the render command.
 	//   bPreview [in] If true, a faster, lower quality rendering is expected.
 
-	const auto pDoc = context.Document();
-	if (nullptr == pDoc)
+	const CRhinoDoc* doc = context.Document();
+	if (nullptr == doc)
 		return CRhinoCommand::failure; 
 
 	CSampleRdkRendererSdkRender render(context, *this, L"SampleRdkRenderer", IDI_RENDER, bPreview);
-	const auto size = render.RenderSize(*pDoc, true);
+	const auto size = render.RenderSize(*doc, true);
 	if (CRhinoSdkRender::render_ok != render.Render(size))
 		return CRhinoCommand::failure;
 

@@ -58,9 +58,9 @@ static void AttachTestRuntimeDibTextureToMaterial(const CRhinoDoc* pDocAssoc, CR
 
 CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoCommandContext& context)
 {
-  auto* pDoc = context.Document();
-  if (nullptr == pDoc)
-    return failure;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
   ON_SimpleArray<CRhRdkMaterial*> materials;
 
@@ -73,15 +73,15 @@ CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoComma
       mat.SetDiffuse(col);
 
       // Create a Basic (Custom) Material using the ON_Material.
-      auto* pCustom = CRhRdkMaterial::FromOnMaterial(mat, pDoc);
+      auto* pCustom = CRhRdkMaterial::FromOnMaterial(mat, doc);
       if (nullptr == pCustom)
-        return failure;
+        return CRhinoCommand::failure;
 
       pCustom->SetInstanceName(L"#1: Sample Custom");
 
-      AttachTestBitmapTextureToMaterial(pDoc, *pCustom, CS_MAT_BITMAP_TEXTURE);
-      AttachTestWoodTextureToMaterial(pDoc, *pCustom, CS_MAT_TRANSPARENCY_TEXTURE);
-      AttachTestRuntimeDibTextureToMaterial(pDoc, *pCustom, CS_MAT_BUMP_TEXTURE);
+      AttachTestBitmapTextureToMaterial(doc, *pCustom, CS_MAT_BITMAP_TEXTURE);
+      AttachTestWoodTextureToMaterial(doc, *pCustom, CS_MAT_TRANSPARENCY_TEXTURE);
+      AttachTestRuntimeDibTextureToMaterial(doc, *pCustom, CS_MAT_BUMP_TEXTURE);
 
       materials.Append(pCustom);
   }
@@ -101,13 +101,13 @@ CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoComma
       col.SetRGBA(1.f, 0.f, 0.f, 1.f);
       pbr->SetBaseColor(col);
 
-      auto* pPBR = CRhRdkMaterial::FromOnMaterial(mat, pDoc);
+      auto* pPBR = CRhRdkMaterial::FromOnMaterial(mat, doc);
 
       pPBR->SetInstanceName(L"#2: Sample PBR");
 
-      AttachTestBitmapTextureToMaterial(pDoc, *pPBR, CS_MAT_PBR_BASE_COLOR);
-      AttachTestWoodTextureToMaterial(pDoc, *pPBR, CS_MAT_PBR_OPACITY);
-      AttachTestRuntimeDibTextureToMaterial(pDoc, *pPBR, CS_MAT_PBR_METALLIC);
+      AttachTestBitmapTextureToMaterial(doc, *pPBR, CS_MAT_PBR_BASE_COLOR);
+      AttachTestWoodTextureToMaterial(doc, *pPBR, CS_MAT_PBR_OPACITY);
+      AttachTestRuntimeDibTextureToMaterial(doc, *pPBR, CS_MAT_PBR_METALLIC);
 
       materials.Append(pPBR);
   }
@@ -115,7 +115,7 @@ CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoComma
   //METHOD 3:
   //Create a PBR material from scratch and fiddle with the parameters directly.
   {
-      auto* pPBR = static_cast<CRhRdkMaterial*>(::RhRdkContentFactoriesEx().NewContentFromTypeEx(uuidPhysicallyBasedMaterialType, pDoc));
+      auto* pPBR = static_cast<CRhRdkMaterial*>(::RhRdkContentFactoriesEx().NewContentFromTypeEx(uuidPhysicallyBasedMaterialType, doc));
 
       ON_4fColor col;
       col.SetRGBA(0.f, 0.f, 1.f, 1.f);
@@ -125,16 +125,15 @@ CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoComma
 
       pPBR->SetInstanceName(L"#3: Sample PBR Set Param");
 
-      AttachTestBitmapTextureToMaterial(pDoc, *pPBR, CS_MAT_PBR_BASE_COLOR);
-      AttachTestWoodTextureToMaterial(pDoc, *pPBR, CS_MAT_PBR_ROUGHNESS);
-      AttachTestRuntimeDibTextureToMaterial(pDoc, *pPBR, CS_MAT_PBR_CLEARCOAT);
+      AttachTestBitmapTextureToMaterial(doc, *pPBR, CS_MAT_PBR_BASE_COLOR);
+      AttachTestWoodTextureToMaterial(doc, *pPBR, CS_MAT_PBR_ROUGHNESS);
+      AttachTestRuntimeDibTextureToMaterial(doc, *pPBR, CS_MAT_PBR_CLEARCOAT);
 
       materials.Append(pPBR);
   }
 
-
   // Attach the Basic Material and PBR to the document.
-  auto& contents = pDoc->Contents().BeginChange(RhRdkChangeContext::Program);
+  auto& contents = doc->Contents().BeginChange(RhRdkChangeContext::Program);
   for (int i=0;i<materials.Count();i++)
   {
       contents.Attach(*materials[i]);
@@ -146,7 +145,7 @@ CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoComma
   ON_NurbsSurface ns;
   sphere.GetNurbForm(ns);
   ON_3dmObjectAttributes attr;
-  auto* pObject = pDoc->AddSurfaceObject(ns, &attr);
+  auto* pObject = doc->AddSurfaceObject(ns, &attr);
   if (nullptr != pObject)
   {
     CRhRdkObjectDataAccess da(pObject);
@@ -155,15 +154,15 @@ CRhinoCommand::result CSampleRdkAddRdkMaterialsCmd::RunCommand(const CRhinoComma
 
   // Do the same for a layer with the PBR material
   const ON_Layer l;
-  const int index = pDoc->m_layer_table.AddLayer(l);
+  const int index = doc->m_layer_table.AddLayer(l);
   if (index >= 0)
   {
-    const auto& layer = pDoc->m_layer_table[index];
+    const auto& layer = doc->m_layer_table[index];
     CRhRdkObjectDataAccess da(&layer);
     da.SetMaterialInstanceId(materials[1]->InstanceId());
   }
 
-  pDoc->DeferredRedraw();
+  doc->DeferredRedraw();
 
   return success;
 }

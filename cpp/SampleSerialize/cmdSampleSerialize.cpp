@@ -89,6 +89,10 @@ static class CCommandSampleUnserialize theSampleUnserializeCommand;
 
 CRhinoCommand::result CCommandSampleUnserialize::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CSampleSerializeData& data = SampleSerializePlugIn().Data();
 
   const ON_Curve* curve = data.Curve();
@@ -99,7 +103,7 @@ CRhinoCommand::result CCommandSampleUnserialize::RunCommand(const CRhinoCommandC
     {
       CRhinoCurveObject* curve_object = new CRhinoCurveObject();
       curve_object->SetCurve(duplicate);
-      context.m_doc.AddObject(curve_object);
+      doc->AddObject(curve_object);
     }
   }
 
@@ -115,12 +119,12 @@ CRhinoCommand::result CCommandSampleUnserialize::RunCommand(const CRhinoCommandC
       {
         CRhinoCurveObject* curve_object = new CRhinoCurveObject();
         curve_object->SetCurve(duplicate);
-        context.m_doc.AddObject(curve_object);
+        doc->AddObject(curve_object);
       }
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

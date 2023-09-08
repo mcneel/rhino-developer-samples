@@ -29,6 +29,10 @@ static class CCommandSampleAddGroup theSampleAddGroupCommand;
 
 CRhinoCommand::result CCommandSampleAddGroup::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to group");
   go.EnableGroupSelect(TRUE);
@@ -41,7 +45,7 @@ CRhinoCommand::result CCommandSampleAddGroup::RunCommand(const CRhinoCommandCont
   const int object_count = go.ObjectCount();
   ON_SimpleArray<const CRhinoObject*> group_members(object_count);
 
-  const CRhinoObject* obj = 0;
+  const CRhinoObject* obj = nullptr;
   for (int i = 0; i < object_count; i++)
   {
     obj = go.Object(i).Object();
@@ -49,10 +53,10 @@ CRhinoCommand::result CCommandSampleAddGroup::RunCommand(const CRhinoCommandCont
       group_members.Append(obj);
   }
 
-  int group_index = context.m_doc.m_group_table.AddGroup(ON_Group(), group_members);
+  int group_index = doc->m_group_table.AddGroup(ON_Group(), group_members);
 
   if (go.ObjectsWerePreSelected())
-    context.m_doc.FlashObjectList(group_members, 0);
+    doc->FlashObjectList(group_members, 0);
 
   return (group_index >= 0) ? CRhinoCommand::success : CRhinoCommand::failure;
 }

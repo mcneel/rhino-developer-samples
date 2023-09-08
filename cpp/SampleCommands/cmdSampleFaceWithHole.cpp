@@ -528,6 +528,10 @@ static class CCommandSampleFaceWithHole theSampleFaceWithHoleCommand;
 
 CRhinoCommand::result CCommandSampleFaceWithHole::RunCommand( const CRhinoCommandContext& context )
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_TextLog error_log;
   ON_Brep* brep = MakeBrepFace( error_log );
   if( 0 == brep )
@@ -535,8 +539,8 @@ CRhinoCommand::result CCommandSampleFaceWithHole::RunCommand( const CRhinoComman
 
   CRhinoBrepObject* brep_object = new CRhinoBrepObject();
   brep_object->SetBrep( brep );
-  context.m_doc.AddObject( brep_object );
-  context.m_doc.Redraw();	
+  doc->AddObject( brep_object );
+  doc->Redraw();	
   
   return CRhinoCommand::success;
 }

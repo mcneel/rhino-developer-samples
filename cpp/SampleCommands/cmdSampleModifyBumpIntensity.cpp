@@ -27,9 +27,9 @@ static class CCommandSampleModifyBumpIntensity theSampleModifyBumpIntensityComma
 
 CRhinoCommand::result CCommandSampleModifyBumpIntensity::RunCommand(const CRhinoCommandContext& context)
 {
-  auto* pDoc = context.Document();
-  if (nullptr == pDoc)
-    return failure;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select object to modify bump intensity");
@@ -41,7 +41,7 @@ CRhinoCommand::result CCommandSampleModifyBumpIntensity::RunCommand(const CRhino
   if (nullptr == obj)
     return CRhinoCommand::failure;
 
-  const auto* pContent = pDoc->Contents().Find(obj->ObjectMaterial().RdkMaterialInstanceId());
+  const auto* pContent = doc->Contents().Find(obj->ObjectMaterial().RdkMaterialInstanceId());
   if (nullptr == pContent)
   {
     // I'm assuming the object already has a material. That is, it is not just using the default material.
@@ -63,7 +63,7 @@ CRhinoCommand::result CCommandSampleModifyBumpIntensity::RunCommand(const CRhino
   c.SetChildSlotAmount(CS_MAT_BUMP_TEXTURE, double(gi.Number()));
   c.EndChange();
 
-  pDoc->Redraw();
+  doc->Redraw();
 
   return success;
 }

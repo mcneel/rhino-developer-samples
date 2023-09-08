@@ -27,6 +27,10 @@ static class CCommandSampleSwapHatch theSampleSwapHatchCommand;
 
 CRhinoCommand::result CCommandSampleSwapHatch::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select hatches to replace pattern");
   go.SetGeometryFilter(CRhinoGetObject::hatch_object);
@@ -45,7 +49,7 @@ CRhinoCommand::result CCommandSampleSwapHatch::RunCommand(const CRhinoCommandCon
   if (pattern_name.IsEmpty())
     return CRhinoCommand::nothing;
 
-  const CRhinoHatchPattern* hatch_pattern = context.m_doc.m_hatchpattern_table.HatchPatternFromName(pattern_name, true);
+  const CRhinoHatchPattern* hatch_pattern = doc->m_hatchpattern_table.HatchPatternFromName(pattern_name, true);
   if (nullptr == hatch_pattern)
   {
     RhinoApp().Print(L"Specified hatch pattern not found in the document.\n");
@@ -80,7 +84,7 @@ CRhinoCommand::result CCommandSampleSwapHatch::RunCommand(const CRhinoCommandCon
     }
 
     dup_obj->SetHatch(dup_hatch);
-    if (!context.m_doc.ReplaceObject(CRhinoObjRef(hatch_obj), dup_obj))
+    if (!doc->ReplaceObject(CRhinoObjRef(hatch_obj), dup_obj))
     {
       delete dup_obj;
       continue;
@@ -91,7 +95,7 @@ CRhinoCommand::result CCommandSampleSwapHatch::RunCommand(const CRhinoCommandCon
 
   if (replaced > 0)
   {
-    context.m_doc.Redraw();
+    doc->Redraw();
     if (1 == replaced)
       RhinoApp().Print(L"1 hatch pattern replaced.\n");
     else

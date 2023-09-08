@@ -101,6 +101,10 @@ static class CCommandSampleDrawEdgeLabels theSampleDrawEdgeLabelsCommand;
 
 CRhinoCommand::result CCommandSampleDrawEdgeLabels::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select edges");
   go.SetGeometryFilter(CRhinoGetObject::curve_object | CRhinoGetObject::polyedge_object);
@@ -122,8 +126,8 @@ CRhinoCommand::result CCommandSampleDrawEdgeLabels::RunCommand(const CRhinoComma
   }
 
   CSampleDrawEdgeLabelsConduit conduit(points, 14);
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
-  context.m_doc.Regen();
+  conduit.Enable(doc->RuntimeSerialNumber());
+  doc->Regen();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -131,7 +135,7 @@ CRhinoCommand::result CCommandSampleDrawEdgeLabels::RunCommand(const CRhinoComma
   gs.GetString();
 
   conduit.Disable();
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -62,6 +62,10 @@ static class CCommandSampleHidePoints theSampleHidePointsCommand;
 
 CRhinoCommand::result CCommandSampleHidePoints::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select point cloud to hide points");
   go.SetGeometryFilter(CRhinoGetObject::pointset_object);
@@ -109,9 +113,9 @@ CRhinoCommand::result CCommandSampleHidePoints::RunCommand(const CRhinoCommandCo
 
   CRhinoPointCloudObject* new_cloud_obj = new CRhinoPointCloudObject();
   new_cloud_obj->SetPointCloud(new_cloud);
-  context.m_doc.ReplaceObject(point_cloud_ref, new_cloud_obj);
+  doc->ReplaceObject(point_cloud_ref, new_cloud_obj);
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

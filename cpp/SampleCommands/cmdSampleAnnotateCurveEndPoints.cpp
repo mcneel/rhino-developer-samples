@@ -27,11 +27,15 @@ static class CCommandSampleAnnotateCurveEndPoints theSampleAnnotateCurveEndPoint
 
 CRhinoCommand::result CCommandSampleAnnotateCurveEndPoints::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curves to annotate");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
   if (go.GetObjects(1, 0) != CRhinoGet::object)
-    return CRhinoCommand::cancel;;
+    return CRhinoCommand::cancel;
 
   for (int i = 0; i < go.ObjectCount(); i++)
   {
@@ -50,7 +54,7 @@ CRhinoCommand::result CCommandSampleAnnotateCurveEndPoints::RunCommand(const CRh
 
     CRhinoTextDot* pStartDot = new CRhinoTextDot();
     pStartDot->SetDot(start_dot);
-    context.m_doc.AddObject(pStartDot);
+    doc->AddObject(pStartDot);
 
     if (curve->IsClosed())
       continue;
@@ -65,10 +69,10 @@ CRhinoCommand::result CCommandSampleAnnotateCurveEndPoints::RunCommand(const CRh
     CRhinoTextDot* pEndDot = new CRhinoTextDot();
     pEndDot->SetDot(end_dot);
 
-    context.m_doc.AddObject(pEndDot);
+    doc->AddObject(pEndDot);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

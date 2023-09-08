@@ -29,6 +29,10 @@ static class CCommandSampleDupBorder theSampleDupBorderCommand;
 
 CRhinoCommand::result CCommandSampleDupBorder::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface or polysurface");
   go.SetGeometryFilter(CRhinoGetObject::surface_object | CRhinoGetObject::polysrf_object);
@@ -68,7 +72,7 @@ CRhinoCommand::result CCommandSampleDupBorder::RunCommand(const CRhinoCommandCon
     }
   }
 
-  double tol = 2.1 * context.m_doc.AbsoluteTolerance();
+  double tol = 2.1 * doc->AbsoluteTolerance();
   ON_SimpleArray<ON_Curve*> output_array;
 
   // Join the curves
@@ -78,7 +82,7 @@ CRhinoCommand::result CCommandSampleDupBorder::RunCommand(const CRhinoCommandCon
     {
       CRhinoCurveObject* curve_object = new CRhinoCurveObject;
       curve_object->SetCurve(output_array[i]);
-      if (context.m_doc.AddObject(curve_object))
+      if (doc->AddObject(curve_object))
         curve_object->Select();
       else
         delete curve_object;
@@ -89,7 +93,7 @@ CRhinoCommand::result CCommandSampleDupBorder::RunCommand(const CRhinoCommandCon
   for (int i = 0; i < curve_array.Count(); i++)
     delete curve_array[i];
 
-  context.m_doc.Redraw();
+  doc->Redraw();
   return success;
 }
 

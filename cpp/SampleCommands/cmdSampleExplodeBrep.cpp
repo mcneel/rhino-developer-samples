@@ -29,6 +29,10 @@ static class CCommandSampleExplodeBrep theSampleExplodeBrepCommand;
 
 CRhinoCommand::result CCommandSampleExplodeBrep::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select polysurfaces to explode");
   go.SetGeometryFilter(CRhinoGetObject::polysrf_object);
@@ -51,13 +55,13 @@ CRhinoCommand::result CCommandSampleExplodeBrep::RunCommand(const CRhinoCommandC
     if (object->GetSubObjects(sub_objects, 0))
     {
       for (int j = 0; j < sub_objects.Count(); j++)
-        context.m_doc.AddObject(sub_objects[j]);
+        doc->AddObject(sub_objects[j]);
 
-      context.m_doc.DeleteObject(object_ref);
+      doc->DeleteObject(object_ref);
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

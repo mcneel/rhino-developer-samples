@@ -31,6 +31,10 @@ static class CCommandSampleMarker theSampleMarkerCommand;
 
 CRhinoCommand::result CCommandSampleMarker::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"Location of marker object");
   gp.GetPoint();
@@ -38,8 +42,8 @@ CRhinoCommand::result CCommandSampleMarker::RunCommand(const CRhinoCommandContex
   {
     CSampleMarkerObject* marker = new CSampleMarkerObject();
     marker->SetPoint(gp.Point());
-    context.m_doc.AddObject(marker);
-    context.m_doc.Redraw();
+    doc->AddObject(marker);
+    doc->Redraw();
   }
 
   return gp.CommandResult();

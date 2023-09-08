@@ -29,12 +29,16 @@ static class CCommandSampleDumpModelObjectIds theSampleDumpModelObjectIdsCommand
 
 CRhinoCommand::result CCommandSampleDumpModelObjectIds::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   //////////////////////
   // Method 1:
 
   RhinoApp().Print(L"ModelIDs by Layer:\n");
   {
-    const CRhinoLayerTable& layer_table = context.m_doc.m_layer_table;
+    const CRhinoLayerTable& layer_table = doc->m_layer_table;
     int i, j, layer_count = layer_table.LayerCount();
 
     for (i = 0; i < layer_count; i++)
@@ -45,7 +49,7 @@ CRhinoCommand::result CCommandSampleDumpModelObjectIds::RunCommand(const CRhinoC
         RhinoApp().Print(L"  %ls:\n", static_cast<const wchar_t*>(layer.Name()));
 
         ON_SimpleArray<CRhinoObject*> object_list;
-        int object_count = context.m_doc.LookupObject(layer, object_list);
+        int object_count = doc->LookupObject(layer, object_list);
         if (object_count)
         {
           for (j = 0; j < object_count; j++)

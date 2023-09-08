@@ -64,14 +64,14 @@ CRhinoCommand::result CCommandMarmalade::RunCommand(const CRhinoCommandContext& 
 	// know what kind of content the instance id refers to. Even temporary contents
 	// can be found as shown here.
 
-	const auto* pDoc = context.Document();
-	if (nullptr == pDoc)
-		return failure;
+	const CRhinoDoc* doc = context.Document();
+	if (nullptr == doc)
+		return CRhinoCommand::failure;
 
 	CMarmaladeMaterial material; // It's a material but it could be any kind.
 
 	const UUID uuidInstance = material.InstanceId();
-	const auto* pContent = ::RhRdkFindContentInstance(pDoc, uuidInstance);
+	const auto* pContent = ::RhRdkFindContentInstance(doc, uuidInstance);
 	if (nullptr != pContent)
 	{
 		// Rhino commands that display a dialog box interface should also support
@@ -101,7 +101,7 @@ CRhinoCommand::result CCommandMarmalade::RunCommand(const CRhinoCommandContext& 
 	//                            (by pressing ESCAPE, clicking a CANCEL button, etc.)
 	//                            in a Get operation, dialog, time consuming computation, etc.
 
-	return failure;
+	return CRhinoCommand::failure;
 }
 
 #if 0

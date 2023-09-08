@@ -31,7 +31,11 @@ CRhinoCommand::result CCommandSampleResetLayers::RunCommand(const CRhinoCommandC
 {
   // Resets all layers by removing their per-viewport settings
 
-  CRhinoLayerTable& layer_table = context.m_doc.m_layer_table;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  CRhinoLayerTable& layer_table = doc->m_layer_table;
   for (int i = 0; i < layer_table.LayerCount(); i++)
   {
     const CRhinoLayer& layer = layer_table[i];
@@ -53,7 +57,7 @@ CRhinoCommand::result CCommandSampleResetLayers::RunCommand(const CRhinoCommandC
     layer_table.ModifyLayer(on_layer, layer.Index());
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

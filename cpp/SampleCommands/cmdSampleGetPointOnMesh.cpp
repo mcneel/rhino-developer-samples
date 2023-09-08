@@ -29,6 +29,10 @@ static class CCommandSampleGetPointOnMesh theSampleGetPointOnMeshCommand;
 
 CRhinoCommand::result CCommandSampleGetPointOnMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Pick a mesh
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select mesh");
@@ -49,7 +53,7 @@ CRhinoCommand::result CCommandSampleGetPointOnMesh::RunCommand(const CRhinoComma
     return CRhinoCommand::cancel;
 
   // Add the picked point and print results
-  context.m_doc.AddPointObject(point.m_P);
+  doc->AddPointObject(point.m_P);
   RhinoApp().Print(L"Added point on face %d, with %g, %g, %g, %g as barycentric coordinates.\n",
     point.m_face_index,
     point.m_t[0],
@@ -88,11 +92,11 @@ CRhinoCommand::result CCommandSampleGetPointOnMesh::RunCommand(const CRhinoComma
         ON_Line line(point.m_P, point.m_P + normal);
 
         ON_3dmObjectAttributes attributes;
-        context.m_doc.GetDefaultObjectAttributes(attributes);
+        doc->GetDefaultObjectAttributes(attributes);
         attributes.m_object_decoration = ON::end_arrowhead;
 
-        context.m_doc.AddCurveObject(line, &attributes);
-        context.m_doc.Redraw();
+        doc->AddCurveObject(line, &attributes);
+        doc->Redraw();
 
         ON_wString normal_str;
         RhinoFormatPoint(normal, normal_str);

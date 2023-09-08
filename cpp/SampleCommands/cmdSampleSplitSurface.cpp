@@ -55,6 +55,10 @@ static class CCommandSampleSplitSurface theSampleSplitSurfaceCommand;
 
 CRhinoCommand::result CCommandSampleSplitSurface::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface to split in u direction");
   go.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -87,18 +91,18 @@ CRhinoCommand::result CCommandSampleSplitSurface::RunCommand(const CRhinoCommand
     {
       CRhinoSurfaceObject* split_obj = new CRhinoSurfaceObject();
       split_obj->SetSurface(split[0]);
-      context.m_doc.AddObject(split_obj);
+      doc->AddObject(split_obj);
     }
 
     if (split[1])
     {
       CRhinoSurfaceObject* split_obj = new CRhinoSurfaceObject();
       split_obj->SetSurface(split[1]);
-      context.m_doc.AddObject(split_obj);
+      doc->AddObject(split_obj);
     }
 
-    context.m_doc.DeleteObject(go.Object(0));
-    context.m_doc.Redraw();
+    doc->DeleteObject(go.Object(0));
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

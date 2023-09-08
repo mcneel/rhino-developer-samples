@@ -72,6 +72,10 @@ static class CCommandSampleDrawZebraPreview theSampleDrawZebraPreviewCommand;
 
 CRhinoCommand::result CCommandSampleDrawZebraPreview::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_Sphere sphere;
   CArgsRhinoGetSphere args;
   CRhinoCommand::result rc = RhinoGetSphere(args, sphere);
@@ -82,12 +86,12 @@ CRhinoCommand::result CCommandSampleDrawZebraPreview::RunCommand(const CRhinoCom
   if (nullptr == brep)
     return CRhinoCommand::failure;
 
-  const ON_MeshParameters& mp = context.m_doc.Properties().AnalysisMeshSettings();
+  const ON_MeshParameters& mp = doc->Properties().AnalysisMeshSettings();
   const ON_Color& color = RhinoApp().AppSettings().SelectedObjectColor();
 
   CSampleDrawZebraPreviewConduit conduit(brep, mp, color);
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
-  context.m_doc.Regen();
+  conduit.Enable(doc->RuntimeSerialNumber());
+  doc->Regen();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -95,7 +99,7 @@ CRhinoCommand::result CCommandSampleDrawZebraPreview::RunCommand(const CRhinoCom
   gs.GetString();
 
   conduit.Disable();
-  context.m_doc.Regen();
+  doc->Regen();
 
   delete brep; // Don't leak...
   brep = nullptr;

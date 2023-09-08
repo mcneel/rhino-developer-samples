@@ -124,6 +124,10 @@ static class CCommandSampleGoldenRectangle theSampleGoldenRectangleCommand;
 
 CRhinoCommand::result CCommandSampleGoldenRectangle::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"First corner of rectangle");
   gp.ConstrainToConstructionPlane();
@@ -162,8 +166,8 @@ CRhinoCommand::result CCommandSampleGoldenRectangle::RunCommand(const CRhinoComm
   ON_Polyline rect = gr.Rectangle();
   if (rect.IsValid())
   {
-    context.m_doc.AddCurveObject(rect);
-    context.m_doc.Redraw();
+    doc->AddCurveObject(rect);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

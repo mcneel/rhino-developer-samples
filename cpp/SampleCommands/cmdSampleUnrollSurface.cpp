@@ -32,6 +32,10 @@ static class CCommandSampleUnrollSurface theSampleUnrollSurfaceCommand;
 
 CRhinoCommand::result CCommandSampleUnrollSurface::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface or polysurface to unroll");
   go.SetGeometryFilter(CRhinoGetObject::surface_object | CRhinoGetObject::polysrf_object);
@@ -70,7 +74,7 @@ CRhinoCommand::result CCommandSampleUnrollSurface::RunCommand(const CRhinoComman
 
   ReverseVReversedSurfaces(p3dBrep);
 
-  CRhinoUnroll Unroller(p3dBrep, context.m_doc.AbsoluteTolerance(), 0.1);
+  CRhinoUnroll Unroller(p3dBrep, doc->AbsoluteTolerance(), 0.1);
   int irc = Unroller.PrepareFaces();
   if (0 == irc)
   {
@@ -110,7 +114,7 @@ CRhinoCommand::result CCommandSampleUnrollSurface::RunCommand(const CRhinoComman
         {
           CRhinoBrepObject* flat_obj = new CRhinoBrepObject(att);
           flat_obj->SetBrep(flat_breps[i]);
-          if (!context.m_doc.AddObject(flat_obj))
+          if (!doc->AddObject(flat_obj))
             delete flat_obj; // Don't leak...
         }
       }
@@ -119,7 +123,7 @@ CRhinoCommand::result CCommandSampleUnrollSurface::RunCommand(const CRhinoComman
     delete p3dBrep; // Don't leak...
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

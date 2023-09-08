@@ -27,6 +27,10 @@ static class CCommandSampleHatch theSampleHatchCommand;
 
 CRhinoCommand::result CCommandSampleHatch::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select closed planar curve");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -40,7 +44,7 @@ CRhinoCommand::result CCommandSampleHatch::RunCommand(const CRhinoCommandContext
   if (0 == crv || !crv->IsClosed() || !crv->IsPlanar())
     return CRhinoCommand::failure;
 
-  CRhinoHatchPatternTable& table = context.m_doc.m_hatchpattern_table;
+  CRhinoHatchPatternTable& table = doc->m_hatchpattern_table;
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Hatch pattern");
@@ -68,7 +72,7 @@ CRhinoCommand::result CCommandSampleHatch::RunCommand(const CRhinoCommandContext
   args.SetPatternRotation(0.0); // default
 
   ON_SimpleArray<ON_Hatch*> hatches;
-  bool rc = RhinoCreateHatches(args, context.m_doc.AbsoluteTolerance(), hatches);
+  bool rc = RhinoCreateHatches(args, doc->AbsoluteTolerance(), hatches);
   if (rc && hatches.Count())
   {
     int i, num_added = 0;
@@ -81,7 +85,7 @@ CRhinoCommand::result CCommandSampleHatch::RunCommand(const CRhinoCommandContext
         if (hatch_obj)
         {
           hatch_obj->SetHatch(hatch);
-          if (context.m_doc.AddObject(hatch_obj))
+          if (doc->AddObject(hatch_obj))
             num_added++;
           else
             delete hatch_obj;
@@ -92,7 +96,7 @@ CRhinoCommand::result CCommandSampleHatch::RunCommand(const CRhinoCommandContext
     }
 
     if (num_added)
-      context.m_doc.Redraw();
+      doc->Redraw();
   }
 
   return rc ? CRhinoCommand::success : CRhinoCommand::failure;

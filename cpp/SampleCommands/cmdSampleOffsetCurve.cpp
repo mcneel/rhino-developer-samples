@@ -39,6 +39,10 @@ CCommandSampleOffsetCurve::CCommandSampleOffsetCurve()
 
 CRhinoCommand::result CCommandSampleOffsetCurve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Corner options
   CRhinoCommandOptionValue list[5] =
   {
@@ -169,7 +173,7 @@ CRhinoCommand::result CCommandSampleOffsetCurve::RunCommand(const CRhinoCommandC
     ON_Plane test_plane = planes[closest_closed_crv];
     ON_3dPoint test_pt = test_plane.ClosestPointTo(offset_point);
 
-    if (1 == RhinoPointInPlanarClosedCurve(test_pt, *crv, test_plane, context.m_doc.AbsoluteTolerance()))
+    if (1 == RhinoPointInPlanarClosedCurve(test_pt, *crv, test_plane, doc->AbsoluteTolerance()))
     {
       ON_RandomNumberGenerator rng;
       for (i = 0; i < go.ObjectCount(); i++)
@@ -192,7 +196,7 @@ CRhinoCommand::result CCommandSampleOffsetCurve::RunCommand(const CRhinoCommandC
             pt.z = rng.RandomDouble(bbox.m_min.z, bbox.m_max.z);
 
             pt = planes[i].ClosestPointTo(pt);
-            if (1 == RhinoPointInPlanarClosedCurve(pt, *crv, planes[i], context.m_doc.AbsoluteTolerance()))
+            if (1 == RhinoPointInPlanarClosedCurve(pt, *crv, planes[i], doc->AbsoluteTolerance()))
             {
               points[i] = pt;
               break;
@@ -205,7 +209,7 @@ CRhinoCommand::result CCommandSampleOffsetCurve::RunCommand(const CRhinoCommandC
 
 
   // Offset curves and add to document
-  double tolerance = context.m_doc.AbsoluteTolerance();
+  double tolerance = doc->AbsoluteTolerance();
   for (i = 0; i < go.ObjectCount(); i++)
   {
     const ON_Curve* crv = go.Object(closest_closed_crv).Curve();
@@ -219,12 +223,12 @@ CRhinoCommand::result CCommandSampleOffsetCurve::RunCommand(const CRhinoCommandC
       {
         CRhinoCurveObject* obj = new CRhinoCurveObject();
         obj->SetCurve(curves_out[j]);
-        context.m_doc.AddObject(obj);
+        doc->AddObject(obj);
       }
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

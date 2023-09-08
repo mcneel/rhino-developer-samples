@@ -27,8 +27,8 @@ static class CCommandSampleMappingUVWTransform theSampleMappingUVWTransformComma
 
 CRhinoCommand::result CCommandSampleMappingUVWTransform::RunCommand(const CRhinoCommandContext& context)
 {
-  CRhinoDoc* pDoc = context.Document();
-  if (nullptr == pDoc)
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
     return CRhinoCommand::failure;
 
   const ON_UUID pluginId = RhinoApp().GetDefaultRenderApp();
@@ -53,7 +53,7 @@ CRhinoCommand::result CCommandSampleMappingUVWTransform::RunCommand(const CRhino
   {
     CRhinoObjectAttributes newAttrs(pBrepObject->Attributes());
     newAttrs.m_rendering_attributes.AddMappingRef(pluginId);
-    if (!pDoc->ModifyObjectAttributes(objRef, newAttrs))
+    if (!doc->ModifyObjectAttributes(objRef, newAttrs))
       return CRhinoCommand::failure;
   }
   pMR = pBrepObject->Attributes().m_rendering_attributes.MappingRef(pluginId);
@@ -65,12 +65,12 @@ CRhinoCommand::result CCommandSampleMappingUVWTransform::RunCommand(const CRhino
   {
     ON_TextureMapping srfpMapping;
     srfpMapping.SetSurfaceParameterMapping();
-    const int mappingTableIndex = pDoc->m_texture_mapping_table.AddTextureMapping(srfpMapping);
+    const int mappingTableIndex = doc->m_texture_mapping_table.AddTextureMapping(srfpMapping);
     if (mappingTableIndex < 0)
       return CRhinoCommand::failure;
     CRhinoObjectAttributes newAttrs(pBrepObject->Attributes());
-    newAttrs.m_rendering_attributes.AddMappingChannel(pluginId, 1, pDoc->m_texture_mapping_table[mappingTableIndex].Id());
-    if (!pDoc->ModifyObjectAttributes(objRef, newAttrs))
+    newAttrs.m_rendering_attributes.AddMappingChannel(pluginId, 1, doc->m_texture_mapping_table[mappingTableIndex].Id());
+    if (!doc->ModifyObjectAttributes(objRef, newAttrs))
       return CRhinoCommand::failure;
   }
   pMR = pBrepObject->Attributes().m_rendering_attributes.MappingRef(pluginId);
@@ -90,12 +90,12 @@ CRhinoCommand::result CCommandSampleMappingUVWTransform::RunCommand(const CRhino
   for (int imc = 0; imc < pMR->m_mapping_channels.Count(); imc++)
   {
     const ON_MappingChannel& mc = pMR->m_mapping_channels[imc];
-    const int mappingTableIndex = pDoc->m_texture_mapping_table.FindTextureMapping(&mc);
+    const int mappingTableIndex = doc->m_texture_mapping_table.FindTextureMapping(&mc);
     if (mappingTableIndex >= 0)
     {
-      ON_TextureMapping newMapping(pDoc->m_texture_mapping_table[mappingTableIndex]);
+      ON_TextureMapping newMapping(doc->m_texture_mapping_table[mappingTableIndex]);
       newMapping.m_uvw = uChange * vChange * wChange;
-      if (!pDoc->m_texture_mapping_table.ModifyTextureMapping(newMapping, mappingTableIndex))
+      if (!doc->m_texture_mapping_table.ModifyTextureMapping(newMapping, mappingTableIndex))
         return CRhinoCommand::failure;
     }
   }

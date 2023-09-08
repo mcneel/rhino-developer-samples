@@ -29,6 +29,10 @@ static class CCommandSampleAddNurbsCircle theSampleAddNurbsCircleCommand;
 
 CRhinoCommand::result CCommandSampleAddNurbsCircle::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   int dimension = 3;
   BOOL bIsRational = TRUE;
   int order = 3; // order = degree + 1
@@ -57,8 +61,8 @@ CRhinoCommand::result CCommandSampleAddNurbsCircle::RunCommand(const CRhinoComma
 
   if (nc.IsValid())
   {
-    context.m_doc.AddCurveObject(nc);
-    context.m_doc.Redraw();
+    doc->AddCurveObject(nc);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

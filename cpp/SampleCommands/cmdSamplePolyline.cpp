@@ -99,6 +99,10 @@ static class CCommandSamplePolyline theSamplePolylineCommand;
 
 CRhinoCommand::result CCommandSamplePolyline::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoCommand::result rc = CRhinoCommand::nothing;
   ON_Polyline pline;
 
@@ -125,8 +129,8 @@ CRhinoCommand::result CCommandSamplePolyline::RunCommand(const CRhinoCommandCont
 
   if (rc == CRhinoCommand::success)
   {
-    context.m_doc.AddCurveObject(pline);
-    context.m_doc.Redraw();
+    doc->AddCurveObject(pline);
+    doc->Redraw();
   }
 
   return rc;

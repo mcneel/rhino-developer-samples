@@ -131,9 +131,13 @@ static class CCommandSamplePhantomObject theSamplePhantomObjectCommand;
 
 CRhinoCommand::result CCommandSamplePhantomObject::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CSamplePhantomObject* phantom = new CSamplePhantomObject();
-  context.m_doc.AddObject(phantom);
-  context.m_doc.Redraw();
+  doc->AddObject(phantom);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

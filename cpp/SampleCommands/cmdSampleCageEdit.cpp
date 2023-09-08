@@ -29,6 +29,10 @@ static class CCommandSampleCageEdit theSampleCageEditCommand;
 
 CRhinoCommand::result CCommandSampleCageEdit::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_Workspace ws;
   CRhinoCommand::result rc = CRhinoCommand::success;
 
@@ -118,17 +122,17 @@ CRhinoCommand::result CCommandSampleCageEdit::RunCommand(const CRhinoCommandCont
   // Create the morph control object
   CRhinoMorphControl* control_object = new CRhinoMorphControl();
   control_object->SetControl(control);
-  context.m_doc.AddObject(control_object);
+  doc->AddObject(control_object);
 
   // Set up the capture
   RhinoCaptureObject(control_object, const_cast<CRhinoObject*>(captive));
 
   // Clean up display
-  context.m_doc.UnselectAll();
+  doc->UnselectAll();
 
   // Turn on the control grips
   control_object->EnableGrips(true);
-  context.m_doc.Redraw(CRhinoView::mark_display_hint);
+  doc->Redraw(CRhinoView::mark_display_hint);
 
   return rc;
 }

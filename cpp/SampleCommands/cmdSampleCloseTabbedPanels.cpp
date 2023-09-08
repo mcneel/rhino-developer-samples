@@ -28,6 +28,10 @@ static class CCommandSampleCloseTabbedPanels theSampleCloseTabbedPanelsCommand;
 
 CRhinoCommand::result CCommandSampleCloseTabbedPanels::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoAppUiDockBarManager& mgr = RhinoApp().RhinoUiDockBarManager();
   ON_SimpleArray<const CRhinoUiPanelFactory*> factories;
   ::RhinoUiPanelFactories(factories);
@@ -37,7 +41,7 @@ CRhinoCommand::result CCommandSampleCloseTabbedPanels::RunCommand(const CRhinoCo
     if (pf)
     {
       ON_SimpleArray<CRhinoUiDockBar*> dockbars;
-      ::RhinoUiDockBarsForTab(context.m_doc, pf->TabId(), dockbars);
+      ::RhinoUiDockBarsForTab(*doc, pf->TabId(), dockbars);
       for (int j = 0; j < dockbars.Count(); j++)
       {
         CRhinoUiDockBar* db = dockbars[j];

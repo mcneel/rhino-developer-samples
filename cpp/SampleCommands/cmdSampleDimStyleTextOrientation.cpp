@@ -28,8 +28,12 @@ static class CCommandSampleDimStyleTextOrientation theSampleDimStyleTextOrientat
 
 CRhinoCommand::result CCommandSampleDimStyleTextOrientation::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Get the current dimstyle
-  const CRhinoDimStyle& dimstyle = context.m_doc.m_dimstyle_table.CurrentDimStyle();
+  const CRhinoDimStyle& dimstyle = doc->m_dimstyle_table.CurrentDimStyle();
   const int dim_style_index = dimstyle.Index();
 
   // Toggle text orientation
@@ -38,14 +42,14 @@ CRhinoCommand::result CCommandSampleDimStyleTextOrientation::RunCommand(const CR
     : ON::TextOrientation::InPlane;
 
   // Copy the dimstyle
-  ON_DimStyle modified_dimstyle(context.m_doc.m_dimstyle_table[dim_style_index]);
+  ON_DimStyle modified_dimstyle(doc->m_dimstyle_table[dim_style_index]);
 
   // Modify the text orientation
   modified_dimstyle.SetTextOrientation(text_orientation);
 
   // Modify the dimension style
-  if (context.m_doc.m_dimstyle_table.ModifyDimStyle(modified_dimstyle, dim_style_index))
-    context.m_doc.Redraw();
+  if (doc->m_dimstyle_table.ModifyDimStyle(modified_dimstyle, dim_style_index))
+    doc->Redraw();
 
   return CRhinoCommand::success;
 }

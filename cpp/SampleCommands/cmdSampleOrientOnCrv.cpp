@@ -128,6 +128,10 @@ static class CCommandSampleOrientOnCrv theSampleOrientOnCrvCommand;
 
 CRhinoCommand::result CCommandSampleOrientOnCrv::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoCommand::result rc = CRhinoCommand::success;
 
   CRhinoXformObjectList object_list;
@@ -167,8 +171,8 @@ CRhinoCommand::result CCommandSampleOrientOnCrv::RunCommand(const CRhinoCommandC
       ON_Xform xform;
       if (get.CalculateTransform(get.View()->Viewport(), get.Point(), xform))
       {
-        TransformObjects(context.m_doc, object_list, xform, TRUE);
-        context.m_doc.Redraw();
+        TransformObjects(*doc, object_list, xform, TRUE);
+        doc->Redraw();
       }
 
       if (bCopy)

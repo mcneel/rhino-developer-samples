@@ -121,6 +121,10 @@ static bool ExtractObjectMeshHelper_Recursive(ON::mesh_type mt, const ON_Viewpor
 
 CRhinoCommand::result CCommandSampleExtractRenderMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.EnableGroupSelect(TRUE);
   go.EnableSubObjectSelect(FALSE);
@@ -131,7 +135,7 @@ CRhinoCommand::result CCommandSampleExtractRenderMesh::RunCommand(const CRhinoCo
     return CRhinoCommand::cancel;
 
   //For view dependent custom render primitives.
-  const ON_Viewport vp = context.m_doc.ActiveView() ? context.m_doc.ActiveView()->ActiveViewport().VP() : ON_Viewport();
+  const ON_Viewport vp = doc->ActiveView() ? doc->ActiveView()->ActiveViewport().VP() : ON_Viewport();
 
   auto rc = CRhinoCommand::success;
 
@@ -140,12 +144,12 @@ CRhinoCommand::result CCommandSampleExtractRenderMesh::RunCommand(const CRhinoCo
     const auto* pTopLevelObject = go.Object(i).Object();
     if (pTopLevelObject)
     {
-      if (!ExtractObjectMeshHelper_Recursive(ON::render_mesh, vp, context.m_doc, *pTopLevelObject, ON_Xform::IdentityTransformation))
+      if (!ExtractObjectMeshHelper_Recursive(ON::render_mesh, vp, *doc, *pTopLevelObject, ON_Xform::IdentityTransformation))
         rc = CRhinoCommand::failure;
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return rc;
 }

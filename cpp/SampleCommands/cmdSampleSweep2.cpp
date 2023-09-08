@@ -28,6 +28,10 @@ static class CCommandSampleSweep2 theSampleSweep2Command;
 
 CRhinoCommand::result CCommandSampleSweep2::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select first rail curve
   CRhinoGetObject go0;
   go0.SetCommandPrompt(L"Select first rail");
@@ -78,7 +82,7 @@ CRhinoCommand::result CCommandSampleSweep2::RunCommand(const CRhinoCommandContex
 
   // Make a 2-rail sweep
   ON_SimpleArray<ON_Brep*> output_breps;
-  bool rc = Rhino2RailSweep(output_breps, rails, shapes, bClosed, context.m_doc.AbsoluteTolerance());
+  bool rc = Rhino2RailSweep(output_breps, rails, shapes, bClosed, doc->AbsoluteTolerance());
   if (rc)
   {
     for (int i = 0; i < output_breps.Count(); i++)
@@ -89,10 +93,10 @@ CRhinoCommand::result CCommandSampleSweep2::RunCommand(const CRhinoCommandContex
         CRhinoBrepObject* brep_obj = new CRhinoBrepObject();
         brep_obj->SetBrep(brep);
         brep = nullptr;
-        context.m_doc.AddObject(brep_obj);
+        doc->AddObject(brep_obj);
       }
     }
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
 

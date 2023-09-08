@@ -28,19 +28,19 @@ static class CCommandSampleExportRenderMeshes theSampleExportRenderMeshesCommand
 
 CRhinoCommand::result CCommandSampleExportRenderMeshes::RunCommand(const CRhinoCommandContext& context)
 {
-  auto* pDoc = context.Document();
-  if (nullptr == pDoc)
-    return failure;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
   ON_Viewport vp;
-  if (context.m_doc.ActiveView())
+  if (doc->ActiveView())
   {
-    vp = context.m_doc.ActiveView()->ActiveViewport().View().m_vp;
+    vp = doc->ActiveView()->ActiveViewport().View().m_vp;
   }
 
   int count = 0;
 
-  CRhinoObjectIterator it(*pDoc, CRhinoObjectIterator::normal_or_locked_objects, CRhinoObjectIterator::active_and_reference_objects);
+  CRhinoObjectIterator it(*doc, CRhinoObjectIterator::normal_or_locked_objects, CRhinoObjectIterator::active_and_reference_objects);
   for (const CRhinoObject* obj = obj = it.First(); nullptr != obj; obj = it.Next())
   {
     const CRhinoObjRef objref(obj);
@@ -57,7 +57,7 @@ CRhinoCommand::result CCommandSampleExportRenderMeshes::RunCommand(const CRhinoC
 
           if (spMesh && spMaterial)
           {
-            if (DoExport(*pDoc, objref, *spMesh, spMaterial->ToOnMaterial()))
+            if (DoExport(*doc, objref, *spMesh, spMaterial->ToOnMaterial()))
             {
               count++;
             }

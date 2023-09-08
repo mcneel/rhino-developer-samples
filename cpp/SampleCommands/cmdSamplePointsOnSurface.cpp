@@ -38,6 +38,10 @@ CCommandSamplePointsOnSurface::CCommandSamplePointsOnSurface()
 
 CRhinoCommand::result CCommandSamplePointsOnSurface::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface to place points on");
   go.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -83,7 +87,7 @@ CRhinoCommand::result CCommandSamplePointsOnSurface::RunCommand(const CRhinoComm
   ON_Interval u_domain = face->Domain(0);
   ON_Interval v_domain = face->Domain(1);
 
-  double tol = context.m_doc.AbsoluteTolerance();
+  double tol = doc->AbsoluteTolerance();
 
   for (int i = 0; i < u_array.Count(); i++)
   {
@@ -99,12 +103,12 @@ CRhinoCommand::result CCommandSamplePointsOnSurface::RunCommand(const CRhinoComm
       if (RhinoIsPointOnFace(*face, tol, false, u, v))
       {
         ON_3dPoint pt = face->PointAt(u, v);
-        context.m_doc.AddPointObject(pt);
+        doc->AddPointObject(pt);
       }
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

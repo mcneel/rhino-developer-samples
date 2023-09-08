@@ -31,6 +31,10 @@ static class CCommandSampleReduceMesh theSampleReduceMeshCommand;
 
 CRhinoCommand::result CCommandSampleReduceMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select meshes to reduce");
   go.SetGeometryFilter(CRhinoGetObject::mesh_object);
@@ -80,7 +84,7 @@ CRhinoCommand::result CCommandSampleReduceMesh::RunCommand(const CRhinoCommandCo
       CRhinoMeshObject* new_obj = new CRhinoMeshObject();
       new_obj->SetMesh(meshes[i]);
       meshes[i] = 0;
-      context.m_doc.ReplaceObject(go.Object(i), new_obj);
+      doc->ReplaceObject(go.Object(i), new_obj);
     }
   }
 
@@ -89,7 +93,7 @@ CRhinoCommand::result CCommandSampleReduceMesh::RunCommand(const CRhinoCommandCo
   else
     RhinoApp().Print(L"Expected %d OpenMP threads, but %d were used.\n", max_num_threads, num_threads);
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

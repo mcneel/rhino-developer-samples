@@ -271,6 +271,10 @@ static class CCommandSampleRegionPick theSampleRegionPickCommand;
 
 CRhinoCommand::result CCommandSampleRegionPick::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select point cloud");
   go.SetGeometryFilter(CRhinoGetObject::pointset_object);
@@ -286,7 +290,7 @@ CRhinoCommand::result CCommandSampleRegionPick::RunCommand(const CRhinoCommandCo
   const ON_PointCloud& cloud = obj->PointCloud();
 
   obj->Select(false);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   CRhGetRegionPoints gp;
   gp.SetCommandPrompt(L"Click and drag, or repeatedly click to lasso point cloud points. Press Enter when done");
@@ -304,7 +308,7 @@ CRhinoCommand::result CCommandSampleRegionPick::RunCommand(const CRhinoCommandCo
   int i;
   for (i = 0; i < index_count; i++)
     obj->SelectSubObject(ON_COMPONENT_INDEX(ON_COMPONENT_INDEX::pointcloud_point, indices[i]), true);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -313,7 +317,7 @@ CRhinoCommand::result CCommandSampleRegionPick::RunCommand(const CRhinoCommandCo
 
   for (i = 0; i < index_count; i++)
     obj->SelectSubObject(ON_COMPONENT_INDEX(ON_COMPONENT_INDEX::pointcloud_point, indices[i]), false);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }
@@ -351,6 +355,10 @@ static class CCommandSampleWindowPick theSampleWindowPickCommand;
 
 CRhinoCommand::result CCommandSampleWindowPick::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select point cloud");
   go.SetGeometryFilter(CRhinoGetObject::pointset_object);
@@ -366,7 +374,7 @@ CRhinoCommand::result CCommandSampleWindowPick::RunCommand(const CRhinoCommandCo
   const ON_PointCloud& cloud = obj->PointCloud();
 
   obj->Select(false);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"Drag a window to select point cloud points");
@@ -385,7 +393,7 @@ CRhinoCommand::result CCommandSampleWindowPick::RunCommand(const CRhinoCommandCo
   int i;
   for (i = 0; i < index_count; i++)
     obj->SelectSubObject(ON_COMPONENT_INDEX(ON_COMPONENT_INDEX::pointcloud_point, indices[i]), true);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -394,7 +402,7 @@ CRhinoCommand::result CCommandSampleWindowPick::RunCommand(const CRhinoCommandCo
 
   for (i = 0; i < index_count; i++)
     obj->SelectSubObject(ON_COMPONENT_INDEX(ON_COMPONENT_INDEX::pointcloud_point, indices[i]), false);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }
@@ -434,6 +442,10 @@ static class CCommandSampleRemovePoints theSampleRemovePointsCommand;
 
 CRhinoCommand::result CCommandSampleRemovePoints::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select point cloud");
   go.SetGeometryFilter(CRhinoGetObject::pointset_object);
@@ -450,7 +462,7 @@ CRhinoCommand::result CCommandSampleRemovePoints::RunCommand(const CRhinoCommand
   const ON_PointCloud& cloud = obj->PointCloud();
 
   obj->Select(false);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   CRhGetRegionPoints gp;
   gp.SetCommandPrompt(L"Click and drag, or repeatedly click to lasso point cloud points. Press Enter when done");
@@ -517,7 +529,7 @@ CRhinoCommand::result CCommandSampleRemovePoints::RunCommand(const CRhinoCommand
   CRhinoPointCloudObject* new_cloud_obj = new CRhinoPointCloudObject(atts);
   new_cloud_obj->SetPointCloud(new_cloud);
   new_cloud.Destroy();
-  if (context.m_doc.AddObject(new_cloud_obj))
+  if (doc->AddObject(new_cloud_obj))
   {
     new_cloud_obj->Select();
   }
@@ -535,10 +547,10 @@ CRhinoCommand::result CCommandSampleRemovePoints::RunCommand(const CRhinoCommand
 
   CRhinoPointCloudObject* dup_cloud_obj = new CRhinoPointCloudObject(atts);
   dup_cloud_obj->SetPointCloud(dup_cloud);
-  if (!context.m_doc.ReplaceObject(obj_ref, dup_cloud_obj))
+  if (!doc->ReplaceObject(obj_ref, dup_cloud_obj))
     delete dup_cloud_obj;
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

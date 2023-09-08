@@ -29,6 +29,10 @@ static class CCommandSampleSrfPtGrid theSampleSrfPtGridCommand;
 
 CRhinoCommand::result CCommandSampleSrfPtGrid::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   int point_count[2] = { 20, 20 };
   int degree[2] = { 3, 3 };
   BOOL is_closed[2] = { false, false };
@@ -47,8 +51,8 @@ CRhinoCommand::result CCommandSampleSrfPtGrid::RunCommand(const CRhinoCommandCon
   ON_NurbsSurface nurb;
   if (&nurb == RhinoSrfPtGrid(point_count, degree, is_closed, point_array, &nurb))
   {
-    context.m_doc.AddSurfaceObject(nurb);
-    context.m_doc.Redraw();
+    doc->AddSurfaceObject(nurb);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

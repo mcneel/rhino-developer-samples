@@ -28,6 +28,10 @@ static class CCommandSampleSelAdjacentSubDFaces theSampleSelAdjacentSubDFacesCom
 
 CRhinoCommand::result CCommandSampleSelAdjacentSubDFaces::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select SubD face");
   go.SetGeometryFilter(ON::meshface_filter);
@@ -74,7 +78,7 @@ CRhinoCommand::result CCommandSampleSelAdjacentSubDFaces::RunCommand(const CRhin
   for (int i = 0; i < ci.Count(); ++i)
     subd_obj->SelectSubObject(ci[i], true, true, true);
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

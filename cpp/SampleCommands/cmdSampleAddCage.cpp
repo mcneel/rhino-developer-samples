@@ -29,6 +29,10 @@ static class CCommandSampleAddCage theSampleAddCageCommand;
 
 CRhinoCommand::result CCommandSampleAddCage::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_3dPoint box_corners[8];
   CArgsRhinoGetBox args;
 
@@ -47,8 +51,8 @@ CRhinoCommand::result CCommandSampleAddCage::RunCommand(const CRhinoCommandConte
     {
       CRhinoCageObject* cage_object = new CRhinoCageObject();
       cage_object->SetCage(nurbs_cage);
-      context.m_doc.AddObject(cage_object);
-      context.m_doc.Redraw();
+      doc->AddObject(cage_object);
+      doc->Redraw();
     }
   }
 

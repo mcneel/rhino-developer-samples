@@ -27,6 +27,10 @@ static class CCommandSampleInterpCurve theSampleInterpCurveCommand;
 
 CRhinoCommand::result CCommandSampleInterpCurve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_3dPointArray points(16);
   points.Append(ON_3dPoint(0.0, 3.12494, 0.0));
   points.Append(ON_3dPoint(7.01306, 3.31419, 0.0));
@@ -50,9 +54,9 @@ CRhinoCommand::result CCommandSampleInterpCurve::RunCommand(const CRhinoCommandC
   {
     CRhinoCurveObject* curve_obj = new CRhinoCurveObject();
     curve_obj->SetCurve(curve);
-    context.m_doc.AddObject(curve_obj);
-    context.m_doc.AddPointCloudObject(points.Count(), points.Array());
-    context.m_doc.Redraw();
+    doc->AddObject(curve_obj);
+    doc->AddPointCloudObject(points.Count(), points.Array());
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

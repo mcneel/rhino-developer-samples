@@ -29,6 +29,10 @@ static class CCommandSampleMoveGrips theSampleMoveGripsCommand;
 
 CRhinoCommand::result CCommandSampleMoveGrips::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select grips to move");
   go.SetGeometryFilter(CRhinoGetObject::grip_object);
@@ -75,7 +79,7 @@ CRhinoCommand::result CCommandSampleMoveGrips::RunCommand(const CRhinoCommandCon
       RhinoUpdateGripOwner(list.m_grip_owners[i], false, 0);
     }
 
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

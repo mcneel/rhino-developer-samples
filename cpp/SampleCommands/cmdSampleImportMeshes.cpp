@@ -28,6 +28,10 @@ static class CCommandSampleImportMeshes theSampleImportMeshesCommand;
 
 CRhinoCommand::result CCommandSampleImportMeshes::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetFileDialog gf;
   gf.SetScriptMode(context.IsInteractive() ? FALSE : TRUE);
   BOOL rc = gf.DisplayFileDialog(CRhinoGetFileDialog::open_rhino_3dm_file_dialog, 0, RhinoApp().MainWnd());
@@ -78,7 +82,7 @@ CRhinoCommand::result CCommandSampleImportMeshes::RunCommand(const CRhinoCommand
       if (nullptr != mesh)
       {
         // CRhinoDoc::AddMeshObject makes a copy of the input mesh
-        context.m_doc.AddMeshObject(*mesh);
+        doc->AddMeshObject(*mesh);
         num_imported++;
       }
     }
@@ -91,7 +95,7 @@ CRhinoCommand::result CCommandSampleImportMeshes::RunCommand(const CRhinoCommand
   else
     RhinoApp().Print(L"%d meshes imported\n", num_imported);
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

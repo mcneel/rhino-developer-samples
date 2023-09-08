@@ -30,6 +30,10 @@ static class CCommandSampleEnableAllClippingPlanes theSampleEnableAllClippingPla
 
 CRhinoCommand::result CCommandSampleEnableAllClippingPlanes::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoObjectIterator it(CRhinoObjectIterator::undeleted_objects, CRhinoObjectIterator::active_objects);
   it.SetObjectFilter(ON::clipplane_object);
 
@@ -41,7 +45,7 @@ CRhinoCommand::result CCommandSampleEnableAllClippingPlanes::RunCommand(const CR
     const CRhinoClippingPlaneObject* clip_obj = CRhinoClippingPlaneObject::Cast(obj);
     if (clip_obj)
     {
-      if (CSampleClippingPlaneUserData::RemoveUserData(context.m_doc, clip_obj))
+      if (CSampleClippingPlaneUserData::RemoveUserData(*doc, clip_obj))
         num_enabled++;
     }
   }
@@ -54,7 +58,7 @@ CRhinoCommand::result CCommandSampleEnableAllClippingPlanes::RunCommand(const CR
       RhinoApp().Print(L"1 clipping plane enabled.\n");
     else
       RhinoApp().Print(L"%d clipping planes enabled.\n", num_enabled);
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

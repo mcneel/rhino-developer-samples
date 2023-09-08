@@ -49,6 +49,10 @@ void CCommandSampleUVMesh::SaveProfile(LPCTSTR lpszSection, CRhinoProfileContext
 
 CRhinoCommand::result CCommandSampleUVMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   bool bDeleteInput = false;
 
   CRhinoGetObject go;
@@ -116,10 +120,10 @@ CRhinoCommand::result CCommandSampleUVMesh::RunCommand(const CRhinoCommandContex
   pMeshObj->SetMesh(pMeshOut);
 
   if (true == bDeleteInput)
-    context.m_doc.ReplaceObject(pObj, pMeshObj);
+    doc->ReplaceObject(pObj, pMeshObj);
   else
-    context.m_doc.AddObject(pMeshObj);
-  context.m_doc.Redraw();
+    doc->AddObject(pMeshObj);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -110,6 +110,10 @@ static class CCommandSampleBooleanUnion theSampleBooleanUnionCommand;
 
 CRhinoCommand::result CCommandSampleBooleanUnion::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   const int max_x = 2;
   const int max_y = 2;
   const int max_z = 2;
@@ -152,7 +156,7 @@ CRhinoCommand::result CCommandSampleBooleanUnion::RunCommand(const CRhinoCommand
     }
   }
 
-  double tol = context.m_doc.AbsoluteTolerance();
+  double tol = doc->AbsoluteTolerance();
   bool bResult = false;
   ON_SimpleArray<ON_Brep*> OutBreps;
 
@@ -174,7 +178,7 @@ CRhinoCommand::result CCommandSampleBooleanUnion::RunCommand(const CRhinoCommand
       CRhinoBrepObject* brep_obj = new CRhinoBrepObject();
       brep_obj->SetBrep(OutBreps[i]);
       OutBreps[i] = 0;
-      context.m_doc.AddObject(brep_obj);
+      doc->AddObject(brep_obj);
     }
   }
   else
@@ -183,7 +187,7 @@ CRhinoCommand::result CCommandSampleBooleanUnion::RunCommand(const CRhinoCommand
       delete OutBreps[i];
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

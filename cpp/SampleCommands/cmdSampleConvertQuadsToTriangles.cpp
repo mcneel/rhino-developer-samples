@@ -33,6 +33,10 @@ static class CCommandSampleConvertQuadsToTriangles theSampleConvertQuadsToTriang
 
 CRhinoCommand::result CCommandSampleConvertQuadsToTriangles::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select meshes to convert");
   go.SetGeometryFilter(CRhinoObject::mesh_object);
@@ -79,9 +83,9 @@ CRhinoCommand::result CCommandSampleConvertQuadsToTriangles::RunCommand(const CR
 
         const CRhinoMeshObject* mesh_object = NULL;
         if (m_delete_input)
-          mesh_object = context.m_doc.ReplaceObject(objref, mesh);
+          mesh_object = doc->ReplaceObject(objref, mesh);
         else
-          mesh_object = context.m_doc.AddMeshObject(mesh);
+          mesh_object = doc->AddMeshObject(mesh);
 
         if (mesh_object)
           num_converted++;
@@ -90,7 +94,7 @@ CRhinoCommand::result CCommandSampleConvertQuadsToTriangles::RunCommand(const CR
   }
 
   if (num_converted > 0)
-    context.m_doc.Redraw();
+    doc->Redraw();
 
   RhinoApp().Print(L"%d meshes selected, %d meshes converted.\n", go.ObjectCount(), num_converted);
 

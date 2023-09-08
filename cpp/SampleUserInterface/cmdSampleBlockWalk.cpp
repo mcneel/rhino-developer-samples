@@ -29,14 +29,18 @@ static class CCommandSampleBlockWalk theSampleBlockWalkCommand;
 
 CRhinoCommand::result CCommandSampleBlockWalk::RunCommand(const CRhinoCommandContext& context)
 {
-  CRhinoInstanceDefinitionTable& idef_table = context.m_doc.m_instance_definition_table;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  CRhinoInstanceDefinitionTable& idef_table = doc->m_instance_definition_table;
   if (0 == idef_table.InstanceDefinitionCount())
   {
     RhinoApp().Print(L"No block definitions to walk.\n");
     return CRhinoCommand::nothing;
   }
 
-  CSampleBlockWalkDialog dialog(CWnd::FromHandle(RhinoApp().MainWnd()), context.m_doc);
+  CSampleBlockWalkDialog dialog(CWnd::FromHandle(RhinoApp().MainWnd()), *doc);
   dialog.DoModal();
 
   return CRhinoCommand::success;

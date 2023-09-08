@@ -35,6 +35,10 @@ static class CCommandSampleBoundingBox theSampleBoundingBoxCommand;
 
 CRhinoCommand::result CCommandSampleBoundingBox::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to calculate tight bounding box");
   go.AddCommandOptionToggle(RHCMDOPTNAME(L"CoordinateSystem"), RHCMDOPTVALUE(L"World"), RHCMDOPTVALUE(L"CPlane"), m_use_cplane, &m_use_cplane);
@@ -113,17 +117,17 @@ CRhinoCommand::result CCommandSampleBoundingBox::RunCommand(const CRhinoCommandC
     // The bounding box is a rectangle
     ON_Polyline pline;
     pline.Create(3, FALSE, 5, 3, (double*)&rect);
-    context.m_doc.AddCurveObject(pline);
+    doc->AddCurveObject(pline);
   }
   else
   {
     // The bounding box is a box
     ON_Brep brep_box;
     ON_BrepBox(box_corners, &brep_box);
-    context.m_doc.AddBrepObject(brep_box);
+    doc->AddBrepObject(brep_box);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

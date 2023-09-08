@@ -29,6 +29,10 @@ static class CCommandSampleBrepBoxWithMesh theSampleBrepBoxWithMeshCommand;
 
 CRhinoCommand::result CCommandSampleBrepBoxWithMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Get the corners of the box
   CArgsRhinoGetBox args;
   ON_3dPoint corners[8];
@@ -48,7 +52,7 @@ CRhinoCommand::result CCommandSampleBrepBoxWithMesh::RunCommand(const CRhinoComm
   }
 
   // Meshing parameters to use when creating a render mesh.
-  const ON_MeshParameters& mp = context.m_doc.Properties().RenderMeshParameters();
+  const ON_MeshParameters& mp = doc->Properties().RenderMeshParameters();
 
   // Calculates polygon mesh approximation of the brep.
   // Note, we are responsible for this memory.
@@ -81,14 +85,14 @@ CRhinoCommand::result CCommandSampleBrepBoxWithMesh::RunCommand(const CRhinoComm
     brep_obj->SetBrep(brep);
 
     // Add object to the doucment
-    if (!context.m_doc.AddObject(brep_obj))
+    if (!doc->AddObject(brep_obj))
     {
       delete brep_obj; // Don't leak...
       return CRhinoCommand::failure;
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

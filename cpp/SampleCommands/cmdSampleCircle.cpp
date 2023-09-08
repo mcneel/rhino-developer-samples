@@ -100,6 +100,10 @@ void CCommandSampleCircle::DoHelp()
 
 CRhinoCommand::result CCommandSampleCircle::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"Center point");
   gp.ConstrainToConstructionPlane(FALSE);
@@ -122,8 +126,8 @@ CRhinoCommand::result CCommandSampleCircle::RunCommand(const CRhinoCommandContex
   if (gc.CalculateCircle(gc.View()->Viewport(), gc.Point()))
   {
     ON_Circle circle = gc.Circle();
-    context.m_doc.AddCurveObject(circle);
-    context.m_doc.Redraw();
+    doc->AddCurveObject(circle);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

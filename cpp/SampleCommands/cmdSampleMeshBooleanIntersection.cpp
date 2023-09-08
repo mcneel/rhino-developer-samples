@@ -27,6 +27,10 @@ static class CCommandSampleMeshBooleanIntersection theSampleMeshBooleanIntersect
 
 CRhinoCommand::result CCommandSampleMeshBooleanIntersection::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   int i = 0;
 
   CRhinoGetObject go;
@@ -88,13 +92,13 @@ CRhinoCommand::result CCommandSampleMeshBooleanIntersection::RunCommand(const CR
 
     OutMeshes[i] = 0;
 
-    if (context.m_doc.AddObject(mesh_obj))
+    if (doc->AddObject(mesh_obj))
       mesh_obj->Select(true);
     else
       delete mesh_obj;
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

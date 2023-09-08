@@ -33,7 +33,11 @@ CRhinoCommand::result CCommandSampleSaveCopy::RunCommand(const CRhinoCommandCont
   current document and not alter the active document's name.
   */
 
-  ON_wString path = context.m_doc.GetPathName();
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  ON_wString path = doc->GetPathName();
   if (path.IsEmpty())
   {
     RhinoApp().Print(L"Please save this document before running this command.\n");
@@ -80,7 +84,7 @@ CRhinoCommand::result CCommandSampleSaveCopy::RunCommand(const CRhinoCommandCont
 
   ON_BinaryFile archive(ON::archive_mode::write3dm, fp);
   CRhinoFileWriteOptions fwo(CRhinoFileWriteOptions::Defaults);
-  rc = context.m_doc.Write3dmFile(archive, fwo);
+  rc = doc->Write3dmFile(archive, fwo);
   ON::CloseFile(fp);
 
   if (rc)

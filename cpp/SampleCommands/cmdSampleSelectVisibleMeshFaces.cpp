@@ -29,6 +29,10 @@ static class CCommandSampleSelectVisibleMeshFaces theSampleSelectVisibleMeshFace
 
 CRhinoCommand::result CCommandSampleSelectVisibleMeshFaces::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select mesh");
   go.SetGeometryFilter(ON::mesh_object);
@@ -51,7 +55,7 @@ CRhinoCommand::result CCommandSampleSelectVisibleMeshFaces::RunCommand(const CRh
     return CRhinoCommand::failure;
 
   mesh_obj->Select(false);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   if (!mesh->HasFaceNormals())
     mesh->ComputeFaceNormals();
@@ -71,7 +75,7 @@ CRhinoCommand::result CCommandSampleSelectVisibleMeshFaces::RunCommand(const CRh
       mesh_obj->SelectSubObject(ci, true, true);
     }
   }
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");

@@ -111,6 +111,10 @@ void CCommandSamplePatch::SaveProfile(LPCTSTR lpszSection, CRhinoProfileContext&
 
 CRhinoCommand::result CCommandSamplePatch::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curves, points, point clouds and meshes to fit surface through");
   go.EnableGroupSelect();
@@ -222,7 +226,7 @@ CRhinoCommand::result CCommandSamplePatch::RunCommand(const CRhinoCommandContext
       args.m_bAutomaticTrim, args.m_bAdjustTangency,
       args.m_dPointSpacing, args.m_dStiffness, args.m_dPull,
       args.m_bPreserveEdges ? true_edges : false_edges,
-      context.m_doc.AbsoluteTolerance()
+      doc->AbsoluteTolerance()
     );
   }
   else
@@ -233,7 +237,7 @@ CRhinoCommand::result CCommandSamplePatch::RunCommand(const CRhinoCommandContext
       args.m_bAutomaticTrim, args.m_bAdjustTangency,
       args.m_dPointSpacing, args.m_dStiffness, 0.0,
       args.m_bPreserveEdges ? true_edges : false_edges,
-      context.m_doc.AbsoluteTolerance()
+      doc->AbsoluteTolerance()
     );
   }
 
@@ -241,8 +245,8 @@ CRhinoCommand::result CCommandSamplePatch::RunCommand(const CRhinoCommandContext
   {
     CRhinoBrepObject* brep_obj = new CRhinoBrepObject();
     brep_obj->SetBrep(brep);
-    context.m_doc.AddObject(brep_obj);
-    context.m_doc.Redraw();
+    doc->AddObject(brep_obj);
+    doc->Redraw();
   }
 
   args.m_pStartingSurface = 0;

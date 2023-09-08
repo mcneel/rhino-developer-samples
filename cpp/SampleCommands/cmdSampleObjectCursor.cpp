@@ -30,6 +30,10 @@ static class CCommandSampleObjectCursor theSampleObjectCursorCommand;
 
 CRhinoCommand::result CCommandSampleObjectCursor::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select object to delete");
   go.AcceptNothing(FALSE);
@@ -46,8 +50,8 @@ CRhinoCommand::result CCommandSampleObjectCursor::RunCommand(const CRhinoCommand
   if (go.CommandResult() != CRhinoCommand::success)
     return go.CommandResult();
 
-  context.m_doc.DeleteObject(go.Object(0));
-  context.m_doc.Redraw();
+  doc->DeleteObject(go.Object(0));
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

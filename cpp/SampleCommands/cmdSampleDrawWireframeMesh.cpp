@@ -74,6 +74,10 @@ static class CCommandSampleDrawWireframeMesh theSampleDrawWireframeMeshCommand;
 
 CRhinoCommand::result CCommandSampleDrawWireframeMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select mesh to draw wireframe");
   go.SetGeometryFilter(CRhinoGetObject::mesh_object);
@@ -86,8 +90,8 @@ CRhinoCommand::result CCommandSampleDrawWireframeMesh::RunCommand(const CRhinoCo
     return CRhinoCommand::failure;
 
   CSampleDrawWireframeMesh conduit(mesh_obj->RuntimeSerialNumber());
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
-  context.m_doc.Regen();
+  conduit.Enable(doc->RuntimeSerialNumber());
+  doc->Regen();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -95,7 +99,7 @@ CRhinoCommand::result CCommandSampleDrawWireframeMesh::RunCommand(const CRhinoCo
   gs.GetString();
 
   conduit.Disable();
-  context.m_doc.Regen();
+  doc->Regen();
 
   return CRhinoCommand::success;
 }

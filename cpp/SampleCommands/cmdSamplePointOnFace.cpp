@@ -95,6 +95,10 @@ static class CCommandSamplePointOnFace theSamplePointOnFaceCommand;
 
 CRhinoCommand::result CCommandSamplePointOnFace::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface");
   go.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -115,8 +119,8 @@ CRhinoCommand::result CCommandSamplePointOnFace::RunCommand(const CRhinoCommandC
     RhinoFormatPoint(point, point_str);
     RhinoApp().Print(L"Point on face = %ls\n", static_cast<const wchar_t*>(point_str));
 
-    context.m_doc.AddPointObject(point);
-    context.m_doc.Redraw();
+    doc->AddPointObject(point);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

@@ -355,7 +355,7 @@ CSampleRdkAsyncRendererSdkRender::CSampleRdkAsyncRendererSdkRender(const CRhinoC
 	// render frame for this render session. Even after this SdkRender object goes off the stack,
 	// the render context persists, owned by the associated render frame.
 
-	const auto pDoc = context.Document();
+	const auto* pDoc = context.Document();
 	if (nullptr == pDoc)
 		return;
 

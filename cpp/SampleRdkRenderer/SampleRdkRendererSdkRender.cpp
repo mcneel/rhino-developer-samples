@@ -8,10 +8,6 @@ CSampleRdkRendererSdkRender::CSampleRdkRendererSdkRender(const CRhinoCommandCont
 	:
 	CRhRdkSdkRender(context, plugIn, sCaption, id)
 {
-	const auto pDoc = context.Document();
-	if (nullptr == pDoc)
-		return;
-
 	GetRenderWindow().ClearChannels();
 
 	// TODO: Add any extra channels before the rendering starts.
@@ -379,11 +375,11 @@ static int RenderThread(void* pv)
 
 void CSampleRdkRendererSdkRender::StartRendering()
 {
-	const auto* pDoc = CommandContext().Document();
-	if (nullptr == pDoc)
+	const auto* doc = CommandContext().Document();
+	if (nullptr == doc)
 		return;
 
-	const auto size = RenderSize(*pDoc, true);
+	const auto size = RenderSize(*doc, true);
 	m_RectRender = CRect(0, 0, size.cx, size.cy);
 
 	m_hRenderThread = ::CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RenderThread, this, 0, NULL);
@@ -391,10 +387,6 @@ void CSampleRdkRendererSdkRender::StartRendering()
 
 BOOL CSampleRdkRendererSdkRender::StartRenderingInWindow(CRhinoView*, const LPCRECT rect)
 {
-	const auto* pDoc = CommandContext().Document();
-	if (nullptr == pDoc)
-		return false;
-
 	m_RectRender = rect;
 
 	m_hRenderThread = ::CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RenderThread, this, 0, NULL);

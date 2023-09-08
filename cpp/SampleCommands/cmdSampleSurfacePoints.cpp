@@ -27,6 +27,10 @@ static class CCommandSampleSurfacePoints theSampleSurfacePointsCommand;
 
 CRhinoCommand::result CCommandSampleSurfacePoints::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface");
   go.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -82,9 +86,9 @@ CRhinoCommand::result CCommandSampleSurfacePoints::RunCommand(const CRhinoComman
 
   // Add
   for (i = 0; i < vertices.Count(); i++)
-    context.m_doc.AddPointObject(brep->m_V[vertices[i]].Point());
+    doc->AddPointObject(brep->m_V[vertices[i]].Point());
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

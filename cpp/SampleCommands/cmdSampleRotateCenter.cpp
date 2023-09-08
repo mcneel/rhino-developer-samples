@@ -30,6 +30,10 @@ static class CCommandSampleRotateCenter theSampleRotateCenterCommand;
 
 CRhinoCommand::result CCommandSampleRotateCenter::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select objects to rotate
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to rotate");
@@ -80,10 +84,10 @@ CRhinoCommand::result CCommandSampleRotateCenter::RunCommand(const CRhinoCommand
     xform.Rotation(m_angle * ON_PI / 180.0, plane.zaxis, bbox.Center());
 
     // Transform the object
-    context.m_doc.TransformObject(obj, xform, true, true, true);
+    doc->TransformObject(obj, xform, true, true, true);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

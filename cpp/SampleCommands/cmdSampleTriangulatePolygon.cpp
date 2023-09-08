@@ -27,6 +27,10 @@ static class CCommandSampleTriangulatePolygon theSampleTriangulatePolygonCommand
 
 CRhinoCommand::result CCommandSampleTriangulatePolygon::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select closed planar polygon to triangulate");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -44,7 +48,7 @@ CRhinoCommand::result CCommandSampleTriangulatePolygon::RunCommand(const CRhinoC
   if (0 == curve->IsPolyline(&points, nullptr))
     return CRhinoCommand::failure;
 
-  context.m_doc.UnselectAll();
+  doc->UnselectAll();
 
   if (points[0] == points[points.Count() - 1])
     points.SetCount(points.Count() - 1);
@@ -65,9 +69,9 @@ CRhinoCommand::result CCommandSampleTriangulatePolygon::RunCommand(const CRhinoC
     pline.Append(points[triangles[(3 * i) + 1]]);
     pline.Append(points[triangles[(3 * i) + 2]]);
     pline.Append(pline[0]);
-    context.m_doc.AddCurveObject(pline);
+    doc->AddCurveObject(pline);
   }
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

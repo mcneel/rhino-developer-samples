@@ -30,6 +30,10 @@ static class CCommandSampleFindCrvsOnSrf theSampleFindCrvsOnSrfCommand;
 
 CRhinoCommand::result CCommandSampleFindCrvsOnSrf::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface");
   go.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -43,7 +47,7 @@ CRhinoCommand::result CCommandSampleFindCrvsOnSrf::RunCommand(const CRhinoComman
     return CRhinoCommand::failure;
 
   ON_BoundingBox face_bbox = face->BoundingBox();
-  double tol = context.m_doc.AbsoluteTolerance();
+  double tol = doc->AbsoluteTolerance();
   bool bRedraw = false;
 
   const CRhinoObject* obj = 0;
@@ -66,7 +70,7 @@ CRhinoCommand::result CCommandSampleFindCrvsOnSrf::RunCommand(const CRhinoComman
   }
 
   if (bRedraw)
-    context.m_doc.Redraw();
+    doc->Redraw();
 
   return CRhinoCommand::success;
 }

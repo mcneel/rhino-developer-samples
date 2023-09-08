@@ -117,6 +117,10 @@ static class CCommandSampleDrawArrowhead theSampleDrawArrowheadCommand;
 
 CRhinoCommand::result CCommandSampleDrawArrowhead::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_Line line;
   ON_Plane plane;
 
@@ -143,8 +147,8 @@ CRhinoCommand::result CCommandSampleDrawArrowhead::RunCommand(const CRhinoComman
     return CRhinoCommand::nothing;
 
   CSampleDrawArrowheadConduit conduit(plane, line, 1.0);
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
-  context.m_doc.Redraw();
+  conduit.Enable(doc->RuntimeSerialNumber());
+  doc->Redraw();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -152,7 +156,7 @@ CRhinoCommand::result CCommandSampleDrawArrowhead::RunCommand(const CRhinoComman
   gs.GetString();
 
   conduit.Disable();
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

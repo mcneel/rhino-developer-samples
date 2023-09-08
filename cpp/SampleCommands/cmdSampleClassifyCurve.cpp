@@ -35,6 +35,10 @@ static class CCommandSampleClassifyCurve theSampleClassifyCurveCommand;
 
 CRhinoCommand::result CCommandSampleClassifyCurve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select a curve to clasify
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curve to classify");
@@ -51,8 +55,8 @@ CRhinoCommand::result CCommandSampleClassifyCurve::RunCommand(const CRhinoComman
     return CRhinoCommand::failure;
 
   // Obtain the document tolerances
-  double tol = context.m_doc.AbsoluteTolerance();
-  double angtol = context.m_doc.AngleToleranceRadians();
+  double tol = doc->AbsoluteTolerance();
+  double angtol = doc->AngleToleranceRadians();
 
   // Is the curve a line?
   if (IsLine(crv))

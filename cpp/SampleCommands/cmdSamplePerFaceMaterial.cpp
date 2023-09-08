@@ -24,9 +24,9 @@ static class CCommandSamplePerFaceMaterial theSamplePerFaceMaterialCommand;
 
 CRhinoCommand::result CCommandSamplePerFaceMaterial::RunCommand(const CRhinoCommandContext& context)
 {
-  auto* pDoc = context.Document();
-  if (nullptr == pDoc)
-    return failure;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
   const CRhRdkMaterial* pMaterial = nullptr;
 
@@ -49,7 +49,7 @@ CRhinoCommand::result CCommandSamplePerFaceMaterial::RunCommand(const CRhinoComm
 
     const auto* pObject = objRef.Object();
     if (nullptr == pObject)
-      return failure;
+      return CRhinoCommand::failure;
 
     pMaterial = pObject->ObjectRdkMaterial(ON_COMPONENT_INDEX());
     if (nullptr != pMaterial)
@@ -87,7 +87,7 @@ CRhinoCommand::result CCommandSamplePerFaceMaterial::RunCommand(const CRhinoComm
     const auto& objRef = go.Object(0);
     pMaterial->AssignTo(objRef);
 
-    pDoc->Redraw();
+    doc->Redraw();
   }
 
   return success;

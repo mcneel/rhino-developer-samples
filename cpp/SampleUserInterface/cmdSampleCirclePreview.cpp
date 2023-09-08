@@ -29,10 +29,15 @@ static class CCommandSampleCirclePreview theSampleCirclePreviewCommand;
 
 CRhinoCommand::result CCommandSampleCirclePreview::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CWnd* pParentWnd = CWnd::FromHandle(RhinoApp().MainWnd());
-  CSampleCirclePreviewDialog dialog(pParentWnd, context.m_doc.RuntimeSerialNumber());
+  CSampleCirclePreviewDialog dialog(pParentWnd, doc->RuntimeSerialNumber());
   if (dialog.DoModal() == IDOK)
-    context.m_doc.AddCurveObject(dialog.m_preview.m_circle);
+    doc->AddCurveObject(dialog.m_preview.m_circle);
+
   return CRhinoCommand::success;
 }
 

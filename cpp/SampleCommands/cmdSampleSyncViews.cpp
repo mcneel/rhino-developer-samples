@@ -173,6 +173,10 @@ CRhinoCommand::result CCommandSampleSyncViews::RunCommand(const CRhinoCommandCon
 {
   UNREFERENCED_PARAMETER(context);
 
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   if (m_conduit.IsEnabled()
     && ::IsWindow(m_conduit.m_hWnd1)
     && ::IsWindow(m_conduit.m_hWnd2))
@@ -201,7 +205,7 @@ CRhinoCommand::result CCommandSampleSyncViews::RunCommand(const CRhinoCommandCon
     if (pPrimaryView == pSecondaryView)
     {
       RhinoApp().Print(L"\nPrimary and secondary views can not be the same view.\n");
-      return failure;
+      return CRhinoCommand::failure;
     }
 
     m_conduit.m_pView1 = pPrimaryView;
@@ -217,7 +221,7 @@ CRhinoCommand::result CCommandSampleSyncViews::RunCommand(const CRhinoCommandCon
     pPrimaryView->Redraw();
     pSecondaryView->Redraw();
 
-    m_conduit.Enable(context.m_doc.RuntimeSerialNumber());
+    m_conduit.Enable(doc->RuntimeSerialNumber());
   }
 
   return CRhinoCommand::success;

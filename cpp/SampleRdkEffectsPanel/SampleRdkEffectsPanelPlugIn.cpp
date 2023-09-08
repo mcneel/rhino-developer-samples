@@ -182,7 +182,7 @@ CRhinoCommand::result CSampleRdkEffectsPanelPlugIn::Render(const CRhinoCommandCo
 	//   context [in] Command paramaters passed to the render command.
 	//   bPreview [in] If true, a faster, lower quality rendering is expected.
 
-	const auto pDoc = context.Document();
+	const auto* pDoc = context.Document();
 	if (nullptr == pDoc)
 		return CRhinoCommand::failure; 
 

@@ -123,6 +123,10 @@ static class CCommandSampleSelectPolylineSegment theSampleSelectPolylineSegmentC
 
 CRhinoCommand::result CCommandSampleSelectPolylineSegment::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhGetPolylineObject go;
   go.SetCommandPrompt(L"Select polyline");
   go.GetObjects(1, 1);
@@ -137,7 +141,7 @@ CRhinoCommand::result CCommandSampleSelectPolylineSegment::RunCommand(const CRhi
     return CRhinoCommand::failure;
 
   object->Select(false);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   CRhGetPolylineSegment gp(curve);
   gp.SetCommandPrompt(L"Select polyline segment");
