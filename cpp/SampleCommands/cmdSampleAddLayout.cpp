@@ -173,7 +173,7 @@ int CCommandSampleAddLayout::NextPageViewNumber(CRhinoDoc& doc)
 {
   int rc = 1;
   ON_SimpleArray<CRhinoView*> view_list;
-  doc.GetViewList(view_list, false, true);
+  doc.GetViewList(view_list, CRhinoView::ViewTypeFilter::Page);
   for (int i = 0; i <view_list.Count(); i++)
   {
     CRhinoView* view = view_list[i];

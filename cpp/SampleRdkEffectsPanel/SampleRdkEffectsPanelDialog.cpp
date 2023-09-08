@@ -105,6 +105,10 @@ void CSampleRdkEffectsPanelDialog::UpdateRendering(void)
 	if (!bRGB && !bRGBA)
 		return; // Only modify RGB or RGBA images.
 
+	// TODO: ANDY -- I'm stuck on this. CRhRdkImageAdjust is now just a forward reference.
+	// To get the settings that Adjust() used to provide, we need a document (to get render settings).
+	// We don't have a document here.
+
 	const auto gamma = 1.0f / m_RW.Adjust().Gamma();
 
 	auto* pDib = m_RW.LockDib();
@@ -226,6 +230,11 @@ HICON CSampleRdkEffectsPanelTab::Icon(const ON_2iSize& sizeInPixels) const
 
 HWND CSampleRdkEffectsPanelTab::PanelHost() const
 {
+	// TODO: ANDY -- I'm stuck on this. This is all obsolete. This was marked as "Internal expert methods
+	// for the RDK UI" so I don't understand why we made a sample explaining it to the public.
+	//
+	// In fact, the way this panel stuff works now is all Eto and it's all completely different.
+
 	const auto* pUI = m_RW.UI();
 	if (nullptr == pUI)
 		return NULL;

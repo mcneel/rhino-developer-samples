@@ -29,7 +29,7 @@ static class CCommandSampleZoomExtents theSampleZoomExtentsCommand;
 CRhinoCommand::result CCommandSampleZoomExtents::RunCommand(const CRhinoCommandContext& context)
 {
   ON_SimpleArray<CRhinoView*> views(16);
-  const int view_count = context.m_doc.GetViewList(views, true, false);
+  const int view_count = context.m_doc.GetViewList(views, CRhinoView::ViewTypeFilter::Model);
   for (int i = 0; i < view_count; i++)
     RhinoDollyExtents(views[i]);  
   context.m_doc.Redraw();

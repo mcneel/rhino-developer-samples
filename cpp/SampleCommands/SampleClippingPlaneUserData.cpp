@@ -361,7 +361,7 @@ bool CSampleClippingPlaneUserData::RemoveUserData(CRhinoDoc& doc, const CRhinoOb
 int CSampleClippingPlaneUserData::StandardViewportIds(CRhinoDoc& doc, ON_SimpleArray<UUID>& viewport_ids)
 {
   ON_SimpleArray<CRhinoView*> view_list;
-  const int view_count = doc.GetViewList(view_list, true, false);
+  const int view_count = doc.GetViewList(view_list, CRhinoView::ViewTypeFilter::Model);
   for (int i = 0; i < view_count; i++)
   {
     CRhinoView* view = view_list[i];

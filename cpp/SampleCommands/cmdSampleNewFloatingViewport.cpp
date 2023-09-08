@@ -31,11 +31,11 @@ CRhinoCommand::result CCommandSampleNewFloatingViewport::RunCommand(const CRhino
 {
   ON_SimpleArray<ON_UUID> viewport_ids;
   ON_SimpleArray<CRhinoView*> view_list;
-  CRhinoView* view = 0;
+  CRhinoView* view = nullptr;
   int i = 0;
 
   // Build a list of (current) viewport ids
-  context.m_doc.GetViewList(view_list, true, false);
+  context.m_doc.GetViewList(view_list, CRhinoView::ViewTypeFilter::Model);
   for (i = 0; i < view_list.Count(); i++)
   {
     view = view_list[i];
@@ -48,7 +48,7 @@ CRhinoCommand::result CCommandSampleNewFloatingViewport::RunCommand(const CRhino
   context.m_doc.NewView(ON_3dmView(), true);
 
   // Find the viewport (id) that was just created
-  context.m_doc.GetViewList(view_list, true, false);
+  context.m_doc.GetViewList(view_list, CRhinoView::ViewTypeFilter::Model);
   for (i = 0; i < view_list.Count(); i++)
   {
     view = view_list[i];
