@@ -63,6 +63,10 @@ static class CCommandSampleHighlightCurve theSampleHighlightCurveCommand;
 
 CRhinoCommand::result CCommandSampleHighlightCurve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curve to highlight");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -76,15 +80,15 @@ CRhinoCommand::result CCommandSampleHighlightCurve::RunCommand(const CRhinoComma
 
   CSampleHighlightCurveConduit conduit;
   conduit.m_runtime_object_serial_number = obj->RuntimeSerialNumber();
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
-  context.m_doc.Redraw();
+  conduit.Enable(doc->RuntimeSerialNumber());
+  doc->Redraw();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
   gs.GetString();
 
   conduit.Disable();
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

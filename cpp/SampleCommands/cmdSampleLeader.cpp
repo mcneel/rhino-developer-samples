@@ -27,13 +27,17 @@ static class CCommandSampleLeader theSampleLeaderCommand;
 
 CRhinoCommand::result CCommandSampleLeader::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_3dPointArray points;
   points.Append(ON_3dPoint(1.0, 1.0, 0.0));
   points.Append(ON_3dPoint(5.0, 1.0, 0.0));
   points.Append(ON_3dPoint(5.0, 5.0, 0.0));
   points.Append(ON_3dPoint(9.0, 5.0, 0.0));
 
-  const CRhinoLeader* dim_obj = context.m_doc.AddLeaderObject(
+  const CRhinoLeader* dim_obj = doc->AddLeaderObject(
     L"Leader",
     ON_Plane::World_xy,
     points.Count(),
@@ -41,7 +45,7 @@ CRhinoCommand::result CCommandSampleLeader::RunCommand(const CRhinoCommandContex
   );
 
   if (nullptr != dim_obj)
-    context.m_doc.Redraw();
+    doc->Redraw();
 
   return CRhinoCommand::success;
 }

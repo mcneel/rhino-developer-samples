@@ -29,7 +29,11 @@ static class CCommandSampleHideObjectsOnLayer theSampleHideObjectsOnLayerCommand
 
 CRhinoCommand::result CCommandSampleHideObjectsOnLayer::RunCommand(const CRhinoCommandContext& context)
 {
-  const CRhinoLayerTable& layer_table = context.m_doc.m_layer_table;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  const CRhinoLayerTable& layer_table = doc->m_layer_table;
   const ON_wString& current_layer_name = layer_table.CurrentLayer().Name();
 
   CRhinoGetString gs;
@@ -53,16 +57,16 @@ CRhinoCommand::result CCommandSampleHideObjectsOnLayer::RunCommand(const CRhinoC
 
   const CRhinoLayer& layer = layer_table[layer_index];
   ON_SimpleArray<CRhinoObject*> objects;
-  const int object_count = context.m_doc.LookupObject(layer, objects);
+  const int object_count = doc->LookupObject(layer, objects);
 
   for (int i = 0; i < object_count; i++)
   {
     const CRhinoObject* obj = objects[i];
     if (obj && obj->IsVisible())
-      context.m_doc.HideObject(CRhinoObjRef(obj));
+      doc->HideObject(CRhinoObjRef(obj));
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

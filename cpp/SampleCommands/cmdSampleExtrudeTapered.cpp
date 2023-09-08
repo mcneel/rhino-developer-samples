@@ -49,6 +49,10 @@ static class CCommandSampleExtrudeTapered theSampleExtrudeTaperedCommand;
 
 CRhinoCommand::result CCommandSampleExtrudeTapered::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhGetClosedPlanarCurve go;
   go.SetCommandPrompt(L"Select planar closed curve to extrude");
   go.GetObjects(1, 1);
@@ -67,7 +71,7 @@ CRhinoCommand::result CCommandSampleExtrudeTapered::RunCommand(const CRhinoComma
   int type = 0;
 
   ON_Plane plane;
-  if (dup_crv->IsPlanar(&plane, context.m_doc.AbsoluteTolerance()))
+  if (dup_crv->IsPlanar(&plane, doc->AbsoluteTolerance()))
   {
     base = plane.origin;
     ON_3dVector v = plane.Normal();
@@ -76,8 +80,8 @@ CRhinoCommand::result CCommandSampleExtrudeTapered::RunCommand(const CRhinoComma
   }
 
   ON_SimpleArray<ON_Brep*> breps;
-  double tol = context.m_doc.AbsoluteTolerance();
-  double ang_tol = context.m_doc.AngleToleranceRadians();
+  double tol = doc->AbsoluteTolerance();
+  double ang_tol = doc->AngleToleranceRadians();
   bool rc = RhinoCreateTaperedExtrude(dup_crv, dist, dir, base, angle, type, tol, ang_tol, breps);
   delete dup_crv; // Don't leak...
 
@@ -87,9 +91,9 @@ CRhinoCommand::result CCommandSampleExtrudeTapered::RunCommand(const CRhinoComma
     {
       CRhinoBrepObject* brep_obj = new CRhinoBrepObject();
       brep_obj->SetBrep(breps[i]);
-      context.m_doc.AddObject(brep_obj);
+      doc->AddObject(brep_obj);
     }
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

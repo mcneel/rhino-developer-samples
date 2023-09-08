@@ -54,6 +54,10 @@ static class CCommandSampleClosestAxisPoint theSampleClosestAxisPointCommand;
 
 CRhinoCommand::result CCommandSampleClosestAxisPoint::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhGetPlanarCurve go;
   go.SetCommandPrompt(L"Select planar curves");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -114,7 +118,7 @@ CRhinoCommand::result CCommandSampleClosestAxisPoint::RunCommand(const CRhinoCom
 
     ON_LineCurve linecrv(line);
 
-    double tol = context.m_doc.AbsoluteTolerance();
+    double tol = doc->AbsoluteTolerance();
     ON_SimpleArray<ON_X_EVENT> x_events;
     int x_count = crv->IntersectCurve(&linecrv, x_events, tol, tol);
 
@@ -123,7 +127,7 @@ CRhinoCommand::result CCommandSampleClosestAxisPoint::RunCommand(const CRhinoCom
       ON_X_EVENT x = x_events[0];
       if (x.IsPointEvent() || x.IsOverlapEvent())
       {
-        context.m_doc.AddPointObject(x.m_A[0]);
+        doc->AddPointObject(x.m_A[0]);
         num_added++;
       }
     }

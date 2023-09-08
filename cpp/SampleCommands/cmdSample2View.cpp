@@ -27,6 +27,10 @@ static class CCommandSample2View theSample2ViewCommand;
 
 CRhinoCommand::result CCommandSample2View::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_3dmView views[2];
   double def_size = 15.0;
   ON_BoundingBox bbox;
@@ -71,8 +75,8 @@ CRhinoCommand::result CCommandSample2View::RunCommand(const CRhinoCommandContext
     views[1].m_position.m_wnd_bottom = 1.0;
   }
 
-  context.m_doc.ReplaceModelViews(2, views);
-  context.m_doc.Redraw();
+  doc->ReplaceModelViews(2, views);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -146,6 +146,10 @@ ON_Surface* CCommandSampleHistory::MakeBilinearSurface(const ON_Curve& C0, const
 
 CRhinoCommand::result CCommandSampleHistory::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select two curves");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -172,7 +176,7 @@ CRhinoCommand::result CCommandSampleHistory::RunCommand(const CRhinoCommandConte
     {
       CRhinoHistory history(*this);
       WriteHistory(history, CObj0, CObj1);
-      context.m_doc.AddBrepObject(brep, 0, &history);
+      doc->AddBrepObject(brep, 0, &history);
       rc = CRhinoCommand::success;
     }
   }

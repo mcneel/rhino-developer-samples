@@ -44,6 +44,10 @@ static class CCommandSampleDimTextHeight theSampleDimTextHeightCommand;
 
 CRhinoCommand::result CCommandSampleDimTextHeight::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select a dimension
   CRhinoGetDimObject go;
   go.SetCommandPrompt(L"Select dimension to modify text height");
@@ -58,7 +62,7 @@ CRhinoCommand::result CCommandSampleDimTextHeight::RunCommand(const CRhinoComman
   if (nullptr == dim_obj)
     return CRhinoCommand::failure;
 
-  const ON_DimStyle& style = dim_obj->GetEffectiveDimensionStyle(&context.m_doc);
+  const ON_DimStyle& style = dim_obj->GetEffectiveDimensionStyle(doc);
 
   // Prompt for a new text height value
   CRhinoGetNumber gn;
@@ -87,7 +91,7 @@ CRhinoCommand::result CCommandSampleDimTextHeight::RunCommand(const CRhinoComman
       modified_style.SetTextHeight(height);
 
       // Modify the dimension style
-      context.m_doc.m_dimstyle_table.ModifyDimStyle(modified_style, style.Index());
+      doc->m_dimstyle_table.ModifyDimStyle(modified_style, style.Index());
     }
     else
     {
@@ -99,8 +103,8 @@ CRhinoCommand::result CCommandSampleDimTextHeight::RunCommand(const CRhinoComman
       child_dimstyle.SetTextHeight(height);
 
       // Add the new child dimstyle
-      int new_style_index = context.m_doc.m_dimstyle_table.OverrideDimStyle(child_dimstyle, style.Index());
-      const ON_DimStyle* new_style = &context.m_doc.m_dimstyle_table[new_style_index];
+      int new_style_index = doc->m_dimstyle_table.OverrideDimStyle(child_dimstyle, style.Index());
+      const ON_DimStyle* new_style = &doc->m_dimstyle_table[new_style_index];
       if (nullptr == new_style)
         return CRhinoCommand::result::failure;
 
@@ -109,10 +113,10 @@ CRhinoCommand::result CCommandSampleDimTextHeight::RunCommand(const CRhinoComman
       const ON_Dimension* dim = ON_Dimension::Cast(new_obj->Geometry());
       const_cast<ON_Dimension*>(dim)->DimensionStyle(*new_style);
 
-      context.m_doc.ReplaceObject(object_ref, new_obj);
+      doc->ReplaceObject(object_ref, new_obj);
     }
 
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

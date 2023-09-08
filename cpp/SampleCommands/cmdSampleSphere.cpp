@@ -27,6 +27,10 @@ static class CCommandSampleSphere theSampleSphereCommand;
 
 CRhinoCommand::result CCommandSampleSphere::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoCommand::result rc = CRhinoCommand::cancel;
 
   ON_3dPoint center(0.0, 0.0, 0.0);
@@ -39,9 +43,9 @@ CRhinoCommand::result CCommandSampleSphere::RunCommand(const CRhinoCommandContex
   CRhinoSurfaceObject* sphere_obj = new CRhinoSurfaceObject();
   sphere_obj->SetSurface(sphere_srf);
 
-  if (context.m_doc.AddObject(sphere_obj))
+  if (doc->AddObject(sphere_obj))
   {
-    context.m_doc.Redraw();
+    doc->Redraw();
     rc = CRhinoCommand::success;
   }
   else

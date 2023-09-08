@@ -111,6 +111,10 @@ static class CCommandSampleExtrusionBox theSampleExtrusionBoxCommand;
 
 CRhinoCommand::result CCommandSampleExtrusionBox::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CArgsRhinoGetBox args;
   ON_3dPoint box_corners[8];
   CRhinoCommand::result rc = RhinoGetBox(args, box_corners);
@@ -125,8 +129,8 @@ CRhinoCommand::result CCommandSampleExtrusionBox::RunCommand(const CRhinoCommand
   extrusion_object->SetExtrusion(extrusion_box);
   extrusion_box = 0;
 
-  context.m_doc.AddObject(extrusion_object);
-  context.m_doc.Redraw();
+  doc->AddObject(extrusion_object);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

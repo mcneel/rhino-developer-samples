@@ -8,7 +8,7 @@ CSampleRdkEffectsPanelSdkRender::CSampleRdkEffectsPanelSdkRender(const CRhinoCom
 	:
 	CRhRdkSdkRender(context, plugIn, sCaption, id)
 {
-	const auto pDoc = context.Document();
+	const auto* pDoc = context.Document();
 	if (nullptr == pDoc)
 		return;
 

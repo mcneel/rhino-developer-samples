@@ -28,6 +28,10 @@ static class CCommandSampleZebra theSampleZebraCommand;
 
 CRhinoCommand::result CCommandSampleZebra::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surfaces or polysurfaces for Zebra analysis");
   go.SetGeometryFilter(CRhinoGetObject::surface_object | CRhinoGetObject::polysrf_object);
@@ -43,7 +47,7 @@ CRhinoCommand::result CCommandSampleZebra::RunCommand(const CRhinoCommandContext
       obj->EnableAnalysisMode(RHINO_ZEBRA_STRIPE_ANALYSIS_MODE_ID, true);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

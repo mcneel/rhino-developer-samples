@@ -30,7 +30,11 @@ static class CCommandSampleDumpBlockTree theSampleDumpBlockTreeCommand;
 
 CRhinoCommand::result CCommandSampleDumpBlockTree::RunCommand(const CRhinoCommandContext& context)
 {
-  const CRhinoInstanceDefinitionTable& idef_table = context.m_doc.m_instance_definition_table;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  const CRhinoInstanceDefinitionTable& idef_table = doc->m_instance_definition_table;
   int idef_count = idef_table.InstanceDefinitionCount();
   if (idef_count == 0)
   {

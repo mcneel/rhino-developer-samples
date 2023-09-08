@@ -60,7 +60,11 @@ static class CCommandSampleClosedCurveContainment theSampleClosedCurveContainmen
 
 CRhinoCommand::result CCommandSampleClosedCurveContainment::RunCommand(const CRhinoCommandContext& context)
 {
-  CRhGetPlanarClosedCurve go(context.m_doc.AbsoluteTolerance());
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  CRhGetPlanarClosedCurve go(doc->AbsoluteTolerance());
   go.SetCommandPrompt(L"Select two closed planar curves for containment test");
   go.GetObjects(2, 2);
   if (go.CommandResult() != CRhinoCommand::success)
@@ -71,7 +75,7 @@ CRhinoCommand::result CCommandSampleClosedCurveContainment::RunCommand(const CRh
   if (nullptr == curve0 || nullptr == curve1)
     return CRhinoCommand::failure;
 
-  const double tolerance = context.m_doc.AbsoluteTolerance();
+  const double tolerance = doc->AbsoluteTolerance();
 
   ON_Plane plane0, plane1;
   if (!curve0->IsPlanar(&plane0, tolerance) || !curve1->IsPlanar(&plane1, tolerance))

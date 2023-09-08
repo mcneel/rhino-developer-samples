@@ -28,6 +28,10 @@ static class CCommandSamplePointCursor theSamplePointCursorCommand;
 
 CRhinoCommand::result CCommandSamplePointCursor::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"Location of point object");
   gp.AcceptNothing(FALSE);
@@ -42,8 +46,8 @@ CRhinoCommand::result CCommandSamplePointCursor::RunCommand(const CRhinoCommandC
 
   ON_3dPoint point = gp.Point();
 
-  context.m_doc.AddPointObject(point);
-  context.m_doc.Redraw();
+  doc->AddPointObject(point);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

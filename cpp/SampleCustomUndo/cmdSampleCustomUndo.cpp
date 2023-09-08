@@ -89,11 +89,15 @@ static class CCommandSampleCustomUndoEarnTen theSampleCustomUndoEarnTenCommand;
 
 CRhinoCommand::result CCommandSampleCustomUndoEarnTen::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   const double amount = 10.0;
 
   CSampleCustomUndoEventHandler* pUndoHandler = new CSampleCustomUndoEventHandler();
   pUndoHandler->m_amount = amount;
-  context.m_doc.AddCustomUndoEvent(pUndoHandler);
+  doc->AddCustomUndoEvent(pUndoHandler);
 
   double balance = SampleCustomUndoPlugIn().Balance();
   balance += amount;
@@ -142,11 +146,15 @@ static class CCommandSampleCustomUndoSpendFive theSampleCustomUndoSpendFiveComma
 
 CRhinoCommand::result CCommandSampleCustomUndoSpendFive::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   const double amount = -5.0;
 
   CSampleCustomUndoEventHandler* pUndoHandler = new CSampleCustomUndoEventHandler();
   pUndoHandler->m_amount = amount;
-  context.m_doc.AddCustomUndoEvent(pUndoHandler);
+  doc->AddCustomUndoEvent(pUndoHandler);
 
   double balance = SampleCustomUndoPlugIn().Balance();
   balance += amount;

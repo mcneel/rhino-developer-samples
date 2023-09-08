@@ -29,6 +29,10 @@ static class CCommandSamplePlanarFaceLoops theSamplePlanarFaceLoopsCommand;
 
 CRhinoCommand::result CCommandSamplePlanarFaceLoops::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject gs;
   gs.SetCommandPrompt(L"Select surface");
   gs.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -76,8 +80,8 @@ CRhinoCommand::result CCommandSamplePlanarFaceLoops::RunCommand(const CRhinoComm
   {
     CRhinoBrepObject* new_brep_obj = new CRhinoBrepObject();
     new_brep_obj->SetBrep(new_brep);
-    context.m_doc.ReplaceObject(gs.Object(0), new_brep_obj);
-    context.m_doc.Redraw();
+    doc->ReplaceObject(gs.Object(0), new_brep_obj);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

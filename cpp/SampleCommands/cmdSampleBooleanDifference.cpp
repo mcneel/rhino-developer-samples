@@ -27,6 +27,10 @@ static class CCommandSampleBooleanDifference theSampleBooleanDifferenceCommand;
 
 CRhinoCommand::result CCommandSampleBooleanDifference::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go0;
   go0.SetCommandPrompt(L"Select surfaces or polysurfaces to subtract from");
   go0.SetGeometryFilter(CRhinoGetObject::surface_object | CRhinoGetObject::polysrf_object);
@@ -75,7 +79,7 @@ CRhinoCommand::result CCommandSampleBooleanDifference::RunCommand(const CRhinoCo
     InBreps1.Append(brep);
   }
 
-  double tol = context.m_doc.AbsoluteTolerance();
+  double tol = doc->AbsoluteTolerance();
   bool something_happened = false;
   ON_SimpleArray<ON_Brep*> OutBreps;
   ON_SimpleArray<int> InputIndexForOutput;
@@ -101,20 +105,20 @@ CRhinoCommand::result CCommandSampleBooleanDifference::RunCommand(const CRhinoCo
     brep_obj->SetBrep(OutBreps[i]);
     OutBreps[i] = 0;
 
-    context.m_doc.AddObject(brep_obj);
+    doc->AddObject(brep_obj);
 
   }
 
   if (true)
   {
     for (int i = 0; i < InBreps0_count; i++)
-      context.m_doc.DeleteObject(go0.Object(i));
+      doc->DeleteObject(go0.Object(i));
 
     for (int i = 0; i < InBreps1_count; i++)
-      context.m_doc.DeleteObject(go1.Object(i));
+      doc->DeleteObject(go1.Object(i));
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -36,6 +36,10 @@ CCommandSampleRailRevolve::CCommandSampleRailRevolve()
 
 CRhinoCommand::result CCommandSampleRailRevolve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   const ON_Curve* profile_curve = nullptr;
   const ON_Curve* rail_curve = nullptr;
   ON_Line axis = ON_Line::UnsetLine;
@@ -126,8 +130,8 @@ CRhinoCommand::result CCommandSampleRailRevolve::RunCommand(const CRhinoCommandC
   brep_obj->SetBrep(brep); // brep_obj now owns brep
 
   // Add to document and redraw
-  context.m_doc.AddObject(brep_obj);
-  context.m_doc.Redraw();
+  doc->AddObject(brep_obj);
+  doc->Redraw();
 
   // Save for next use
   m_bSplitAtTangents = bSplitAtTangents;

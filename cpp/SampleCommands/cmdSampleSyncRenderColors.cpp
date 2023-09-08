@@ -25,9 +25,9 @@ static class CCommandSampleSyncRenderColors theSampleSyncRenderColorsCommand;
 
 CRhinoCommand::result CCommandSampleSyncRenderColors::RunCommand(const CRhinoCommandContext& context)
 {
-  auto* pDoc = context.Document();
-  if (nullptr == pDoc)
-    return failure;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
   int num_modified = 0;
 
@@ -38,7 +38,7 @@ CRhinoCommand::result CCommandSampleSyncRenderColors::RunCommand(const CRhinoCom
 
     for (auto* obj = it.First(); nullptr != obj; obj = it.Next())
     {
-      if (SynchronizeDiffuseColorWithDisplayColor(context.m_doc, obj))
+      if (SynchronizeDiffuseColorWithDisplayColor(*doc, obj))
         num_modified++;
     }
   }
@@ -57,13 +57,13 @@ CRhinoCommand::result CCommandSampleSyncRenderColors::RunCommand(const CRhinoCom
     for (int i = 0; i < count; i++)
     {
       const auto* obj = go.Object(i).Object();
-      if (SynchronizeDiffuseColorWithDisplayColor(*pDoc, obj))
+      if (SynchronizeDiffuseColorWithDisplayColor(*doc, obj))
         num_modified++;
     }
   }
 
   if (num_modified > 0)
-    pDoc->Regen();
+    doc->Regen();
 
   return success;
 }

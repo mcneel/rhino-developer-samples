@@ -102,6 +102,10 @@ static class CCommandSampleDrawBrep theSampleDrawBrepCommand;
 
 CRhinoCommand::result CCommandSampleDrawBrep::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_Sphere sphere;
   CArgsRhinoGetSphere args;
   CRhinoCommand::result rc = RhinoGetSphere(args, sphere);
@@ -118,10 +122,10 @@ CRhinoCommand::result CCommandSampleDrawBrep::RunCommand(const CRhinoCommandCont
   ON_SimpleArray<const ON_Brep*> breps;
   breps.Append(brep);
 
-  CSampleDrawBrepConduit conduit(context.m_doc);
+  CSampleDrawBrepConduit conduit(*doc);
   conduit.SetBreps(breps);
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
-  context.m_doc.Regen();
+  conduit.Enable(doc->RuntimeSerialNumber());
+  doc->Regen();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -129,7 +133,7 @@ CRhinoCommand::result CCommandSampleDrawBrep::RunCommand(const CRhinoCommandCont
   gs.GetString();
 
   conduit.Disable();
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   delete brep; // Don't leak...
   brep = nullptr;

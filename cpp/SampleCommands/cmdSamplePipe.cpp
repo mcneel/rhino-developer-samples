@@ -32,6 +32,10 @@ static class CCommandSamplePipe theSamplePipeCommand;
 
 CRhinoCommand::result CCommandSamplePipe::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select path curve");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -83,7 +87,7 @@ CRhinoCommand::result CCommandSamplePipe::RunCommand(const CRhinoCommandContext&
             CRhinoExtrusionObject* object = new CRhinoExtrusionObject();
             object->SetExtrusion(ON_Extrusion::Cast(results[i]));
             results[i] = 0; // object now owns the memory
-            if (!context.m_doc.AddObject(object))
+            if (!doc->AddObject(object))
               delete object; // Don't leak...
           }
           else
@@ -96,7 +100,7 @@ CRhinoCommand::result CCommandSamplePipe::RunCommand(const CRhinoCommandContext&
               {
                 CRhinoBrepObject* object = new CRhinoBrepObject();
                 object->SetBrep(brep);
-                if (!context.m_doc.AddObject(object))
+                if (!doc->AddObject(object))
                   delete object; // Don't leak...
               }
             }
@@ -109,13 +113,13 @@ CRhinoCommand::result CCommandSamplePipe::RunCommand(const CRhinoCommandContext&
           CRhinoBrepObject* object = new CRhinoBrepObject();
           object->SetBrep(ON_Brep::Cast(results[i]));
           results[i] = 0; // object now owns the memory
-          if (!context.m_doc.AddObject(object))
+          if (!doc->AddObject(object))
             delete object; // Don't leak...
         }
       }
     }
 
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

@@ -29,6 +29,10 @@ static class CCommandSampleSelectByName theSampleSelectByNameCommand;
 
 CRhinoCommand::result CCommandSampleSelectByName::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Object name to select");
   gs.GetString();
@@ -61,7 +65,7 @@ CRhinoCommand::result CCommandSampleSelectByName::RunCommand(const CRhinoCommand
     RhinoApp().Print(L"%d objects selected\n", num_selected);
 
   if (num_selected)
-    context.m_doc.Redraw();
+    doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -164,6 +164,10 @@ static class CCommandSampleMeshDir theSampleMeshDirCommand;
 
 CRhinoCommand::result CCommandSampleMeshDir::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetGeometryFilter(CRhinoObject::mesh_object | CRhinoObject::surface_object | CRhinoObject::polysrf_object | CRhinoObject::instance_reference);
   go.SetCommandPrompt(L"Select mesh, surface, or polysurface objects");
@@ -172,7 +176,7 @@ CRhinoCommand::result CCommandSampleMeshDir::RunCommand(const CRhinoCommandConte
     return CRhinoCommand::cancel;
 
   //For view dependent custom render primitives.
-  const ON_Viewport vp = context.m_doc.ActiveView() ? context.m_doc.ActiveView()->ActiveViewport().VP() : ON_Viewport();
+  const ON_Viewport vp = doc->ActiveView() ? doc->ActiveView()->ActiveViewport().VP() : ON_Viewport();
 
   CMeshDirDrawCallback callback;
 
@@ -218,7 +222,7 @@ CRhinoCommand::result CCommandSampleMeshDir::RunCommand(const CRhinoCommandConte
   gs.AddCommandOptionToggle(RHCMDOPTNAME(L"FaceNormals"), RHCMDOPTVALUE(L"No"), RHCMDOPTVALUE(L"Yes"), draw_face_normals, &draw_face_normals);
   gs.AddCommandOptionToggle(RHCMDOPTNAME(L"VertexNormals"), RHCMDOPTVALUE(L"No"), RHCMDOPTVALUE(L"Yes"), draw_vertex_normals, &draw_vertex_normals);
 
-  callback.Enable(context.m_doc.RuntimeSerialNumber());
+  callback.Enable(doc->RuntimeSerialNumber());
 
   CRhinoGet::result res = CRhinoGet::nothing;
   for (;; )
@@ -226,7 +230,7 @@ CRhinoCommand::result CCommandSampleMeshDir::RunCommand(const CRhinoCommandConte
     callback.m_draw_face_normals = draw_face_normals;
     callback.m_draw_vertex_normals = draw_vertex_normals;
 
-    context.m_doc.Redraw(CRhinoView::regenerate_display_hint);;
+    doc->Redraw(CRhinoView::regenerate_display_hint);;
 
     res = gs.GetOption();
     if (res == CRhinoGet::option)
@@ -236,7 +240,7 @@ CRhinoCommand::result CCommandSampleMeshDir::RunCommand(const CRhinoCommandConte
   }
 
   callback.Disable();
-  context.m_doc.Redraw(CRhinoView::regenerate_display_hint);
+  doc->Redraw(CRhinoView::regenerate_display_hint);
 
   // Save persistent settings
   Settings().SetBool(psz_draw_face_normals, draw_face_normals);

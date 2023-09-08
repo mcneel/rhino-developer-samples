@@ -28,6 +28,10 @@ static class CCommandSampleSuperEllipse theSampleSuperEllipseCommand;
 
 CRhinoCommand::result CCommandSampleSuperEllipse::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Create the NURBS "Super Ellipse", 
   // where: (x / a) ^ n + (y / b) ^ n = 1
   CArgsRhinoGetEllipse args;
@@ -95,14 +99,14 @@ CRhinoCommand::result CCommandSampleSuperEllipse::RunCommand(const CRhinoCommand
       if (d > max_var)
         max_var = d;
       if (i % 20 == 0) 
-        context.m_doc.AddPointObject(E);
+        doc->AddPointObject(E);
     }
     RhinoApp().Print(L"Max deviation = %g\n", max_dev);
     RhinoApp().Print(L"Max deviation from 1 = %g\n", max_var);
   }
 
-  context.m_doc.AddCurveObject(nurb);
-  context.m_doc.Redraw();
+  doc->AddCurveObject(nurb);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

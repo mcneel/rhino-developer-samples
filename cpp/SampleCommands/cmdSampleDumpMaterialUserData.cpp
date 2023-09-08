@@ -29,9 +29,13 @@ static class CCommandSampleDumpMaterialUserData theSampleDumpMaterialUserDataCom
 
 CRhinoCommand::result CCommandSampleDumpMaterialUserData::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoApp& theApp = RhinoApp();
 
-  const int material_count = context.m_doc.m_material_table.MaterialCount();
+  const int material_count = doc->m_material_table.MaterialCount();
   if (0 == material_count)
   {
     theApp.Print(L"No materials to dump\n");
@@ -40,7 +44,7 @@ CRhinoCommand::result CCommandSampleDumpMaterialUserData::RunCommand(const CRhin
 
   for (int i = 0; i < material_count; i++)
   {
-    const CRhinoMaterial& material = context.m_doc.m_material_table[i];
+    const CRhinoMaterial& material = doc->m_material_table[i];
     if (material.IsDeleted())
       continue;
 

@@ -42,6 +42,10 @@ CCommandSampleDupEdge::CCommandSampleDupEdge()
 
 CRhinoCommand::result CCommandSampleDupEdge::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select edges to duplicate");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -73,7 +77,7 @@ CRhinoCommand::result CCommandSampleDupEdge::RunCommand(const CRhinoCommandConte
 
         CRhinoCurveObject* curve_obj = new CRhinoCurveObject();
         curve_obj->SetCurve(curve);
-        if (context.m_doc.AddObject(curve_obj))
+        if (doc->AddObject(curve_obj))
         {
           // Select the new curve
           curve_obj->Select();
@@ -87,7 +91,7 @@ CRhinoCommand::result CCommandSampleDupEdge::RunCommand(const CRhinoCommandConte
           }
 
           // Record history if needed
-          if (context.m_doc.m_history_record_table.HistoryRecordingEnabled())
+          if (doc->m_history_record_table.HistoryRecordingEnabled())
           {
             CRhinoHistory history(*this);
             history.SetHistoryVersion(m_history_version);
@@ -104,7 +108,7 @@ CRhinoCommand::result CCommandSampleDupEdge::RunCommand(const CRhinoCommandConte
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

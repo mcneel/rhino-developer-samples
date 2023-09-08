@@ -30,8 +30,12 @@ static class CCommandSampleDisableAllClippingPlanes theSampleDisableAllClippingP
 
 CRhinoCommand::result CCommandSampleDisableAllClippingPlanes::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_SimpleArray<UUID> viewport_ids;
-  const int viewport_count = CSampleClippingPlaneUserData::StandardViewportIds(context.m_doc, viewport_ids);
+  const int viewport_count = CSampleClippingPlaneUserData::StandardViewportIds(*doc, viewport_ids);
   if (0 == viewport_count)
     return CRhinoCommand::nothing;
 
@@ -56,7 +60,7 @@ CRhinoCommand::result CCommandSampleDisableAllClippingPlanes::RunCommand(const C
       if (0 == clipped_ids.Count())
         continue;
 
-      if (CSampleClippingPlaneUserData::AddUserData(context.m_doc, clip_obj, clipped_ids))
+      if (CSampleClippingPlaneUserData::AddUserData(*doc, clip_obj, clipped_ids))
         num_disabled++;
     }
   }
@@ -69,7 +73,7 @@ CRhinoCommand::result CCommandSampleDisableAllClippingPlanes::RunCommand(const C
       RhinoApp().Print(L"1 clipping plane disabled.\n");
     else
       RhinoApp().Print(L"%d clipping planes disabled.\n", num_disabled);
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

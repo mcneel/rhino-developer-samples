@@ -37,6 +37,10 @@ CCommandSamplePrePostSelect::CCommandSamplePrePostSelect()
 
 CRhinoCommand::result CCommandSamplePrePostSelect::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   double dValue = m_dValue;
   int nValue = m_nValue;
 
@@ -98,7 +102,7 @@ CRhinoCommand::result CCommandSamplePrePostSelect::RunCommand(const CRhinoComman
       if (0 != object)
         object->Select(false);
     }
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   int object_count = go.ObjectCount();

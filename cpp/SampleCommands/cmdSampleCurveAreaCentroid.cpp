@@ -56,6 +56,10 @@ static int RhinoClosedCurveOrientation(const ON_Curve& curve, const ON_Plane& pl
 
 CRhinoCommand::result CCommandSampleCurveAreaCentroid::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CGetClosedPlanarCurve go;
   go.SetCommandPrompt(L"Select closed, planar curves for centroid calculation");
   go.EnableSubObjectSelect(FALSE);
@@ -98,8 +102,8 @@ CRhinoCommand::result CCommandSampleCurveAreaCentroid::RunCommand(const CRhinoCo
   }
 
   ON_3dPoint centroid = total_mp.Centroid();
-  context.m_doc.AddPointObject(centroid);
-  context.m_doc.Redraw();
+  doc->AddPointObject(centroid);
+  doc->Redraw();
 
   ON_wString str;
   RhinoFormatPoint(centroid, str, L"%g");

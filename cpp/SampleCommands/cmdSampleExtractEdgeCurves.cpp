@@ -76,6 +76,10 @@ static int RhCopyBrepFaceLoopCurves(const ON_Brep* brep, ON_SimpleArray<ON_Curve
 
 CRhinoCommand::result CCommandSampleExtractEdgeCurves::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surfaces and polysurfaces for edge extraction");
   go.SetGeometryFilter(CRhinoGetObject::surface_object | CRhinoGetObject::polysrf_object);
@@ -97,7 +101,7 @@ CRhinoCommand::result CCommandSampleExtractEdgeCurves::RunCommand(const CRhinoCo
           CRhinoCurveObject* curve_obj = new CRhinoCurveObject();
           curve_obj->SetCurve(curves[j]);
           curves[i] = 0;
-          context.m_doc.AddObject(curve_obj);
+          doc->AddObject(curve_obj);
         }
       }
     }

@@ -33,6 +33,10 @@ static class CCommandSampleReadInstancesFromFile theSampleReadInstancesFromFileC
 
 CRhinoCommand::result CCommandSampleReadInstancesFromFile::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Prompt the user for a 3dm file
 
   CRhinoGetFileDialog gf;
@@ -52,9 +56,9 @@ CRhinoCommand::result CCommandSampleReadInstancesFromFile::RunCommand(const CRhi
     return CRhinoCommand::failure;
   }
 
-  ReadInstanceObjectsFromFile(context.m_doc, filename);
+  ReadInstanceObjectsFromFile(*doc, filename);
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

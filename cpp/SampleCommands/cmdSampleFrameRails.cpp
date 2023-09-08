@@ -32,6 +32,10 @@ static class CCommandSampleFrameRails theSampleFrameRailsCommand;
 
 CRhinoCommand::result CCommandSampleFrameRails::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   int count = 10;
 
   CRhinoGetObject go;
@@ -59,10 +63,10 @@ CRhinoCommand::result CCommandSampleFrameRails::RunCommand(const CRhinoCommandCo
   for (int i = 0; i < frames.Count(); i++)
   {
     ON_Line line(frames[i].origin, frames[i].origin + frames[i].xaxis);
-    context.m_doc.AddCurveObject(line);
+    doc->AddCurveObject(line);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

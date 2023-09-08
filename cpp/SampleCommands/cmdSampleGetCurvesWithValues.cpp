@@ -36,6 +36,10 @@ CCommandSampleGetCurvesWithValues::CCommandSampleGetCurvesWithValues()
 
 CRhinoCommand::result CCommandSampleGetCurvesWithValues::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_ClassArray<CRhinoObjRef> objects;
   ON_SimpleArray<double> values;
 
@@ -144,7 +148,7 @@ CRhinoCommand::result CCommandSampleGetCurvesWithValues::RunCommand(const CRhino
         values.Append(m_default_value);
       }
     }
-    context.m_doc.Redraw();
+    doc->Redraw();
 
     continue;
   }

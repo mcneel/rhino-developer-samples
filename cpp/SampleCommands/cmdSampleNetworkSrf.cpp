@@ -28,6 +28,10 @@ static class CCommandSampleNetworkSrf theSampleNetworkSrfCommand;
 
 CRhinoCommand::result CCommandSampleNetworkSrf::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_SimpleArray<const ON_Curve*> ucurves, vcurves;
   int ucont[2] = { 1, 1 }; // 0 = Loose, 1 = Position, 2 = Tangency, 3 = Curvature
   int vcont[2] = { 1, 1 }; // 0 = Loose, 1 = Position, 2 = Tangency, 3 = Curvature
@@ -76,8 +80,8 @@ CRhinoCommand::result CCommandSampleNetworkSrf::RunCommand(const CRhinoCommandCo
         ON_NurbsSurface ns;
         if (0 == RhinoNetworkSurface(ucurves, ucont[0], ns))
         {
-          context.m_doc.AddSurfaceObject(ns);
-          context.m_doc.Redraw();
+          doc->AddSurfaceObject(ns);
+          doc->Redraw();
         }
 
         return CRhinoCommand::success;
@@ -122,8 +126,8 @@ CRhinoCommand::result CCommandSampleNetworkSrf::RunCommand(const CRhinoCommandCo
   ON_NurbsSurface ns;
   if (0 == RhinoNetworkSurface(ucurves, ucont, vcurves, vcont, ns))
   {
-    context.m_doc.AddSurfaceObject(ns);
-    context.m_doc.Redraw();
+    doc->AddSurfaceObject(ns);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

@@ -30,6 +30,10 @@ static class CCommandSampleBrepFaceUserData theSampleBrepFaceUserDataCommand;
 
 CRhinoCommand::result CCommandSampleBrepFaceUserData::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Allow for picking of either a surface or a brep face.
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface to attach data");
@@ -109,7 +113,7 @@ CRhinoCommand::result CCommandSampleBrepFaceUserData::RunCommand(const CRhinoCom
   // the picked face, not the top level brep. 
   // Note, dupe_obj is now owned by Rhino, so we are not 
   // responsible for deleting it.
-  if (!context.m_doc.ReplaceObject(CRhinoObjRef(obj), dupe_obj))
+  if (!doc->ReplaceObject(CRhinoObjRef(obj), dupe_obj))
   {
     delete dupe_obj;
     return CRhinoCommand::failure;
@@ -117,7 +121,7 @@ CRhinoCommand::result CCommandSampleBrepFaceUserData::RunCommand(const CRhinoCom
 
   // Done deal
   RhinoApp().Print(L"Data attached successfully.\n");
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -41,6 +41,10 @@ CRhinoCommand::result CCommandSampleExtractCurves::RunCommand(const CRhinoComman
 {
   // Note, to extract isocurves from trimmed faces, use RhinoGetBrepFaceIsoCurves().
 
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select untrimmed surface for isocurve extraction");
   go.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -89,7 +93,7 @@ CRhinoCommand::result CCommandSampleExtractCurves::RunCommand(const CRhinoComman
     {
       CRhinoCurveObject* crv_obj = new CRhinoCurveObject();
       crv_obj->SetCurve(crv);
-      if (context.m_doc.AddObject(crv_obj))
+      if (doc->AddObject(crv_obj))
         crv_obj->Select();
       else
         delete crv_obj;
@@ -105,14 +109,14 @@ CRhinoCommand::result CCommandSampleExtractCurves::RunCommand(const CRhinoComman
     {
       CRhinoCurveObject* crv_obj = new CRhinoCurveObject();
       crv_obj->SetCurve(crv);
-      if (context.m_doc.AddObject(crv_obj))
+      if (doc->AddObject(crv_obj))
         crv_obj->Select();
       else
         delete crv_obj;
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

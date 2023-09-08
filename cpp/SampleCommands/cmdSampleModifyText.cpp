@@ -73,6 +73,10 @@ static class CCommandSampleModifyText theSampleModifyTextCommand;
 
 CRhinoCommand::result CCommandSampleModifyText::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CGetTextObject go;
   go.SetCommandPrompt(L"Select text to modify");
   go.GetObjects(1, 1);
@@ -84,7 +88,7 @@ CRhinoCommand::result CCommandSampleModifyText::RunCommand(const CRhinoCommandCo
   if (nullptr == text_object)
     return CRhinoCommand::failure;
 
-  const ON_DimStyle& dimstyle = text_object->GetEffectiveDimensionStyle(&context.m_doc);
+  const ON_DimStyle& dimstyle = text_object->GetEffectiveDimensionStyle(doc);
   const ON_Text* text = text_object->TextObject(&dimstyle);
   if (nullptr == text)
     return CRhinoCommand::failure;
@@ -117,8 +121,8 @@ CRhinoCommand::result CCommandSampleModifyText::RunCommand(const CRhinoCommandCo
   CRhinoText* new_text_object = new CRhinoText();
   new_text_object->SetTextObject(new_text);
 
-  context.m_doc.ReplaceObject(object_ref, new_text_object);
-  context.m_doc.Redraw();
+  doc->ReplaceObject(object_ref, new_text_object);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

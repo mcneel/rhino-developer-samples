@@ -33,6 +33,10 @@ static class CCommandSampleAnimator theSampleAnimatorCommand;
 
 CRhinoCommand::result CCommandSampleAnimator::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select objects to animate
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to animate");
@@ -52,7 +56,7 @@ CRhinoCommand::result CCommandSampleAnimator::RunCommand(const CRhinoCommandCont
 
   const ON_Curve* crv = gc.Object(0).Curve();
   if (0 == crv)
-    return failure;
+    return CRhinoCommand::failure;
 
   // Create an array of normalized curve parameters
   ON_SimpleArray<double> t_array(m_max_steps);
@@ -66,10 +70,10 @@ CRhinoCommand::result CCommandSampleAnimator::RunCommand(const CRhinoCommandCont
 
   // Get the real parameters along the curve
   if (!crv->GetNormalizedArcLengthPoints(m_max_steps, t_array.Array(), t_array.Array()))
-    return failure;
+    return CRhinoCommand::failure;
 
   // Create our dialog box with animation slider...
-  CSampleAnimatorDialog dlg(CWnd::FromHandle(RhinoApp().MainWnd()), context.m_doc.RuntimeSerialNumber());
+  CSampleAnimatorDialog dlg(CWnd::FromHandle(RhinoApp().MainWnd()), doc->RuntimeSerialNumber());
   dlg.m_max_steps = m_max_steps;
   dlg.m_start = crv->PointAtStart();
 
@@ -84,7 +88,7 @@ CRhinoCommand::result CCommandSampleAnimator::RunCommand(const CRhinoCommandCont
   for (i = 0; i < go.ObjectCount(); i++)
   {
     CRhinoObjRef ref = go.Object(i);
-    context.m_doc.HideObject(ref);
+    doc->HideObject(ref);
     dlg.m_conduit.m_objects.Append(ref.Object());
   }
 
@@ -96,15 +100,15 @@ CRhinoCommand::result CCommandSampleAnimator::RunCommand(const CRhinoCommandCont
   for (i = 0; i < go.ObjectCount(); i++)
   {
     CRhinoObjRef ref = go.Object(i);
-    context.m_doc.ShowObject(ref);
+    doc->ShowObject(ref);
     if (rc == IDOK)
     {
       ON_Xform xform = dlg.m_conduit.m_xform;
-      context.m_doc.TransformObject(ref, xform);
+      doc->TransformObject(ref, xform);
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

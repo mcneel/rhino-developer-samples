@@ -29,6 +29,10 @@ static class CCommandSampleShortPath theSampleShortPathCommand;
 
 CRhinoCommand::result CCommandSampleShortPath::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface for creating a short curve between two points on the surface");
   go.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -75,7 +79,7 @@ CRhinoCommand::result CCommandSampleShortPath::RunCommand(const CRhinoCommandCon
     return CRhinoCommand::nothing;
   }
 
-  double tol = context.m_doc.AbsoluteTolerance();
+  double tol = doc->AbsoluteTolerance();
   ON_Curve* crv = RhinoShortPath(*srf, ON_2dPoint(u0, v0), ON_2dPoint(u1, v1), tol);
   if (0 == crv)
   {
@@ -85,9 +89,9 @@ CRhinoCommand::result CCommandSampleShortPath::RunCommand(const CRhinoCommandCon
 
   CRhinoCurveObject* crv_obj = new CRhinoCurveObject();
   crv_obj->SetCurve(crv);
-  context.m_doc.AddObject(crv_obj);
+  doc->AddObject(crv_obj);
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

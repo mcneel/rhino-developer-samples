@@ -28,6 +28,10 @@ static class CCommandSampleObjectPlotWeight theSampleObjectPlotWeightCommand;
 
 CRhinoCommand::result CCommandSampleObjectPlotWeight::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects");
   go.EnableSubObjectSelect(FALSE);
@@ -46,11 +50,11 @@ CRhinoCommand::result CCommandSampleObjectPlotWeight::RunCommand(const CRhinoCom
       CRhinoObjectAttributes attrib(obj->Attributes());
       attrib.m_plot_weight_mm = 0.25; // Some weight in mm
       attrib.SetPlotWeightSource(ON::plot_weight_from_object);
-      context.m_doc.ModifyObjectAttributes(obj_ref, attrib);
+      doc->ModifyObjectAttributes(obj_ref, attrib);
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

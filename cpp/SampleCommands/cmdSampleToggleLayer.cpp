@@ -29,6 +29,10 @@ static class CCommandSampleToggleLayer theSampleToggleLayerCommand;
 
 CRhinoCommand::result CCommandSampleToggleLayer::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Layer to toggle visiblity");
   gs.GetString();
@@ -40,7 +44,7 @@ CRhinoCommand::result CCommandSampleToggleLayer::RunCommand(const CRhinoCommandC
   if (layer_name.IsEmpty())
     return CRhinoCommand::nothing;
 
-  CRhinoLayerTable& layer_table = context.m_doc.m_layer_table;
+  CRhinoLayerTable& layer_table = doc->m_layer_table;
   int layer_index = layer_table.FindLayerFromFullPathName(layer_name, -1);
   if (layer_index < 0)
   {
@@ -55,7 +59,7 @@ CRhinoCommand::result CCommandSampleToggleLayer::RunCommand(const CRhinoCommandC
   onlayer.SetPersistentVisibility(bVisible);
 
   layer_table.ModifyLayer(onlayer, layer_index, true);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

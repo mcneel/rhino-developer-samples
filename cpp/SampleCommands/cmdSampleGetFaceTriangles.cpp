@@ -68,6 +68,10 @@ static class CCommandSampleGetFaceTriangles theSampleGetFaceTrianglesCommand;
 
 CRhinoCommand::result CCommandSampleGetFaceTriangles::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select polysurface to mesh");
   go.SetGeometryFilter(CRhinoGetObject::polysrf_object);
@@ -91,11 +95,11 @@ CRhinoCommand::result CCommandSampleGetFaceTriangles::RunCommand(const CRhinoCom
       CRhinoMeshObject* mesh_obj = new CRhinoMeshObject();
       // ~CRhinoMeshObject() will delete this mesh
       mesh_obj->SetMesh(mesh);
-      context.m_doc.AddObject(mesh_obj);
+      doc->AddObject(mesh_obj);
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -29,6 +29,10 @@ static class CCommandSampleCurveLinetype theSampleCurveLinetypeCommand;
 
 CRhinoCommand::result CCommandSampleCurveLinetype::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curve to change linetype");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -63,8 +67,8 @@ CRhinoCommand::result CCommandSampleCurveLinetype::RunCommand(const CRhinoComman
       new_attributes.SetLinetypeSource(ON::linetype_from_object);
     }
 
-    context.m_doc.ModifyObjectAttributes(obj_ref, new_attributes);
-    context.m_doc.Redraw();
+    doc->ModifyObjectAttributes(obj_ref, new_attributes);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

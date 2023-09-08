@@ -10,6 +10,8 @@ void CSampleCustomRenderMeshEventWatcher::OnReplaceObject(CRhinoDoc& doc, CRhino
   // If object has sample custom render mesh user data then tell custom render mesh manager that it's CRM's need to be updated
   if (object.Attributes().GetUserData(SampleCustomRenderMeshUserDataUuid) != nullptr)
   {
+    // TODO: ANDY -- this is not supposed to be called by clients so why is it here?
+    // RhRdkCustomRenderMeshManager2 does not have this function.
     RhRdkCustomRenderMeshManager().OnRhinoObjectChanged(doc, &object);
   }
 }

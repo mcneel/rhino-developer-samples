@@ -105,6 +105,10 @@ static class CCommandSampleOrientOnMesh theSampleOrientOnMeshCommand;
 
 CRhinoCommand::result CCommandSampleOrientOnMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select objects to orient
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to orient");
@@ -162,9 +166,9 @@ CRhinoCommand::result CCommandSampleOrientOnMesh::RunCommand(const CRhinoCommand
     for (int i = 0; i < go.ObjectCount(); i++)
     {
       CRhinoObjRef obj_ref = go.Object(i);
-      context.m_doc.TransformObject(obj_ref, xform, false);
+      doc->TransformObject(obj_ref, xform, false);
     }
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

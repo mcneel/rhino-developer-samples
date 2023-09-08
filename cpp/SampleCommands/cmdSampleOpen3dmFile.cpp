@@ -30,6 +30,10 @@ static class CCommandSampleOpen3dmFile theSampleOpen3dmFileCommand;
 
 CRhinoCommand::result CCommandSampleOpen3dmFile::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetFileDialog gf;
   gf.SetScriptMode(context.IsInteractive() ? FALSE : TRUE);
   bool rc = gf.DisplayFileDialog(CRhinoGetFileDialog::open_rhino_3dm_file_dialog, nullptr, RhinoApp().MainWnd());
@@ -50,7 +54,7 @@ CRhinoCommand::result CCommandSampleOpen3dmFile::RunCommand(const CRhinoCommandC
   // In case the path string contains spaces, wrap the string in double-quote characters.
   ON_wString script;
   script.Format(L"_-Open \"%ls\" _Enter", static_cast<const wchar_t*>(filename));
-  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), static_cast<const wchar_t*>(script), 0);
+  RhinoApp().RunScript(doc->RuntimeSerialNumber(), static_cast<const wchar_t*>(script), 0);
 
   return CRhinoCommand::success;
 }

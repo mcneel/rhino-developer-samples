@@ -27,6 +27,10 @@ static class CCommandSampleSplitBrep theSampleSplitBrepCommand;
 
 CRhinoCommand::result CCommandSampleSplitBrep::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface or polysurface to split");
   go.SetGeometryFilter(CRhinoGetObject::surface_object | CRhinoGetObject::polysrf_object);
@@ -50,7 +54,7 @@ CRhinoCommand::result CCommandSampleSplitBrep::RunCommand(const CRhinoCommandCon
   if (0 == cutter)
     return CRhinoCommand::failure;
 
-  double tol = context.m_doc.AbsoluteTolerance();
+  double tol = doc->AbsoluteTolerance();
 
   ON_SimpleArray<ON_Brep*> pieces;
   if (RhinoBrepSplit(*brep, *cutter, tol, pieces))
@@ -62,11 +66,11 @@ CRhinoCommand::result CCommandSampleSplitBrep::RunCommand(const CRhinoCommandCon
     {
       CRhinoBrepObject* piece_obj = new CRhinoBrepObject(attribs);
       piece_obj->SetBrep(pieces[i]);
-      context.m_doc.AddObject(piece_obj);
+      doc->AddObject(piece_obj);
     }
 
-    context.m_doc.DeleteObject(CRhinoObjRef(brep_obj));
-    context.m_doc.Redraw();
+    doc->DeleteObject(CRhinoObjRef(brep_obj));
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

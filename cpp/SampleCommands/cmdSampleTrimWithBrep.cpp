@@ -30,6 +30,10 @@ CRhinoCommand::result CCommandSampleTrimWithBrep::RunCommand(const CRhinoCommand
 {
   // Works similar to Grasshopper's "Trim with Brep (Trim)" component
 
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select curves to split
   CRhinoGetObject gc;
   gc.SetCommandPrompt(L"Select curves to split");
@@ -56,11 +60,11 @@ CRhinoCommand::result CCommandSampleTrimWithBrep::RunCommand(const CRhinoCommand
     return CRhinoCommand::failure;
 
   // Make some output layers
-  int inside_index = context.m_doc.m_layer_table.AddLayer(L"Inside", ON_Color(255, 0, 0), true);
-  int outside_index = context.m_doc.m_layer_table.AddLayer(L"Outside", ON_Color(0, 0, 255), true);
+  int inside_index = doc->m_layer_table.AddLayer(L"Inside", ON_Color(255, 0, 0), true);
+  int outside_index = doc->m_layer_table.AddLayer(L"Outside", ON_Color(0, 0, 255), true);
 
-  double tol = context.m_doc.AbsoluteTolerance();
-  double angtol = context.m_doc.AngleToleranceRadians();
+  double tol = doc->AbsoluteTolerance();
+  double angtol = doc->AngleToleranceRadians();
 
   // Process each curve
   for (int i = 0; i < gc.ObjectCount(); i++)
@@ -91,21 +95,21 @@ CRhinoCommand::result CCommandSampleTrimWithBrep::RunCommand(const CRhinoCommand
         bool inside = RhinoIsPointInBrep(brep, point, tol, false);
 
         CRhinoObjectAttributes attributes;
-        context.m_doc.GetDefaultObjectAttributes(attributes);
+        doc->GetDefaultObjectAttributes(attributes);
         attributes.m_layer_index = (inside) ? inside_index : outside_index;
 
         CRhinoCurveObject* curve_object = new CRhinoCurveObject(attributes);
         curve_object->SetCurve(piece);
-        context.m_doc.AddObject(curve_object);
+        doc->AddObject(curve_object);
         ok = true;
       }
     }
 
     if (ok)
-      context.m_doc.DeleteObject(object_ref);
+      doc->DeleteObject(object_ref);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

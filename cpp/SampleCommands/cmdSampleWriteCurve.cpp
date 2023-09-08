@@ -191,6 +191,10 @@ static class CCommandSampleReadCurve theSampleReadCurveCommand;
 
 CRhinoCommand::result CCommandSampleReadCurve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_wString filename;
   if (context.IsInteractive())
   {
@@ -241,8 +245,8 @@ CRhinoCommand::result CCommandSampleReadCurve::RunCommand(const CRhinoCommandCon
   {
     CRhinoCurveObject* curve_object = new CRhinoCurveObject();
     curve_object->SetCurve(curve);
-    context.m_doc.AddObject(curve_object);
-    context.m_doc.Redraw();
+    doc->AddObject(curve_object);
+    doc->Redraw();
   }
   else
   {

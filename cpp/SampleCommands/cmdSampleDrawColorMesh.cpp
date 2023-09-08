@@ -93,6 +93,10 @@ static class CCommandSampleDrawColorMesh theSampleDrawColorMeshCommand;
 
 CRhinoCommand::result CCommandSampleDrawColorMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_Sphere sphere;
   CArgsRhinoGetSphere args;
   CRhinoCommand::result rc = RhinoGetSphere(args, sphere);
@@ -101,17 +105,17 @@ CRhinoCommand::result CCommandSampleDrawColorMesh::RunCommand(const CRhinoComman
 
   ON_Mesh* pMesh = RhinoMeshSphere(sphere, 10, 10);
   if (!pMesh)
-    return failure;
+    return CRhinoCommand::failure;
 
   CConduitDrawColorMesh conduit(pMesh);
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
-  context.m_doc.Regen();
+  conduit.Enable(doc->RuntimeSerialNumber());
+  doc->Regen();
 
   CRhinoGetPoint gp;
   gp.GetPoint();
 
   conduit.Disable();
-  context.m_doc.Regen();
+  doc->Regen();
 
   delete pMesh;
 

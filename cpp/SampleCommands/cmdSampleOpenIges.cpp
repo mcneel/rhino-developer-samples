@@ -31,6 +31,10 @@ static class CCommandSampleOpenIges theSampleOpenIgesCommand;
 
 CRhinoCommand::result CCommandSampleOpenIges::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_wString filename;
 
   if (context.IsInteractive())
@@ -76,12 +80,12 @@ CRhinoCommand::result CCommandSampleOpenIges::RunCommand(const CRhinoCommandCont
   // open a file (if the current document has been modified in any way).
   // But, you will (also) loose any modifications to the current document.
   // So, use the following line of code carefully.
-  context.m_doc.SetModifiedFlag(FALSE);
+  doc->SetModifiedFlag(FALSE);
 
   ON_wString script;
   script.Format(L"_-Open \"%ls\" _Enter _Enter _Enter", static_cast<const wchar_t*>(filename));
 
-  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), script, 0);
+  RhinoApp().RunScript(doc->RuntimeSerialNumber(), script, 0);
 
   return CRhinoCommand::success;
 }

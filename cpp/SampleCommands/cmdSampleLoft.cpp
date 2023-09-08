@@ -61,6 +61,10 @@ CCommandSampleLoft::CCommandSampleLoft()
 
 CRhinoCommand::result CCommandSampleLoft::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select curves to loft
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curves to loft");
@@ -117,7 +121,7 @@ CRhinoCommand::result CCommandSampleLoft::RunCommand(const CRhinoCommandContext&
 
   // Do the loft calculation
   ON_SimpleArray<ON_Brep*> out_breps;
-  CRhinoCommand::result rc = CreateOutput(context.m_doc, args, false, out_breps);
+  CRhinoCommand::result rc = CreateOutput(*doc, args, false, out_breps);
 
   // Delete the loft curves so we do not leak memory.
   for (int i = 0; i < args.m_loftcurves.Count(); i++)
@@ -135,7 +139,7 @@ CRhinoCommand::result CCommandSampleLoft::RunCommand(const CRhinoCommandContext&
     brep_obj = new CRhinoBrepObject();
     brep_obj->SetBrep(out_breps[i]);
     out_breps[i] = nullptr;
-    context.m_doc.AddObject(brep_obj);
+    doc->AddObject(brep_obj);
   }
 
   if (1 == out_brep_count && nullptr != brep_obj)
@@ -143,10 +147,10 @@ CRhinoCommand::result CCommandSampleLoft::RunCommand(const CRhinoCommandContext&
     CRhinoHistory history(*this);
     bool bSplitCreasedSurfaces = RhinoApp().AppSettings().GeneralSettings().m_bSplitCreasedSurfaces;
     if (WriteHistory(history, in_curves, bSplitCreasedSurfaces))
-      context.m_doc.m_history_record_table.CreateObjectHistory(brep_obj, history);
+      doc->m_history_record_table.CreateObjectHistory(brep_obj, history);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return rc;
 }

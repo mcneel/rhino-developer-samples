@@ -194,7 +194,11 @@ static class CCommandSampleCreatePlanarMeshes theSampleCreatePlanarMeshesCommand
 
 CRhinoCommand::result CCommandSampleCreatePlanarMeshes::RunCommand(const CRhinoCommandContext& context)
 {
-  CRhinoGetClosedPlanarPolyline go(context.m_doc.AbsoluteTolerance());
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  CRhinoGetClosedPlanarPolyline go(doc->AbsoluteTolerance());
   go.SetCommandPrompt(L"Select closed, planar polylines to mesh");
   go.EnableSubObjectSelect(false);
   go.GetObjects(1, 0);
@@ -217,10 +221,10 @@ CRhinoCommand::result CCommandSampleCreatePlanarMeshes::RunCommand(const CRhinoC
   {
     CRhinoMeshObject* mesh_obj = new CRhinoMeshObject();
     mesh_obj->SetMesh(meshes[i]);
-    context.m_doc.AddObject(mesh_obj);
+    doc->AddObject(mesh_obj);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

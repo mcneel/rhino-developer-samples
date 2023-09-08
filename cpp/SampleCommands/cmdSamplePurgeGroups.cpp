@@ -27,9 +27,13 @@ static class CCommandSamplePurgeGroups theSamplePurgeGroupsCommand;
 
 CRhinoCommand::result CCommandSamplePurgeGroups::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   int deleted_count = 0;
 
-  CRhinoGroupTable& group_table = context.m_doc.m_group_table;
+  CRhinoGroupTable& group_table = doc->m_group_table;
   const int group_count = group_table.GroupCount();
 
   int group_index = 0;

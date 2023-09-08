@@ -29,15 +29,19 @@ static class CCommandSampleOptionsListCtrl theSampleOptionsListCtrlCommand;
 
 CRhinoCommand::result CCommandSampleOptionsListCtrl::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_UUID tabId = CSampleOptionsListCtrlPageDialog::ID();
 
   if (context.IsInteractive())
   {
-    CRhinoTabbedDockBarDialog::OpenDockbarTab(context.m_doc, tabId);
+    CRhinoTabbedDockBarDialog::OpenDockbarTab(*doc, tabId);
   }
   else
   {
-    bool bVisible = CRhinoTabbedDockBarDialog::IsTabVisible(context.m_doc, tabId);
+    bool bVisible = CRhinoTabbedDockBarDialog::IsTabVisible(*doc, tabId);
 
     ON_wString str;
     str.Format(L"%ls is %ls. New value", LocalCommandName(), bVisible ? L"visible" : L"hidden");
@@ -58,11 +62,11 @@ CRhinoCommand::result CCommandSampleOptionsListCtrl::RunCommand(const CRhinoComm
     int option_index = option->m_option_index;
 
     if (h_option == option_index && bVisible)
-      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, false, false, nullptr);
+      CRhinoTabbedDockBarDialog::ShowDockbarTab(*doc, tabId, false, false, nullptr);
     else if (s_option == option_index && !bVisible)
-      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, true, true, nullptr);
+      CRhinoTabbedDockBarDialog::ShowDockbarTab(*doc, tabId, true, true, nullptr);
     else if (t_option == option_index)
-      CRhinoTabbedDockBarDialog::ShowDockbarTab(context.m_doc, tabId, !bVisible, !bVisible, nullptr);
+      CRhinoTabbedDockBarDialog::ShowDockbarTab(*doc, tabId, !bVisible, !bVisible, nullptr);
   }
 
   return CRhinoCommand::success;
