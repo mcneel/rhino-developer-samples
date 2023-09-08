@@ -357,3 +357,4 @@ venv/
 *.rhl
 
 .DS_Store
+.env

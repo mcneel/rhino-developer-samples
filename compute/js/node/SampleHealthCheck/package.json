@@ -1,0 +1,20 @@
+{
+  "name": "samplehealthcheck",
+  "version": "0.0.2",
+  "description": "Test calling compute health check",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rhino.compute",
+    "node.js"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "compute-rhino3d": "^0.13.0-beta",
+    "dotenv": "^16.3.1"
+  }
+}
