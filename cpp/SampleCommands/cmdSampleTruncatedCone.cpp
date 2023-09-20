@@ -27,6 +27,10 @@ static class CCommandSampleTruncatedCone theSampleTruncatedConeCommand;
 
 CRhinoCommand::result CCommandSampleTruncatedCone::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_Plane bottom_plane = ON_Plane::World_xy;
   ON_Circle bottom_circle(bottom_plane, 5.0);
 
@@ -48,8 +52,8 @@ CRhinoCommand::result CCommandSampleTruncatedCone::RunCommand(const CRhinoComman
   ON_Brep truncated_cone;
   ON_BrepRevSurface(rev_surface, FALSE, FALSE, &truncated_cone);
 
-  context.m_doc.AddBrepObject(truncated_cone);
-  context.m_doc.Redraw();
+  doc->AddBrepObject(truncated_cone);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

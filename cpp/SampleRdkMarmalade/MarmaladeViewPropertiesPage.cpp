@@ -35,13 +35,13 @@ BOOL CMarmaladeViewPropertiesPage::OnInitDialog()
 
 void CMarmaladeViewPropertiesPage::UpdatePage(IRhinoPropertiesPanelPageEventArgs& ea)
 {
-	const auto* pDoc = ea.Document();
-	if (nullptr == pDoc)
+	const auto* doc = ea.Document();
+	if (nullptr == doc)
 		return;
 
 	m_bInit = true;
 
-	const auto vsn = pDoc->ActiveRhinoViewSerialNumber();
+	const auto vsn = doc->ActiveRhinoViewSerialNumber();
 	const auto* pView = CRhinoView::FromRuntimeSerialNumber(vsn);
 	const auto pt = pView->ActiveViewport().Target();
 	ON_wString s;
@@ -61,11 +61,11 @@ void CMarmaladeViewPropertiesPage::OnKillfocusEditTarget()
 		return;
 
 	const auto dsn = PropertiesPanelPageHost()->DocumentRuntimeSerialNumber();
-	auto* pDoc = CRhinoDoc::FromRuntimeSerialNumber(dsn);
-	if (nullptr == pDoc)
+	auto* doc = CRhinoDoc::FromRuntimeSerialNumber(dsn);
+	if (nullptr == doc)
 		return;
 
-	const auto vsn = pDoc->ActiveRhinoViewSerialNumber();
+	const auto vsn = doc->ActiveRhinoViewSerialNumber();
 	const auto* pView = CRhinoView::FromRuntimeSerialNumber(vsn);
 
 	CString s;
@@ -78,7 +78,7 @@ void CMarmaladeViewPropertiesPage::OnKillfocusEditTarget()
 	vec.z = StringToFloat(s);
 	pView->ActiveViewport().SetTarget(vec);
 
-	pDoc->DeferredRedraw();
+	doc->DeferredRedraw();
 }
 
 bool CMarmaladeViewPropertiesPage::IncludeInNavigationControl(IRhinoPropertiesPanelPageEventArgs&) const

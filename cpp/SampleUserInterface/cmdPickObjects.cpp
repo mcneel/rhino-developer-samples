@@ -31,7 +31,7 @@ static class CCommandSamplePickObjects theSamplePickObjectsCommand;
 CRhinoCommand::result CCommandSamplePickObjects::RunCommand(const CRhinoCommandContext& context)
 {
   CWnd* pParentWnd = CWnd::FromHandle(RhinoApp().MainWnd());
-  CSamplePickObjectsDialog dialog(pParentWnd, context.m_doc.RuntimeSerialNumber());
+  CSamplePickObjectsDialog dialog(pParentWnd, context.m_rhino_doc_sn);
   dialog.DoModal();
   return CRhinoCommand::success;
 }

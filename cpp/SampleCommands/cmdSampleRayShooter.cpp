@@ -27,6 +27,10 @@ static class CCommandSampleRayShooter theSampleRayShooterCommand;
 
 CRhinoCommand::result CCommandSampleRayShooter::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select reflecting surfaces
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select reflecting surfaces");
@@ -135,7 +139,7 @@ CRhinoCommand::result CCommandSampleRayShooter::RunCommand(const CRhinoCommandCo
       break;
 
     // Verify the hit point was on the active region of the face
-    if (!RhinoIsPointOnFace(*face, context.m_doc.AbsoluteTolerance(), true, hit.m_b[0], hit.m_b[1]))
+    if (!RhinoIsPointOnFace(*face, doc->AbsoluteTolerance(), true, hit.m_b[0], hit.m_b[1]))
       break;
 
     Q = hit.m_B[0]; // surface point
@@ -156,8 +160,8 @@ CRhinoCommand::result CCommandSampleRayShooter::RunCommand(const CRhinoCommandCo
 
   if (polyline.Count() >= 2)
   {
-    context.m_doc.AddCurveObject(polyline);
-    context.m_doc.Redraw();
+    doc->AddCurveObject(polyline);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

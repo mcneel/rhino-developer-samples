@@ -28,6 +28,10 @@ static class CCommandSampleMeshSplit theSampleMeshSplitCommand;
 
 CRhinoCommand::result CCommandSampleMeshSplit::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go0;
   go0.SetCommandPrompt(L"Select mesh to split");
   go0.SetGeometryFilter(CRhinoGetObject::mesh_object);
@@ -103,13 +107,13 @@ CRhinoCommand::result CCommandSampleMeshSplit::RunCommand(const CRhinoCommandCon
       mesh_obj->SetMesh(OutMeshes[i]);
       OutMeshes[i] = nullptr;
       if (i == 0)
-        context.m_doc.ReplaceObject(obj, mesh_obj);
+        doc->ReplaceObject(obj, mesh_obj);
       else
-        context.m_doc.AddObject(mesh_obj);
+        doc->AddObject(mesh_obj);
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -29,13 +29,17 @@ static class CCommandSampleNewFloatingViewport theSampleNewFloatingViewportComma
 
 CRhinoCommand::result CCommandSampleNewFloatingViewport::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_SimpleArray<ON_UUID> viewport_ids;
   ON_SimpleArray<CRhinoView*> view_list;
   CRhinoView* view = 0;
   int i = 0;
 
   // Build a list of (current) viewport ids
-  context.m_doc.GetViewList(view_list, true, false);
+  doc->GetViewList(view_list, true, false);
   for (i = 0; i < view_list.Count(); i++)
   {
     view = view_list[i];
@@ -45,10 +49,10 @@ CRhinoCommand::result CCommandSampleNewFloatingViewport::RunCommand(const CRhino
   view_list.Empty();
 
   // Create a new view
-  context.m_doc.NewView(ON_3dmView(), true);
+  doc->NewView(ON_3dmView(), true);
 
   // Find the viewport (id) that was just created
-  context.m_doc.GetViewList(view_list, true, false);
+  doc->GetViewList(view_list, true, false);
   for (i = 0; i < view_list.Count(); i++)
   {
     view = view_list[i];

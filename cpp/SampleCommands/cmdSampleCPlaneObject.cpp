@@ -29,6 +29,10 @@ static class CCommandSampleCPlaneObject theSampleCPlaneObjectCommand;
 
 CRhinoCommand::result CCommandSampleCPlaneObject::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoView* view = RhinoApp().ActiveView();
   if (0 == view)
     return CRhinoCommand::failure;
@@ -55,7 +59,7 @@ CRhinoCommand::result CCommandSampleCPlaneObject::RunCommand(const CRhinoCommand
 
   if (nullptr != (curve = objref.Curve()))
   {
-    rc = curve->IsPlanar(&plane, context.m_doc.AbsoluteTolerance());
+    rc = curve->IsPlanar(&plane, doc->AbsoluteTolerance());
     if (rc)
       plane.SetOrigin(curve->PointAtStart());
     else

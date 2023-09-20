@@ -27,6 +27,10 @@ static class CCommandSampleElevation theSampleElevationCommand;
 
 CRhinoCommand::result CCommandSampleElevation::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   double x = 0.0, y = 0.0;
   ON_wString sx, sy, sz;
 
@@ -89,7 +93,7 @@ CRhinoCommand::result CCommandSampleElevation::RunCommand(const CRhinoCommandCon
   // Intersect the line with the brep
   ON_SimpleArray<ON_Curve*> curves;
   ON_3dPointArray points;
-  bool rc = RhinoCurveBrepIntersect(line, *brep, context.m_doc.AbsoluteTolerance(), curves, points);
+  bool rc = RhinoCurveBrepIntersect(line, *brep, doc->AbsoluteTolerance(), curves, points);
   if (false == rc || 0 == points.Count())
   {
     RhinoApp().Print(L"No maximum surface Z coordinate at %ls,%ls found.\n", static_cast<const wchar_t*>(sx), static_cast<const wchar_t*>(sy));
@@ -112,7 +116,7 @@ CRhinoCommand::result CCommandSampleElevation::RunCommand(const CRhinoCommandCon
   RhinoApp().Print(L"Maximum surface Z coordinate at %ls,%ls is %ls.\n", static_cast<const wchar_t*>(sx), static_cast<const wchar_t*>(sy), static_cast<const wchar_t*>(sz));
 
   // Optional, add a point object
-  context.m_doc.AddPointObject(pt);
+  doc->AddPointObject(pt);
 
   // Delete any overlap intersection curves that might have been calculated
   for (i = 0; i < curves.Count(); i++)
@@ -121,7 +125,7 @@ CRhinoCommand::result CCommandSampleElevation::RunCommand(const CRhinoCommandCon
     curves[i] = 0;
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

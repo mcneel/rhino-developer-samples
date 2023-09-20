@@ -27,6 +27,10 @@ static class CCommandSampleMeshPolysrf theSampleMeshPolysrfCommand;
 
 CRhinoCommand::result CCommandSampleMeshPolysrf::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select polysurface to mesh");
   go.SetGeometryFilter(CRhinoGetObject::polysrf_object);
@@ -46,10 +50,10 @@ CRhinoCommand::result CCommandSampleMeshPolysrf::RunCommand(const CRhinoCommandC
   {
     ON_Mesh mesh;
     if (brep->Face(i)->CreateMesh(mp, &mesh))
-      context.m_doc.AddMeshObject(mesh);
+      doc->AddMeshObject(mesh);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

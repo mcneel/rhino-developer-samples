@@ -62,18 +62,25 @@ static class CCommandSampleChangeQueue theSampleChangeQueueCommand;
 
 CRhinoCommand::result CCommandSampleChangeQueue::RunCommand(const CRhinoCommandContext& context)
 {
-	CSampleChangeQueuePlugIn& plugIn = SampleChangeQueuePlugIn();
-	if (plugIn.m_pSampleChangeQueue) {
-		RhinoApp().Print(L"A SampleChangeQueue is already running\n");
-		return CRhinoCommand::nothing;
-	}
-	CRhinoView* rhinoView = RhinoApp().ActiveView();
-	const ON_3dmView& vw = rhinoView->ActiveViewport().View();
-	// construct our changequeue.
-	plugIn.m_pSampleChangeQueue = new SampleChangeQueue(context.m_doc, PlugIn()->PlugInID(), vw, nullptr, false, true);
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
-	// we HAVE to run CreateWorld on the main thread, so lets do it here - commands run on the main thread.
-	plugIn.m_pSampleChangeQueue->CreateWorld(true);
+  CSampleChangeQueuePlugIn& plugIn = SampleChangeQueuePlugIn();
+  if (plugIn.m_pSampleChangeQueue) {
+  	RhinoApp().Print(L"A SampleChangeQueue is already running\n");
+  	return CRhinoCommand::nothing;
+  }
+
+  CRhinoView* rhinoView = RhinoApp().ActiveView();
+  const ON_3dmView& vw = rhinoView->ActiveViewport().View();
+
+  // construct our changequeue.
+  plugIn.m_pSampleChangeQueue = new SampleChangeQueue(*doc, PlugIn()->PlugInID(), vw, nullptr, false, true);
+
+  // we HAVE to run CreateWorld on the main thread, so lets do it here - commands run on the main thread.
+  plugIn.m_pSampleChangeQueue->CreateWorld(true);
+
   return CRhinoCommand::success;
 }
 

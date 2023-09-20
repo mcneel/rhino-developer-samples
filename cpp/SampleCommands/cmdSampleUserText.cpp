@@ -27,6 +27,10 @@ static class CCommandSampleSetUserText theSampleSetUserTextCommand;
 
 CRhinoCommand::result CCommandSampleSetUserText::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   bool bAttachToGeometry = false;
 
   CRhinoGetObject go;
@@ -86,7 +90,7 @@ CRhinoCommand::result CCommandSampleSetUserText::RunCommand(const CRhinoCommandC
         if (geometry)
         {
           geometry->SetUserString(key, string_value);
-          bool rc = context.m_doc.ReplaceObject(object_ref, object_copy);
+          bool rc = doc->ReplaceObject(object_ref, object_copy);
           if (!rc)
             delete object_copy; // don't leak...
         }
@@ -96,7 +100,7 @@ CRhinoCommand::result CCommandSampleSetUserText::RunCommand(const CRhinoCommandC
     {
       CRhinoObjectAttributes attrib = object->Attributes();
       attrib.SetUserString(key, string_value);
-      context.m_doc.ModifyObjectAttributes(object_ref, attrib, TRUE);
+      doc->ModifyObjectAttributes(object_ref, attrib, TRUE);
     }
   }
 
@@ -223,6 +227,10 @@ static class CCommandSampleSetDocumentUserText theSampleSetDocumentUserTextComma
 
 CRhinoCommand::result CCommandSampleSetDocumentUserText::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Text key");
   gs.GetString();
@@ -238,7 +246,7 @@ CRhinoCommand::result CCommandSampleSetDocumentUserText::RunCommand(const CRhino
 
   ON_wString string_value = gs.String();
 
-  context.m_doc.SetUserString(key, string_value);
+  doc->SetUserString(key, string_value);
 
   return CRhinoCommand::success;
 }
@@ -276,9 +284,13 @@ static class CCommandSampleGetDocumentUserText theSampleGetDocumentUserTextComma
 
 CRhinoCommand::result CCommandSampleGetDocumentUserText::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_ClassArray<ON_UserString> user_strings;
 
-  if (context.m_doc.GetUserStrings(user_strings))
+  if (doc->GetUserStrings(user_strings))
   {
     int i, count = user_strings.Count();
     RhinoApp().Print(L"%d document user strings.\n", count);

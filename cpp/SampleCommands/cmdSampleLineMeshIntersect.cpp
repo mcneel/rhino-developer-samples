@@ -29,6 +29,10 @@ static class CCommandSampleLineMeshIntersect theSampleLineMeshIntersectCommand;
 
 CRhinoCommand::result CCommandSampleLineMeshIntersect::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject gm;
   gm.SetCommandPrompt(L"Select mesh to intersect");
   gm.SetGeometryFilter(CRhinoGetObject::mesh_object);
@@ -74,11 +78,11 @@ CRhinoCommand::result CCommandSampleLineMeshIntersect::RunCommand(const CRhinoCo
       for (int i = 0; i < cmx.Count(); i++)
       {
         RhinoApp().Print(L"Intesection found at face index = %d.\n", cmx[i].m_M[0].m_face_index);
-        CRhinoPointObject* point_object = context.m_doc.AddPointObject(cmx[i].m_M[0].m_P);
+        CRhinoPointObject* point_object = doc->AddPointObject(cmx[i].m_M[0].m_P);
         if (point_object)
           point_object->Select();
       }
-      context.m_doc.Redraw();
+      doc->Redraw();
     }
 
     if (1 == cmx.Count())

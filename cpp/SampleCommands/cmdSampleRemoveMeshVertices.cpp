@@ -45,6 +45,10 @@ static class CCommandSampleRemoveMeshVertices theSampleRemoveMeshVerticesCommand
 
 CRhinoCommand::result CCommandSampleRemoveMeshVertices::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select mesh vertices to remove");
   go.SetGeometryFilter(CRhinoGetObject::meshvertex_filter);
@@ -121,11 +125,11 @@ CRhinoCommand::result CCommandSampleRemoveMeshVertices::RunCommand(const CRhinoC
     if (new_mesh.DeleteComponents(ci_list))
     {
       new_mesh.Compact();
-      context.m_doc.ReplaceObject(CRhinoObjRef(helper.m_mesh_obj), new_mesh);
+      doc->ReplaceObject(CRhinoObjRef(helper.m_mesh_obj), new_mesh);
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

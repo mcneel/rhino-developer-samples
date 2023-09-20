@@ -222,7 +222,7 @@ CRhinoCommand::result CCommandSampleMeshPreviewImage::RunCommand(const CRhinoCom
 
   ON_Mesh* mesh = RhinoMeshSphere(sphere, 10, 10);
   if (nullptr == mesh)
-    return failure;
+    return CRhinoCommand::failure;
 
   ON_SimpleArray<const ON_Mesh*> meshes;
   meshes.Append(mesh);

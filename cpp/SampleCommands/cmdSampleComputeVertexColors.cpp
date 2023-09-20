@@ -27,9 +27,9 @@ static class CCommandSampleComputeVertexColors theSampleComputeVertexColorsComma
 
 CRhinoCommand::result CCommandSampleComputeVertexColors::RunCommand(const CRhinoCommandContext& context)
 {
-  auto* pDoc = context.Document();
-  if (nullptr == pDoc)
-    return failure;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select a mesh with a texture map assigned");
@@ -43,15 +43,15 @@ CRhinoCommand::result CCommandSampleComputeVertexColors::RunCommand(const CRhino
   if (nullptr == mesh_obj)
     return CRhinoCommand::failure;
 
-  auto* mesh_with_colors = ComputeVertexColors(*pDoc, mesh_obj);
+  auto* mesh_with_colors = ComputeVertexColors(*doc, mesh_obj);
   if (nullptr == mesh_with_colors)
     return CRhinoCommand::failure;
 
   auto* mesh_with_colors_obj = new CRhinoMeshObject(mesh_obj->Attributes());
   mesh_with_colors_obj->SetMesh(mesh_with_colors);
-  pDoc->ReplaceObject(obj_ref, mesh_with_colors_obj);
+  doc->ReplaceObject(obj_ref, mesh_with_colors_obj);
 
-  pDoc->Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

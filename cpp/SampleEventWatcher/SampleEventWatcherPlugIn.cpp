@@ -197,6 +197,10 @@ BOOL CRhinoGetTranslationPoint::CalculateTransform(CRhinoViewport& vp, const ON_
 
 CRhinoCommand::result CSampleEventWatcherPlugIn::MoveObjects(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to move");
   go.GetObjects(1, 0);
@@ -228,9 +232,9 @@ CRhinoCommand::result CSampleEventWatcherPlugIn::MoveObjects(const CRhinoCommand
     for (int i = 0; i < go.ObjectCount(); i++)
     {
       CRhinoObjRef obj_ref = go.Object(i);
-      context.m_doc.TransformObject(obj_ref, xform);
+      doc->TransformObject(obj_ref, xform);
     }
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

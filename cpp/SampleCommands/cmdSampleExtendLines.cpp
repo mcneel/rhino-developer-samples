@@ -44,6 +44,10 @@ static class CCommandSampleExtendLines theSampleExtendLinesCommand;
 
 CRhinoCommand::result CCommandSampleExtendLines::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetLineCurve go;
   go.SetCommandPrompt(L"First line to extend");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -106,7 +110,7 @@ CRhinoCommand::result CCommandSampleExtendLines::RunCommand(const CRhinoCommandC
     line0.to = pt;
 
   ON_LineCurve new_line_crv0(line0);
-  context.m_doc.ReplaceObject(CRhinoObjRef(obj0), new_line_crv0);
+  doc->ReplaceObject(CRhinoObjRef(obj0), new_line_crv0);
 
   if (pt.DistanceTo(line1.from) < pt.DistanceTo(line1.to))
     line1.from = pt;
@@ -114,11 +118,11 @@ CRhinoCommand::result CCommandSampleExtendLines::RunCommand(const CRhinoCommandC
     line1.to = pt;
 
   ON_LineCurve new_line_crv1(line1);
-  context.m_doc.ReplaceObject(CRhinoObjRef(obj1), new_line_crv1);
+  doc->ReplaceObject(CRhinoObjRef(obj1), new_line_crv1);
 
-  //context.m_doc.AddPointObject( pt );
+  //doc->AddPointObject( pt );
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

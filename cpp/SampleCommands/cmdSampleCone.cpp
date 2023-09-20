@@ -27,6 +27,10 @@ static class CCommandSampleCone theSampleConeCommand;
 
 CRhinoCommand::result CCommandSampleCone::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_Plane plane = ON_xy_plane;
   double height = 10.0;
   double radius = 5.0;
@@ -40,8 +44,8 @@ CRhinoCommand::result CCommandSampleCone::RunCommand(const CRhinoCommandContext&
     {
       CRhinoBrepObject* cone_object = new CRhinoBrepObject();
       cone_object->SetBrep(cone_brep);
-      context.m_doc.AddObject(cone_object);
-      context.m_doc.Redraw();
+      doc->AddObject(cone_object);
+      doc->Redraw();
     }
   }
 

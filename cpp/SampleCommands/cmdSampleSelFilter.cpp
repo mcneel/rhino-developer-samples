@@ -40,6 +40,10 @@ static int compare_int(const unsigned int* a, const unsigned int* b)
 
 CRhinoCommand::result CCommandSampleSelFilter::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   m_sel_window_filter_helper.SetCount(0);
 
   CRhinoGetPoint gp;
@@ -86,7 +90,7 @@ CRhinoCommand::result CCommandSampleSelFilter::RunCommand(const CRhinoCommandCon
     view->ActiveViewport().VP().GetFrustumLine(screen_point.x, screen_point.y, pick_context.m_pick_line);
 
     CRhinoObjRefArray pick_list;
-    int i, pick_count = context.m_doc.PickObjects(pick_context, pick_list);
+    int i, pick_count = doc->PickObjects(pick_context, pick_list);
 
     m_sel_window_filter_helper.Reserve(pick_count);
 

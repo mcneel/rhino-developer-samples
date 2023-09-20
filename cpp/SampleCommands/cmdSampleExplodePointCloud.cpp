@@ -29,6 +29,10 @@ static class CCommandSampleExplodePointCloud theSampleExplodePointCloudCommand;
 
 CRhinoCommand::result CCommandSampleExplodePointCloud::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select point cloud");
   go.SetGeometryFilter(CRhinoGetObject::pointset_object);
@@ -46,7 +50,7 @@ CRhinoCommand::result CCommandSampleExplodePointCloud::RunCommand(const CRhinoCo
   bool bColors = cloud.HasPointColors();
 
   CRhinoObjectAttributes atts;
-  context.m_doc.GetDefaultObjectAttributes(atts);
+  doc->GetDefaultObjectAttributes(atts);
   atts.SetColorSource(ON::color_from_object);
 
   for (int i = 0; i < cloud.PointCount(); i++)
@@ -54,13 +58,13 @@ CRhinoCommand::result CCommandSampleExplodePointCloud::RunCommand(const CRhinoCo
     if (bColors)
       atts.m_color = cloud.m_C[i];
 
-    CRhinoPointObject* point_obj = context.m_doc.AddPointObject(cloud.m_P[i], bColors ? &atts : 0);
+    CRhinoPointObject* point_obj = doc->AddPointObject(cloud.m_P[i], bColors ? &atts : 0);
     if (go.ObjectsWerePreSelected() && point_obj)
       point_obj->Select();
   }
 
-  context.m_doc.DeleteObject(obj_ref);
-  context.m_doc.Redraw();
+  doc->DeleteObject(obj_ref);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

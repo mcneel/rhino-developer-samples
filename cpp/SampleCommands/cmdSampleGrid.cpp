@@ -35,8 +35,12 @@ CCommandSampleGrid::CCommandSampleGrid()
 
 CRhinoCommand::result CCommandSampleGrid::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoView* pActiveView = RhinoApp().ActiveView();
-  if (NULL == pActiveView)
+  if (nullptr == pActiveView)
     return CRhinoCommand::failure;
 
   ON_SimpleArray<unsigned int> view_list;
@@ -169,7 +173,7 @@ CRhinoCommand::result CCommandSampleGrid::RunCommand(const CRhinoCommandContext&
       {
         CRhinoDisplayAttrsMgr::SetIsModified(true);
         CRhinoDisplayAttrsMgr::SaveProfile(RhinoApp().ProfileContext());
-        context.m_doc.Regen();
+        doc->Regen();
       }
 
       if (bDoAll || iExtents == pOption->m_option_index)

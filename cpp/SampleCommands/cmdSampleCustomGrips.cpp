@@ -30,6 +30,10 @@ static class CCommandSampleCustomGrips theSampleCustomGripsCommand;
 
 CRhinoCommand::result CCommandSampleCustomGrips::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CArgsRhinoGetPlane args;
   args.SetCornerMode(CArgsRhinoGetPlane::mode_corners);
   args.SetAllowRounded(FALSE);
@@ -54,8 +58,8 @@ CRhinoCommand::result CCommandSampleCustomGrips::RunCommand(const CRhinoCommandC
     if (nullptr != rectangle_object)
     {
       rectangle_object->SetCurve(rectangle_curve);
-      if (context.m_doc.AddObject(rectangle_object))
-        context.m_doc.Redraw();
+      if (doc->AddObject(rectangle_object))
+        doc->Redraw();
       else
         delete rectangle_object;
     }

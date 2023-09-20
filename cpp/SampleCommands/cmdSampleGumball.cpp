@@ -140,6 +140,10 @@ static class CCommandSampleGumball theSampleGumballCommand;
 
 CRhinoCommand::result CCommandSampleGumball::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoXformObjectList list;
   CRhinoCommand::result cmdrc = SelectObjects(L"Select objects", list);
   if (cmdrc != CRhinoCommand::success)
@@ -168,8 +172,8 @@ CRhinoCommand::result CCommandSampleGumball::RunCommand(const CRhinoCommandConte
   {
     dc.SetBaseGumball(gb);
     dc.EnableGumballDraw(true);
-    dc.Enable(context.m_doc.RuntimeSerialNumber());
-    context.m_doc.Redraw();
+    dc.Enable(doc->RuntimeSerialNumber());
+    doc->Redraw();
 
     CSampleGumballGetXform gp(&dc);
     if (dc.PreTransform().IsIdentity())
@@ -219,10 +223,10 @@ CRhinoCommand::result CCommandSampleGumball::RunCommand(const CRhinoCommandConte
   if (!dc.PreTransform().IsIdentity())
   {
     ON_Xform xform = dc.PreTransform();
-    TransformObjects(context.m_doc, list, xform, false, false);
+    TransformObjects(*doc, list, xform, false, false);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

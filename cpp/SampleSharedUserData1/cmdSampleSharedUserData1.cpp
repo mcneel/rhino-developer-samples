@@ -30,6 +30,10 @@ static class CCommandSampleSharedUserData1 theSampleSharedUserData1Command;
 
 CRhinoCommand::result CCommandSampleSharedUserData1::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select object");
   go.GetObjects(1, 1);
@@ -52,10 +56,10 @@ CRhinoCommand::result CCommandSampleSharedUserData1::RunCommand(const CRhinoComm
   if (gs.CommandResult() != CRhinoCommand::success)
     return gs.CommandResult();
 
-  bool rc = AddPlugInUserData(context.m_doc, object, gp.Point(), gs.String());
+  bool rc = AddPlugInUserData(*doc, object, gp.Point(), gs.String());
   RhinoApp().Print(L"%ls\n", rc ? L"Succeeded!" : L"Failed!");
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

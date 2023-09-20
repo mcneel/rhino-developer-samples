@@ -28,6 +28,10 @@ static class CCommandSampleMeshPolygon theSampleMeshPolygonCommand;
 
 CRhinoCommand::result CCommandSampleMeshPolygon::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select closed polyline to mesh");
   go.SetGeometryFilter(ON::curve_object);
@@ -45,7 +49,7 @@ CRhinoCommand::result CCommandSampleMeshPolygon::RunCommand(const CRhinoCommandC
   if (0 == curve->IsPolyline(&points, nullptr))
     return CRhinoCommand::failure;
 
-  context.m_doc.UnselectAll();
+  doc->UnselectAll();
 
   if (points[0] == points[points.Count() - 1])
     points.SetCount(points.Count() - 1);
@@ -80,9 +84,9 @@ CRhinoCommand::result CCommandSampleMeshPolygon::RunCommand(const CRhinoCommandC
 
   CRhinoMeshObject* mesh_obj = new CRhinoMeshObject();
   mesh_obj->SetMesh(mesh);
-  context.m_doc.AddObject(mesh_obj);
+  doc->AddObject(mesh_obj);
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

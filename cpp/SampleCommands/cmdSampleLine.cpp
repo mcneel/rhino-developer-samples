@@ -27,6 +27,10 @@ static class CCommandSampleLine theSampleLineCommand;
 
 CRhinoCommand::result CCommandSampleLine::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CArgsRhinoGetLine args;
   args.EnableFromMidPointOption(TRUE);
   args.EnableShowVariations(TRUE);
@@ -35,8 +39,8 @@ CRhinoCommand::result CCommandSampleLine::RunCommand(const CRhinoCommandContext&
   CRhinoCommand::result rc = RhinoGetLine(args, line);
   if (rc == CRhinoCommand::success)
   {
-    context.m_doc.AddCurveObject(line);
-    context.m_doc.Redraw();
+    doc->AddCurveObject(line);
+    doc->Redraw();
   }
 
   return rc;

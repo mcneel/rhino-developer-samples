@@ -28,6 +28,10 @@ static class CCommandSampleCopyInPlace theSampleCopyInPlaceCommand;
 
 CRhinoCommand::result CCommandSampleCopyInPlace::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   unsigned int geometry_filter = (unsigned int)CRhinoGetObject::any_object;
   geometry_filter &= ~CRhinoGetObject::extrusion_object;
   geometry_filter &= ~CRhinoGetObject::light_object;
@@ -61,7 +65,7 @@ CRhinoCommand::result CCommandSampleCopyInPlace::RunCommand(const CRhinoCommandC
         // new groups need to be created.This function handles the
         // details.
         RhinoUpdateObjectGroups(dupe, group_map);
-        if (!context.m_doc.AddObject(dupe))
+        if (!doc->AddObject(dupe))
         {
           delete dupe;
           dupe = nullptr;

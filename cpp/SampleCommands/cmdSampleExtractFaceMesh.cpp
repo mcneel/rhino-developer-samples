@@ -27,6 +27,10 @@ static class CCommandSampleExtractFaceMesh theSampleExtractFaceMeshCommand;
 
 CRhinoCommand::result CCommandSampleExtractFaceMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select faces");
   go.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -43,10 +47,10 @@ CRhinoCommand::result CCommandSampleExtractFaceMesh::RunCommand(const CRhinoComm
     {
       const ON_Mesh* pM = pF->Mesh(ON::render_mesh);
       if (pM)
-        context.m_doc.AddMeshObject(*pM);
+        doc->AddMeshObject(*pM);
     }
   }
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

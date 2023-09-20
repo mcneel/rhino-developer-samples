@@ -28,6 +28,10 @@ static class CCommandSampleAttributeUserDataAdd theSampleAttributeUserDataAddCom
 
 CRhinoCommand::result CCommandSampleAttributeUserDataAdd::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select object to attach user data
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select object to attach user data");
@@ -63,7 +67,7 @@ CRhinoCommand::result CCommandSampleAttributeUserDataAdd::RunCommand(const CRhin
   new_attribs.AttachUserData(ud);
 
   // Replace the selected object's attributes
-  context.m_doc.ModifyObjectAttributes(ref, new_attribs);
+  doc->ModifyObjectAttributes(ref, new_attribs);
 
   return CRhinoCommand::success;
 }

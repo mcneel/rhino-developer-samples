@@ -31,10 +31,14 @@ static class CCommandSampleAddLayout theSampleAddLayoutCommand;
 
 CRhinoCommand::result CCommandSampleAddLayout::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   AFX_MANAGE_STATE(RhinoApp().RhinoModuleState());
 
   ON_wString name;
-  name.Format(L"Page %d", NextPageViewNumber(context.m_doc));
+  name.Format(L"Page %d", NextPageViewNumber(*doc));
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"New Layout Name");
@@ -54,7 +58,7 @@ CRhinoCommand::result CCommandSampleAddLayout::RunCommand(const CRhinoCommandCon
   page_settings.m_height_mm = 8.5 * scale;
   page_settings.m_page_number = 0;
 
-  CRhinoPageView* page_view = CreatePageView(context.m_doc, detail_count, name, page_settings);
+  CRhinoPageView* page_view = CreatePageView(*doc, detail_count, name, page_settings);
   if (nullptr == page_view)
     return CRhinoCommand::failure;
 

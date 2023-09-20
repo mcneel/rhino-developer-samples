@@ -380,6 +380,10 @@ CCommandSampleGumballCylinder::CCommandSampleGumballCylinder()
 
 CRhinoCommand::result CCommandSampleGumballCylinder::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"Base point of cylinder");
   gp.GetPoint();
@@ -432,7 +436,7 @@ CRhinoCommand::result CCommandSampleGumballCylinder::RunCommand(const CRhinoComm
       m_initial_radius = cylinder.Radius();
       m_initial_height = cylinder.Height();
       if (cylinder.Create(plane, m_initial_radius, m_initial_height))
-        context.m_doc.AddBrepObject(cylinder.BrepCylinder());
+        doc->AddBrepObject(cylinder.BrepCylinder());
       break;
     }
 
@@ -445,7 +449,7 @@ CRhinoCommand::result CCommandSampleGumballCylinder::RunCommand(const CRhinoComm
     cylinder = CSampleGumballCylinder(plane, radius, height);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

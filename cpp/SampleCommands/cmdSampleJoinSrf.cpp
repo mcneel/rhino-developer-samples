@@ -27,6 +27,10 @@ static class CCommandSampleJoinSrf theSampleJoinSrfCommand;
 
 CRhinoCommand::result CCommandSampleJoinSrf::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoCommand::result rc = CRhinoCommand::success;
 
   CRhinoGetObject go;
@@ -68,7 +72,7 @@ CRhinoCommand::result CCommandSampleJoinSrf::RunCommand(const CRhinoCommandConte
   }
 
   ON_SimpleArray<ON_Brep*> OutBreps;
-  bool bSuccess = RhinoJoinBreps(InBreps, OutBreps, context.m_doc.AbsoluteTolerance());
+  bool bSuccess = RhinoJoinBreps(InBreps, OutBreps, doc->AbsoluteTolerance());
 
   if (bSuccess)
   {
@@ -77,11 +81,11 @@ CRhinoCommand::result CCommandSampleJoinSrf::RunCommand(const CRhinoCommandConte
       CRhinoBrepObject* pBrepObj = new CRhinoBrepObject();
       pBrepObj->SetBrep(OutBreps[i]);
       OutBreps[i] = 0;
-      if (!context.m_doc.AddObject(pBrepObj))
+      if (!doc->AddObject(pBrepObj))
         delete pBrepObj; // Don't leak...
     }
 
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   for (i = 0; i < InBreps.Count(); i++)

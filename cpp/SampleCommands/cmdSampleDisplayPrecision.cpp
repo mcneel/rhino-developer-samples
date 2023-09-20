@@ -27,7 +27,11 @@ static class CCommandSampleDisplayPrecision theSampleDisplayPrecisionCommand;
 
 CRhinoCommand::result CCommandSampleDisplayPrecision::RunCommand(const CRhinoCommandContext& context)
 {
-  ON_3dmUnitsAndTolerances units = context.m_doc.Properties().ModelUnitsAndTolerances();
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  ON_3dmUnitsAndTolerances units = doc->Properties().ModelUnitsAndTolerances();
 
   CRhinoGetInteger gi;
   gi.SetCommandPrompt(L"New display precision");
@@ -41,7 +45,7 @@ CRhinoCommand::result CCommandSampleDisplayPrecision::RunCommand(const CRhinoCom
     if (distance_display_precision != units.m_distance_display_precision)
     {
       units.m_distance_display_precision = distance_display_precision;
-      context.m_doc.Properties().SetModelUnitsAndTolerances(units, false);
+      doc->Properties().SetModelUnitsAndTolerances(units, false);
     }
   }
 

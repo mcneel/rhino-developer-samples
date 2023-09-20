@@ -22,20 +22,20 @@ theSampleRdkRemoveUnusedContentCmd;
 
 CRhinoCommand::result CSampleRdkRemoveUnusedContentCmd::RunCommand(const CRhinoCommandContext& context)
 {
-  auto* pDoc = context.Document();
-  if (nullptr == pDoc)
-    return failure;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
   // This example finds and deletes a material called 'Custom'.
   const wchar_t* name = L"Custom";
 
   // Find the content by name.
   CRhRdkContentArray aContent;
-  pDoc->Contents().Find(CRhRdkContent::Kinds::Material, name, false, false, aContent);
+  doc->Contents().Find(CRhRdkContent::Kinds::Material, name, false, false, aContent);
   if (aContent.Count() == 0)
   {
     RhinoApp().Print(L"'%s' was not found\n", name);
-    return failure;
+    return CRhinoCommand::failure;
   }
 
   // Check if the content is in use (assume only 1 match).
@@ -43,7 +43,7 @@ CRhinoCommand::result CSampleRdkRemoveUnusedContentCmd::RunCommand(const CRhinoC
   if (c.UseCount() > 0)
   {
     RhinoApp().Print(L"'%s' is in use\n", name);
-    return failure;
+    return CRhinoCommand::failure;
   }
 
 #ifdef RHINO_7_8_UPWARDS // The following is only supported from Rhino 7.8 onwards due to a bug in earlier versions.
@@ -53,7 +53,7 @@ CRhinoCommand::result CSampleRdkRemoveUnusedContentCmd::RunCommand(const CRhinoC
   contents.EndChange();
 #else
   // This method is not recommended but is the only way until Rhino 7.8 if you want undo support.
-  auto& rdkDoc = CRhRdkDocument::Get(*pDoc).BeginChange(RhRdkChangeContext::Program);
+  auto& rdkDoc = CRhRdkDocument::Get(*doc).BeginChange(RhRdkChangeContext::Program);
   auto* pDetach = rdkDoc.DetachContent(c, CRhRdkEventWatcher::DetachReason::Delete);
   rdkDoc.EndChange();
 #endif
@@ -63,7 +63,7 @@ CRhinoCommand::result CSampleRdkRemoveUnusedContentCmd::RunCommand(const CRhinoC
     // Delete the detached content while allowing undo.
     CRhRdkContentArrayNC aContentNC;
     aContentNC.Append(pDetach);
-    CRhRdkContentUndo cu(*pDoc);
+    CRhRdkContentUndo cu(*doc);
     cu.DeleteTopLevelContent(aContentNC);
   }
 

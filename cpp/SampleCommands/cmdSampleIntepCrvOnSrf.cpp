@@ -27,6 +27,10 @@ static class CCommandSampleIntepCrvOnSrf theSampleIntepCrvOnSrfCommand;
 
 CRhinoCommand::result CCommandSampleIntepCrvOnSrf::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface to draw curve on");
   go.SetGeometryFilter(CRhinoObject::surface_object);
@@ -102,14 +106,14 @@ CRhinoCommand::result CCommandSampleIntepCrvOnSrf::RunCommand(const CRhinoComman
         is_closed = 1;
     }
 
-    double tol = context.m_doc.AbsoluteTolerance();
+    double tol = doc->AbsoluteTolerance();
     ON_Curve* crv = RhinoInterpolatePointsOnSurface(*face, points2d, is_closed, tol, 1);
     if (crv)
     {
       CRhinoCurveObject* crv_obj = new CRhinoCurveObject();
       crv_obj->SetCurve(crv);
-      context.m_doc.AddObject(crv_obj);
-      context.m_doc.Redraw();
+      doc->AddObject(crv_obj);
+      doc->Redraw();
     }
 
     return CRhinoCommand::success;

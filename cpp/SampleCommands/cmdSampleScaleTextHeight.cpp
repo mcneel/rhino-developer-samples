@@ -49,6 +49,10 @@ static class CCommandSampleScaleTextHeight theSampleScaleTextHeightCommand;
 
 CRhinoCommand::result CCommandSampleScaleTextHeight::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CGetText go;
   go.SetCommandPrompt(L"Select text to scale height");
   go.GetObjects(1, 0);
@@ -75,7 +79,7 @@ CRhinoCommand::result CCommandSampleScaleTextHeight::RunCommand(const CRhinoComm
     if (nullptr == text_object)
       return CRhinoCommand::failure;
 
-    const ON_DimStyle& dimstyle = text_object->GetEffectiveDimensionStyle(&context.m_doc);
+    const ON_DimStyle& dimstyle = text_object->GetEffectiveDimensionStyle(doc);
     const ON_Text* text = text_object->TextObject(&dimstyle);
     if (nullptr == text)
       return CRhinoCommand::failure;
@@ -91,10 +95,10 @@ CRhinoCommand::result CCommandSampleScaleTextHeight::RunCommand(const CRhinoComm
     CRhinoText* new_text_object = new CRhinoText();
     new_text_object->SetTextObject(new_text);
 
-    context.m_doc.ReplaceObject(object_ref, new_text_object);
+    doc->ReplaceObject(object_ref, new_text_object);
   }
   
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

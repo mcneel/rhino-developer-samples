@@ -28,6 +28,10 @@ static class CCommandSampleUngroup theSampleUngroupCommand;
 
 CRhinoCommand::result CCommandSampleUngroup::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to ungroup");
   go.EnableGroupSelect(TRUE);
@@ -44,10 +48,10 @@ CRhinoCommand::result CCommandSampleUngroup::RunCommand(const CRhinoCommandConte
     {
       CRhinoObjectAttributes attrib(obj->Attributes());
       attrib.RemoveFromTopGroup();
-      context.m_doc.ModifyObjectAttributes(obj_ref, attrib);
+      doc->ModifyObjectAttributes(obj_ref, attrib);
     }
   }
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -28,6 +28,10 @@ static class CCommandSampleNurbsSquare theSampleNurbsSquareCommand;
 
 CRhinoCommand::result CCommandSampleNurbsSquare::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // The degree must be >= 1
   int degree = 1;
 
@@ -54,8 +58,8 @@ CRhinoCommand::result CCommandSampleNurbsSquare::RunCommand(const CRhinoCommandC
 
   if (nurbs.IsValid())
   {
-    context.m_doc.AddSurfaceObject(nurbs);
-    context.m_doc.Redraw();
+    doc->AddSurfaceObject(nurbs);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

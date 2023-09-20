@@ -69,12 +69,12 @@ static void PrintContent(const CRhRdkContent& c, int count)
 
 CRhinoCommand::result CCommandSamplePrintMaterialTextures::RunCommand(const CRhinoCommandContext& context)
 {
-  auto* pDoc = context.Document();
-  if (nullptr == pDoc)
-    return failure;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
   int count = 0;
-  auto* pIt = pDoc->Contents().NewIterator(CRhRdkContent::Kinds::Material, CRhRdkDocument::it_Normal);
+  auto* pIt = doc->Contents().NewIterator(CRhRdkContent::Kinds::Material, CRhRdkDocument::it_Normal);
 
   const auto* pContent = pIt->Next();
   if (nullptr != pContent)

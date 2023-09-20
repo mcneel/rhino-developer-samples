@@ -29,9 +29,13 @@ static class CCommandSampleBoundingBoxAll theSampleBoundingBoxAllCommand;
 
 CRhinoCommand::result CCommandSampleBoundingBoxAll::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   ON_SimpleArray<const CRhinoObject*> objects;
 
-  CRhinoObjectIterator it(context.m_doc, CRhinoObjectIterator::all_objects);
+  CRhinoObjectIterator it(*doc, CRhinoObjectIterator::all_objects);
   const CRhinoObject* obj = 0;
   for (obj = it.First(); 0 != obj; obj = it.Next())
     objects.Append(obj);
@@ -47,8 +51,8 @@ CRhinoCommand::result CCommandSampleBoundingBoxAll::RunCommand(const CRhinoComma
   ON_3dVector dir(bbox.m_max - bbox.m_min);
 
   ON_3dmUnitsAndTolerances doc_units = (ON::page_space == RhinoApp().ActiveSpace()) ?
-    context.m_doc.Properties().PageUnitsAndTolerances() :
-    context.m_doc.Properties().ModelUnitsAndTolerances();
+    doc->Properties().PageUnitsAndTolerances() :
+    doc->Properties().ModelUnitsAndTolerances();
 
   ON_3dmUnitsAndTolerances display_units = doc_units;
   RhinoFormatNumber(dir.x, doc_units, display_units, dimx, false);

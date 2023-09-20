@@ -81,6 +81,10 @@ static class CCommandSampleShowMyStuff theSampleShowMyStuffCommand;
 
 CRhinoCommand::result CCommandSampleShowMyStuff::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to show");
   go.GetObjects(1, 0);
@@ -110,9 +114,9 @@ CRhinoCommand::result CCommandSampleShowMyStuff::RunCommand(const CRhinoCommandC
 
   CSampleShowMyStuffConduit conduit;
   conduit.SetDisplayObjects(viewport_id, object_ids);
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
+  conduit.Enable(doc->RuntimeSerialNumber());
 
-  context.m_doc.Redraw(CRhinoView::regenerate_display_hint);
+  doc->Redraw(CRhinoView::regenerate_display_hint);
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -120,7 +124,7 @@ CRhinoCommand::result CCommandSampleShowMyStuff::RunCommand(const CRhinoCommandC
   gs.GetString();
 
   conduit.Disable();
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

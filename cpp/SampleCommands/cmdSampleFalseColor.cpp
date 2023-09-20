@@ -74,6 +74,10 @@ static class CCommandSampleFalseColor theSampleFalseColorCommand;
 
 CRhinoCommand::result CCommandSampleFalseColor::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoMeshDensity mesh_density;
   mesh_density.m_around = 20;
   mesh_density.m_vertical = 20;
@@ -96,8 +100,8 @@ CRhinoCommand::result CCommandSampleFalseColor::RunCommand(const CRhinoCommandCo
 
   CSampleFalseColorConduit conduit;
   conduit.SetFalseColorMesh(mesh);
-  conduit.Enable(context.m_doc.RuntimeSerialNumber());
-  context.m_doc.Regen();
+  conduit.Enable(doc->RuntimeSerialNumber());
+  doc->Regen();
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Press <Enter> to continue");
@@ -110,7 +114,7 @@ CRhinoCommand::result CCommandSampleFalseColor::RunCommand(const CRhinoCommandCo
   delete mesh;
   mesh = 0;
 
-  context.m_doc.Regen();
+  doc->Regen();
 
   return CRhinoCommand::success;
 }

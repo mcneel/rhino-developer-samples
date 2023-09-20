@@ -91,6 +91,10 @@ static class CCommandSampleTriangleMesh theSampleTriangleMeshCommand;
 
 CRhinoCommand::result CCommandSampleTriangleMesh::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   const double d = sqrt(2.0) / 2.0;
   ON_3dPoint p0 = ON_3dPoint(0.0, 0.0, d);
   ON_3dPoint p1 = ON_3dPoint(0.0, 0.0, -d);
@@ -115,8 +119,8 @@ CRhinoCommand::result CCommandSampleTriangleMesh::RunCommand(const CRhinoCommand
     CRhinoMeshObject* mesh_obj = new CRhinoMeshObject();
     mesh_obj->SetMesh(mesh);
     mesh = nullptr;
-    context.m_doc.AddObject(mesh_obj);
-    context.m_doc.Redraw();
+    doc->AddObject(mesh_obj);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

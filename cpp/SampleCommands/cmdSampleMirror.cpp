@@ -133,6 +133,10 @@ static class CCommandSampleMirror theSampleMirrorCommand;
 
 CRhinoCommand::result CCommandSampleMirror::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select objects to mirror
   CRhinoXformObjectList list;
   CRhinoCommand::result rc = SelectObjects(L"Select objects to mirror", list);
@@ -185,8 +189,8 @@ CRhinoCommand::result CCommandSampleMirror::RunCommand(const CRhinoCommandContex
   if (!gm2.CalculateTransform(view->ActiveViewport(), gm2.Point(), xform))
     return CRhinoCommand::failure;
 
-  TransformObjects(context.m_doc, list, xform, TRUE, TRUE);
-  context.m_doc.Redraw();
+  TransformObjects(*doc, list, xform, TRUE, TRUE);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

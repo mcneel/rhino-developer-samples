@@ -29,6 +29,10 @@ static class CCommandSampleIntersetCrvSrf theSampleIntersetCrvSrfCommand;
 
 CRhinoCommand::result CCommandSampleIntersetCrvSrf::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Define plane
   ON_3dPoint plane_origin(-10, -10, 0.0);
   ON_3dPoint plane_x(10, -10, 0.0);
@@ -44,7 +48,7 @@ CRhinoCommand::result CCommandSampleIntersetCrvSrf::RunCommand(const CRhinoComma
   plane_srf.SetExtents(0, domain0, true);
   plane_srf.SetExtents(1, domain1, true);
 
-  context.m_doc.AddSurfaceObject(plane_srf);
+  doc->AddSurfaceObject(plane_srf);
 
   // Define line
   ON_3dPoint line_start(-2.0, -6.0, -6.0);
@@ -55,20 +59,20 @@ CRhinoCommand::result CCommandSampleIntersetCrvSrf::RunCommand(const CRhinoComma
   // Define line curve
   ON_LineCurve line_crv(line);
 
-  context.m_doc.AddCurveObject(line_crv);
+  doc->AddCurveObject(line_crv);
 
   // Intersect curve and surface
-  double tolerance = context.m_doc.AbsoluteTolerance();
+  double tolerance = doc->AbsoluteTolerance();
   ON_SimpleArray<ON_X_EVENT> csx_events;
   int count = line_crv.IntersectSurface(&plane_srf, csx_events, tolerance, tolerance);
   for (int i = 0; i < count; i++)
   {
     ON_X_EVENT csx = csx_events[i];
     if (csx.IsPointEvent())
-      context.m_doc.AddPointObject(csx.m_A[0]);
+      doc->AddPointObject(csx.m_A[0]);
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

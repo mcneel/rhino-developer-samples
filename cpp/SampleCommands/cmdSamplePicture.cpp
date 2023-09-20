@@ -28,6 +28,10 @@ static class CCommandSamplePicture theSamplePictureCommand;
 
 CRhinoCommand::result CCommandSamplePicture::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetFileDialog gf;
   gf.SetScriptMode(context.IsInteractive() ? FALSE : TRUE);
   BOOL bResult = gf.DisplayFileDialog(CRhinoGetFileDialog::open_bitmap_dialog);
@@ -46,7 +50,7 @@ CRhinoCommand::result CCommandSamplePicture::RunCommand(const CRhinoCommandConte
   }
 
   CRhinoDib dib;
-  if (!dib.ReadFromFile(context.m_doc.RuntimeSerialNumber(), filename))
+  if (!dib.ReadFromFile(doc->RuntimeSerialNumber(), filename))
   {
     RhinoApp().Print(L"The specified file cannot be identifed as a supported type.\n");
     return CRhinoCommand::nothing;
@@ -77,11 +81,11 @@ CRhinoCommand::result CCommandSamplePicture::RunCommand(const CRhinoCommandConte
 
   ON_Plane plane(rect[0], udir, vdir);
 
-  const CRhinoObject* obj = RhinoCreatePictureFrame(context.m_doc, plane, filename, false, true, width, height, true, true, true);
+  const CRhinoObject* obj = RhinoCreatePictureFrame(*doc, plane, filename, false, true, width, height, true, true, true);
   if (nullptr == obj)
     return CRhinoCommand::failure;
 
-  context.m_doc.Redraw();
+  doc->Redraw();
   
   return CRhinoCommand::success;
 }

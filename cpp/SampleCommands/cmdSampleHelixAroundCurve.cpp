@@ -28,6 +28,10 @@ static class CCommandSampleHelixAroundCurve theSampleHelixAroundCurveCommand;
 
 CRhinoCommand::result CCommandSampleHelixAroundCurve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   {
     CRhinoGetObject go;
     go.SetCommandPrompt(L"Select curve");
@@ -83,8 +87,8 @@ CRhinoCommand::result CCommandSampleHelixAroundCurve::RunCommand(const CRhinoCom
     bool rc = RhinoCreateSpiral(args, helix);
     if (rc)
     {
-      context.m_doc.AddCurveObject(helix);
-      context.m_doc.Redraw();
+      doc->AddCurveObject(helix);
+      doc->Redraw();
     }
 
     return rc 

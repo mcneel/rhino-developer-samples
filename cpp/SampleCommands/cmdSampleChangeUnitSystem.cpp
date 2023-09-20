@@ -28,15 +28,19 @@ static class CCommandSampleChangeUnitSystem theSampleChangeUnitSystemCommand;
 
 CRhinoCommand::result CCommandSampleChangeUnitSystem::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Get the model units and tolerance settings
-  ON_3dmUnitsAndTolerances units_tolerances = context.m_doc.Properties().ModelUnitsAndTolerances();
+  ON_3dmUnitsAndTolerances units_tolerances = doc->Properties().ModelUnitsAndTolerances();
   if (units_tolerances.m_unit_system.UnitSystem() != ON::LengthUnitSystem::Inches)
   {
     units_tolerances.m_unit_system.SetUnitSystem(ON::LengthUnitSystem::Inches);
     bool bScaleModelObjects = true;
     // Set the model units and tolerance settings
-    context.m_doc.Properties().SetModelUnitsAndTolerances(units_tolerances, bScaleModelObjects);
-    context.m_doc.Redraw();
+    doc->Properties().SetModelUnitsAndTolerances(units_tolerances, bScaleModelObjects);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

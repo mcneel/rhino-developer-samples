@@ -27,6 +27,10 @@ static class CCommandSampleIntersectCrv theSampleIntersectCrvCommand;
 
 CRhinoCommand::result CCommandSampleIntersectCrv::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select two curves to intersect");
   go.SetGeometryFilter(ON::curve_object);
@@ -39,7 +43,7 @@ CRhinoCommand::result CCommandSampleIntersectCrv::RunCommand(const CRhinoCommand
   if (nullptr == curveA || nullptr == curveB)
     return CRhinoCommand::failure;
 
-  const double tolerance = context.m_doc.AbsoluteTolerance();
+  const double tolerance = doc->AbsoluteTolerance();
 
   ON_SimpleArray<ON_X_EVENT> ccx_events;
   int ccx_count = curveA->IntersectCurve(curveB, ccx_events, tolerance, tolerance);
@@ -59,7 +63,7 @@ CRhinoCommand::result CCommandSampleIntersectCrv::RunCommand(const CRhinoCommand
     const ON_X_EVENT& ccx = ccx_events[i];
     if (ccx.IsPointEvent())
     {
-      CRhinoPointObject* point_obj = context.m_doc.AddPointObject(ccx.m_A[0]);
+      CRhinoPointObject* point_obj = doc->AddPointObject(ccx.m_A[0]);
       if (point_obj)
         point_obj->Select(true);
     }
@@ -71,7 +75,7 @@ CRhinoCommand::result CCommandSampleIntersectCrv::RunCommand(const CRhinoCommand
       {
         CRhinoCurveObject* curve_obj = new CRhinoCurveObject();
         curve_obj->SetCurve(trim);
-        if (context.m_doc.AddObject(curve_obj))
+        if (doc->AddObject(curve_obj))
           curve_obj->Select(true);
         else
           delete curve_obj;
@@ -79,7 +83,7 @@ CRhinoCommand::result CCommandSampleIntersectCrv::RunCommand(const CRhinoCommand
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

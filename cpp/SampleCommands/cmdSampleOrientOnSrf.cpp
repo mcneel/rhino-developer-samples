@@ -27,6 +27,10 @@ static class CCommandSampleOrientOnSrf theSampleOrientOnSrfCommand;
 
 CRhinoCommand::result CCommandSampleOrientOnSrf::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select objects to orient
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to orient");
@@ -113,9 +117,9 @@ CRhinoCommand::result CCommandSampleOrientOnSrf::RunCommand(const CRhinoCommandC
       for (i = 0; i < go.ObjectCount(); i++)
       {
         CRhinoObjRef obj_ref = go.Object(i);
-        context.m_doc.TransformObject(obj_ref, xform, bDeleteOriginal);
+        doc->TransformObject(obj_ref, xform, bDeleteOriginal);
       }
-      context.m_doc.Redraw();
+      doc->Redraw();
       rc = CRhinoCommand::success;
     }
   }

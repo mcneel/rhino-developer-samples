@@ -29,6 +29,10 @@ static class CCommandSampleDupMeshBorder theSampleDupMeshBorderCommand;
 
 CRhinoCommand::result CCommandSampleDupMeshBorder::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select mesh");
   go.SetGeometryFilter(CRhinoGetObject::mesh_object);
@@ -61,7 +65,7 @@ CRhinoCommand::result CCommandSampleDupMeshBorder::RunCommand(const CRhinoComman
         ON_Line line(p0, p1);
         if (line.IsValid())
         {
-          CRhinoCurveObject* line_obj = context.m_doc.AddCurveObject(line);
+          CRhinoCurveObject* line_obj = doc->AddCurveObject(line);
           if (line_obj)
             line_obj->Select(true);
         }
@@ -69,7 +73,7 @@ CRhinoCommand::result CCommandSampleDupMeshBorder::RunCommand(const CRhinoComman
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

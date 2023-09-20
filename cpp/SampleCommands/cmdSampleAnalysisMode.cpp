@@ -250,6 +250,10 @@ static class CCommandZAnalysisOn theZAnalysisOnCommand;
 
 CRhinoCommand::result CCommandZAnalysisOn::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects for Z analysis.");
   go.SetGeometryFilter(ON::brep_object | ON::mesh_object);
@@ -257,8 +261,8 @@ CRhinoCommand::result CCommandZAnalysisOn::RunCommand(const CRhinoCommandContext
   if (CRhinoCommand::success != go.CommandResult())
     return go.CommandResult();
 
-  ON_MeshParameters mp = context.m_doc.Properties().MeshParameters(ON_MeshParameters::MESH_STYLE::render_mesh_quality);
-  context.m_doc.Properties().SetAnalysisMeshSettings(mp);
+  ON_MeshParameters mp = doc->Properties().MeshParameters(ON_MeshParameters::MESH_STYLE::render_mesh_quality);
+  doc->Properties().SetAnalysisMeshSettings(mp);
 
   int count = 0;
   for (int i = 0; i < go.ObjectCount(); i++)
@@ -277,7 +281,7 @@ CRhinoCommand::result CCommandZAnalysisOn::RunCommand(const CRhinoCommandContext
   }
 
   RhinoApp().Print(L"%d objects were put into Z analysis mode", count);
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }
@@ -318,7 +322,11 @@ CRhinoCommand::result CCommandZAnalysisOff::RunCommand(const CRhinoCommandContex
   // This is an easy way to turn off all objects that might be
   // in Z analysis mode.
 
-  CRhinoObjectIterator it(CRhinoObjectIterator::undeleted_objects,CRhinoObjectIterator::active_and_reference_objects);
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  CRhinoObjectIterator it(*doc, CRhinoObjectIterator::undeleted_objects,CRhinoObjectIterator::active_and_reference_objects);
 
   for (CRhinoObject* rhino_object = it.First(); rhino_object; rhino_object = it.Next())
   {
@@ -328,7 +336,7 @@ CRhinoCommand::result CCommandZAnalysisOff::RunCommand(const CRhinoCommandContex
   RhinoApp().Print(L"Z analysis is off.\n");
 
   // update the display
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

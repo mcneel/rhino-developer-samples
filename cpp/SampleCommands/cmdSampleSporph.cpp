@@ -82,6 +82,10 @@ static class CCommandSampleSporph theSampleSporphCommand;
 
 CRhinoCommand::result CCommandSampleSporph::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoCommand::result rc = CRhinoCommand::nothing;
 
   CRhinoGetObject go;
@@ -143,7 +147,7 @@ CRhinoCommand::result CCommandSampleSporph::RunCommand(const CRhinoCommandContex
 
   CRhinoObject* sporphed_obj = RhinoSporphObject(obj, base, target, base_pt, target_pt);
   if (sporphed_obj)
-    context.m_doc.Redraw();
+    doc->Redraw();
 
   return CRhinoCommand::success;
 }

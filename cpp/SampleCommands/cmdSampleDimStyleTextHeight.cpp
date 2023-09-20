@@ -29,8 +29,12 @@ static class CCommandSampleDimStyleTextHeight theSampleDimStyleTextHeightCommand
 
 CRhinoCommand::result CCommandSampleDimStyleTextHeight::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Get the current dimstyle
-  const CRhinoDimStyle& dimstyle = context.m_doc.m_dimstyle_table.CurrentDimStyle();
+  const CRhinoDimStyle& dimstyle = doc->m_dimstyle_table.CurrentDimStyle();
 
   ON_wString prompt;
   prompt.Format(L"New text height for \"%ls\" dimension style", static_cast<const wchar_t*>(dimstyle.Name()));
@@ -54,14 +58,14 @@ CRhinoCommand::result CCommandSampleDimStyleTextHeight::RunCommand(const CRhinoC
     int style_index = dimstyle.Index();
 
     // Copy the dimstyle
-    ON_DimStyle modified_dimstyle(context.m_doc.m_dimstyle_table[style_index]);
+    ON_DimStyle modified_dimstyle(doc->m_dimstyle_table[style_index]);
 
     // Modify the text height
     modified_dimstyle.SetTextHeight(height);
 
     // Modify the dimension style
-    if (context.m_doc.m_dimstyle_table.ModifyDimStyle(modified_dimstyle, style_index))
-      context.m_doc.Redraw();
+    if (doc->m_dimstyle_table.ModifyDimStyle(modified_dimstyle, style_index))
+      doc->Redraw();
   }
 
   return CRhinoCommand::success;

@@ -29,6 +29,10 @@ static class CCommandSampleMeshOutline theSampleMeshOutlineCommand;
 
 CRhinoCommand::result CCommandSampleMeshOutline::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select mesh objects to outline");
   go.SetGeometryFilter(CRhinoGetObject::mesh_object);
@@ -56,7 +60,7 @@ CRhinoCommand::result CCommandSampleMeshOutline::RunCommand(const CRhinoCommandC
     return CRhinoCommand::failure;
 
   ON_ClassArray<ON_SimpleArray<ON_PolylineCurve*>> OutRegions;
-  bool rc = RhinoGetMeshOutline(InMeshes, view, 0.001 * context.m_doc.AbsoluteTolerance(), OutRegions);
+  bool rc = RhinoGetMeshOutline(InMeshes, view, 0.001 * doc->AbsoluteTolerance(), OutRegions);
   if (rc)
   {
     for (i = 0; i < OutRegions.Count(); i++)
@@ -69,7 +73,7 @@ CRhinoCommand::result CCommandSampleMeshOutline::RunCommand(const CRhinoCommandC
           crv->RemoveShortSegments(ON_SQRT_EPSILON);
           CRhinoCurveObject* crv_obj = new CRhinoCurveObject();
           crv_obj->SetCurve(crv);
-          if (context.m_doc.AddObject(crv_obj))
+          if (doc->AddObject(crv_obj))
             crv_obj->Select();
           else
             delete crv_obj;
@@ -78,7 +82,7 @@ CRhinoCommand::result CCommandSampleMeshOutline::RunCommand(const CRhinoCommandC
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

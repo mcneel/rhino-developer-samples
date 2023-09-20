@@ -28,6 +28,10 @@ static class CCommandSampleRevolve theSampleRevolveCommand;
 
 CRhinoCommand::result CCommandSampleRevolve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curve to rotate around world x-y axis");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -81,8 +85,8 @@ CRhinoCommand::result CCommandSampleRevolve::RunCommand(const CRhinoCommandConte
   {
     CRhinoSurfaceObject* surface_obj = new CRhinoSurfaceObject();
     surface_obj->SetSurface(surface);
-    context.m_doc.AddObject(surface_obj);
-    context.m_doc.Redraw();
+    doc->AddObject(surface_obj);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

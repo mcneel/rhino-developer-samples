@@ -22,9 +22,9 @@ static class CCommandSampleTexture theSampleTextureCommand;
 
 CRhinoCommand::result CCommandSampleTexture::RunCommand(const CRhinoCommandContext& context)
 {
-  const auto* pDoc = context.Document();
-  if (nullptr == pDoc)
-    return failure;
+  const CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
   unsigned int geometry_filter =
     CRhinoGetObject::surface_object |
@@ -69,7 +69,7 @@ CRhinoCommand::result CCommandSampleTexture::RunCommand(const CRhinoCommandConte
   }
 
   CRhinoDib dib;
-  if (!dib.ReadFromFile(pDoc->RuntimeSerialNumber(), filename))
+  if (!dib.ReadFromFile(doc->RuntimeSerialNumber(), filename))
   {
     RhinoApp().Print(L"The specified file cannot be identifed as a supported type.\n");
     return nothing;
@@ -80,7 +80,7 @@ CRhinoCommand::result CCommandSampleTexture::RunCommand(const CRhinoCommandConte
   mat.AddTexture(filename, ON_Texture::TYPE::bitmap_texture);
 
   // Create an RDK material from the material.
-  auto* pMaterial = ::RhRdkNewBasicMaterial(mat, pDoc);
+  auto* pMaterial = ::RhRdkNewBasicMaterial(mat, doc);
   if (nullptr == pMaterial)
     return nothing;
 
@@ -90,7 +90,7 @@ CRhinoCommand::result CCommandSampleTexture::RunCommand(const CRhinoCommandConte
   pMaterial->SetInstanceName(sName);
 
   // Attach the material to the document's render content collection.
-  auto& contents = pDoc->Contents().BeginChange(RhRdkChangeContext::Program);
+  auto& contents = doc->Contents().BeginChange(RhRdkChangeContext::Program);
   contents.Attach(*pMaterial);
   contents.EndChange();
 

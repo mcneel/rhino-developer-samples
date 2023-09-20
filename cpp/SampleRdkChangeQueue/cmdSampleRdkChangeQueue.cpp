@@ -64,12 +64,11 @@ CRhinoCommand::result CCommandSampleRdkChangeQueue::RunCommand(const CRhinoComma
 {
 	const CRhinoDoc* pDoc = context.Document();
 	if (nullptr == pDoc)
-		return failure;
+		return CRhinoCommand::failure;
 
 	const CRhinoView* pView = RhinoApp().ActiveView();
 	if (nullptr == pView)
-		return failure;
-
+		return CRhinoCommand::failure;
 
 	RhRdk::Realtime::ChangeQueue* pQueue = nullptr;
 	
@@ -104,6 +103,7 @@ CRhinoCommand::result CCommandSampleRdkChangeQueue::RunCommand(const CRhinoComma
 	RhinoApp().Print(L"Destroying CustomChangeQueue\n");
 	delete pQueue;
 	pQueue = nullptr;
+
   return CRhinoCommand::success;
 }
 

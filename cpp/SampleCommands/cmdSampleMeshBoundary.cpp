@@ -26,6 +26,10 @@ static class CCommandSampleMeshBoundary theSampleMeshBoundaryCommand;
 
 CRhinoCommand::result CCommandSampleMeshBoundary::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select an open mesh object
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select open mesh");
@@ -76,12 +80,12 @@ CRhinoCommand::result CCommandSampleMeshBoundary::RunCommand(const CRhinoCommand
     {
       CRhinoCurveObject* obj = new CRhinoCurveObject();
       obj->SetCurve(output[i]);
-      if (context.m_doc.AddObject(obj))
+      if (doc->AddObject(obj))
         obj->Select();
       else
         delete obj; // Don't leak...
     }
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   // Clean up

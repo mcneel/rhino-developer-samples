@@ -27,6 +27,10 @@ static class CCommandSampleExtractIsoCurve theSampleExtractIsoCurveCommand;
 
 CRhinoCommand::result CCommandSampleExtractIsoCurve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select the surface to extract isocurve
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface");
@@ -74,14 +78,14 @@ CRhinoCommand::result CCommandSampleExtractIsoCurve::RunCommand(const CRhinoComm
     ON_Curve* crv = srf->IsoCurve(dir, dir ? u : v);
     if (crv)
     {
-      context.m_doc.AddCurveObject(*crv);
+      doc->AddCurveObject(*crv);
 
       // CRhinoDoc::AddCurveObject make a copy of the input curve.
       // So, we need to delete crv otherwise we will leak memory.
       delete crv;
       crv = 0;
 
-      context.m_doc.Redraw();
+      doc->Redraw();
     }
   }
 

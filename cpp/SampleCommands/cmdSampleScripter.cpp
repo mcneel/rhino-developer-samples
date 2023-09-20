@@ -72,17 +72,21 @@ CRhinoCommand::result CCommandSampleScripter::RunCommand(const CRhinoCommandCont
 {
   UNREFERENCED_PARAMETER(context);
 
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CSampleScriptCancelHelper helper;
 
-  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), L"_Line", 1);
+  RhinoApp().RunScript(doc->RuntimeSerialNumber(), L"_Line", 1);
   if (helper.LastCommandResult() != CRhinoCommand::success)
     return helper.LastCommandResult();
 
-  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), L"_Circle", 1);
+  RhinoApp().RunScript(doc->RuntimeSerialNumber(), L"_Circle", 1);
   if (helper.LastCommandResult() != CRhinoCommand::success)
     return helper.LastCommandResult();
 
-  RhinoApp().RunScript(context.m_doc.RuntimeSerialNumber(), L"_Arc", 1);
+  RhinoApp().RunScript(doc->RuntimeSerialNumber(), L"_Arc", 1);
   if (helper.LastCommandResult() != CRhinoCommand::success)
     return helper.LastCommandResult();
 

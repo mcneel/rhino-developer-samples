@@ -28,6 +28,10 @@ static class CCommandSampleMergeSrf theSampleMergeSrfCommand;
 
 CRhinoCommand::result CCommandSampleMergeSrf::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select a pair of surfaces to merge");
   go.SetGeometryFilter(CRhinoGetObject::surface_object);
@@ -50,8 +54,8 @@ CRhinoCommand::result CCommandSampleMergeSrf::RunCommand(const CRhinoCommandCont
     objref[i].SurfaceParameter(&picked_point[i][0], &picked_point[i][1]);
   }
 
-  double tol = context.m_doc.AbsoluteTolerance();
-  double angtol = context.m_doc.AngleToleranceRadians();
+  double tol = doc->AbsoluteTolerance();
+  double angtol = doc->AngleToleranceRadians();
 
   CRhinoCommand::result rc = CRhinoCommand::failure;
   ON_Brep* out_brep = RhinoMergeSrf(brep[0], brep[1], tol, angtol, &picked_point[0], &picked_point[1]);
@@ -64,9 +68,9 @@ CRhinoCommand::result CCommandSampleMergeSrf::RunCommand(const CRhinoCommandCont
     brep_obj->SetBrep(out_brep);
     out_brep = nullptr;
 
-    if (context.m_doc.ReplaceObject(objref[0], brep_obj))
+    if (doc->ReplaceObject(objref[0], brep_obj))
     {
-      context.m_doc.DeleteObject(objref[1]);
+      doc->DeleteObject(objref[1]);
       rc = CRhinoCommand::success;
     }
     else
@@ -76,7 +80,7 @@ CRhinoCommand::result CCommandSampleMergeSrf::RunCommand(const CRhinoCommandCont
     }
   }
 
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return rc;
 }

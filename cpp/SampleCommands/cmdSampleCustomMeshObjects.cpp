@@ -48,6 +48,10 @@ static class CCommandSampleCustomMeshObjects theSampleCustomMeshObjectsCommand;
 
 CRhinoCommand::result CCommandSampleCustomMeshObjects::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surfaces, polysurfaces and extrusions to mesh");
   unsigned int geometry_filter = 0;
@@ -101,10 +105,10 @@ CRhinoCommand::result CCommandSampleCustomMeshObjects::RunCommand(const CRhinoCo
         mesh_obj->SetMesh(mesh.m_mesh);
         mesh.m_mesh = nullptr;
 
-        context.m_doc.AddObject(mesh_obj);
+        doc->AddObject(mesh_obj);
       }
     }
-    context.m_doc.Redraw();
+    doc->Redraw();
   }
 
   return rc;

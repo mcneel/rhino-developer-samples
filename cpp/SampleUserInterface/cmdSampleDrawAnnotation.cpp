@@ -28,8 +28,12 @@ static class CCommandSampleDrawAnnotation theSampleDrawAnnotationCommand;
 
 CRhinoCommand::result CCommandSampleDrawAnnotation::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CWnd* pWnd = CWnd::FromHandle(RhinoApp().MainWnd());
-  CSampleDrawAnnotationDialog dialog(pWnd, context.m_doc);
+  CSampleDrawAnnotationDialog dialog(pWnd, *doc);
   dialog.DoModal();
   
   return CRhinoCommand::success;

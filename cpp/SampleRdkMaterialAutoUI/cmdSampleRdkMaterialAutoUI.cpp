@@ -18,7 +18,7 @@ static class CCommandSampleRdkMaterialAutoUI theSampleRdkMaterialAutoUICommand;
 
 CRhinoCommand::result CCommandSampleRdkMaterialAutoUI::RunCommand(const CRhinoCommandContext& context)
 {
-	//auto& rdkDoc = context.m_doc.RdkDocument().BeginChange(RhRdkChangeContext::UI);
+	//auto& rdkDoc = doc->RdkDocument().BeginChange(RhRdkChangeContext::UI);
 
 	//auto pContent = new CSampleRdkMaterial;
 	//pContent->Initialize();

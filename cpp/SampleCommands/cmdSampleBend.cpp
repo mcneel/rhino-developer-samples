@@ -66,6 +66,10 @@ static class CCommandSampleBend theSampleBendCommand;
 
 CRhinoCommand::result CCommandSampleBend::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surface or polysurface to bend");
   go.SetGeometryFilter(CRhinoGetObject::surface_object | CRhinoGetObject::polysrf_object);
@@ -91,7 +95,7 @@ CRhinoCommand::result CCommandSampleBend::RunCommand(const CRhinoCommandContext&
 
   CRhinoObject* obj = RhinoBendObject(go.Object(0).Object(), line.from, line.to, gp.Point());
   if (obj)
-    context.m_doc.Redraw();
+    doc->Redraw();
 
   return CRhinoCommand::success;
 }

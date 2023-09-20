@@ -113,6 +113,10 @@ static class CCommandSampleSplitCurve theSampleSplitCurveCommand;
 
 CRhinoCommand::result CCommandSampleSplitCurve::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curve to split");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -127,7 +131,7 @@ CRhinoCommand::result CCommandSampleSplitCurve::RunCommand(const CRhinoCommandCo
     return CRhinoCommand::failure;
 
   ON_SimpleArray<double> crv_t;
-  CRhinoCommand::result rc = PickCurveParameters(context.m_doc, *crv, crv_t);
+  CRhinoCommand::result rc = PickCurveParameters(*doc, *crv, crv_t);
   if (rc != CRhinoCommand::success)
     return rc;
 
@@ -144,13 +148,13 @@ CRhinoCommand::result CCommandSampleSplitCurve::RunCommand(const CRhinoCommandCo
       {
         CRhinoCurveObject* new_crv_obj = new CRhinoCurveObject(atts);
         new_crv_obj->SetCurve(new_crv);
-        context.m_doc.AddObject(new_crv_obj);
+        doc->AddObject(new_crv_obj);
       }
     }
   }
 
-  context.m_doc.DeleteObject(crv_obj_ref);
-  context.m_doc.Redraw();
+  doc->DeleteObject(crv_obj_ref);
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

@@ -132,12 +132,16 @@ CCommandSamplePerspectiveColors::CCommandSamplePerspectiveColors()
 
 CRhinoCommand::result CCommandSamplePerspectiveColors::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   if (m_conduit.IsEnabled())
     m_conduit.Disable();
   else
-    m_conduit.Enable(context.m_doc.RuntimeSerialNumber());
+    m_conduit.Enable(doc->RuntimeSerialNumber());
 
-  context.m_doc.Regen();
+  doc->Regen();
 
   return CRhinoCommand::success;
 }

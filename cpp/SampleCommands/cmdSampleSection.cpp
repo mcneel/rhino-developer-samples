@@ -27,6 +27,10 @@ static class CCommandSampleSection theSampleSectionCommand;
 
 CRhinoCommand::result CCommandSampleSection::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select surfaces and polysurfaces to section
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select surfaces and polysurfaces to section");
@@ -106,7 +110,7 @@ CRhinoCommand::result CCommandSampleSection::RunCommand(const CRhinoCommandConte
   {
     ON_Curve* crv = curve_array[i];
     if (crv)
-      context.m_doc.AddCurveObject(*crv);
+      doc->AddCurveObject(*crv);
   }
 
   // We are responsible for cleanign up the section curves
@@ -125,7 +129,7 @@ CRhinoCommand::result CCommandSampleSection::RunCommand(const CRhinoCommandConte
   }
 
   if (curve_array.Count())
-    context.m_doc.Redraw();
+    doc->Redraw();
 
   return CRhinoCommand::success;
 }

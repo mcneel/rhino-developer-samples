@@ -27,6 +27,10 @@ static class CCommandSampleMakeBlock theSampleMakeBlockCommand;
 
 CRhinoCommand::result CCommandSampleMakeBlock::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   // Select objects to define block
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select objects to define block");
@@ -69,7 +73,7 @@ CRhinoCommand::result CCommandSampleMakeBlock::RunCommand(const CRhinoCommandCon
     return CRhinoCommand::nothing;
 
   // See if block name already exists
-  CRhinoInstanceDefinitionTable& idef_table = context.m_doc.m_instance_definition_table;
+  CRhinoInstanceDefinitionTable& idef_table = doc->m_instance_definition_table;
   int idef_index = idef_table.FindInstanceDefinition(idef_name);
   if (idef_index >= 0)
   {
@@ -111,7 +115,7 @@ CRhinoCommand::result CCommandSampleMakeBlock::RunCommand(const CRhinoCommandCon
           geom->Transform(xform);
           dupe->UpdateBoundingBox();
         }
-        context.m_doc.AddObject(dupe, false, true);
+        doc->AddObject(dupe, false, true);
         idef_objects.Append(dupe);
       }
     }

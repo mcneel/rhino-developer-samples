@@ -28,9 +28,11 @@ static class CCommandSampleChangeDimStyle theSampleChangeDimStyleCommand;
 
 CRhinoCommand::result CCommandSampleChangeDimStyle::RunCommand(const CRhinoCommandContext& context)
 {
-  //int dimstyle_count = context.m_doc.m_dimstyle_table.DimStyleCount();
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
 
-  const CRhinoDimStyle& ds = context.m_doc.m_dimstyle_table.CurrentDimStyle();
+  const CRhinoDimStyle& ds = doc->m_dimstyle_table.CurrentDimStyle();
 
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select Objects");
@@ -58,14 +60,14 @@ CRhinoCommand::result CCommandSampleChangeDimStyle::RunCommand(const CRhinoComma
             {
               new_text->SetDimensionStyleId(ds.Id());
               rhtext->SetTextObject(new_text);
-              context.m_doc.ReplaceObject(objref, rhtext);
+              doc->ReplaceObject(objref, rhtext);
             }
           }
         }
       }
     }
   }
-  context.m_doc.Redraw();
+  doc->Redraw();
 
   return CRhinoCommand::success;
 }

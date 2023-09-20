@@ -42,6 +42,10 @@ static class CCommandSampleObjectUserDataAdd theSampleObjectUserDataAddCommand;
 
 CRhinoCommand::result CCommandSampleObjectUserDataAdd::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select object");
   go.GetObjects(1, 1);
@@ -64,7 +68,7 @@ CRhinoCommand::result CCommandSampleObjectUserDataAdd::RunCommand(const CRhinoCo
   if (gs.CommandResult() != success)
     return gs.CommandResult();
 
-  bool rc = CSampleObjectUserData::AddSampleObjectUserData(context.m_doc, object, gp.Point(), gs.String());
+  bool rc = CSampleObjectUserData::AddSampleObjectUserData(*doc, object, gp.Point(), gs.String());
   RhinoApp().Print(L"%ls\n", rc ? L"Succeeded!" : L"Failed!");
 
   return CRhinoCommand::success;
@@ -166,6 +170,10 @@ static class CCommandSampleObjectUserDataRemove theSampleObjectUserDataRemoveCom
 
 CRhinoCommand::result CCommandSampleObjectUserDataRemove::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select object");
   go.GetObjects(1, 1);
@@ -176,7 +184,7 @@ CRhinoCommand::result CCommandSampleObjectUserDataRemove::RunCommand(const CRhin
   if (0 == object)
     return CRhinoCommand::failure;
 
-  bool rc = CSampleObjectUserData::RemoveSampleObjectUserData(context.m_doc, object);
+  bool rc = CSampleObjectUserData::RemoveSampleObjectUserData(*doc, object);
   RhinoApp().Print(L"%ls\n", rc ? L"Succeeded!" : L"Failed!");
 
   return CRhinoCommand::success;

@@ -27,6 +27,10 @@ static class CCommandSamplePtFromCrvStart theSamplePtFromCrvStartCommand;
 
 CRhinoCommand::result CCommandSamplePtFromCrvStart::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select curve");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -68,8 +72,8 @@ CRhinoCommand::result CCommandSamplePtFromCrvStart::RunCommand(const CRhinoComma
   if (crv->GetNormalizedArcLengthPoint(s, &t))
   {
     ON_3dPoint pt = crv->PointAt(t);
-    context.m_doc.AddPointObject(pt);
-    context.m_doc.Redraw();
+    doc->AddPointObject(pt);
+    doc->Redraw();
   }
 
   return CRhinoCommand::success;

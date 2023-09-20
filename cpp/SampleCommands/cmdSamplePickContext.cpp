@@ -34,6 +34,10 @@ CRhinoCommand::result CCommandSamplePickContext::RunCommand(const CRhinoCommandC
   in addition to everything else the picker is doing by default.
   */
 
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoPickContext pick_context;
 
   CRhinoGetObject go;
@@ -54,7 +58,7 @@ CRhinoCommand::result CCommandSamplePickContext::RunCommand(const CRhinoCommandC
   vp.VP().GetFrustumLine(gp.Point2d().x, gp.Point2d().y, pick_context.m_pick_line);
 
   CRhinoObjRefArray pick_list;
-  context.m_doc.PickObjects(pick_context, pick_list);
+  doc->PickObjects(pick_context, pick_list);
   if (pick_list.Count() > 0 && pick_list[0].Edge())
     RhinoApp().Print(L"Edge picked.\n");
   else

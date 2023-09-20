@@ -28,7 +28,11 @@ static class CCommandSampleBlockView theSampleBlockViewCommand;
 
 CRhinoCommand::result CCommandSampleBlockView::RunCommand(const CRhinoCommandContext& context)
 {
-  const CRhinoInstanceDefinitionTable& idef_table = context.m_doc.m_instance_definition_table;
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
+  const CRhinoInstanceDefinitionTable& idef_table = doc->m_instance_definition_table;
 
   bool bFound = false;
   int i;
@@ -52,7 +56,7 @@ CRhinoCommand::result CCommandSampleBlockView::RunCommand(const CRhinoCommandCon
     return nothing;
   }
 
-  CSampleBlockViewDialog dialog(CWnd::FromHandle(RhinoApp().MainWnd()), context.m_doc);
+  CSampleBlockViewDialog dialog(CWnd::FromHandle(RhinoApp().MainWnd()), *doc);
   dialog.DoModal();
 
   return CRhinoCommand::success;

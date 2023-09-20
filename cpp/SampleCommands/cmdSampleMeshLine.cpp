@@ -27,6 +27,10 @@ static class CCommandSampleMeshLine theSampleMeshLineCommand;
 
 CRhinoCommand::result CCommandSampleMeshLine::RunCommand(const CRhinoCommandContext& context)
 {
+  CRhinoDoc* doc = context.Document();
+  if (nullptr == doc)
+    return CRhinoCommand::failure;
+
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select mesh");
   go.SetGeometryFilter(CRhinoGetObject::mesh_object);
@@ -47,13 +51,13 @@ CRhinoCommand::result CCommandSampleMeshLine::RunCommand(const CRhinoCommandCont
     if (rc == 0)
     {
       ON_LineCurve line_crv(start_point.m_P, end_point.m_P);
-      double tolerance = context.m_doc.AbsoluteTolerance();
+      double tolerance = doc->AbsoluteTolerance();
       ON_PolylineCurve* polyline_crv = RhinoPullCurveToMesh(&line_crv, mesh_obj->Mesh(), tolerance);
       if (polyline_crv)
       {
-        context.m_doc.AddCurveObject(*polyline_crv);
+        doc->AddCurveObject(*polyline_crv);
         delete polyline_crv; // Don't leak...
-        context.m_doc.Redraw();
+        doc->Redraw();
       }
     }
   }

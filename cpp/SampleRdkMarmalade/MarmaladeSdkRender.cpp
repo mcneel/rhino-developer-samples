@@ -11,11 +11,11 @@ CMarmaladeSdkRender::CMarmaladeSdkRender(const CRhinoCommandContext& context, CR
 	m_bRenderQuick(bPreview),
 	CRhRdkSdkRender(context, plugIn, sCaption, uIconId)
 {
-	const auto* pDoc = context.Document();
-	if (nullptr == pDoc)
+	const CRhinoDoc* doc = context.Document();
+	if (nullptr == doc)
 		return;
 
-	const auto& rs = pDoc->Properties().RenderSettings();
+	const auto& rs = doc->Properties().RenderSettings();
 	m_pRenderer = new CMarmaladeRenderer(*this, rs);
 
 	GetRenderWindow().ClearChannels();
@@ -81,13 +81,13 @@ CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::Render(const ON_2iSize& 
 
 CRhinoSdkRender::RenderReturnCodes CMarmaladeSdkRender::RenderWindow(CRhinoView* pView, const LPRECT pRect, bool bInPopupWindow)
 {
-	const auto* pDoc = CommandContext().Document();
-	if (nullptr == pDoc)
+	const auto* doc = CommandContext().Document();
+	if (nullptr == doc)
 		return CRhinoSdkRender::RenderReturnCodes::render_empty_scene;
 
 	m_pRenderer->SetRenderRegion(pRect); // Must be before SetRenderSize().
 
-	const auto sizeRender = RenderSize(*pDoc, true);
+	const auto sizeRender = RenderSize(*doc, true);
 	m_pRenderer->SetRenderSize(sizeRender);
 
 	// Marmalade doesn't use these render meshes, but your plug-in will
