@@ -4,7 +4,7 @@ import time
 import compute_rhino3d.Mesh
 import compute_rhino3d.Util
 
-compute_rhino3d.Util.url = "http://localhost:8081/"
+compute_rhino3d.Util.url = "http://localhost:5000/"
 #compute_rhino3d.Util.apiKey = ""
 
 center = Point3d(250, 250, 0)
