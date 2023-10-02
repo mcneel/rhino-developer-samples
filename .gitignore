@@ -357,3 +357,6 @@ venv/
 
 .DS_Store
 .env
+
+bin
+obj
