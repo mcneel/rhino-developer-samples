@@ -12,14 +12,30 @@ process.argv.forEach(function (val, index, array) {
 
 const rhino = await rhino3dm()
 
-let buffer = fs.readFileSync(file3dmpath);
-let arr = new Uint8Array(buffer)
-let file3dm = rhino.File3dm.fromByteArray(arr)
-let objects = file3dm.objects();
+const buffer = fs.readFileSync(file3dmpath);
+const arr = new Uint8Array(buffer)
+const file3dm = rhino.File3dm.fromByteArray(arr)
+const objects = file3dm.objects();
 
-for(var i=0; i<objects.count; i++) {
-    let geometry = objects.get(i).geometry()
-    console.log(geometry)
+const stats = {}
+
+for ( let i = 0; i < objects.count; i ++ ) {
+
+    const geometry = objects.get(i).geometry()
+    const prop = geometry.objectType.constructor.name.substring(11)
+    increment(stats, prop)
+
+}
+
+function increment(obj, prop) {
+
+    if ( !Object.hasOwn(obj, prop) ) {
+        obj[prop] = 0
     }
+    obj[prop]++
+
+}
+
+console.log(stats)
 
 // do something with geometry

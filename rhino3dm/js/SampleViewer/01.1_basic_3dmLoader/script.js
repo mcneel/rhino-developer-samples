@@ -13,7 +13,7 @@ load()
 
 function init () {
 
-    THREE.Object3D.DefaultUp = new THREE.Vector3(0,0,1)
+    THREE.Object3D.DEFAULT_UP = new THREE.Vector3(0,0,1)
 
     scene = new THREE.Scene()
     scene.background = new THREE.Color(1,1,1)
@@ -35,7 +35,7 @@ function init () {
 function load() {
 
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta2/' )
 
     const material = new THREE.MeshNormalMaterial()
     loader.load( model, function ( object ) {

@@ -14,14 +14,14 @@ angle = 20
 curve = json.dumps(circle.ToNurbsCurve().Encode())
 
 # create list of input trees
-curve_tree = gh.DataTree("RH_IN:curve")
+curve_tree = gh.DataTree("curve")
 curve_tree.Append([0], [curve])
-rotate_tree = gh.DataTree("RH_IN:rotate")
+rotate_tree = gh.DataTree("rotate")
 rotate_tree.Append([0], [angle])
 trees = [curve_tree, rotate_tree]
 
 output = gh.EvaluateDefinition('twisty.gh', trees)
-# print(output)
+print(output)
 
 # decode results
 branch = output['values'][0]['InnerTree']['{0;0}']

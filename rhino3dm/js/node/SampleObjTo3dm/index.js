@@ -8,7 +8,7 @@ const rhino = await rhino3dm()
 
 console.log('Loaded rhino3dm.')
 
-let file = fs.readFileSync('Rhino_Logo.obj').toString()
+let file = fs.readFileSync('../../../models/Rhino_Logo.obj').toString()
 
 const loader = new OBJLoader()
 const obj = loader.parse(file)
@@ -31,7 +31,7 @@ doc.objects().add(rhinoMesh, null)
 
 let opts = new rhino.File3dmWriteOptions()
 opts.version = 8
-let buffer = doc.toByteArray(opts)
+let buffer = doc.toByteArrayOptions(opts)
 fs.writeFileSync('Rhino_Logo_Mesh.3dm', buffer)
 
 

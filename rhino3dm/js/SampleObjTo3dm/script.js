@@ -41,7 +41,7 @@ function convert () {
       if ( xhr.lengthComputable ) {
 
         const percentComplete = xhr.loaded / xhr.total * 100;
-        console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+        console.log( 'model ' + Math.round( percentComplete, 2 ) + '% loaded' );
 
       }
 
@@ -83,7 +83,7 @@ function saveByteArray ( fileName, byte ) {
 function init () {
 
   // Rhino models are z-up, so set this as the default
-  THREE.Object3D.DefaultUp = new THREE.Vector3( 0, 0, 1 )
+  THREE.Object3D.DEFAULT_UP = new THREE.Vector3(0,0,1)
 
   scene = new THREE.Scene()
   scene.background = new THREE.Color(1,1,1)

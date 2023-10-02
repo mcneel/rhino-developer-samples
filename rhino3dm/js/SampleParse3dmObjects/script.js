@@ -18,13 +18,9 @@ create()
 function create () {
 
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta2/' )
 
     doc = new rhino.File3dm()
-
-    console.log(doc.settings().earthAnchorPoint.modelNorth)
-    doc.settings().earthAnchorPoint.modelNorth = [0,0,1]
-    console.log(doc.settings().earthAnchorPoint.modelNorth)
 
     // Create layers
 
@@ -228,12 +224,13 @@ function create () {
           child.material.size = 10
         }
       }, false)
+      console.log(object)
       scene.add( object )
 
       // enable download button
       downloadButton.disabled = false
   
-    } )
+    }, ( error ) => { console.error } )
 
 }
 
@@ -256,7 +253,7 @@ function saveByteArray ( fileName, byte ) {
 function init () {
 
   // Rhino models are z-up, so set this as the default
-  THREE.Object3D.DefaultUp = new THREE.Vector3( 0, 0, 1 )
+  THREE.Object3D.DEFAULT_UP = new THREE.Vector3(0,0,1)
 
   scene = new THREE.Scene()
   scene.background = new THREE.Color( 1,1,1 )

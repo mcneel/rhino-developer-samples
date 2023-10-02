@@ -9,7 +9,7 @@ import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
 // #region GLOBALS //
 
 const loader = new Rhino3dmLoader()
-loader.setLibraryPath('https://unpkg.com/rhino3dm@8.0.0-beta/')
+loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta2/' )
 
 const upload = document.getElementById("file-upload")
 
@@ -73,7 +73,7 @@ animate()
 function init() {
 
     // Rhino models are z-up, so set this as the default
-    THREE.Object3D.DefaultUp = new THREE.Vector3(0, 0, 1)
+    THREE.Object3D.DEFAULT_UP = new THREE.Vector3(0, 0, 1)
 
     //renderer
 
