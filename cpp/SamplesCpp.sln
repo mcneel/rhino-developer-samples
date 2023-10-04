@@ -77,8 +77,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleChangeQueue", "Sample
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleCustomRenderMesh", "SampleCustomRenderMesh\SampleCustomRenderMesh.vcxproj", "{3CCC067E-989F-4E33-BABA-6FC75FBAC201}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkEffectsPanel", "SampleRdkEffectsPanel\SampleRdkEffectsPanel.vcxproj", "{43471328-4335-4429-9F06-B0AEA711D31B}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkAddRdkMaterials", "SampleRdkAddRdkMaterials\SampleRdkAddRdkMaterials.vcxproj", "{11103684-D2C8-4314-99B1-C4132BD46B9F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleDockBarDialog", "SampleDockBarDialog\SampleDockBarDialog.vcxproj", "{431CF7CF-4110-4EF8-ACFD-C98C4547B1F0}"
@@ -248,10 +246,6 @@ Global
 		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.Debug|x64.Build.0 = Debug|x64
 		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.Release|x64.ActiveCfg = Release|x64
 		{3CCC067E-989F-4E33-BABA-6FC75FBAC201}.Release|x64.Build.0 = Release|x64
-		{43471328-4335-4429-9F06-B0AEA711D31B}.Debug|x64.ActiveCfg = Debug|x64
-		{43471328-4335-4429-9F06-B0AEA711D31B}.Debug|x64.Build.0 = Debug|x64
-		{43471328-4335-4429-9F06-B0AEA711D31B}.Release|x64.ActiveCfg = Release|x64
-		{43471328-4335-4429-9F06-B0AEA711D31B}.Release|x64.Build.0 = Release|x64
 		{11103684-D2C8-4314-99B1-C4132BD46B9F}.Debug|x64.ActiveCfg = Debug|x64
 		{11103684-D2C8-4314-99B1-C4132BD46B9F}.Debug|x64.Build.0 = Debug|x64
 		{11103684-D2C8-4314-99B1-C4132BD46B9F}.Release|x64.ActiveCfg = Release|x64

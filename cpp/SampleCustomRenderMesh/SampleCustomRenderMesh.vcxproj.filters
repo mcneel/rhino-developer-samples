@@ -33,9 +33,6 @@
     <ClCompile Include="SampleCustomRenderMeshUserData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SampleCustomRenderMeshEventWatcher.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SampleCustomRenderMeshApp.h">
@@ -57,9 +54,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SampleCustomRenderMeshUserData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleCustomRenderMeshEventWatcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

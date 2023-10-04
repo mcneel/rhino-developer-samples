@@ -135,11 +135,7 @@ BOOL CSampleCustomRenderMeshPlugIn::OnLoadPlugIn()
 
   // Add sample custom render mesh provider
 
-  RhRdkAddExtension(new CSampleCRMP());
-
-  // Enable event watcher
-  m_eventWatcher.Register();
-  m_eventWatcher.Enable(TRUE);
+  RhRdkAddExtension(new CSampleCRMP);
 
   return TRUE;
 }

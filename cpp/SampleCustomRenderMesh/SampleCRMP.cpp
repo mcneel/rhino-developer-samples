@@ -1,3 +1,6 @@
+
+// ANDY: Search for [ANDYLOOK] -- 3 places.
+
 #include "stdafx.h"
 #include "SampleCRMP.h"
 #include "SampleCustomRenderMeshPlugIn.h"
@@ -18,134 +21,199 @@ UUID CSampleCRMP::PlugInId(void) const
 
 UUID CSampleCRMP::ProviderId(void) const
 {
-  // {5F3B9BE4-4663-450C-86DE-098695A0101E}
-  static const GUID uuidSampleCRMP =
-  { 0x5f3b9be4, 0x4663, 0x450c,{ 0x86, 0xde, 0x9, 0x86, 0x95, 0xa0, 0x10, 0x1e } };
+	static const UUID uuid =
+	{
+		0x5f3b9be4, 0x4663, 0x450c,{ 0x86, 0xde, 0x9, 0x86, 0x95, 0xa0, 0x10, 0x1e }
+	};
 
-	return uuidSampleCRMP;
+	return uuid;
+}
+
+std::vector<ObjectId> CSampleCRMP::NonObjectIds(void) const
+{
+	return std::vector<ObjectId>();
+}
+
+UUID CSampleCRMP::InterfaceId(void) const
+{
+	return IRenderMeshProvider::InterfaceId();
 }
 
 ON_wString CSampleCRMP::Name(void) const
 {
-  const static ON_wString wszName = L"SampleCRMP";
-  return wszName;
+	const static ON_wString wszName = L"SampleCRMP";
+	return wszName;
 }
 
-bool CSampleCRMP::IsViewDependent(void) const
+CRhRdkVariant CSampleCRMP::GetParameter(const CRhinoDoc& doc, const ObjectId& object,
+										const wchar_t* wszParamName) const
 {
-  // Custom render meshes are not dependent on the view
-  return false;
+	const auto* pObject = doc.LookupObject(object);
+	if (nullptr == pObject)
+		return CRhRdkVariant::Null();
+
+	// TODO: Return your value for this parameter if possible.
+	return CRhRdkVariant(); // ...
 }
 
-bool CSampleCRMP::IsRequestingPlugInDependent(void) const
+void CSampleCRMP::SetParameter(const CRhinoDoc& doc, const ObjectId& object,
+                               const wchar_t* wszParamName, const CRhRdkVariant& value)
 {
-  // Custom render meshes are same for all requesting plug-ins
-  return false;
+	auto* pObject = doc.LookupObject(object);
+	if (nullptr == pObject)
+		return;
+
+	// TODO: Set your value for this parameter if possible.
 }
 
-bool CSampleCRMP::IsPreviewAndStandardSameMesh(void) const
+bool CSampleCRMP::HasCustomRenderMeshes(ON::mesh_type mt, const ON_Viewport& vp, const CRhinoDoc& doc,
+                  const ObjectId& objectId, ON__UINT32& flags, const CRhinoPlugIn* requestingPlugIn,
+                  const CDisplayPipelineAttributes* pAttributes) const
 {
-  // Preivew and standard meshes are same
-  return true;
+	const auto* pObject = doc.LookupObject(objectId);
+	if (nullptr == pObject)
+		return false;
+
+	// Read sample custom render mesh user data from the object attributes.
+	auto* ud = pObject->Attributes().GetUserData(SampleCustomRenderMeshUserDataUuid);
+	const auto* pUserData = CSampleCustomRenderMeshUserData::Cast(ud);
+
+	// If object doesn't have this type of user data then it doesn't have custom render mesh.
+	if (pUserData == nullptr)
+		return false;
+
+	return true;
 }
 
-CRhRdkVariant CSampleCRMP::GetParameter(const CRhinoObject&, const wchar_t*) const
+std::shared_ptr<const IRenderMeshes> CSampleCRMP::RenderMeshes(
+                ON::mesh_type mp, const ON_Viewport& vp, const CRhinoDoc& doc, const ObjectId& objectId,
+                const CRhRdkObjectAncestry& ancestry, ON__UINT32& flags,
+                std::shared_ptr<const IRenderMeshes> previousMeshes, const CRhinoPlugIn* requestingPlugIn,
+                const CDisplayPipelineAttributes* pAttributes) const
 {
-  return 0;
+	if (!previousMeshes)
+		return nullptr;
+
+	const auto* object = doc.LookupObject(objectId);
+	if (object == nullptr)
+		return nullptr;
+
+	if (!HasCustomRenderMeshes(mp, vp, doc, objectId, flags, requestingPlugIn, pAttributes))
+		return nullptr;
+
+	// Read sample custom render mesh user data from the object attributes
+	// If object doesn't have this type of user data then it doesn't have custom render meshes.
+	auto* ud = object->Attributes().GetUserData(SampleCustomRenderMeshUserDataUuid);
+	const auto* user_data = CSampleCustomRenderMeshUserData::Cast(ud);
+	if (user_data == nullptr)
+		return false;
+
+	auto runningHash = previousMeshes->Hash();
+	const double amount = user_data->Amount();
+	runningHash = ON_CRC32(runningHash, sizeof(amount), &amount);
+
+	// Check the cache.
+	if (IManager::Flags::DisableCaching != (flags & IManager::Flags::DisableCaching))
+	{
+		const auto* pTrackingRecord = m_tracking.Tracker(doc).Record(objectId);
+		if (nullptr != pTrackingRecord)
+		{
+			if (pTrackingRecord->Hash() == runningHash)
+			{
+				return pTrackingRecord->Primitives();
+			}
+		}
+	}
+
+	// [ANDYLOOK] I don't know what I'm supposed to do here.
+	//
+	// This is what Thickening does:
+	//
+	//ON_SimpleArray<int> aSubObjectIndices;
+	//ON_Mesh renderMeshUnion;
+	//
+	//int rmi = 0;
+	//int i = 0;
+	//for (const auto& rm : *previousMeshes)
+	//{
+	//	ON_Mesh mesh(*rm->Geometry().Mesh());
+	//
+	//	mesh.ConvertQuadsToTriangles();
+	//
+	//	renderMeshUnion.Append(mesh);
+	//
+	//	aSubObjectIndices.SetCapacity(renderMeshUnion.FaceCount());
+	//	aSubObjectIndices.SetCount(renderMeshUnion.FaceCount());
+	//
+	//	const int iFaceCount = mesh.FaceCount();
+	//
+	//	for (int fi = 0; fi < iFaceCount; fi++, i++)
+	//	{
+	//		aSubObjectIndices[i] = rmi;
+	//	}
+	//
+	//	rmi++;
+	//}
+
+	auto out = std::shared_ptr<IRenderMeshes>(IRenderMeshes::New(doc, objectId, ProviderId(), runningHash));
+
+	ON_Xform translationXform = ON_Xform::TranslationTransformation(0.0, 0.0, user_data->Amount());
+
+	ON_SimpleArray<const ON_Mesh*> renderMeshes;
+	object->GetMeshes(ON::render_mesh, renderMeshes);
+
+	auto it = previousMeshes->begin();
+
+	for (int i = 0; i < renderMeshes.Count(); i++)
+	{
+		const auto* rm = renderMeshes[i];
+		if (rm == nullptr)
+			continue;
+
+		auto custom_mesh = std::make_shared<ON_Mesh>(*rm);
+		if (custom_mesh)
+		{
+			custom_mesh->Transform(translationXform); // Is this needed?
+
+			// [ANDYLOOK]
+			// This was here before I tried to change it but I can't figure out what I should change it to.
+			//
+			//crmInOut.SetUseObjectsMappingChannels(true);
+			//crmInOut.SetInstanceTransform(ON_Xform::IdentityTransformation);
+			//crmInOut.SetAutoDeleteMeshesOn();
+			//crmInOut.SetAutoDeleteMaterialsOn();
+
+			std::shared_ptr<IRenderMeshes::IInstance> pPrevious = nullptr; // Is this needed?
+			if (std::end(*previousMeshes) != it && nullptr != *it)
+			{
+				const auto pPrevious = *it; // Is this right?
+				out->AddInstance(IRenderMeshes::IInstance::New(custom_mesh, *pPrevious));
+				it++;
+			}
+			else
+			{
+				out->AddInstance(IRenderMeshes::IInstance::New(custom_mesh, *object));
+			}
+		}
+	}
+
+	// Add to the cache.
+	if (IManager::Flags::DisableCaching != (flags & IManager::Flags::DisableCaching))
+	{
+		m_tracking.Tracker(doc).Set(out);
+	}
+
+	return out;
 }
 
-void CSampleCRMP::SetParameter(const CRhinoObject&, const wchar_t*, const CRhRdkVariant&)
+std::unique_ptr<IRenderMeshProvider::IProgress> CSampleCRMP::Progress(
+                const CRhinoDoc&, const std::vector<ObjectId>* pOptionalObjects) const
 {
+	// TODO: [ANDYLOOK]
+	return nullptr;
 }
 
-bool CSampleCRMP::WillBuildCustomMesh(const ON_Viewport& vp, const CRhinoObject* pObject, const CRhinoDoc&,
-                                      const UUID&, const CDisplayPipelineAttributes*) const
+void* CSampleCRMP::EVF(const wchar_t*, void*)
 {
-  // No custom render mesh for document
-  if (nullptr == pObject)
-    return false;
-
-  // Read sample custom render mesh user data from the object attributes
-  const CSampleCustomRenderMeshUserData* pUserData = CSampleCustomRenderMeshUserData::Cast(pObject->Attributes().GetUserData(SampleCustomRenderMeshUserDataUuid));
-
-  // If object doesn't have this type of user data then it doesn't custom render mesh
-  if (pUserData == nullptr)
-    return false;
-
-  return true;
-}
-
-ON_BoundingBox CSampleCRMP::BoundingBox(const ON_Viewport& vp, const CRhinoObject* pObject, const CRhinoDoc& doc,
-                                        const UUID& uuidRequestingPlugIn, const CDisplayPipelineAttributes* pAttributes) const
-{
-  // No custom render mesh for document. Therefore no need to provide bounding box either.
-  if (nullptr == pObject)
-    return ON_BoundingBox::EmptyBoundingBox;
-
-  // Read sample custom render mesh user data from the object attributes
-  const CSampleCustomRenderMeshUserData* pUserData = CSampleCustomRenderMeshUserData::Cast(pObject->Attributes().GetUserData(SampleCustomRenderMeshUserDataUuid));
-
-  // If object doesn't have this type of user data then it doesn't custom render mesh. So no bounding box needed either.
-  if (pUserData == nullptr)
-    return ON_BoundingBox::EmptyBoundingBox;
-
-  // Calculate bounding box for the custom render mesh. This does not need to be a tight bounding box.
-  ON_BoundingBox bb = pObject->BoundingBox();
-  ON_Xform translationXform = ON_Xform::TranslationTransformation(0.0, 0.0, pUserData->Amount());
-  bb.Transform(translationXform);
-  return bb;
-}
-
-bool CSampleCRMP::BuildCustomMeshes(const ON_Viewport& vp, const UUID& uuidRequestingPlugIn, const CRhinoDoc& doc,
-                                    IRhRdkCustomRenderMeshes& crmInOut, const CDisplayPipelineAttributes* pAttributes,
-                                    bool bWillBuildCustomMeshCheck) const
-{
-  const CRhinoObject* pObject = crmInOut.Object();
-
-  // No custom render mesh for document
-  if (nullptr == pObject)
-    return false;
-
-  // Call WillBuildCustomMesh if requested
-  if (bWillBuildCustomMeshCheck)
-  {
-    if (!WillBuildCustomMesh(vp, pObject, doc, uuidRequestingPlugIn, pAttributes))
-    {
-      return false;
-    }
-  }
-
-  // Read sample custom render mesh user data from the object attributes
-  const CSampleCustomRenderMeshUserData* pUserData = CSampleCustomRenderMeshUserData::Cast(pObject->Attributes().GetUserData(SampleCustomRenderMeshUserDataUuid));
-
-  // If object doesn't have this type of user data then it doesn't custom render mesh
-  if (pUserData == nullptr)
-    return false;
-
-Look at thickening in Displacement plug-in
-Remember to put the 'Tracker' in the header.
-
-  ON_Xform translationXform = ON_Xform::TranslationTransformation(0.0, 0.0, pUserData->Amount());
-
-  ON_SimpleArray<const ON_Mesh*> renderMeshes;
-  pObject->GetMeshes(ON::render_mesh, renderMeshes);
-  for (int mi = 0; mi < renderMeshes.Count(); mi++)
-  {
-    const ON_Mesh* pRenderMesh = renderMeshes[mi];
-    if (pRenderMesh != nullptr)
-    {
-      ON_Mesh* pCustomMesh = new ON_Mesh(*pRenderMesh);
-      if (pCustomMesh != nullptr)
-      {
-        pCustomMesh->Transform(translationXform);
-        crmInOut.SetUseObjectsMappingChannels(true);
-        crmInOut.SetInstanceTransform(ON_Xform::IdentityTransformation);
-        crmInOut.SetAutoDeleteMeshesOn();
-        crmInOut.SetAutoDeleteMaterialsOn();
-        crmInOut.Add(pCustomMesh, nullptr);
-      }
-    }
-  }
-
-  return true;
+	return nullptr;
 }
