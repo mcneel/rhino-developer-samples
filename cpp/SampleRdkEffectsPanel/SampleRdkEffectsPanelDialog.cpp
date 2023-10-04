@@ -95,6 +95,8 @@ LRESULT CSampleRdkEffectsPanelDialog::OnColorChanged(WPARAM, LPARAM)
 	return 1;
 }
 
+Get rid of the whole sample.
+
 void CSampleRdkEffectsPanelDialog::UpdateRendering(void)
 {
 	// This is a very simple example of modifying the rendered image.

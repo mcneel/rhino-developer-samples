@@ -135,9 +135,7 @@ BOOL CSampleCustomRenderMeshPlugIn::OnLoadPlugIn()
 
   // Add sample custom render mesh provider
 
-  // TODO: ANDY -- RhRdkCustomRenderMeshManager2 does not have this function.
-  // I can't figure out what to call instead.
-  RhRdkCustomRenderMeshManager2().Add(new CSampleCRMP());
+  RhRdkAddExtension(new CSampleCRMP());
 
   // Enable event watcher
   m_eventWatcher.Register();

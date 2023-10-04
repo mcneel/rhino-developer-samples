@@ -137,10 +137,6 @@ CRhinoCommand::result CCommandSampleCustomRenderMesh::RunCommand(const CRhinoCom
       if (!SetAmount(doc, pObject->Id(), amount))
         return CRhinoCommand::failure;
 
-      // TODO: ANDY -- this is not supposed to be called by clients so why is it here?
-      // RhRdkCustomRenderMeshManager2 does not have this function.
-      RhRdkCustomRenderMeshManager().OnRhinoObjectChanged(doc, pObject);
-
       return CRhinoCommand::success;
     }
     else if (gnr == CRhinoGet::result::option)
@@ -149,14 +145,12 @@ CRhinoCommand::result CCommandSampleCustomRenderMesh::RunCommand(const CRhinoCom
       {
         if (!SetAmount(doc, pObject->Id(), amount))
           return CRhinoCommand::failure;
-        RhRdkCustomRenderMeshManager().OnRhinoObjectChanged(doc, pObject);
       }
     }
     else if (gnr == CRhinoGet::result::nothing)
     {
       if (!SetAmount(doc, pObject->Id(), amount))
         return CRhinoCommand::failure;
-      RhRdkCustomRenderMeshManager().OnRhinoObjectChanged(doc, pObject);
       return CRhinoCommand::success;
     }
     else

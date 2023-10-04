@@ -122,6 +122,9 @@ bool CSampleCRMP::BuildCustomMeshes(const ON_Viewport& vp, const UUID& uuidReque
   if (pUserData == nullptr)
     return false;
 
+Look at thickening in Displacement plug-in
+Remember to put the 'Tracker' in the header.
+
   ON_Xform translationXform = ON_Xform::TranslationTransformation(0.0, 0.0, pUserData->Amount());
 
   ON_SimpleArray<const ON_Mesh*> renderMeshes;

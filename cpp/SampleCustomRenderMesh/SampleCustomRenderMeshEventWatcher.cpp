@@ -2,6 +2,8 @@
 #include "SampleCustomRenderMeshEventWatcher.h"
 #include "SampleCustomRenderMeshUserData.h"
 
+// Get rid of event watcher.
+
 void CSampleCustomRenderMeshEventWatcher::OnReplaceObject(CRhinoDoc& doc, CRhinoObject& old_object, CRhinoObject& new_object)
 {
   // Use either old or new object depending on which one has valid id
