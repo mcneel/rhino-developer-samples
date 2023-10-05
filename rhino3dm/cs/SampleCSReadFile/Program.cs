@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Rhino.FileIO;
+﻿using Rhino.FileIO;
 
 Console.WriteLine("Hello, World!");
 

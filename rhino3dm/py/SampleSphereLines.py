@@ -37,10 +37,6 @@ for i in range(num_lines):
 	# Add to model
 	model.Objects.AddCurve(line_curve)
 
-# Full path to 3dm file to save
-desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
 filename = 'spherelines.3dm'
-path = os.path.join(desktop, filename)
-
 # Write model to disk
-model.Write(path, 6)
+model.Write(filename, 7)

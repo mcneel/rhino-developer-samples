@@ -61,7 +61,7 @@ async function load() {
 
     // load and pass to threejs
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta2/' )
 
     loader.load( model, function ( object ) {
 
@@ -75,7 +75,9 @@ async function load() {
         scene.add( object )
         parsedDoc = object
 
-    } )
+    } , ( progress ) => { 
+        console.log( ( progress.loaded / progress.total ) * 100 ) 
+    }, ( error ) => { console.error( error ) } )
 
 
 }
@@ -84,7 +86,7 @@ async function load() {
 function init () {
 
     // Rhino models are z-up, so set this as the default
-    THREE.Object3D.DefaultUp = new THREE.Vector3( 0, 0, 1 )
+    THREE.Object3D.DEFAULT_UP = new THREE.Vector3(0,0,1)
 
     // create a scene and a camera
     scene = new THREE.Scene()
