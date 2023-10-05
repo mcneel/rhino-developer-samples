@@ -1,6 +1,4 @@
 
-// ANDY: Search for [ANDYLOOK] -- 3 places.
-
 #include "stdafx.h"
 #include "SampleCRMP.h"
 #include "SampleCustomRenderMeshPlugIn.h"
@@ -125,75 +123,20 @@ std::shared_ptr<const IRenderMeshes> CSampleCRMP::RenderMeshes(
 		}
 	}
 
-	// [ANDYLOOK] I don't know what I'm supposed to do here.
-	//
-	// This is what Thickening does:
-	//
-	//ON_SimpleArray<int> aSubObjectIndices;
-	//ON_Mesh renderMeshUnion;
-	//
-	//int rmi = 0;
-	//int i = 0;
-	//for (const auto& rm : *previousMeshes)
-	//{
-	//	ON_Mesh mesh(*rm->Geometry().Mesh());
-	//
-	//	mesh.ConvertQuadsToTriangles();
-	//
-	//	renderMeshUnion.Append(mesh);
-	//
-	//	aSubObjectIndices.SetCapacity(renderMeshUnion.FaceCount());
-	//	aSubObjectIndices.SetCount(renderMeshUnion.FaceCount());
-	//
-	//	const int iFaceCount = mesh.FaceCount();
-	//
-	//	for (int fi = 0; fi < iFaceCount; fi++, i++)
-	//	{
-	//		aSubObjectIndices[i] = rmi;
-	//	}
-	//
-	//	rmi++;
-	//}
+	const ON_Xform translationXform = ON_Xform::TranslationTransformation(0.0, 0.0, user_data->Amount());
 
-	auto out = std::shared_ptr<IRenderMeshes>(IRenderMeshes::New(doc, objectId, ProviderId(), runningHash));
+	//We're just going to move the meshes - so make a copy of the previous meshes...
+	auto out = previousMeshes->MakeCopy();
 
-	ON_Xform translationXform = ON_Xform::TranslationTransformation(0.0, 0.0, user_data->Amount());
+	if (!out)
+		return nullptr;
 
-	ON_SimpleArray<const ON_Mesh*> renderMeshes;
-	object->GetMeshes(ON::render_mesh, renderMeshes);
-
-	auto it = previousMeshes->begin();
-
-	for (int i = 0; i < renderMeshes.Count(); i++)
+	//...and then add the translation transform to all of the instances.
+	for (auto& pInstance : *out)
 	{
-		const auto* rm = renderMeshes[i];
-		if (rm == nullptr)
-			continue;
-
-		auto custom_mesh = std::make_shared<ON_Mesh>(*rm);
-		if (custom_mesh)
+		if (pInstance)
 		{
-			custom_mesh->Transform(translationXform); // Is this needed?
-
-			// [ANDYLOOK]
-			// This was here before I tried to change it but I can't figure out what I should change it to.
-			//
-			//crmInOut.SetUseObjectsMappingChannels(true);
-			//crmInOut.SetInstanceTransform(ON_Xform::IdentityTransformation);
-			//crmInOut.SetAutoDeleteMeshesOn();
-			//crmInOut.SetAutoDeleteMaterialsOn();
-
-			std::shared_ptr<IRenderMeshes::IInstance> pPrevious = nullptr; // Is this needed?
-			if (std::end(*previousMeshes) != it && nullptr != *it)
-			{
-				const auto pPrevious = *it; // Is this right?
-				out->AddInstance(IRenderMeshes::IInstance::New(custom_mesh, *pPrevious));
-				it++;
-			}
-			else
-			{
-				out->AddInstance(IRenderMeshes::IInstance::New(custom_mesh, *object));
-			}
+			pInstance->Transform(translationXform);
 		}
 	}
 
@@ -209,7 +152,7 @@ std::shared_ptr<const IRenderMeshes> CSampleCRMP::RenderMeshes(
 std::unique_ptr<IRenderMeshProvider::IProgress> CSampleCRMP::Progress(
                 const CRhinoDoc&, const std::vector<ObjectId>* pOptionalObjects) const
 {
-	// TODO: [ANDYLOOK]
+	//This is super quick,. so no need to report any progress
 	return nullptr;
 }
 
