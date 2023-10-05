@@ -34,11 +34,14 @@ CRhinoCommand::result CCommandSampleZoomExtents::RunCommand(const CRhinoCommandC
 
   ON_SimpleArray<CRhinoView*> views(16);
 
-  const int view_count = doc->GetViewList(views, true, false);
-
+  const int view_count = doc->GetViewList(views, CRhinoView::ViewTypeFilter::Model);
   for (int i = 0; i < view_count; i++)
+  {
     RhinoDollyExtents(views[i]);  
+  }
+
   doc->Redraw();
+
   return CRhinoCommand::success;
 }
 

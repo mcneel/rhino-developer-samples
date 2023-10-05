@@ -1,12 +1,8 @@
-// SampleCustomRenderMeshPlugIn.h : main header file for the SampleCustomRenderMesh plug-in.
-//
 
 #pragma once
-#include "SampleCustomRenderMeshEventWatcher.h"
 
 // CSampleCustomRenderMeshPlugIn
 // See SampleCustomRenderMeshPlugIn.cpp for the implementation of this class
-//
 
 class CSampleCustomRenderMeshPlugIn : public CRhinoUtilityPlugIn
 {
@@ -58,13 +54,9 @@ public:
 
 private:
   ON_wString m_plugin_version;
-  CSampleCustomRenderMeshEventWatcher m_eventWatcher;
 
   // TODO: Add additional class information here
 };
 
 // Return a reference to the one and only CSampleCustomRenderMeshPlugIn object
 CSampleCustomRenderMeshPlugIn& SampleCustomRenderMeshPlugIn();
-
-
-

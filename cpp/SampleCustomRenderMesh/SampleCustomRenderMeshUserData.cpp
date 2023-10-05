@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "SampleCustomRenderMeshPlugIn.h"
 #include "SampleCustomRenderMeshUserData.h"
@@ -9,10 +10,9 @@ CSampleCustomRenderMeshUserData::CSampleCustomRenderMeshUserData()
 	m_application_uuid = SampleCustomRenderMeshPlugIn().PlugInID();
 	m_userdata_uuid = SampleCustomRenderMeshUserDataUuid;
 	m_userdata_copycount = 1;
-  m_amount = 0.0;
 }
 
-CSampleCustomRenderMeshUserData::CSampleCustomRenderMeshUserData(const CSampleCustomRenderMeshUserData & src)
+CSampleCustomRenderMeshUserData::CSampleCustomRenderMeshUserData(const CSampleCustomRenderMeshUserData& src)
 : ON_UserData(src)
 {
 	m_userdata_copycount = src.m_userdata_copycount;
@@ -48,49 +48,41 @@ void CSampleCustomRenderMeshUserData::SetAmount(double amount)
 
 bool CSampleCustomRenderMeshUserData::Archive() const
 {
-  // Save this user data to 3dm file with object
+	// Save this user data to the archive with object.
 	return true;
 }
 
-bool CSampleCustomRenderMeshUserData::Write(ON_BinaryArchive & binary_archive) const
+bool CSampleCustomRenderMeshUserData::Write(ON_BinaryArchive & archive) const
 {
-  // Write firtst user data version. Later there may be need to extend this user data.
-	const int nVersion = 1;
+	// Write user data version first. Later there may be a need to extend this user data.
+	const int version = 1;
 
-	if (!binary_archive.WriteInt(nVersion))
-	{
+	if (!archive.WriteInt(version))
 		return false;
-	}
 
-  // Version 1 only has amount as a double
-	if (!binary_archive.WriteDouble(m_amount))
-	{
-    return false;
-	}
+	// Version 1 only has amount as a double.
+	if (!archive.WriteDouble(m_amount))
+		return false;
 
 	return true;
 }
 
-bool CSampleCustomRenderMeshUserData::Read(ON_BinaryArchive & binary_archive)
+bool CSampleCustomRenderMeshUserData::Read(ON_BinaryArchive& archive)
 {
-	int nVersion = 1;
+	int version = 1;
 
-	if (!binary_archive.ReadInt(&nVersion))
-	{
+	if (!archive.ReadInt(&version))
 		return false;
-	}
 
-  if (nVersion == 1)
-  {
-    // Version 1 user data only has the amount as a double
-    if (!binary_archive.ReadDouble(&m_amount))
-    {
-      return false;
-    }
-  }
-  else
-  {
-    // User data in the archive is not supported by this version of the plug-in
+	if (version == 1)
+	{
+		// Version 1 user data only has the amount as a double.
+		if (!archive.ReadDouble(&m_amount))
+			return false;
+	}
+	else
+	{
+		// User data in the archive is not supported by this version of the plug-in.
 		return false;
 	}
 

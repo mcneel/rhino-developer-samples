@@ -134,11 +134,8 @@ BOOL CSampleCustomRenderMeshPlugIn::OnLoadPlugIn()
   //    CPlugIn::OnLoadPlugIn() from your derived class.
 
   // Add sample custom render mesh provider
-  RhRdkCustomRenderMeshManager().Add(new CSampleCRMP());
 
-  // Enable event watcher
-  m_eventWatcher.Register();
-  m_eventWatcher.Enable(TRUE);
+  RhRdkAddExtension(new CSampleCRMP);
 
   return TRUE;
 }
