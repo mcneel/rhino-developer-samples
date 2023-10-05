@@ -30,8 +30,7 @@ public:
 	             const ObjectId& objectId,
 	             ON__UINT32& flags,
 	             const CRhinoPlugIn* requestingPlugIn,
-	             const CDisplayPipelineAttributes* pAttributes
-	             ) const override;
+	             const CDisplayPipelineAttributes* pAttributes) const override;
 
 	virtual std::shared_ptr<const IRenderMeshes> RenderMeshes(
 	        ON::mesh_type mt, 
@@ -42,8 +41,7 @@ public:
 	        ON__UINT32& flags,
 	        std::shared_ptr<const IRenderMeshes> crmIn,
 	        const CRhinoPlugIn* requestingPlugIn,
-	        const CDisplayPipelineAttributes* pAttributes
-	        ) const override;
+	        const CDisplayPipelineAttributes* pAttributes) const override;
 
 	virtual std::unique_ptr<IProgress> Progress(const CRhinoDoc&, const std::vector<ObjectId>* pOptionalObjects) const override;
 

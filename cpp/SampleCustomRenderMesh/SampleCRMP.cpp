@@ -39,8 +39,7 @@ UUID CSampleCRMP::InterfaceId(void) const
 
 ON_wString CSampleCRMP::Name(void) const
 {
-	const static ON_wString wszName = L"SampleCRMP";
-	return wszName;
+	return L"SampleCRMP";
 }
 
 CRhRdkVariant CSampleCRMP::GetParameter(const CRhinoDoc& doc, const ObjectId& object,
@@ -152,7 +151,7 @@ std::shared_ptr<const IRenderMeshes> CSampleCRMP::RenderMeshes(
 std::unique_ptr<IRenderMeshProvider::IProgress> CSampleCRMP::Progress(
                 const CRhinoDoc&, const std::vector<ObjectId>* pOptionalObjects) const
 {
-	//This is super quick,. so no need to report any progress
+	//This is super quick so no need to report any progress.
 	return nullptr;
 }
 
