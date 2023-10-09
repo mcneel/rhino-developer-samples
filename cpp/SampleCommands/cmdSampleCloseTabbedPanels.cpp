@@ -33,23 +33,30 @@ CRhinoCommand::result CCommandSampleCloseTabbedPanels::RunCommand(const CRhinoCo
     return CRhinoCommand::failure;
 
   CRhinoAppUiDockBarManager& mgr = RhinoApp().RhinoUiDockBarManager();
+
   ON_SimpleArray<const CRhinoUiPanelFactory*> factories;
   ::RhinoUiPanelFactories(factories);
-  for (int i = 0; i < factories.Count(); i++)
+
+  for (int fc = 0; fc < factories.Count(); fc++)
   {
-    const CRhinoUiPanelFactory* pf = factories[i];
-    if (pf)
+    const auto* panel_factory = factories[fc];
+    if (nullptr != panel_factory)
     {
-      ON_SimpleArray<CRhinoUiDockBar*> dockbars;
-      ::RhinoUiDockBarsForTab(*doc, pf->TabId(), dockbars);
-      for (int j = 0; j < dockbars.Count(); j++)
+      ON_SimpleArray<ON_UUID> dockbars;
+      ::RhinoUiDockBarsForTab(context.m_doc, panel_factory->TabId(), dockbars);
+
+      for (int db = 0; db < dockbars.Count(); db++)
       {
-        CRhinoUiDockBar* db = dockbars[j];
-        if (db && db->IsVisible())
-          mgr.ShowDockBar(db->DockBarID(), false, false);
+        const auto& dock_bar_id = dockbars[db];
+
+        if (mgr.IsDockBarVisible(dock_bar_id))
+        {
+          mgr.ShowDockBar(dock_bar_id, false, false);
+        }
       }
     }
   }
+
   return CRhinoCommand::success;
 }
 

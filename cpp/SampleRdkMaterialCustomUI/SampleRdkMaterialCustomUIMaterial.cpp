@@ -88,9 +88,8 @@ IRhRdkContentUI* CSampleRdkMaterialCustomUIMaterial::CreateUI(IRhRdkContentEdito
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	const auto pParent = CWnd::FromHandle(e.UiHostWindow());
-	const auto pDlg = new CSampleRdkMaterialCustomUIDlg(e.Id(), uuidUI, pParent);
-	pDlg->CreateDlg(pParent);
+	const auto pDlg = new CSampleRdkMaterialCustomUIDlg(e.Id(), uuidUI, nullptr);
+	pDlg->CreateDlg(nullptr);
 
 	return pDlg;
 }
