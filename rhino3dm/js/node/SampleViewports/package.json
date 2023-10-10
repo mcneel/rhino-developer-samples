@@ -1,0 +1,15 @@
+{
+  "name": "SampleViewports",
+  "version": "1.0.0",
+  "description": "Reading viewports from a 3dm",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luis Fraguada",
+  "license": "MIT",
+  "dependencies": {
+    "rhino3dm": "file:../rhino3dm"
+  }
+}
