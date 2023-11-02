@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "SampleCSAzureFunction": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7137",
+      "launchBrowser": false
+    }
+  }
+}
