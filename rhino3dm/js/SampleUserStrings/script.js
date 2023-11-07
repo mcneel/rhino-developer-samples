@@ -4,12 +4,11 @@ import { Rhino3dmLoader } from 'three/examples/jsm/loaders/3DMLoader'
 import rhino3dm from 'rhino3dm'
 
 const model = 'RectifiedArchimedeanSolids.3dm'
-let rotation = 0.01
+let rotation = 0.001
 const selectMaterial = new THREE.MeshStandardMaterial( { metalness: 1, roughness: 0.7, color: 0xffff00 } )
 const material = new THREE.MeshStandardMaterial( { metalness: 1, roughness: 0.7, color: 0xadd8e6 } )
 
 window.addEventListener( 'click', handleInteraction, false)
-window.addEventListener( 'mousemove', handleInteraction, false)
 window.addEventListener( 'touchstart', handleInteraction, false)
 
 // globals
@@ -21,7 +20,6 @@ const rhino = await rhino3dm()
 
 init()
 load()
-
 
 async function load() {
 
@@ -61,7 +59,7 @@ async function load() {
 
     // load and pass to threejs
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta2/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta3/' )
 
     loader.load( model, function ( object ) {
 
@@ -133,14 +131,9 @@ function handleInteraction( event ) {
         if ( event.type === 'click' ) {
             coordinates =  { x: event.clientX, y: event.clientY }
         }
-        else if ( event.type === 'mousemove' ) {
-            rotation = Math.abs( 1 - ( event.clientX / ( window.innerWidth / 2 ) ) ) / 10
-            return
-        }
     } else if ( event instanceof TouchEvent ) {
         if ( event.type === 'touchstart' ) {
             coordinates =  { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY }
-            rotation = Math.abs( 1 - ( event.changedTouches[0].clientX / ( window.innerWidth / 2 ) ) ) / 10
         }
     }
     onClick( coordinates )

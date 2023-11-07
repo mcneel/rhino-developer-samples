@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Rhino;
 
@@ -16,7 +15,6 @@ public class IndexModel : PageModel
     {
         _logger = logger;
         _logger.LogInformation("Let's Gooo!");
-        Random rnd = new Random();
         CircumferenceString = "?";
     }
 
