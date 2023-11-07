@@ -1,0 +1,53 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="jumbotron">
+    <h1>rhino3dm.net on Azure</h1>
+    <p class="lead">Example .NET app using rhino3dm.net to Azure App Service.</p>
+    <p id="Circumference">The Circumference is @Model.CircumferenceString</p>
+</div>
+<div>
+    <form method="post" id="form" target="hiddenFrame">
+        <label for="slider" class="form-label">Slider!</label>
+        <input type="range" class="form-range" id="slider" name="Slider">
+    </form>
+</div>
+<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
+<script>
+
+    const slider = document.getElementById("slider")
+    const form = document.getElementById("form")
+    const text = document.getElementById("Circumference")
+    slider.addEventListener("change", async (e) => {
+
+        console.log("submit post")
+        const formData = new FormData(form)
+
+        const request = {
+            'method':'POST',
+            'body': formData,
+            //'headers': {'Content-Type': 'application/json'}
+        }
+
+        try {
+            const response = await fetch('/', request)
+            const responseJson = await response.json()
+            console.log(responseJson)
+            text.innerHTML = 'The Circumference is: ' + responseJson.circumference
+        } catch (error) {
+            console.log(error)
+        }
+
+
+        
+    })
+
+    slider.addEventListener("onmouseup", (e)=>{
+        
+    })
+
+</script>
+
