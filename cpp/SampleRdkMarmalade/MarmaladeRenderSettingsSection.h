@@ -38,11 +38,10 @@ protected:
 	virtual CRhinoCommandOptionName CommandOptionName(void) const override { return CRhinoCommandOptionName(L"Marmalade", L"Marmalade"); }
 	virtual CRhinoCommand::result RunScript(CRhRdkControllerPtr) override { return CRhinoCommand::result::success; }
 
-private:
+protected:
 	RhRdkUiModalities m_Modality;
+	bool m_bExpertMode = false;
 	bool m_bIsHidden = true;
-	static IRhinoUiDataSource* m_pDS;
-	static int m_iCount;
 };
 
 class CMarmaladeRenderSettingsSection1 : public CMarmaladeRenderSettingsSection
