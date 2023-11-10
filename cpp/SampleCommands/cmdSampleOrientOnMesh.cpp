@@ -27,6 +27,7 @@ CRhGetMeshPoint::CRhGetMeshPoint(const ON_Mesh* mesh, const ON_Plane& object_pla
   : m_mesh(mesh)
 {
   m_object_plane = object_plane;
+  Constrain(*mesh);
 }
 
 BOOL CRhGetMeshPoint::CalculateTransform(CRhinoViewport& vp, const ON_3dPoint& pt, ON_Xform& xform)
