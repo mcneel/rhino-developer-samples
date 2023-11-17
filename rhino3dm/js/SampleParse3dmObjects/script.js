@@ -18,7 +18,7 @@ create()
 function create () {
 
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta2/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.1/' )
 
     doc = new rhino.File3dm()
 
@@ -51,6 +51,21 @@ function create () {
     const extrusion_layer_index = doc.layers().addLayer( 'Extrusions', { r: 0, g: 255, b: 255, a: 255 } )
 
     const textdot_layer_index = doc.layers().addLayer( 'TextDots', { r: 0, g: 0, b: 255, a: 255 } )
+
+
+    // Create two groups
+
+    doc.groups().add(new rhino.Group())
+    doc.groups().add(new rhino.Group())
+    console.log(`nº of groups ${doc.groups().count}`)
+
+    const group1 = doc.groups().get(0)
+    console.log(`group id: ${group1.id}`)
+    console.log(`group index: ${group1.index}`)
+
+    const group2 = doc.groups().get(1)
+    console.log(`group id: ${group2.id}`)
+    console.log(`group index: ${group2.index}`)
 
     // -- POINTS / POINTCLOUDS -- //
 

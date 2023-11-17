@@ -16,6 +16,8 @@ var oa = new Rhino.DocObjects.ObjectAttributes
 var sphere = new Rhino.Geometry.Sphere(Rhino.Geometry.Point3d.Origin, 10);
 file3dm.Objects.AddSphere(sphere, oa);
 
+//var rc = new Rhino.FileIO.File3dmRenderMaterial();
+
 file3dm.Write("fileWithMaterial.3dm", null);
 
 

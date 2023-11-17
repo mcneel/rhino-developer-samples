@@ -3,7 +3,7 @@ model = rhino3dm.File3dm.Read('../models/Rhino_Logo_Mesh8_NamedViews.3dm')
 
 def viewportInfo(vp):
     print("IsValidCameraFrame: " + str(vp.IsValidCameraFrame))
-    print("IsValidCamera: " + str(vp.isValidCamer))
+    print("IsValidCamera: " + str(vp.IsValidCamera))
     print("IsValidFrustum: " + str(vp.IsValidFrustum))
     print("IsParallelProjection: " + str(vp.IsParallelProjection))
     print("IsPerspectiveProjection: " + str(vp.IsPerspectiveProjection))

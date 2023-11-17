@@ -69,6 +69,8 @@ doc.materials().add(magentaMaterial)
 
 const magentaThreeMaterial = new THREE.MeshPhysicalMaterial( {color:0xff00ff, metalness:0.2, roughness: 0.9} )
 
+console.log(doc.materials().count)
+
 // #endregion MATERIALS //
 
 // #region LAYERS //
@@ -230,7 +232,7 @@ function onWindowResize() {
 
 function download() {
     const options = new rhino.File3dmWriteOptions()
-    options.version = 7
+    options.version = 8
     let buffer = doc.toByteArrayOptions(options)
     saveByteArray('rhinoDocument_' + options.version + '.3dm', buffer)
 }

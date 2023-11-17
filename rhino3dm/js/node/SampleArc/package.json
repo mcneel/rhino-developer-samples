@@ -12,6 +12,6 @@
   "author": "Luis E. Fraguada",
   "license": "MIT",
   "dependencies": {
-    "rhino3dm": "8.0.0-beta2"
+    "rhino3dm": "8.0.1"
   }
 }

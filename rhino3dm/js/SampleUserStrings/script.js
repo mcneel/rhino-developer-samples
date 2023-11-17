@@ -39,6 +39,8 @@ async function load() {
 
         const rhinoObject = objs.get( i )
 
+        console.log(rhinoObject.geometry())
+
         if ( rhinoObject.geometry().objectType === rhino.ObjectType.Curve ) continue
         
         if ( rhinoObject.attributes().userStringCount > 0 ) {
@@ -59,7 +61,7 @@ async function load() {
 
     // load and pass to threejs
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta3/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.1/' )
 
     loader.load( model, function ( object ) {
 

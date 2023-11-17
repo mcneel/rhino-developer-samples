@@ -9,7 +9,7 @@ select.onchange = load
 let model = 'hello_mesh.3dm'
 
 const loader = new Rhino3dmLoader()
-loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta2/' )
+loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.1/' )
 
 const material = new THREE.MeshNormalMaterial()
 
