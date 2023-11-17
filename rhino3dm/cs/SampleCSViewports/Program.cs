@@ -1,9 +1,13 @@
-﻿using Rhino.DocObjects;
+﻿using System.ComponentModel;
+using Rhino.DocObjects;
 using Rhino.FileIO;
 
 File3dm file3dm = File3dm.Read("../../models/Rhino_Logo_Mesh8_NamedViews.3dm");
 
+
+
 Console.WriteLine("--- Views ---");
+Console.WriteLine("nº of views: {0}", file3dm.AllViews.Count);
 for ( var i = 0; i < file3dm.AllViews.Count; i ++ ) {
     var view = file3dm.AllViews[i];
     Console.WriteLine(view.Name);
@@ -11,11 +15,17 @@ for ( var i = 0; i < file3dm.AllViews.Count; i ++ ) {
 }
 
 Console.WriteLine("--- Named Views ---");
+Console.WriteLine("nº of named views: {0}", file3dm.AllNamedViews.Count);
 for ( var i = 0; i < file3dm.AllNamedViews.Count; i ++ ) {
     var view = file3dm.AllNamedViews[i];
     Console.WriteLine(view.Name);
     ViewPortInfo(view.Viewport);
 }
+
+// Add view to file
+ViewInfo vi = new ViewInfo();
+vi.Name = "Added from rhino3dm";
+file3dm.AllViews.Add(vi);
 
 void ViewPortInfo(ViewportInfo vp) {
 
