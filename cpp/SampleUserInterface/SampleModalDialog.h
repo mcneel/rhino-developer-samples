@@ -2,17 +2,18 @@
 
 #include "resource.h"
 
-class CSampleModalDialog : public CDialog
+class CSampleModalDialog : public CRhinoDialog
 {
   DECLARE_DYNAMIC(CSampleModalDialog)
 
 public:
-  CSampleModalDialog(CWnd* pParent = 0);   // standard constructor
+  CSampleModalDialog(CWnd* pParent = nullptr);
 
   // Dialog Data
   enum { IDD = IDD_MODAL_DIALOG };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange* pDX) override;
+  virtual BOOL OnInitDialog() override;
   DECLARE_MESSAGE_MAP()
 };

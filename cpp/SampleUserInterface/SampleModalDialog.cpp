@@ -1,19 +1,26 @@
 #include "stdafx.h"
 #include "SampleModalDialog.h"
 
-IMPLEMENT_DYNAMIC(CSampleModalDialog, CDialog)
+IMPLEMENT_DYNAMIC(CSampleModalDialog, CRhinoDialog)
 
 CSampleModalDialog::CSampleModalDialog(CWnd* pParent /*=NULL*/)
-  : CDialog(CSampleModalDialog::IDD, pParent)
+  : CRhinoDialog(CSampleModalDialog::IDD, pParent)
 {
 }
 
 void CSampleModalDialog::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+  CRhinoDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CSampleModalDialog, CDialog)
+BEGIN_MESSAGE_MAP(CSampleModalDialog, CRhinoDialog)
 END_MESSAGE_MAP()
 
 // CSampleModalDialog message handlers
+
+BOOL CSampleModalDialog::OnInitDialog()
+{
+  CRhinoDialog::OnInitDialog();
+
+  return TRUE;
+}
