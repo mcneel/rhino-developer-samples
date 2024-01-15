@@ -37,7 +37,7 @@ class BoxMorph(Rhino.Geometry.SpaceMorph):
         
 def SampleBoxSpaceMorph():
     obj_id = rs.GetObject("Select surface or polysurface", rs.filter.surface and rs.filter.polysurface)
-    if None == obj_id: return
+    if obj_id is None: return
     
     brep = rs.coercebrep(obj_id)
     if brep is None: return

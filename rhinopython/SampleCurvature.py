@@ -51,7 +51,7 @@ def SampleCurvature():
     go.GeometryFilter = Rhino.DocObjects.ObjectType.Curve
     go.SubObjectSelect = False
     go.Get()
-    if go.CommandResult() <> Rhino.Commands.Result.Success:
+    if go.CommandResult() != Rhino.Commands.Result.Success:
         return go.CommandResult()
     
     curve = go.Object(0).Curve()
@@ -62,7 +62,7 @@ def SampleCurvature():
     gp = SampleGetCurvaturePoint(curve)
     gp.SetCommandPrompt("Select point on curve for curvature measurement")
     gp.Get()
-    if gp.CommandResult() <> Rhino.Commands.Result.Success:
+    if gp.CommandResult() != Rhino.Commands.Result.Success:
         return gp.CommandResult()
     
     # One final curvature calculation
