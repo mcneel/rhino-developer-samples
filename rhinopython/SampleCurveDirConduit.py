@@ -15,6 +15,7 @@ class SampleCurveDirConduit(Rhino.Display.DisplayConduit):
     
     # Initializer
     def __init__(self):
+        super().__init__()
         self.m_curve = None
         self.m_arrow_count = 3
     
