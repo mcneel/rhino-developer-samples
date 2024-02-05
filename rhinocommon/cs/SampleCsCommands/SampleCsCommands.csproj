@@ -181,6 +181,7 @@
     <Compile Include="SampleCsOrientPerpendicularToCurve.cs" />
     <Compile Include="SampleCsOverCut.cs" />
     <Compile Include="SampleCsParseTextFields.cs" />
+    <Compile Include="SampleCsPerFaceMaterial.cs" />
     <Compile Include="SampleCsPersistentSettings.cs" />
     <Compile Include="SampleCsPickHole.cs" />
     <Compile Include="SampleCsPictureFrame.cs" />
