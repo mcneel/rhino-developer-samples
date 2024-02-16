@@ -211,6 +211,7 @@
     <Compile Include="SampleCsSetCameraTarget.cs" />
     <Compile Include="SampleCsSetDisplayMode.cs" />
     <Compile Include="SampleCsSetDocumentUserText.cs" />
+    <Compile Include="SampleCsSetObjectName.cs" />
     <Compile Include="SampleCsSetPoint.cs" />
     <Compile Include="SampleCsShadedBrep.cs" />
     <Compile Include="SampleCsShadedView.cs" />

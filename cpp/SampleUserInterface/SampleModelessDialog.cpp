@@ -82,7 +82,7 @@ void CSampleModelessDialog::OnOK()
 void CSampleModelessDialog::OnCancel()
 {
   SampleUserInterfacePlugIn().ZeroDlg();
-  CRhinoDialog::OnCancel();
+  DestroyWindow();
 }
 
 void CSampleModelessDialog::PostNcDestroy()
