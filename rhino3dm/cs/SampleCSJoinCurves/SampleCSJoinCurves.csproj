@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Rhino3dm" Version="8.0.1" />
+    <PackageReference Include="Rhino3dm" Version="8.4.0" />
   </ItemGroup>
 
 </Project>
