@@ -22,7 +22,7 @@ function load() {
     material.envMap = scene.background
 
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.1/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.4.0/' )
 
     // load 3dm file into three.js scene
     loader.load( model, function ( object ) {

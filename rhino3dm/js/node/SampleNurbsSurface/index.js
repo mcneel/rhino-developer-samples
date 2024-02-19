@@ -13,6 +13,8 @@ const cnt = objects.count
 
 console.log(`Number of Objects: ${cnt}`)
 
+
+
 for ( let i = 0; i < cnt; i ++ ) {
     const object = objects.get( i )
     const brep = object.geometry()
@@ -50,5 +52,22 @@ for ( let i = 0; i < cnt; i ++ ) {
     console.log(knotList)
 
     */
+
+    const n_surface = rhino.NurbsSurface.create(3, nurbsSurface.isRational, nurbsSurface.orderU, nurbsSurface.orderV, nurbsSurface.points.countU, nurbsSurface.points.countV );
+    n_surface.points = nurbsSurface.points;
+    n_surface.knotsU = nurbsSurface.knotsU;
+    n_surface.knotsV = nurbsSurface.knotsV;
+    n_surface.setDomain(0, [0,1]); 
+    n_surface.setDomain(1, [0,1]);
+
+    file3dm.objects().add(n_surface, null);
     
 }
+
+
+
+const options = new rhino.File3dmWriteOptions()
+options.version = 8
+let buff = file3dm.toByteArrayOptions(options)
+fs.writeFileSync("file.3dm", buff);
+
