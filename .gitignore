@@ -360,3 +360,5 @@ venv/
 
 bin
 obj
+
+.azure

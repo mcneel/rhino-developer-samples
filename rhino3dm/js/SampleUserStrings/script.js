@@ -61,7 +61,7 @@ async function load() {
 
     // load and pass to threejs
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.1/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.4.0/' )
 
     loader.load( model, function ( object ) {
 
