@@ -29,10 +29,7 @@ static class CCommandSampleMoveGrips theSampleMoveGripsCommand;
 
 CRhinoCommand::result CCommandSampleMoveGrips::RunCommand(const CRhinoCommandContext& context)
 {
-  CRhinoDoc* doc = context.Document();
-  if (nullptr == doc)
-    return CRhinoCommand::failure;
-
+  // Select grips to move
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select grips to move");
   go.SetGeometryFilter(CRhinoGetObject::grip_object);
@@ -40,10 +37,12 @@ CRhinoCommand::result CCommandSampleMoveGrips::RunCommand(const CRhinoCommandCon
   if (go.CommandResult() != success)
     return go.CommandResult();
 
+  // Fancy class for managing selected objects and grips
   CRhinoXformObjectList list;
   if (list.AddObjects(go, true) < 1)
     return CRhinoCommand::failure;
 
+  // Point to move from
   CRhinoGetPoint gp;
   gp.SetCommandPrompt(L"Point to move from");
   gp.GetPoint();
@@ -52,6 +51,7 @@ CRhinoCommand::result CCommandSampleMoveGrips::RunCommand(const CRhinoCommandCon
 
   ON_3dPoint from = gp.Point();
 
+  // Point to move to
   gp.SetCommandPrompt(L"Point to move to");
   gp.SetBasePoint(from);
   gp.DrawLineFromPoint(from, TRUE);
@@ -61,12 +61,12 @@ CRhinoCommand::result CCommandSampleMoveGrips::RunCommand(const CRhinoCommandCon
 
   ON_3dPoint to = gp.Point();
 
+  // Create a translation transformation
   ON_Xform xform = ON_Xform::TranslationTransformation(to - from);
   if (xform.IsValid())
   {
     // Transform the grip objects
-    int i;
-    for (i = 0; i < list.m_grips.Count(); i++)
+    for (int i = 0; i < list.m_grips.Count(); i++)
     {
       CRhinoGripObject* grip = list.m_grips[i];
       if (grip)
@@ -74,13 +74,11 @@ CRhinoCommand::result CCommandSampleMoveGrips::RunCommand(const CRhinoCommandCon
     }
 
     // Replace the old owner with a new one
-    for (i = 0; i < list.m_grip_owners.Count(); i++)
-    {
-      RhinoUpdateGripOwner(list.m_grip_owners[i], false, 0);
-    }
-
-    doc->Redraw();
+    for (int i = 0; i < list.m_grip_owners.Count(); i++)
+      RhinoUpdateGripOwner(list.m_grip_owners[i], false, nullptr);
   }
+
+  context.m_doc.Redraw();
 
   return CRhinoCommand::success;
 }
