@@ -11,7 +11,7 @@
 class CCommandSamplePipe : public CRhinoCommand
 {
 public:
-  CCommandSamplePipe() { m_radius = 1.0; }
+  CCommandSamplePipe() = default;
   ~CCommandSamplePipe() = default;
   UUID CommandUUID() override
   {
@@ -24,7 +24,7 @@ public:
   CRhinoCommand::result RunCommand(const CRhinoCommandContext& context) override ;
 
 private:
-  double m_radius;
+  double m_radius = 1.0;
 };
 
 // The one and only CCommandSamplePipe object
@@ -32,10 +32,6 @@ static class CCommandSamplePipe theSamplePipeCommand;
 
 CRhinoCommand::result CCommandSamplePipe::RunCommand(const CRhinoCommandContext& context)
 {
-  CRhinoDoc* doc = context.Document();
-  if (nullptr == doc)
-    return CRhinoCommand::failure;
-
   CRhinoGetObject go;
   go.SetCommandPrompt(L"Select path curve");
   go.SetGeometryFilter(CRhinoGetObject::curve_object);
@@ -45,7 +41,7 @@ CRhinoCommand::result CCommandSamplePipe::RunCommand(const CRhinoCommandContext&
     return go.CommandResult();
 
   const ON_Curve* curve = go.Object(0).Curve();
-  if (0 == curve)
+  if (nullptr == curve)
     return CRhinoCommand::failure;
 
   CRhinoGetNumber gn;
@@ -58,69 +54,91 @@ CRhinoCommand::result CCommandSamplePipe::RunCommand(const CRhinoCommandContext&
 
   m_radius = fabs(gn.Number());
 
-  ON_Interval dom = curve->Domain();
+  ON_SimpleArray<double> curve_params(2);
+  ON_Interval domain = curve->Domain();
+  curve_params.Append(domain.NormalizedParameterAt(domain.Min()));
+  curve_params.Append(domain.NormalizedParameterAt(domain.Max()));
 
-  ON_SimpleArray<double> curve_params;
-  curve_params.Append(dom.NormalizedParameterAt(dom.Min()));
-  curve_params.Append(dom.NormalizedParameterAt(dom.Max()));
+  ON_SimpleArray<double> radii(2);;
+  radii.Append(m_radius); // radius at domain.Min()
+  radii.Append(m_radius); // radius at domain.Max()
 
-  ON_SimpleArray<double> radii;
-  radii.Append(m_radius); // radius at dom.Min()
-  radii.Append(m_radius); // radius at dom.Max()
-
-  int blend_type = 0;    // local blend
-  int cap_mode = 1;      // flat cap
-  bool fit_rail = false; // don't fit
+  double abstol = context.m_doc.AbsoluteTolerance();
+  double angtol = context.m_doc.AngleToleranceRadians();
+  int blend_type = 0;         // local blend
+  int cap_mode = 1;           // flat cap
+  bool fit_rail = false;      // don't fit
   bool bUseExtrusions = true; // Create extrusion objects when possible
 
   ON_SimpleArray<ON_Object*> results;
-  if (RhinoPipe(*curve, curve_params, radii, results, blend_type, cap_mode, fit_rail))
+  if (RhinoPipe(*curve, curve_params, radii, results, abstol, angtol, blend_type, cap_mode, fit_rail))
   {
     for (int i = 0; i < results.Count(); i++)
     {
-      if (0 != results[i])
+      if (nullptr == results[i])
+        continue;
+
+      if (results[i]->ObjectType() == ON::extrusion_object)
       {
-        if (results[i]->ObjectType() == ON::extrusion_object)
+        ON_Extrusion* pExtrusion = ON_Extrusion::Cast(results[i]);
+        if (pExtrusion)
         {
           if (bUseExtrusions)
           {
-            CRhinoExtrusionObject* object = new CRhinoExtrusionObject();
-            object->SetExtrusion(ON_Extrusion::Cast(results[i]));
-            results[i] = 0; // object now owns the memory
-            if (!doc->AddObject(object))
-              delete object; // Don't leak...
+            CRhinoExtrusionObject* pExtrusionObject = new CRhinoExtrusionObject();
+            pExtrusionObject->SetExtrusion(pExtrusion);
+
+            results[i] = nullptr; // pExtrusionObject now owns this memory
+
+            if (!context.m_doc.AddObject(pExtrusionObject))
+              delete pExtrusionObject; // Don't leak...
           }
           else
           {
-            ON_Extrusion* extrusion = ON_Extrusion::Cast(results[i]);
-            if (extrusion)
+            ON_Brep* pBrep = pExtrusion->BrepForm(nullptr, true);
+            if (pBrep)
             {
-              ON_Brep* brep = extrusion->BrepForm(0, true);
-              if (brep)
-              {
-                CRhinoBrepObject* object = new CRhinoBrepObject();
-                object->SetBrep(brep);
-                if (!doc->AddObject(object))
-                  delete object; // Don't leak...
-              }
+              delete results[i]; // Extrusion no longer needed...
+              results[i] = nullptr;
+
+              CRhinoBrepObject* pBrepObject = new CRhinoBrepObject();
+              pBrepObject->SetBrep(pBrep);
+
+              pBrep = nullptr; // pBrepObject now owns this memory
+
+              if (!context.m_doc.AddObject(pBrepObject))
+                delete pBrepObject; // Don't leak...
             }
-            delete results[i]; // Don't leak...
-            results[i] = 0;
           }
         }
-        else
+      }
+      else if (results[i]->ObjectType() == ON::brep_object)
+      {
+        ON_Brep* pBrep = ON_Brep::Cast(results[i]);
+        if (pBrep)
         {
-          CRhinoBrepObject* object = new CRhinoBrepObject();
-          object->SetBrep(ON_Brep::Cast(results[i]));
-          results[i] = 0; // object now owns the memory
-          if (!doc->AddObject(object))
-            delete object; // Don't leak...
+          CRhinoBrepObject* pBrepObject = new CRhinoBrepObject();
+          pBrepObject->SetBrep(pBrep);
+
+          results[i] = nullptr; // pBrepObject now owns this memory
+
+          if (!context.m_doc.AddObject(pBrepObject))
+            delete pBrepObject; // Don't leak...
         }
       }
     }
 
-    doc->Redraw();
+    for (int i = 0; i < results.Count(); i++)
+    {
+      if (results[i])
+      {
+        delete results[i]; // Don't leak...
+        results[i] = nullptr;
+      }
+    }
   }
+
+  context.m_doc.Redraw();
 
   return CRhinoCommand::success;
 }
