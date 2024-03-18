@@ -15,7 +15,7 @@ const v_order = v_degree + 1
 
 const ns = rhino.NurbsSurface.create(dim, rational, u_order, v_order, u_cv_count, v_cv_count)
 
-//geberate knots
+//generate knots
 ns.knotsU().createUniformKnots(1.0)
 ns.knotsV().createUniformKnots(1.0)
 
