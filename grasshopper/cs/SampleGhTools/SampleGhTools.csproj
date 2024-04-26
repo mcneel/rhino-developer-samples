@@ -48,6 +48,7 @@
     <Compile Include="Components\Blocks\InstanceDefinitionProperties.cs" />
     <Compile Include="Components\Blocks\InstanceDefinitions.cs" />
     <Compile Include="Components\Blocks\InstanceObjectProperties.cs" />
+    <Compile Include="Components\Other\CustomPreviewComponent.cs" />
     <Compile Include="Components\Geometry\ExrudePlanarCurveComponent.cs" />
     <Compile Include="Components\Geometry\RectangleCenterComponent.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
