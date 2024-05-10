@@ -69,6 +69,7 @@
     <Compile Include="SampleCsApplyCrv.cs" />
     <Compile Include="SampleCsArc.cs" />
     <Compile Include="SampleCsBooleanDifference4.cs" />
+    <Compile Include="SampleCsCachedTextureCoordinates.cs" />
     <Compile Include="SampleCsCreateBooleanRegions.cs" />
     <Compile Include="SampleCsCreateUVCurve.cs" />
     <Compile Include="SampleCsAddAlignedDimension.cs" />
