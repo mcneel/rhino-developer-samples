@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <Psapi.h>
 
 /// <summary>
 /// Evaluate torsion of a curve at a parmeter.
@@ -359,4 +360,49 @@ const CRhinoHatchPattern* CRhinoHatchTableHelper::FindOrCreateHatchPattern(CRhin
     rc = table.HatchPattern(manifest_item);
   }
   return rc;
+}
+
+
+/// <summary>
+/// Returns true if Rhino was started as a standalone executable.
+/// Returns false if Rhino was started by some other application or process.
+/// </summary>
+static bool IsRhinoRunningAsExe()
+{
+  bool rc = false;
+  DWORD dwProcessId = ::GetCurrentProcessId();
+  HANDLE hProcess = ::OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, dwProcessId);
+  if (hProcess)
+  {
+    wchar_t szPath[MAX_PATH];
+    DWORD dwLength = ::GetModuleFileNameEx(hProcess, 0, szPath, MAX_PATH);
+    ::CloseHandle(hProcess);
+    if (dwLength > 0)
+    {
+      ON_wString name;
+      ON_FileSystemPath::SplitPath(szPath, nullptr, nullptr, &name, nullptr);
+      rc = name.EqualOrdinal(L"Rhino", true);
+    }
+  }
+  return rc;
+}
+
+/// <summary>
+/// Returns true if Rhino has input focus.
+/// </summary>
+static bool RhinoHasFocus()
+{
+  // Retrieves a handle to the foreground window
+  HWND hWnd = ::GetForegroundWindow();
+  if (hWnd != NULL)
+  {
+    // Retrieves the identifier of the thread that created the specified window
+    DWORD dwProcessId = 0;
+    ::GetWindowThreadProcessId(hWnd, &dwProcessId);
+    // Retrieves the process identifier of the calling process (a.k.a. Rhino)
+    DWORD dwRhinoProcessId = ::GetCurrentProcessId();
+    // Compare and return
+    return (dwRhinoProcessId == dwProcessId);
+  }
+  return false;
 }
