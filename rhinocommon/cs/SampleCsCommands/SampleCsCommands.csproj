@@ -55,6 +55,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
     <Reference Include="Xfinium.Pdf.Win">
       <HintPath>C:\Program Files\Rhino 7\Plug-ins\Xfinium.Pdf.Win.dll</HintPath>
     </Reference>
@@ -83,6 +84,7 @@
     <Compile Include="SampleCsDrawPin.cs" />
     <Compile Include="SampleCsDuplicateObjectFromNameTag.cs" />
     <Compile Include="SampleCsExportDXF.cs" />
+    <Compile Include="SampleCsExportSvgWithDialog.cs" />
     <Compile Include="SampleCsExtractInflectionPoints.cs" />
     <Compile Include="SampleCsExtractMinMaxRadiusPoints.cs" />
     <Compile Include="SampleCsExtrudeMeshFace.cs" />
