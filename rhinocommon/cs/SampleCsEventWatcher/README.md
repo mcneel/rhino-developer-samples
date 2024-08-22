@@ -7,12 +7,12 @@ Building Sample
 --------------------
 To build the sample, you are going to need:
 
-* Rhinoceros 6 (http://www.rhino3d.com)
-* Microsoft Visual C# 2017
+* Rhinoceros 8 (http://www.rhino3d.com)
+* Microsoft Visual C# 2022
 
 Legal Stuff
 -----------
-Copyright © 2017, Robert McNeel & Associates. All Rights Reserved.
+Copyright © 2017-2024, Robert McNeel & Associates. All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
