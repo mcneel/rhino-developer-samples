@@ -17,8 +17,9 @@
     <ClCompile Include="cmdSampleComputeVertexColors.cpp" />
     <ClCompile Include="cmdSampleCopyInPlace.cpp" />
     <ClCompile Include="cmdSampleCPlaneWorld.cpp" />
-    <ClCompile Include="cmdSampleCsCachedTextureCoordinates.cpp" />
     <ClCompile Include="cmdSampleDeleteFaces.cpp" />
+    <ClCompile Include="cmdSampleDrawSubD.cpp" />
+    <ClCompile Include="cmdSampleDrawSubDWires.cpp" />
     <ClCompile Include="cmdSampleDrawZebraPreview.cpp" />
     <ClCompile Include="cmdSampleDump3dmMaterialTextures.cpp" />
     <ClCompile Include="cmdSampleDumpMeshCachedTextureCoordinates.cpp" />
