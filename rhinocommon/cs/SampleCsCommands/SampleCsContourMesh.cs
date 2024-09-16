@@ -25,7 +25,7 @@ namespace SampleCsCommands
       Rhino.Geometry.Point3d end_pt = bbox.Corner(false, true, true);
       double interval = start_pt.DistanceTo(end_pt) / 10;
 
-      Rhino.Geometry.Curve[] curves = Rhino.Geometry.Mesh.CreateContourCurves(mesh, start_pt, end_pt, interval);
+      Rhino.Geometry.Curve[] curves = Rhino.Geometry.Mesh.CreateContourCurves(mesh, start_pt, end_pt, interval, doc.ModelAbsoluteTolerance);
       if (null != curves && curves.Length > 0)
       {
         for (int i = 0; i < curves.Length; i++)

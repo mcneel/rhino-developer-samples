@@ -98,7 +98,7 @@ namespace SampleCsCommands
       if (null == src)
         return null;
 
-      var rc = new byte[0];
+      var rc = Array.Empty<byte>();
       try
       {
         var formatter = new BinaryFormatter();

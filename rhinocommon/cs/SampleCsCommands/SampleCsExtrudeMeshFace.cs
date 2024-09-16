@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
