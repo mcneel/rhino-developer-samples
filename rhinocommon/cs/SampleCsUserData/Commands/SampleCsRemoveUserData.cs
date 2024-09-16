@@ -5,7 +5,6 @@ using Rhino.Input;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("60fcd171-d0a4-4184-b2a4-22dc2e9c1ebe")]
   public class SampleCsRemoveUserData : Command
   {
     public override string EnglishName

@@ -5,7 +5,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("38868ab0-cef1-4b61-ab53-45ef4d450027")]
   public class SampleCsAddBrepFaceUserData : Command
   {
     public override string EnglishName

@@ -4,7 +4,6 @@ using Rhino.Input;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("dd97883a-077d-4ea3-9848-8752ac40339b")]
   public class SampleCsAddSimpleDocumentData : Command
   {
     public override string EnglishName

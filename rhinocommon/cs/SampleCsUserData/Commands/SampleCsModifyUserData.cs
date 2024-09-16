@@ -6,7 +6,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("59f0cc43-3019-41ae-b65b-87e1fbadfba3")]
   public class SampleCsModifyUserData : Command
   {
     public override string EnglishName
