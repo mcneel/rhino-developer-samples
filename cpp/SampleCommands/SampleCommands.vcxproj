@@ -28,6 +28,7 @@
     <ClCompile Include="cmdSampleFrameRails.cpp" />
     <ClCompile Include="cmdSampleGetMultipleSpecial.cpp" />
     <ClCompile Include="cmdSampleGrid.cpp" />
+    <ClCompile Include="cmdSampleGroupUserData.cpp" />
     <ClCompile Include="cmdSampleHidePoints.cpp" />
     <ClCompile Include="cmdSampleMappingUvwTransform.cpp" />
     <ClCompile Include="cmdSampleMergeSrf.cpp" />
