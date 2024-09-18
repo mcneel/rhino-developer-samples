@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cmdSampleBlendCurve.cpp" />
     <ClCompile Include="cmdSampleChangeDimStyle.cpp" />
     <ClCompile Include="cmdSampleClosedCurveContainment.cpp" />
     <ClCompile Include="cmdSampleCloseTabbedPanels.cpp" />
@@ -306,6 +307,7 @@
     <ClInclude Include="SampleCommandsPlugIn.h" />
     <ClInclude Include="SampleDocumentUserData.h" />
     <ClInclude Include="SampleDrawCallback.h" />
+    <ClInclude Include="SampleFunctions.h" />
     <ClInclude Include="SampleObjectUserData.h" />
     <ClInclude Include="SampleRectangleObject.h" />
     <ClInclude Include="stdafx.h" />
