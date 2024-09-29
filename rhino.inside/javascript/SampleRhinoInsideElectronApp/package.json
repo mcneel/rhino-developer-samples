@@ -15,7 +15,7 @@
   "author": "Luis E. Fraguada (McNeel EU)",
   "license": "MIT",
   "dependencies": {
-    "electron": "18.3.7",
+    "electron": "22.3.21",
     "electron-edge-js": "18.0.0"
   },
   "engines": {
