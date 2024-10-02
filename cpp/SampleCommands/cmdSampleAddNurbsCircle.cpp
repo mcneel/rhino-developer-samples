@@ -33,12 +33,20 @@ CRhinoCommand::result CCommandSampleAddNurbsCircle::RunCommand(const CRhinoComma
   if (nullptr == doc)
     return CRhinoCommand::failure;
 
+  // Specify dimension, degree and number of control points.
+  // The degree must be >= 1 and the number of control points
+  // must be >= (degree+1). The number of knots is always
+  // (number of control points + degree - 1).
   int dimension = 3;
-  BOOL bIsRational = TRUE;
-  int order = 3; // order = degree + 1
+  bool bIsRational = true;
+  int degree = 2;
+  int order = degree + 1;
   int cv_count = 9;
+  int knot_count = cv_count + degree - 1;
 
+  // Make a rational, degree 2 NURBS curve with 9 control points
   ON_NurbsCurve nc(dimension, bIsRational, order, cv_count);
+  // Set the control points
   nc.SetCV(0, ON_4dPoint(1.0, 0.0, 0.0, 1.0));
   nc.SetCV(1, ON_4dPoint(0.707107, 0.707107, 0.0, 0.707107));
   nc.SetCV(2, ON_4dPoint(0.0, 1.0, 0.0, 1.0));
@@ -48,6 +56,7 @@ CRhinoCommand::result CCommandSampleAddNurbsCircle::RunCommand(const CRhinoComma
   nc.SetCV(6, ON_4dPoint(0.0, -1.0, 0.0, 1.0));
   nc.SetCV(7, ON_4dPoint(0.707107, -0.707107, 0.0, 0.707107));
   nc.SetCV(8, ON_4dPoint(1.0, 0.0, 0.0, 1.0));
+  // Set the 10 knots
   nc.SetKnot(0, 0.0);
   nc.SetKnot(1, 0.0);
   nc.SetKnot(2, 0.5*ON_PI);
