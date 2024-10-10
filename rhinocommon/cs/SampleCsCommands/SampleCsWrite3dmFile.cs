@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using Rhino;
 using Rhino.Commands;
@@ -15,7 +14,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+      var path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
       var filename = Path.Combine(path, "SampleCsWrite3dmFile.3dm");
 
       Result rc;

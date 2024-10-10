@@ -3,7 +3,6 @@ using Rhino.Commands;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("075db042-a92e-40f4-8ca2-5b9c9e243334")]
   public class SampleCsQueryLayerUserData : Command
   {
     public override string EnglishName

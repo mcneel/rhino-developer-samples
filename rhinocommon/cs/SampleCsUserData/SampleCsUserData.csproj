@@ -1,89 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug32</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{444482E8-CB8F-4A79-87A8-9C3FCBCC7B16}</ProjectGuid>
+    <TargetFrameworks>net7.0;net48</TargetFrameworks>
+    <TargetExt>.rhp</TargetExt>
+    <OutputPath>..\Bin\</OutputPath>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SampleCsUserData</RootNamespace>
-    <AssemblyName>SampleCsUserData</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
+    <Company>Robert McNeel &amp; Associates</Company>
+    <Copyright>Copyright © 2013-2024, Robert McNeel &amp; Associates</Copyright>
+    <Product>SampleCsUserData</Product>
+    <Description>Sample Event Watcher Plug-in</Description>
+    <Version>8.0.0</Version>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+    <NoWarn>1701;1702;NU1701</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+    <NoWarn>1701;1702;NU1701</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+    <NoWarn>1701;1702;NU1701</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
+    <NoWarn>1701;1702;NU1701</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RhinoCommon">
-      <HintPath>C:\Program Files\Rhino 7\System\RhinoCommon.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="Microsoft.CSharp" />
+    <EmbeddedResource Include="Resources\**\*" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\SampleCsAddBrepFaceUserData.cs" />
-    <Compile Include="Commands\SampleCsAddSimpleDocumentData.cs" />
-    <Compile Include="Commands\SampleCsAddUserData.cs" />
-    <Compile Include="Commands\SampleCsDocumentDictionary.cs" />
-    <Compile Include="Commands\SampleCsModifyUserData.cs" />
-    <Compile Include="Commands\SampleCsQueryLayerUserData.cs" />
-    <Compile Include="Commands\SampleCsQueryUserData.cs" />
-    <Compile Include="Commands\SampleCsRemoveUserData.cs" />
-    <Compile Include="Commands\SampleCsStringTable.cs" />
-    <Compile Include="Commands\SampleCsAddLayerUserData.cs" />
-    <Compile Include="SampleCsSimpleDocumentData.cs" />
-    <Compile Include="SampleCsStringDocumentData.cs" />
-    <Compile Include="SampleCsUserDataObject.cs" />
-    <Compile Include="SampleCsUserDataPlugIn.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="RhinoCommon" Version="8.9.24194.18121" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\SampleCs.ico" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)$(ProjectName).rhp"
-Erase "$(TargetPath)"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <FallbackCulture>en-US</FallbackCulture>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <StartProgram>c:\Program Files\Rhinoceros 5.0 (64-bit)\System\Rhino.exe</StartProgram>
-    <StartArguments>
-    </StartArguments>
-    <StartAction>Program</StartAction>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
 </Project>

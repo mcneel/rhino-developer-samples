@@ -41,8 +41,8 @@ namespace SampleCsCommands
       var radius_go = new GumballObject();
       var height_go = new GumballObject();
 
-      var radius_dc = new GumballDisplayConduit();
-      var height_dc = new GumballDisplayConduit();
+      var radius_dc = new GumballDisplayConduit(Rhino.DocObjects.ActiveSpace.ModelSpace);
+      var height_dc = new GumballDisplayConduit(Rhino.DocObjects.ActiveSpace.ModelSpace);
 
       var radius_gas = RadiusGumballAppearanceSettings();
       var height_gas = HeightGumballAppearanceSettings();

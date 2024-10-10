@@ -11,14 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cmdSampleBlendCurve.cpp" />
     <ClCompile Include="cmdSampleChangeDimStyle.cpp" />
     <ClCompile Include="cmdSampleClosedCurveContainment.cpp" />
     <ClCompile Include="cmdSampleCloseTabbedPanels.cpp" />
     <ClCompile Include="cmdSampleComputeVertexColors.cpp" />
     <ClCompile Include="cmdSampleCopyInPlace.cpp" />
     <ClCompile Include="cmdSampleCPlaneWorld.cpp" />
-    <ClCompile Include="cmdSampleCsCachedTextureCoordinates.cpp" />
     <ClCompile Include="cmdSampleDeleteFaces.cpp" />
+    <ClCompile Include="cmdSampleDrawSubD.cpp" />
+    <ClCompile Include="cmdSampleDrawSubDWires.cpp" />
     <ClCompile Include="cmdSampleDrawZebraPreview.cpp" />
     <ClCompile Include="cmdSampleDump3dmMaterialTextures.cpp" />
     <ClCompile Include="cmdSampleDumpMeshCachedTextureCoordinates.cpp" />
@@ -27,6 +29,7 @@
     <ClCompile Include="cmdSampleFrameRails.cpp" />
     <ClCompile Include="cmdSampleGetMultipleSpecial.cpp" />
     <ClCompile Include="cmdSampleGrid.cpp" />
+    <ClCompile Include="cmdSampleGroupUserData.cpp" />
     <ClCompile Include="cmdSampleHidePoints.cpp" />
     <ClCompile Include="cmdSampleMappingUvwTransform.cpp" />
     <ClCompile Include="cmdSampleMergeSrf.cpp" />
@@ -216,6 +219,7 @@
     <ClCompile Include="cmdSampleReadInstancesFromFile.cpp" />
     <ClCompile Include="cmdSampleReduceMesh.cpp" />
     <ClCompile Include="cmdSampleRemoveMeshVertices.cpp" />
+    <ClCompile Include="cmdSampleRenderSettings.cpp" />
     <ClCompile Include="cmdSampleResetLayers.cpp" />
     <ClCompile Include="cmdSampleRevolve.cpp" />
     <ClCompile Include="cmdSampleRotate.cpp" />
@@ -304,6 +308,7 @@
     <ClInclude Include="SampleCommandsPlugIn.h" />
     <ClInclude Include="SampleDocumentUserData.h" />
     <ClInclude Include="SampleDrawCallback.h" />
+    <ClInclude Include="SampleFunctions.h" />
     <ClInclude Include="SampleObjectUserData.h" />
     <ClInclude Include="SampleRectangleObject.h" />
     <ClInclude Include="stdafx.h" />

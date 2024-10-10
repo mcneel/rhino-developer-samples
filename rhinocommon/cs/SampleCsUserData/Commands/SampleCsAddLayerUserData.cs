@@ -4,7 +4,6 @@ using Rhino.Input.Custom;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("d8f14956-165c-4c22-9f2d-93db2b8e108d")]
   public class SampleCsAddLayerUserData : Command
   {
     public override string EnglishName

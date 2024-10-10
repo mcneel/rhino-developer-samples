@@ -4,7 +4,6 @@ using Rhino.Commands;
 
 namespace SampleCsUserData.Commands
 {
-  [System.Runtime.InteropServices.Guid("2adff73e-30b1-4ded-80d0-6eae56d8a790")]
   public class SampleCsDocumentDictionary : Command
   {
     private const string INTEGER_VALUE = "INT";

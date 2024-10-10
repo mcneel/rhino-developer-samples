@@ -27,6 +27,35 @@ double ON_CurveTorsion(const ON_Curve& curve, double t)
 }
 
 /// <summary>
+/// Create a blend curve with G0 continuity between two existing curves.
+/// </summary>
+/// <param name="crvA">Curve to blend from (blending will occur at curve end point).</param>
+/// <param name="crvB">Curve to blend to (blending will occur at curve start point).</param>
+/// <returns>An ON_Curve representing the blend between A and B.</returns>
+/// <remarks>
+/// CRITICAL: Memory for the resulting curve is allocated. It is the calling
+/// functions responsibility to clean up the memory.
+/// </remarks>
+ON_Curve* ON_BlendG0Curve(
+  const ON_Curve* crvA,
+  const ON_Curve* crvB
+  )
+{
+  ON_Curve* rc = nullptr;
+  if (crvA && !crvA->IsClosed() && crvB && !crvB->IsClosed())
+  {
+    double ta = crvA->Domain().Max();
+    double tb = crvB->Domain().Min();
+
+    ON_3dPoint A = crvA->PointAt(ta);
+    ON_3dPoint B = crvB->PointAt(tb);
+
+    rc = new ON_LineCurve(A, B);
+  }
+  return rc;
+}
+
+/// <summary>
 /// Create a blend curve with G1 continuity between two existing curves.
 /// </summary>
 /// <param name="crvA">Curve to blend from (blending will occur at curve end point).</param>
@@ -46,7 +75,7 @@ ON_Curve* ON_BlendG1Curve(
 )
 {
   ON_Curve* rc = nullptr;
-  if (crvA && crvB)
+  if (crvA && !crvA->IsClosed() && crvB && !crvB->IsClosed())
   {
     double ta = crvA->Domain().Max();
     double tb = crvB->Domain().Min();
@@ -101,7 +130,7 @@ ON_Curve* ON_BlendG2Curve(
 )
 {
   ON_Curve* rc = nullptr;
-  if (crvA && crvB)
+  if (crvA && !crvA->IsClosed() && crvB && !crvB->IsClosed())
   {
     double ta = crvA->Domain().Max();
     double tb = crvB->Domain().Min();
@@ -259,53 +288,6 @@ HBITMAP ON_ReadBitmapPreviewImage(const wchar_t* pszFilePath)
   return hBitmap;
 }
 
-/// <summary>
-/// CRhinoHatchPatternTable helpers for system hatch patterns
-/// </summary>
-class CRhinoHatchTableHelper
-{
-public:
-  /// <summary>
-  /// Returns the Solid hatch pattern
-  /// </summary>
-  static const CRhinoHatchPattern* Solid(CRhinoHatchPatternTable& table);
-  /// <summary>
-  /// Returns the Hatch1 hatch pattern
-  /// </summary>
-  static const CRhinoHatchPattern* Hatch1(CRhinoHatchPatternTable& table);
-  /// <summary>
-  /// Returns the Hatch2 hatch pattern
-  /// </summary>
-  static const CRhinoHatchPattern* Hatch2(CRhinoHatchPatternTable& table);
-  /// <summary>
-  /// Returns the Hatch3 hatch pattern
-  /// </summary>
-  static const CRhinoHatchPattern* Hatch3(CRhinoHatchPatternTable& table);
-  /// <summary>
-  /// Returns the HatchDash hatch pattern
-  /// </summary>
-  static const CRhinoHatchPattern* HatchDash(CRhinoHatchPatternTable& table);
-  /// <summary>
-  /// Returns the Grid hatch pattern
-  /// </summary>
-  static const CRhinoHatchPattern* Grid(CRhinoHatchPatternTable& table);
-  /// <summary>
-  /// Returns the Grid60 hatch pattern
-  /// </summary>
-  static const CRhinoHatchPattern* Grid60(CRhinoHatchPatternTable& table);
-  /// <summary>
-  /// Returns the Plus hatch pattern
-  /// </summary>
-  static const CRhinoHatchPattern* Plus(CRhinoHatchPatternTable& table);
-  /// <summary>
-  /// Returns the Squares hatch pattern
-  /// </summary>
-  static const CRhinoHatchPattern* Squares(CRhinoHatchPatternTable& table);
-
-private:
-  static const CRhinoHatchPattern* FindOrCreateHatchPattern(CRhinoHatchPatternTable& table, const ON_HatchPattern& hatch_pattern);
-};
-
 const CRhinoHatchPattern* CRhinoHatchTableHelper::Solid(CRhinoHatchPatternTable& table)
 {
   return FindOrCreateHatchPattern(table, CRhinoHatchPattern::Solid);
@@ -367,7 +349,7 @@ const CRhinoHatchPattern* CRhinoHatchTableHelper::FindOrCreateHatchPattern(CRhin
 /// Returns true if Rhino was started as a standalone executable.
 /// Returns false if Rhino was started by some other application or process.
 /// </summary>
-static bool IsRhinoRunningAsExe()
+bool IsRhinoRunningAsExe()
 {
   bool rc = false;
   DWORD dwProcessId = ::GetCurrentProcessId();
@@ -390,7 +372,7 @@ static bool IsRhinoRunningAsExe()
 /// <summary>
 /// Returns true if Rhino has input focus.
 /// </summary>
-static bool RhinoHasFocus()
+bool RhinoHasFocus()
 {
   // Retrieves a handle to the foreground window
   HWND hWnd = ::GetForegroundWindow();

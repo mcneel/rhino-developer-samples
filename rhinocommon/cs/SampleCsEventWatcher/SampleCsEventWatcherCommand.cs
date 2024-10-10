@@ -8,7 +8,6 @@ namespace SampleCsEventWatcher
   /// <summary>
   /// SampleCsEventWatcher command
   /// </summary>
-  [System.Runtime.InteropServices.Guid("61055a13-cd6d-4c5d-8978-0ee9a0560837")]
   public class SampleCsEventWatcherCommand : Command
   {
     /// <summary>
