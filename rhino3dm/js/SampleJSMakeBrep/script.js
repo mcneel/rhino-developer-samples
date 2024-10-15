@@ -126,7 +126,7 @@ function createObject(objectType) {
     downloadButton.disabled = false
 
     let geometry
-    let rhinoObject, rhinoMesh, result, xform
+    let rhinoObject, rhinoMesh, result
     const oa = new rhino.ObjectAttributes()
     oa.materialSource = rhino.ObjectMaterialSource.MaterialFromLayer
 
@@ -139,6 +139,7 @@ function createObject(objectType) {
     const x = Math.random() * xDim * (Math.random() > 0.5 ? 1 : - 1)
     const y = Math.random() * yDim * (Math.random() > 0.5 ? 1 : - 1)
     const z = Math.random() * zDim * (Math.random() > 0.5 ? 1 : - 1)
+    const xform = rhino.Transform.translationXYZ(x, y, z)
 
     console.log( [ x, y, z ] )
 
@@ -150,10 +151,10 @@ function createObject(objectType) {
             geometry = new THREE.SphereGeometry( dim, 32, 32 )
             geometry.translate( x, z, -y )
 
-            rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: geometry } )
-
             const sphere = new rhino.Sphere( [ x, y, z ], dim )
             rhinoObject = rhino.Brep.createFromSphere( sphere )
+
+            rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: geometry } )
             result = rhinoObject.faces().get(0).setMesh( rhinoMesh, rhino.MeshType.Render )
 
             oa.layerIndex = brep_layer_index
@@ -169,8 +170,6 @@ function createObject(objectType) {
 
             const rhinoBox = new rhino.Box( new rhino.BoundingBox( [ -halfDim, -halfDim, -halfDim ], [ halfDim, halfDim, halfDim ] ) )
             rhinoObject = rhino.Extrusion.createBoxExtrusion( rhinoBox, true )
-
-            xform = rhino.Transform.translationXYZ(x, y, z)
             rhinoObject.transform( xform )
 
             rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: geometry } )
@@ -189,10 +188,11 @@ function createObject(objectType) {
 
             const circle = new rhino.Circle([ x, y, z ], dim)
             const cylinder = new rhino.Cylinder(circle, dim)
-            rhinoObject = rhino.Brep.createFromCylinder( cylinder, true, true )
+            rhinoObject = rhino.Extrusion.createCylinderExtrusion( cylinder, true, true )
+            rhinoObject.transform( xform )
 
             rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: geometry } )
-            result = rhinoObject.faces().get(0).setMesh( rhinoMesh, rhino.MeshType.Render )
+            result = rhinoObject.setMesh( rhinoMesh, rhino.MeshType.Render )
 
             oa.layerIndex = cyl_layer_index
 
@@ -201,13 +201,10 @@ function createObject(objectType) {
             break
     }
 
-    
-    
     const mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
 
     doc.objects().add( rhinoObject, oa)
-
 
 }
 
@@ -220,8 +217,6 @@ function createObject(objectType) {
  */
 
 function init() {
-
-    THREE.Object3D.DEFAULT_UP = new THREE.Vector3(0,0,1)
 
     renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
