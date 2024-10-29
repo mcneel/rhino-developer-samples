@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace WinFormsApp
@@ -13,17 +14,47 @@ namespace WinFormsApp
 
     protected override void OnHandleCreated(EventArgs e)
     {
-      // This is a good spot to start Rhino.Inside as we now have a
-      // handle to the top level parent window for Rhino
-      _rhinoCore = new Rhino.Runtime.InProcess.RhinoCore(null, Rhino.Runtime.InProcess.WindowStyle.Hidden, Handle);
       base.OnHandleCreated(e);
+      Application.Idle += Application_Idle;
+
+      try
+      {
+        // This is a good spot to start Rhino.Inside as we now have a
+        // handle to the top level parent window for Rhino
+        _rhinoCore = new Rhino.Runtime.InProcess.RhinoCore
+        (
+          new[] { "/NOSPLASH" },
+          Rhino.Runtime.InProcess.WindowStyle.Hidden,
+          Handle
+        );
+      }
+      catch { }
     }
 
-    protected override void OnHandleDestroyed(EventArgs e)
+    protected override void DestroyHandle()
     {
-      _rhinoCore.Dispose();
+      _rhinoCore?.Dispose();
       _rhinoCore = null;
-      base.OnHandleDestroyed(e);
+
+      Application.Idle -= Application_Idle;
+
+      base.DestroyHandle();
+    }
+
+    bool idlePending = true;
+    private void Application_Idle(object sender, EventArgs e)
+    {
+      var active = false;
+      do
+      {
+        if (idlePending)
+          idlePending = _rhinoCore?.DoIdle() ?? false;
+
+        active = _rhinoCore?.DoEvents() ?? false;
+        if (active)
+          idlePending = true;
+
+      } while (active);
     }
 
     protected override void OnLoad(EventArgs e)
@@ -39,6 +70,12 @@ namespace WinFormsApp
           viewportControl1.Invalidate();
         };
       }
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+      e.Cancel = Rhino.Commands.Command.InCommand();
+      base.OnClosing(e);
     }
 
     private void openToolStripMenuItem_Click(object sender, EventArgs e)
