@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Input.Custom;
+using System.IO;
+using System.Windows.Forms;
 
 namespace SampleCsCommands
 {
@@ -17,7 +17,7 @@ namespace SampleCsCommands
       string path;
       if (mode == RunMode.Interactive)
       {
-        var savefile = new SaveFileDialog
+        SaveFileDialog savefile = new SaveFileDialog
         {
           FileName = "Untitled.3ds",
           Filter = @"3D Studio (*.3ds)|*.3ds||"
@@ -29,7 +29,7 @@ namespace SampleCsCommands
       }
       else
       {
-        var gs = new GetString();
+        GetString gs = new GetString();
         gs.SetCommandPrompt("Name of 3D Studio file to save");
         gs.Get();
         if (gs.CommandResult() != Result.Success)
@@ -49,7 +49,7 @@ namespace SampleCsCommands
       // string contains spaces, we will want to surround the string
       // with double-quote characters so the command line parser
       // will deal with it property.
-      var script = $"_-SaveAs \"{path}\" _Enter";
+      string script = $"_-SaveAs \"{path}\" _Enter";
       RhinoApp.RunScript(script, false);
 
       return Result.Success;

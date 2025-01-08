@@ -12,12 +12,12 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var zebra_id = VisualAnalysisMode.RhinoZebraStripeAnalysisModeId;
-      var analysis_mode = VisualAnalysisMode.Find(zebra_id);
+      System.Guid zebra_id = VisualAnalysisMode.RhinoZebraStripeAnalysisModeId;
+      VisualAnalysisMode analysis_mode = VisualAnalysisMode.Find(zebra_id);
       if (null == analysis_mode)
         return Result.Failure;
 
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select surfaces or polysurfaces for Zebra analysis");
       go.GeometryFilter = ObjectType.Surface | ObjectType.PolysrfFilter;
       go.SubObjectSelect = false;
@@ -25,9 +25,9 @@ namespace SampleCsCommands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      foreach (var obj_ref in go.Objects())
+      foreach (ObjRef obj_ref in go.Objects())
       {
-        var obj = obj_ref.Object();
+        RhinoObject obj = obj_ref.Object();
         if (null == obj)
           return Result.Failure;
 

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Drawing;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Render;
+using System;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -19,7 +19,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var analysis_mode = VisualAnalysisMode.Find(typeof(SampleCsZAnalysisMode));
+      VisualAnalysisMode analysis_mode = VisualAnalysisMode.Find(typeof(SampleCsZAnalysisMode));
       if (null == analysis_mode)
         analysis_mode = VisualAnalysisMode.Register(typeof(SampleCsZAnalysisMode));
       if (null == analysis_mode)
@@ -29,14 +29,14 @@ namespace SampleCsCommands
       }
 
       const ObjectType filter = ObjectType.Surface | ObjectType.PolysrfFilter | ObjectType.Mesh;
-      var rc = RhinoGet.GetMultipleObjects("Select objects for Z analysis", false, filter, out var obj_refs);
+      Result rc = RhinoGet.GetMultipleObjects("Select objects for Z analysis", false, filter, out ObjRef[] obj_refs);
       if (rc != Result.Success)
         return rc;
 
-      var count = 0;
-      foreach (var obj_ref in obj_refs)
+      int count = 0;
+      foreach (ObjRef obj_ref in obj_refs)
       {
-        var obj = obj_ref.Object();
+        RhinoObject obj = obj_ref.Object();
 
         // see if this object is already in Z-Analysis mode
         if (obj.InVisualAnalysisMode(analysis_mode))
@@ -62,10 +62,10 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var analysis_mode = VisualAnalysisMode.Find(typeof(SampleCsZAnalysisMode));
+      VisualAnalysisMode analysis_mode = VisualAnalysisMode.Find(typeof(SampleCsZAnalysisMode));
       if (analysis_mode != null)
       {
-        foreach (var obj in doc.Objects)
+        foreach (RhinoObject obj in doc.Objects)
           obj.EnableVisualAnalysisMode(analysis_mode, false);
         doc.Views.Redraw();
       }
@@ -110,9 +110,9 @@ namespace SampleCsCommands
     protected override void UpdateVertexColors(RhinoObject obj, Mesh[] meshes)
     {
       // A "mapping tag" is used to determine if the colors need to be set
-      var mt = GetMappingTag();
+      MappingTag mt = GetMappingTag();
 
-      foreach (var mesh in meshes)
+      foreach (Mesh mesh in meshes)
       {
         if (mesh.VertexColors.Tag.Id != Id)
         {
@@ -121,8 +121,8 @@ namespace SampleCsCommands
           // false colors set using different m_z_range[]/m_hue_range[] values, or
           // the mesh has been moved.  In any case, we need to set the false
           // colors to the ones we want.
-          var colors = new Color[mesh.Vertices.Count];
-          for (var i = 0; i < mesh.Vertices.Count; i++)
+          Color[] colors = new Color[mesh.Vertices.Count];
+          for (int i = 0; i < mesh.Vertices.Count; i++)
           {
             double z = mesh.Vertices[i].Z;
             colors[i] = FalseColor(z);
@@ -142,7 +142,7 @@ namespace SampleCsCommands
     /// </summary>
     private MappingTag GetMappingTag()
     {
-      var mt = new MappingTag();
+      MappingTag mt = new MappingTag();
 
       // Since the false colors that are shown will change if
       // the mesh is transformed, we have to initialize the
@@ -178,9 +178,9 @@ namespace SampleCsCommands
     {
       // Simple example of one way to change a number
       // into a color.
-      var s = m_z_range.NormalizedParameterAt(z);
+      double s = m_z_range.NormalizedParameterAt(z);
       s = RhinoMath.Clamp(s, 0.0, 1.0);
-      var hue = m_hue_range.ParameterAt(s);
+      double hue = m_hue_range.ParameterAt(s);
       return ColorFromHsv(hue, 1.0, 1.0);
     }
 
@@ -203,7 +203,7 @@ namespace SampleCsCommands
       else
       {
         hue *= 3.0 / Math.PI;  // (6.0 / 2.0 * ON_PI);
-        var i = (int)Math.Floor(hue);
+        int i = (int)Math.Floor(hue);
         if (i < 0 || i > 5)
         {
           hue = hue % 6.0;
@@ -211,10 +211,10 @@ namespace SampleCsCommands
             hue += 6.0;
           i = (int)Math.Floor(hue);
         }
-        var f = hue - i;
-        var p = value * (1.0 - saturation);
-        var q = value * (1.0 - (saturation * f));
-        var t = value * (1.0 - (saturation * (1.0 - f)));
+        double f = hue - i;
+        double p = value * (1.0 - saturation);
+        double q = value * (1.0 - (saturation * f));
+        double t = value * (1.0 - (saturation * (1.0 - f)));
         switch (i)
         {
           case 0:
@@ -251,10 +251,10 @@ namespace SampleCsCommands
       blue *= 255.0;
       alpha *= 255.0;
 
-      var r = (int)red;
-      var g = (int)green;
-      var b = (int)blue;
-      var a = (int)alpha;
+      int r = (int)red;
+      int g = (int)green;
+      int b = (int)blue;
+      int a = (int)alpha;
 
       if (red - r >= 0.5) r++;
       if (green - g >= 0.5) g++;

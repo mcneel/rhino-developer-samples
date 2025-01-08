@@ -10,7 +10,7 @@ namespace SampleCsWpf.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var dialog = new Views.SampleCsWpfDialog();
+      Views.SampleCsWpfDialog dialog = new Views.SampleCsWpfDialog();
       dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
 
       return Result.Success;

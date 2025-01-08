@@ -13,7 +13,7 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Select a mesh
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select mesh face to extrude");
       go.GeometryFilter = ObjectType.MeshFace;
       go.Get();
@@ -21,23 +21,23 @@ namespace SampleCsCommands
         return go.CommandResult();
 
       // Get the selected object reference
-      var objref = go.Object(0);
-      var rh_obj = objref.Object();
+      ObjRef objref = go.Object(0);
+      RhinoObject rh_obj = objref.Object();
       if (null == rh_obj)
         return Result.Failure;
 
       // Get the base mesh
-      var mesh = objref.Mesh();
+      Mesh mesh = objref.Mesh();
       if (null == mesh)
         return Result.Failure;
 
       // Get the selected component
-      var ci = objref.GeometryComponentIndex;
+      ComponentIndex ci = objref.GeometryComponentIndex;
       if (ComponentIndexType.MeshFace != ci.ComponentIndexType)
         return Result.Failure;
 
       // Copy the mesh geometry
-      var mesh_copy = mesh.DuplicateMesh();
+      Mesh mesh_copy = mesh.DuplicateMesh();
 
       // Make sure the mesh has normals
       if (mesh_copy.FaceNormals.Count != mesh_copy.Faces.Count)
@@ -46,33 +46,33 @@ namespace SampleCsCommands
         mesh_copy.Normals.ComputeNormals();
 
       // Get the mesh face
-      var face = mesh_copy.Faces[ci.Index];
+      MeshFace face = mesh_copy.Faces[ci.Index];
 
       // Get the mesh face vertices
-      var base_vertices = new Point3d[4];
-      for (var i = 0; i < 4; i++)
+      Point3d[] base_vertices = new Point3d[4];
+      for (int i = 0; i < 4; i++)
         base_vertices[i] = mesh_copy.Vertices[face[i]];
 
       // Get the face normal and scale it by 5.0
-      var offset = mesh_copy.FaceNormals[ci.Index] * (float)5.0;
+      Vector3f offset = mesh_copy.FaceNormals[ci.Index] * (float)5.0;
 
       // Calculate the offset vertices
-      var offset_vertices = new Point3d[4];
-      for (var i = 0; i < 4; i++)
+      Point3d[] offset_vertices = new Point3d[4];
+      for (int i = 0; i < 4; i++)
         offset_vertices[i] = base_vertices[i] + offset;
 
       // Delete the mesh face
-      var faces_indices = new int[] { ci.Index };
+      int[] faces_indices = new int[] { ci.Index };
       mesh_copy.Faces.DeleteFaces(faces_indices);
 
       // Add the base mesh face vertices
-      var base_indices = new int[4];
-      for (var i = 0; i < 4; i++)
+      int[] base_indices = new int[4];
+      for (int i = 0; i < 4; i++)
         base_indices[i] = mesh_copy.Vertices.Add(base_vertices[i]);
 
       // Add the offset mesh face vertices
-      var offset_indices = new int[4];
-      for (var i = 0; i < 4; i++)
+      int[] offset_indices = new int[4];
+      for (int i = 0; i < 4; i++)
         offset_indices[i] = mesh_copy.Vertices.Add(offset_vertices[i]);
 
       // Add the new mesh faces

@@ -13,14 +13,14 @@ namespace SampleCsRectangleGrips
       if (rhObject == null)
         return;
 
-      var polyline_curve = rhObject.Geometry as PolylineCurve;
+      PolylineCurve polyline_curve = rhObject.Geometry as PolylineCurve;
       if (polyline_curve == null)
         return;
 
       if (!SampleCsRectangleHelper.IsRectangle(polyline_curve))
         return;
 
-      var rectangle_grips = new SampleCsRectangleGrips();
+      SampleCsRectangleGrips rectangle_grips = new SampleCsRectangleGrips();
       if (!rectangle_grips.CreateGrips(polyline_curve))
         return;
 

@@ -50,7 +50,7 @@ namespace SampleCsEto.Commands
       Title = "Rebuild";
       Padding = new Eto.Drawing.Padding(5);
 
-      var layout = new Eto.Forms.DynamicLayout
+      Eto.Forms.DynamicLayout layout = new Eto.Forms.DynamicLayout
       {
         Padding = new Eto.Drawing.Padding(5),
         Spacing = new Eto.Drawing.Size(5, 5)
@@ -69,10 +69,10 @@ namespace SampleCsEto.Commands
 
     private Eto.Forms.DynamicLayout CreateSteppers()
     {
-      var label0 = new Eto.Forms.Label { Text = "Point count:" };
-      var label1 = new Eto.Forms.Label { Text = "Degree:" };
-      var label2 = new Eto.Forms.Label { Text = $"({m_args.PointCount})" };
-      var label3 = new Eto.Forms.Label { Text = $"({m_args.Degree})" };
+      Eto.Forms.Label label0 = new Eto.Forms.Label { Text = "Point count:" };
+      Eto.Forms.Label label1 = new Eto.Forms.Label { Text = "Degree:" };
+      Eto.Forms.Label label2 = new Eto.Forms.Label { Text = $"({m_args.PointCount})" };
+      Eto.Forms.Label label3 = new Eto.Forms.Label { Text = $"({m_args.Degree})" };
 
       m_point_count_stepper = new Eto.Forms.NumericStepper
       {
@@ -88,7 +88,7 @@ namespace SampleCsEto.Commands
         MaxValue = 11
       };
 
-      var layout = new Eto.Forms.DynamicLayout { Spacing = new Eto.Drawing.Size(5, 5) };
+      Eto.Forms.DynamicLayout layout = new Eto.Forms.DynamicLayout { Spacing = new Eto.Drawing.Size(5, 5) };
       layout.AddRow(label0, label2, m_point_count_stepper);
       layout.AddRow(label1, label3, m_degree_stepper);
       return layout;
@@ -110,7 +110,7 @@ namespace SampleCsEto.Commands
         ThreeState = false
       };
 
-      var layout = new Eto.Forms.DynamicLayout { Spacing = new Eto.Drawing.Size(5, 5) };
+      Eto.Forms.DynamicLayout layout = new Eto.Forms.DynamicLayout { Spacing = new Eto.Drawing.Size(5, 5) };
       layout.AddRow(m_delete_input_checkbox);
       layout.AddRow(m_preserve_tangents_checkbox);
       return layout;
@@ -124,17 +124,17 @@ namespace SampleCsEto.Commands
       AbortButton = new Eto.Forms.Button { Text = "Cancel" };
       AbortButton.Click += AbortButton_Click;
 
-      var layout = new Eto.Forms.DynamicLayout { Spacing = new Eto.Drawing.Size(5, 5) };
+      Eto.Forms.DynamicLayout layout = new Eto.Forms.DynamicLayout { Spacing = new Eto.Drawing.Size(5, 5) };
       layout.AddRow(null, DefaultButton, AbortButton, null);
       return layout;
     }
 
     private void DefaultButton_Click(object sender, EventArgs e)
     {
-      m_args.PointCount = (int) m_point_count_stepper.Value;
-      m_args.Degree = (int) m_degree_stepper.Value;
-      m_args.DeleteInput = (bool) m_delete_input_checkbox.Checked;
-      m_args.PreserveTangents = (bool) m_preserve_tangents_checkbox.Checked;
+      m_args.PointCount = (int)m_point_count_stepper.Value;
+      m_args.Degree = (int)m_degree_stepper.Value;
+      m_args.DeleteInput = (bool)m_delete_input_checkbox.Checked;
+      m_args.PreserveTangents = (bool)m_preserve_tangents_checkbox.Checked;
       Close(true);
     }
 
@@ -156,19 +156,19 @@ namespace SampleCsEto.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var rc = RhinoGet.GetOneObject("Select curve to rebuild", true, ObjectType.Curve, out var objref);
+      Result rc = RhinoGet.GetOneObject("Select curve to rebuild", true, ObjectType.Curve, out ObjRef objref);
       if (rc != Rhino.Commands.Result.Success)
         return rc;
 
-      var curve = objref.Curve();
+      Rhino.Geometry.Curve curve = objref.Curve();
       if (null == curve)
         return Result.Failure;
 
-      var nurb = curve.ToNurbsCurve();
+      Rhino.Geometry.NurbsCurve nurb = curve.ToNurbsCurve();
       if (null == nurb)
         return Result.Failure;
 
-      var args = new RebuildCurveArgs
+      RebuildCurveArgs args = new RebuildCurveArgs
       {
         PointCount = nurb.Points.Count,
         Degree = nurb.Degree,
@@ -176,8 +176,8 @@ namespace SampleCsEto.Commands
         PreserveTangents = PreserveTangents
       };
 
-      var dlg = new RebuildCurveDialog(args);
-      var res = dlg.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow);
+      RebuildCurveDialog dlg = new RebuildCurveDialog(args);
+      bool res = dlg.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow);
       if (res)
       {
         args = dlg.Results;

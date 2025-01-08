@@ -68,7 +68,7 @@ namespace SampleCsWinForms.Forms
         {
           if (!(ctrl is ContainerControl) && !(ctrl is GroupBox) && !(ctrl is Panel))
           {
-            var index = ctrl.TabIndex;
+            int index = ctrl.TabIndex;
             while (m_controls.ContainsKey(index))
               ++index;
             m_controls.Add(index, ctrl);
@@ -92,7 +92,7 @@ namespace SampleCsWinForms.Forms
     {
       if (null != m_form.ActiveControl)
       {
-        var ctrl = m_form.ActiveControl;
+        Control ctrl = m_form.ActiveControl;
         while (ctrl is ContainerControl container)
           ctrl = container.ActiveControl;
         return ctrl;
@@ -126,7 +126,7 @@ namespace SampleCsWinForms.Forms
     {
       get
       {
-        var ctrl = GetActiveControl();
+        Control ctrl = GetActiveControl();
         if (m_enumerator.Current.Value != ctrl)
           InitializeControlEnumerator(ctrl);
 

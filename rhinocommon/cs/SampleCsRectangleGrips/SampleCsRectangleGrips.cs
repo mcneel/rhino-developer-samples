@@ -1,6 +1,6 @@
-﻿using System;
-using Rhino.DocObjects.Custom;
+﻿using Rhino.DocObjects.Custom;
 using Rhino.Geometry;
+using System;
 
 namespace SampleCsRectangleGrips
 {
@@ -19,7 +19,7 @@ namespace SampleCsRectangleGrips
     {
       m_draw_rectangle = false;
       m_sample_cs_rectangle_grips = new SampleCsRectangleGrip[8];
-      for (var i = 0; i < 8; i++)
+      for (int i = 0; i < 8; i++)
         m_sample_cs_rectangle_grips[i] = new SampleCsRectangleGrip();
     }
 
@@ -40,16 +40,16 @@ namespace SampleCsRectangleGrips
       m_plane = plane;
 
       m_active_rectangle = new Point3d[5];
-      for (var i = 0; i < polylineCurve.PointCount; i++)
+      for (int i = 0; i < polylineCurve.PointCount; i++)
         m_active_rectangle[i] = polylineCurve.Point(i);
 
       m_original_rectangle = new Point3d[5];
       Array.Copy(m_active_rectangle, m_original_rectangle, 5);
 
-      var line = new Line();
-      for (var i = 0; i < 4; i++)
+      Line line = new Line();
+      for (int i = 0; i < 4; i++)
       {
-        var gi = 2 * i;
+        int gi = 2 * i;
         line.From = m_active_rectangle[i];
         line.To = m_active_rectangle[i + 1];
         m_sample_cs_rectangle_grips[gi].OriginalLocation = line.From;
@@ -58,7 +58,7 @@ namespace SampleCsRectangleGrips
         m_sample_cs_rectangle_grips[gi + 1].Active = true;
       }
 
-      for (var i = 0; i < 8; i++)
+      for (int i = 0; i < 8; i++)
         AddGrip(m_sample_cs_rectangle_grips[i]);
 
       return true;
@@ -73,11 +73,11 @@ namespace SampleCsRectangleGrips
       {
         // If anything moved this time, the ones that didn't move will
         // be inactive for the rest of the drag
-        for (var i = 0; i < 8; i++)
+        for (int i = 0; i < 8; i++)
         {
           if (m_sample_cs_rectangle_grips[i].Active && m_sample_cs_rectangle_grips[i].Moved)
           {
-            for (var j = 0; j < 8; j++)
+            for (int j = 0; j < 8; j++)
             {
               if (!m_sample_cs_rectangle_grips[j].Moved)
                 m_sample_cs_rectangle_grips[j].Active = false;
@@ -87,7 +87,7 @@ namespace SampleCsRectangleGrips
         }
 
         // First check corners
-        for (var i = 0; i < 8; i += 2)
+        for (int i = 0; i < 8; i += 2)
         {
           if (m_sample_cs_rectangle_grips[i].Active && m_sample_cs_rectangle_grips[i].Moved)
           {
@@ -98,7 +98,7 @@ namespace SampleCsRectangleGrips
         }
 
         // Second check middles
-        for (var i = 1; i < 8; i += 2)
+        for (int i = 1; i < 8; i += 2)
         {
           if (m_sample_cs_rectangle_grips[i].Active && m_sample_cs_rectangle_grips[i].Moved)
           {
@@ -109,25 +109,25 @@ namespace SampleCsRectangleGrips
         }
 
         // Set up transforms
-        var world_to_plane = Transform.ChangeBasis(Plane.WorldXY, m_plane);
-        var plane_to_world = Transform.ChangeBasis(m_plane, Plane.WorldXY);
+        Transform world_to_plane = Transform.ChangeBasis(Plane.WorldXY, m_plane);
+        Transform plane_to_world = Transform.ChangeBasis(m_plane, Plane.WorldXY);
 
         // Copy and transform active rectangle points
-        var rectangle = new Point3d[5];
+        Point3d[] rectangle = new Point3d[5];
         Array.Copy(m_active_rectangle, rectangle, 5);
-        for (var i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
           rectangle[i].Transform(world_to_plane);
 
         // Copy and transform current grip locations
-        var locations = new Point3d[8];
-        for (var i = 0; i < 8; i++)
+        Point3d[] locations = new Point3d[8];
+        for (int i = 0; i < 8; i++)
         {
           locations[i] = m_sample_cs_rectangle_grips[i].CurrentLocation;
           locations[i].Transform(world_to_plane);
         }
 
         // Figure out which x, y coordinates have been changed
-        var x0 = rectangle[0].X;
+        double x0 = rectangle[0].X;
         if (m_sample_cs_rectangle_grips[0].Active && m_sample_cs_rectangle_grips[0].Moved)
           x0 = locations[0].X;
         else if (m_sample_cs_rectangle_grips[6].Active && m_sample_cs_rectangle_grips[6].Moved)
@@ -135,7 +135,7 @@ namespace SampleCsRectangleGrips
         else if (m_sample_cs_rectangle_grips[7].Active && m_sample_cs_rectangle_grips[7].Moved)
           x0 = locations[7].X;
 
-        var x1 = rectangle[2].X;
+        double x1 = rectangle[2].X;
         if (m_sample_cs_rectangle_grips[4].Active && m_sample_cs_rectangle_grips[4].Moved)
           x1 = locations[4].X;
         else if (m_sample_cs_rectangle_grips[2].Active && m_sample_cs_rectangle_grips[2].Moved)
@@ -143,7 +143,7 @@ namespace SampleCsRectangleGrips
         else if (m_sample_cs_rectangle_grips[3].Active && m_sample_cs_rectangle_grips[3].Moved)
           x1 = locations[3].X;
 
-        var y0 = rectangle[0].Y;
+        double y0 = rectangle[0].Y;
         if (m_sample_cs_rectangle_grips[0].Active && m_sample_cs_rectangle_grips[0].Moved)
           y0 = locations[0].Y;
         else if (m_sample_cs_rectangle_grips[2].Active && m_sample_cs_rectangle_grips[2].Moved)
@@ -151,7 +151,7 @@ namespace SampleCsRectangleGrips
         else if (m_sample_cs_rectangle_grips[1].Active && m_sample_cs_rectangle_grips[1].Moved)
           y0 = locations[1].Y;
 
-        var y1 = rectangle[2].Y;
+        double y1 = rectangle[2].Y;
         if (m_sample_cs_rectangle_grips[4].Active && m_sample_cs_rectangle_grips[4].Moved)
           y1 = locations[4].Y;
         else if (m_sample_cs_rectangle_grips[6].Active && m_sample_cs_rectangle_grips[6].Moved)
@@ -167,14 +167,14 @@ namespace SampleCsRectangleGrips
 
         // Copy and transform updated rectangle points
         Array.Copy(rectangle, m_active_rectangle, 5);
-        for (var i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
           m_active_rectangle[i].Transform(plane_to_world);
 
         // Apply rectangular constraints to grip locations
-        var line = new Line();
-        for (var i = 0; i < 4; i++)
+        Line line = new Line();
+        for (int i = 0; i < 4; i++)
         {
-          var gi = 2 * i;
+          int gi = 2 * i;
           line.From = m_active_rectangle[i];
           line.To = m_active_rectangle[i + 1];
           m_sample_cs_rectangle_grips[gi].Move(line.From);
@@ -215,10 +215,10 @@ namespace SampleCsRectangleGrips
       UpdateGrips();
       if (m_draw_rectangle && args.DrawDynamicStuff)
       {
-        for (var i = 1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
         {
-          var start = i - 1;
-          var end = i;
+          int start = i - 1;
+          int end = i;
           args.DrawControlPolygonLine(m_active_rectangle[start], m_active_rectangle[end], start, end);
         }
       }

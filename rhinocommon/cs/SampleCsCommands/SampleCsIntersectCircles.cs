@@ -1,7 +1,7 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
+using System;
 
 namespace SampleCsCommands
 {
@@ -40,7 +40,7 @@ namespace SampleCsCommands
       }
 
       doc.Views.Redraw();
-      
+
       return Result.Success;
     }
 
@@ -109,14 +109,14 @@ namespace SampleCsCommands
     /// </summary>
     private double Hypot(double x, double y)
     {
-     double r;
-     if (x == 0) return y;
-     if (y == 0) return x;
-     if (x < 0) x = -x;
-     if (y < 0) y = -y;
-     if (x < y) {r = x; x = y; y = r;}
-     r = y / x;
-     return x * Math.Sqrt(1 + r * r);    
+      double r;
+      if (x == 0) return y;
+      if (y == 0) return x;
+      if (x < 0) x = -x;
+      if (y < 0) y = -y;
+      if (x < y) { r = x; x = y; y = r; }
+      r = y / x;
+      return x * Math.Sqrt(1 + r * r);
     }
   }
 }

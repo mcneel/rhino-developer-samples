@@ -10,7 +10,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var gd = new GetDetailViewObject();
+      GetDetailViewObject gd = new GetDetailViewObject();
       gd.SetCommandPrompt("Select detail view");
       gd.EnablePreSelect(false, true);
       gd.DeselectAllBeforePostSelect = false;
@@ -18,11 +18,11 @@ namespace SampleCsCommands
       if (gd.CommandResult() != Result.Success)
         return gd.CommandResult();
 
-      var detail_obj = gd.Object(0).Object() as DetailViewObject;
+      DetailViewObject detail_obj = gd.Object(0).Object() as DetailViewObject;
       if (null == detail_obj)
         return Result.Failure;
 
-      var detail = detail_obj.DetailGeometry;
+      Rhino.Geometry.DetailView detail = detail_obj.DetailGeometry;
       if (null == detail)
         return Result.Failure;
 

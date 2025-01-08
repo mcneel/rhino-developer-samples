@@ -13,7 +13,7 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Select planar surface
-      var gs = new GetObject();
+      GetObject gs = new GetObject();
       gs.SetCommandPrompt("Select planar surface");
       gs.GeometryFilter = ObjectType.Surface;
       gs.SubObjectSelect = false;
@@ -21,18 +21,18 @@ namespace SampleCsCommands
       if (gs.CommandResult() != Result.Success)
         return gs.CommandResult();
 
-      var brep_ref = gs.Object(0);
-      var brep = brep_ref.Brep();
+      ObjRef brep_ref = gs.Object(0);
+      Brep brep = brep_ref.Brep();
       if (null == brep)
         return Result.Failure;
 
       // Verify underlying surface is a PlaneSurface
-      var plane_surface = brep.Faces[0].UnderlyingSurface() as PlaneSurface;
+      PlaneSurface plane_surface = brep.Faces[0].UnderlyingSurface() as PlaneSurface;
       if (null == plane_surface)
         return Result.Nothing;
 
       // Select trimming curves on planar surface
-      var gc = new GetObject();
+      GetObject gc = new GetObject();
       gc.SetCommandPrompt("Select trimming curves on planar surface");
       gc.GeometryFilter = ObjectType.Curve;
       gc.GroupSelect = true;
@@ -44,14 +44,14 @@ namespace SampleCsCommands
         return gc.CommandResult();
 
       // Make a copy of the selected Brep
-      var new_brep = new Brep();
+      Brep new_brep = new Brep();
       new_brep.Append(brep);
 
       // Add each selected curve a a inner planar face loop
-      var boundary = new Curve[1];
-      for (var i = 0; i < gc.ObjectCount; i++)
+      Curve[] boundary = new Curve[1];
+      for (int i = 0; i < gc.ObjectCount; i++)
       {
-        var curve = gc.Object(i).Curve();
+        Curve curve = gc.Object(i).Curve();
         if (null != curve)
         {
           boundary[0] = curve;

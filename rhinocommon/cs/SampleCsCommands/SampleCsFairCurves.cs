@@ -31,7 +31,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select curves to fair");
       go.GeometryFilter = ObjectType.Curve;
       go.GroupSelect = true;
@@ -40,20 +40,20 @@ namespace SampleCsCommands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      foreach (var objref in go.Objects())
+      foreach (ObjRef objref in go.Objects())
       {
-        var curve = objref.Curve();
+        Curve curve = objref.Curve();
         if (null == curve)
           return Result.Failure;
 
-        var nurb = curve.ToNurbsCurve();
+        NurbsCurve nurb = curve.ToNurbsCurve();
         if (null == nurb)
           return Result.Failure;
 
         if (1 == nurb.Degree)
         {
           RhinoApp.WriteLine("Cannot fair degree 1 curves.");
-          var obj = objref.Object();
+          RhinoObject obj = objref.Object();
           if (null != obj)
           {
             obj.Select(false);
@@ -64,28 +64,28 @@ namespace SampleCsCommands
         }
       }
 
-      var rc = GetTolerance(ref m_dist_tol);
+      Result rc = GetTolerance(ref m_dist_tol);
       if (rc != Result.Success)
         return rc;
 
       // Divide tolerance by 4 as part of getting Fair to stay within stated tolerance
-      var dist_tol = m_dist_tol * 0.25;
-      var faired_count = 0;
-      var degree3_count = 0;
+      double dist_tol = m_dist_tol * 0.25;
+      int faired_count = 0;
+      int degree3_count = 0;
 
-      foreach (var objref in go.Objects())
+      foreach (ObjRef objref in go.Objects())
       {
-        var curve = objref.Curve();
+        Curve curve = objref.Curve();
         if (null == curve)
           return Result.Failure;
 
-        var nurb = curve.ToNurbsCurve();
+        NurbsCurve nurb = curve.ToNurbsCurve();
         if (null == nurb)
           return Result.Failure;
 
-        var curve_degree = nurb.Degree;
+        int curve_degree = nurb.Degree;
 
-        var fair = nurb.Fair(dist_tol, m_ang_tol, (int)FairClamp.None, (int)FairClamp.None, m_iterations);
+        Curve fair = nurb.Fair(dist_tol, m_ang_tol, (int)FairClamp.None, (int)FairClamp.None, m_iterations);
         if (null != fair && fair.IsValid)
         {
           if (curve_degree != fair.Degree)
@@ -118,18 +118,18 @@ namespace SampleCsCommands
 
     private static Result GetTolerance(ref double tolerance)
     {
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Tolerance");
       gp.SetDefaultNumber(tolerance);
       gp.AcceptNumber(true, false);
 
       for (; ; )
       {
-        var res = gp.Get();
+        GetResult res = gp.Get();
 
         if (res == GetResult.Number)
         {
-          var d = gp.Number();
+          double d = gp.Number();
           if (d < 0.0)
           {
             RhinoApp.WriteLine("Tolerance must be greater than 0.");
@@ -147,7 +147,7 @@ namespace SampleCsCommands
         break;
       }
 
-      var base_point = gp.Point();
+      Point3d base_point = gp.Point();
 
       gp.SetBasePoint(base_point, true);
       gp.DrawLineFromPoint(base_point, true);
@@ -155,11 +155,11 @@ namespace SampleCsCommands
 
       for (; ; )
       {
-        var res = gp.Get();
+        GetResult res = gp.Get();
 
         if (res == GetResult.Number)
         {
-          var d = gp.Number();
+          double d = gp.Number();
           if (d < 0.0)
           {
             RhinoApp.WriteLine("Tolerance must be greater than 0.");

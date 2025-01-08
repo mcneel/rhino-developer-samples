@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Rhino;
+using Rhino.Commands;
+using Rhino.Geometry;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Rhino;
-using Rhino.Commands;
-using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
@@ -36,8 +36,8 @@ namespace SampleCsCommands
       mesh.Normals.ComputeNormals();
       mesh.Compact();
 
-      var folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-      var path = Path.Combine(folder, "SampleCsWriteStl.stl");
+      string folder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+      string path = Path.Combine(folder, "SampleCsWriteStl.stl");
       FileStl.WriteFile(mesh, path);
 
       return Result.Success;
@@ -64,7 +64,7 @@ namespace SampleCsCommands
     {
       try
       {
-        var model = WriteString(meshes);
+        string model = WriteString(meshes);
         File.WriteAllText(path, model);
       }
       catch (Exception)
@@ -87,31 +87,31 @@ namespace SampleCsCommands
     /// </summary>
     public static string WriteString(IList<Mesh> meshes)
     {
-      var sb = new StringBuilder();
+      StringBuilder sb = new StringBuilder();
 
-      var name = meshes.Count == 1 ? "Mesh" : "Composite Mesh";
+      string name = meshes.Count == 1 ? "Mesh" : "Composite Mesh";
       sb.AppendLine(string.Format("solid {0}", name));
 
-      foreach (var mesh in meshes)
+      foreach (Mesh mesh in meshes)
       {
         // STL files contain triangle meshes
-        var m = mesh.DuplicateMesh();
+        Mesh m = mesh.DuplicateMesh();
         m.Faces.ConvertQuadsToTriangles();
         m.FaceNormals.ComputeFaceNormals();
         m.Normals.ComputeNormals();
         m.Compact();
 
-        for (var i = 0; i < m.Faces.Count; i++)
+        for (int i = 0; i < m.Faces.Count; i++)
         {
-          var f = m.Faces[i];
+          MeshFace f = m.Faces[i];
 
-          var n = m.FaceNormals[i];
+          Vector3f n = m.FaceNormals[i];
           sb.AppendLine($"facet normal {n.X} {n.Y} {n.Z}");
           sb.AppendLine("outer loop");
 
-          var a = m.Vertices[f.A];
-          var b = m.Vertices[f.B];
-          var c = m.Vertices[f.C];
+          Point3f a = m.Vertices[f.A];
+          Point3f b = m.Vertices[f.B];
+          Point3f c = m.Vertices[f.C];
 
           sb.AppendLine($"\tvertex {a.X} {a.Y} {a.Z}");
           sb.AppendLine($"\tvertex {b.X} {b.Y} {b.Z}");

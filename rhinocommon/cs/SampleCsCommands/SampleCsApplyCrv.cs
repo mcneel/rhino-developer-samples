@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
-using Rhino.UI.Controls;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -15,7 +13,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var gc = new GetObject();
+      GetObject gc = new GetObject();
       gc.SetCommandPrompt("Select curves on world XY plane to apply to a surface");
       gc.GeometryFilter = ObjectType.Curve;
       gc.EnablePreSelect(true, true);
@@ -23,13 +21,13 @@ namespace SampleCsCommands
       if (gc.CommandResult() != Result.Success)
         return gc.CommandResult();
 
-      var tol = doc.ModelAbsoluteTolerance;
-      var bbox = new BoundingBox();
+      double tol = doc.ModelAbsoluteTolerance;
+      BoundingBox bbox = new BoundingBox();
 
-      var input_curves = new List<Curve>(gc.ObjectCount);
-      foreach (var curve_ref in gc.Objects())
+      List<Curve> input_curves = new List<Curve>(gc.ObjectCount);
+      foreach (ObjRef curve_ref in gc.Objects())
       {
-        var curve = curve_ref.Curve();
+        Curve curve = curve_ref.Curve();
         if (null == curve)
           continue;
         if (!curve.IsValid)
@@ -45,7 +43,7 @@ namespace SampleCsCommands
       if (0 == input_curves.Count)
         return Result.Failure;
 
-      var gs = new GetObject();
+      GetObject gs = new GetObject();
       gs.SetCommandPrompt("Select surface to apply the planar curves to");
       gs.GeometryFilter = ObjectType.Surface;
       gs.EnablePreSelect(false, true);
@@ -54,27 +52,27 @@ namespace SampleCsCommands
       if (gs.CommandResult() != Result.Success)
         return gs.CommandResult();
 
-      var brep_face = gs.Object(0).Face();
-      var surface = brep_face?.UnderlyingSurface();
+      BrepFace brep_face = gs.Object(0).Face();
+      Surface surface = brep_face?.UnderlyingSurface();
       if (surface == null)
         return Result.Failure;
 
-      var srf_u_domain = surface.Domain(0);
-      var srf_v_domain = surface.Domain(1);
-      var srf_u_extent = srf_u_domain.Max - srf_u_domain.Min;
-      var srf_v_extent = srf_v_domain.Max - srf_v_domain.Min;
+      Interval srf_u_domain = surface.Domain(0);
+      Interval srf_v_domain = surface.Domain(1);
+      double srf_u_extent = srf_u_domain.Max - srf_u_domain.Min;
+      double srf_v_extent = srf_v_domain.Max - srf_v_domain.Min;
 
-      var bbox_x_domain = new Interval(bbox.Min.X, bbox.Max.X);
-      var bbox_y_domain = new Interval(bbox.Min.Y, bbox.Max.Y);
-      var bbox_x_extent = bbox_x_domain.Max - bbox_x_domain.Min;
-      var bbox_y_extent = bbox_y_domain.Max - bbox_y_domain.Min;
+      Interval bbox_x_domain = new Interval(bbox.Min.X, bbox.Max.X);
+      Interval bbox_y_domain = new Interval(bbox.Min.Y, bbox.Max.Y);
+      double bbox_x_extent = bbox_x_domain.Max - bbox_x_domain.Min;
+      double bbox_y_extent = bbox_y_domain.Max - bbox_y_domain.Min;
       if (bbox_x_extent <= 0.0 || bbox_y_extent <= 0.0)
         return Result.Failure;
 
-      var scale0 = srf_u_extent / bbox_x_extent;
-      var scale1 = srf_v_extent / bbox_y_extent;
+      double scale0 = srf_u_extent / bbox_x_extent;
+      double scale1 = srf_v_extent / bbox_y_extent;
 
-      var xform = new Transform
+      Transform xform = new Transform
       {
         M00 = scale0,
         M11 = scale1,
@@ -84,13 +82,13 @@ namespace SampleCsCommands
         M13 = srf_v_domain.Min - bbox_y_domain.Min * scale1
       };
 
-      foreach (var curve in input_curves)
+      foreach (Curve curve in input_curves)
       {
-        var curve2d = curve.DuplicateCurve();
+        Curve curve2d = curve.DuplicateCurve();
         if (null != curve2d)
         {
           curve2d.Transform(xform);
-          var curve3d = surface.Pushup(curve2d, tol);
+          Curve curve3d = surface.Pushup(curve2d, tol);
           if (null != curve3d)
             doc.Objects.AddCurve(curve3d);
         }

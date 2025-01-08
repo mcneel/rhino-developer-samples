@@ -1,8 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
+using System;
+using System.Diagnostics;
 
 namespace SampleCsEventWatcher
 {
@@ -517,7 +517,7 @@ namespace SampleCsEventWatcher
     {
       try
       {
-        var method_name = new StackTrace().GetFrame(1).GetMethod().Name;
+        string method_name = new StackTrace().GetFrame(1).GetMethod().Name;
         RhinoApp.WriteLine("> {0}", method_name);
       }
       catch

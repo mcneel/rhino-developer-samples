@@ -12,16 +12,16 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select curves");
       go.GeometryFilter = ObjectType.Curve;
       go.GetMultiple(1, 0);
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      for (var i = 0; i < go.ObjectCount; i++)
+      for (int i = 0; i < go.ObjectCount; i++)
       {
-        var curve = go.Object(i).Curve();
+        Curve curve = go.Object(i).Curve();
         if (null == curve)
           return Result.Failure;
 

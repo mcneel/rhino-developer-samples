@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices;
-using Eto.Forms;
+﻿using Eto.Forms;
+using System.Runtime.InteropServices;
 
 namespace SampleCsWizardPanel
 {
@@ -22,7 +22,7 @@ namespace SampleCsWizardPanel
       // of 0
       Padding = 6;
       // ViewModel associated with a specific RhinoDoc.RuntimeSerialNumber
-      var view = new SampleCsWizardPanelViewModel(documentRuntimeSerialNumber);
+      SampleCsWizardPanelViewModel view = new SampleCsWizardPanelViewModel(documentRuntimeSerialNumber);
       // Set this panels DataContext, Page... panels will inherit this
       // DeviceContext
       DataContext = view;

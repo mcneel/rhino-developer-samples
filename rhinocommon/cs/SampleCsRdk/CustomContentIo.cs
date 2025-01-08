@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Rhino.Render;
-/*
+﻿/*
 namespace rdktest_cs
 {
   [CustomRenderContentIo("myext", RenderContentKind.Material, true, false)]

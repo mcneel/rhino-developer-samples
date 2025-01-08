@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 
 namespace SampleCsCommands
@@ -38,7 +37,7 @@ namespace SampleCsCommands
       if (doc.MeshingParameterStyle == Rhino.Geometry.MeshingParameterStyle.Custom)
         doc.MeshingParameterStyle = Rhino.Geometry.MeshingParameterStyle.Fast;
       doc.MeshingParameterStyle = Rhino.Geometry.MeshingParameterStyle.Custom;
-      
+
       doc.Views.Redraw();
 
       return Result.Success;

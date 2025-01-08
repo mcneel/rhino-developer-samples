@@ -1,10 +1,10 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System;
 
 namespace SampleCsCommands
 {
@@ -51,7 +51,7 @@ namespace SampleCsCommands
 
       if (Math.Abs(t1 - t0) < RhinoMath.ZeroTolerance)
         return Result.Nothing;
-  
+
       Interval range = new Interval(t0, t1);
       if (!crv.IsClosed && range.IsDecreasing)
         range.Swap();

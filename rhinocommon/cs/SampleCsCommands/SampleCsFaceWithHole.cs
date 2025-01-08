@@ -10,7 +10,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var brep = MakeBrepFace();
+      Brep brep = MakeBrepFace();
       if (null == brep)
         return Result.Failure;
 
@@ -47,7 +47,7 @@ namespace SampleCsCommands
     public static Brep MakeBrepFace()
     {
       // Define the vertices
-      var points = new Point3d[8];
+      Point3d[] points = new Point3d[8];
       points[A] = new Point3d(0.0, 0.0, 0.0);   // point A = geometry for vertex 0
       points[B] = new Point3d(10.0, 0.0, 0.0);  // point B = geometry for vertex 1
       points[C] = new Point3d(10.0, 10.0, 0.0); // point C = geometry for vertex 2
@@ -59,10 +59,10 @@ namespace SampleCsCommands
       points[H] = new Point3d(8.0, 8.0, 0.0);   // point H = geometry for vertex 7
 
       // Create the Brep
-      var brep = new Brep();
+      Brep brep = new Brep();
 
       // Create four vertices of the outer edges
-      for (var vi = 0; vi < 8; vi++)
+      for (int vi = 0; vi < 8; vi++)
       {
         // This simple example is exact - for models with
         // non-exact data, set tolerance as explained in
@@ -96,7 +96,7 @@ namespace SampleCsCommands
 
 #if DEBUG
       string tlog;
-      var rc = brep.IsValidTopology(out tlog);
+      bool rc = brep.IsValidTopology(out tlog);
       if (!rc)
       {
         RhinoApp.WriteLine(tlog);
@@ -154,7 +154,7 @@ namespace SampleCsCommands
     private static Curve CreateLinearCurve(Point3d start, Point3d end)
     {
       // Creates a 3d line segment to be used as a 3d curve in a Brep
-      var curve = new LineCurve(start, end) { Domain = new Interval(0.0, 10.0) };
+      LineCurve curve = new LineCurve(start, end) { Domain = new Interval(0.0, 10.0) };
       return curve;
     }
 
@@ -168,7 +168,7 @@ namespace SampleCsCommands
     /// <returns>The surface if successful, null otherwise</returns>
     private static Surface CreateNurbsSurface(Point3d sw, Point3d se, Point3d ne, Point3d nw)
     {
-      var nurb = NurbsSurface.Create(
+      NurbsSurface nurb = NurbsSurface.Create(
         3,     // dimension (>= 1)
         false, // not rational
         2,     // "u" order (>= 2)
@@ -203,8 +203,8 @@ namespace SampleCsCommands
     /// <param name="c3i">Index of the 3d curve</param>
     private static void CreateOneEdge(Brep brep, int vi0, int vi1, int c3i)
     {
-      var start_vertex = brep.Vertices[vi0];
-      var end_vertex = brep.Vertices[vi1];
+      BrepVertex start_vertex = brep.Vertices[vi0];
+      BrepVertex end_vertex = brep.Vertices[vi1];
 
       // This simple example is exact - for models with
       // non-exact data, set tolerance as explained in
@@ -273,11 +273,11 @@ namespace SampleCsCommands
 
       // In this case, trim curves lie on the four edges of the surface
 
-      var domain_u = surface.Domain(0);
-      var domain_v = surface.Domain(1);
+      Interval domain_u = surface.Domain(0);
+      Interval domain_v = surface.Domain(1);
 
-      var start = new Point2d();
-      var end = new Point2d();
+      Point2d start = new Point2d();
+      Point2d end = new Point2d();
 
       switch (side)
       {
@@ -309,7 +309,7 @@ namespace SampleCsCommands
           return null;
       }
 
-      var curve = new LineCurve(start, end) { Domain = new Interval(0.0, 1.0) };
+      LineCurve curve = new LineCurve(start, end) { Domain = new Interval(0.0, 1.0) };
 
       return curve;
     }
@@ -341,10 +341,10 @@ namespace SampleCsCommands
         int eWDir
         )
     {
-      var surface = brep.Surfaces[face.SurfaceIndex];
+      Surface surface = brep.Surfaces[face.SurfaceIndex];
 
       // Create new loop
-      var loop = brep.Loops.Add(BrepLoopType.Outer, face);
+      BrepLoop loop = brep.Loops.Add(BrepLoopType.Outer, face);
 
       // Create trimming curves running counter clockwise around the
       // surface's domain. Note that trims of outer loops run counter
@@ -356,17 +356,17 @@ namespace SampleCsCommands
       // y_iso and x_iso respectfully.
 
       // Start at the south side
-      for (var side = 0; side < 4; side++)
+      for (int side = 0; side < 4; side++)
       {
         // side: 0=south, 1=east, 2=north, 3=west
-        var curve = CreateOuterTrimmingCurve(surface, side);
+        Curve curve = CreateOuterTrimmingCurve(surface, side);
 
         // Add trimming curve to brep trimming curves array
-        var c2i = brep.Curves2D.Add(curve);
+        int c2i = brep.Curves2D.Add(curve);
 
-        var ei = 0;
-        var reverse = false;
-        var iso = IsoStatus.None;
+        int ei = 0;
+        bool reverse = false;
+        IsoStatus iso = IsoStatus.None;
 
         switch (side)
         {
@@ -394,7 +394,7 @@ namespace SampleCsCommands
 
         // Create new trim topology that references edge, direction
         // reletive to edge, loop and trim curve geometry
-        var trim = brep.Trims.Add(brep.Edges[ei], reverse, loop, c2i);
+        BrepTrim trim = brep.Trims.Add(brep.Edges[ei], reverse, loop, c2i);
         trim.IsoStatus = iso;
 
         // This one Brep face, so all trims are boundary ones.
@@ -423,19 +423,19 @@ namespace SampleCsCommands
       // clockwise around the region the hole.
 
       // In this case, trim curves lie with 0.2 domain distance from surface edge
-      var domain_u = surface.Domain(0);
-      var domain_v = surface.Domain(1);
+      Interval domain_u = surface.Domain(0);
+      Interval domain_v = surface.Domain(1);
 
-      var du = 0.2 * (domain_u.T1 - domain_u.T0);
-      var dv = 0.2 * (domain_v.T1 - domain_v.T0);
+      double du = 0.2 * (domain_u.T1 - domain_u.T0);
+      double dv = 0.2 * (domain_v.T1 - domain_v.T0);
 
       domain_u.T0 += du;
       domain_u.T1 -= du;
       domain_v.T0 += dv;
       domain_v.T1 -= dv;
 
-      var start = new Point2d();
-      var end = new Point2d();
+      Point2d start = new Point2d();
+      Point2d end = new Point2d();
 
       switch (side)
       {
@@ -467,7 +467,7 @@ namespace SampleCsCommands
           return null;
       }
 
-      var curve = new LineCurve(start, end) { Domain = new Interval(0.0, 1.0) };
+      LineCurve curve = new LineCurve(start, end) { Domain = new Interval(0.0, 1.0) };
 
       return curve;
     }
@@ -499,10 +499,10 @@ namespace SampleCsCommands
         int eWDir
         )
     {
-      var surface = brep.Surfaces[face.SurfaceIndex];
+      Surface surface = brep.Surfaces[face.SurfaceIndex];
 
       // Create new inner loop
-      var loop = brep.Loops.Add(BrepLoopType.Inner, face);
+      BrepLoop loop = brep.Loops.Add(BrepLoopType.Inner, face);
 
       // Create trimming curves running counter clockwise around the
       // surface's domain. Note that trims of outer loops run counter
@@ -514,19 +514,19 @@ namespace SampleCsCommands
       // y_iso and x_iso respectfully.
 
       // Start near the south side
-      for (var side = 0; side < 4; side++)
+      for (int side = 0; side < 4; side++)
       {
         // side: 0=near south(y_iso), 1=near west(x_iso), 2=near north(y_iso), 3=near east(x_iso)
 
         // Create trim 2d curve
-        var curve = CreateInnerTrimmingCurve(surface, side);
+        Curve curve = CreateInnerTrimmingCurve(surface, side);
 
         // Add trimming curve to brep trimming curves array
-        var c2i = brep.Curves2D.Add(curve);
+        int c2i = brep.Curves2D.Add(curve);
 
-        var ei = 0;
-        var reverse = false;
-        var iso = IsoStatus.None;
+        int ei = 0;
+        bool reverse = false;
+        IsoStatus iso = IsoStatus.None;
 
         switch (side)
         {
@@ -554,7 +554,7 @@ namespace SampleCsCommands
 
         // Create new trim topology that references edge, direction
         // reletive to edge, loop and trim curve geometry
-        var trim = brep.Trims.Add(brep.Edges[ei], reverse, loop, c2i);
+        BrepTrim trim = brep.Trims.Add(brep.Edges[ei], reverse, loop, c2i);
         trim.IsoStatus = iso;
 
         // This one Brep face, so all trims are boundary ones.
@@ -577,31 +577,31 @@ namespace SampleCsCommands
     private static void CreateFace(Brep brep, int si)
     {
       // Add new face to brep
-      var face = brep.Faces.Add(si);
+      BrepFace face = brep.Faces.Add(si);
 
       // Create outer loop and trims for the face
       MakeOuterTrimmingLoop(brep, face,
         AB, +1,      // South side edge and its orientation with respect to
-                      // to the trimming curve.  (AB)
+                     // to the trimming curve.  (AB)
         BC, +1,      // East side edge and its orientation with respect to
-                      // to the trimming curve.  (BC)
+                     // to the trimming curve.  (BC)
         CD, +1,      // North side edge and its orientation with respect to
-                      // to the trimming curve   (CD)
+                     // to the trimming curve   (CD)
         AD, -1       // West side edge and its orientation with respect to
-                      // to the trimming curve   (AD)
+                     // to the trimming curve   (AD)
         );
 
 
       // Create loop and trims for the face
       MakeInnerTrimmingLoop(brep, face,
         EF, +1,      // Parallel to south side edge and its orientation with respect to
-                      // to the trimming curve.  (EF)
+                     // to the trimming curve.  (EF)
         FG, +1,      // Parallel to east side edge and its orientation with respect to
-                      // to the trimming curve.  (FG)
+                     // to the trimming curve.  (FG)
         GH, +1,      // Parallel to north side edge and its orientation with respect to
-                      // to the trimming curve   (GH)
+                     // to the trimming curve   (GH)
         EH, -1       // Parallel to west side edge and its orientation with respect to
-                      // to the trimming curve   (EH)
+                     // to the trimming curve   (EH)
         );
 
       // Set face direction relative to surface direction

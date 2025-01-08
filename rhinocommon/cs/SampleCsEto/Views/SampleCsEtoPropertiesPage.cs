@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using System.Reflection;
-using Eto.Drawing;
+﻿using Eto.Drawing;
 using Eto.Forms;
-using Rhino.DocObjects;
 using Rhino.UI;
+using System.Diagnostics;
 
 namespace SampleCsEto.Views
 {
@@ -15,8 +13,8 @@ namespace SampleCsEto.Views
 
     public override System.Drawing.Icon PageIcon(System.Drawing.Size sizeInPixels)
     {
-      var icon = Rhino.UI.DrawingUtilities.LoadIconWithScaleDown(
-        "SampleCsEto.Resources.SampleCsEtoPanel.ico", 
+      System.Drawing.Icon icon = Rhino.UI.DrawingUtilities.LoadIconWithScaleDown(
+        "SampleCsEto.Resources.SampleCsEtoPanel.ico",
         sizeInPixels.Width,
         GetType().Assembly);
       return icon;
@@ -40,13 +38,13 @@ namespace SampleCsEto.Views
   {
     public SampleCsEtoPropertiesPageControl()
     {
-      var hello_button = new Button { Text = "Hello..." };
+      Button hello_button = new Button { Text = "Hello..." };
       hello_button.Click += (sender, e) => OnHelloButton();
 
-      var child_button = new Button { Text = "Child Dialog..." };
+      Button child_button = new Button { Text = "Child Dialog..." };
       child_button.Click += (sender, e) => OnChildButton();
 
-      var layout = new DynamicLayout { DefaultSpacing = new Size(5, 5), Padding = new Padding(10) };
+      DynamicLayout layout = new DynamicLayout { DefaultSpacing = new Size(5, 5), Padding = new Padding(10) };
       layout.AddSeparateRow(hello_button, null);
       layout.AddSeparateRow(child_button, null);
       layout.Add(null);
@@ -71,7 +69,7 @@ namespace SampleCsEto.Views
     /// </summary>
     protected void OnChildButton()
     {
-      var dialog = new SampleCsEtoHelloWorld();
+      SampleCsEtoHelloWorld dialog = new SampleCsEtoHelloWorld();
       dialog.ShowModal(this);
     }
   }

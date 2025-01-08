@@ -12,7 +12,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go0 = new GetObject();
+      GetObject go0 = new GetObject();
       go0.SetCommandPrompt("Select surface or polysurface to subtract from");
       go0.GeometryFilter = ObjectType.Surface | ObjectType.PolysrfFilter;
       go0.SubObjectSelect = false;
@@ -20,11 +20,11 @@ namespace SampleCsCommands
       if (go0.CommandResult() != Result.Success)
         return go0.CommandResult();
 
-      var brep0 = go0.Object(0).Brep();
+      Brep brep0 = go0.Object(0).Brep();
       if (null == brep0)
         return Result.Failure;
 
-      var go1 = new GetObject();
+      GetObject go1 = new GetObject();
       go1.SetCommandPrompt("Select surface or polysurface to subtract with");
       go1.GeometryFilter = ObjectType.Surface | ObjectType.PolysrfFilter;
       go1.SubObjectSelect = false;
@@ -34,15 +34,15 @@ namespace SampleCsCommands
       if (go1.CommandResult() != Result.Success)
         return go1.CommandResult();
 
-      var brep1 = go1.Object(0).Brep();
+      Brep brep1 = go1.Object(0).Brep();
       if (null == brep1)
         return Result.Failure;
 
-      var tolerance = doc.ModelAbsoluteTolerance;
-      var out_breps = Brep.CreateBooleanDifference(brep0, brep1, tolerance);
+      double tolerance = doc.ModelAbsoluteTolerance;
+      Brep[] out_breps = Brep.CreateBooleanDifference(brep0, brep1, tolerance);
       if (null != out_breps && out_breps.Length > 0)
       {
-        foreach (var b in out_breps)
+        foreach (Brep b in out_breps)
           doc.Objects.AddBrep(b);
 
         doc.Objects.Delete(go0.Object(0).ObjectId, true);

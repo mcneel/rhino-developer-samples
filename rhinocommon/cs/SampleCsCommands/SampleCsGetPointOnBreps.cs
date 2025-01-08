@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms.VisualStyles;
-using Rhino;
+﻿using Rhino;
 using Rhino.ApplicationSettings;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -19,7 +18,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select surfaces and polysurfaces");
       go.GeometryFilter = ObjectType.Surface | ObjectType.PolysrfFilter;
       go.SubObjectSelect = false;
@@ -27,20 +26,20 @@ namespace SampleCsCommands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var gp = new GetPointOnBreps();
+      GetPointOnBreps gp = new GetPointOnBreps();
       gp.SetCommandPrompt("Point on surface or polysurface");
 
-      foreach (var obj_ref in go.Objects())
+      foreach (ObjRef obj_ref in go.Objects())
         gp.Breps.Add(obj_ref.Brep());
 
       gp.Get();
       if (gp.CommandResult() != Result.Success)
         return gp.CommandResult();
 
-      var point = gp.Point();
+      Point3d point = gp.Point();
 
       // One final calculation
-      var closest_point = gp.CalculateClosestPoint(point);
+      Point3d closest_point = gp.CalculateClosestPoint(point);
       if (closest_point.IsValid)
       {
         doc.Objects.AddPoint(closest_point);
@@ -68,16 +67,16 @@ namespace SampleCsCommands
 
     public Point3d CalculateClosestPoint(Point3d point)
     {
-      var closest_point = Point3d.Unset;
-      var minimum_distance = Double.MaxValue;
-      foreach (var brep in Breps)
+      Point3d closest_point = Point3d.Unset;
+      double minimum_distance = Double.MaxValue;
+      foreach (Brep brep in Breps)
       {
-        foreach (var face in brep.Faces)
+        foreach (BrepFace face in brep.Faces)
         {
           double u, v;
           if (face.ClosestPoint(point, out u, out v))
           {
-            var face_point = face.PointAt(u, v);
+            Point3d face_point = face.PointAt(u, v);
             double distance = face_point.DistanceTo(point);
             if (distance < minimum_distance)
             {

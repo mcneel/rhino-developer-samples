@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
@@ -22,15 +21,15 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       double tolerance = doc.ModelAbsoluteTolerance;
-      var opt_double = new OptionDouble(Radius, true, tolerance);
+      OptionDouble opt_double = new OptionDouble(Radius, true, tolerance);
 
       // Select first surface to fillet
-      var go0 = new GetObject();
+      GetObject go0 = new GetObject();
       go0.SetCommandPrompt("Select first surface to fillet");
       go0.AddOptionDouble("Radius", ref opt_double, "Fillet radius");
       go0.GeometryFilter = ObjectType.Surface;
       go0.EnablePreSelect(false, true);
-      for (;;)
+      for (; ; )
       {
         GetResult res = go0.Get();
         if (res == GetResult.Option)
@@ -40,7 +39,7 @@ namespace SampleCsCommands
         break;
       }
 
-      var obj_ref0 = go0.Object(0);
+      ObjRef obj_ref0 = go0.Object(0);
       BrepFace face0 = obj_ref0.Face();
       if (null == face0)
         return Result.Failure;
@@ -48,7 +47,7 @@ namespace SampleCsCommands
       double u0, v0;
       if (null == obj_ref0.SurfaceParameter(out u0, out v0))
       {
-        var pt = obj_ref0.SelectionPoint();
+        Point3d pt = obj_ref0.SelectionPoint();
         if (!pt.IsValid || !face0.ClosestPoint(pt, out u0, out v0))
         {
           // Make surface selection scriptable
@@ -65,13 +64,13 @@ namespace SampleCsCommands
         v0 = 0.99 * v0 + 0.01 * face0.Domain(1).Mid;
 
       // Select second surface to fillet
-      var go1 = new GetObject();
+      GetObject go1 = new GetObject();
       go1.SetCommandPrompt("Select second surface to fillet");
       go1.AddOptionDouble("Radius", ref opt_double, "Fillet radius");
       go1.GeometryFilter = ObjectType.Surface;
       go1.EnablePreSelect(false, true);
       go1.DeselectAllBeforePostSelect = false;
-      for (;;)
+      for (; ; )
       {
         GetResult res = go1.Get();
         if (res == GetResult.Option)
@@ -81,7 +80,7 @@ namespace SampleCsCommands
         break;
       }
 
-      var obj_ref1 = go1.Object(0);
+      ObjRef obj_ref1 = go1.Object(0);
       BrepFace face1 = obj_ref1.Face();
       if (null == face1)
         return Result.Failure;
@@ -89,7 +88,7 @@ namespace SampleCsCommands
       double u1, v1;
       if (null == obj_ref1.SurfaceParameter(out u1, out v1))
       {
-        var pt = obj_ref1.SelectionPoint();
+        Point3d pt = obj_ref1.SelectionPoint();
         if (!pt.IsValid || !face1.ClosestPoint(pt, out u1, out v1))
         {
           // Make surface selection scriptable
@@ -105,11 +104,11 @@ namespace SampleCsCommands
       if (v1 == face1.Domain(1).Min || v1 == face1.Domain(1).Max)
         v1 = 0.99 * v0 + 0.01 * face1.Domain(1).Mid;
 
-      var p0 = new Point2d(u0, v0);
-      var p1 = new Point2d(u1, v1);
-      var fillets = Surface.CreateRollingBallFillet(face0, p0, face1, p1, Radius, tolerance);
+      Point2d p0 = new Point2d(u0, v0);
+      Point2d p1 = new Point2d(u1, v1);
+      Surface[] fillets = Surface.CreateRollingBallFillet(face0, p0, face1, p1, Radius, tolerance);
 
-      foreach (var f in fillets)
+      foreach (Surface f in fillets)
         doc.Objects.AddSurface(f);
 
       doc.Views.Redraw();

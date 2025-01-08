@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -15,15 +15,15 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Select objects to define block
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects to define block");
       go.ReferenceObjectSelect = false;
       go.SubObjectSelect = false;
       go.GroupSelect = true;
 
       // Phantoms, grips, lights, etc., cannot be in blocks.
-      var forbidden_geometry_filter = ObjectType.Light | ObjectType.Grip | ObjectType.Phantom;
-      var geometry_filter = forbidden_geometry_filter ^ ObjectType.AnyObject;
+      ObjectType forbidden_geometry_filter = ObjectType.Light | ObjectType.Grip | ObjectType.Phantom;
+      ObjectType geometry_filter = forbidden_geometry_filter ^ ObjectType.AnyObject;
       go.GeometryFilter = geometry_filter;
       go.GetMultiple(1, 0);
       if (go.CommandResult() != Result.Success)
@@ -31,7 +31,7 @@ namespace SampleCsCommands
 
       // Block base point
       Point3d base_point;
-      var rc = RhinoGet.GetPoint("Block base point", false, out base_point);
+      Result rc = RhinoGet.GetPoint("Block base point", false, out base_point);
       if (rc != Result.Success)
         return rc;
 
@@ -55,11 +55,11 @@ namespace SampleCsCommands
       }
 
       // Gather all of the selected objects
-      var geometry = new List<GeometryBase>();
-      var attributes = new List<ObjectAttributes>();
+      List<GeometryBase> geometry = new List<GeometryBase>();
+      List<ObjectAttributes> attributes = new List<ObjectAttributes>();
       for (int i = 0; i < go.ObjectCount; i++)
       {
-        var rh_object = go.Object(i).Object();
+        RhinoObject rh_object = go.Object(i).Object();
         if (rh_object != null)
         {
           geometry.Add(rh_object.Geometry);
@@ -68,7 +68,7 @@ namespace SampleCsCommands
       }
 
       // Gather all of the selected objects
-      var idef_index = doc.InstanceDefinitions.Add(idef_name, string.Empty, base_point, geometry, attributes);
+      int idef_index = doc.InstanceDefinitions.Add(idef_name, string.Empty, base_point, geometry, attributes);
       if (idef_index < 0)
       {
         RhinoApp.WriteLine("Unable to create block definition", idef_name);

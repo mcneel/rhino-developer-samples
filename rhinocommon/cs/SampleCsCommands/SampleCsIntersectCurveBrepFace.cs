@@ -12,7 +12,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var gs = new GetObject();
+      GetObject gs = new GetObject();
       gs.SetCommandPrompt("Select surface");
       gs.GeometryFilter = Rhino.DocObjects.ObjectType.Surface;
       gs.SubObjectSelect = true;
@@ -20,11 +20,11 @@ namespace SampleCsCommands
       if (gs.CommandResult() != Result.Success)
         return gs.CommandResult();
 
-      var face = gs.Object(0).Face();
+      BrepFace face = gs.Object(0).Face();
       if (null == face)
         return Result.Failure;
 
-      var gc = new GetObject();
+      GetObject gc = new GetObject();
       gc.SetCommandPrompt("Select curve");
       gc.GeometryFilter = Rhino.DocObjects.ObjectType.Curve;
       gc.EnablePreSelect(false, true);
@@ -33,18 +33,18 @@ namespace SampleCsCommands
       if (gc.CommandResult() != Result.Success)
         return gc.CommandResult();
 
-      var curve = gc.Object(0).Curve();
+      Curve curve = gc.Object(0).Curve();
       if (null == curve)
         return Result.Failure;
 
-      var tol = doc.ModelAbsoluteTolerance;
-      var rc = Intersection.CurveBrepFace(curve, face, tol, out Curve[] outCurves, out Point3d[] outPoints);
+      double tol = doc.ModelAbsoluteTolerance;
+      bool rc = Intersection.CurveBrepFace(curve, face, tol, out Curve[] outCurves, out Point3d[] outPoints);
       if (rc)
       {
-        foreach (var c in outCurves)
+        foreach (Curve c in outCurves)
           doc.Objects.AddCurve(c);
 
-        foreach (var pt in outPoints)
+        foreach (Point3d pt in outPoints)
           doc.Objects.AddPoint(pt);
 
         doc.Views.Redraw();

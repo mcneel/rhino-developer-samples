@@ -11,7 +11,7 @@ namespace SampleCsCommands
   {
     public Mesh Mesh { get; private set; }
     public DisplayMaterial Material { get; private set; }
-    
+
     public SampleCsDrawMeshConduit(Mesh mesh, Material material)
     {
       Mesh = mesh;
@@ -42,15 +42,15 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var sphere = new Sphere(Plane.WorldXY, 10.0);
-      var mesh = Mesh.CreateFromSphere(sphere, 10, 10);
+      Sphere sphere = new Sphere(Plane.WorldXY, 10.0);
+      Mesh mesh = Mesh.CreateFromSphere(sphere, 10, 10);
 
-      var mat = new Material
+      Material mat = new Material
       {
         DiffuseColor = System.Drawing.Color.Red
       };
 
-      var conduit = new SampleCsDrawMeshConduit(mesh, mat)
+      SampleCsDrawMeshConduit conduit = new SampleCsDrawMeshConduit(mesh, mat)
       {
         Enabled = true
       };

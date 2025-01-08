@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.ApplicationSettings;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -32,7 +32,7 @@ namespace SampleCsCommands
 
     public void RemoveLastPoint()
     {
-      var point_count = m_points.Count;
+      int point_count = m_points.Count;
       if (point_count > 0)
         m_points.RemoveAt(point_count - 1);
     }
@@ -43,7 +43,7 @@ namespace SampleCsCommands
 
     protected override void CalculateBoundingBox(CalculateBoundingBoxEventArgs e)
     {
-      var bbox = new BoundingBox(m_points);
+      BoundingBox bbox = new BoundingBox(m_points);
       e.IncludeBoundingBox(bbox);
     }
 
@@ -67,11 +67,11 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var conduit = new SampleCsGetMultiplePointsConduit { Enabled = true };
+      SampleCsGetMultiplePointsConduit conduit = new SampleCsGetMultiplePointsConduit { Enabled = true };
 
       Result rc;
 
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       while (true)
       {
         if (0 == conduit.PointCount)
@@ -87,7 +87,7 @@ namespace SampleCsCommands
           gp.AcceptUndo(true);
         }
 
-        var res = gp.Get();
+        GetResult res = gp.Get();
 
         if (res == GetResult.Point)
         {

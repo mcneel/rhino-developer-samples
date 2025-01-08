@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Rhino;
+using Rhino.PlugIns;
+using System;
 using System.IO;
 using System.Text;
-using Rhino;
-using Rhino.PlugIns;
 
 namespace SampleCsCommands
 {
@@ -76,7 +76,7 @@ namespace SampleCsCommands
       // EXAMPLE:
 
       // Get the version number of our plug-in, that was last used, from our settings file.
-      var plugin_version = Settings.GetString("PlugInVersion", null);
+      string plugin_version = Settings.GetString("PlugInVersion", null);
 
       if (!string.IsNullOrEmpty(plugin_version))
       {
@@ -85,14 +85,14 @@ namespace SampleCsCommands
         if (0 != string.Compare(Version, plugin_version, StringComparison.OrdinalIgnoreCase))
         {
           // Build a path to the user's staged .rui file.
-          var sb = new StringBuilder();
+          StringBuilder sb = new StringBuilder();
           sb.Append(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
           sb.Append("\\McNeel\\Rhinoceros\\5.0\\Plug-ins\\");
           sb.AppendFormat("{0} ({1})", Name, Id);
           sb.Append("\\settings\\");
           sb.AppendFormat("{0}.rui", Assembly.GetName().Name);
 
-          var path = sb.ToString();
+          string path = sb.ToString();
 
           // Verify the .rui file exists.
           if (File.Exists(path))

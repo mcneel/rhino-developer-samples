@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Rhino;
+using Rhino.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rhino;
-using Rhino.Commands;
 
 namespace SampleCsCommands
 {
@@ -65,7 +65,7 @@ namespace SampleCsCommands
     public void ResetOffsets()
     {
       ValidateOffsets();
-      for (var i = 0; i < Offsets.Count; i++)
+      for (int i = 0; i < Offsets.Count; i++)
         Offsets[i] = Rhino.Geometry.Vector3d.Zero;
     }
 
@@ -144,7 +144,7 @@ namespace SampleCsCommands
       args.CalculateOffsets();
 
       // Array the unit Brep box
-      for (var i = 0; i < args.Offsets.Count; i++)
+      for (int i = 0; i < args.Offsets.Count; i++)
       {
         // Skip the first one...
         if (!args.Offsets[i].IsZero)

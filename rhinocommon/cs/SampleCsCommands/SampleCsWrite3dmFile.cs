@@ -1,10 +1,10 @@
-﻿using System.Drawing;
-using System.IO;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.FileIO;
 using Rhino.Geometry;
+using System.Drawing;
+using System.IO;
 
 namespace SampleCsCommands
 {
@@ -14,22 +14,22 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
-      var filename = Path.Combine(path, "SampleCsWrite3dmFile.3dm");
+      string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
+      string filename = Path.Combine(path, "SampleCsWrite3dmFile.3dm");
 
       Result rc;
 
-      using (var file = new File3dm())
+      using (File3dm file = new File3dm())
       {
-        var layer = new Layer { Name = "Default", Color = Color.Black };
+        Layer layer = new Layer { Name = "Default", Color = Color.Black };
         file.AllLayers.Add(layer);
 
-        var layer_index = file.AllLayers.Count - 1;
-        var attributes = new ObjectAttributes { LayerIndex = layer_index };
+        int layer_index = file.AllLayers.Count - 1;
+        ObjectAttributes attributes = new ObjectAttributes { LayerIndex = layer_index };
 
-        for (var x = 0; x < 100; x++)
+        for (int x = 0; x < 100; x++)
         {
-          var line_curve = new LineCurve(new Point3d(x, 0, 0), new Point3d(x, 1, 0));
+          LineCurve line_curve = new LineCurve(new Point3d(x, 0, 0), new Point3d(x, 1, 0));
           if (line_curve.IsValid)
             file.Objects.AddCurve(line_curve, attributes);
         }

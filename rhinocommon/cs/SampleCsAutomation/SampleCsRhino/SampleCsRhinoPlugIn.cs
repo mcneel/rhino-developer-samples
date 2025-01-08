@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using Rhino;
+﻿using Rhino;
 using Rhino.PlugIns;
+using System.Reflection;
 
 namespace SampleCsRhino
 {
@@ -31,8 +31,8 @@ namespace SampleCsRhino
     /// </summary>
     protected override LoadReturnCode OnLoad(ref string errorMessage)
     {
-      var app_name = Assembly.GetExecutingAssembly().GetName().Name;
-      var app_version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+      string app_name = Assembly.GetExecutingAssembly().GetName().Name;
+      string app_version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
       RhinoApp.WriteLine("{0} {1} loaded.", app_name, app_version);
       return LoadReturnCode.Success;
     }
@@ -43,7 +43,7 @@ namespace SampleCsRhino
     /// </summary>
     public override object GetPlugInObject()
     {
-      var rhino_obj = new SampleCsRhinoObject();
+      SampleCsRhinoObject rhino_obj = new SampleCsRhinoObject();
       return rhino_obj;
     }
   }

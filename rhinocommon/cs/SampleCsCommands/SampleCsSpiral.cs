@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 
 namespace SampleCsCommands
@@ -25,23 +24,23 @@ namespace SampleCsCommands
 
     private static Rhino.Geometry.NurbsCurve GetSpirial0()
     {
-      var axisStart = new Rhino.Geometry.Point3d(0, 0, 0);
-      var axisDir = new Rhino.Geometry.Vector3d(1, 0, 0);
-      var radiusPoint = new Rhino.Geometry.Point3d(0, 1, 0);
+      Rhino.Geometry.Point3d axisStart = new Rhino.Geometry.Point3d(0, 0, 0);
+      Rhino.Geometry.Vector3d axisDir = new Rhino.Geometry.Vector3d(1, 0, 0);
+      Rhino.Geometry.Point3d radiusPoint = new Rhino.Geometry.Point3d(0, 1, 0);
 
       return Rhino.Geometry.NurbsCurve.CreateSpiral(axisStart, axisDir, radiusPoint, 1, 10, 1.0, 1.0);
     }
 
     private static Rhino.Geometry.NurbsCurve GetSpirial1()
     {
-      var railStart = new Rhino.Geometry.Point3d(0, 0, 0);
-      var railEnd = new Rhino.Geometry.Point3d(0, 0, 10);
-      var railCurve = new Rhino.Geometry.LineCurve(railStart, railEnd);
+      Rhino.Geometry.Point3d railStart = new Rhino.Geometry.Point3d(0, 0, 0);
+      Rhino.Geometry.Point3d railEnd = new Rhino.Geometry.Point3d(0, 0, 10);
+      Rhino.Geometry.LineCurve railCurve = new Rhino.Geometry.LineCurve(railStart, railEnd);
 
       double t0 = railCurve.Domain.Min;
       double t1 = railCurve.Domain.Max;
 
-      var radiusPoint = new Rhino.Geometry.Point3d(1, 0, 0);
+      Rhino.Geometry.Point3d radiusPoint = new Rhino.Geometry.Point3d(1, 0, 0);
 
       return Rhino.Geometry.NurbsCurve.CreateSpiral(railCurve, t0, t1, radiusPoint, 1, 10, 1.0, 1.0, 12);
     }

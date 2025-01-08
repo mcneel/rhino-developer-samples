@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SampleCsCommon
+﻿namespace SampleCsCommon
 {
   public class SampleCsStringTableHelpers
   {

@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
@@ -23,7 +22,7 @@ namespace SampleCsCommands
       Rhino.Geometry.Mesh mesh = obj_ref.Mesh();
       if (null == mesh)
         return Result.Failure;
-  
+
       // Pick a point that is contrained to the mesh
       GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Pick point on mesh");

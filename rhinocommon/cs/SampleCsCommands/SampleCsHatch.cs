@@ -73,7 +73,7 @@ namespace SampleCsCommands
       if (null != pattern)
       {
         rc = table.FindName(pattern.Name);
-        var index = rc?.Index ?? table.Add(pattern);
+        int index = rc?.Index ?? table.Add(pattern);
         rc = table[index];
       }
       return rc;
@@ -89,12 +89,12 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var circle = new Circle(Plane.WorldXY, 5.0);
-      var curve = circle.ToNurbsCurve();
+      Circle circle = new Circle(Plane.WorldXY, 5.0);
+      NurbsCurve curve = circle.ToNurbsCurve();
 
-      var pattern = doc.HatchPatterns.DashPattern();
+      HatchPattern pattern = doc.HatchPatterns.DashPattern();
 
-      var hatch = Hatch.Create(curve, pattern.Index, 0.0, 1.0, doc.ModelAbsoluteTolerance);
+      Hatch[] hatch = Hatch.Create(curve, pattern.Index, 0.0, 1.0, doc.ModelAbsoluteTolerance);
       doc.Objects.AddHatch(hatch[0]);
       doc.Views.Redraw();
 

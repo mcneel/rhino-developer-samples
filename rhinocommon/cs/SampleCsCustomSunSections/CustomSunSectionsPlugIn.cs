@@ -1,8 +1,7 @@
-﻿using Rhino.UI.Controls;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
-using System;
+using Rhino.UI.Controls;
+using System.Collections.Generic;
 
 namespace CustomSunSections
 {

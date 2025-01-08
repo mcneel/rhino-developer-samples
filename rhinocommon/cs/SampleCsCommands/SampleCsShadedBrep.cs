@@ -1,10 +1,9 @@
-﻿using System;
-using System.Drawing;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.Geometry;
 using Rhino.Input;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -23,8 +22,8 @@ namespace SampleCsCommands
     public Brep BrepGeometry
     {
       get => m_brep;
-      set 
-      { 
+      set
+      {
         m_brep = value;
         if (null != m_brep && m_brep.IsValid)
         {
@@ -55,7 +54,7 @@ namespace SampleCsCommands
         DisplayMaterial material = new DisplayMaterial();
         material.Diffuse = Color.RoyalBlue;
         e.Display.DrawBrepShaded(m_brep, material);
-      }    
+      }
     }
   }
 

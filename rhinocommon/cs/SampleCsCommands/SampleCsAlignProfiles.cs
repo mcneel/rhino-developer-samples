@@ -12,13 +12,13 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var curve_objs = new CurveObject[2];
-      var boxes = new BoundingBox[2];
-      var rects = new Rectangle3d[2];
+      CurveObject[] curve_objs = new CurveObject[2];
+      BoundingBox[] boxes = new BoundingBox[2];
+      Rectangle3d[] rects = new Rectangle3d[2];
 
-      for (var i = 0; i < 2; i++)
+      for (int i = 0; i < 2; i++)
       {
-        var go = new GetObject { GeometryFilter = ObjectType.Curve, SubObjectSelect = false };
+        GetObject go = new GetObject { GeometryFilter = ObjectType.Curve, SubObjectSelect = false };
         if (i == 0)
         {
           go.SetCommandPrompt("Select curve to align to");
@@ -36,14 +36,14 @@ namespace SampleCsCommands
         if (!(go.Object(0).Object() is CurveObject curve_obj))
           return Result.Failure;
 
-        var rc = RhinoObject.GetTightBoundingBox(new [] { curve_obj }, out var box);
+        bool rc = RhinoObject.GetTightBoundingBox(new[] { curve_obj }, out BoundingBox box);
         if (!rc || !box.IsValid)
         {
           RhinoApp.WriteLine("Cannot calculate bounding box.");
           return Result.Failure;
         }
 
-        rc = IsBoundingBoxRectangle(box, doc.ModelAbsoluteTolerance, out var rect);
+        rc = IsBoundingBoxRectangle(box, doc.ModelAbsoluteTolerance, out Rectangle3d rect);
         if (!rc)
         {
           RhinoApp.WriteLine("Profile is not planar in world coordinates.");
@@ -88,20 +88,20 @@ namespace SampleCsCommands
         return Result.Failure;
       }
 
-      var plane = new Plane(rects[0].Plane.Origin, shared_axis);
-      var dist = plane.DistanceTo(rects[1].Plane.Origin);
-      var trans = new Vector3d(shared_axis);
+      Plane plane = new Plane(rects[0].Plane.Origin, shared_axis);
+      double dist = plane.DistanceTo(rects[1].Plane.Origin);
+      Vector3d trans = new Vector3d(shared_axis);
       trans *= -dist;
 
-      var A = Transform.Translation(trans);
+      Transform A = Transform.Translation(trans);
 
-      var scale_factor = 1.0;
+      double scale_factor = 1.0;
       if (target_width != 0)
         scale_factor = source_width / target_width;
 
-      var B = Transform.Scale(rects[1].Plane.Origin, scale_factor);
+      Transform B = Transform.Scale(rects[1].Plane.Origin, scale_factor);
 
-      var xform = A * B;
+      Transform xform = A * B;
 
       doc.Objects.Transform(curve_objs[1].Id, xform, true);
       doc.Objects.UnselectAll();
@@ -117,27 +117,27 @@ namespace SampleCsCommands
       if (box.IsDegenerate(tolerance) != 1)
         return false;
 
-      var origin = box.Min;
+      Point3d origin = box.Min;
 
       if (IsBoundingBoxDegenerateX(box, tolerance))
       {
-        var plane = new Plane(origin, Vector3d.YAxis, Vector3d.ZAxis);
-	      var width = box.Max.Y - box.Min.Y;
-	      var height = box.Max.Z - box.Min.Z;
+        Plane plane = new Plane(origin, Vector3d.YAxis, Vector3d.ZAxis);
+        double width = box.Max.Y - box.Min.Y;
+        double height = box.Max.Z - box.Min.Z;
         rect = new Rectangle3d(plane, width, height);
       }
       else if (IsBoundingBoxDegenerateY(box, tolerance))
       {
-        var plane = new Plane(origin, Vector3d.XAxis, Vector3d.ZAxis);
-        var width = box.Max.X - box.Min.X;
-        var height = box.Max.Z - box.Min.Z;
+        Plane plane = new Plane(origin, Vector3d.XAxis, Vector3d.ZAxis);
+        double width = box.Max.X - box.Min.X;
+        double height = box.Max.Z - box.Min.Z;
         rect = new Rectangle3d(plane, width, height);
       }
       else if (IsBoundingBoxDegenerateZ(box, tolerance))
       {
-        var plane = new Plane(origin, Vector3d.XAxis, Vector3d.YAxis);
-        var width = box.Max.X - box.Min.X;
-        var height = box.Max.Y - box.Min.Y;
+        Plane plane = new Plane(origin, Vector3d.XAxis, Vector3d.YAxis);
+        double width = box.Max.X - box.Min.X;
+        double height = box.Max.Y - box.Min.Y;
         rect = new Rectangle3d(plane, width, height);
       }
       return rect.IsValid;

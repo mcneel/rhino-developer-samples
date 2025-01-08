@@ -11,15 +11,15 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Point to draw from");
       gp.Get();
       if (gp.CommandResult() != Result.Success)
         return gp.CommandResult();
 
-      var pt = gp.Point();
+      Point3d pt = gp.Point();
 
-      var gd = new GetDirection();
+      GetDirection gd = new GetDirection();
       gd.SetCommandPrompt("Point to draw to");
       gd.SetBasePoint(pt, true);
       gd.DrawArrowFromPoint(pt, true, true);
@@ -88,12 +88,12 @@ namespace SampleCsCommands
     {
       if (m_draw_arrow && m_draw_arrow_point.IsValid)
       {
-        var line = new Line(m_draw_arrow_point, e.CurrentPoint);
+        Line line = new Line(m_draw_arrow_point, e.CurrentPoint);
         if (line.IsValid)
         {
           if (m_show_simple_arrow)
           {
-            var direction = line.To - line.From;
+            Vector3d direction = line.To - line.From;
             direction.Unitize();
             e.Display.DrawLine(line, DynamicDrawColor);
             e.Display.DrawDirectionArrow(line.To, direction, DynamicDrawColor);

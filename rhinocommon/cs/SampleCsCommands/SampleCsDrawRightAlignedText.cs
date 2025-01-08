@@ -1,9 +1,9 @@
-﻿using System.Drawing;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -27,12 +27,12 @@ namespace SampleCsCommands
     {
       if (e.Viewport.GetScreenPort(out int left, out int right, out int bottom, out int top, out int near, out int far))
       {
-        for (var i = m_strings.Length - 1; i >= 0; i--)
+        for (int i = m_strings.Length - 1; i >= 0; i--)
         {
-          var rect = e.Display.Measure2dText(m_strings[i], new Point2d(0, 0), false, 0.0, 12, "Arial");
-          var width = System.Math.Abs(rect.Width);
-          var height = System.Math.Abs(rect.Height);
-          var point = new Point2d(right - width - X_GAP, bottom - height - Y_GAP);
+          Rectangle rect = e.Display.Measure2dText(m_strings[i], new Point2d(0, 0), false, 0.0, 12, "Arial");
+          int width = System.Math.Abs(rect.Width);
+          int height = System.Math.Abs(rect.Height);
+          Point2d point = new Point2d(right - width - X_GAP, bottom - height - Y_GAP);
           e.Display.Draw2dText(m_strings[i], Color.Black, point, false, 12, "Arial");
           bottom = bottom - height - Y_GAP;
         }
@@ -46,11 +46,11 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var conduit = new SampleCsDrawRightAlignedTextConduit();
+      SampleCsDrawRightAlignedTextConduit conduit = new SampleCsDrawRightAlignedTextConduit();
       conduit.Enabled = true;
       doc.Views.Redraw();
 
-      var gs = new GetString();
+      GetString gs = new GetString();
       gs.SetCommandPrompt("Press <Enter> to continue");
       gs.AcceptNothing(true);
       gs.Get();

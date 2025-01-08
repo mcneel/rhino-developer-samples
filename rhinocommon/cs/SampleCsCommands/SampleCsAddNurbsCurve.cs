@@ -20,7 +20,7 @@ namespace SampleCsCommands
       const int knot_count = cv_count + degree - 1;
 
       // Define the "Euclidean" (world 3-D) locations for the control points.
-      var cvs = new Point3d[cv_count];
+      Point3d[] cvs = new Point3d[cv_count];
       cvs[0] = new Point3d(0.0, 0.0, 0.0);
       cvs[1] = new Point3d(5.0, 10.0, 0.0);
       cvs[2] = new Point3d(10.0, 0.0, 0.0);
@@ -34,7 +34,7 @@ namespace SampleCsCommands
       // In this example the first three knots are 0 and the last three knots are 3.
       // The interior knots can have multiplicity from 1 (a "simple" knot)
       // to degree (a "full multiplicity")
-      var knots = new double[knot_count];
+      double[] knots = new double[knot_count];
       // Start with a full multiplicity knot
       knots[0] = 0.0;
       knots[1] = 0.0;
@@ -49,7 +49,7 @@ namespace SampleCsCommands
       knots[7] = 3.0;
 
       // Create a non-rational NURBS curve
-      var curve = new NurbsCurve(3, false, order, cv_count);
+      NurbsCurve curve = new NurbsCurve(3, false, order, cv_count);
 
       // Set the control points
       for (int i = 0; i < cv_count; i++)
@@ -62,14 +62,14 @@ namespace SampleCsCommands
       if (curve.IsValid)
       {
         // Parameterization should match the length of a curve
-        var length = curve.GetLength();
-        var domain = new Interval(0.0, length);
+        double length = curve.GetLength();
+        Interval domain = new Interval(0.0, length);
         curve.Domain = domain;
 
         doc.Objects.AddCurve(curve);
         doc.Views.Redraw();
-      } 
-      
+      }
+
       return Result.Success;
     }
   }

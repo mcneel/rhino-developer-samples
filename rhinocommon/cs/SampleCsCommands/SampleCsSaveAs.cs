@@ -1,7 +1,7 @@
-﻿using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Input.Custom;
+using System.Windows.Forms;
 
 namespace SampleCsCommands
 {
@@ -15,7 +15,7 @@ namespace SampleCsCommands
 
       if (mode == RunMode.Interactive)
       {
-        var savefile = new SaveFileDialog
+        SaveFileDialog savefile = new SaveFileDialog
         {
           FileName = "Untitled.txt",
           Filter = @"Text files (*.txt)|*.txt|All files (*.*)|*.*"
@@ -27,7 +27,7 @@ namespace SampleCsCommands
       }
       else
       {
-        var gs = new GetString();
+        GetString gs = new GetString();
         gs.SetCommandPrompt("Name of text file to save");
         gs.Get();
         if (gs.CommandResult() != Result.Success)

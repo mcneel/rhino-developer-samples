@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Input;
@@ -22,37 +21,37 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Get persistent settings
-      var bNormal = Settings.GetBool(Normal, true);
-      var bLocked = Settings.GetBool(Locked, true);
-      var bHidden = Settings.GetBool(Hidden, true);
-      var bActive = Settings.GetBool(Active, true);
-      var bReference = Settings.GetBool(Reference, true);
+      bool bNormal = Settings.GetBool(Normal, true);
+      bool bLocked = Settings.GetBool(Locked, true);
+      bool bHidden = Settings.GetBool(Hidden, true);
+      bool bActive = Settings.GetBool(Active, true);
+      bool bReference = Settings.GetBool(Reference, true);
 
       // Create command line options
-      var optNormal = new OptionToggle(bNormal, OffValue, OnValue);
-      var optLocked = new OptionToggle(bLocked, OffValue, OnValue);
-      var optHidden = new OptionToggle(bHidden, OffValue, OnValue);
-      var optActive = new OptionToggle(bActive, OffValue, OnValue);
-      var optReference = new OptionToggle(bReference, OffValue, OnValue);
+      OptionToggle optNormal = new OptionToggle(bNormal, OffValue, OnValue);
+      OptionToggle optLocked = new OptionToggle(bLocked, OffValue, OnValue);
+      OptionToggle optHidden = new OptionToggle(bHidden, OffValue, OnValue);
+      OptionToggle optActive = new OptionToggle(bActive, OffValue, OnValue);
+      OptionToggle optReference = new OptionToggle(bReference, OffValue, OnValue);
 
-      var go = new GetOption();
+      GetOption go = new GetOption();
       go.SetCommandPrompt("Object enumerator options");
       go.AcceptNothing(true);
       while (true)
       {
         go.ClearCommandOptions();
-        var idxNormal = go.AddOptionToggle(Normal, ref optNormal);
-        var idxLocked = go.AddOptionToggle(Locked, ref optLocked);
-        var idxHidden = go.AddOptionToggle(Hidden, ref optHidden);
-        var idxActive = go.AddOptionToggle(Active, ref optActive);
-        var idxReference = go.AddOptionToggle(Reference, ref optReference);
+        int idxNormal = go.AddOptionToggle(Normal, ref optNormal);
+        int idxLocked = go.AddOptionToggle(Locked, ref optLocked);
+        int idxHidden = go.AddOptionToggle(Hidden, ref optHidden);
+        int idxActive = go.AddOptionToggle(Active, ref optActive);
+        int idxReference = go.AddOptionToggle(Reference, ref optReference);
 
         // Get the options
-        var res = go.Get();
+        GetResult res = go.Get();
 
         if (res == GetResult.Option)
         {
-          var index = go.Option().Index;
+          int index = go.Option().Index;
           if (index == idxNormal)
             bNormal = optNormal.CurrentValue;
           else if (index == idxLocked)
@@ -71,9 +70,9 @@ namespace SampleCsCommands
 
         if (!bNormal && !bLocked && !bHidden)
         {
-          var msg = string.Format("Either \"{0}\" or \"{1}\" or \"{2}\" must be \"{3}\"", 
-            Normal, 
-            Locked, 
+          string msg = string.Format("Either \"{0}\" or \"{1}\" or \"{2}\" must be \"{3}\"",
+            Normal,
+            Locked,
             Hidden,
             OnValue
             );
@@ -83,9 +82,9 @@ namespace SampleCsCommands
 
         if (!bActive && !bReference)
         {
-          var msg = string.Format("Either \"{0}\" or \"{1}\" must be \"{2}\"", 
-            Active, 
-            Reference, 
+          string msg = string.Format("Either \"{0}\" or \"{1}\" must be \"{2}\"",
+            Active,
+            Reference,
             OnValue
             );
           RhinoApp.WriteLine(msg);
@@ -95,7 +94,7 @@ namespace SampleCsCommands
         break;
       }
 
-      var settings = new ObjectEnumeratorSettings
+      ObjectEnumeratorSettings settings = new ObjectEnumeratorSettings
       {
         NormalObjects = bNormal,
         LockedObjects = bLocked,
@@ -106,12 +105,12 @@ namespace SampleCsCommands
         IncludeGrips = false
       };
 
-      var objects = doc.Objects.GetObjectList(settings);
-      foreach (var obj in objects)
+      System.Collections.Generic.IEnumerable<RhinoObject> objects = doc.Objects.GetObjectList(settings);
+      foreach (RhinoObject obj in objects)
       {
-        var msg = string.Format("{0}, {1}, {2}, {3}",
+        string msg = string.Format("{0}, {1}, {2}, {3}",
           obj.Id,
-          obj.ShortDescription(false), 
+          obj.ShortDescription(false),
           obj.IsNormal ? Normal : obj.IsLocked ? Locked : Hidden,
           obj.IsReference ? Reference : Active
           );

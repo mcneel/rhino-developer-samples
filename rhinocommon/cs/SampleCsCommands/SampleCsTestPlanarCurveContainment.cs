@@ -21,20 +21,20 @@ namespace SampleCsCommands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var curve_a = go.Object(0).Curve();
-      var curve_b = go.Object(1).Curve();
+      Curve curve_a = go.Object(0).Curve();
+      Curve curve_b = go.Object(1).Curve();
       if (null == curve_a || null == curve_b)
         return Result.Failure;
 
-      var tol = doc.ModelAbsoluteTolerance;
+      double tol = doc.ModelAbsoluteTolerance;
 
-      if (!curve_a.TryGetPlane(out var plane_a, tol))
+      if (!curve_a.TryGetPlane(out Plane plane_a, tol))
       {
         RhinoApp.WriteLine("The first curve is not planar.");
         return Result.Success;
       }
 
-      if (!curve_b.TryGetPlane(out var plane_b, tol))
+      if (!curve_b.TryGetPlane(out Plane plane_b, tol))
       {
         RhinoApp.WriteLine("The second curve is not planar.");
         return Result.Success;
@@ -46,7 +46,7 @@ namespace SampleCsCommands
         return Result.Success;
       }
 
-      var rc = Curve.PlanarClosedCurveRelationship(curve_a, curve_b, plane_a, tol);
+      RegionContainment rc = Curve.PlanarClosedCurveRelationship(curve_a, curve_b, plane_a, tol);
       switch (rc)
       {
         case RegionContainment.Disjoint:

@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.FileIO;
+using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace SampleCsCommands
 {
@@ -13,21 +13,21 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var dialog = new OpenFileDialog
+      OpenFileDialog dialog = new OpenFileDialog
       {
         Filter = @"Rhino 3D Models (*.3dm)|*.3dm",
         DefaultExt = "3dm"
       };
 
-      var rc = dialog.ShowDialog();
+      DialogResult rc = dialog.ShowDialog();
       if (rc != DialogResult.OK)
         return Result.Cancel;
 
-      var filename = dialog.FileName;
+      string filename = dialog.FileName;
       if (string.IsNullOrEmpty(filename) || !File.Exists(filename))
         return Result.Failure;
 
-      var file = File3dm.Read(filename);
+      File3dm file = File3dm.Read(filename);
       if (null == file)
         return Result.Failure;
 
@@ -41,7 +41,7 @@ namespace SampleCsCommands
       // to generate full layer path names from layers in in File3dm, you need to write your
       // own function.
 
-      for (var i = 0; i < file.AllLayers.Count; i++)
+      for (int i = 0; i < file.AllLayers.Count; i++)
       {
         string full_name = null;
         if (GetLayerPathName(file, i, ref full_name))
@@ -68,17 +68,17 @@ namespace SampleCsCommands
         return false;
 
       string name = null;
-      for (var i = 0; i < file.AllLayers.Count; i++)
+      for (int i = 0; i < file.AllLayers.Count; i++)
       {
-        var layer = file.AllLayers.FindIndex(layerIndex);
-        var layer_name = layer.Name;
+        Rhino.DocObjects.Layer layer = file.AllLayers.FindIndex(layerIndex);
+        string layer_name = layer.Name;
         if (string.IsNullOrEmpty(name))
         {
           name = layer_name;
         }
         else
         {
-          var child_name = name;
+          string child_name = name;
           name = layer_name;
           if (!string.IsNullOrEmpty(delimeter))
             name += delimeter;
@@ -105,7 +105,7 @@ namespace SampleCsCommands
     {
       if (null != file && id != Guid.Empty)
       {
-        for (var i = 0; i < file.AllLayers.Count; i++)
+        for (int i = 0; i < file.AllLayers.Count; i++)
         {
           if (file.AllLayers.FindIndex(i).Id == id)
             return i;

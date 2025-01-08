@@ -1,10 +1,10 @@
-﻿using System.IO;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Input;
 using Rhino.Input.Custom;
 using Rhino.UI;
+using System.IO;
 
 namespace SampleCsDeserializeEmbeddedResource.Commands
 {
@@ -18,7 +18,7 @@ namespace SampleCsDeserializeEmbeddedResource.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Selet surface or polysurface to serialize to a file.");
       go.GeometryFilter = ObjectType.Surface | ObjectType.PolysrfFilter;
       go.SubObjectSelect = false;
@@ -26,14 +26,14 @@ namespace SampleCsDeserializeEmbeddedResource.Commands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var brep = go.Object(0).Brep();
+      Rhino.Geometry.Brep brep = go.Object(0).Brep();
       if (null == brep)
         return Result.Failure;
 
       string path = null;
       if (mode == RunMode.Interactive)
       {
-        var dialog = new SaveFileDialog
+        SaveFileDialog dialog = new SaveFileDialog
         {
           Title = EnglishName,
           Filter = @"Bin Files (*.bin)|*.bin||",
@@ -47,7 +47,7 @@ namespace SampleCsDeserializeEmbeddedResource.Commands
       }
       else
       {
-        var result = RhinoGet.GetString("Save file name", false, ref path);
+        Result result = RhinoGet.GetString("Save file name", false, ref path);
         if (result != Result.Success)
           return result;
       }
@@ -59,7 +59,7 @@ namespace SampleCsDeserializeEmbeddedResource.Commands
       if (!Path.HasExtension(path))
         path = Path.ChangeExtension(path, ".bin");
 
-      var rc = SampleCsGeometryHelper.WriteToFile(path, brep);
+      bool rc = SampleCsGeometryHelper.WriteToFile(path, brep);
 
       return rc ? Result.Success : Result.Failure;
     }

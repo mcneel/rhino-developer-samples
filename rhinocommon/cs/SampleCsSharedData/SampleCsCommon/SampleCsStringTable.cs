@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Rhino;
+﻿using Rhino;
 using Rhino.FileIO;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("SampleCsMain")]
 namespace SampleCsCommon
@@ -172,11 +172,11 @@ namespace SampleCsCommon
     /// </summary>
     public void ReadDocument(RhinoDoc doc, BinaryArchiveReader archive, FileReadOptions options)
     {
-      archive.Read3dmChunkVersion(out var major, out var minor);
+      archive.Read3dmChunkVersion(out int major, out int minor);
       if (MAJOR == major && MINOR == minor)
       {
         // Always read user data even though you might not use it...
-        var strings = archive.ReadStringArray();
+        string[] strings = archive.ReadStringArray();
         if (null != strings && !options.ImportMode && !options.ImportReferenceMode)
           m_strings.AddRange(strings);
       }

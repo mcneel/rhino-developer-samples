@@ -1,7 +1,7 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
+using System;
 
 namespace SampleCsCommands
 {
@@ -13,8 +13,8 @@ namespace SampleCsCommands
     {
       const int order = 3; // order = degree + 1
       const int cv_count = 9;
- 
-      var curve = new NurbsCurve(3, true, order, cv_count);
+
+      NurbsCurve curve = new NurbsCurve(3, true, order, cv_count);
 
       curve.Points.SetPoint(0, 1.0, 0.0, 0.0, 1.0);
       curve.Points.SetPoint(1, 0.707107, 0.707107, 0.0, 0.707107);
@@ -36,17 +36,17 @@ namespace SampleCsCommands
       curve.Knots[7] = 1.5 * Math.PI;
       curve.Knots[8] = 2.0 * Math.PI;
       curve.Knots[9] = 2.0 * Math.PI;
- 
+
       if (curve.IsValid)
       {
-        var length = curve.GetLength();
-        var domain = new Interval(0.0, length);
+        double length = curve.GetLength();
+        Interval domain = new Interval(0.0, length);
         curve.Domain = domain;
 
         doc.Objects.AddCurve(curve);
         doc.Views.Redraw();
-      } 
-      
+      }
+
       return Result.Success;
 
     }

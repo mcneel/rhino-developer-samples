@@ -11,24 +11,24 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select curve to intersect");
       go.GeometryFilter = ObjectType.Curve;
       go.Get();
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var curve = go.Object(0).Curve();
+      Rhino.Geometry.Curve curve = go.Object(0).Curve();
       if (null == curve)
         return Result.Failure;
 
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("First point of infinite intersecting line");
       gp.Get();
       if (gp.CommandResult() != Result.Success)
         return gp.CommandResult();
 
-      var from = gp.Point();
+      Rhino.Geometry.Point3d from = gp.Point();
 
       gp.SetCommandPrompt("Second point of infinite intersecting line");
       gp.SetBasePoint(from, true);
@@ -37,14 +37,14 @@ namespace SampleCsCommands
       if (gp.CommandResult() != Result.Success)
         return gp.CommandResult();
 
-      var line = new Rhino.Geometry.Line(from, gp.Point());
+      Rhino.Geometry.Line line = new Rhino.Geometry.Line(from, gp.Point());
       if (!line.IsValid || line.Length < Rhino.RhinoMath.SqrtEpsilon)
         return Result.Nothing;
 
-      var ccx = IntersectCurveLine(curve, line, doc.ModelAbsoluteTolerance, doc.ModelAbsoluteTolerance);
+      Rhino.Geometry.Intersect.CurveIntersections ccx = IntersectCurveLine(curve, line, doc.ModelAbsoluteTolerance, doc.ModelAbsoluteTolerance);
       if (null != ccx)
       {
-        foreach (var x in ccx)
+        foreach (Rhino.Geometry.Intersect.IntersectionEvent x in ccx)
         {
           if (x.IsPoint)
             doc.Objects.AddPoint(x.PointA);
@@ -70,9 +70,9 @@ namespace SampleCsCommands
     /// then tolerance * 2.0 is used.</param>
     /// <returns>A collection of intersection events.</returns>
     public static Rhino.Geometry.Intersect.CurveIntersections IntersectCurveLine(
-      Rhino.Geometry.Curve curve, 
-      Rhino.Geometry.Line line, 
-      double tolerance, 
+      Rhino.Geometry.Curve curve,
+      Rhino.Geometry.Line line,
+      double tolerance,
       double overlapTolerance
       )
     {
@@ -80,21 +80,21 @@ namespace SampleCsCommands
         return null;
 
       // Extend the line through the curve's bounding box
-      var bbox = curve.GetBoundingBox(false);
+      Rhino.Geometry.BoundingBox bbox = curve.GetBoundingBox(false);
       if (!bbox.IsValid)
         return null;
 
-      var dir = line.Direction;
+      Rhino.Geometry.Vector3d dir = line.Direction;
       dir.Unitize();
 
-      var points = bbox.GetCorners();
-      var plane = new Rhino.Geometry.Plane(line.From, dir);
+      Rhino.Geometry.Point3d[] points = bbox.GetCorners();
+      Rhino.Geometry.Plane plane = new Rhino.Geometry.Plane(line.From, dir);
 
       double max_dist;
-      var min_dist = max_dist = plane.DistanceTo(points[0]);
-      for (var i = 1; i < points.Length; i++)
+      double min_dist = max_dist = plane.DistanceTo(points[0]);
+      for (int i = 1; i < points.Length; i++)
       {
-        var dist = plane.DistanceTo(points[i]);
+        double dist = plane.DistanceTo(points[i]);
         if (dist < min_dist)
           min_dist = dist;
         if (dist > max_dist)
@@ -106,7 +106,7 @@ namespace SampleCsCommands
       line.To = line.From + dir * (max_dist + 1.0);
 
       // Calculate curve-curve intersection
-      var line_curve = new Rhino.Geometry.LineCurve(line);
+      Rhino.Geometry.LineCurve line_curve = new Rhino.Geometry.LineCurve(line);
       return Rhino.Geometry.Intersect.Intersection.CurveCurve(curve, line_curve, tolerance, overlapTolerance);
     }
   }

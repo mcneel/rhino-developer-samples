@@ -1,9 +1,9 @@
 ﻿using Rhino;
 using Rhino.Commands;
-using Rhino.DocObjects;
 using Rhino.Display;
-using Rhino.Input.Custom;
+using Rhino.DocObjects;
 using Rhino.Geometry;
+using Rhino.Input.Custom;
 
 namespace SampleCsCommands
 {
@@ -20,7 +20,7 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Select objects to orient
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects to orient");
       go.SubObjectSelect = false;
       go.GroupSelect = true;
@@ -29,14 +29,14 @@ namespace SampleCsCommands
         return go.CommandResult();
 
       // Point to orient from
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Point to orient from");
       gp.Get();
       if (gp.CommandResult() != Result.Success)
         return gp.CommandResult();
 
       // Define source plane
-      var view = gp.View();
+      RhinoView view = gp.View();
       if (view == null)
       {
         view = doc.Views.ActiveView;
@@ -44,11 +44,11 @@ namespace SampleCsCommands
           return Result.Failure;
       }
 
-      var plane = view.ActiveViewport.ConstructionPlane();
+      Plane plane = view.ActiveViewport.ConstructionPlane();
       plane.Origin = gp.Point();
 
       // Curve to orient on
-      var gc = new GetObject();
+      GetObject gc = new GetObject();
       gc.SetCommandPrompt("Curve to orient on");
       gc.GeometryFilter = ObjectType.Curve;
       gc.EnablePreSelect(false, true);
@@ -57,9 +57,9 @@ namespace SampleCsCommands
       if (gc.CommandResult() != Result.Success)
         return gc.CommandResult();
 
-      var objref = gc.Object(0);
-      var obj = objref.Object();
-      var curve = objref.Curve();
+      ObjRef objref = gc.Object(0);
+      RhinoObject obj = objref.Object();
+      Curve curve = objref.Curve();
       if (obj == null || curve == null)
         return Result.Failure;
 
@@ -67,14 +67,14 @@ namespace SampleCsCommands
       obj.Select(false);
 
       // Point on surface to orient to
-      var gx = new GetOrientPerpendicularPoint(curve, plane, go.Object(0).Object());
+      GetOrientPerpendicularPoint gx = new GetOrientPerpendicularPoint(curve, plane, go.Object(0).Object());
       gx.SetCommandPrompt("New base point on curve");
       gx.Get();
       if (gx.CommandResult() != Result.Success)
         return gx.CommandResult();
 
       // One final calculation
-      var xform = new Transform(1);
+      Transform xform = new Transform(1);
       if (gx.CalculateTransform(gx.View().ActiveViewport, gx.Point(), ref xform))
       {
         doc.Objects.Transform(go.Object(0).Object(), xform, true);

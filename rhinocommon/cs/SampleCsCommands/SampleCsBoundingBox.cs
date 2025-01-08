@@ -14,18 +14,18 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var cs_option = new OptionToggle(m_use_cplane, "World", "CPlane");
+      OptionToggle cs_option = new OptionToggle(m_use_cplane, "World", "CPlane");
 
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects for bounding box calculation");
       go.GroupSelect = true;
       go.SubObjectSelect = false;
-      for (;;)
+      for (; ; )
       {
         go.ClearCommandOptions();
         go.AddOptionToggle("CoordinateSystem", ref cs_option);
 
-        var res = go.GetMultiple(1, 0);
+        GetResult res = go.GetMultiple(1, 0);
 
         if (res == GetResult.Option)
           continue;
@@ -35,20 +35,20 @@ namespace SampleCsCommands
         break;
       }
 
-      var plane = go.View().ActiveViewport.ConstructionPlane();
+      Plane plane = go.View().ActiveViewport.ConstructionPlane();
       m_use_cplane = cs_option.CurrentValue;
 
-      var world_to_plane = new Transform(1.0);
+      Transform world_to_plane = new Transform(1.0);
       if (m_use_cplane)
         world_to_plane = Transform.ChangeBasis(Plane.WorldXY, plane);
-      
-      var bounding_box = new BoundingBox();
-      for (var i = 0; i < go.ObjectCount; i++)
+
+      BoundingBox bounding_box = new BoundingBox();
+      for (int i = 0; i < go.ObjectCount; i++)
       {
-        var rhino_obj = go.Object(i).Object();
+        Rhino.DocObjects.RhinoObject rhino_obj = go.Object(i).Object();
         if (null != rhino_obj)
         {
-          var box = rhino_obj.Geometry.GetBoundingBox(world_to_plane);
+          BoundingBox box = rhino_obj.Geometry.GetBoundingBox(world_to_plane);
           if (box.IsValid)
           {
             if (i == 0)
@@ -65,7 +65,7 @@ namespace SampleCsCommands
         return Result.Failure;
       }
 
-      var box_corners = new Point3d[8];
+      Point3d[] box_corners = new Point3d[8];
       box_corners[0] = bounding_box.Corner(false, false, false);
       box_corners[1] = bounding_box.Corner(true, false, false);
       box_corners[2] = bounding_box.Corner(true, true, false);
@@ -79,13 +79,13 @@ namespace SampleCsCommands
       {
         // Transform corners points from cplane coordinates
         // to world coordinates if necessary.
-        var plane_to_world = Transform.ChangeBasis(plane, Plane.WorldXY);
-        for (var i = 0; i < 8; i++)
+        Transform plane_to_world = Transform.ChangeBasis(plane, Plane.WorldXY);
+        for (int i = 0; i < 8; i++)
           box_corners[i].Transform(plane_to_world);
       }
-      
+
       Point3d[] rect;
-      var type = ClassifyBoundingBox(box_corners, out rect);
+      BoundingBoxClassification type = ClassifyBoundingBox(box_corners, out rect);
 
       if (type == BoundingBoxClassification.Point)
       {
@@ -101,7 +101,7 @@ namespace SampleCsCommands
       }
       else //if (type == BoundingBoxClassification.Box)
       {
-        var brep = Brep.CreateFromBox(box_corners);
+        Brep brep = Brep.CreateFromBox(box_corners);
         doc.Objects.AddBrep(brep);
       }
 
@@ -139,9 +139,9 @@ namespace SampleCsCommands
     {
       rect = new Point3d[5];
 
-      var num_flat = 0;
-      var xflat = false;
-      var yflat = false;
+      int num_flat = 0;
+      bool xflat = false;
+      bool yflat = false;
       //var zflat = false;
 
       const float flt_epsilon = 1.192092896e-07F;

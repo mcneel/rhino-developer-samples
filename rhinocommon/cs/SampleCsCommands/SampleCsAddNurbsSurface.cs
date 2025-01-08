@@ -16,7 +16,7 @@ namespace SampleCsCommands
       const int v_degree = 3;
       const int u_cv_count = 3;
       const int v_cv_count = 5;
-      
+
       int i;
       int j;
 
@@ -24,8 +24,8 @@ namespace SampleCsCommands
       // at the start and end of the knot vector.  If you are
       // coming from a system that has the 2 superfluous knots,
       // just ignore them when creating NURBS surfaces.
-      var u_knot = new double[u_cv_count + u_degree - 1];
-      var v_knot = new double[v_cv_count + v_degree - 1];
+      double[] u_knot = new double[u_cv_count + u_degree - 1];
+      double[] v_knot = new double[v_cv_count + v_degree - 1];
 
       // make up a quadratic knot vector with no interior knots
       u_knot[0] = u_knot[1] = 0.0;
@@ -39,14 +39,14 @@ namespace SampleCsCommands
       // Rational control points can be in either homogeneous
       // or euclidean form. Non-rational control points do not
       // need to specify a weight.  
-      var cv = new Point3d[u_cv_count, v_cv_count];
+      Point3d[,] cv = new Point3d[u_cv_count, v_cv_count];
       for (i = 0; i < u_cv_count; i++)
       {
         for (j = 0; j < v_cv_count; j++)
-          cv[i, j] = new Point3d {X = i, Y = j, Z = i - j};
+          cv[i, j] = new Point3d { X = i, Y = j, Z = i - j };
       }
 
-      var nurbs_surface = NurbsSurface.Create(dim, rational, u_degree + 1, v_degree + 1, u_cv_count, v_cv_count);
+      NurbsSurface nurbs_surface = NurbsSurface.Create(dim, rational, u_degree + 1, v_degree + 1, u_cv_count, v_cv_count);
 
       for (i = 0; i < nurbs_surface.KnotsU.Count; i++)
         nurbs_surface.KnotsU[i] = u_knot[i];
@@ -60,7 +60,7 @@ namespace SampleCsCommands
           nurbs_surface.Points.SetPoint(i, j, cv[i, j]);
       }
 
-      var rc = Result.Failure;
+      Result rc = Result.Failure;
       if (nurbs_surface.IsValid)
       {
         doc.Objects.AddSurface(nurbs_surface);

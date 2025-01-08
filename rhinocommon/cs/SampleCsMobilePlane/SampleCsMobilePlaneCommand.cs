@@ -23,39 +23,39 @@ namespace SampleCsMobilePlane
     /// </summary>
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select object");
       go.SubObjectSelect = false;
       go.Get();
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var obj_ref = go.Object(0);
-      var obj = obj_ref.Object();
+      ObjRef obj_ref = go.Object(0);
+      RhinoObject obj = obj_ref.Object();
       if (null == obj)
         return Result.Failure;
 
-      var pre_selected = go.ObjectsWerePreselected;
+      bool pre_selected = go.ObjectsWerePreselected;
       obj.Select(true);
 
-      var gt = new GetOption();
+      GetOption gt = new GetOption();
       gt.SetCommandPrompt("Choose mobile plane option");
       gt.AcceptNothing(true);
 
-      var attach_index = gt.AddOption("Attach");
-      var detach_index = gt.AddOption("Detach");
-      var enable_index = gt.AddOption("Enable");
-      var refresh_index = gt.AddOption("Refresh");
-      var show_index = gt.AddOption("Show");
+      int attach_index = gt.AddOption("Attach");
+      int detach_index = gt.AddOption("Detach");
+      int enable_index = gt.AddOption("Enable");
+      int refresh_index = gt.AddOption("Refresh");
+      int show_index = gt.AddOption("Show");
 
-      for (;;)
+      for (; ; )
       {
-        var res = gt.Get();
+        GetResult res = gt.Get();
         if (res != GetResult.Option)
           break;
 
-        var rc = Result.Cancel;
-        var index = gt.OptionIndex();
+        Result rc = Result.Cancel;
+        int index = gt.OptionIndex();
 
         if (index == attach_index)
           rc = AttachOption(doc, obj);
@@ -88,14 +88,14 @@ namespace SampleCsMobilePlane
       if (null == doc || null == obj)
         return Result.Failure;
 
-      var viewport_id = doc.Views.ActiveView.ActiveViewportID;
-    
+      System.Guid viewport_id = doc.Views.ActiveView.ActiveViewportID;
+
       Plane plane;
-      var res = RhinoGet.GetPlane(out plane);
+      Result res = RhinoGet.GetPlane(out plane);
       if (res != Result.Success)
         return res;
 
-      var rc = SampleCsMobilePlaneUserData.Attach(obj, plane, viewport_id);
+      bool rc = SampleCsMobilePlaneUserData.Attach(obj, plane, viewport_id);
       return rc ? Result.Success : Result.Failure;
     }
 
@@ -113,7 +113,7 @@ namespace SampleCsMobilePlane
         return Result.Success;
       }
 
-      var rc = SampleCsMobilePlaneUserData.Detach(obj);
+      bool rc = SampleCsMobilePlaneUserData.Detach(obj);
       return rc ? Result.Success : Result.Failure;
     }
 
@@ -131,12 +131,12 @@ namespace SampleCsMobilePlane
         return Result.Success;
       }
 
-      var enable = SampleCsMobilePlaneUserData.IsEnabled(obj);
-      var res = RhinoGet.GetBool("Enable object mobile plane", true, "Disable", "Enable", ref enable);
+      bool enable = SampleCsMobilePlaneUserData.IsEnabled(obj);
+      Result res = RhinoGet.GetBool("Enable object mobile plane", true, "Disable", "Enable", ref enable);
       if (res != Result.Success)
         return res;
 
-      var rc = SampleCsMobilePlaneUserData.Enable(obj, enable);
+      bool rc = SampleCsMobilePlaneUserData.Enable(obj, enable);
       return rc ? Result.Success : Result.Failure;
     }
 
@@ -154,7 +154,7 @@ namespace SampleCsMobilePlane
         return Result.Success;
       }
 
-      var rc = SampleCsMobilePlaneUserData.Refresh(obj, true);
+      bool rc = SampleCsMobilePlaneUserData.Refresh(obj, true);
       return rc ? Result.Success : Result.Failure;
     }
 
@@ -166,17 +166,17 @@ namespace SampleCsMobilePlane
       if (null == doc || null == obj)
         return Result.Failure;
 
-      var data = SampleCsMobilePlaneUserData.DataFromObject(obj);
+      SampleCsMobilePlaneUserData data = SampleCsMobilePlaneUserData.DataFromObject(obj);
       if (null == data)
       {
         RhinoApp.WriteLine("No mobile plane attached.");
         return Result.Success;
       }
 
-      var conduit = new SampleCsMobilePlaneConduit(data.Plane);
+      SampleCsMobilePlaneConduit conduit = new SampleCsMobilePlaneConduit(data.Plane);
       doc.Views.Redraw();
 
-      var gs = new GetString();
+      GetString gs = new GetString();
       gs.SetCommandPrompt("Press <Enter> when done.");
       gs.Get();
 

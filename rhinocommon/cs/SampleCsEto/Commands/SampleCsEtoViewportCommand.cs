@@ -1,8 +1,8 @@
-﻿using Rhino;
+﻿using Eto.Drawing;
+using Eto.Forms;
+using Rhino;
 using Rhino.Commands;
 using Rhino.UI;
-using Eto.Forms;
-using Eto.Drawing;
 
 namespace SampleCsEto.Commands
 {
@@ -12,7 +12,7 @@ namespace SampleCsEto.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var f = new SampleCsViewportForm();
+      SampleCsViewportForm f = new SampleCsViewportForm();
       f.ShowModal(RhinoEtoApp.MainWindow);
       return Result.Success;
     }
@@ -24,7 +24,7 @@ namespace SampleCsEto.Commands
     {
       Title = "Rhino Viewport in an Eto Control";
       Resizable = true;
-      var viewport_control = new[] 
+      Rhino.UI.Controls.ViewportControl[] viewport_control = new[]
       {
         new Rhino.UI.Controls.ViewportControl {Size = new Size(400, 200)},
         new Rhino.UI.Controls.ViewportControl {Size = new Size(400, 200)}

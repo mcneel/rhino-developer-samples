@@ -1,8 +1,7 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using Rhino.Collections;
 using Rhino.UI.Controls;
-using Rhino.Render;
-using Rhino.Collections;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 namespace SampleCustomRenderSettingsSections
@@ -32,7 +31,7 @@ namespace SampleCustomRenderSettingsSections
     {
       get
       {
-        var rs = RenderSettingsForRead();
+        Rhino.Render.DataSources.RhinoSettings rs = RenderSettingsForRead();
 
         bool value = false;
 
@@ -50,9 +49,9 @@ namespace SampleCustomRenderSettingsSections
         {
           if (value != null)
           {
-            using (var u = UndoHelper("Custom Render Section 1 BoolValue changed"))
+            using (UndoRecord u = UndoHelper("Custom Render Section 1 BoolValue changed"))
             {
-              var rs = RenderSettingsForWrite();
+              Rhino.Render.DataSources.RhinoSettings rs = RenderSettingsForWrite();
 
               Rhino.Render.RenderSettings render_settings = rs.GetRenderSettings();
               ArchivableDictionary userdata = render_settings.UserDictionary;

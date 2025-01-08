@@ -1,6 +1,6 @@
-﻿using System.Windows.Input;
-using Eto.Forms;
+﻿using Eto.Forms;
 using Rhino;
+using System.Windows.Input;
 
 namespace SampleCsWizardPanel
 {
@@ -20,7 +20,7 @@ namespace SampleCsWizardPanel
 
       // Read-only property initialization
       DocumentRuntimeSerialNumber = documentRuntimeSerialNumber;
-      
+
       // List of wizard panels in the order displayed
       m_panels = new SampleCsWizardEtoPanel[]
       {

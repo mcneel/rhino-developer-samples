@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SampleCsCommands
 {
@@ -15,7 +15,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go0 = new GetObject();
+      GetObject go0 = new GetObject();
       go0.SetCommandPrompt("Select first set of meshes for interference check");
       go0.GeometryFilter = ObjectType.Mesh;
       go0.SubObjectSelect = false;
@@ -25,16 +25,16 @@ namespace SampleCsCommands
       if (go0.CommandResult() != Result.Success)
         return go0.CommandResult();
 
-      var mesh_list0 = new List<Mesh>(go0.ObjectCount);
-      foreach (var obj_ref in go0.Objects())
+      List<Mesh> mesh_list0 = new List<Mesh>(go0.ObjectCount);
+      foreach (ObjRef obj_ref in go0.Objects())
       {
-        var mesh = obj_ref.Mesh();
+        Mesh mesh = obj_ref.Mesh();
         if (null == mesh)
           return Result.Failure;
         mesh_list0.Add(mesh);
       }
 
-      var go1 = new GetObject();
+      GetObject go1 = new GetObject();
       go1.SetCommandPrompt("Select second set of meshes for interference check");
       go1.GeometryFilter = ObjectType.Mesh;
       go1.SubObjectSelect = false;
@@ -45,19 +45,19 @@ namespace SampleCsCommands
       if (go1.CommandResult() != Result.Success)
         return go1.CommandResult();
 
-      var mesh_list1 = new List<Mesh>(go1.ObjectCount);
-      foreach (var obj_ref in go1.Objects())
+      List<Mesh> mesh_list1 = new List<Mesh>(go1.ObjectCount);
+      foreach (ObjRef obj_ref in go1.Objects())
       {
-        var mesh = obj_ref.Mesh();
+        Mesh mesh = obj_ref.Mesh();
         if (null == mesh)
           return Result.Failure;
         mesh_list1.Add(mesh);
       }
 
-      var check = new SampleInterferenceCheck(mesh_list0.ToArray(), mesh_list1.ToArray());
-      var rc = check.BoxCheck(doc.ModelAbsoluteTolerance);
+      SampleInterferenceCheck check = new SampleInterferenceCheck(mesh_list0.ToArray(), mesh_list1.ToArray());
+      bool rc = check.BoxCheck(doc.ModelAbsoluteTolerance);
 
-      var count = check.EventCount;
+      int count = check.EventCount;
       if (0 == count)
         RhinoApp.WriteLine("0 interference events.");
       else if (1 == count)
@@ -69,7 +69,7 @@ namespace SampleCsCommands
       {
         doc.Objects.UnselectAll(true);
 
-        foreach (var result in check.EventResults)
+        foreach (Tuple<int, int> result in check.EventResults)
         {
           go0.Object(result.Item1).Object().Select(true, true);
           go1.Object(result.Item2).Object().Select(true, true);
@@ -113,13 +113,13 @@ namespace SampleCsCommands
         if (tolerance <= 0)
           tolerance = RhinoMath.SqrtEpsilon;
 
-        var box_tree = new RTree[2];
+        RTree[] box_tree = new RTree[2];
         box_tree[0] = new RTree();
         box_tree[1] = new RTree();
 
-        var ok = new bool[] { false, false };
+        bool[] ok = new bool[] { false, false };
         Parallel.For(0, m_mesh_list.Length, i => { ok[i] = MakeBoxTree(m_mesh_list[i].ToArray(), box_tree[i]); });
-        var rc = ok[0] && ok[1];
+        bool rc = ok[0] && ok[1];
 
         if (rc)
           rc = RTree.SearchOverlaps(box_tree[0], box_tree[1], tolerance, SearchCallback);
@@ -145,13 +145,13 @@ namespace SampleCsCommands
         if (null == meshes || null == tree)
           return false;
 
-        var rc = false;
-        var element = 0;
-        foreach (var mesh in meshes)
+        bool rc = false;
+        int element = 0;
+        foreach (Mesh mesh in meshes)
         {
           if (null == mesh)
             continue;
-          var bbox = mesh.GetBoundingBox(false);
+          BoundingBox bbox = mesh.GetBoundingBox(false);
           if (bbox.IsValid)
           {
             tree.Insert(bbox, element++);

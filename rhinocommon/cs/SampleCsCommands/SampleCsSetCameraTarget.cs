@@ -9,13 +9,13 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var view = doc.Views.ActiveView;
-      var vp = view.ActiveViewport;
+      Rhino.Display.RhinoView view = doc.Views.ActiveView;
+      Rhino.Display.RhinoViewport vp = view.ActiveViewport;
 
-      var target = vp.CameraTarget;
-      var camera = vp.CameraLocation;
+      Rhino.Geometry.Point3d target = vp.CameraTarget;
+      Rhino.Geometry.Point3d camera = vp.CameraLocation;
 
-      var gp = new Rhino.Input.Custom.GetPoint();
+      Rhino.Input.Custom.GetPoint gp = new Rhino.Input.Custom.GetPoint();
       gp.SetCommandPrompt("New target location");
       gp.SetDefaultPoint(target);
       gp.Get();
@@ -35,7 +35,7 @@ namespace SampleCsCommands
 
       camera = gp.Point();
 
-      var camdir = target - camera;
+      Rhino.Geometry.Vector3d camdir = target - camera;
       camdir.Unitize();
       if (camdir.IsTiny())
         return Result.Cancel;
@@ -43,7 +43,7 @@ namespace SampleCsCommands
       vp.SetCameraLocations(target, camera);
       view.Redraw();
 
-      return Result.Success; 
+      return Result.Success;
     }
   }
 }

@@ -1,9 +1,9 @@
-using System.Drawing;
 using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Render;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -27,14 +27,14 @@ namespace SampleCsCommands
       // basic material because it does not target any particular rendering plug-in.
 
       // 1. Create a Rhino material.
-      var rhino_material = new Material
+      Material rhino_material = new Material
       {
         Name = "Burly",
         DiffuseColor = Color.BurlyWood
       };
 
       // 2. Create a basic Render material from the Rhino material.
-      var render_material = RenderMaterial.CreateBasicMaterial(rhino_material, doc);
+      RenderMaterial render_material = RenderMaterial.CreateBasicMaterial(rhino_material, doc);
 
       // 3. Add the basic Render material to the document.
       doc.RenderMaterials.Add(render_material);
@@ -50,8 +50,8 @@ namespace SampleCsCommands
       // However, this is no longer recommended because Render materials should always be used.
 
       // 4. Now create a sphere with the Render material assigned to it.
-      var sphere = new Sphere(Plane.WorldXY, 5);
-      var attr = new ObjectAttributes { RenderMaterial = render_material };
+      Sphere sphere = new Sphere(Plane.WorldXY, 5);
+      ObjectAttributes attr = new ObjectAttributes { RenderMaterial = render_material };
       doc.Objects.AddSphere(sphere, attr);
 
       doc.Views.Redraw();

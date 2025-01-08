@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Input.Custom;
 
@@ -19,7 +18,7 @@ namespace SampleCsCommands
         return Result.Nothing;
       }
 
-      var go = new GetOption();
+      GetOption go = new GetOption();
       go.SetCommandPrompt("Choose unisolate option");
       int a_opt = go.AddOption("All");
       int p_opt = go.AddOption("Previous");
@@ -27,7 +26,7 @@ namespace SampleCsCommands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var opt = go.Option();
+      CommandLineOption opt = go.Option();
       if (null == opt)
         return Result.Failure;
 
@@ -45,8 +44,8 @@ namespace SampleCsCommands
       else
         return Result.Failure;
 
-      RhinoApp.RunScript(script, false); 
-      
+      RhinoApp.RunScript(script, false);
+
       return Result.Success;
     }
   }

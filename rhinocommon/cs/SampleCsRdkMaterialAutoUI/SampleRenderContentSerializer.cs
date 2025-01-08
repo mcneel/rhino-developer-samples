@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino.Render;
+﻿using Rhino.Render;
 using Rhino.Render.Fields;
+using System;
+using System.Collections.Generic;
 
 namespace SampleRdkMaterialAutoUI
 {
@@ -35,11 +35,11 @@ namespace SampleRdkMaterialAutoUI
       // Create new Sample Material without fields.
       // We will read the fields from the file and
       // add them to the material
-      var material = new SampleRdkMaterial();
+      SampleRdkMaterial material = new SampleRdkMaterial();
 
       // Read values from file and set values
       string line;
-      var file = new System.IO.StreamReader(pathToFile);
+      System.IO.StreamReader file = new System.IO.StreamReader(pathToFile);
       while ((line = file.ReadLine()) != null)
       {
         string[] type_prompt_key_and_value = line.Split(',');
@@ -92,11 +92,11 @@ namespace SampleRdkMaterialAutoUI
     // Write sample material to .sample file (only bool values)
     public override bool Write(string pathToFile, RenderContent renderContent, CreatePreviewEventArgs previewArgs)
     {
-      var lines = new List<string>();
+      List<string> lines = new List<string>();
 
-      foreach (var field in renderContent.Fields)
+      foreach (Field field in renderContent.Fields)
       {
-        var type = field.GetType();
+        Type type = field.GetType();
 
         // Bool fields
         if (type == typeof(BoolField))
@@ -110,7 +110,7 @@ namespace SampleRdkMaterialAutoUI
       }
 
       // Write all lines to .sample file
-      using (var file = new System.IO.StreamWriter(pathToFile))
+      using (System.IO.StreamWriter file = new System.IO.StreamWriter(pathToFile))
       {
         foreach (string line in lines)
         {

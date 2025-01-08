@@ -1,9 +1,9 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System;
 
 namespace SampleCsCommands
 {
@@ -13,7 +13,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var get_outer = new GetObject();
+      GetObject get_outer = new GetObject();
       get_outer.SetCommandPrompt("Outer profile curve");
       get_outer.GeometryFilter = ObjectType.Curve;
       get_outer.SubObjectSelect = false;
@@ -21,11 +21,11 @@ namespace SampleCsCommands
       if (get_outer.CommandResult() != Result.Success)
         return get_outer.CommandResult();
 
-      var outer = get_outer.Object(0).Curve();
+      Curve outer = get_outer.Object(0).Curve();
       if (null == outer)
         return Result.Failure;
 
-      var get_inner = new GetObject();
+      GetObject get_inner = new GetObject();
       get_inner.SetCommandPrompt("Inner profile curve");
       get_inner.GeometryFilter = ObjectType.Curve;
       get_inner.SubObjectSelect = false;
@@ -35,16 +35,16 @@ namespace SampleCsCommands
       if (get_inner.CommandResult() != Result.Success)
         return get_outer.CommandResult();
 
-      var inners = new Curve[get_inner.ObjectCount];
-      for (var i = 0; i < get_inner.ObjectCount; i++)
+      Curve[] inners = new Curve[get_inner.ObjectCount];
+      for (int i = 0; i < get_inner.ObjectCount; i++)
       {
-        var inner = get_inner.Object(i).Curve();
+        Curve inner = get_inner.Object(i).Curve();
         if (null == inner)
           return Result.Failure;
         inners[i] = inner;
       }
 
-      var extrusion = CreateExtrusion(outer, inners, 10);
+      Extrusion extrusion = CreateExtrusion(outer, inners, 10);
       if (null != extrusion)
       {
         doc.Objects.AddExtrusion(extrusion);
@@ -63,7 +63,7 @@ namespace SampleCsCommands
       if (!outerProfile.TryGetPlane(out plane))
         return null;
 
-      var path = new Line
+      Line path = new Line
       {
         From = plane.PointAt(0.0, 0.0, 0.0),
         To = plane.PointAt(0.0, 0.0, height)
@@ -71,22 +71,22 @@ namespace SampleCsCommands
       if (!path.IsValid || !(path.Length > RhinoMath.ZeroTolerance))
         return null;
 
-      var up = plane.YAxis;
-      var tangent = path.To - path.From;
+      Vector3d up = plane.YAxis;
+      Vector3d tangent = path.To - path.From;
       tangent.Unitize();
       if (!up.IsValid || !up.IsUnitVector || Math.Abs(up * tangent) > RhinoMath.SqrtEpsilon)
         return null;
 
-      var xform = Transform.ChangeBasis(Plane.WorldXY, plane);
+      Transform xform = Transform.ChangeBasis(Plane.WorldXY, plane);
 
-      var curve = outerProfile.DuplicateCurve();
+      Curve curve = outerProfile.DuplicateCurve();
       curve.Transform(xform);
       curve.ChangeDimension(2);
 
-      var extrusion = new Extrusion();
+      Extrusion extrusion = new Extrusion();
       extrusion.SetOuterProfile(curve, true);
 
-      foreach (var profile in innerProfiles)
+      foreach (Curve profile in innerProfiles)
       {
         Plane curve_plane;
         if (profile.TryGetPlane(out curve_plane))
@@ -120,8 +120,8 @@ namespace SampleCsCommands
       if (tolerance < RhinoMath.ZeroTolerance)
         tolerance = RhinoMath.ZeroTolerance;
 
-      var eq0 = plane.GetPlaneEquation();
-      var eq1 = testPlane.GetPlaneEquation();
+      double[] eq0 = plane.GetPlaneEquation();
+      double[] eq1 = testPlane.GetPlaneEquation();
 
       return Math.Abs(eq0[0] - eq1[0]) < tolerance &&
              Math.Abs(eq0[1] - eq1[1]) < tolerance &&

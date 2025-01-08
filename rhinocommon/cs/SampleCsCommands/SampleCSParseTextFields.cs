@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Input.Custom;
 
@@ -26,9 +25,9 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-     
+
       //Select some objects to add attribute user text to
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects");
       go.GroupSelect = true;
       go.GetMultiple(1, 0);
@@ -37,14 +36,14 @@ namespace SampleCsCommands
 
 
       //Apply the ObjectName textfield as the user text value to the selected objects
-      for (var i = 0; i < go.ObjectCount; i++)
+      for (int i = 0; i < go.ObjectCount; i++)
       {
-        var obj_ref = go.Object(i);
-        var obj = obj_ref.Object();
+        Rhino.DocObjects.ObjRef obj_ref = go.Object(i);
+        Rhino.DocObjects.RhinoObject obj = obj_ref.Object();
         if (null != obj)
         {
           //Create an ObjectName TextField and apply it as the value of the user text
-          var fx = $"%<ObjectName(\"{obj_ref.ObjectId}\")>%";
+          string fx = $"%<ObjectName(\"{obj_ref.ObjectId}\")>%";
           obj.Attributes.SetUserString("ObjectName", fx);
         }
       }
@@ -52,15 +51,15 @@ namespace SampleCsCommands
 
 
       //Now retrieve the values we just set and parse them
-      for (var i = 0; i < go.ObjectCount; i++)
+      for (int i = 0; i < go.ObjectCount; i++)
       {
-        var obj_ref = go.Object(i);
-        var obj = obj_ref.Object();
+        Rhino.DocObjects.ObjRef obj_ref = go.Object(i);
+        Rhino.DocObjects.RhinoObject obj = obj_ref.Object();
         if (null == obj)
           continue;
 
         //Read user text value and parse it as a textfield
-        var user_string_value = obj.Attributes.GetUserString("ObjectName");
+        string user_string_value = obj.Attributes.GetUserString("ObjectName");
         if (!string.IsNullOrEmpty(user_string_value))
         {
           if (user_string_value.StartsWith("%<") && user_string_value.EndsWith(">%"))
@@ -68,15 +67,15 @@ namespace SampleCsCommands
             //RhinoApp.ParseTextField will try to automatically parse any string that looks like a valid textfield containing
             //a formula. %<ObjectName("E3D64B7C-3AE7-4390-B983-82730091B8CD")>% for example and return the results.
             //The parent object parameter is required only for page objects such as detail object viewport info. 
-            var parsed_string = RhinoApp.ParseTextField(user_string_value, obj_ref.Object(), null);
+            string parsed_string = RhinoApp.ParseTextField(user_string_value, obj_ref.Object(), null);
             RhinoApp.WriteLine($"Parsed TextField: {parsed_string}");
           }
         }
 
         //Direct method call to TextField ObjectName Example
         //You can also call the ObjectName and other TextField functions directly instead of using ParseTextField should you wish to do so.
-        var direct_string = Rhino.Runtime.TextFields.ObjectName(obj_ref.ObjectId.ToString());
-        var direct_area = Rhino.Runtime.TextFields.Area(obj_ref.ObjectId.ToString(), UnitSystem.Millimeters.ToString());
+        string direct_string = Rhino.Runtime.TextFields.ObjectName(obj_ref.ObjectId.ToString());
+        double direct_area = Rhino.Runtime.TextFields.Area(obj_ref.ObjectId.ToString(), UnitSystem.Millimeters.ToString());
         RhinoApp.WriteLine($"Direct ObjectName call: {direct_string}");
         RhinoApp.WriteLine($"Direct Area call: {direct_area}");
       }

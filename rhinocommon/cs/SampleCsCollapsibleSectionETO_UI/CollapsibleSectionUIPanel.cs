@@ -1,8 +1,5 @@
-﻿using System;
-using Rhino;
-using Rhino.Commands;
+﻿using Eto.Forms;
 using Rhino.UI.Controls;
-using Eto.Forms;
 
 namespace Project
 {

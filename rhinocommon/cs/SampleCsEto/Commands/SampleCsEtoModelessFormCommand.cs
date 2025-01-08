@@ -1,7 +1,7 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.UI;
+using System;
 
 namespace SampleCsEto.Commands
 {

@@ -14,7 +14,7 @@
 
     private void OnShowPanel(object sender, Rhino.UI.ShowPanelEventArgs e)
     {
-      var sn = e.DocumentSerialNumber;
+      uint sn = e.DocumentSerialNumber;
       // TOOD...
     }
 

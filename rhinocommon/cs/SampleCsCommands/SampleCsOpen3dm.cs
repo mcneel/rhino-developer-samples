@@ -13,7 +13,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var filename = string.Empty;
+      string filename = string.Empty;
       if (mode == Rhino.Commands.RunMode.Interactive)
         filename = RhinoGet.GetFileName(GetFileNameMode.OpenRhinoOnly, null, "Open", RhinoApp.MainWindowHandle());
       else
@@ -31,7 +31,7 @@ namespace SampleCsCommands
 
       // Make sure to surround filename string with double-quote characters
       // in case the path contains spaces.
-      var script = string.Format("_-Open \"{0}\"", filename);
+      string script = string.Format("_-Open \"{0}\"", filename);
       RhinoApp.RunScript(script, false);
 
       return Result.Success;

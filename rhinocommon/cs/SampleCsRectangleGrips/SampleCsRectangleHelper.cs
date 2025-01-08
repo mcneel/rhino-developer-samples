@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Geometry;
+using System;
+using System.Collections.Generic;
 
 namespace SampleCsRectangleGrips
 {
@@ -12,7 +12,7 @@ namespace SampleCsRectangleGrips
     /// </summary>
     public static bool IsRectangle(IEnumerable<Point3d> points)
     {
-      var curve = new PolylineCurve(points);
+      PolylineCurve curve = new PolylineCurve(points);
       return curve.IsValid && IsRectangle(curve);
     }
 
@@ -24,7 +24,7 @@ namespace SampleCsRectangleGrips
       if (polyline == null)
         return false;
 
-      var curve = new PolylineCurve(polyline);
+      PolylineCurve curve = new PolylineCurve(polyline);
       return curve.IsValid && IsRectangle(curve);
     }
 
@@ -39,19 +39,19 @@ namespace SampleCsRectangleGrips
 
       // Angle between each segment should be 90 degrees
       const double angle = 90.0 * (Math.PI / 180.0);
-      for (var i = 1; i < curve.PointCount - 1; i++)
+      for (int i = 1; i < curve.PointCount - 1; i++)
       {
-        var p0 = curve.Point(i - 1);
-        var p1 = curve.Point(i);
-        var p2 = curve.Point(i + 1);
+        Point3d p0 = curve.Point(i - 1);
+        Point3d p1 = curve.Point(i);
+        Point3d p2 = curve.Point(i + 1);
 
-        var v0 = p1 - p0;
+        Vector3d v0 = p1 - p0;
         v0.Unitize();
 
-        var v1 = p1 - p2;
+        Vector3d v1 = p1 - p2;
         v1.Unitize();
 
-        var a = Vector3d.VectorAngle(v0, v1);
+        double a = Vector3d.VectorAngle(v0, v1);
         if (Math.Abs(angle - a) >= RhinoMath.DefaultAngleTolerance)
           return false;
       }
@@ -64,7 +64,7 @@ namespace SampleCsRectangleGrips
     /// </summary>
     public static bool IsRectangle(GeometryBase geometry)
     {
-      var polyline_curve = geometry as PolylineCurve;
+      PolylineCurve polyline_curve = geometry as PolylineCurve;
       return polyline_curve != null && IsRectangle(polyline_curve);
     }
   }

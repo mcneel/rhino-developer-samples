@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.UI;
 
 namespace SampleCsWinForms.Forms

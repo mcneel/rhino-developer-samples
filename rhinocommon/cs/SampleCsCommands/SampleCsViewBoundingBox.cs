@@ -22,7 +22,7 @@ namespace SampleCsCommands
         return Result.Success;
       }
 
-      var rc = RhinoGet.GetBox(out Box box);
+      Result rc = RhinoGet.GetBox(out Box box);
       if (rc != Result.Success)
         return rc;
 
@@ -46,7 +46,7 @@ namespace SampleCsCommands
     {
       if (null != args && null != args.RhinoObject && BoundingBox.IsValid)
       {
-        var bbox = args.RhinoObject.Geometry.GetBoundingBox(true);
+        BoundingBox bbox = args.RhinoObject.Geometry.GetBoundingBox(true);
         if (!BoundingBox.Contains(bbox))
           args.DrawObject = false;
       }

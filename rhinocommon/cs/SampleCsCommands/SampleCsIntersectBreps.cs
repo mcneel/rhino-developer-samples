@@ -1,10 +1,10 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
 using Rhino.Input.Custom;
+using System;
 
 namespace SampleCsCommands
 {
@@ -14,7 +14,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select two surfaces or polysurfaces to intersect");
       go.GeometryFilter = ObjectType.Surface | ObjectType.PolysrfFilter;
       go.SubObjectSelect = false;
@@ -22,29 +22,29 @@ namespace SampleCsCommands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var brep0 = go.Object(0).Brep();
-      var brep1 = go.Object(1).Brep();
+      Brep brep0 = go.Object(0).Brep();
+      Brep brep1 = go.Object(1).Brep();
       if (null == brep0 || null == brep1)
         return Result.Failure;
 
-      var rc = Intersection.BrepBrep(brep0, brep1, doc.ModelAbsoluteTolerance, out Curve[] curves, out Point3d[] points);
+      bool rc = Intersection.BrepBrep(brep0, brep1, doc.ModelAbsoluteTolerance, out Curve[] curves, out Point3d[] points);
       if (!rc)
       {
         RhinoApp.WriteLine("Unable to intersect two Breps.");
         return Result.Cancel;
       }
 
-      foreach (var curve in curves)
+      foreach (Curve curve in curves)
       {
-        var object_id = doc.Objects.AddCurve(curve);
-        var rhino_object = doc.Objects.Find(object_id);
+        Guid object_id = doc.Objects.AddCurve(curve);
+        RhinoObject rhino_object = doc.Objects.Find(object_id);
         rhino_object?.Select(true);
       }
 
-      foreach (var point in points)
+      foreach (Point3d point in points)
       {
-        var object_id = doc.Objects.AddPoint(point);
-        var rhino_object = doc.Objects.Find(object_id);
+        Guid object_id = doc.Objects.AddPoint(point);
+        RhinoObject rhino_object = doc.Objects.Find(object_id);
         rhino_object?.Select(true);
       }
 

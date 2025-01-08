@@ -1,7 +1,7 @@
-﻿using System.Drawing;
-using Rhino;
+﻿using Rhino;
 using Rhino.ApplicationSettings;
 using Rhino.Commands;
+using System.Drawing;
 
 namespace SampleCsCommands
 {

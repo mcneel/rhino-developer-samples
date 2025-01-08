@@ -12,11 +12,11 @@ namespace SampleCsDeserializeEmbeddedResource.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var geometry = SampleCsGeometryHelper.ReadFromEmbeddedResource(RESOURCE);
+      GeometryBase geometry = SampleCsGeometryHelper.ReadFromEmbeddedResource(RESOURCE);
       if (null == geometry)
         return Result.Failure;
 
-      var brep = geometry as Brep;
+      Brep brep = geometry as Brep;
       if (null != brep)
       {
         doc.Objects.AddBrep(brep);

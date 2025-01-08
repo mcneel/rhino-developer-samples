@@ -15,7 +15,7 @@ namespace SampleCsUserData.Commands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Allow for picking of either a surface or a brep face
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select surface to attach data");
       go.GeometryFilter = ObjectType.Surface;
       go.SubObjectSelect = true;
@@ -25,32 +25,32 @@ namespace SampleCsUserData.Commands
 
       // Get first object reference. Note, this reference represents the picked
       // surface or face, not the top level brep.
-      var obj_ref = go.Object(0);
+      ObjRef obj_ref = go.Object(0);
 
       // Get brep face that was picked
-      var face = obj_ref.Face();
+      Rhino.Geometry.BrepFace face = obj_ref.Face();
       if (null == face)
         return Result.Failure;
 
       // Since the object reference only represents the picked surface or face, 
       // we need to get the owning brep from the Rhino object.
-      var brep_object = obj_ref.Object() as BrepObject;
+      BrepObject brep_object = obj_ref.Object() as BrepObject;
       if (null == brep_object)
         return Result.Failure;
 
       // Get the brep object's brep geometry
-      var brep = brep_object.BrepGeometry;
+      Rhino.Geometry.Brep brep = brep_object.BrepGeometry;
       if (null == brep)
         return Result.Failure;
 
       // Get the brep face's underlying surface
-      var surface_index = face.SurfaceIndex;
-      var srf = brep.Surfaces[surface_index];
+      int surface_index = face.SurfaceIndex;
+      Rhino.Geometry.Surface srf = brep.Surfaces[surface_index];
       if (null == srf)
         return Result.Failure;
 
       // Query the surface for user data
-      var ud = srf.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
+      SampleCsUserDataObject ud = srf.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
       if (null != ud)
       {
         RhinoApp.WriteLine("{0} = {1}", ud.Description, ud.Notes);
@@ -58,14 +58,14 @@ namespace SampleCsUserData.Commands
       }
 
       // Prompt for a string
-      var gs = new GetString();
+      GetString gs = new GetString();
       gs.SetCommandPrompt("Surface notes");
       gs.GetLiteralString();
       if (gs.CommandResult() != Result.Success)
         return gs.CommandResult();
 
       // Duplicate the brep
-      var new_brep = brep.DuplicateBrep();
+      Rhino.Geometry.Brep new_brep = brep.DuplicateBrep();
       if (null != new_brep)
       {
         // Get the brep face's underlying surface

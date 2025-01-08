@@ -10,7 +10,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects");
       go.SubObjectSelect = false;
       go.ReferenceObjectSelect = false;
@@ -19,9 +19,9 @@ namespace SampleCsCommands
         return go.CommandResult();
 
       string defaultName = null;
-      foreach (var objRef in go.Objects())
+      foreach (Rhino.DocObjects.ObjRef objRef in go.Objects())
       {
-        var rhObj = objRef.Object();
+        Rhino.DocObjects.RhinoObject rhObj = objRef.Object();
         if (null == rhObj)
           return Result.Failure;
 
@@ -34,28 +34,28 @@ namespace SampleCsCommands
         }
       }
 
-      var gs = new GetString();
+      GetString gs = new GetString();
       gs.SetCommandPrompt("Object name");
       gs.SetDefaultString(defaultName);
       gs.Get();
       if (gs.CommandResult() != Result.Success)
         return gs.CommandResult();
 
-      var newName = gs.StringResult();
+      string newName = gs.StringResult();
       newName = newName.Trim();
 
       if (defaultName.Equals(newName))
         return Result.Nothing;
 
-      foreach (var objRef in go.Objects())
+      foreach (Rhino.DocObjects.ObjRef objRef in go.Objects())
       {
-        var rhObj = objRef.Object();
+        Rhino.DocObjects.RhinoObject rhObj = objRef.Object();
         if (null == rhObj)
           return Result.Failure;
 
         if (!newName.Equals(rhObj.Attributes.Name))
         {
-          var attributes = rhObj.Attributes.Duplicate();
+          Rhino.DocObjects.ObjectAttributes attributes = rhObj.Attributes.Duplicate();
           attributes.Name = newName;
           doc.Objects.ModifyAttributes(rhObj, attributes, false);
         }

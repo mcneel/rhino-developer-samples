@@ -1,16 +1,16 @@
-﻿using System.ComponentModel;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System;
-using System.Collections.Generic;
-using Eto.Drawing;
+﻿using Eto.Drawing;
 using Eto.Forms;
 using Rhino;
 using Rhino.Display;
 using Rhino.Render;
+using Rhino.UI;
 using Rhino.UI.Controls;
 using RhinoWindows.ViewModels;
-using Rhino.UI;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace SampleCsRdk
 {
@@ -31,14 +31,14 @@ namespace SampleCsRdk
       {
         try
         {
-          var floats = value;
+          string floats = value;
           floats = floats.Trim();
           floats = floats.Replace("  ", " ");
           floats = floats.Replace(",", ".");
 
-          var fs = floats.Split(' ');
-          var realfloats = new float[fs.Length];
-          for (var i = 0; i < fs.Length; i++)
+          string[] fs = floats.Split(' ');
+          float[] realfloats = new float[fs.Length];
+          for (int i = 0; i < fs.Length; i++)
           {
             realfloats[i] = float.Parse(fs[i], NumberFormatInfo);
           }
@@ -76,7 +76,7 @@ namespace SampleCsRdk
         }
       };
 
-      var cob = new ColorObject { ColorAsString = "1.0 2.0 3.0" };
+      ColorObject cob = new ColorObject { ColorAsString = "1.0 2.0 3.0" };
       cob.PropertyChanged += CustomEtoCyclesUISection_PropertyChanged;
       DataContext = cob;
     }
@@ -85,14 +85,14 @@ namespace SampleCsRdk
     {
       if (DataContext is ColorObject cob)
       {
-        var c = cob.Color;
+        Color4f c = cob.Color;
         RhinoApp.WriteLine(String.Format("Custom Eto Section property changed: {0} {1},{2},{3}", e.PropertyName, c.R, c.G, c.B));
       }
     }
 
     private TextBox DataContextBinding()
     {
-      var label = new TextBox
+      TextBox label = new TextBox
       {
         Enabled = true
       };
@@ -109,7 +109,7 @@ namespace SampleCsRdk
   [Guid("2FEE12AE-1D16-4338-9D28-0BBD6EFE763D")]
   public class CustomEtoUiSectionMaterial : RenderMaterial
   {
-    public override string TypeName        { get { return "Test Eto Section Material"; } }
+    public override string TypeName { get { return "Test Eto Section Material"; } }
     public override string TypeDescription { get { return "Test Eto Section Material"; } }
 
     public CustomEtoUiSectionMaterial()
@@ -123,7 +123,7 @@ namespace SampleCsRdk
     {
       AddAutomaticUserInterfaceSection("Parameters", 0);
 
-      var s1 = new CustomEtoCyclesUISection();
+      CustomEtoCyclesUISection s1 = new CustomEtoCyclesUISection();
 
       //This line and the list will be unnecessary after Rhino 6.9
       m_sections_to_keep_alive.Add(s1);

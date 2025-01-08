@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using Rhino;
+using Rhino.Geometry;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Rhino;
-using Rhino.Geometry;
 
 namespace SampleCsRhino
 {
@@ -39,7 +39,7 @@ namespace SampleCsRhino
     /// </summary>
     public object GetPoint()
     {
-      var pt = new ArrayList(3) {2.0, 1.0, 0.0};
+      ArrayList pt = new ArrayList(3) { 2.0, 1.0, 0.0 };
       return pt.ToArray();
     }
 
@@ -48,18 +48,18 @@ namespace SampleCsRhino
     /// </summary>
     public object GetPoints()
     {
-      var pts = new ArrayList();
+      ArrayList pts = new ArrayList();
 
-      var p0 = new ArrayList {0.0, 0.0, 0.0};
+      ArrayList p0 = new ArrayList { 0.0, 0.0, 0.0 };
       pts.Add(p0.ToArray());
 
-      var p1 = new ArrayList {10.0, 0.0, 0.0};
+      ArrayList p1 = new ArrayList { 10.0, 0.0, 0.0 };
       pts.Add(p1.ToArray());
 
-      var p2 = new ArrayList {10.0, 10.0, 0.0};
+      ArrayList p2 = new ArrayList { 10.0, 10.0, 0.0 };
       pts.Add(p2.ToArray());
 
-      var p3 = new ArrayList {0.0, 10.0, 0.0};
+      ArrayList p3 = new ArrayList { 0.0, 10.0, 0.0 };
       pts.Add(p3.ToArray());
 
       return pts.ToArray();
@@ -70,13 +70,13 @@ namespace SampleCsRhino
     /// </summary>
     public object AddPoint(object pointObj)
     {
-      var point = new Point3d();
+      Point3d point = new Point3d();
       if (SampleCsRhinoHelpers.ConvertToPoint3d(pointObj, ref point))
       {
-        var doc = RhinoDoc.ActiveDoc;
+        RhinoDoc doc = RhinoDoc.ActiveDoc;
         if (null != doc)
         {
-          var object_id = doc.Objects.AddPoint(point);
+          System.Guid object_id = doc.Objects.AddPoint(point);
           if (!object_id.Equals(System.Guid.Empty))
           {
             doc.Views.Redraw();
@@ -92,16 +92,16 @@ namespace SampleCsRhino
     /// </summary>
     public object AddPoints(object pointsObj)
     {
-      var points = new List<Point3d>();
+      List<Point3d> points = new List<Point3d>();
       if (SampleCsRhinoHelpers.ConvertToPoint3dList(pointsObj, ref points))
       {
-        var doc = RhinoDoc.ActiveDoc;
+        RhinoDoc doc = RhinoDoc.ActiveDoc;
         if (null != doc)
         {
-          var object_ids = new ArrayList();
-          for (var i = 0; i < points.Count(); i++)
+          ArrayList object_ids = new ArrayList();
+          for (int i = 0; i < points.Count(); i++)
           {
-            var object_id = doc.Objects.AddPoint(points[i]);
+            System.Guid object_id = doc.Objects.AddPoint(points[i]);
             if (!object_id.Equals(System.Guid.Empty))
               object_ids.Add(object_id.ToString());
           }
@@ -121,7 +121,7 @@ namespace SampleCsRhino
     public bool RunScript(string script, bool echo)
     {
       script = script.TrimStart('!');
-      var rc = RhinoApp.RunScript(script, echo);
+      bool rc = RhinoApp.RunScript(script, echo);
       return rc;
     }
   }

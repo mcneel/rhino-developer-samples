@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Input;
+using System;
+using System.IO;
 
 namespace SampleCsCommands
 {
@@ -14,7 +14,7 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       string filename = null;
-      var rc = RhinoGet.GetString("Name of AutoCAD DWG file to open", false, ref filename);
+      Result rc = RhinoGet.GetString("Name of AutoCAD DWG file to open", false, ref filename);
       if (rc != Result.Success)
         return rc;
 
@@ -28,7 +28,7 @@ namespace SampleCsCommands
         return Result.Failure;
       }
 
-      var extension = Path.GetExtension(filename);
+      string extension = Path.GetExtension(filename);
       if (string.IsNullOrEmpty(extension))
         return Result.Nothing;
 
@@ -40,7 +40,7 @@ namespace SampleCsCommands
 
       // Make sure to surround filename string with double-quote characters
       // in case the path contains spaces.
-      var script = string.Format("_-Open \"{0}\" _Enter", filename);
+      string script = string.Format("_-Open \"{0}\" _Enter", filename);
       RhinoApp.RunScript(script, false);
 
       return Result.Success;

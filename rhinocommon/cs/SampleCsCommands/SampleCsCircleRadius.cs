@@ -11,20 +11,20 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Center of circle");
       gp.Get();
       if (gp.CommandResult() != Result.Success)
         return gp.CommandResult();
 
-      var view = gp.View();
+      Rhino.Display.RhinoView view = gp.View();
       if (null == view)
         return Result.Failure;
 
-      var plane = view.ActiveViewport.ConstructionPlane();
+      Plane plane = view.ActiveViewport.ConstructionPlane();
       plane.Origin = gp.Point();
 
-      var gr = new GetRadiusPoint(plane);
+      GetRadiusPoint gr = new GetRadiusPoint(plane);
       gr.SetCommandPrompt("Radius");
       gr.Get();
       if (gr.CommandResult() != Result.Success)
@@ -45,7 +45,7 @@ namespace SampleCsCommands
     private Plane BasePlane { get; }
     private bool CanDraw { get; set; }
     private System.Drawing.Color DrawColor { get; }
-    
+
     public Circle Circle { get; private set; }
 
     public GetRadiusPoint(Plane basePlane)
@@ -63,9 +63,9 @@ namespace SampleCsCommands
 
     public bool CalculateCircle(Point3d testPoint)
     {
-      var rc = false;
-      var point = BasePlane.ClosestPoint(testPoint);
-      var dir = point - BasePlane.Origin;
+      bool rc = false;
+      Point3d point = BasePlane.ClosestPoint(testPoint);
+      Vector3d dir = point - BasePlane.Origin;
       if (!dir.IsTiny())
       {
         Circle = new Circle(BasePlane, dir.Length);

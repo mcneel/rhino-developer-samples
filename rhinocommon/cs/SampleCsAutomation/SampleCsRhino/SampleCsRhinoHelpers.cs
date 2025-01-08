@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Rhino.Geometry;
+using System;
 using System.Collections.Generic;
-using Rhino.Geometry;
 
 namespace SampleCsRhino
 {
@@ -11,7 +11,7 @@ namespace SampleCsRhino
     /// </summary>
     public static bool ConvertToPoint3d(object pointObj, ref Point3d point)
     {
-      var rc = false;
+      bool rc = false;
       if (pointObj is Array point_arr && 3 == point_arr.Length)
       {
         try
@@ -43,13 +43,13 @@ namespace SampleCsRhino
     /// </summary>
     public static bool ConvertToPoint3dList(object pointsObj, ref List<Point3d> points)
     {
-      var rc = false;
-      var points_count = points.Count;
+      bool rc = false;
+      int points_count = points.Count;
       if (pointsObj is Array point_arr)
       {
-        for (var i = 0; i < point_arr.Length; i++)
+        for (int i = 0; i < point_arr.Length; i++)
         {
-          var point = new Point3d();
+          Point3d point = new Point3d();
           if (ConvertToPoint3d(point_arr.GetValue(i), ref point))
             points.Add(point);
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 
 namespace SampleCsCommands
@@ -48,13 +47,13 @@ namespace SampleCsCommands
       if (null == gp.PointOnCurve(out t1))
         return Result.Failure;
 
-      if (System.Math.Abs(t1-t0) < Rhino.RhinoMath.ZeroTolerance)
+      if (System.Math.Abs(t1 - t0) < Rhino.RhinoMath.ZeroTolerance)
         return Result.Failure;
 
       if (crv.IsClosed || (!crv.IsClosed && t0 > t1))
       {
-        double t = t0; 
-        t0 = t1; 
+        double t = t0;
+        t0 = t1;
         t1 = t;
       }
 

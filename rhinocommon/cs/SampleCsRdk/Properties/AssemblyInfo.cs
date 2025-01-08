@@ -1,7 +1,6 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using Rhino.PlugIns;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using Rhino.PlugIns;
 
 // Plug-In title and Guid are extracted from the following two attributes
 [assembly: AssemblyTitle("C# Test Render Plug-In (RDK)")]

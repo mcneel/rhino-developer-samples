@@ -1,8 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
+using System.Windows.Forms;
 
 namespace SampleCsCommands
 {
@@ -24,7 +23,7 @@ namespace SampleCsCommands
       Result res = Rhino.Input.RhinoGet.GetRectangle(out corners);
       if (res != Result.Success)
         return res;
- 
+
       Point3d p0 = corners[0];
       Point3d p1 = corners[1];
       Point3d p3 = corners[3];
@@ -35,7 +34,7 @@ namespace SampleCsCommands
 
       doc.Objects.AddPictureFrame(plane, filename, false, width, height, true, false);
       doc.Views.Redraw();
-      
+
       return Result.Success;
     }
   }

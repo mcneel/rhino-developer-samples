@@ -12,7 +12,7 @@ namespace SampleCsConsole
       try
       {
         const string rhino_id = "Rhino.Application";
-        var type = Type.GetTypeFromProgID(rhino_id);
+        Type type = Type.GetTypeFromProgID(rhino_id);
         rhino = Activator.CreateInstance(type);
       }
       catch
@@ -28,7 +28,7 @@ namespace SampleCsConsole
 
       // Wait until Rhino is initialized before calling into it
       const int bail_milliseconds = 15 * 1000;
-      var time_waiting = 0;
+      int time_waiting = 0;
       while (0 == rhino.IsInitialized())
       {
         Thread.Sleep(100);

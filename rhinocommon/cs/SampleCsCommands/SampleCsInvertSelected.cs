@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 
@@ -12,7 +10,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var filter = new ObjectEnumeratorSettings
+      ObjectEnumeratorSettings filter = new ObjectEnumeratorSettings
       {
         NormalObjects = true,
         LockedObjects = false,
@@ -21,10 +19,10 @@ namespace SampleCsCommands
         ReferenceObjects = true
       };
 
-      var rh_objects = doc.Objects.FindByFilter(filter);
-      foreach (var rh_obj in rh_objects)
+      RhinoObject[] rh_objects = doc.Objects.FindByFilter(filter);
+      foreach (RhinoObject rh_obj in rh_objects)
       {
-        var select = 0 == rh_obj.IsSelected(false) && rh_obj.IsSelectable();
+        bool select = 0 == rh_obj.IsSelected(false) && rh_obj.IsSelectable();
         rh_obj.Select(select);
       }
 

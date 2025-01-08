@@ -10,15 +10,15 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var layer_index = -1;
-      var current_state = false;
-      var rc = Rhino.UI.Dialogs.ShowSelectLayerDialog(ref layer_index, "Select Layer Objects", false, false, ref current_state);
+      int layer_index = -1;
+      bool current_state = false;
+      bool rc = Rhino.UI.Dialogs.ShowSelectLayerDialog(ref layer_index, "Select Layer Objects", false, false, ref current_state);
       if (!rc)
         return Result.Cancel;
 
       if (layer_index >= 0 && layer_index < doc.Layers.Count)
       {
-        var layer = doc.Layers[layer_index];
+        Layer layer = doc.Layers[layer_index];
         if (layer.IsDeleted)
           return Result.Nothing;
 
@@ -29,7 +29,7 @@ namespace SampleCsCommands
         }
 
         RhinoObject[] rh_objects = doc.Objects.FindByLayer(layer);
-        foreach (var rh_object in rh_objects)
+        foreach (RhinoObject rh_object in rh_objects)
         {
           if (rh_object.IsSelectable())
             rh_object.Select(true);

@@ -11,9 +11,9 @@ namespace SampleCsSkin
     public void DoHardWork()
     {
       // Do something time consuming...
-      for (var i = 1; i <= 100; i++)
+      for (int i = 1; i <= 100; i++)
       {
-        for (var j = 1; j <= 100000; j++)
+        for (int j = 1; j <= 100000; j++)
         {
           Thread.Sleep(0);
         }
@@ -25,7 +25,7 @@ namespace SampleCsSkin
 
     private void OnProgressChanged(int progress)
     {
-      var handler = ProgressChanged;
+      EventHandler<SplashScreenWorkerArgs> handler = ProgressChanged;
       if (handler != null)
       {
         handler(this, new SplashScreenWorkerArgs(progress));
@@ -34,7 +34,7 @@ namespace SampleCsSkin
 
     private void OnWorkerDone()
     {
-      var handler = HardWorkDone;
+      EventHandler handler = HardWorkDone;
       if (handler != null)
       {
         handler(this, EventArgs.Empty);

@@ -29,15 +29,15 @@ namespace SampleCsRectangleGrips
         CustomObjectGrips.RegisterGripsEnabler(m_grip_enabler.TurnOnGrips, typeof(SampleCsRectangleGrips));
       }
 
-      var go = new SampleCsGetRectangleCurve();
+      SampleCsGetRectangleCurve go = new SampleCsGetRectangleCurve();
       go.SetCommandPrompt("Select rectangles for point display");
       go.GetMultiple(1, 0);
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      for (var i = 0; i < go.ObjectCount; i++)
+      for (int i = 0; i < go.ObjectCount; i++)
       {
-        var rh_object = go.Object(i).Object();
+        Rhino.DocObjects.RhinoObject rh_object = go.Object(i).Object();
         if (null != rh_object)
         {
           if (rh_object.GripsOn)

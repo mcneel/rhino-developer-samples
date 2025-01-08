@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 
 namespace SampleCsCommands
@@ -12,13 +11,13 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var view = doc.Views.ActiveView;
+      Rhino.Display.RhinoView view = doc.Views.ActiveView;
       if (null == view)
         return Result.Failure;
 
-      var size = view.ActiveViewport.Size;
+      System.Drawing.Size size = view.ActiveViewport.Size;
 
-      var get = new Rhino.Input.Custom.GetInteger();
+      Rhino.Input.Custom.GetInteger get = new Rhino.Input.Custom.GetInteger();
       get.SetCommandPrompt("Viewport width in pixels");
       get.SetDefaultInteger(size.Width);
       get.SetLowerLimit(10, true);
@@ -37,7 +36,7 @@ namespace SampleCsCommands
 
       size.Height = get.Number();
 
-      var script = $"_-ViewportProperties _Size {size.Width} {size.Height} _Enter";
+      string script = $"_-ViewportProperties _Size {size.Width} {size.Height} _Enter";
       RhinoApp.RunScript(script, false);
 
       return Result.Success;

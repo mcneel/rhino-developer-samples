@@ -1,6 +1,6 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
+using System;
 
 namespace SampleCsCommands
 {
@@ -24,7 +24,7 @@ namespace SampleCsCommands
     {
       Rhino.Geometry.Mesh mesh = new Rhino.Geometry.Mesh();
 
-      mesh.Vertices.Add(new Rhino.Geometry.Point3d(0.5,  0.5,  0.5));
+      mesh.Vertices.Add(new Rhino.Geometry.Point3d(0.5, 0.5, 0.5));
       mesh.Vertices.Add(new Rhino.Geometry.Point3d(0.5, 0.5, -0.5));
       mesh.Vertices.Add(new Rhino.Geometry.Point3d(0.5, -0.5, 0.5));
       mesh.Vertices.Add(new Rhino.Geometry.Point3d(0.5, -0.5, -0.5));

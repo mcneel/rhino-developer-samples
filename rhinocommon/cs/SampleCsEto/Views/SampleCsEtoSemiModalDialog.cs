@@ -18,7 +18,7 @@ namespace SampleCsEto.Views
       Title = GetType().Name;
       WindowStyle = WindowStyle.Default;
 
-      var hello_button = new Button { Text = "Pick" };
+      Button hello_button = new Button { Text = "Pick" };
       hello_button.Click += (sender, e) => this.PushPickButton((s, e2) => PickFunction());
 
       DefaultButton = new Button { Text = "OK" };
@@ -27,14 +27,14 @@ namespace SampleCsEto.Views
       AbortButton = new Button { Text = "Cancel" };
       AbortButton.Click += (sender, e) => Close(DialogResult.Cancel);
 
-      var button_layout = new TableLayout
+      TableLayout button_layout = new TableLayout
       {
         Padding = new Padding(5, 10, 5, 5),
         Spacing = new Size(5, 5),
         Rows = { new TableRow(null, hello_button, null) }
       };
 
-      var defaults_layout = new TableLayout
+      TableLayout defaults_layout = new TableLayout
       {
         Padding = new Padding(5, 10, 5, 5),
         Spacing = new Size(5, 5),

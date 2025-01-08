@@ -1,8 +1,8 @@
-﻿using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using RhinoWindows;
 using RhinoWindows.Forms;
+using System.Windows.Forms;
 
 namespace SampleCsWinForms.Commands
 {
@@ -16,18 +16,18 @@ namespace SampleCsWinForms.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var result = Result.Cancel;
+      Result result = Result.Cancel;
 
       if (mode == RunMode.Interactive)
       {
-        var form = new Forms.SampleCsModalForm { StartPosition = FormStartPosition.CenterParent };
-        var dialog_result = form.ShowSemiModal(RhinoWinApp.MainWindow);
+        Forms.SampleCsModalForm form = new Forms.SampleCsModalForm { StartPosition = FormStartPosition.CenterParent };
+        DialogResult dialog_result = form.ShowSemiModal(RhinoWinApp.MainWindow);
         if (dialog_result == DialogResult.OK)
           result = Result.Success;
       }
       else
       {
-        var msg = string.Format("Scriptable version of {0} command not implemented.", EnglishName);
+        string msg = string.Format("Scriptable version of {0} command not implemented.", EnglishName);
         RhinoApp.WriteLine(msg);
       }
 

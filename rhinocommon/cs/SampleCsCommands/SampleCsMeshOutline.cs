@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SampleCsCommands
 {
@@ -44,10 +44,10 @@ namespace SampleCsCommands
 
       if (InObjects.Count > 0)
       {
-        var flags = Rhino.Render.CustomRenderMeshes.RenderMeshProvider.Flags.Recursive;
+        Rhino.Render.CustomRenderMeshes.RenderMeshProvider.Flags flags = Rhino.Render.CustomRenderMeshes.RenderMeshProvider.Flags.Recursive;
         foreach (RhinoObject obj in InObjects)
         {
-          var meshRefs = obj.RenderMeshes(MeshType.Render, null, null, ref flags, null, null).ToArray();
+          Rhino.Render.CustomRenderMeshes.Instance[] meshRefs = obj.RenderMeshes(MeshType.Render, null, null, ref flags, null, null).ToArray();
           if (null != meshRefs)
           {
             for (int i = 0; i < meshRefs.Length; i++)

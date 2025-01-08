@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -17,23 +17,23 @@ namespace SampleCsCommands
 
       // 1.) Get the runtime serial number that will be assigned to the
       // next Rhino Object that is created.
-      var sn_start = RhinoObject.NextRuntimeSerialNumber;
+      uint sn_start = RhinoObject.NextRuntimeSerialNumber;
 
       // 2.) Script the Rhino command here using Rhino.RhinoApp.RunScript.
       // http://developer.rhino3d.com/guides/rhinocommon/run_rhino_command_from_plugin/
 
       // 3.) Get the runtime serial number that will be assigned to the
       // next Rhino Object that is created.
-      var sn_end = RhinoObject.NextRuntimeSerialNumber;
+      uint sn_end = RhinoObject.NextRuntimeSerialNumber;
 
       // 4.) If the scripted command completed successfully and new objects were
       // added to the document, sn_end will be greater than sn_start. So all
       // that's left to do is find the newly added objects.
 
-      var objects = new List<RhinoObject>();
-      for (var sn = sn_start; sn < sn_end; sn++)
+      List<RhinoObject> objects = new List<RhinoObject>();
+      for (uint sn = sn_start; sn < sn_end; sn++)
       {
-        var obj = doc.Objects.Find(sn);
+        RhinoObject obj = doc.Objects.Find(sn);
         if (null != obj)
           objects.Add(obj);
       }

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
-using Rhino.Input;
 using Rhino.Input.Custom;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -62,7 +60,7 @@ namespace SampleCsCommands
       face_indices.Add(face_list[0].FaceIndex);
       while (idx < face_list.Count)
       {
-        var next_obj = face_list[idx].MeshObject;
+        MeshObject next_obj = face_list[idx].MeshObject;
         if (curr_obj.RuntimeSerialNumber == next_obj.RuntimeSerialNumber)
         {
           face_indices.Add(face_list[idx].FaceIndex);

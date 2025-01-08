@@ -11,16 +11,16 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var have_preselected_objects = false;
+      bool have_preselected_objects = false;
 
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects");
       go.GeometryFilter = ObjectType.AnyObject;
       go.GroupSelect = true;
       go.SubObjectSelect = false;
 
       while (true)
-      { 
+      {
         go.GetMultiple(1, 0);
 
         if (go.CommandResult() != Result.Success)
@@ -42,9 +42,9 @@ namespace SampleCsCommands
 
       if (have_preselected_objects)
       {
-        for (var i = 0; i < go.ObjectCount; i++)
+        for (int i = 0; i < go.ObjectCount; i++)
         {
-          var obj = go.Object(i).Object();
+          RhinoObject obj = go.Object(i).Object();
           obj?.Select(false);
         }
 

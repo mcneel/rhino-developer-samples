@@ -1,8 +1,8 @@
-﻿using System;
-using Rhino.DocObjects;
+﻿using Rhino.DocObjects;
 using Rhino.DocObjects.Custom;
 using Rhino.FileIO;
 using Rhino.Geometry;
+using System;
 
 namespace SampleCsMobilePlane
 {
@@ -50,7 +50,7 @@ namespace SampleCsMobilePlane
     /// </summary>
     protected override bool Read(BinaryArchiveReader archive)
     {
-      archive.Read3dmChunkVersion(out var major, out var minor);
+      archive.Read3dmChunkVersion(out int major, out int minor);
       if (1 == major && 0 == minor)
       {
         Plane = archive.ReadPlane();
@@ -79,7 +79,7 @@ namespace SampleCsMobilePlane
     {
       base.OnTransform(xform);
 
-      var p = Plane;
+      Plane p = Plane;
       p.Transform(xform);
       Plane = p;
 
@@ -96,10 +96,10 @@ namespace SampleCsMobilePlane
     /// </summary>
     public void UpdateConstructionPlane()
     {
-      var doc = Rhino.RhinoDoc.ActiveDoc;
+      Rhino.RhinoDoc doc = Rhino.RhinoDoc.ActiveDoc;
       if (null != doc)
       {
-        var view = doc.Views.Find(ViewportId);
+        Rhino.Display.RhinoView view = doc.Views.Find(ViewportId);
         if (null != view)
         {
           view.ActiveViewport.SetConstructionPlane(Plane);
@@ -117,10 +117,10 @@ namespace SampleCsMobilePlane
     /// </summary>
     public static bool IsAttached(RhinoObject obj)
     {
-      var rc = false;
+      bool rc = false;
       if (null != obj)
       {
-        var data = DataFromObject(obj);
+        SampleCsMobilePlaneUserData data = DataFromObject(obj);
         rc = null != data;
       }
       return rc;
@@ -131,10 +131,10 @@ namespace SampleCsMobilePlane
     /// </summary>
     public static bool Attach(RhinoObject obj, Plane plane, Guid viewportId)
     {
-      var rc = false;
+      bool rc = false;
       if (null != obj)
       {
-        var data = DataFromObject(obj);
+        SampleCsMobilePlaneUserData data = DataFromObject(obj);
         if (null != data)
         {
           data.Plane = plane;
@@ -160,10 +160,10 @@ namespace SampleCsMobilePlane
     /// </summary>
     public static bool Detach(RhinoObject obj)
     {
-      var rc = false;
+      bool rc = false;
       if (null != obj)
       {
-        var data = DataFromObject(obj);
+        SampleCsMobilePlaneUserData data = DataFromObject(obj);
         if (null != data)
           rc = obj.Geometry.UserData.Remove(data);
       }
@@ -175,10 +175,10 @@ namespace SampleCsMobilePlane
     /// </summary>
     public static bool IsEnabled(RhinoObject obj)
     {
-      var rc = false;
+      bool rc = false;
       if (null != obj)
       {
-        var data = DataFromObject(obj);
+        SampleCsMobilePlaneUserData data = DataFromObject(obj);
         if (null != data)
           rc = data.Enabled;
       }
@@ -190,10 +190,10 @@ namespace SampleCsMobilePlane
     /// </summary>
     public static bool Enable(RhinoObject obj, bool bEnable)
     {
-      var rc = false;
+      bool rc = false;
       if (null != obj)
       {
-        var data = DataFromObject(obj);
+        SampleCsMobilePlaneUserData data = DataFromObject(obj);
         if (null != data)
         {
           data.Enabled = bEnable;
@@ -208,10 +208,10 @@ namespace SampleCsMobilePlane
     /// </summary>
     public static bool Refresh(RhinoObject obj, bool bIgnoreEnabled)
     {
-      var rc = false;
+      bool rc = false;
       if (null != obj)
       {
-        var data = DataFromObject(obj);
+        SampleCsMobilePlaneUserData data = DataFromObject(obj);
         if (null != data)
         {
           if (bIgnoreEnabled || data.Enabled)

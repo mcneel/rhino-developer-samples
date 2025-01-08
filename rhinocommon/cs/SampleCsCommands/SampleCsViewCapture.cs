@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
+using System;
+using System.IO;
 
 namespace SampleCsCommands
 {
@@ -12,11 +12,11 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var view = doc.Views.ActiveView;
+      RhinoView view = doc.Views.ActiveView;
       if (null == view)
         return Result.Failure;
 
-      var view_capture = new ViewCapture
+      ViewCapture view_capture = new ViewCapture
       {
         Width = view.ActiveViewport.Size.Width,
         Height = view.ActiveViewport.Size.Height,
@@ -27,11 +27,11 @@ namespace SampleCsCommands
         TransparentBackground = true
       };
 
-      var bitmap = view_capture.CaptureToBitmap(view);
+      System.Drawing.Bitmap bitmap = view_capture.CaptureToBitmap(view);
       if (null != bitmap)
       {
-        var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        var filename = Path.Combine(path, "SampleCsViewCapture.png");
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filename = Path.Combine(path, "SampleCsViewCapture.png");
         bitmap.Save(filename, System.Drawing.Imaging.ImageFormat.Png);
       }
 

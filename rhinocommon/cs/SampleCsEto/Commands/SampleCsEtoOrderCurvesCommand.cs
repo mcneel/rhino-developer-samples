@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Eto.Drawing;
+using Eto.Forms;
 using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
-using Eto.Drawing;
-using Eto.Forms;
 using Rhino.Input.Custom;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace SampleCsEto.Commands
 {
@@ -20,7 +20,7 @@ namespace SampleCsEto.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select curves");
       go.GeometryFilter = ObjectType.Curve;
       go.SubObjectSelect = false;
@@ -28,25 +28,25 @@ namespace SampleCsEto.Commands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var curves = new ObservableCollection<CurveItem>();
-      foreach (var objref in go.Objects())
+      ObservableCollection<CurveItem> curves = new ObservableCollection<CurveItem>();
+      foreach (ObjRef objref in go.Objects())
       {
-        var rhinoObj = objref.Object();
+        RhinoObject rhinoObj = objref.Object();
         if (null == rhinoObj)
           return Result.Failure;
 
         if (rhinoObj is CurveObject curveObj)
         {
-          var curveItem = new CurveItem(curveObj);
+          CurveItem curveItem = new CurveItem(curveObj);
           curves.Add(curveItem);
         }
       }
 
-      var dialog = new OrderCurvesDialog(curves);
+      OrderCurvesDialog dialog = new OrderCurvesDialog(curves);
       dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow);
       if (dialog.Result == Result.Success)
       {
-        foreach (var id in dialog.OrderedIds)
+        foreach (Guid id in dialog.OrderedIds)
         {
           RhinoApp.WriteLine(id.ToString());
         }
@@ -91,12 +91,12 @@ namespace SampleCsEto.Commands
     /// </summary>
     private TableLayout CreateLayout()
     {
-      var label = new Label { Text = "Drag curves to reorder:" };
-      var gridRow = CreateGridTableRow();
+      Label label = new Label { Text = "Drag curves to reorder:" };
+      TableRow gridRow = CreateGridTableRow();
       return new TableLayout
       {
-        Padding =  new Padding(8),
-        Spacing =  new Size(5, 5),
+        Padding = new Padding(8),
+        Spacing = new Size(5, 5),
         Rows = { label, gridRow }
       };
     }
@@ -134,7 +134,7 @@ namespace SampleCsEto.Commands
       m_grid.DragOver += OnGridViewDragOver;
       m_grid.DragDrop += OnGridViewDragDrop;
 
-      var tableRow = new TableRow(m_grid) { ScaleHeight = true };
+      TableRow tableRow = new TableRow(m_grid) { ScaleHeight = true };
       return tableRow;
     }
 
@@ -159,10 +159,10 @@ namespace SampleCsEto.Commands
         && m_mousedown_point != null
         && m_mousedown_point.Value.Distance(e.Location) >= g_drag_offset)
       {
-        var cell = m_grid.GetCellAt(e.Location);
+        GridCell cell = m_grid.GetCellAt(e.Location);
         if (cell.Item != null)
         {
-          var data = new DataObject();
+          DataObject data = new DataObject();
           data.SetObject(m_grid.SelectedRows.ToArray(), g_drag_type);
           m_grid.DoDragDrop(data, DragEffects.Move);
           m_dragging = true;
@@ -197,7 +197,7 @@ namespace SampleCsEto.Commands
     private void OnGridViewDragOver(object sender, DragEventArgs e)
     {
       base.OnDragOver(e);
-      var info = m_grid.GetDragInfo(e);
+      GridViewDragInfo info = m_grid.GetDragInfo(e);
       if (info != null && e.Data.Contains(g_drag_type))
       {
         info.RestrictToInsert();
@@ -211,24 +211,24 @@ namespace SampleCsEto.Commands
     private void OnGridViewDragDrop(object sender, DragEventArgs e)
     {
       base.OnDragDrop(e);
-      var info = m_grid.GetDragInfo(e);
+      GridViewDragInfo info = m_grid.GetDragInfo(e);
       if (info != null && e.Data.Contains(g_drag_type))
       {
-        var index = info.InsertIndex;
+        int index = info.InsertIndex;
         if (index >= 0 && e.Data.GetObject(g_drag_type) is int[] source_rows)
         {
-          var data = new List<CurveItem>();
-          foreach (var row in source_rows.OrderByDescending(r => r))
+          List<CurveItem> data = new List<CurveItem>();
+          foreach (int row in source_rows.OrderByDescending(r => r))
           {
-            var item = m_curves[row];
+            CurveItem item = m_curves[row];
             data.Add(item);
             m_curves.RemoveAt(row);
             if (row < index)
               index--;
           }
 
-          var selectedIndex = index;
-          foreach (var item in data)
+          int selectedIndex = index;
+          foreach (CurveItem item in data)
             m_curves.Insert(index++, item);
 
           m_grid.SelectedRow = selectedIndex;

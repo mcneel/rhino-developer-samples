@@ -10,16 +10,16 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var idef_table = doc.InstanceDefinitions;
-      var idef_count = idef_table.ActiveCount;
+      Rhino.DocObjects.Tables.InstanceDefinitionTable idef_table = doc.InstanceDefinitions;
+      int idef_count = idef_table.ActiveCount;
       if (0 == idef_count)
       {
         RhinoApp.WriteLine("SampleDumpBlockTree");
         return Result.Success;
       }
 
-      var indent = 0;
-      for (var i = 0; i < idef_count; i++)
+      int indent = 0;
+      for (int i = 0; i < idef_count; i++)
         DumpInstanceDefinition(idef_table[i], ref indent);
 
       return Result.Success;
@@ -35,18 +35,18 @@ namespace SampleCsCommands
         const string line = "\u2500";
         const string corner = "\u2514";
 
-        var node = (0 == indent) ? line : corner;
-        var str = new string(' ', indent * 2);
+        string node = (0 == indent) ? line : corner;
+        string str = new string(' ', indent * 2);
         RhinoApp.WriteLine($"{str}{node} Instance definition {idef.Index} = {idef.Name}");
 
-        var idef_object_count = idef.ObjectCount;
+        int idef_object_count = idef.ObjectCount;
         if (idef_object_count > 0)
         {
           indent++;
           str = new string(' ', indent * 2);
-          for (var i = 0; i < idef_object_count; i++)
+          for (int i = 0; i < idef_object_count; i++)
           {
-            var obj = idef.Object(i);
+            RhinoObject obj = idef.Object(i);
             if (null != obj)
             {
               if (obj is InstanceObject iref)
@@ -57,7 +57,7 @@ namespace SampleCsCommands
           }
           indent--;
         }
-      }   
+      }
     }
   }
 }

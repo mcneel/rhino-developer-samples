@@ -1,6 +1,6 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
+using System;
 
 namespace SampleCsCommands
 {
@@ -27,7 +27,7 @@ namespace SampleCsCommands
       // Add our escape key event handler
       RhinoApp.EscapeKeyPressed += RhinoApp_EscapeKeyPressed;
 
-      for (var i = 0; i < 10000; i++)
+      for (int i = 0; i < 10000; i++)
       {
         // Pauses to keep Windows message pump alive
         RhinoApp.Wait();

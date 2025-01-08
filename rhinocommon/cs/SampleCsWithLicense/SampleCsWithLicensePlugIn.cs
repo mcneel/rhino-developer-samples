@@ -1,6 +1,6 @@
-﻿using System;
-using Rhino.PlugIns;
+﻿using Rhino.PlugIns;
 using Rhino.UI;
+using System;
 
 namespace SampleCsWithLicense
 {
@@ -39,7 +39,7 @@ namespace SampleCsWithLicense
     /// </summary>
     protected override LoadReturnCode OnLoad(ref string errorMessage)
     {
-      var rc = GetLicense(Capabilities, TextMask, OnValidateProductKey, OnLeaseChanged);
+      bool rc = GetLicense(Capabilities, TextMask, OnValidateProductKey, OnLeaseChanged);
       if (!rc)
         return LoadReturnCode.ErrorNoDialog;
 
@@ -55,7 +55,7 @@ namespace SampleCsWithLicense
     {
       get
       {
-        var size = RhinoWindows.Forms.Dpi.ScaleInt(32);
+        int size = RhinoWindows.Forms.Dpi.ScaleInt(32);
         return DrawingUtilities.LoadIconWithScaleDown("SampleCsWithLicense.Resources.SampleCs.ico", size);
       }
     }
@@ -104,7 +104,7 @@ namespace SampleCsWithLicense
         RequiresOnlineValidation = false // This sample current does not support Rhino accounts.
       };
 
-      var evaluation = false;
+      bool evaluation = false;
       if (string.IsNullOrEmpty(licenseKey))
       {
         licenseKey = EvalLicenseKey;
@@ -147,12 +147,12 @@ namespace SampleCsWithLicense
       // then just this value to null.
       if (evaluation)
       {
-        var today = DateTime.UtcNow;
-        var expire = today.AddDays(90);
+        DateTime today = DateTime.UtcNow;
+        DateTime expire = today.AddDays(90);
         licenseData.DateToExpire = expire;
       }
 
-      var rc = licenseData.IsValid();
+      bool rc = licenseData.IsValid();
 
       return ValidateResult.Success;
     }

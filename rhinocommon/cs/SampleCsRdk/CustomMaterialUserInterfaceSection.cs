@@ -1,15 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Drawing;
-using Rhino.Display;
-using Rhino.Render;
-using Rhino.Render.UI;
-using System.Collections.Generic;
+﻿using Rhino.Display;
 using Rhino.UI;
-using Rhino.UI.Controls;
-using Rhino.UI.Controls.DataSource;
-using System.Diagnostics;
 using RhinoWindows.Forms;
+using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace SampleCsRdk
 {
@@ -88,7 +82,7 @@ namespace SampleCsRdk
       subNodeControl.ParentInstanceList = m_view_model.SelectedMaterialIdList;
 
       int? tbPos = m_view_model.TrackBarPositionVaries;
-      if(tbPos!=null)
+      if (tbPos != null)
       {
         trackPositionLabel.Text = $"{tbPos.Value}";
       }
