@@ -2,7 +2,7 @@ import rhino3dm
 
 model = rhino3dm.File3dm()
 
-ef = rhino3dm.EmbeddedFile.Read2('./rhinologo.png')
+ef = rhino3dm.EmbeddedFile.Read('./rhinologo.png')
 print('FileName: ' + ef.Filename)
 ef.Filename = 'rhinologo.png'
 print('FileName: ' + ef.Filename)

@@ -1,32 +1,30 @@
-#requires rhino3dm.py >= 8.6.0
 import rhino3dm
 
 model = rhino3dm.File3dm()
-model.ApplicationName = 'python'
-model.ApplicationDetails = 'rhino-developer-samples'
-model.ApplicationUrl = 'https://rhino3d.com'
 
-# create objects to be in instance definition
-circle = rhino3dm.Circle(10)
+#create geometry
+sphere1 = rhino3dm.Sphere( rhino3dm.Point3d( 0,0,0 ), 10)
+sphere2 = rhino3dm.Sphere( rhino3dm.Point3d( 10,10,10 ), 4)
+geometry = (sphere1.ToBrep(), sphere2.ToBrep())
 
-bbox = rhino3dm.BoundingBox(-10,-10,0, 10,10,20)
-box = rhino3dm.Box(bbox)
-extrusion = rhino3dm.Extrusion.CreateBoxExtrusion(box, False) #this extrusion is fine
+#create attributes
+attr1 = rhino3dm.ObjectAttributes()
+attr1.Name = "Sphere 1"
+attr2 = rhino3dm.ObjectAttributes()
+attr2.Name = "Sphere 2"
+attributes = (attr1, attr2)
+basepoint = rhino3dm.Point3d( 0,0,0 )
 
-objects = [circle.ToNurbsCurve(), extrusion] #objects need to derive from GeometryBase, hence circle.ToNurbsCurve()
+#create idef
+index = model.InstanceDefinitions.Add("name", "description", "url", "urltag", basepoint, geometry, attributes)
+print("Index of new idef: " + str(index))
 
-#create the instance definition
-oa = rhino3dm.ObjectAttributes()
-attributes = [oa, oa]
-p1 = rhino3dm.Point3d(0,0,0)
-#index = model.InstanceDefinitions.AddInstanceDefinition('test', 'an idef', 'https://www.rhino3d.com', 'tag', p1, objects, attributes)
-
-index = model.InstanceDefinitions.AddInstanceDefinition2( 'test', 'an idef', 'https://www.rhino3d.com', 'tag', p1,(circle.ToNurbsCurve(), extrusion), (oa, oa) )
-
-#add a reference to the Instance Definition to the model
+#create iref
 idef = model.InstanceDefinitions.FindIndex(index)
-xform = rhino3dm.Transform(100)
-iref = rhino3dm.InstanceReference(idef.Id, xform)
-model.Objects.AddInstanceObject(iref)
+xf = rhino3dm.Transform(10.00)
+iref = rhino3dm.InstanceReference(idef.Id, xf)
+uuid = model.Objects.Add(iref, None)
+print("id of new iref: " + str(uuid))
 
-model.Write("idef_py.3dm", 0)
+#save file
+model.Write('../models/InstanceDefinition.3dm',8)
