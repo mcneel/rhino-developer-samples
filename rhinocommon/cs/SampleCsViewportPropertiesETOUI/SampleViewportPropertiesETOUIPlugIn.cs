@@ -1,7 +1,6 @@
 ﻿using Rhino;
 using Rhino.Commands;
 using Rhino.UI;
-using System.Collections.Generic;
 
 namespace SampleViewportPropertiesETOUI
 {

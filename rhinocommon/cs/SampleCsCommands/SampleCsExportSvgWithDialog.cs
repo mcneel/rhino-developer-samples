@@ -1,9 +1,9 @@
-﻿using System;
-using Eto.Forms;
+﻿using Eto.Forms;
 using Rhino;
 using Rhino.Commands;
-using Rhino.UI.Forms;
 using Rhino.UI;
+using Rhino.UI.Forms;
+using System;
 using Command = Rhino.Commands.Command;
 
 namespace SampleCsCommands
@@ -18,9 +18,9 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      
+
       //Create an ETO file save dialog
-      var save_dialog = new Eto.Forms.SaveFileDialog()
+      Eto.Forms.SaveFileDialog save_dialog = new Eto.Forms.SaveFileDialog()
       {
         CheckFileExists = false,
         Title = "Export SVG"
@@ -31,21 +31,21 @@ namespace SampleCsCommands
       save_dialog.CurrentFilter = save_dialog.Filters[0];
 
       //Show the file save dialog
-      var result = save_dialog.ShowDialog(RhinoEtoApp.MainWindow);
+      DialogResult result = save_dialog.ShowDialog(RhinoEtoApp.MainWindow);
       if (result != DialogResult.Ok)
         return Result.Cancel;
 
       //The previous Print dialog settings are stored in the Commands.rhp plug-in. We can get its previous settings directly from the plug-in. 
-      Guid.TryParse("02bf604d-799c-4cc2-830e-8d72f21b14b7", out var commands_id);
-      
+      Guid.TryParse("02bf604d-799c-4cc2-830e-8d72f21b14b7", out Guid commands_id);
+
       //Show the Print Dialog configured for SVG export. 
-      var svg_export_view_capture_settings = PrintDialogUi.EtoExportSvg(doc.RuntimeSerialNumber, PersistentSettings.FromPlugInId(commands_id));
+      Rhino.Display.ViewCaptureSettings svg_export_view_capture_settings = PrintDialogUi.EtoExportSvg(doc.RuntimeSerialNumber, PersistentSettings.FromPlugInId(commands_id));
 
       if (svg_export_view_capture_settings == null)
         return Result.Cancel;
 
       //Get the SVG Xml settings from the ViewCapture. 
-      var capture_to_svg = Rhino.Display.ViewCapture.CaptureToSvg(svg_export_view_capture_settings);
+      System.Xml.XmlDocument capture_to_svg = Rhino.Display.ViewCapture.CaptureToSvg(svg_export_view_capture_settings);
       if (capture_to_svg == null)
         return Result.Cancel;
 

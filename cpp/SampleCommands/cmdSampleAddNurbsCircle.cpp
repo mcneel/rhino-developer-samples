@@ -42,7 +42,7 @@ CRhinoCommand::result CCommandSampleAddNurbsCircle::RunCommand(const CRhinoComma
   int degree = 2;
   int order = degree + 1;
   int cv_count = 9;
-  int knot_count = cv_count + degree - 1;
+  //int knot_count = cv_count + degree - 1;
 
   // Make a rational, degree 2 NURBS curve with 9 control points
   ON_NurbsCurve nc(dimension, bIsRational, order, cv_count);

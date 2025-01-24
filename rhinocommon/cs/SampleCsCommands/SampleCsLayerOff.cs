@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
+using System.Linq;
 
 namespace SampleCsCommands
 {
@@ -10,9 +10,9 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var layer_index = doc.Layers.CurrentLayerIndex;
-      var current_state = false;
-      var res = Rhino.UI.Dialogs.ShowSelectLayerDialog(ref layer_index, "Select Layer", false, false, ref current_state);
+      int layer_index = doc.Layers.CurrentLayerIndex;
+      bool current_state = false;
+      bool res = Rhino.UI.Dialogs.ShowSelectLayerDialog(ref layer_index, "Select Layer", false, false, ref current_state);
       if (!res)
         return Result.Cancel;
 
@@ -22,7 +22,7 @@ namespace SampleCsCommands
       if (layer_index == doc.Layers.CurrentLayerIndex)
         return Result.Nothing; // Cannot hide the current layer
 
-      var layer = doc.Layers[layer_index];
+      Rhino.DocObjects.Layer layer = doc.Layers[layer_index];
       layer.IsVisible = false;
       layer.SetPersistentVisibility(false);
 
@@ -39,12 +39,12 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Find the layer index by full path name
-      var layer_index = doc.Layers.FindByFullPath("TO-DRAW", -1);
+      int layer_index = doc.Layers.FindByFullPath("TO-DRAW", -1);
       if (-1 == layer_index)
         return Result.Cancel;
 
       // Get the layer object
-      var layer = doc.Layers[layer_index];
+      Rhino.DocObjects.Layer layer = doc.Layers[layer_index];
       if (null == layer)
         return Result.Failure;
 
@@ -53,7 +53,7 @@ namespace SampleCsCommands
         return Result.Cancel;
 
       // Find the page view
-      var page_view = doc.Views.GetPageViews().First(
+      Rhino.Display.RhinoPageView page_view = doc.Views.GetPageViews().First(
         item => item.PageName.Equals("PANEL_01", System.StringComparison.OrdinalIgnoreCase)
         );
 
@@ -61,9 +61,9 @@ namespace SampleCsCommands
         return Result.Cancel;
 
       // Process each detail
-      foreach (var detail in page_view.GetDetailViews())
+      foreach (Rhino.DocObjects.DetailViewObject detail in page_view.GetDetailViews())
       {
-        var viewport_id = detail.Viewport.Id;
+        System.Guid viewport_id = detail.Viewport.Id;
 
         // Re-acquire the layer object, as the underlying
         // object may have been modified
@@ -80,7 +80,7 @@ namespace SampleCsCommands
       }
 
       // Redraw if needed
-      var view = doc.Views.ActiveView;
+      Rhino.Display.RhinoView view = doc.Views.ActiveView;
       if (null != view && view.ActiveViewportID == page_view.ActiveViewportID)
         doc.Views.Redraw();
 

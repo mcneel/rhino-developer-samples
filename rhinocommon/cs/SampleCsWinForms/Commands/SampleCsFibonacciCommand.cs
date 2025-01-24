@@ -1,7 +1,7 @@
-﻿using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using SampleCsWinForms.Forms;
+using System.Windows.Forms;
 
 namespace SampleCsWinForms.Commands
 {
@@ -15,7 +15,7 @@ namespace SampleCsWinForms.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var form = new SampleCsFibonacciForm {StartPosition = FormStartPosition.CenterParent};
+      SampleCsFibonacciForm form = new SampleCsFibonacciForm { StartPosition = FormStartPosition.CenterParent };
       form.ShowDialog();
       return Result.Success;
     }

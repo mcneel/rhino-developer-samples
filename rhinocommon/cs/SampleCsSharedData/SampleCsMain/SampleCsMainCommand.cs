@@ -36,7 +36,7 @@ namespace SampleCsMain
       int list_index = go.AddOption("List");
 
       go.Get();
-      if (go.CommandResult() !=Result.Success)
+      if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
       CommandLineOption option = go.Option();

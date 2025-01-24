@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
@@ -17,23 +16,23 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects");
       go.GetMultiple(1, 0);
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      foreach (var rhinoObjectRef in go.Objects())
+      foreach (ObjRef rhinoObjectRef in go.Objects())
       {
         RhinoObject rhinoObject = rhinoObjectRef.Object();
         if (null == rhinoObject)
           continue;
 
         // Get the object material, this material is used where subobject material is not defined
-        var objectMaterial = rhinoObject.GetMaterial(true);
+        Material objectMaterial = rhinoObject.GetMaterial(true);
 
         // Get the render meshes from the object
-        var meshes = rhinoObject.GetMeshes(MeshType.Render);
+        Mesh[] meshes = rhinoObject.GetMeshes(MeshType.Render);
 
         // If there are no render meshes, create them and get them again
         if (meshes == null || meshes.Length == 0)
@@ -51,12 +50,12 @@ namespace SampleCsCommands
         // Iterate through the meshes, each polysurface face has a corresponding mesh
         for (int mi = 0; mi < meshes.Length; mi++)
         {
-          var mesh = meshes[mi];
+          Mesh mesh = meshes[mi];
           if (null == mesh)
             continue;
 
           // Figure out which material to use for this mesh
-          var meshMaterial = objectMaterial;
+          Material meshMaterial = objectMaterial;
           if (rhinoObject.HasSubobjectMaterials)
           {
             // If this object has subobject materials, figure out what is the component type of its subobject
@@ -70,19 +69,19 @@ namespace SampleCsCommands
 
             // Ask if there is a subobject material for the current subobject
             ComponentIndex ci = new ComponentIndex(ciSubMaterialComponentType, mi);
-            var subObjectMaterial = rhinoObject.GetMaterial(ci);
+            Material subObjectMaterial = rhinoObject.GetMaterial(ci);
             if (subObjectMaterial != null)
               meshMaterial = subObjectMaterial;
           }
 
-          RhinoApp.WriteLine($"  Mesh {mi} material {meshMaterial.Id}");  
+          RhinoApp.WriteLine($"  Mesh {mi} material {meshMaterial.Id}");
 
           // Set up cached texture coordinates based on the material texture channels
           mesh.SetCachedTextureCoordinatesFromMaterial(rhinoObject, meshMaterial);
 
           // Get all the textures used by the material
-          var textures = meshMaterial.GetTextures();
-          foreach (var texture in textures)
+          Texture[] textures = meshMaterial.GetTextures();
+          foreach (Texture texture in textures)
           {
             if (texture == null)
               continue;

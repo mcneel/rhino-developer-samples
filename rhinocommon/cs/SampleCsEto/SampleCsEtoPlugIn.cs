@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.UI;
+using System.Collections.Generic;
 
 namespace SampleCsEto
 {
@@ -19,19 +19,19 @@ namespace SampleCsEto
 
     protected override void DocumentPropertiesDialogPages(RhinoDoc doc, List<OptionsDialogPage> pages)
     {
-      var page = new Views.SampleCsEtoOptionsPage();
+      Views.SampleCsEtoOptionsPage page = new Views.SampleCsEtoOptionsPage();
       pages.Add(page);
     }
 
     protected override void OptionsDialogPages(List<OptionsDialogPage> pages)
     {
-      var page = new Views.SampleCsEtoOptionsPage();
+      Views.SampleCsEtoOptionsPage page = new Views.SampleCsEtoOptionsPage();
       pages.Add(page);
     }
 
     protected override void ObjectPropertiesPages(ObjectPropertiesPageCollection collection)
     {
-      var page = new Views.SampleCsEtoPropertiesPage();
+      Views.SampleCsEtoPropertiesPage page = new Views.SampleCsEtoPropertiesPage();
       collection.Add(page);
     }
   }

@@ -1,8 +1,8 @@
-﻿using System.IO;
-using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Input.Custom;
+using System.IO;
+using System.Windows.Forms;
 
 namespace SampleCsCommands
 {
@@ -14,7 +14,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects to export");
       go.GroupSelect = true;
       go.GetMultiple(1, 0);
@@ -24,7 +24,7 @@ namespace SampleCsCommands
       string path;
       if (mode == RunMode.Interactive)
       {
-        var savefile = new SaveFileDialog
+        SaveFileDialog savefile = new SaveFileDialog
         {
           FileName = @"Untitled.dxf",
           Filter = @"AutoCAD Drawing Exchange (*.dxf)|*.dxf||"
@@ -36,7 +36,7 @@ namespace SampleCsCommands
       }
       else
       {
-        var gs = new GetString();
+        GetString gs = new GetString();
         gs.SetCommandPrompt("Name of AutoCAD Drawing Exchange file to save");
         gs.Get();
         if (gs.CommandResult() != Result.Success)
@@ -56,7 +56,7 @@ namespace SampleCsCommands
       // string contains spaces, we will want to surround the string
       // with double-quote characters so the command line parser
       // will deal with it property.
-      var script = $"_-Export \"{path}\" _Enter";
+      string script = $"_-Export \"{path}\" _Enter";
       RhinoApp.RunScript(script, false);
 
       return Result.Success;

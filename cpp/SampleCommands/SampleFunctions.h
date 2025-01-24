@@ -156,3 +156,55 @@ bool IsRhinoRunningAsExe();
 /// Returns true if Rhino has input focus.
 /// </summary>
 bool RhinoHasFocus();
+
+/// <summary>
+/// Returns true if the Rhino main window has been re-parented to some other application window.
+/// Returns true if the Rhino main window parent is the Windows Desktop.
+/// </summary>
+bool IsRhinoReparented();
+
+/// <summary>
+/// Returns module handle where "this" function is running in: EXE or DLL.
+/// </summary>
+HMODULE FancyGetModuleHandle();
+
+
+/// <summary>
+/// CRhinoDoc::BeginUndoRecord and CRhinoDoc::EndUndoRecord helper.
+/// Undo record will be ended when classes goes out of scope.
+/// Useful in modeless user interface code that modifies document objects.
+/// Not useful Rhino command, as Rhino's command handler tracks undo records.
+/// </summary>
+class CRhinoDocUndoRecordHelper
+{
+public:
+  /// <summary>
+  /// Begin a CRhinoDoc undo record.
+  /// </summary>
+  /// <param name="doc">The active document.</param>
+  /// <param name="pszDescription">The undo description.</param>
+  CRhinoDocUndoRecordHelper(CRhinoDoc& doc, const wchar_t* pszDescription);
+
+  /// <summary>
+  /// Begin a CRhinoDoc undo record.
+  /// </summary>
+  /// <param name="docRuntimeSerialNumber">The active document's runtime serial number.</param>
+  /// <param name="pszDescription">The undo description.</param>
+  CRhinoDocUndoRecordHelper(unsigned int docRuntimeSerialNumber, const wchar_t* pszDescription);
+
+  /// <summary>
+  /// Class destructor, ends the undo record.
+  /// </summary>
+  ~CRhinoDocUndoRecordHelper();
+
+  /// <summary>
+  /// Ends the undo record.
+  /// </summary>
+  /// <returns>true if the undo record was ended.</returns>
+  /// <remarks>The class destructor calls this method.</returns>
+  bool EndUndoRecord();
+
+private:
+  unsigned int m_docRuntimeSerialNumber = 0;
+  unsigned int m_undoRecordSerialNumber = 0;
+};

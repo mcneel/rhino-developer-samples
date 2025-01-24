@@ -1,11 +1,11 @@
-﻿using System.Drawing;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.DocObjects;
-using Rhino.Input;
 using Rhino.Geometry;
+using Rhino.Input;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -23,22 +23,22 @@ namespace SampleCsCommands
       }
       else
       {
-        if (RhinoGet.GetOneObject("Select surface", false, ObjectType.Surface, out var obj) == Result.Success)
+        if (RhinoGet.GetOneObject("Select surface", false, ObjectType.Surface, out ObjRef obj) == Result.Success)
         {
           m_conduit.Points.Clear();
-          var surface = obj.Surface();
-          var u_domain = surface.Domain(0);
+          Surface surface = obj.Surface();
+          Interval u_domain = surface.Domain(0);
           u_domain.MakeIncreasing();
-          var v_domain = surface.Domain(1);
+          Interval v_domain = surface.Domain(1);
           v_domain.MakeIncreasing();
           const int count = 10;
-          for (var i = 0; i < count + 1; i++)
+          for (int i = 0; i < count + 1; i++)
           {
-            for (var j = 0; j < count + 1; j++)
+            for (int j = 0; j < count + 1; j++)
             {
-              var u = u_domain.Min + u_domain.Length * i / count;
-              var v = v_domain.Min + v_domain.Length * j / count;
-              var point = surface.PointAt(u, v);
+              double u = u_domain.Min + u_domain.Length * i / count;
+              double v = v_domain.Min + v_domain.Length * j / count;
+              Point3d point = surface.PointAt(u, v);
               m_conduit.Points.Add(point);
             }
           }
@@ -58,7 +58,7 @@ namespace SampleCsCommands
 
     protected override void PostDrawObjects(DrawEventArgs e)
     {
-      foreach (var point in Points)
+      foreach (Point3d point in Points)
         e.Display.DrawPoint(point, PointStyle.Pin, Color.Lavender, Color.Blue, 1, .1f, .4f, 0, false, false);
     }
   }

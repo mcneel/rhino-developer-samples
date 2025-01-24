@@ -1,7 +1,7 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
+using System;
 
 namespace SampleCsCommands
 {
@@ -17,7 +17,7 @@ namespace SampleCsCommands
         return rc;
       if (null == objref)
         return Result.Failure;
-      
+
       Rhino.Geometry.Mesh mesh = objref.Mesh();
       if (null == mesh)
         return Result.Failure;

@@ -1,9 +1,9 @@
-﻿using System.Drawing;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.DocObjects;
 using Rhino.Geometry;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -25,24 +25,24 @@ namespace SampleCsCommands
   {
     protected override void PostDrawObjects(DrawEventArgs e)
     {
-      var points = new[] { new Point3d(2, 2, 0), new Point3d(2, -6, 0), new Point3d(5, -6, 0), new Point3d(5, 2, 0) };
+      Point3d[] points = new[] { new Point3d(2, 2, 0), new Point3d(2, -6, 0), new Point3d(5, -6, 0), new Point3d(5, 2, 0) };
       e.Display.DrawPolygon(points, Color.Black, false);
 
-      var fill = Color.FromArgb(250, Color.White);
-      var center = new Point3d(2, 2, 0);
-      var off_x = new Point3d(3, 2, 0);
-      var off_y = new Point3d(2, 3, 0);
-      var radius = 3;
+      Color fill = Color.FromArgb(250, Color.White);
+      Point3d center = new Point3d(2, 2, 0);
+      Point3d off_x = new Point3d(3, 2, 0);
+      Point3d off_y = new Point3d(2, 3, 0);
+      int radius = 3;
 
       e.Display.DrawPoint(center, PointStyle.RoundControlPoint, Color.Black, fill, radius, 1, 0, 0, true, true);
 
-      var world_to_screen = e.Viewport.GetTransform(CoordinateSystem.World, CoordinateSystem.Screen);
-      var center_screen = center;
+      Transform world_to_screen = e.Viewport.GetTransform(CoordinateSystem.World, CoordinateSystem.Screen);
+      Point3d center_screen = center;
       center_screen.Transform(world_to_screen);
-      var off_screen = off_x;
+      Point3d off_screen = off_x;
       off_screen.Transform(world_to_screen);
-      var xaxis = new Vector3d(off_screen.X - center_screen.X, off_screen.Y - center_screen.Y, 0);
-      var angle = Vector3d.VectorAngle(Vector3d.XAxis, xaxis);
+      Vector3d xaxis = new Vector3d(off_screen.X - center_screen.X, off_screen.Y - center_screen.Y, 0);
+      double angle = Vector3d.VectorAngle(Vector3d.XAxis, xaxis);
       if (xaxis.Y > 0)
         angle = -angle;
       e.Display.DrawPoint(center, PointStyle.ArrowTail, Color.Black, fill, 6, 1, 3, (float)angle, true, true);
@@ -50,7 +50,7 @@ namespace SampleCsCommands
 
       off_screen = off_y;
       off_screen.Transform(world_to_screen);
-      var yaxis = new Vector3d(off_screen.X - center_screen.X, off_screen.Y - center_screen.Y, 0);
+      Vector3d yaxis = new Vector3d(off_screen.X - center_screen.X, off_screen.Y - center_screen.Y, 0);
       angle = Vector3d.VectorAngle(Vector3d.YAxis, yaxis);
       if (yaxis.X < 0)
         angle = -angle;

@@ -1,9 +1,9 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System;
 
 namespace SampleCsCommands
 {
@@ -20,7 +20,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go0 = new GetObject();
+      GetObject go0 = new GetObject();
       go0.SetCommandPrompt("Select surface or polysurface to subtract from");
       go0.GeometryFilter = ObjectType.Surface | ObjectType.PolysrfFilter;
       go0.SubObjectSelect = false;
@@ -28,13 +28,13 @@ namespace SampleCsCommands
       if (go0.CommandResult() != Result.Success)
         return go0.CommandResult();
 
-      var objref0 = go0.Object(0);
-      var rh_obj = objref0.Object();
-      var brep0 = objref0.Brep();
+      ObjRef objref0 = go0.Object(0);
+      RhinoObject rh_obj = objref0.Object();
+      Brep brep0 = objref0.Brep();
       if (null == rh_obj || null == brep0)
         return Result.Failure;
 
-      var go1 = new GetObject();
+      GetObject go1 = new GetObject();
       go1.SetCommandPrompt("Select surface or polysurface to subtract with");
       go1.GeometryFilter = ObjectType.Surface | ObjectType.PolysrfFilter;
       go1.SubObjectSelect = false;
@@ -44,14 +44,14 @@ namespace SampleCsCommands
       if (go1.CommandResult() != Result.Success)
         return go1.CommandResult();
 
-      var objref1 = go1.Object(0);
-      var brep1 = objref1.Brep();
+      ObjRef objref1 = go1.Object(0);
+      Brep brep1 = objref1.Brep();
       if (null == brep1)
         return Result.Failure;
 
-      var tolerance = doc.ModelAbsoluteTolerance;
+      double tolerance = doc.ModelAbsoluteTolerance;
 
-      var out_breps = Brep.CreateBooleanDifference(brep0, brep1, tolerance);
+      Brep[] out_breps = Brep.CreateBooleanDifference(brep0, brep1, tolerance);
       if (null == out_breps || 0 == out_breps.Length)
       {
         RhinoApp.WriteLine("Boolean difference failed.");
@@ -59,14 +59,14 @@ namespace SampleCsCommands
       }
 
       // Create a history record
-      var history = new HistoryRecord(this, HISTORY_VERSION);
+      HistoryRecord history = new HistoryRecord(this, HISTORY_VERSION);
       WriteHistory(history, objref0, objref1, tolerance);
 
-      var attributes = rh_obj.Attributes.Duplicate();
+      ObjectAttributes attributes = rh_obj.Attributes.Duplicate();
       attributes.ObjectId = Guid.Empty;
       attributes.RemoveFromAllGroups();
 
-      foreach (var brep in out_breps)
+      foreach (Brep brep in out_breps)
         doc.Objects.AddBrep(brep, attributes, history, false);
 
       doc.Views.Redraw();
@@ -80,23 +80,23 @@ namespace SampleCsCommands
     {
       ObjRef objref0 = null;
       ObjRef objref1 = null;
-      var tolerance = RhinoMath.UnsetValue;
+      double tolerance = RhinoMath.UnsetValue;
 
       if (!ReadHistory(replay, ref objref0, ref objref1, ref tolerance))
         return false;
 
-      var brep0 = objref0.Brep();
+      Brep brep0 = objref0.Brep();
       if (null == brep0)
         return false;
 
-      var brep1 = objref1.Brep();
+      Brep brep1 = objref1.Brep();
       if (null == brep1)
         return false;
 
       if (!RhinoMath.IsValidDouble(tolerance))
         return false;
 
-      var out_breps = Brep.CreateBooleanDifference(brep0, brep1, tolerance);
+      Brep[] out_breps = Brep.CreateBooleanDifference(brep0, brep1, tolerance);
       if (null == out_breps || 0 == out_breps.Length)
         return false;
 

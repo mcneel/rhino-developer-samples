@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Collections;
 using Rhino.Commands;
 using Rhino.Display;
@@ -79,14 +78,14 @@ namespace SampleCsCommands
       GetSetPointTransform gx = new GetSetPointTransform(true, true, true);
       gx.SetCommandPrompt("Location for points");
       gx.AddTransformObjects(list);
-      for (;;)
+      for (; ; )
       {
         gx.ClearCommandOptions();
         gx.AddOptionToggle("XSet", ref opt_xset);
         gx.AddOptionToggle("YSet", ref opt_yset);
         gx.AddOptionToggle("ZSet", ref opt_zset);
 
-        var res = gx.GetXform();
+        GetResult res = gx.GetXform();
 
         if (res == GetResult.Point)
         {

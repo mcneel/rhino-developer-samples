@@ -69,7 +69,7 @@ namespace SampleCsUserData
     protected override bool Read(BinaryArchiveReader archive)
     {
       // Read the chuck version
-      archive.Read3dmChunkVersion(out var major, out var minor);
+      archive.Read3dmChunkVersion(out int major, out int minor);
       if (major == MAJOR_VERSION)
       {
         // Read 1.0 fields  here

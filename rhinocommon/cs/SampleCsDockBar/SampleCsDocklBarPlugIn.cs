@@ -1,6 +1,6 @@
-﻿using System;
-using Rhino.PlugIns;
+﻿using Rhino.PlugIns;
 using RhinoWindows.Controls;
+using System;
 
 namespace SampleCsDockBar
 {
@@ -37,10 +37,10 @@ namespace SampleCsDockBar
       CreateMyDockBar();
       return base.OnLoad(ref errorMessage);
     }
-    
+
     private void CreateMyDockBar()
     {
-      var create_options = new DockBarCreateOptions
+      DockBarCreateOptions create_options = new DockBarCreateOptions
       {
         DockLocation = DockBarDockLocation.Right,
         Visible = false,

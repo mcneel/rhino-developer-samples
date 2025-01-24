@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
@@ -13,7 +12,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetPolylineCurve();
+      GetPolylineCurve go = new GetPolylineCurve();
       go.SetCommandPrompt("Select polyline");
       go.GeometryFilter = ObjectType.Curve;
       go.SubObjectSelect = false;
@@ -22,20 +21,20 @@ namespace SampleCsCommands
         return go.CommandResult();
 
       // Get underlying curve geometry
-      var polyline_curve = go.Object(0).Geometry() as PolylineCurve;
+      PolylineCurve polyline_curve = go.Object(0).Geometry() as PolylineCurve;
       if (null == polyline_curve)
         return Result.Failure;
 
       // Make a copy of the geometry
-      var new_polyline_curve = polyline_curve.DuplicateCurve() as PolylineCurve;
+      PolylineCurve new_polyline_curve = polyline_curve.DuplicateCurve() as PolylineCurve;
       if (null == new_polyline_curve)
         return Result.Failure;
 
       // Modify the geometry in some way
-      for (var i = 0; i < new_polyline_curve.PointCount; i++)
+      for (int i = 0; i < new_polyline_curve.PointCount; i++)
       {
-        var point = new_polyline_curve.Point(i);
-        if (i%2 != 0)
+        Point3d point = new_polyline_curve.Point(i);
+        if (i % 2 != 0)
         {
           point.X += 1;
           point.Y += 1;
@@ -63,7 +62,7 @@ namespace SampleCsCommands
   {
     public override bool CustomGeometryFilter(RhinoObject obj, GeometryBase geom, ComponentIndex ci)
     {
-      var polyline_curve = geom as PolylineCurve;
+      PolylineCurve polyline_curve = geom as PolylineCurve;
       return polyline_curve != null;
     }
   }

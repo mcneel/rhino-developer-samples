@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Rhino.Geometry;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using Rhino.Geometry;
 
 namespace SampleCsDeserializeEmbeddedResource
 {
@@ -20,14 +20,14 @@ namespace SampleCsDeserializeEmbeddedResource
       if (null == geometry)
         return false;
 
-      var bytes = ToBytes(geometry);
+      byte[] bytes = ToBytes(geometry);
       if (null == bytes || 0 == bytes.Length)
         return false;
 
       bool rc;
       try
       {
-        using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
+        using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write))
         {
           stream.Write(bytes, 0, bytes.Length);
           rc = true;
@@ -52,19 +52,19 @@ namespace SampleCsDeserializeEmbeddedResource
 
       try
       {
-        var assembly = Assembly.GetExecutingAssembly();
-        using (var stream = assembly.GetManifestResourceStream(resource))
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        using (Stream stream = assembly.GetManifestResourceStream(resource))
         {
           if (null != stream)
           {
-            var bytes_to_read = (int)stream.Length;
+            int bytes_to_read = (int)stream.Length;
             if (bytes_to_read > 0)
             {
-              var bytes = new byte[bytes_to_read];
-              var bytes_read = stream.Read(bytes, 0, bytes_to_read);
+              byte[] bytes = new byte[bytes_to_read];
+              int bytes_read = stream.Read(bytes, 0, bytes_to_read);
               if (bytes_read == bytes_to_read)
               {
-                var geometry = ToGeometryBase(bytes);
+                GeometryBase geometry = ToGeometryBase(bytes);
                 return geometry;
               }
             }
@@ -84,15 +84,15 @@ namespace SampleCsDeserializeEmbeddedResource
     /// </summary>
     private static byte[] ToBytes(GeometryBase src)
     {
-      var rc = new byte[0];
+      byte[] rc = new byte[0];
 
       if (null == src)
         return rc;
 
       try
       {
-        var formatter = new BinaryFormatter();
-        using (var stream = new MemoryStream())
+        BinaryFormatter formatter = new BinaryFormatter();
+        using (MemoryStream stream = new MemoryStream())
         {
           formatter.Serialize(stream, src);
           rc = stream.ToArray();
@@ -117,12 +117,12 @@ namespace SampleCsDeserializeEmbeddedResource
       GeometryBase rc = null;
       try
       {
-        using (var stream = new MemoryStream())
+        using (MemoryStream stream = new MemoryStream())
         {
-          var formatter = new BinaryFormatter();
+          BinaryFormatter formatter = new BinaryFormatter();
           stream.Write(bytes, 0, bytes.Length);
           stream.Seek(0, SeekOrigin.Begin);
-          var geometry = formatter.Deserialize(stream) as GeometryBase;
+          GeometryBase geometry = formatter.Deserialize(stream) as GeometryBase;
           if (null != geometry && geometry.IsValid)
             rc = geometry;
         }

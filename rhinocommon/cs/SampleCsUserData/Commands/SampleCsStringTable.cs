@@ -21,27 +21,27 @@ namespace SampleCsUserData.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetOption();
+      GetOption go = new GetOption();
       go.SetCommandPrompt("Choose an option");
       go.AddOption("Add");
       go.AddOption("Delete");
       go.AddOption("List");
       go.AcceptNothing(true);
 
-      var res = go.Get();
+      GetResult res = go.Get();
 
       Result rc;
       switch (res)
       {
-      case GetResult.Option:
-        rc = CommandOption(go.Option());
-        break;
-      case GetResult.Nothing:
-        rc = Result.Success;
-        break;
-      default:
-        rc = Result.Cancel;
-        break;
+        case GetResult.Option:
+          rc = CommandOption(go.Option());
+          break;
+        case GetResult.Nothing:
+          rc = Result.Success;
+          break;
+        default:
+          rc = Result.Cancel;
+          break;
       }
 
       return rc;
@@ -67,7 +67,7 @@ namespace SampleCsUserData.Commands
 
     protected Result AddOption()
     {
-      var gs = new GetString();
+      GetString gs = new GetString();
       gs.SetCommandPrompt("String to add");
       gs.AcceptNothing(true);
       switch (gs.Get())
@@ -80,11 +80,11 @@ namespace SampleCsUserData.Commands
           return Result.Cancel;
       }
 
-      var str = gs.StringResult().Trim();
+      string str = gs.StringResult().Trim();
       if (string.IsNullOrEmpty(str))
         return Result.Nothing;
 
-      var plugin = SampleCsUserDataPlugIn.Instance;
+      SampleCsUserDataPlugIn plugin = SampleCsUserDataPlugIn.Instance;
       if (plugin.StringDocumentDataTable.Add(str) < 0)
         RhinoApp.WriteLine("Unable to add string.");
 
@@ -93,7 +93,7 @@ namespace SampleCsUserData.Commands
 
     protected Result DeleteOption()
     {
-      var gs = new GetString();
+      GetString gs = new GetString();
       gs.SetCommandPrompt("String to delete");
       switch (gs.Get())
       {
@@ -105,11 +105,11 @@ namespace SampleCsUserData.Commands
           return Result.Cancel;
       }
 
-      var str = gs.StringResult().Trim();
+      string str = gs.StringResult().Trim();
       if (string.IsNullOrEmpty(str))
         return Result.Nothing;
 
-      var plugin = SampleCsUserDataPlugIn.Instance;
+      SampleCsUserDataPlugIn plugin = SampleCsUserDataPlugIn.Instance;
       if (!plugin.StringDocumentDataTable.Delete(str))
         RhinoApp.WriteLine("Unable to delete string.");
 
@@ -118,8 +118,8 @@ namespace SampleCsUserData.Commands
 
     protected Result ListOption()
     {
-      var plugin = SampleCsUserDataPlugIn.Instance;
-      for (var i = 0; i < plugin.StringDocumentDataTable.Count; i++)
+      SampleCsUserDataPlugIn plugin = SampleCsUserDataPlugIn.Instance;
+      for (int i = 0; i < plugin.StringDocumentDataTable.Count; i++)
         RhinoApp.WriteLine(plugin.StringDocumentDataTable.Item(i));
       return Result.Success;
     }

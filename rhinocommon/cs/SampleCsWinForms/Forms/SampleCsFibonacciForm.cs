@@ -67,7 +67,7 @@ namespace SampleCsWinForms.Forms
     private void DoWork(object sender, DoWorkEventArgs e)
     {
       // Get the BackgroundWorker that raised this event.
-      var worker = sender as BackgroundWorker;
+      BackgroundWorker worker = sender as BackgroundWorker;
 
       // Assign the result of the computation to the Result property of the DoWorkEventArgs
       // object. This is will be available to the RunWorkerCompleted eventhandler.
@@ -148,7 +148,7 @@ namespace SampleCsWinForms.Forms
           result = ComputeFibonacci(n - 1, worker, e) + ComputeFibonacci(n - 2, worker, e);
 
         // Report progress as a percentage of the total task.
-        var percent_complete = (int)(n / (float)m_number_to_compute * 100);
+        int percent_complete = (int)(n / (float)m_number_to_compute * 100);
         if (percent_complete > m_highest_percentage_reached)
         {
           m_highest_percentage_reached = percent_complete;

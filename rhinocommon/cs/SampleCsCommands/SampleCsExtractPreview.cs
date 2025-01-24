@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
+using System.IO;
+using System.Windows.Forms;
 
 namespace SampleCsCommands
 {

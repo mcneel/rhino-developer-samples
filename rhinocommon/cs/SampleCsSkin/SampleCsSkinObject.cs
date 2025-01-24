@@ -25,7 +25,7 @@ namespace SampleCsSkin
     {
       get
       {
-        var icon = new Icon(Properties.Resources.SampleCsSkin, new Size(32, 32));
+        Icon icon = new Icon(Properties.Resources.SampleCsSkin, new Size(32, 32));
         return icon.ToBitmap();
       }
     }
@@ -34,13 +34,13 @@ namespace SampleCsSkin
     {
       m_splash = new SampleCsSplashScreen();
 
-      var thread = new Thread(ShowSplashScreen);
+      Thread thread = new Thread(ShowSplashScreen);
       thread.Start();
 
-      var worker = new SampleCsSplashScreenWorker();
+      SampleCsSplashScreenWorker worker = new SampleCsSplashScreenWorker();
       worker.ProgressChanged += (o, ex) =>
       {
-        if (null != m_splash) 
+        if (null != m_splash)
           m_splash.UpdateProgress(ex.Progress);
       };
 
@@ -55,7 +55,7 @@ namespace SampleCsSkin
     private void ShowSplashScreen()
     {
       m_splash.Show();
-      
+
       while (!m_done)
       {
         Application.DoEvents();

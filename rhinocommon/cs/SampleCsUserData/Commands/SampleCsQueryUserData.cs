@@ -16,7 +16,7 @@ namespace SampleCsUserData.Commands
     {
       const ObjectType filter = ObjectType.AnyObject;
       ObjRef objref;
-      var rc = RhinoGet.GetOneObject("Select object", false, filter, out objref);
+      Result rc = RhinoGet.GetOneObject("Select object", false, filter, out objref);
       if (rc != Result.Success || null == objref)
         return rc;
 
@@ -24,7 +24,7 @@ namespace SampleCsUserData.Commands
       if (null == obj)
         return Result.Failure;
 
-      var ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
+      SampleCsUserDataObject ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
       if (null != ud)
         RhinoApp.WriteLine("{0} = {1}", ud.Description, ud.Notes);
       else

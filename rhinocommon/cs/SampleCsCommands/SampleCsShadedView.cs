@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 
@@ -14,7 +13,7 @@ namespace SampleCsCommands
       RhinoView view = doc.Views.ActiveView;
       if (null == view)
         return Result.Failure;
-      
+
       const string englishName = @"Shaded";
       DisplayModeDescription display_mode_description = DisplayModeDescription.FindByName(englishName);
       if (null != display_mode_description)

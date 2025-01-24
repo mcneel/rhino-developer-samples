@@ -1,8 +1,8 @@
-﻿using Rhino;
-using Rhino.UI;
-using Eto.Drawing;
+﻿using Eto.Drawing;
 using Eto.Forms;
+using Rhino;
 using Rhino.Commands;
+using Rhino.UI;
 
 namespace SampleCsEto.Commands
 {
@@ -12,8 +12,8 @@ namespace SampleCsEto.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var form = new CoffeeDialog();
-      var rc = form.ShowModal(RhinoEtoApp.MainWindow);
+      CoffeeDialog form = new CoffeeDialog();
+      Result rc = form.ShowModal(RhinoEtoApp.MainWindow);
       return rc;
     }
   }
@@ -25,21 +25,21 @@ namespace SampleCsEto.Commands
       Title = "Coffee";
       Resizable = true;
 
-      var sep0 = new TestSeparator { Text = "Roast" };
-      var chk0 = new CheckBox { Text = "Light roast" };
-      var chk1 = new CheckBox { Text = "Medium roast" };
-      var chk2 = new CheckBox { Text = "Medium-Dark roast" };
-      var chk3 = new CheckBox { Text = "Dark roast" };
+      TestSeparator sep0 = new TestSeparator { Text = "Roast" };
+      CheckBox chk0 = new CheckBox { Text = "Light roast" };
+      CheckBox chk1 = new CheckBox { Text = "Medium roast" };
+      CheckBox chk2 = new CheckBox { Text = "Medium-Dark roast" };
+      CheckBox chk3 = new CheckBox { Text = "Dark roast" };
 
-      var sep1 = new TestSeparator { Text = "Flavor" };
-      var chk4 = new CheckBox { Text = "Mild" };
-      var chk5 = new CheckBox { Text = "Bold" };
-      var chk6 = new CheckBox { Text = "Extra bold" };
+      TestSeparator sep1 = new TestSeparator { Text = "Flavor" };
+      CheckBox chk4 = new CheckBox { Text = "Mild" };
+      CheckBox chk5 = new CheckBox { Text = "Bold" };
+      CheckBox chk6 = new CheckBox { Text = "Extra bold" };
 
-      var sep2 = new TestSeparator { Text = "Temperature" };
-      var chk7 = new CheckBox { Text = "Cold" };
-      var chk8 = new CheckBox { Text = "Warm" };
-      var chk9 = new CheckBox { Text = "Hot" };
+      TestSeparator sep2 = new TestSeparator { Text = "Temperature" };
+      CheckBox chk7 = new CheckBox { Text = "Cold" };
+      CheckBox chk8 = new CheckBox { Text = "Warm" };
+      CheckBox chk9 = new CheckBox { Text = "Hot" };
 
       DefaultButton = new Button { Text = "OK" };
       DefaultButton.Click += (sender, e) => Close(Rhino.Commands.Result.Success);
@@ -47,7 +47,7 @@ namespace SampleCsEto.Commands
       AbortButton = new Button { Text = "C&ancel" };
       AbortButton.Click += (sender, e) => Close(Rhino.Commands.Result.Cancel);
 
-      var buttons = new StackLayout
+      StackLayout buttons = new StackLayout
       {
         Orientation = Orientation.Horizontal,
         Spacing = 5,
@@ -168,7 +168,7 @@ namespace SampleCsEto.Commands
     protected override void OnPaint(PaintEventArgs e)
     {
       base.OnPaint(e);
-      var middle = new PointF(Size / 2);
+      PointF middle = new PointF(Size / 2);
       e.Graphics.FillRectangle(
         Color,
         Orientation == Orientation.Horizontal

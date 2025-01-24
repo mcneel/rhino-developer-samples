@@ -22,7 +22,7 @@ namespace SampleCsWpf.Commands
     /// </summary>
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var dialog = new Views.SampleCsWpfViewportDialog();
+      Views.SampleCsWpfViewportDialog dialog = new Views.SampleCsWpfViewportDialog();
       dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
       return Result.Success;
     }

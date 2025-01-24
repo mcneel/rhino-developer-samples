@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -14,18 +14,18 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var all = false;
-      var combine = false;
+      bool all = false;
+      bool combine = false;
 
-      var all_option = new OptionToggle(all, "No", "Yes");
-      var combine_option = new OptionToggle(combine, "No", "Yes");
-      var res = GetResult.Nothing;
+      OptionToggle all_option = new OptionToggle(all, "No", "Yes");
+      OptionToggle combine_option = new OptionToggle(combine, "No", "Yes");
+      GetResult res = GetResult.Nothing;
 
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select curves");
       go.GeometryFilter = ObjectType.Curve;
       go.EnablePreSelect(false, true);
-      for (;;)
+      for (; ; )
       {
         go.ClearCommandOptions();
         go.AddOptionToggle("AllRegions", ref all_option);
@@ -38,10 +38,10 @@ namespace SampleCsCommands
       if (res != GetResult.Object)
         return Result.Cancel;
 
-      var curves = new List<Curve>(go.ObjectCount);
-      foreach (var obj_ref in go.Objects())
+      List<Curve> curves = new List<Curve>(go.ObjectCount);
+      foreach (ObjRef obj_ref in go.Objects())
       {
-        var curve = obj_ref.Curve();
+        Curve curve = obj_ref.Curve();
         if (null == curve)
           return Result.Failure;
         curves.Add(curve);
@@ -50,13 +50,13 @@ namespace SampleCsCommands
       all = all_option.CurrentValue;
       combine = combine_option.CurrentValue;
 
-      var points = new List<Point3d>();
+      List<Point3d> points = new List<Point3d>();
       if (!all)
       {
-        var gp = new GetPoint();
+        GetPoint gp = new GetPoint();
         gp.SetCommandPrompt("Pick region points.  Press <Enter> when done");
         gp.AcceptNothing(true);
-        for (;;)
+        for (; ; )
         {
           res = gp.Get();
           if (res != GetResult.Point)
@@ -65,27 +65,27 @@ namespace SampleCsCommands
         }
       }
 
-      var plane = Plane.WorldXY;
-      var tolerance = doc.ModelAbsoluteTolerance;
-      var regions = all
+      Plane plane = Plane.WorldXY;
+      double tolerance = doc.ModelAbsoluteTolerance;
+      CurveBooleanRegions regions = all
         ? Curve.CreateBooleanRegions(curves, plane, combine, tolerance)
         : Curve.CreateBooleanRegions(curves, plane, points, combine, tolerance);
 
       if (null == regions)
         return Result.Failure;
 
-      for (var i = 0; i < regions.RegionCount; i++)
+      for (int i = 0; i < regions.RegionCount; i++)
       {
-        var boundaries = regions.RegionCurves(i);
-        foreach (var boundary in boundaries)
+        Curve[] boundaries = regions.RegionCurves(i);
+        foreach (Curve boundary in boundaries)
           doc.Objects.AddCurve(boundary);
       }
 
       if (!all)
       {
-        for (var i = 0; i < regions.PointCount; i++)
+        for (int i = 0; i < regions.PointCount; i++)
         {
-          var point_index = regions.RegionPointIndex(i);
+          int point_index = regions.RegionPointIndex(i);
           if (point_index >= 0)
             doc.Objects.AddPoint(points[point_index]);
         }
@@ -93,7 +93,7 @@ namespace SampleCsCommands
 
       regions.Dispose();
 
-      foreach (var obj_ref in go.Objects())
+      foreach (ObjRef obj_ref in go.Objects())
         doc.Objects.Delete(obj_ref, false, false);
 
       doc.Views.Redraw();

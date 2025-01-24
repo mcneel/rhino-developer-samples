@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
@@ -20,7 +19,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      const ObjectType geometryFilter =  ObjectType.Curve;
+      const ObjectType geometryFilter = ObjectType.Curve;
 
       GetObject get_rail = new GetObject();
       get_rail.SetCommandPrompt("Select rail curve");
@@ -66,7 +65,7 @@ namespace SampleCsCommands
         doc.Objects.AddBrep(brep[i], null, history, false);
 
       doc.Views.Redraw();
-      
+
       return Result.Success;
     }
 

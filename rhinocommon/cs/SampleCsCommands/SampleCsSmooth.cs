@@ -1,7 +1,6 @@
-﻿using System;
-using System.Text;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
+using System.Text;
 
 namespace SampleCsCommands
 {

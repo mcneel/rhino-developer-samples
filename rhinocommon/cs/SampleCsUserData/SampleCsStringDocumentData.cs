@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Rhino.FileIO;
+﻿using Rhino.FileIO;
+using System.Collections.Generic;
 
 namespace SampleCsUserData
 {
@@ -131,10 +131,10 @@ namespace SampleCsUserData
     /// </summary>
     public void ReadDocument(BinaryArchiveReader archive)
     {
-      archive.Read3dmChunkVersion(out var major, out var minor);
+      archive.Read3dmChunkVersion(out int major, out int minor);
       if (MAJOR == major && MINOR == minor)
       {
-        var string_table = archive.ReadStringArray();
+        string[] string_table = archive.ReadStringArray();
         if (null != string_table)
           m_string_table.AddRange(string_table);
       }

@@ -1,5 +1,4 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 
 namespace SampleCsCommands
@@ -34,7 +33,7 @@ namespace SampleCsCommands
       Rhino.Display.DisplayModeDescription currentDisplayMode = viewport.DisplayMode;
       Rhino.RhinoApp.WriteLine("Viewport in {0} display.", currentDisplayMode.EnglishName);
 
-      Rhino.Display.DisplayModeDescription[] displayModes =  Rhino.Display.DisplayModeDescription.GetDisplayModes();
+      Rhino.Display.DisplayModeDescription[] displayModes = Rhino.Display.DisplayModeDescription.GetDisplayModes();
 
       Rhino.Input.Custom.GetOption go = new Rhino.Input.Custom.GetOption();
       go.SetCommandPrompt("Select new display mode");

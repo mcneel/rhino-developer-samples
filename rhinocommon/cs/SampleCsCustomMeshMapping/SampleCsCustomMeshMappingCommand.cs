@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
+using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
-using Rhino.DocObjects;
 using Rhino.Render;
 
 namespace SampleCsCustomMeshMapping
@@ -40,7 +38,7 @@ namespace SampleCsCustomMeshMapping
       {
         go.SetCommandPrompt("Select object to apply custom mesh mapping to");
         go.GeometryFilter = ObjectType.Brep | ObjectType.Extrusion | ObjectType.Mesh;
-        var goRes = go.Get();
+        GetResult goRes = go.Get();
         if (goRes != GetResult.Object)
         {
           return go.CommandResult();
@@ -52,13 +50,13 @@ namespace SampleCsCustomMeshMapping
       {
         // Get render meshes from the object
 
-        var renderMeshes = rhinoObject.GetMeshes(Rhino.Geometry.MeshType.Render);
+        Mesh[] renderMeshes = rhinoObject.GetMeshes(Rhino.Geometry.MeshType.Render);
         if (renderMeshes != null && renderMeshes.Length > 0 && renderMeshes[0] != null)
         {
           // Create mapping mesh from render meshes
 
           Mesh mappingMesh = new Mesh();
-          foreach (var renderMesh in renderMeshes)
+          foreach (Mesh renderMesh in renderMeshes)
           {
             if (renderMesh != null)
             {

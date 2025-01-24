@@ -46,8 +46,8 @@ namespace SampleCsCommands
       // Sometimes, Surface.TryGetSphere() will return a sphere with a left-handed
       // plane. So, ensure the plane is right-handed.
       Rhino.Geometry.Plane plane = new Rhino.Geometry.Plane(
-        sphere.EquatorialPlane.Origin, 
-        sphere.EquatorialPlane.XAxis, 
+        sphere.EquatorialPlane.Origin,
+        sphere.EquatorialPlane.XAxis,
         sphere.EquatorialPlane.YAxis
         );
 

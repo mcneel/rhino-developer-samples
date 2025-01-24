@@ -10,16 +10,16 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var view = doc.Views.ActiveView;
+      Rhino.Display.RhinoView view = doc.Views.ActiveView;
       if (null == view)
         return Result.Failure;
 
       string name = null;
-      var rc = RhinoGet.GetString("Named view to restore", false, ref name);
+      Result rc = RhinoGet.GetString("Named view to restore", false, ref name);
       if (rc != Result.Success || string.IsNullOrEmpty(name))
         return Result.Cancel;
 
-      var index = doc.NamedViews.FindByName(name);
+      int index = doc.NamedViews.FindByName(name);
       if (index < 0 || index >= doc.NamedViews.Count)
       {
         RhinoApp.WriteLine("Named view not found");

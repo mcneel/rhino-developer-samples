@@ -14,12 +14,12 @@ namespace SampleCsCommands
     protected override bool SelFilter(RhinoObject rhObj)
     {
       if (null != rhObj)
-      { 
-        var curve_obj = rhObj as CurveObject;
+      {
+        CurveObject curve_obj = rhObj as CurveObject;
         if (null != curve_obj)
         {
-          var doc = rhObj.Document;
-          var curve = curve_obj.CurveGeometry;
+          Rhino.RhinoDoc doc = rhObj.Document;
+          Curve curve = curve_obj.CurveGeometry;
           if (null != doc && null != curve)
             return curve.TryGetCircle(out Circle circle, doc.ModelAbsoluteTolerance);
         }

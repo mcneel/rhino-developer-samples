@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
 using Rhino.Input;
+using System;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -96,15 +96,15 @@ namespace SampleCsCommands
                 break;
               case 6:
                 RhinoApp.WriteLine("Curve is a regular hexagon.");
-                 break;
+                break;
               case 7:
                 RhinoApp.WriteLine("Curve is a regular heptagon.");
                 break;
               case 8:
-                  RhinoApp.WriteLine("Curve is a regular octagon.");
+                RhinoApp.WriteLine("Curve is a regular octagon.");
                 break;
               case 9:
-                  RhinoApp.WriteLine("Curve is a regular nonagon.");
+                RhinoApp.WriteLine("Curve is a regular nonagon.");
                 break;
               case 10:
                 RhinoApp.WriteLine("Curve is a regular decagon.");
@@ -125,16 +125,16 @@ namespace SampleCsCommands
                 RhinoApp.WriteLine("Curve is an triangle.");
                 break;
               case 4:
-              {
-                // I'll leave searching for parallelogram and trapezoids for somebody else...
-                if (bAngle)
-                  RhinoApp.WriteLine("Curve is a rectangle.");
-                else if (bLength)
-                  RhinoApp.WriteLine("Curve is a rhombus.");
-                else
-                  RhinoApp.WriteLine("Curve is a quadrilateral.");
-                break;
-              }
+                {
+                  // I'll leave searching for parallelogram and trapezoids for somebody else...
+                  if (bAngle)
+                    RhinoApp.WriteLine("Curve is a rectangle.");
+                  else if (bLength)
+                    RhinoApp.WriteLine("Curve is a rhombus.");
+                  else
+                    RhinoApp.WriteLine("Curve is a quadrilateral.");
+                  break;
+                }
               case 5:
                 RhinoApp.WriteLine("Curve is a irregular pentagon.");
                 break;
@@ -208,7 +208,7 @@ namespace SampleCsCommands
       // (Should never need to test for this...)
       if (curve is PolyCurve poly_curve)
       {
-        if (poly_curve.TryGetPolyline(out var polyline))
+        if (poly_curve.TryGetPolyline(out Polyline polyline))
         {
           if (2 == polyline.Count)
             return true;
@@ -218,7 +218,7 @@ namespace SampleCsCommands
       // Is the curve a NURBS curve that looks like a line?
       if (curve is NurbsCurve nurbs_curve)
       {
-        if (nurbs_curve.TryGetPolyline(out var polyline))
+        if (nurbs_curve.TryGetPolyline(out Polyline polyline))
         {
           if (2 == polyline.Count)
             return true;
@@ -247,7 +247,7 @@ namespace SampleCsCommands
       // (Should never need to test for this...)
       if (curve is PolyCurve poly_curve)
       {
-        if (poly_curve.TryGetArc(out var arc))
+        if (poly_curve.TryGetArc(out Arc arc))
         {
           bCircle = arc.IsCircle;
           return true;
@@ -257,7 +257,7 @@ namespace SampleCsCommands
       // Is the curve a NURBS curve that looks like an arc?
       if (curve is NurbsCurve nurbs_curve)
       {
-        if (nurbs_curve.TryGetArc(out var arc))
+        if (nurbs_curve.TryGetArc(out Arc arc))
         {
           bCircle = arc.IsCircle;
           return true;
@@ -279,7 +279,7 @@ namespace SampleCsCommands
       // (Should never need to test for this...)
       if (curve is PolyCurve poly_curve)
       {
-        if (poly_curve.TryGetEllipse(out var ellipse))
+        if (poly_curve.TryGetEllipse(out Ellipse ellipse))
         {
           bEllipticalArc = !ellipse.ToNurbsCurve().IsClosed;
           return true;
@@ -289,7 +289,7 @@ namespace SampleCsCommands
       // Is the curve a NURBS curve that looks like an ellipse?
       if (curve is NurbsCurve nurbs_curve)
       {
-        if (nurbs_curve.TryGetEllipse(out var ellipse))
+        if (nurbs_curve.TryGetEllipse(out Ellipse ellipse))
         {
           bEllipticalArc = !nurbs_curve.IsClosed;
           return true;
@@ -322,12 +322,12 @@ namespace SampleCsCommands
       // Is the curve a polycurve that looks like an polyline?
       if (curve is PolyCurve poly_curve)
       {
-        if (poly_curve.TryGetPolyline(out var polyline))
+        if (poly_curve.TryGetPolyline(out Polyline polyline))
         {
           if (polyline.Count <= 2)
             return false;
 
-          for (var i = 0; i < polyline.Count; i++)
+          for (int i = 0; i < polyline.Count; i++)
             points.Add(polyline[i]);
         }
       }
@@ -335,12 +335,12 @@ namespace SampleCsCommands
       // Is the curve a NURBS curve that looks like an polyline?
       if (curve is NurbsCurve nurbs_curve)
       {
-        if (nurbs_curve.TryGetPolyline(out var polyline))
+        if (nurbs_curve.TryGetPolyline(out Polyline polyline))
         {
           if (polyline.Count <= 2)
             return false;
 
-          for (var i = 0; i < polyline.Count; i++)
+          for (int i = 0; i < polyline.Count; i++)
             points.Add(polyline[i]);
         }
       }
@@ -358,7 +358,7 @@ namespace SampleCsCommands
       pointCount = (bClosed ? points.Count - 1 : points.Count);
 
       // Test for self-intersection.
-      var intesections = Intersection.CurveSelf(curve, m_tolerance);
+      CurveIntersections intesections = Intersection.CurveSelf(curve, m_tolerance);
       bIntersect = intesections.Count > 0;
 
       // If the curve is not closed, no reason to continue...
@@ -366,14 +366,14 @@ namespace SampleCsCommands
         return true;
 
       // Test if the distance between each point is identical.
-      var distance = 0.0;
-      for (var i = 1; i < points.Count; i++)
+      double distance = 0.0;
+      for (int i = 1; i < points.Count; i++)
       {
-        var p0 = points[i - 1];
-        var p1 = points[i];
-        var v = p0 - p1;
+        Point3d p0 = points[i - 1];
+        Point3d p1 = points[i];
+        Vector3d v = p0 - p1;
 
-        var d = v.Length;
+        double d = v.Length;
         if (i == 1)
         {
           distance = d;
@@ -392,20 +392,20 @@ namespace SampleCsCommands
       bLength = RhinoMath.IsValidDouble(distance);
 
       // Test if the angle between each point is identical.
-      var angle = 0.0;
-      for (var i = 1; i < points.Count - 1; i++)
+      double angle = 0.0;
+      for (int i = 1; i < points.Count - 1; i++)
       {
-        var p0 = points[i - 1];
-        var p1 = points[i];
-        var p2 = points[i + 1];
+        Point3d p0 = points[i - 1];
+        Point3d p1 = points[i];
+        Point3d p2 = points[i + 1];
 
-        var v0 = p1 - p0;
-        var v1 = p1 - p2;
+        Vector3d v0 = p1 - p0;
+        Vector3d v1 = p1 - p2;
 
         v0.Unitize();
         v1.Unitize();
 
-        var a = Vector3d.VectorAngle(v0, v1);
+        double a = Vector3d.VectorAngle(v0, v1);
         if (i == 1)
         {
           angle = a;
@@ -422,7 +422,7 @@ namespace SampleCsCommands
       }
 
       // Set return value.
-      bAngle =  RhinoMath.IsValidDouble(angle);
+      bAngle = RhinoMath.IsValidDouble(angle);
 
       return true;
     }
@@ -441,7 +441,7 @@ namespace SampleCsCommands
 
       return false;
     }
- 
+
     /// <summary>
     /// Test for a curve that is a NURBS curve.
     /// </summary>

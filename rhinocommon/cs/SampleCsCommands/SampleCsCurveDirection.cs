@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -61,7 +60,7 @@ namespace SampleCsCommands
     public SampleCsCurveDirectionConduit(GetObject go)
     {
       m_curves = new List<Curve>(go.ObjectCount);
-     
+
       for (int i = 0; i < go.ObjectCount; i++)
       {
         Curve curve = go.Object(i).Curve();
@@ -79,7 +78,7 @@ namespace SampleCsCommands
         if (null == curve)
           continue;
 
-        for (double j = 0.0; j < CURVE_ARROW_COUNT; j += 1.0 )
+        for (double j = 0.0; j < CURVE_ARROW_COUNT; j += 1.0)
         {
           double d = j / (CURVE_ARROW_COUNT - 1.0);
           double t = curve.Domain.ParameterAt(d);

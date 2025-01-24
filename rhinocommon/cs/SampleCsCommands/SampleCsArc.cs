@@ -1,8 +1,8 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System;
 
 namespace SampleCsCommands
 {
@@ -102,12 +102,12 @@ namespace SampleCsCommands
         e.Display.DrawPoint(m_arc.Center);
       }
 
-      var relative_length = 1.5;
-      var v1 = m_args.Point2 - m_args.Point1;
-      var v2 = m_args.Point3 - m_args.Point1;
-      var v3 = e.CurrentPoint - m_args.Point1;
-      var length1 = v1.Length * relative_length;
-      var length3 = v3.Length;
+      double relative_length = 1.5;
+      Vector3d v1 = m_args.Point2 - m_args.Point1;
+      Vector3d v2 = m_args.Point3 - m_args.Point1;
+      Vector3d v3 = e.CurrentPoint - m_args.Point1;
+      double length1 = v1.Length * relative_length;
+      double length3 = v3.Length;
       v2.Unitize();
       v1 *= relative_length;
       if (length1 > length3)
@@ -131,16 +131,16 @@ namespace SampleCsCommands
     {
       arc = new Arc();
 
-      var x = args.Point2 - args.Point1;
-      var y = args.Point3 - args.Point1;
+      Vector3d x = args.Point2 - args.Point1;
+      Vector3d y = args.Point3 - args.Point1;
       if (x.IsTiny() || y.IsTiny())
         return false;
 
-      var radius = x.Length;
-      var quadrant = args.Quadrant;
-      var dir = args.Dir;
+      double radius = x.Length;
+      int quadrant = args.Quadrant;
+      int dir = args.Dir;
 
-      var new_quadrant = WhichQuadrant(args.Point1, args.Point2, args.Point3, args.Normal);
+      int new_quadrant = WhichQuadrant(args.Point1, args.Point2, args.Point3, args.Normal);
       if (quadrant == 0)
         dir = (new_quadrant < 3) ? 1 : -1; // unspecified previous quadrant
       else if ((quadrant == 1 && new_quadrant == 4 && dir == 1) || (quadrant == 4 && new_quadrant == 1 && dir == -1))
@@ -150,16 +150,16 @@ namespace SampleCsCommands
       x.Unitize();
       y.Unitize();
 
-      var dot = x * y;
+      double dot = x * y;
       dot = RhinoMath.Clamp(dot, -1.0, 1.0);
-      var angle = Math.Acos(dot);
+      double angle = Math.Acos(dot);
 
       if (dir > 0)
         y = Vector3d.CrossProduct(args.Normal, x);
       else
         y = Vector3d.CrossProduct(-args.Normal, x);
 
-      var plane = new Plane(args.Point1, x, y);
+      Plane plane = new Plane(args.Point1, x, y);
       if (!plane.IsValid)
         return false;
 
@@ -167,7 +167,7 @@ namespace SampleCsCommands
         angle = 2.0 * Math.PI - angle;
 
       arc = new Arc(plane, args.Point1, radius, angle);
-      var rc = arc.IsValid;
+      bool rc = arc.IsValid;
       if (rc)
       {
         args.Quadrant = quadrant;
@@ -183,11 +183,11 @@ namespace SampleCsCommands
     /// </summary>
     private static int WhichQuadrant(Point3d point1, Point3d point2, Point3d point3, Vector3d normal)
     {
-      var x = point2 - point1;
-      var r = point3 - point1;
-      var y = Vector3d.CrossProduct(normal, x);
-      var dotX = x * r;
-      var dotY = y * r;
+      Vector3d x = point2 - point1;
+      Vector3d r = point3 - point1;
+      Vector3d y = Vector3d.CrossProduct(normal, x);
+      double dotX = x * r;
+      double dotY = y * r;
       if (dotX >= 0.0)
         return (dotY >= 0.0) ? 1 : 4;
       else
@@ -207,10 +207,10 @@ namespace SampleCsCommands
     /// </summary>
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var args = new ArcArguments();
+      ArcArguments args = new ArcArguments();
 
       // Center of arc
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Center of arc");
       gp.Get();
       if (gp.CommandResult() != Result.Success)
@@ -229,12 +229,12 @@ namespace SampleCsCommands
 
       args.Point2 = gp.Point();
 
-      var arc_plane = gp.View().ActiveViewport.ConstructionPlane();
+      Plane arc_plane = gp.View().ActiveViewport.ConstructionPlane();
       arc_plane.Origin = args.Point1;
       args.Normal = arc_plane.ZAxis;
 
       // End of arc
-      var gp3 = new GetThirdArcPoint(args);
+      GetThirdArcPoint gp3 = new GetThirdArcPoint(args);
       gp3.SetCommandPrompt("End of arc");
       gp3.Constrain(arc_plane, false);
       gp3.ConstrainDistanceFromBasePoint(args.Point1.DistanceTo(args.Point2));

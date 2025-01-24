@@ -1,6 +1,6 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
+using System;
 
 namespace SampleCsCommands
 {
@@ -50,9 +50,9 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var handler = new EscapeKeyEventHandler("Press <Esc> to cancel");
+      EscapeKeyEventHandler handler = new EscapeKeyEventHandler("Press <Esc> to cancel");
 
-      for (var i = 0; i < 1000; i++)
+      for (int i = 0; i < 1000; i++)
       {
         if (handler.EscapeKeyPressed)
         {
@@ -60,10 +60,10 @@ namespace SampleCsCommands
           break;
         }
 
-        var x = (double)m_random.Next(0, 100);
-        var y = (double)m_random.Next(0, 100);
-        var z = (double)m_random.Next(0, 100);
-        var pt = new Rhino.Geometry.Point3d(x, y, z);
+        double x = (double)m_random.Next(0, 100);
+        double y = (double)m_random.Next(0, 100);
+        double z = (double)m_random.Next(0, 100);
+        Rhino.Geometry.Point3d pt = new Rhino.Geometry.Point3d(x, y, z);
         doc.Objects.AddPoint(pt);
         doc.Views.Redraw();
       }

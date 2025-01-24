@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SampleCsCommands
 {
@@ -57,7 +57,7 @@ namespace SampleCsCommands
 
       for (int i = 0; i < culled_t.Count - 1; i++)
       {
-        Interval domain = new Interval(culled_t[i], culled_t[i+1]);
+        Interval domain = new Interval(culled_t[i], culled_t[i + 1]);
         if (curve.Domain.IncludesInterval(domain))
         {
           Curve trim = curve.Trim(domain);

@@ -13,7 +13,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var rc = RhinoGet.GetOneObject("Select object to move", false, ObjectType.AnyObject, out ObjRef objref);
+      Result rc = RhinoGet.GetOneObject("Select object to move", false, ObjectType.AnyObject, out ObjRef objref);
       if (rc != Result.Success)
         return rc;
       if (null == objref)
@@ -23,7 +23,7 @@ namespace SampleCsCommands
       if (rc != Result.Success)
         return rc;
 
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Point to move to");
       gp.SetBasePoint(first_point, true);
       gp.DrawLineFromPoint(first_point, true);
@@ -32,12 +32,12 @@ namespace SampleCsCommands
       if (rc != Result.Success)
         return rc;
 
-      var second_point = gp.Point();
+      Point3d second_point = gp.Point();
 
-      var dir = second_point - first_point;
+      Vector3d dir = second_point - first_point;
       if (dir.Length > RhinoMath.ZeroTolerance)
       {
-        var xform = Transform.Translation(dir);
+        Transform xform = Transform.Translation(dir);
         doc.Objects.Transform(objref, xform, true);
         doc.Views.Redraw();
       }

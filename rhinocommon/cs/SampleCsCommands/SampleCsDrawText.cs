@@ -1,10 +1,9 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -28,7 +27,7 @@ namespace SampleCsCommands
         string str = "Hello Rhino!";
         Rectangle rect = e.Display.Measure2dText(str, new Point2d(0, 0), false, 0.0, 12, "Arial");
 
-        if (rect.Width + (2*X_GAP) < width || rect.Height + (2*Y_GAP) < height)
+        if (rect.Width + (2 * X_GAP) < width || rect.Height + (2 * Y_GAP) < height)
         {
           // Cook up text location (lower right corner of viewport)
           Point2d point = new Point2d(right - rect.Width - X_GAP, bottom - Y_GAP);
@@ -46,11 +45,11 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var conduit = new SampleCsDrawTextConduit();
+      SampleCsDrawTextConduit conduit = new SampleCsDrawTextConduit();
       conduit.Enabled = true;
       doc.Views.Redraw();
 
-      var gs = new GetString();
+      GetString gs = new GetString();
       gs.SetCommandPrompt("Press <Enter> to continue");
       gs.AcceptNothing(true);
       gs.Get();

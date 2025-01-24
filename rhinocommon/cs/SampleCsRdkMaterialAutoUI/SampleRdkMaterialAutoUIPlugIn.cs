@@ -1,11 +1,6 @@
-﻿using Rhino;
+﻿using Rhino.PlugIns;
 using Rhino.Render;
-using Rhino.Commands;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Rhino.PlugIns;
 
 namespace SampleRdkMaterialAutoUI
 {
@@ -43,7 +38,7 @@ namespace SampleRdkMaterialAutoUI
     // You can override methods here to change the plug-in behavior on
     // loading and shut down, add options pages to the Rhino _Option command
     // and mantain plug-in wide options in a document.
-    
+
     protected override LoadReturnCode OnLoad(ref string errorMessage)
     {
       base.OnLoad(ref errorMessage);

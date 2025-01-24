@@ -21,7 +21,7 @@ namespace SampleCsCommands
         return false;
       if (!(geometry is BrepLoop loop))
         return false;
-      var brep = loop.Brep;
+      Brep brep = loop.Brep;
       return null != brep && IsHoleLoop(brep, componentIndex.Index, true, false, m_tolerance);
     }
 
@@ -49,15 +49,15 @@ namespace SampleCsCommands
         return false;
       if (loopIndex < 0 || loopIndex >= brep.Loops.Count)
         return false;
-      var loop = brep.Loops[loopIndex];
+      BrepLoop loop = brep.Loops[loopIndex];
       if (null == loop)
         return false;
       if (loop.LoopType != BrepLoopType.Inner)
         return false;
-      var face = loop.Face;
+      BrepFace face = loop.Face;
       if (null == face)
         return false;
-      var srf = face.UnderlyingSurface();
+      Surface srf = face.UnderlyingSurface();
       if (null == srf)
         return false;
 
@@ -71,13 +71,13 @@ namespace SampleCsCommands
           return false;
       }
 
-      for (var lti = 0; lti < loop.Trims.Count; lti++)
+      for (int lti = 0; lti < loop.Trims.Count; lti++)
       {
-        var trim = loop.Trims[lti];
+        BrepTrim trim = loop.Trims[lti];
         if (null == trim)
           return false;
-        var ti = trim.TrimIndex;
-        var edge = trim.Edge;
+        int ti = trim.TrimIndex;
+        BrepEdge edge = trim.Edge;
         if (null == edge)
           return false;
 
@@ -91,17 +91,17 @@ namespace SampleCsCommands
             {
               if (bBoundaryCheck)
                 return false;
-              var other_ti = -1;
+              int other_ti = -1;
               if (edge.TrimIndices()[0] == ti)
                 other_ti = edge.TrimIndices()[1];
               else if (edge.TrimIndices()[1] == ti)
                 other_ti = edge.TrimIndices()[0];
               else
                 return false;
-              var other_trim = brep.Trims[other_ti];
+              BrepTrim other_trim = brep.Trims[other_ti];
               if (null == other_trim)
                 return false;
-              var other_loop = brep.Loops[other_trim.Loop.LoopIndex];
+              BrepLoop other_loop = brep.Loops[other_trim.Loop.LoopIndex];
               if (null == other_loop)
                 return false;
               if (other_loop.LoopType != BrepLoopType.Outer)
@@ -125,7 +125,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new SampleGetHole(doc.ModelAbsoluteTolerance);
+      SampleGetHole go = new SampleGetHole(doc.ModelAbsoluteTolerance);
       go.SetCommandPrompt("Select holes in one planar surface");
       go.GeometryFilter = ObjectType.BrepLoop;
       go.GetMultiple(1, 0);

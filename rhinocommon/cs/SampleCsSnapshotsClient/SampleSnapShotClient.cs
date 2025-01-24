@@ -1,9 +1,9 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.DocObjects;
 using Rhino.FileIO;
 using Rhino.Geometry;
 using Rhino.Runtime.InteropWrappers;
+using System;
 
 namespace SampleCsSnapshotsClient
 {
@@ -144,10 +144,10 @@ namespace SampleCsSnapshotsClient
     {
       throw new NotImplementedException();
     }
-   
+
     public override bool IsCurrentModelStateInAnySnapshot(RhinoDoc doc, RhinoObject doc_object, BinaryArchiveReader archive, SimpleArrayBinaryArchiveReader archive_array, TextLog text_log = null)
     {
-      var userdata = archive.ReadDictionary();
+      Rhino.Collections.ArchivableDictionary userdata = archive.ReadDictionary();
 
       string name = "";
       if (!userdata.TryGetString("ObjName", out name))
@@ -155,8 +155,8 @@ namespace SampleCsSnapshotsClient
 
       for (int i = 0; i < archive_array.Count; i++)
       {
-        var ba = archive_array.Get(i);
-        var ud = ba.ReadDictionary();
+        BinaryArchiveReader ba = archive_array.Get(i);
+        Rhino.Collections.ArchivableDictionary ud = ba.ReadDictionary();
 
         string s = "";
 

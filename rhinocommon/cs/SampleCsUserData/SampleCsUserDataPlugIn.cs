@@ -90,18 +90,18 @@ namespace SampleCsUserData
     /// </summary>
     protected override void ReadDocument(RhinoDoc doc, BinaryArchiveReader archive, FileReadOptions options)
     {
-      archive.Read3dmChunkVersion(out var major, out var minor);
+      archive.Read3dmChunkVersion(out int major, out int minor);
       if (MAJOR == major && MINOR == minor)
       {
         // Always read user data even though you might not use it.
 
-        var string_table = new SampleCsStringDocumentData();
+        SampleCsStringDocumentData string_table = new SampleCsStringDocumentData();
         string_table.ReadDocument(archive);
 
-        var simple_table = new SampleCsSimpleDocumentDataTable();
+        SampleCsSimpleDocumentDataTable simple_table = new SampleCsSimpleDocumentDataTable();
         simple_table.ReadDocument(archive);
 
-        var dictionary = archive.ReadDictionary();
+        ArchivableDictionary dictionary = archive.ReadDictionary();
 
         if (!options.ImportMode && !options.ImportReferenceMode)
         {

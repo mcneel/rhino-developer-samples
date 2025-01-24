@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Input.Custom;
@@ -12,7 +11,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects to isolate");
       go.GroupSelect = true;
       go.SubObjectSelect = false;
@@ -22,7 +21,7 @@ namespace SampleCsCommands
 
       for (int i = 0; i < go.ObjectCount; i++)
       {
-        var obj = go.Object(i).Object();
+        RhinoObject obj = go.Object(i).Object();
         if (null != obj)
           obj.Select(true);
       }
@@ -40,7 +39,7 @@ namespace SampleCsCommands
       {
         for (int i = 0; i < go.ObjectCount; i++)
         {
-          var obj = go.Object(i).Object();
+          RhinoObject obj = go.Object(i).Object();
           if (null != obj)
             obj.Select(true);
         }
@@ -48,7 +47,7 @@ namespace SampleCsCommands
 
       doc.Views.RedrawEnabled = true;
 
-      return Result.Success; 
+      return Result.Success;
     }
   }
 }

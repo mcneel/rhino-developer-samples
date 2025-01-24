@@ -26,7 +26,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var value = doc.Strings.GetValue(SampleCsDocStringData.Key);
+      string value = doc.Strings.GetValue(SampleCsDocStringData.Key);
       if (!string.IsNullOrEmpty(value))
         RhinoApp.WriteLine($"<{SampleCsDocStringData.Key}> {value}");
       return Result.Success;

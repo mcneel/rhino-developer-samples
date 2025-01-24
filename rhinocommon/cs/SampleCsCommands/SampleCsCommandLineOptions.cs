@@ -13,13 +13,13 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       const ObjectType geometry_filter = ObjectType.Surface | ObjectType.PolysrfFilter | ObjectType.Mesh;
-      var integer1 = 300;
-      var integer2 = 300;
+      int integer1 = 300;
+      int integer2 = 300;
 
-      var option_integer1 = new OptionInteger(integer1, 200, 900);
-      var option_integer2 = new OptionInteger(integer2, 200, 900);
+      OptionInteger option_integer1 = new OptionInteger(integer1, 200, 900);
+      OptionInteger option_integer2 = new OptionInteger(integer2, 200, 900);
 
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select surfaces, polysurfaces, or meshes");
       go.GeometryFilter = geometry_filter;
       go.AddOptionInteger("Option1", ref option_integer1);
@@ -27,11 +27,11 @@ namespace SampleCsCommands
       go.GroupSelect = true;
       go.SubObjectSelect = false;
 
-      var have_preselected_objects = false;
+      bool have_preselected_objects = false;
 
       while (true)
       {
-        var res = go.GetMultiple(1, 0);
+        GetResult res = go.GetMultiple(1, 0);
 
         if (res == GetResult.Option)
         {
@@ -68,15 +68,15 @@ namespace SampleCsCommands
         // of pre-selected and post-selected. So, to make sure everything
         // "looks the same", lets unselect everything before finishing
         // the command.
-        for (var i = 0; i < go.ObjectCount; i++)
+        for (int i = 0; i < go.ObjectCount; i++)
         {
-          var rhino_object = go.Object(i).Object();
+          RhinoObject rhino_object = go.Object(i).Object();
           rhino_object?.Select(false);
         }
         doc.Views.Redraw();
       }
 
-      var object_count = go.ObjectCount;
+      int object_count = go.ObjectCount;
       integer1 = option_integer1.CurrentValue;
       integer2 = option_integer2.CurrentValue;
 

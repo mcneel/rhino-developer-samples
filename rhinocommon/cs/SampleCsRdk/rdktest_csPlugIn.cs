@@ -1,17 +1,14 @@
+using Rhino;
+using Rhino.Commands;
+using Rhino.Display;
+using Rhino.DocObjects;
+using Rhino.PlugIns;
+using Rhino.Render;
+using Rhino.Render.ChangeQueue;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Runtime.Remoting.Activation;
-using Rhino;
-using Rhino.Display;
-using Rhino.Render;
 using System.Threading;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Rhino.Commands;
-using Rhino.DocObjects;
-using Rhino.Render.ChangeQueue;
-using Rhino.PlugIns;
 
 namespace SampleCsRdk
 {
@@ -121,7 +118,7 @@ namespace SampleCsRdk
     {
       lock (uselock)
       {
-        var sp = e.ViewInfo.Viewport.ScreenPort;
+        Rectangle sp = e.ViewInfo.Viewport.ScreenPort;
         rs = new Size(sp.Width, sp.Height);
         if (rw.Size() != rs)
         {
@@ -140,11 +137,11 @@ namespace SampleCsRdk
         {
           lock (uselock)
           {
-            using (var ch = rw.OpenChannel(RenderWindow.StandardChannels.RGBA))
+            using (RenderWindow.Channel ch = rw.OpenChannel(RenderWindow.StandardChannels.RGBA))
             {
-              for (var x = 0; x < rs.Width; x++)
+              for (int x = 0; x < rs.Width; x++)
               {
-                for (var y = 0; y < rs.Height; y++)
+                for (int y = 0; y < rs.Height; y++)
                 {
                   ch.SetValue(x, y, new Color4f((float)rnd.NextDouble(), (float)rnd.NextDouble(), (float)rnd.NextDouble(), 1.0f));
                 }
@@ -171,7 +168,7 @@ namespace SampleCsRdk
     }
     public override bool IsFrameBufferAvailable(ViewInfo view)
     {
-      var yes = cq.AreViewsEqual(GetView(), view);
+      bool yes = cq.AreViewsEqual(GetView(), view);
       return yes;
     }
 
@@ -311,7 +308,7 @@ namespace SampleCsRdk
       : base(doc, mode, plugin, RenderPipeline.RenderSize(doc),
              "RdkTest", Rhino.Render.RenderWindow.StandardChannels.RGBA, false, false, ref aRC)
     {
-     m_asyncRenderContext = (MyAsyncRenderContext)aRC;
+      m_asyncRenderContext = (MyAsyncRenderContext)aRC;
     }
 
     public bool Cancel() { return m_bStopFlag; }
@@ -366,8 +363,8 @@ namespace SampleCsRdk
     static void AddDefaultCustomEnvironment(RhinoDoc rhinoDoc)
     {
       // There is no default environment so add one now
-      var type = typeof(CustomEnvironment);
-      var content = RenderContent.Create(type, RenderContent.ShowContentChooserFlags.None, rhinoDoc) as CustomEnvironment;
+      Type type = typeof(CustomEnvironment);
+      CustomEnvironment content = RenderContent.Create(type, RenderContent.ShowContentChooserFlags.None, rhinoDoc) as CustomEnvironment;
       if (content == null) return;
       rhinoDoc.CurrentEnvironment.ForBackground = content;
       rhinoDoc.RenderSettings.BackgroundStyle = BackgroundStyle.Environment;
@@ -375,13 +372,13 @@ namespace SampleCsRdk
 
     protected override void RegisterRenderPanels(RenderPanels panels)
     {
-      var type = typeof (CustomRenderPanel);
+      Type type = typeof(CustomRenderPanel);
       panels.RegisterPanel(this, RenderPanelType.RenderWindow, type, this.Id, "Custom Panel", true, true);
     }
 
     protected override void RegisterRenderTabs(RenderTabs tabs)
     {
-      var type = typeof(CustomRenderPanel);
+      Type type = typeof(CustomRenderPanel);
       tabs.RegisterTab(this, type, this.Id, "Custom Panel", SystemIcons.Exclamation);
     }
 
@@ -395,7 +392,7 @@ namespace SampleCsRdk
       if (scene.Quality == PreviewSceneQuality.Low)
       {
         // Use built in image for quick preview so we don't slow the UI down.
-        scene.PreviewImage = new Bitmap(Properties.Resources.AtoZ, scene.PreviewImageSize); 
+        scene.PreviewImage = new Bitmap(Properties.Resources.AtoZ, scene.PreviewImageSize);
         return;
       }
       // New preview bitmap
@@ -413,7 +410,7 @@ namespace SampleCsRdk
       {
         // Make sure the content is a material
         RenderMaterial render_material = null;
-        foreach (var obj in scene.Objects)
+        foreach (CreatePreviewEventArgs.SceneObject obj in scene.Objects)
         {
           render_material = obj.Material;
           if (render_material != null) break;
@@ -435,9 +432,9 @@ namespace SampleCsRdk
 
     Bitmap BitmapForScene(CreatePreviewEventArgs scene, Color4f color)
     {
-      var bitmap = new Bitmap(scene.PreviewImageSize.Width, scene.PreviewImageSize.Height, PixelFormat.Format24bppRgb);
+      Bitmap bitmap = new Bitmap(scene.PreviewImageSize.Width, scene.PreviewImageSize.Height, PixelFormat.Format24bppRgb);
       // Fill the bitmap using the computed color
-      using (var g = Graphics.FromImage(bitmap))
+      using (Graphics g = Graphics.FromImage(bitmap))
       {
         g.Clear(Color.FromArgb(255, color.AsSystemColor()));
         g.DrawRectangle(Pens.Black, 0, 0, bitmap.Width - 1, bitmap.Height - 1);

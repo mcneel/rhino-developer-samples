@@ -14,24 +14,24 @@ namespace SampleCsUserData.Commands
     {
       const ObjectType filter = ObjectType.AnyObject;
       ObjRef objref;
-      var rc = RhinoGet.GetOneObject("Select object", false, filter, out objref);
+      Result rc = RhinoGet.GetOneObject("Select object", false, filter, out objref);
       if (rc != Result.Success || null == objref)
         return rc;
 
-      var obj = objref.Object();
+      RhinoObject obj = objref.Object();
       if (null == obj)
         return Result.Failure;
 
-      var ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
+      SampleCsUserDataObject ud = obj.Attributes.UserData.Find(typeof(SampleCsUserDataObject)) as SampleCsUserDataObject;
       if (null == ud)
       {
-        var gs = new GetString();
+        GetString gs = new GetString();
         gs.SetCommandPrompt("Object notes");
         gs.GetLiteralString();
         if (gs.CommandResult() != Result.Success)
           return gs.CommandResult();
 
-        ud = new SampleCsUserDataObject 
+        ud = new SampleCsUserDataObject
         {
           Notes = gs.StringResult()
         };

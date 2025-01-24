@@ -19,17 +19,17 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects");
       go.GroupSelect = true;
       go.GetMultiple(1, 0);
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      for (var i = 0; i < go.ObjectCount; i++)
+      for (int i = 0; i < go.ObjectCount; i++)
       {
-        var obj_ref = go.Object(i);
-        var obj = obj_ref.Object();
+        Rhino.DocObjects.ObjRef obj_ref = go.Object(i);
+        Rhino.DocObjects.RhinoObject obj = obj_ref.Object();
         if (null != obj)
           obj.Attributes.SetUserString(SampleCsUserStringData.Key, SampleCsUserStringData.Value);
       }
@@ -47,20 +47,20 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects");
       go.GroupSelect = true;
       go.GetMultiple(1, 0);
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      for (var i = 0; i < go.ObjectCount; i++)
+      for (int i = 0; i < go.ObjectCount; i++)
       {
-        var obj_ref = go.Object(i);
-        var obj = obj_ref.Object();
+        Rhino.DocObjects.ObjRef obj_ref = go.Object(i);
+        Rhino.DocObjects.RhinoObject obj = obj_ref.Object();
         if (null != obj)
         {
-          var value = obj.Attributes.GetUserString(SampleCsUserStringData.Key);
+          string value = obj.Attributes.GetUserString(SampleCsUserStringData.Key);
           if (!string.IsNullOrEmpty(value))
             RhinoApp.WriteLine(string.Format("<{0}> {1}", SampleCsUserStringData.Key, value));
         }
@@ -79,23 +79,23 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects");
       go.GroupSelect = true;
       go.GetMultiple(1, 0);
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      for (var i = 0; i < go.ObjectCount; i++)
+      for (int i = 0; i < go.ObjectCount; i++)
       {
-        var obj_ref = go.Object(i);
-        var obj = obj_ref.Object();
+        Rhino.DocObjects.ObjRef obj_ref = go.Object(i);
+        Rhino.DocObjects.RhinoObject obj = obj_ref.Object();
         if (null != obj)
           obj.Attributes.SetUserString(SampleCsUserStringData.Key, null);
       }
 
       return Result.Success;
-    }    
+    }
   }
 
 }

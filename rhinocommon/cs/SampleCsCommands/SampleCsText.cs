@@ -1,12 +1,12 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System;
+using System.Drawing;
+using System.Linq;
 
 namespace SampleCsCommands
 {
@@ -18,19 +18,19 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Start point");
       gp.AddOptionEnumList("Justification", m_justification);
       gp.ConstrainToConstructionPlane(false);
-      for (;;)
+      for (; ; )
       {
-        var res = gp.Get();
+        GetResult res = gp.Get();
         if (res == GetResult.Option)
         {
-          var option = gp.Option();
+          CommandLineOption option = gp.Option();
           if (null != option)
           {
-            var list = Enum.GetValues(typeof(TextJustification)).Cast<TextJustification>().ToList();
+            System.Collections.Generic.List<TextJustification> list = Enum.GetValues(typeof(TextJustification)).Cast<TextJustification>().ToList();
             m_justification = list[option.CurrentListOptionIndex];
           }
           continue;
@@ -42,27 +42,27 @@ namespace SampleCsCommands
         break;
       }
 
-      var point = gp.Point();
+      Point3d point = gp.Point();
 
-      var plane = gp.View().ActiveViewport.ConstructionPlane();
+      Plane plane = gp.View().ActiveViewport.ConstructionPlane();
       plane.Origin = point;
 
-      var text = new TextEntity
+      TextEntity text = new TextEntity
       {
         Plane = plane,
         Justification = m_justification
       };
       text.PlainText = text.Justification.ToString();
 
-      var attr = new ObjectAttributes
+      ObjectAttributes attr = new ObjectAttributes
       {
         ColorSource = ObjectColorSource.ColorFromObject,
         ObjectColor = Color.FromArgb(0, 0, 255)
       };
 
-      var object_id = doc.Objects.AddText(text, attr);
+      Guid object_id = doc.Objects.AddText(text, attr);
       RhinoApp.WriteLine("{0}", object_id.ToString());
-      
+
       doc.Views.Redraw();
 
       return Result.Success;

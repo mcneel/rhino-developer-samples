@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Rhino.FileIO;
+using System;
 using System.Collections.Generic;
-using Rhino.FileIO;
 
 namespace SampleCsUserData
 {
@@ -33,7 +33,7 @@ namespace SampleCsUserData
     /// </summary>
     public bool Write(BinaryArchiveWriter archive)
     {
-      var rc = false;
+      bool rc = false;
       if (null != archive)
       {
         try
@@ -55,12 +55,12 @@ namespace SampleCsUserData
     /// </summary>
     public bool Read(BinaryArchiveReader archive)
     {
-      var rc = false;
+      bool rc = false;
       if (null != archive)
       {
         try
         {
-          archive.Read3dmChunkVersion(out var major, out var minor);
+          archive.Read3dmChunkVersion(out int major, out int minor);
           if (major == MAJOR && minor == MINOR)
           {
             Value = archive.ReadInt();
@@ -92,14 +92,14 @@ namespace SampleCsUserData
     /// </summary>
     public bool WriteDocument(BinaryArchiveWriter archive)
     {
-      var rc = false;
+      bool rc = false;
       if (null != archive)
       {
         try
         {
           archive.Write3dmChunkVersion(MAJOR, MINOR);
           archive.WriteInt(Count);
-          for (var i = 0; i < Count; i++)
+          for (int i = 0; i < Count; i++)
             this[i].Write(archive);
           rc = archive.WriteErrorOccured;
         }
@@ -116,18 +116,18 @@ namespace SampleCsUserData
     /// </summary>
     public bool ReadDocument(BinaryArchiveReader archive)
     {
-      var rc = false;
+      bool rc = false;
       if (null != archive)
       {
         try
         {
-          archive.Read3dmChunkVersion(out var major, out var minor);
+          archive.Read3dmChunkVersion(out int major, out int minor);
           if (major == MAJOR && minor == MINOR)
           {
-            var count = archive.ReadInt();
-            for (var i = 0; i < count; i++)
+            int count = archive.ReadInt();
+            for (int i = 0; i < count; i++)
             {
-              var data = new SampleCsSimpleDocumentData();
+              SampleCsSimpleDocumentData data = new SampleCsSimpleDocumentData();
               if (data.Read(archive))
                 Add(data);
             }

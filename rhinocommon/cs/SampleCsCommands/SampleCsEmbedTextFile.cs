@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Input;
+using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace SampleCsCommands
 {
@@ -19,7 +19,7 @@ namespace SampleCsCommands
       string path = null;
       if (mode == RunMode.Interactive)
       {
-        var dialog = new OpenFileDialog
+        OpenFileDialog dialog = new OpenFileDialog
         {
           Title = EnglishName,
           Filter = @"Text Documents|*.txt"
@@ -32,7 +32,7 @@ namespace SampleCsCommands
       }
       else
       {
-        var rc = RhinoGet.GetString("Name of file to embed", false, ref path);
+        Result rc = RhinoGet.GetString("Name of file to embed", false, ref path);
         if (rc != Result.Success)
           return rc;
       }
@@ -64,7 +64,7 @@ namespace SampleCsCommands
         return Result.Nothing;
       }
 
-      var fname = Path.GetFileName(path);
+      string fname = Path.GetFileName(path);
       doc.Strings.SetString(fname, text);
 
       RhinoApp.Write("Embedded {0} ({1} characters)", fname, text.Length);
@@ -83,7 +83,7 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       string fname = null;
-      var rc = RhinoGet.GetString("Name of file to extract", false, ref fname);
+      Result rc = RhinoGet.GetString("Name of file to extract", false, ref fname);
       if (rc != Result.Success)
         return rc;
 
@@ -91,7 +91,7 @@ namespace SampleCsCommands
       if (string.IsNullOrEmpty(fname))
         return Result.Nothing;
 
-      var text = doc.Strings.GetValue(fname);
+      string text = doc.Strings.GetValue(fname);
       if (string.IsNullOrEmpty(text))
       {
         RhinoApp.WriteLine("File not found.");
@@ -101,7 +101,7 @@ namespace SampleCsCommands
       string path = null;
       if (mode == RunMode.Interactive)
       {
-        var dialog = new SaveFileDialog
+        SaveFileDialog dialog = new SaveFileDialog
         {
           Title = EnglishName,
           Filter = @"Text Documents|*.txt",

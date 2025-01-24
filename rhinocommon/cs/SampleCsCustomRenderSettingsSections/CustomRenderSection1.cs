@@ -1,6 +1,6 @@
-﻿using System;
-using Eto.Forms;
+﻿using Eto.Forms;
 using Rhino.UI;
+using System;
 
 namespace SampleCustomRenderSettingsSections
 {
@@ -172,7 +172,7 @@ namespace SampleCustomRenderSettingsSections
     private void OnCheckedChanged(object sender, EventArgs e)
     {
       m_checkbox_lb.Text = m_checkbox.Checked.ToString();
-      
+
       if (m_checkbox.Checked != null)
       {
         bool checked_state = (bool)m_checkbox.Checked;

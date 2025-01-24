@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -16,7 +16,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var view = doc.Views.ActiveView;
+      RhinoView view = doc.Views.ActiveView;
       if (null == view)
         return Result.Failure;
 
@@ -26,9 +26,9 @@ namespace SampleCsCommands
         return Result.Cancel;
       }
 
-      var active_option = new OptionToggle(m_bActive, "Inactive", "Active");
+      OptionToggle active_option = new OptionToggle(m_bActive, "Inactive", "Active");
 
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects to hide");
       go.GroupSelect = true;
       for (; ; )
@@ -36,7 +36,7 @@ namespace SampleCsCommands
         go.ClearCommandOptions();
         go.AddOptionToggle("Detail", ref active_option);
 
-        var res = go.GetMultiple(1, 0);
+        GetResult res = go.GetMultiple(1, 0);
 
         if (res == GetResult.Option)
           continue;
@@ -63,7 +63,7 @@ namespace SampleCsCommands
         return Result.Cancel;
       }
 
-      var viewport_id_list = new List<Guid>(16);
+      List<Guid> viewport_id_list = new List<Guid>(16);
       if (m_bActive)
       {
         viewport_id_list.Add(view.ActiveViewportID);
@@ -72,10 +72,10 @@ namespace SampleCsCommands
       {
         if (view is RhinoPageView page_view)
         {
-          var detail_views = page_view.GetDetailViews();
+          Rhino.DocObjects.DetailViewObject[] detail_views = page_view.GetDetailViews();
           if (null != detail_views)
           {
-            foreach (var detail in detail_views)
+            foreach (Rhino.DocObjects.DetailViewObject detail in detail_views)
             {
               if (detail.Viewport.Id != view.ActiveViewportID)
                 viewport_id_list.Add(detail.Viewport.Id);
@@ -87,13 +87,13 @@ namespace SampleCsCommands
       if (0 == viewport_id_list.Count)
         return Result.Nothing;
 
-      foreach (var objref in go.Objects())
+      foreach (Rhino.DocObjects.ObjRef objref in go.Objects())
       {
-        var obj = objref.Object();
+        Rhino.DocObjects.RhinoObject obj = objref.Object();
         if (null != obj)
         {
-          var attributes = obj.Attributes.Duplicate();
-          foreach (var viewport_id in viewport_id_list)
+          Rhino.DocObjects.ObjectAttributes attributes = obj.Attributes.Duplicate();
+          foreach (Guid viewport_id in viewport_id_list)
             attributes.AddHideInDetailOverride(viewport_id);
           doc.Objects.ModifyAttributes(objref, attributes, true);
         }

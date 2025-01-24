@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
+using System;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -13,9 +13,9 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       const double height = 20.0;
-      var tolerance = doc.ModelAbsoluteTolerance;
+      double tolerance = doc.ModelAbsoluteTolerance;
 
-      var points0 = new List<Point3d>
+      List<Point3d> points0 = new List<Point3d>
       {
         new Point3d(-1.0, 0.0, 0.0),
         new Point3d(-1.0, -1.0, 0.0),
@@ -27,11 +27,11 @@ namespace SampleCsCommands
         new Point3d(-1.0, 0.0, 0.0)
       };
 
-      var brep0 = CreateBrep(points0, height, tolerance);
+      Brep brep0 = CreateBrep(points0, height, tolerance);
       if (null == brep0)
         return Result.Failure;
 
-      var points1 = new List<Point3d>
+      List<Point3d> points1 = new List<Point3d>
       {
         new Point3d(-1.0, 0.0, 0.0),
         new Point3d(-1.0, -1.0, 0.0),
@@ -40,17 +40,17 @@ namespace SampleCsCommands
         new Point3d(-1.0, 0.0, 0.0)
       };
 
-      var brep1 = CreateBrep(points1, height, tolerance);
+      Brep brep1 = CreateBrep(points1, height, tolerance);
       if (null == brep1)
         return Result.Failure;
 
       brep1.Rotate((Math.PI * 0.5), new Vector3d(1.0, 0.0, 0.0), new Point3d(0.0, 0.0, (0.5 * height)));
       brep1.Translate(new Vector3d(0.0, -1.0, 5.0));
 
-      var results = Brep.CreateBooleanDifference(brep0, brep1, tolerance);
+      Brep[] results = Brep.CreateBooleanDifference(brep0, brep1, tolerance);
       if (null != results)
       {
-        foreach (var rc in results)
+        foreach (Brep rc in results)
           doc.Objects.AddBrep(rc);
       }
 
@@ -68,17 +68,17 @@ namespace SampleCsCommands
         return null;
 
       // Create the profile curve
-      var profile = new PolylineCurve(points);
+      PolylineCurve profile = new PolylineCurve(points);
       if (!profile.IsClosed || !profile.IsPlanar(tolerance))
         return null;
 
       // Create a surface by extruding the profile curve
-      var surface = Surface.CreateExtrusion(profile, new Vector3d(0.0, 0.0, height));
+      Surface surface = Surface.CreateExtrusion(profile, new Vector3d(0.0, 0.0, height));
       if (null == surface)
         return null;
 
       // Create a Brep from the surface
-      var brep = surface.ToBrep();
+      Brep brep = surface.ToBrep();
 
       // The profile curve is a degree=1 curve. Thus, the extruded surface will
       // have kinks. Because kinked surface can cause problems down stream, Rhino
@@ -88,7 +88,7 @@ namespace SampleCsCommands
       brep.Faces.SplitKinkyFaces(RhinoMath.DefaultAngleTolerance, true);
 
       // Cap any planar holes
-      var capped_brep = brep.CapPlanarHoles(tolerance);
+      Brep capped_brep = brep.CapPlanarHoles(tolerance);
       if (null == capped_brep)
         return null;
 

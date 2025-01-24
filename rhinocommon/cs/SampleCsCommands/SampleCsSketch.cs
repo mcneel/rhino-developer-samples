@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -18,7 +18,7 @@ namespace SampleCsCommands
 
     public GetResult GetPoints()
     {
-      var rc = Get(true);
+      GetResult rc = Get(true);
       if (rc == GetResult.Point)
         Points.Add(Point());
       return rc;
@@ -55,7 +55,7 @@ namespace SampleCsCommands
     {
       if (Points.Count > 0)
       {
-        for (var i = 1; i < Points.Count; i++ )
+        for (int i = 1; i < Points.Count; i++)
           e.Display.DrawLine(Points[i - 1], Points[i], DynamicDrawColor);
       }
       else
@@ -74,27 +74,27 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var old_snap_on = Rhino.ApplicationSettings.ModelAidSettings.GridSnap;
+      bool old_snap_on = Rhino.ApplicationSettings.ModelAidSettings.GridSnap;
       if (old_snap_on)
         Rhino.ApplicationSettings.ModelAidSettings.GridSnap = false;
 
 
-      var gp = new GetSketchPoints();
+      GetSketchPoints gp = new GetSketchPoints();
       gp.SetCommandPrompt("Click and drag to sketch. Press Enter when done");
       gp.PermitOrthoSnap(false);
       gp.AcceptNothing(true);
-      var res = gp.GetPoints();
+      GetResult res = gp.GetPoints();
       if (res == GetResult.Point)
       {
-        var points = gp.Points;
+        List<Point3d> points = gp.Points;
         if (points.Count > 2)
         {
-          var p0 = points[0];
-          var p1 = points[points.Count - 1];
+          Point3d p0 = points[0];
+          Point3d p1 = points[points.Count - 1];
           if (p0.DistanceTo(p1) < doc.ModelAbsoluteTolerance)
             points.Add(p0);
 
-          var pline_curve = new PolylineCurve(points);
+          PolylineCurve pline_curve = new PolylineCurve(points);
           doc.Objects.AddCurve(pline_curve);
           doc.Views.Redraw();
         }

@@ -1,7 +1,7 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Geometry;
 using Rhino.Render;
+using System;
 using System.Collections.Generic;
 
 namespace SampleCustomLightManager
@@ -243,9 +243,9 @@ namespace SampleCustomLightManager
     public override bool OnEditLight(RhinoDoc doc, ref LightArray light_array)
     {
 #pragma warning disable CS0162 // Unreachable code detected
-       for (int i = 0; i < light_array.Count(); i++)
+      for (int i = 0; i < light_array.Count(); i++)
 #pragma warning restore CS0162 // Unreachable code detected
-       {
+      {
         Rhino.Geometry.Light light = light_array.ElementAt(i);
         int index = doc.Lights.Find(light.Id, true);
         if (index > -1)
@@ -293,12 +293,12 @@ namespace SampleCustomLightManager
 
     public override void GroupLights(RhinoDoc doc, ref LightArray light_array)
     {
-      
+
     }
 
     public override void UnGroup(RhinoDoc doc, ref LightArray light_array)
     {
-      
+
     }
   }
 

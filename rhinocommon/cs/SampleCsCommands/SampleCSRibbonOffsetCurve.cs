@@ -29,7 +29,7 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       //Get a closed curve to offset
-      var go = new GetObject
+      GetObject go = new GetObject
       {
         GeometryFilter = ObjectType.Curve,
         GeometryAttributeFilter = GeometryAttributeFilter.ClosedCurve
@@ -42,12 +42,12 @@ namespace SampleCsCommands
         return Result.Cancel;
 
       //Get the curve from the GetObject
-      var crv = go.Object(0).Curve();
+      Curve crv = go.Object(0).Curve();
       if (crv == null)
         return Result.Cancel;
 
       //Get the side of the curve to offset towards.
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Select curve side to offset");
       gp.Get();
 
@@ -55,7 +55,7 @@ namespace SampleCsCommands
       if (gp.Result() != GetResult.Point)
         return Result.Cancel;
       //The selected Point
-      var pt = gp.Point();
+      Point3d pt = gp.Point();
 
       //Try to get the plane from the curve
       crv.TryGetPlane(out Plane ribbon_plane);
@@ -63,10 +63,10 @@ namespace SampleCsCommands
         ribbon_plane = doc.Views.ActiveView.ActiveViewport.ConstructionPlane();
 
       //Set the ribbon plane vector
-      var plane_vector = ribbon_plane.Normal;
+      Vector3d plane_vector = ribbon_plane.Normal;
 
       //Create the ribbon offset, its cross sections, and its ruled surfaces
-      var ribbon_curve_output = crv.RibbonOffset(1, .1, pt, plane_vector, doc.ModelAbsoluteTolerance,out Curve[] cross_sections, out Surface[] ruled_surfaces);
+      Curve ribbon_curve_output = crv.RibbonOffset(1, .1, pt, plane_vector, doc.ModelAbsoluteTolerance, out Curve[] cross_sections, out Surface[] ruled_surfaces);
 
       //Add the ribbon curve to the document
       if (ribbon_curve_output != null)
@@ -77,7 +77,7 @@ namespace SampleCsCommands
       //Add any cross section curves to the document
       if (cross_sections != null)
       {
-        foreach (var curve in cross_sections)
+        foreach (Curve curve in cross_sections)
         {
           doc.Objects.AddCurve(curve);
         }
@@ -86,7 +86,7 @@ namespace SampleCsCommands
       //Add any ruled surfaces to the document
       if (ruled_surfaces != null)
       {
-        foreach (var surface in ruled_surfaces)
+        foreach (Surface surface in ruled_surfaces)
         {
           doc.Objects.AddSurface(surface);
         }

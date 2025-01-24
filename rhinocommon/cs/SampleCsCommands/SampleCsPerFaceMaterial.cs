@@ -1,9 +1,8 @@
-﻿using System;
-using System.Security.Cryptography;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Input.Custom;
+using System;
 
 namespace SampleCsCommands
 {
@@ -13,10 +12,10 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var render_plugin_id = Rhino.Render.Utilities.DefaultRenderPlugInId;
-      var idi = new GuidIndex();
+      Guid render_plugin_id = Rhino.Render.Utilities.DefaultRenderPlugInId;
+      GuidIndex idi = new GuidIndex();
 
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select object with the rendering material you want to assign");
       go.EnablePreSelect(false, true);
       go.EnablePostSelect(true);
@@ -24,11 +23,11 @@ namespace SampleCsCommands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var obj = go.Object(0).Object();
+      RhinoObject obj = go.Object(0).Object();
       if (null == obj)
         return Result.Failure;
 
-      var att = obj.Attributes;
+      ObjectAttributes att = obj.Attributes;
       if ((idi.Index = att.MaterialIndex) >= 0)
       {
         idi.Id = doc.Materials[idi.Index].Id;
@@ -39,7 +38,7 @@ namespace SampleCsCommands
         if (att.MaterialRefs.ContainsKey(idi.Id))
           mat_ref = att.MaterialRefs[render_plugin_id];
         if (null == mat_ref)
-            mat_ref = att.MaterialRefs[Guid.Empty];
+          mat_ref = att.MaterialRefs[Guid.Empty];
         if (null != mat_ref)
         {
           idi.Id = mat_ref.FrontFaceMaterialId;

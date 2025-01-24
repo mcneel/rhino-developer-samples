@@ -1,18 +1,12 @@
-﻿using System;
-using System.Drawing;
+﻿using Rhino.Display;
+using Rhino.Render;
+using Rhino.UI;
+using Rhino.UI.Controls;
+using RhinoWindows.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
-using Rhino.Render.UI;
-using Rhino.Render;
-using RhinoWindows.ViewModels;
-
-using Rhino.UI.Controls;
-
-using Rhino.Display;
-using Rhino.UI;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Drawing;
 
 namespace SampleCsRdk
 {
@@ -56,7 +50,7 @@ namespace SampleCsRdk
     {
       get
       {
-        var vc = VariesColor;
+        Color4f? vc = VariesColor;
         if (null != vc)
         {
           return vc.Value.AsSystemColor();
@@ -82,7 +76,7 @@ namespace SampleCsRdk
         if (sel == null)
           return null;
 
-        foreach (var item in sel)
+        foreach (object item in sel)
         {
           if (item is RenderMaterial material)
           {
@@ -114,9 +108,9 @@ namespace SampleCsRdk
         if (sel == null)
           return;
 
-        var undo = Rhino.RhinoDoc.ActiveDoc.BeginUndoRecord("Set material Color value");
+        uint undo = Rhino.RhinoDoc.ActiveDoc.BeginUndoRecord("Set material Color value");
 
-        foreach (var item in sel)
+        foreach (object item in sel)
         {
           if (item is RenderMaterial material)
           {
@@ -145,7 +139,7 @@ namespace SampleCsRdk
     {
       get
       {
-        var vc = VariesShowSection2;
+        bool? vc = VariesShowSection2;
         if (null != vc)
         {
           return vc.Value;
@@ -162,8 +156,9 @@ namespace SampleCsRdk
     {
       get
       {
-        var vc = TrackBarPositionVaries;
-        if (null != vc) {
+        int? vc = TrackBarPositionVaries;
+        if (null != vc)
+        {
           return vc.Value;
         }
         return int.MinValue;
@@ -176,7 +171,8 @@ namespace SampleCsRdk
 
     public int? TrackBarPositionVaries
     {
-      get {
+      get
+      {
         bool bVaries = false;
         int? i = null;
 
@@ -184,7 +180,7 @@ namespace SampleCsRdk
         if (sel == null)
           return null;
 
-        foreach (var item in sel)
+        foreach (object item in sel)
         {
 
           if (item is RenderMaterial material)
@@ -210,14 +206,15 @@ namespace SampleCsRdk
 
         return bVaries ? null : i;
       }
-      set {
+      set
+      {
         RenderContentCollection sel = Selection;
         if (sel == null)
           return;
 
-        var undo = Rhino.RhinoDoc.ActiveDoc.BeginUndoRecord("Set material TrackBarPosition value");
+        uint undo = Rhino.RhinoDoc.ActiveDoc.BeginUndoRecord("Set material TrackBarPosition value");
 
-        foreach (var item in sel)
+        foreach (object item in sel)
         {
           if (item is RenderMaterial material)
           {
@@ -254,7 +251,7 @@ namespace SampleCsRdk
         if (sel == null)
           return null;
 
-        foreach (var item in sel)
+        foreach (object item in sel)
         {
 
           if (item is RenderMaterial material)
@@ -287,9 +284,9 @@ namespace SampleCsRdk
         if (sel == null)
           return;
 
-        var undo = Rhino.RhinoDoc.ActiveDoc.BeginUndoRecord("Set material ShowSectionKey value");
+        uint undo = Rhino.RhinoDoc.ActiveDoc.BeginUndoRecord("Set material ShowSectionKey value");
 
-        foreach (var item in sel)
+        foreach (object item in sel)
         {
           if (item is RenderMaterial material)
           {
@@ -318,12 +315,12 @@ namespace SampleCsRdk
     {
       get
       {
-        var list = new List<Guid>();
+        List<Guid> list = new List<Guid>();
 
         RenderContentCollection sel = Selection;
         if (sel != null)
         {
-          foreach (var item in sel)
+          foreach (object item in sel)
           {
             if (item is RenderMaterial material)
             {
@@ -384,7 +381,7 @@ namespace SampleCsRdk
     public CustomMaterialWpfUserInterfaceSectionHost()
       : base(new CustomMaterialWpfUserInterfaceSection(), null)
     {
-      var vm = WpfViewModel as CustomMaterialViewModel;
+      CustomMaterialViewModel vm = WpfViewModel as CustomMaterialViewModel;
       vm.Section = this;
 
       DataChanged += UserInterfaceDisplayData;
@@ -392,7 +389,7 @@ namespace SampleCsRdk
 
     public void UserInterfaceDisplayData(object sender, Rhino.UI.Controls.DataSource.EventArgs e)
     {
-      var vm = WpfViewModel as CustomMaterialViewModel;
+      CustomMaterialViewModel vm = WpfViewModel as CustomMaterialViewModel;
 
       vm.RaisePropertyChanged(e);
     }

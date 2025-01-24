@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Rhino;
+using Rhino.Geometry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Rhino;
-using Rhino.Geometry;
 
 namespace SampleCsCommands
 {
@@ -20,18 +20,18 @@ namespace SampleCsCommands
     /// </returns>
     public static Guid[] RunCommandScript(RhinoDoc doc, string script, bool echo)
     {
-      var rc = new Guid[0];
+      Guid[] rc = new Guid[0];
       try
       {
-        var start_sn = Rhino.DocObjects.RhinoObject.NextRuntimeSerialNumber;
+        uint start_sn = Rhino.DocObjects.RhinoObject.NextRuntimeSerialNumber;
         RhinoApp.RunScript(script, false);
-        var end_sn = Rhino.DocObjects.RhinoObject.NextRuntimeSerialNumber;
+        uint end_sn = Rhino.DocObjects.RhinoObject.NextRuntimeSerialNumber;
         if (start_sn < end_sn)
         {
-          var object_ids = new List<Guid>();
-          for (var sn = start_sn; sn < end_sn; sn++)
+          List<Guid> object_ids = new List<Guid>();
+          for (uint sn = start_sn; sn < end_sn; sn++)
           {
-            var obj = doc.Objects.Find(sn);
+            Rhino.DocObjects.RhinoObject obj = doc.Objects.Find(sn);
             if (null != obj)
               object_ids.Add(obj.Id);
           }
@@ -53,9 +53,9 @@ namespace SampleCsCommands
     /// <returns>True if the Brep is box, false otherwise.</returns>
     public static bool IsBrepBox(Brep brep, double tolerance)
     {
-      var normals = new Vector3d[6];
+      Vector3d[] normals = new Vector3d[6];
 
-      var rc = null != brep;
+      bool rc = null != brep;
 
       if (rc)
         rc = brep.IsSolid;
@@ -65,9 +65,9 @@ namespace SampleCsCommands
 
       if (rc)
       {
-        for (var i = 0; rc && i < 6; i++)
+        for (int i = 0; rc && i < 6; i++)
         {
-          if (brep.Faces[i].TryGetPlane(out var plane, tolerance))
+          if (brep.Faces[i].TryGetPlane(out Plane plane, tolerance))
           {
             normals[i] = plane.Normal;
             normals[i].Unitize();
@@ -81,12 +81,12 @@ namespace SampleCsCommands
 
       if (rc)
       {
-        for (var i = 0; rc && i < 6; i++)
+        for (int i = 0; rc && i < 6; i++)
         {
-          var count = 0;
-          for (var j = 0; rc && j < 6; j++)
+          int count = 0;
+          for (int j = 0; rc && j < 6; j++)
           {
-            var dot = Math.Abs(normals[i] * normals[j]);
+            double dot = Math.Abs(normals[i] * normals[j]);
             if (Math.Abs(dot) <= tolerance)
               continue;
             if (Math.Abs(dot - 1.0) <= tolerance)
@@ -122,10 +122,10 @@ namespace SampleCsCommands
     )
     {
       uDir = vDir = nDir = Vector3d.Unset;
-      var rc = false;
+      bool rc = false;
       if (null != nurb && cvIndex >= 0 && cvIndex < nurb.Points.Count)
       {
-        var t = nurb.GrevilleParameter(cvIndex);
+        double t = nurb.GrevilleParameter(cvIndex);
         if (RhinoMath.IsValidDouble(t))
         {
           if (t < nurb.Domain.Min)
@@ -133,7 +133,7 @@ namespace SampleCsCommands
 
           uDir = nurb.TangentAt(t);
 
-          var kappa = nurb.CurvatureAt(t);
+          Vector3d kappa = nurb.CurvatureAt(t);
           if (nurb.TryGetPlane(out Plane plane))
           {
             nDir = plane.ZAxis;
@@ -203,14 +203,14 @@ namespace SampleCsCommands
         else if (dir == 1 && direction == 0)
           continue;
 
-        var index = 0.0;
-        var srf_knots = (dir == 0) ? srf.KnotsU : srf.KnotsV;
-        var old_knot = srf_knots[0];
+        double index = 0.0;
+        Rhino.Geometry.Collections.NurbsSurfaceKnotList srf_knots = (dir == 0) ? srf.KnotsU : srf.KnotsV;
+        double old_knot = srf_knots[0];
         srf_knots[0] = index;
 
-        for (var ki = 1; ki < srf_knots.Count; ki++)
+        for (int ki = 1; ki < srf_knots.Count; ki++)
         {
-          var knot = srf_knots[ki];
+          double knot = srf_knots[ki];
           if (Math.Abs(knot - old_knot) < RhinoMath.ZeroTolerance)
           {
             if (ki < srf.Degree(dir) || ki >= srf_knots.Count - srf.Degree(dir))

@@ -388,3 +388,93 @@ bool RhinoHasFocus()
   }
   return false;
 }
+
+static HWND GetRealParent(HWND hWnd)
+{
+  // To obtain a window's owner window, instead of using GetParent,
+  // use GetWindow with the GW_OWNER flag.
+  HWND hWndOwner = ::GetWindow(hWnd, GW_OWNER);
+  if (NULL != hWndOwner)
+    return hWndOwner;
+
+  // Obtain the parent window and not the owner
+  return GetAncestor(hWnd, GA_PARENT);
+}
+
+/// <summary>
+/// Returns true if the Rhino main window has been re-parented to some other application window.
+/// Returns true if the Rhino main window parent is the Windows Desktop.
+/// </summary>
+bool IsRhinoReparented()
+{
+  HWND hParent = GetRealParent(RhinoApp().MainWnd());
+  HWND hDesktop = ::GetDesktopWindow();
+  return hParent != hDesktop;
+}
+
+/// <summary>
+/// Returns module handle where "this" function is running in: EXE or DLL.
+/// </summary>
+HMODULE FancyGetModuleHandle()
+{
+  HMODULE hModule = NULL;
+  ::GetModuleHandleEx(
+    GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+    (LPCTSTR)FancyGetModuleHandle,
+    &hModule
+  );
+  return hModule;
+}
+
+
+/// <summary>
+/// Begin a CRhinoDoc undo record.
+/// </summary>
+/// <param name="doc">The active document.</param>
+/// <param name="pszDescription">The undo description.</param>
+CRhinoDocUndoRecordHelper::CRhinoDocUndoRecordHelper(CRhinoDoc& doc, const wchar_t* pszDescription)
+{
+  m_docRuntimeSerialNumber = doc.RuntimeSerialNumber();
+  m_undoRecordSerialNumber = doc.BeginUndoRecord(pszDescription);
+}
+
+/// <summary>
+/// Begin a CRhinoDoc undo record.
+/// </summary>
+/// <param name="docRuntimeSerialNumber">The active document's runtime serial number.</param>
+/// <param name="pszDescription">The undo description.</param>
+CRhinoDocUndoRecordHelper::CRhinoDocUndoRecordHelper(unsigned int docRuntimeSerialNumber, const wchar_t* pszDescription)
+{
+  CRhinoDoc* pDoc = CRhinoDoc::FromRuntimeSerialNumber(docRuntimeSerialNumber);
+  if (pDoc)
+  {
+    m_docRuntimeSerialNumber = pDoc->RuntimeSerialNumber();
+    m_undoRecordSerialNumber = pDoc->BeginUndoRecord(pszDescription);
+  }
+}
+
+/// <summary>
+/// Class destructor, ends the undo record.
+/// </summary>
+CRhinoDocUndoRecordHelper::~CRhinoDocUndoRecordHelper()
+{
+  EndUndoRecord();
+}
+
+/// <summary>
+/// Ends the undo record.
+/// </summary>
+/// <returns>true if the undo record was ended.</returns>
+bool CRhinoDocUndoRecordHelper::EndUndoRecord()
+{
+  bool rc = (m_docRuntimeSerialNumber > 0 && m_undoRecordSerialNumber > 0);
+  if (rc)
+  {
+    CRhinoDoc* pDoc = CRhinoDoc::FromRuntimeSerialNumber(m_docRuntimeSerialNumber);
+    if (pDoc)
+      rc = pDoc->EndUndoRecord(m_undoRecordSerialNumber);
+    m_docRuntimeSerialNumber = m_undoRecordSerialNumber = 0;
+  }
+  return rc;
+}
+

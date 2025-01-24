@@ -14,7 +14,7 @@ namespace SampleCsWizardPanel
     /// </summary>
     private void InitializeComponent()
     {
-      var textbox = new TextBox();
+      TextBox textbox = new TextBox();
       Content = new TableLayout
       {
         Spacing = SpacingSize,

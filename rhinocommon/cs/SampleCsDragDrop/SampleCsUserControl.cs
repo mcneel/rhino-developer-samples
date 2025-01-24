@@ -29,14 +29,14 @@ namespace SampleCsDragDrop
 
     private void OnListBoxMouseMove(object sender, MouseEventArgs e)
     {
-      var item_index = m_listbox.IndexFromPoint(e.Location);
+      int item_index = m_listbox.IndexFromPoint(e.Location);
       if (m_drag_item_index < 0 || m_dragging || item_index == m_drag_item_index)
         return;
 
       m_dragging = true;
 
       Rhino.RhinoApp.WriteLine("DoDragDrop...");
-      var result = m_listbox.DoDragDrop(this, DragDropEffects.All);
+      DragDropEffects result = m_listbox.DoDragDrop(this, DragDropEffects.All);
       Rhino.RhinoApp.WriteLine($"...DoneDragDrop({result})");
 
       m_dragging = false;

@@ -1,7 +1,7 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
+using System;
 
 namespace SampleCsCommands
 {
@@ -11,18 +11,18 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var rc = Rhino.Input.RhinoGet.GetCircle(out var circle);
+      Result rc = Rhino.Input.RhinoGet.GetCircle(out Circle circle);
       if (rc != Result.Success)
         return rc;
 
-      var n = 19;
+      int n = 19;
 
-      var points = PointsOnCircle(new Point3d(0, 0, 0), 5.0, n);
-      for (var i = 0; i < n; i++)
+      Point3d[] points = PointsOnCircle(new Point3d(0, 0, 0), 5.0, n);
+      for (int i = 0; i < n; i++)
       {
-        for (var j = i + 1; j < n; j++)
+        for (int j = i + 1; j < n; j++)
         {
-          var line = new Line(points[i], points[j]);
+          Line line = new Line(points[i], points[j]);
           doc.Objects.AddLine(line);
         }
       }
@@ -34,12 +34,12 @@ namespace SampleCsCommands
 
     Point3d[] PointsOnCircle(Point3d center, double radius, int n)
     {
-      var alpha = Math.PI * 2 / n;
-      var points = new Point3d[n];
+      double alpha = Math.PI * 2 / n;
+      Point3d[] points = new Point3d[n];
 
-      for (var i = 0; i < n; i++)
+      for (int i = 0; i < n; i++)
       {
-        var theta = alpha * i;
+        double theta = alpha * i;
         points[i] = new Point3d(
             center.X + Math.Cos(theta) * radius,
             center.Y + Math.Sin(theta) * radius,

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -21,7 +21,7 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Select objects to orient
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select objects to orient");
       go.SubObjectSelect = false;
       go.EnableIgnoreGrips(true);
@@ -30,18 +30,18 @@ namespace SampleCsCommands
         return go.CommandResult();
 
       // Point to move from
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Point to move from");
       gp.Get();
       if (gp.CommandResult() != Result.Success)
         return gp.CommandResult();
 
       // Calculate source plane
-      var plane = gp.View().ActiveViewport.ConstructionPlane();
+      Plane plane = gp.View().ActiveViewport.ConstructionPlane();
       plane.Origin = gp.Point();
 
       // Mesh to orient on
-      var gm = new GetObject();
+      GetObject gm = new GetObject();
       gm.SetCommandPrompt("Mesh to orient on");
       gm.GeometryFilter = ObjectType.Mesh;
       gm.EnablePreSelect(false, true);
@@ -50,12 +50,12 @@ namespace SampleCsCommands
       if (gm.CommandResult() != Result.Success)
         return gm.CommandResult();
 
-      var mesh = gm.Object(0).Mesh();
+      Mesh mesh = gm.Object(0).Mesh();
       if (null == mesh)
         return Result.Failure;
 
       // Point on mesh to orient to
-      var gpm = new GetPointOnMesh(mesh, plane);
+      GetPointOnMesh gpm = new GetPointOnMesh(mesh, plane);
       gpm.SetCommandPrompt("Point on mesh to orient to");
       gpm.AppendObjects(go);
       gpm.Get();
@@ -63,12 +63,12 @@ namespace SampleCsCommands
         return gpm.CommandResult();
 
       // One final calculation
-      var xform = new Transform(1);
+      Transform xform = new Transform(1);
       if (gpm.CalculateTransform(gpm.View().ActiveViewport, gpm.Point(), ref xform))
       {
-        foreach (var objRef in go.Objects())
+        foreach (ObjRef objRef in go.Objects())
         {
-          var obj = objRef.Object();
+          RhinoObject obj = objRef.Object();
           if (null != obj)
             doc.Objects.Transform(obj, xform, true);
         }
@@ -91,7 +91,7 @@ namespace SampleCsCommands
     private List<RhinoObject> m_objects;
 
     // Mesh face plane cache
-    private readonly Dictionary<int, Plane> m_face_planes; 
+    private readonly Dictionary<int, Plane> m_face_planes;
 
     /// <summary>
     /// Public constructor
@@ -116,9 +116,9 @@ namespace SampleCsCommands
         if (null == m_objects)
           m_objects = new List<RhinoObject>();
 
-        foreach (var objRef in go.Objects())
+        foreach (ObjRef objRef in go.Objects())
         {
-          var obj = objRef.Object();
+          RhinoObject obj = objRef.Object();
           if (null != obj)
             m_objects.Add(obj);
         }
@@ -130,8 +130,8 @@ namespace SampleCsCommands
     /// </summary>
     public bool CalculateTransform(RhinoViewport vp, Point3d pt, ref Transform xform)
     {
-      var rc = false;
-      var mp = m_mesh.ClosestMeshPoint(pt, 0.0);
+      bool rc = false;
+      MeshPoint mp = m_mesh.ClosestMeshPoint(pt, 0.0);
       if (null != mp)
       {
         Plane meshPlane;
@@ -160,7 +160,7 @@ namespace SampleCsCommands
     {
       if (m_draw)
       {
-        foreach (var obj in m_objects)
+        foreach (RhinoObject obj in m_objects)
           e.Display.DrawObject(obj, m_xform);
       }
     }
@@ -171,10 +171,10 @@ namespace SampleCsCommands
     private bool MeshFacePlane(MeshPoint mp, out Plane plane)
     {
       plane = new Plane();
-      var rc = false;
+      bool rc = false;
       if (null != mp && mp.ComponentIndex.ComponentIndexType == ComponentIndexType.MeshFace)
       {
-        var mesh = mp.Mesh;
+        Mesh mesh = mp.Mesh;
         if (null != mesh && 0 <= mp.FaceIndex && mp.FaceIndex < mesh.Faces.Count)
         {
           if (m_face_planes.ContainsKey(mp.FaceIndex))

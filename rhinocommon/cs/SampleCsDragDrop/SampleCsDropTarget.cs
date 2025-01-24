@@ -1,9 +1,9 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using Rhino;
+﻿using Rhino;
 using Rhino.Display;
 using Rhino.DocObjects;
 using RhinoWindows.Forms;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace SampleCsDragDrop
 {
@@ -20,7 +20,7 @@ namespace SampleCsDragDrop
 
     protected override bool SupportDataObject(DataObject data)
     {
-      var str = DropString(data);
+      string str = DropString(data);
       RhinoApp.WriteLine($"SampleCsDropTarget.SupportDataObject({str})");
       return !string.IsNullOrEmpty(str);
     }
@@ -45,7 +45,7 @@ namespace SampleCsDragDrop
 
     private string DropString(DataObject dataObject)
     {
-      var control = dataObject?.GetData(typeof(SampleCsUserControl)) as SampleCsUserControl;
+      SampleCsUserControl control = dataObject?.GetData(typeof(SampleCsUserControl)) as SampleCsUserControl;
       return control?.DropString;
     }
   }

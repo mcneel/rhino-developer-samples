@@ -1,9 +1,9 @@
-﻿using System;
-using System.Drawing;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.Input;
+using System;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -13,11 +13,11 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var view = doc.Views.ActiveView;
+      RhinoView view = doc.Views.ActiveView;
       if (null == view)
         return Result.Failure;
 
-      var conduit = new SampleCsDrawGrayscaleConduit(view.ActiveViewportID)
+      SampleCsDrawGrayscaleConduit conduit = new SampleCsDrawGrayscaleConduit(view.ActiveViewportID)
       {
         Enabled = true
       };
@@ -58,8 +58,8 @@ namespace SampleCsCommands
     {
       if (e.Display.Viewport.Id == ViewportId)
       {
-        var old_color = e.Display.DisplayPipelineAttributes.ObjectColor;
-        var new_color = ConvertToGrayscale(old_color);
+        Color old_color = e.Display.DisplayPipelineAttributes.ObjectColor;
+        Color new_color = ConvertToGrayscale(old_color);
         // Works for curves
         e.Display.DisplayPipelineAttributes.ObjectColor = new_color;
       }
@@ -70,11 +70,11 @@ namespace SampleCsCommands
     /// </summary>
     static Color ConvertToGrayscale(Color color)
     {
-      var r = color.R;
-      var g = color.G;
-      var b = color.B;
-      var luma = (int)(r * 0.3 + g * 0.59 + b * 0.11);
-      var gray = Color.FromArgb(luma, luma, luma);
+      byte r = color.R;
+      byte g = color.G;
+      byte b = color.B;
+      int luma = (int)(r * 0.3 + g * 0.59 + b * 0.11);
+      Color gray = Color.FromArgb(luma, luma, luma);
       return gray;
     }
   }

@@ -12,7 +12,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select closed, planar curves for containment test");
       go.GeometryFilter = ObjectType.Curve;
       go.GeometryAttributeFilter = GeometryAttributeFilter.ClosedCurve;
@@ -20,14 +20,14 @@ namespace SampleCsCommands
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var plane = go.View().ActiveViewport.ConstructionPlane();
-      var tol = doc.ModelAbsoluteTolerance;
+      Plane plane = go.View().ActiveViewport.ConstructionPlane();
+      double tol = doc.ModelAbsoluteTolerance;
 
-      var crvs = new Curve[2];
-      for (var i = 0; i < 2; i++)
+      Curve[] crvs = new Curve[2];
+      for (int i = 0; i < 2; i++)
       {
-        var rh_ref = go.Object(i);
-        var rh_obj = rh_ref.Object();
+        ObjRef rh_ref = go.Object(i);
+        RhinoObject rh_obj = rh_ref.Object();
         crvs[i] = rh_ref.Curve();
         if (null == rh_obj || null == crvs[i])
           return Result.Failure;
@@ -41,7 +41,7 @@ namespace SampleCsCommands
         }
       }
 
-      var result = Curve.PlanarClosedCurveRelationship(crvs[0], crvs[1], plane, tol);
+      RegionContainment result = Curve.PlanarClosedCurveRelationship(crvs[0], crvs[1], plane, tol);
       switch (result)
       {
         case RegionContainment.Disjoint:

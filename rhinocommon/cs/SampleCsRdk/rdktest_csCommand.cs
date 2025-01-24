@@ -1,4 +1,3 @@
-using System;
 using Rhino;
 
 namespace SampleCsRdk

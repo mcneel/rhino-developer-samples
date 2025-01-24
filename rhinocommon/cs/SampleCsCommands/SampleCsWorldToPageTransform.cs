@@ -13,31 +13,31 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var view = doc.Views.ActiveView;
+      RhinoView view = doc.Views.ActiveView;
       if (null == view)
         return Result.Failure;
 
-      var page_view = view as RhinoPageView;
+      RhinoPageView page_view = view as RhinoPageView;
       if (null == page_view)
       {
         RhinoApp.WriteLine("The active view is neither a layout nor a detail view.");
         return Result.Failure;
       }
 
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select point object");
       go.GeometryFilter = ObjectType.Point;
       go.Get();
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
-      var point_obj = go.Object(0).Point();
+      Point point_obj = go.Object(0).Point();
       if (null == point_obj)
         return Result.Failure;
 
       if (page_view.PageIsActive)
       {
-        var gd = new GetDetailViewObject();
+        GetDetailViewObject gd = new GetDetailViewObject();
         gd.SetCommandPrompt("Select target detail view");
         gd.EnablePreSelect(false, true);
         gd.DeselectAllBeforePostSelect = false;
@@ -45,10 +45,10 @@ namespace SampleCsCommands
         if (gd.CommandResult() != Result.Success)
           return gd.CommandResult();
 
-        var detail = gd.Object(0).Object() as DetailViewObject;
+        DetailViewObject detail = gd.Object(0).Object() as DetailViewObject;
         if (null != detail)
         {
-          var point = point_obj.Location;
+          Point3d point = point_obj.Location;
           RhinoApp.WriteLine("Page location: {0}", point.ToString());
           point.Transform(detail.PageToWorldTransform);
           RhinoApp.WriteLine("World location: {0}", point.ToString());
@@ -56,10 +56,10 @@ namespace SampleCsCommands
       }
       else
       {
-        var detail = FindActiveDetailObject(page_view);
+        DetailViewObject detail = FindActiveDetailObject(page_view);
         if (null != detail)
         {
-          var point = point_obj.Location;
+          Point3d point = point_obj.Location;
           RhinoApp.WriteLine("World location: {0}", point.ToString());
           point.Transform(detail.WorldToPageTransform);
           RhinoApp.WriteLine("Page location: {0}", point.ToString());
@@ -77,11 +77,11 @@ namespace SampleCsCommands
       if (null == pageView || pageView.PageIsActive)
         return null;
 
-      var details = pageView.GetDetailViews();
+      DetailViewObject[] details = pageView.GetDetailViews();
       if (null == details)
         return null;
 
-      foreach (var detail in details)
+      foreach (DetailViewObject detail in details)
       {
         if (detail.IsActive)
           return detail;
@@ -98,7 +98,7 @@ namespace SampleCsCommands
   {
     public override bool CustomGeometryFilter(RhinoObject rhObject, GeometryBase geometry, ComponentIndex componentIndex)
     {
-      var detail = rhObject as DetailViewObject;
+      DetailViewObject detail = rhObject as DetailViewObject;
       return detail != null;
     }
   }

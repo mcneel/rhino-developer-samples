@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
@@ -46,7 +44,7 @@ namespace SampleCsCommands
       Curve curve = go.Object(0).Curve();
       if (null == curve)
         return Result.Failure;
-    
+
       PolyCurve poly_curve = curve as PolyCurve;
       if (null == poly_curve)
         return Result.Failure;
@@ -58,7 +56,7 @@ namespace SampleCsCommands
       doc.Objects.Delete(go.Object(0), false);
 
       doc.Views.Redraw();
- 
+
       return Result.Success;
     }
   }

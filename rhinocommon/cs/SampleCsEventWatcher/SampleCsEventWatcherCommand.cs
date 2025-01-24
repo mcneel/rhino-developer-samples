@@ -42,24 +42,24 @@ namespace SampleCsEventWatcher
     /// </summary>
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var enabled = SampleCsEventHandlers.Instance.IsEnabled;
-      var prompt = enabled ? "Event watcher is enabled. New value" : "Event watcher is disabled. New value";
+      bool enabled = SampleCsEventHandlers.Instance.IsEnabled;
+      string prompt = enabled ? "Event watcher is enabled. New value" : "Event watcher is disabled. New value";
 
-      var go = new GetOption();
+      GetOption go = new GetOption();
       go.SetCommandPrompt(prompt);
       go.AcceptNothing(true);
 
-      var d_option = go.AddOption("Disable");
-      var e_option = go.AddOption("Enable");
-      var t_option = go.AddOption("Toggle");
+      int d_option = go.AddOption("Disable");
+      int e_option = go.AddOption("Enable");
+      int t_option = go.AddOption("Toggle");
 
-      var res = go.Get();
+      GetResult res = go.Get();
       if (res == GetResult.Nothing)
         return Result.Success;
       if (res != GetResult.Option)
         return Result.Cancel;
 
-      var option = go.Option();
+      CommandLineOption option = go.Option();
       if (null == option)
         return Result.Failure;
 

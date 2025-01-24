@@ -1,11 +1,8 @@
-﻿using System;
-using System.Drawing;
-using System.Text;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
-using Rhino.FileIO;
 using Rhino.Geometry;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -15,7 +12,7 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var vertices = new Point3d[8];
+      Point3d[] vertices = new Point3d[8];
       vertices[0] = new Point3d(10.0, 10.0, 10.0);
       vertices[1] = new Point3d(10.0, 10.0, -10.0);
       vertices[2] = new Point3d(10.0, -10.0, 10.0);
@@ -25,21 +22,21 @@ namespace SampleCsCommands
       vertices[6] = new Point3d(-10.0, -10.0, 10.0);
       vertices[7] = new Point3d(-10.0, -10.0, -10.0);
 
-      var indices = new int[,]
+      int[,] indices = new int[,]
       {
-        { 0, 1, 5, 4 }, 
-        { 0, 4, 6, 2 }, 
-        { 0, 2, 3, 1 }, 
-        { 7, 3, 2, 6}, 
-        { 7, 6, 4, 5}, 
+        { 0, 1, 5, 4 },
+        { 0, 4, 6, 2 },
+        { 0, 2, 3, 1 },
+        { 7, 3, 2, 6},
+        { 7, 6, 4, 5},
         { 7, 5, 1, 3}
       };
 
-      var meshes = new Mesh[6];
-      for (var mi = 0; mi < 6; mi++)
+      Mesh[] meshes = new Mesh[6];
+      for (int mi = 0; mi < 6; mi++)
       {
-        var mesh = new Mesh();
-        for (var vi = 0; vi < 4; vi++)
+        Mesh mesh = new Mesh();
+        for (int vi = 0; vi < 4; vi++)
           mesh.Vertices.Add(vertices[indices[mi, vi]]);
         mesh.Faces.AddFace(0, 1, 2, 3);
         mesh.FaceNormals.ComputeFaceNormals();
@@ -48,7 +45,7 @@ namespace SampleCsCommands
         meshes[mi] = mesh;
       }
 
-      var colors = new Color[]
+      Color[] colors = new Color[]
       {
         Color.Red,
         Color.Orange,
@@ -58,12 +55,12 @@ namespace SampleCsCommands
         Color.Purple
       };
 
-      var gi = doc.Groups.Add();
+      int gi = doc.Groups.Add();
 
-      var atts = new ObjectAttributes {ColorSource = ObjectColorSource.ColorFromObject};
+      ObjectAttributes atts = new ObjectAttributes { ColorSource = ObjectColorSource.ColorFromObject };
       atts.AddToGroup(gi);
 
-      for (var mi = 0; mi < 6; mi++)
+      for (int mi = 0; mi < 6; mi++)
       {
         atts.ObjectColor = colors[mi];
         doc.Objects.AddMesh(meshes[mi], atts);

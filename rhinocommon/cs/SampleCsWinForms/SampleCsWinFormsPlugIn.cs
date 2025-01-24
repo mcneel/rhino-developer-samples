@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.PlugIns;
 using Rhino.UI;
 using SampleCsWinForms.Forms;
+using System.Collections.Generic;
 
 namespace SampleCsWinForms
 {
@@ -28,26 +28,26 @@ namespace SampleCsWinForms
     /// </summary>
     protected override LoadReturnCode OnLoad(ref string errorMessage)
     {
-      var type = typeof(SampleCsPanelUserControl);
+      System.Type type = typeof(SampleCsPanelUserControl);
       Panels.RegisterPanel(this, type, "SampleWinForms", SampleCsWinForms.Properties.Resources.Panel, PanelType.System);
       return LoadReturnCode.Success;
     }
 
     protected override void OptionsDialogPages(List<OptionsDialogPage> pages)
     {
-      var sample_page = new SampleCsOptionsPage();
+      SampleCsOptionsPage sample_page = new SampleCsOptionsPage();
       pages.Add(sample_page);
     }
 
     protected override void DocumentPropertiesDialogPages(RhinoDoc doc, List<OptionsDialogPage> pages)
     {
-      var sample_page = new SampleCsDocPropertiesPage(doc);
+      SampleCsDocPropertiesPage sample_page = new SampleCsDocPropertiesPage(doc);
       pages.Add(sample_page);
     }
 
     protected override void ObjectPropertiesPages(ObjectPropertiesPageCollection collection)
     {
-      var sample_page = new SampleCsObjectPropertiesPage();
+      SampleCsObjectPropertiesPage sample_page = new SampleCsObjectPropertiesPage();
       collection.Add(sample_page);
     }
 

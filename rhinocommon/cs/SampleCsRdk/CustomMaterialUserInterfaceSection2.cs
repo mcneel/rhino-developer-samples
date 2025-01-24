@@ -1,7 +1,4 @@
-﻿using System.Windows.Forms;
-using Rhino.Render;
-using Rhino.Render.UI;
-using Rhino.UI;
+﻿using Rhino.UI;
 
 namespace SampleCsRdk
 {
@@ -15,7 +12,7 @@ namespace SampleCsRdk
 
       m_view_model = new CustomMaterialViewModel(this);
     }
-     
+
 
     public override bool Hidden
     {

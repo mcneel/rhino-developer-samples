@@ -1,11 +1,10 @@
-﻿using System;
-using System.Drawing;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System.Drawing;
 
 namespace SampleCsCommands
 {
@@ -32,14 +31,14 @@ namespace SampleCsCommands
     {
 
       //Select a brep or mesh to extract some curves from
-      var go = new GetObject() {GeometryFilter = ObjectType.Brep | ObjectType.Mesh};
+      GetObject go = new GetObject() { GeometryFilter = ObjectType.Brep | ObjectType.Mesh };
       go.SetCommandPrompt("Select object for draft curve extraction");
       go.Get();
       if (go.Result() != GetResult.Object)
         return Result.Cancel;
 
       //The selected geometry base
-      var geometry = go.Object(0).Geometry();
+      GeometryBase geometry = go.Object(0).Geometry();
 
 
       //Min & Max angle must be specified in Radians
@@ -54,20 +53,20 @@ namespace SampleCsCommands
       double angle_tolerance = doc.ModelAngleToleranceRadians;
 
       //Compute the minimum draft angle curves
-      var min_draft_silhouettes = Silhouette.ComputeDraftCurve(geometry, min_angle, direction, tolerance,angle_tolerance);
+      Silhouette[] min_draft_silhouettes = Silhouette.ComputeDraftCurve(geometry, min_angle, direction, tolerance, angle_tolerance);
 
       //Compute the maximum draft angle curves
-      var max_draft_silhouettes = Silhouette.ComputeDraftCurve(geometry, max_angle, direction, tolerance, angle_tolerance);
-      
+      Silhouette[] max_draft_silhouettes = Silhouette.ComputeDraftCurve(geometry, max_angle, direction, tolerance, angle_tolerance);
+
 
       //Add all of the minimum draft angle silhouette curves to the doc
       if (min_draft_silhouettes != null)
       {
-        var oa = new ObjectAttributes(){ObjectColor = Color.Red,ColorSource = ObjectColorSource.ColorFromObject};
-        foreach (var silhouette in min_draft_silhouettes)
+        ObjectAttributes oa = new ObjectAttributes() { ObjectColor = Color.Red, ColorSource = ObjectColorSource.ColorFromObject };
+        foreach (Silhouette silhouette in min_draft_silhouettes)
         {
-          var crv = silhouette.Curve;
-          doc.Objects.AddCurve(crv,oa);
+          Curve crv = silhouette.Curve;
+          doc.Objects.AddCurve(crv, oa);
         }
       }
 
@@ -75,11 +74,11 @@ namespace SampleCsCommands
       //Add all of the maximum draft angle silhouette curves to the doc
       if (max_draft_silhouettes != null)
       {
-        var oa = new ObjectAttributes(){ObjectColor = Color.Blue, ColorSource = ObjectColorSource.ColorFromObject };
-        foreach (var silhouette in max_draft_silhouettes)
+        ObjectAttributes oa = new ObjectAttributes() { ObjectColor = Color.Blue, ColorSource = ObjectColorSource.ColorFromObject };
+        foreach (Silhouette silhouette in max_draft_silhouettes)
         {
-          var crv = silhouette.Curve;
-          doc.Objects.AddCurve(crv,oa);
+          Curve crv = silhouette.Curve;
+          doc.Objects.AddCurve(crv, oa);
         }
       }
 

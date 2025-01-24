@@ -1,9 +1,9 @@
 ﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
+using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
-using Rhino.Geometry;
 using Rhino.UI.Gumball;
 
 namespace SampleCsCommands
@@ -36,16 +36,16 @@ namespace SampleCsCommands
         plane = view.ActiveViewport.ConstructionPlane();
       plane.Origin = center;
 
-      var cylinder = new SampleCsGumballCylinder(plane, m_radius, m_height);
+      SampleCsGumballCylinder cylinder = new SampleCsGumballCylinder(plane, m_radius, m_height);
 
-      var radius_go = new GumballObject();
-      var height_go = new GumballObject();
+      GumballObject radius_go = new GumballObject();
+      GumballObject height_go = new GumballObject();
 
-      var radius_dc = new GumballDisplayConduit(Rhino.DocObjects.ActiveSpace.ModelSpace);
-      var height_dc = new GumballDisplayConduit(Rhino.DocObjects.ActiveSpace.ModelSpace);
+      GumballDisplayConduit radius_dc = new GumballDisplayConduit(Rhino.DocObjects.ActiveSpace.ModelSpace);
+      GumballDisplayConduit height_dc = new GumballDisplayConduit(Rhino.DocObjects.ActiveSpace.ModelSpace);
 
-      var radius_gas = RadiusGumballAppearanceSettings();
-      var height_gas = HeightGumballAppearanceSettings();
+      GumballAppearanceSettings radius_gas = RadiusGumballAppearanceSettings();
+      GumballAppearanceSettings height_gas = HeightGumballAppearanceSettings();
 
       while (true)
       {
@@ -58,7 +58,7 @@ namespace SampleCsCommands
         radius_dc.Enabled = true;
         height_dc.Enabled = true;
 
-        var gx = new SampleCsGumballCylinderGetPoint(cylinder, radius_dc, height_dc);
+        SampleCsGumballCylinderGetPoint gx = new SampleCsGumballCylinderGetPoint(cylinder, radius_dc, height_dc);
         gx.SetCommandPrompt("Drag gumball. Press Enter when done");
         gx.AcceptNothing(true);
         gx.MoveGumball();
@@ -69,11 +69,11 @@ namespace SampleCsCommands
         if (gx.CommandResult() != Result.Success)
           break;
 
-        var res = gx.Result();
+        GetResult res = gx.Result();
         if (res == GetResult.Point)
         {
-          var radius = cylinder.Radius;
-          var height = cylinder.Height;
+          double radius = cylinder.Radius;
+          double height = cylinder.Height;
           cylinder = new SampleCsGumballCylinder(plane, radius, height);
           continue;
         }
@@ -82,7 +82,7 @@ namespace SampleCsCommands
           m_radius = cylinder.Radius;
           m_height = cylinder.Height;
           cylinder = new SampleCsGumballCylinder(plane, m_radius, m_height);
-          var brep = cylinder.ToBrep;
+          Brep brep = cylinder.ToBrep;
           if (null != brep)
             doc.Objects.AddBrep(brep);
         }
@@ -97,7 +97,7 @@ namespace SampleCsCommands
 
     private GumballAppearanceSettings RadiusGumballAppearanceSettings()
     {
-      var gas = new GumballAppearanceSettings
+      GumballAppearanceSettings gas = new GumballAppearanceSettings
       {
         RelocateEnabled = false,
         RotateXEnabled = false,
@@ -119,7 +119,7 @@ namespace SampleCsCommands
 
     private GumballAppearanceSettings HeightGumballAppearanceSettings()
     {
-      var gas = new GumballAppearanceSettings
+      GumballAppearanceSettings gas = new GumballAppearanceSettings
       {
         RelocateEnabled = false,
         RotateXEnabled = false,
@@ -172,7 +172,7 @@ namespace SampleCsCommands
 
     public bool Create(Plane plane, double radius, double height)
     {
-      var rc = false;
+      bool rc = false;
       if (radius > 0.0 && height > 0.0)
       {
         m_circle = new Circle(plane, radius);
@@ -205,10 +205,10 @@ namespace SampleCsCommands
     {
       get
       {
-        var center = m_circle.PointAt(0.0);
-        var xaxis = m_circle.TangentAt(0.0);
+        Point3d center = m_circle.PointAt(0.0);
+        Vector3d xaxis = m_circle.TangentAt(0.0);
         xaxis.Unitize();
-        var zaxis = m_circle.Normal;
+        Vector3d zaxis = m_circle.Normal;
         zaxis.Unitize();
         return new Plane(center, xaxis, zaxis);
       }
@@ -218,10 +218,10 @@ namespace SampleCsCommands
     {
       get
       {
-        var dir = m_circle.Normal;
+        Vector3d dir = m_circle.Normal;
         dir.Unitize();
         dir *= m_cylinder.TotalHeight;
-        var center = Point3d.Add(m_circle.Center, dir);
+        Point3d center = Point3d.Add(m_circle.Center, dir);
         return new Plane(center, m_circle.Plane.XAxis, m_circle.Plane.YAxis);
       }
     }
@@ -279,13 +279,13 @@ namespace SampleCsCommands
       m_radius_dc.PickResult.SetToDefault();
       m_height_dc.PickResult.SetToDefault();
 
-      var pick_context = new PickContext
+      PickContext pick_context = new PickContext
       {
         View = e.Viewport.ParentView,
         PickStyle = PickStyle.PointPick
       };
 
-      var xform = e.Viewport.GetPickTransform(e.WindowPoint);
+      Transform xform = e.Viewport.GetPickTransform(e.WindowPoint);
       pick_context.SetPickTransform(xform);
 
       Line pick_line;
@@ -314,8 +314,8 @@ namespace SampleCsCommands
         Line world_line;
         if (e.Viewport.GetFrustumLine(e.WindowPoint.X, e.WindowPoint.Y, out world_line))
         {
-          var dir = e.Point - m_base_point;
-          var len = dir.Length;
+          Vector3d dir = e.Point - m_base_point;
+          double len = dir.Length;
           if (m_base_origin.DistanceTo(e.Point) < m_base_origin.DistanceTo(m_base_point))
             len = -len;
 
@@ -351,7 +351,7 @@ namespace SampleCsCommands
 
     public GetResult MoveGumball()
     {
-      var rc = Get(true);
+      GetResult rc = Get(true);
       return rc;
     }
   }

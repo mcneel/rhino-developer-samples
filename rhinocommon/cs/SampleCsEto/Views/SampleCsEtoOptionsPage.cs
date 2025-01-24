@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using Eto.Drawing;
+﻿using Eto.Drawing;
 using Eto.Forms;
 using Rhino.UI;
+using System.Diagnostics;
 
 namespace SampleCsEto.Views
 {
@@ -45,13 +45,13 @@ namespace SampleCsEto.Views
   {
     public SampleCsEtoOptionsPageControl()
     {
-      var hello_button = new Button { Text = "Hello" };
+      Button hello_button = new Button { Text = "Hello" };
       hello_button.Click += (sender, e) => OnHelloButton();
 
-      var child_button = new Button { Text = "Child Dialog..." };
+      Button child_button = new Button { Text = "Child Dialog..." };
       child_button.Click += (sender, e) => OnChildButton();
 
-      var layout = new DynamicLayout { DefaultSpacing = new Size(5, 5), Padding = new Padding(10) };
+      DynamicLayout layout = new DynamicLayout { DefaultSpacing = new Size(5, 5), Padding = new Padding(10) };
       layout.AddSeparateRow(hello_button, null);
       layout.AddSeparateRow(child_button, null);
       layout.Add(null);
@@ -93,7 +93,7 @@ namespace SampleCsEto.Views
     /// </summary>
     protected void OnChildButton()
     {
-      var dialog = new SampleCsEtoHelloWorld();
+      SampleCsEtoHelloWorld dialog = new SampleCsEtoHelloWorld();
       dialog.ShowModal(this);
     }
   }

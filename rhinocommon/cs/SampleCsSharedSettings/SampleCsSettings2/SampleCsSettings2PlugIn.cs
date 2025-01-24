@@ -1,5 +1,5 @@
-﻿using System;
-using Rhino.PlugIns;
+﻿using Rhino.PlugIns;
+using System;
 
 namespace SampleCsSettings2
 {
@@ -23,7 +23,7 @@ namespace SampleCsSettings2
 
     protected override LoadReturnCode OnLoad(ref string errorMessage)
     {
-      var thread = new System.Threading.Thread(LoadAndRegister) { Name = "Registering thread" };
+      System.Threading.Thread thread = new System.Threading.Thread(LoadAndRegister) { Name = "Registering thread" };
       Rhino.RhinoApp.Initialized += OnRhinoAppInitialized;
       thread.Start();
       return LoadReturnCode.Success;
@@ -40,8 +40,8 @@ namespace SampleCsSettings2
         System.Threading.Thread.Sleep(10);
 
       // Find SampleCsSettings1 plug-in
-      var plugin_id = SampleCsSettings1PlugInId;
-      var plugin = Find(SampleCsSettings1PlugInId);
+      Guid plugin_id = SampleCsSettings1PlugInId;
+      PlugIn plugin = Find(SampleCsSettings1PlugInId);
       if (plugin == null)
       {
         if (LoadPlugIn(plugin_id))
@@ -61,10 +61,10 @@ namespace SampleCsSettings2
     public void ReadSetting()
     {
       // Find SampleCsSettings1 plug-in
-      var plugin = Find(SampleCsSettings1PlugInId);
+      PlugIn plugin = Find(SampleCsSettings1PlugInId);
       if (plugin != null)
       {
-        var value = plugin.Settings.GetInteger("SomeSetting", -1);
+        int value = plugin.Settings.GetInteger("SomeSetting", -1);
         Rhino.RhinoApp.WriteLine($"Setting from SampleCsSettings1 > {value}");
       }
     }

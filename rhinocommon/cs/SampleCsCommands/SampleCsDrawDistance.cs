@@ -1,10 +1,10 @@
-﻿using System;
-using System.Drawing;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System;
+using System.Drawing;
 
 namespace SampleCsCommands
 {

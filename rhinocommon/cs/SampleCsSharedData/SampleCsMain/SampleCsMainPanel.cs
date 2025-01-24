@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SampleCsCommon;
+using System;
 using System.Windows.Forms;
-using SampleCsCommon;
 
 namespace SampleCsMain
 {

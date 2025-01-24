@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 namespace SampleCsCommands
 {
@@ -42,20 +42,20 @@ namespace SampleCsCommands
       Tolerance = doc.ModelAbsoluteTolerance;
 
       // Get persistent settings
-      var settings = Settings;
-      var radius = settings.GetDouble("Radius", RADIUS);
-      var cut_type = settings.GetEnumValue("CutType", CUTTYPE);
+      PersistentSettings settings = Settings;
+      double radius = settings.GetDouble("Radius", RADIUS);
+      CutType cut_type = settings.GetEnumValue("CutType", CUTTYPE);
 
       // Select closed,planar curve
-      var go = new GetClosedPlanarPolyline(Tolerance);
+      GetClosedPlanarPolyline go = new GetClosedPlanarPolyline(Tolerance);
       go.SetCommandPrompt("Select closed, planar polyline");
       go.Get();
       if (go.CommandResult() != Result.Success)
         return go.CommandResult();
 
       // Get curve
-      var obj_ref = go.Object(0);
-      var curve = obj_ref.Curve();
+      ObjRef obj_ref = go.Object(0);
+      Curve curve = obj_ref.Curve();
       if (null == curve || !curve.IsClosed || !curve.IsPlanar())
         return Result.Failure;
 
@@ -73,7 +73,7 @@ namespace SampleCsCommands
         return Result.Failure;
 
       // Get corner point indices
-      var indices = FindInnerCornerPoints(curve, polyline, plane);
+      int[] indices = FindInnerCornerPoints(curve, polyline, plane);
       if (0 == indices.Length)
       {
         RhinoApp.WriteLine("No inner corners found.");
@@ -81,7 +81,7 @@ namespace SampleCsCommands
       }
 
       // Show preview conduit
-      var conduit = new SampleCsOverCutConduit
+      SampleCsOverCutConduit conduit = new SampleCsOverCutConduit
       {
         Circles = CalculateCuttingCircles(curve, polyline, indices, plane, radius, cut_type),
         Enabled = true
@@ -91,25 +91,25 @@ namespace SampleCsCommands
       Result rc;
 
       // Choose overcut options
-      var gp = new GetOption();
+      GetOption gp = new GetOption();
       gp.SetCommandPrompt("Choose overcut option");
       gp.AcceptNothing(true);
-      for (;;)
+      for (; ; )
       {
         gp.ClearCommandOptions();
-        var cut_type_index = gp.AddOptionEnumList("CutType", cut_type);
-        var radius_option = new OptionDouble(radius, true, Tolerance);
-        var radius_index = gp.AddOptionDouble("Radius", ref radius_option);
-        var res = gp.Get();
+        int cut_type_index = gp.AddOptionEnumList("CutType", cut_type);
+        OptionDouble radius_option = new OptionDouble(radius, true, Tolerance);
+        int radius_index = gp.AddOptionDouble("Radius", ref radius_option);
+        GetResult res = gp.Get();
 
         if (res == GetResult.Option)
         {
-          var option = gp.Option();
+          CommandLineOption option = gp.Option();
           if (null != option)
           {
             if (option.Index == cut_type_index)
             {
-              var list = Enum.GetValues(typeof (CutType)).Cast<CutType>().ToList();
+              List<CutType> list = Enum.GetValues(typeof(CutType)).Cast<CutType>().ToList();
               cut_type = list[option.CurrentListOptionIndex];
             }
             else if (option.Index == radius_index)
@@ -138,11 +138,11 @@ namespace SampleCsCommands
       if (rc == Result.Success)
       {
         // Try differencing circles from curve
-        var success = true;
-        var new_curve = curve;
-        for (var i = 0; i < conduit.Circles.Count && success; i++)
+        bool success = true;
+        Curve new_curve = curve;
+        for (int i = 0; i < conduit.Circles.Count && success; i++)
         {
-          var new_curves = Curve.CreateBooleanDifference(new_curve, new ArcCurve(conduit.Circles[i]), doc.ModelAbsoluteTolerance);
+          Curve[] new_curves = Curve.CreateBooleanDifference(new_curve, new ArcCurve(conduit.Circles[i]), doc.ModelAbsoluteTolerance);
           if (1 == new_curves.Length && null != new_curves[0])
             new_curve = new_curves[0];
           else
@@ -156,7 +156,7 @@ namespace SampleCsCommands
         }
         else
         {
-          for (var i = 0; i < conduit.Circles.Count; i++)
+          for (int i = 0; i < conduit.Circles.Count; i++)
             doc.Objects.AddCircle(conduit.Circles[i]);
         }
 
@@ -178,15 +178,15 @@ namespace SampleCsCommands
       if (null == curve || null == polyline)
         return new int[0];
 
-      var indices = new List<int>();
+      List<int> indices = new List<int>();
 
-      for (var current = 0; current < polyline.Count; current++)
+      for (int current = 0; current < polyline.Count; current++)
       {
-        var prev = (current == 0) ? polyline.Count - 1 : current - 1;
-        var dir = polyline[current] - polyline[prev];
+        int prev = (current == 0) ? polyline.Count - 1 : current - 1;
+        Vector3d dir = polyline[current] - polyline[prev];
         dir.Unitize();
-        dir *= 2.1*Tolerance;
-        var point = polyline[current] + dir;
+        dir *= 2.1 * Tolerance;
+        Point3d point = polyline[current] + dir;
         if (PointContainment.Inside == curve.Contains(point, plane, Tolerance))
           indices.Add(current);
       }
@@ -199,14 +199,14 @@ namespace SampleCsCommands
     /// </summary>
     private List<Circle> CalculateCuttingCircles(Curve curve, Polyline polyline, int[] indices, Plane plane, double radius, CutType cutType)
     {
-      var circles = new List<Circle>();
+      List<Circle> circles = new List<Circle>();
 
       if (null == curve || null == polyline || null == indices)
         return circles;
 
-      for (var i = 0; i < indices.Length; i++)
+      for (int i = 0; i < indices.Length; i++)
       {
-        var current = indices[i];
+        int current = indices[i];
         int prev, next;
         if (current == 0)
         {
@@ -224,23 +224,23 @@ namespace SampleCsCommands
           next = current + 1;
         }
 
-        var dir0 = polyline[prev] - polyline[current];
-        var dir1 = polyline[next] - polyline[current];
+        Vector3d dir0 = polyline[prev] - polyline[current];
+        Vector3d dir1 = polyline[next] - polyline[current];
 
         if (cutType == CutType.Corner)
         {
           dir0.Unitize();
           dir1.Unitize();
 
-          var dir = 0.5 * (dir0 + dir1);
+          Vector3d dir = 0.5 * (dir0 + dir1);
           dir.Unitize();
           dir *= radius;
 
-          var circle_plane = plane;
+          Plane circle_plane = plane;
           circle_plane.Origin = polyline[current];
-          var circle = new Circle(circle_plane, radius);
+          Circle circle = new Circle(circle_plane, radius);
 
-          var xform = Transform.Translation(dir);
+          Transform xform = Transform.Translation(dir);
           circle.Transform(xform);
 
           circles.Add(circle);
@@ -251,10 +251,10 @@ namespace SampleCsCommands
           dir0.Unitize();
           dir1.Unitize();
 
-          var dir = Vector3d.Unset;
+          Vector3d dir = Vector3d.Unset;
 
           dir0 *= 2.1 * Tolerance;
-          var point = polyline[prev] + dir0;
+          Point3d point = polyline[prev] + dir0;
           if (PointContainment.Inside == curve.Contains(point, plane, Tolerance))
             dir = dir0;
           else
@@ -270,11 +270,11 @@ namespace SampleCsCommands
             dir.Unitize();
             dir *= radius;
 
-            var circle_plane = plane;
+            Plane circle_plane = plane;
             circle_plane.Origin = polyline[current];
-            var circle = new Circle(circle_plane, radius);
+            Circle circle = new Circle(circle_plane, radius);
 
-            var xform = Transform.Translation(dir);
+            Transform xform = Transform.Translation(dir);
             circle.Transform(xform);
 
             circles.Add(circle);
@@ -286,10 +286,10 @@ namespace SampleCsCommands
           dir0.Unitize();
           dir1.Unitize();
 
-          var dir = Vector3d.Unset;
+          Vector3d dir = Vector3d.Unset;
 
           dir0 *= 2.1 * Tolerance;
-          var point = polyline[prev] + dir0;
+          Point3d point = polyline[prev] + dir0;
           if (PointContainment.Inside != curve.Contains(point, plane, Tolerance))
             dir = dir0;
           else
@@ -305,11 +305,11 @@ namespace SampleCsCommands
             dir.Unitize();
             dir *= radius;
 
-            var circle_plane = plane;
+            Plane circle_plane = plane;
             circle_plane.Origin = polyline[current];
-            var circle = new Circle(circle_plane, radius);
+            Circle circle = new Circle(circle_plane, radius);
 
-            var xform = Transform.Translation(dir);
+            Transform xform = Transform.Translation(dir);
             circle.Transform(xform);
 
             circles.Add(circle);
@@ -329,7 +329,7 @@ namespace SampleCsCommands
     /// <returns>The concave points if successful.</returns>
     private static Point3d[] FindConcaveCornerPoints(Curve curve, double tolerance)
     {
-      var rc = new Point3d[0];
+      Point3d[] rc = new Point3d[0];
 
       // Make sure we have a curve and it's closed.
       if (null == curve || !curve.IsClosed)
@@ -350,22 +350,22 @@ namespace SampleCsCommands
       polyline.RemoveAt(polyline.Count - 1);
 
       // Find the concave corner points...
-      var points = new List<Point3d>();
-      for (var current = 0; current < polyline.Count; current++)
+      List<Point3d> points = new List<Point3d>();
+      for (int current = 0; current < polyline.Count; current++)
       {
-        var prev = current == 0 ? polyline.Count - 1 : current - 1;
-        var next = current == polyline.Count - 1 ? 0 : current + 1;
+        int prev = current == 0 ? polyline.Count - 1 : current - 1;
+        int next = current == polyline.Count - 1 ? 0 : current + 1;
 
-        var dir0 = polyline[current] - polyline[prev];
+        Vector3d dir0 = polyline[current] - polyline[prev];
         dir0.Unitize();
 
-        var dir1 = polyline[next] - polyline[current];
+        Vector3d dir1 = polyline[next] - polyline[current];
         dir1.Unitize();
 
-        var dir2 = Vector3d.CrossProduct(dir0, dir1);
+        Vector3d dir2 = Vector3d.CrossProduct(dir0, dir1);
         dir2.Unitize();
 
-        var dot = dir2 * plane.Normal; // dot product
+        double dot = dir2 * plane.Normal; // dot product
         if (dot < 0.0)
           points.Add(polyline[current]);
       }
@@ -382,7 +382,7 @@ namespace SampleCsCommands
   internal class SampleCsOverCutConduit : DisplayConduit
   {
     private Color TrackingColor { get; }
-    public List<Circle> Circles { get; set; } 
+    public List<Circle> Circles { get; set; }
 
     /// <summary>
     /// Constructor
@@ -400,7 +400,7 @@ namespace SampleCsCommands
     {
       if (null != Circles)
       {
-        for (var i = 0; i < Circles.Count; i++)
+        for (int i = 0; i < Circles.Count; i++)
         {
           e.Display.DrawCircle(Circles[i], TrackingColor);
         }
@@ -429,7 +429,7 @@ namespace SampleCsCommands
     /// </summary>
     public override bool CustomGeometryFilter(RhinoObject rhinoObject, GeometryBase geometry, ComponentIndex componentIndex)
     {
-      var curve = geometry as Curve;
+      Curve curve = geometry as Curve;
       if (null == curve || !curve.IsClosed || !curve.IsPlanar(Tolerance))
         return false;
 

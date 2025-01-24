@@ -1,5 +1,5 @@
-﻿using Rhino.UI.Controls;
-using Eto.Forms;
+﻿using Eto.Forms;
+using Rhino.UI.Controls;
 
 namespace SampleViewportPropertiesETOUI
 {

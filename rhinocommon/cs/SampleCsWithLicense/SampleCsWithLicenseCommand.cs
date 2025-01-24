@@ -9,7 +9,7 @@ namespace SampleCsWithLicense
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      RhinoApp.WriteLine($"{0} plug-in loaded.", SampleCsWithLicensePlugIn.Instance.Name);
+      RhinoApp.WriteLine("{0} plug-in loaded.", SampleCsWithLicensePlugIn.Instance.Name);
       return Result.Success;
     }
   }

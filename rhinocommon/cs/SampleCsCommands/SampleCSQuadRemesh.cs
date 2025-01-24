@@ -29,7 +29,7 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       //Select some object
-      var go = new GetObject();
+      GetObject go = new GetObject();
       go.SetCommandPrompt("Select object to remesh");
       go.GeometryFilter = ObjectType.Brep | ObjectType.Mesh;
       go.Get();
@@ -38,11 +38,11 @@ namespace SampleCsCommands
         return Result.Cancel;
 
       //Grab the results of the object picker.
-      var rhino_object = go.Object(0).Object();
+      RhinoObject rhino_object = go.Object(0).Object();
 
 
       //Set our desired quad remesh parameters
-      var quad_remesh_parameters = new QuadRemeshParameters()
+      QuadRemeshParameters quad_remesh_parameters = new QuadRemeshParameters()
       {
         TargetQuadCount = 2000,
         AdaptiveQuadCount = true,
@@ -62,7 +62,7 @@ namespace SampleCsCommands
         //Optionally this method also accepts an IEnumerable<Curve> overload.
         //Pass it your curve object array/list if you want guide curves)
         //If guide curves, lastly change your quad_remesh_parameters.GuideCurveInfluence if using curves
-        var remeshed = Mesh.QuadRemeshBrep(brep, quad_remesh_parameters);
+        Mesh remeshed = Mesh.QuadRemeshBrep(brep, quad_remesh_parameters);
 
         if (remeshed == null)
           return Result.Cancel;
@@ -73,7 +73,7 @@ namespace SampleCsCommands
         RhinoApp.WriteLine("1 Brep successfully remeshed");
       }
       //Remesh a selected Mesh
-      else if(rhino_object.ObjectType == ObjectType.Mesh)
+      else if (rhino_object.ObjectType == ObjectType.Mesh)
       {
         if (!(rhino_object is MeshObject mesh_object))
           return Result.Cancel;
@@ -83,7 +83,7 @@ namespace SampleCsCommands
           return Result.Cancel;
 
         //Do the remeshing of the Mesh Objects Mesh Geometry
-        var remeshed = mesh_object.MeshGeometry.QuadRemesh(quad_remesh_parameters);
+        Mesh remeshed = mesh_object.MeshGeometry.QuadRemesh(quad_remesh_parameters);
 
         if (remeshed == null)
           return Result.Cancel;

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
 using Rhino.Input.Custom;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SampleCsCommands
 {
@@ -26,13 +26,13 @@ namespace SampleCsCommands
     /// </summary>
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var setA = new List<RhinoObject>();
-      var setB = new List<RhinoObject>();
-      var rc = SelectClashSets(setA, setB);
+      List<RhinoObject> setA = new List<RhinoObject>();
+      List<RhinoObject> setB = new List<RhinoObject>();
+      Result rc = SelectClashSets(setA, setB);
       if (rc != Result.Success)
         return rc;
 
-      var gd = new GetNumber();
+      GetNumber gd = new GetNumber();
       gd.SetCommandPrompt("Clearance distance");
       gd.SetDefaultNumber(Distance);
       gd.SetLowerLimit(0.0, true);
@@ -53,9 +53,9 @@ namespace SampleCsCommands
     /// </summary>
     private Result SelectClashSets(List<RhinoObject> setA, List<RhinoObject> setB)
     {
-      var filter = ObjectType.Surface | ObjectType.PolysrfFilter | ObjectType.Extrusion | ObjectType.SubD;
+      ObjectType filter = ObjectType.Surface | ObjectType.PolysrfFilter | ObjectType.Extrusion | ObjectType.SubD;
 
-      var go0 = new GetObject();
+      GetObject go0 = new GetObject();
       go0.SetCommandPrompt("Select first set of objects for clash detection");
       go0.GeometryFilter = filter;
       go0.GroupSelect = true;
@@ -64,15 +64,15 @@ namespace SampleCsCommands
       if (go0.CommandResult() != Result.Success)
         return go0.CommandResult();
 
-      foreach (var objref in go0.Objects())
+      foreach (ObjRef objref in go0.Objects())
       {
-        var rh_obj = objref.Object();
+        RhinoObject rh_obj = objref.Object();
         if (null == rh_obj)
           return Result.Failure;
         setA.Add(rh_obj);
       }
 
-      var go1 = new GetObject();
+      GetObject go1 = new GetObject();
       go1.SetCommandPrompt("Select second set of objects for clash detection");
       go1.GeometryFilter = filter;
       go1.GroupSelect = true;
@@ -83,9 +83,9 @@ namespace SampleCsCommands
       if (go1.CommandResult() != Result.Success)
         return go1.CommandResult();
 
-      foreach (var objref in go1.Objects())
+      foreach (ObjRef objref in go1.Objects())
       {
-        var rh_obj = objref.Object();
+        RhinoObject rh_obj = objref.Object();
         if (null == rh_obj)
           return Result.Failure;
         setB.Add(rh_obj);
@@ -100,20 +100,20 @@ namespace SampleCsCommands
     private Result ClashObjects(RhinoDoc doc, List<RhinoObject> setA, List<RhinoObject> setB, double distance)
     {
       // Get the meshes for each Rhino object
-      var map = new Dictionary<Mesh, RhinoObject>[2];
-      var mp = MeshingParameters.FastRenderMesh;
-      for (var dex = 0; dex < 2; dex++)
+      Dictionary<Mesh, RhinoObject>[] map = new Dictionary<Mesh, RhinoObject>[2];
+      MeshingParameters mp = MeshingParameters.FastRenderMesh;
+      for (int dex = 0; dex < 2; dex++)
       {
         map[dex] = new Dictionary<Mesh, RhinoObject>();
-        var rh_objects = (0 == dex) ? setA : setB;
-        for (var i = 0; i < rh_objects.Count; i++)
+        List<RhinoObject> rh_objects = (0 == dex) ? setA : setB;
+        for (int i = 0; i < rh_objects.Count; i++)
         {
           if (null != rh_objects[i])
           {
-            var meshes = GetGeometryMeshes(rh_objects[i].Geometry, mp);
+            Mesh[] meshes = GetGeometryMeshes(rh_objects[i].Geometry, mp);
             if (meshes.Length > 0)
             {
-              for (var j = 0; j < meshes.Length; j++)
+              for (int j = 0; j < meshes.Length; j++)
                 map[dex].Add(meshes[j], rh_objects[i]);
             }
           }
@@ -123,14 +123,14 @@ namespace SampleCsCommands
         return Result.Failure;
 
       // Do the mesh clash detection
-      var clashes = MeshClash.Search(map[0].Keys.ToArray(), map[1].Keys.ToArray(), distance, 0);
+      MeshClash[] clashes = MeshClash.Search(map[0].Keys.ToArray(), map[1].Keys.ToArray(), distance, 0);
 
       if (clashes.Length == 1)
         RhinoApp.WriteLine("1 clash found.");
       else
         RhinoApp.WriteLine("{0} clashes found.", clashes.Length);
 
-      foreach (var clash in clashes)
+      foreach (MeshClash clash in clashes)
       {
         if (map[0].TryGetValue(clash.MeshA, out RhinoObject a) && map[1].TryGetValue(clash.MeshB, out RhinoObject b))
         {
@@ -149,7 +149,7 @@ namespace SampleCsCommands
     /// </summary>
     private Mesh[] GetGeometryMeshes(GeometryBase geometry, MeshingParameters mp)
     {
-      var rc = new Mesh[0];
+      Mesh[] rc = new Mesh[0];
       if (null != geometry)
       {
         if (null == mp)
@@ -159,10 +159,10 @@ namespace SampleCsCommands
         {
           case ObjectType.Surface:
             {
-              var surface = geometry as Surface;
+              Surface surface = geometry as Surface;
               if (null != surface)
               {
-                var mesh = Mesh.CreateFromSurface(surface, mp);
+                Mesh mesh = Mesh.CreateFromSurface(surface, mp);
                 if (null != mesh)
                   rc = new Mesh[] { mesh };
               }
@@ -171,10 +171,10 @@ namespace SampleCsCommands
 
           case ObjectType.Brep:
             {
-              var brep = geometry as Brep;
+              Brep brep = geometry as Brep;
               if (null != brep)
               {
-                var meshes = Mesh.CreateFromBrep(brep, mp);
+                Mesh[] meshes = Mesh.CreateFromBrep(brep, mp);
                 if (null != meshes && meshes.Length > 0)
                   rc = meshes;
               }
@@ -183,13 +183,13 @@ namespace SampleCsCommands
 
           case ObjectType.Extrusion:
             {
-              var extrusion = geometry as Extrusion;
+              Extrusion extrusion = geometry as Extrusion;
               if (null != extrusion)
               {
-                var brep = extrusion.ToBrep();
+                Brep brep = extrusion.ToBrep();
                 if (null != brep)
                 {
-                  var meshes = Mesh.CreateFromBrep(brep, mp);
+                  Mesh[] meshes = Mesh.CreateFromBrep(brep, mp);
                   if (null != meshes && meshes.Length > 0)
                     rc = meshes;
                 }
@@ -199,7 +199,7 @@ namespace SampleCsCommands
 
           case ObjectType.Mesh:
             {
-              var mesh = geometry as Mesh;
+              Mesh mesh = geometry as Mesh;
               if (null != mesh)
                 rc = new Mesh[] { mesh };
             }
@@ -207,11 +207,11 @@ namespace SampleCsCommands
 
           case ObjectType.SubD:
             {
-              var subd = geometry as SubD;
+              SubD subd = geometry as SubD;
               if (null != subd)
               {
                 // 2 == ON_SubDDisplayParameters::CourseDensity
-                var mesh = Mesh.CreateFromSubD(geometry as SubD, 2);
+                Mesh mesh = Mesh.CreateFromSubD(geometry as SubD, 2);
                 if (null != mesh)
                   rc = new Mesh[] { mesh };
               }

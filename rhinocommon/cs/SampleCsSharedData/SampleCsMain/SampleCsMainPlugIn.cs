@@ -1,9 +1,9 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.FileIO;
 using Rhino.PlugIns;
 using Rhino.UI;
 using SampleCsCommon;
+using System;
 
 namespace SampleCsMain
 {
@@ -63,7 +63,7 @@ namespace SampleCsMain
 
       // Add an event handler so we know when documents are closed.
       RhinoDoc.CloseDocument += new EventHandler<DocumentEventArgs>(OnCloseDocument);
-      
+
       return LoadReturnCode.Success;
     }
 
@@ -116,7 +116,7 @@ namespace SampleCsMain
     /// </summary>
     protected override void ReadDocument(RhinoDoc doc, BinaryArchiveReader archive, FileReadOptions options)
     {
-      archive.Read3dmChunkVersion(out var major, out var minor);
+      archive.Read3dmChunkVersion(out int major, out int minor);
       if (MAJOR == major && MINOR == minor)
       {
         SampleCsStringTable string_table = SampleCsStringTable.Instance;

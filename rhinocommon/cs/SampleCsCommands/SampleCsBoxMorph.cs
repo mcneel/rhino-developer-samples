@@ -79,7 +79,7 @@ namespace SampleCsCommands
       if (8 == box.Length)
       {
         m_box = new Rhino.Geometry.Point3d[8];
-        for (var i = 0; i < 8; i++)
+        for (int i = 0; i < 8; i++)
           m_box[i] = box[i];
       }
 
@@ -100,7 +100,7 @@ namespace SampleCsCommands
 
     public bool IsValid()
     {
-      if (null != m_box &&  null != m_corners)
+      if (null != m_box && null != m_corners)
         return true;
       return false;
     }
@@ -129,9 +129,9 @@ namespace SampleCsCommands
       if (!IsValid())
         return false;
 
-      for (int i = 0; i < 8; i++ )
+      for (int i = 0; i < 8; i++)
       {
-        if( m_corners[i] != m_box[i] )
+        if (m_corners[i] != m_box[i])
           return false;
       }
 

@@ -12,14 +12,14 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var gm = new GetObject();
+      GetObject gm = new GetObject();
       gm.SetCommandPrompt("Select mesh");
       gm.GeometryFilter = ObjectType.Mesh;
       gm.Get();
       if (gm.CommandResult() != Result.Success)
         return gm.CommandResult();
 
-      var gp = new GetObject();
+      GetObject gp = new GetObject();
       gp.SetCommandPrompt("Select polyline");
       gp.GeometryFilter = ObjectType.Curve;
       gp.EnablePreSelect(false, true);
@@ -28,15 +28,15 @@ namespace SampleCsCommands
       if (gm.CommandResult() != Result.Success)
         return gp.CommandResult();
 
-      var mesh = gm.Object(0).Mesh();
+      Mesh mesh = gm.Object(0).Mesh();
       if (null == mesh)
         return Result.Failure;
 
-      var curve = gp.Object(0).Curve();
+      Curve curve = gp.Object(0).Curve();
       if (null == curve)
         return Result.Failure;
 
-      var polyline_curve = curve as PolylineCurve;
+      PolylineCurve polyline_curve = curve as PolylineCurve;
       if (null == polyline_curve)
       {
         RhinoApp.Write("Curve is not a polyline");
@@ -44,10 +44,10 @@ namespace SampleCsCommands
       }
 
       int[] face_ids;
-      var points = Rhino.Geometry.Intersect.Intersection.MeshPolyline(mesh, polyline_curve, out face_ids);
+      Point3d[] points = Rhino.Geometry.Intersect.Intersection.MeshPolyline(mesh, polyline_curve, out face_ids);
       if (points.Length > 0)
       {
-        foreach (var pt in points)
+        foreach (Point3d pt in points)
           doc.Objects.AddPoint(pt);
         doc.Views.Redraw();
       }

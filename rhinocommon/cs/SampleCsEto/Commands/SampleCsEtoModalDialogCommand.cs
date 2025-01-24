@@ -13,18 +13,18 @@ namespace SampleCsEto.Commands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var rc = Result.Cancel;
+      Result rc = Result.Cancel;
 
       if (mode == RunMode.Interactive)
       {
-        var dialog = new Views.SampleCsEtoModalDialog();
-        var dialog_rc = dialog.ShowModal(RhinoEtoApp.MainWindow);
+        Views.SampleCsEtoModalDialog dialog = new Views.SampleCsEtoModalDialog();
+        Eto.Forms.DialogResult dialog_rc = dialog.ShowModal(RhinoEtoApp.MainWindow);
         if (dialog_rc == Eto.Forms.DialogResult.Ok)
           rc = Result.Success;
       }
       else
       {
-        var msg = string.Format("Scriptable version of {0} command not implemented.", EnglishName);
+        string msg = string.Format("Scriptable version of {0} command not implemented.", EnglishName);
         RhinoApp.WriteLine(msg);
       }
 

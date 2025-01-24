@@ -1,10 +1,10 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Display;
 using Rhino.Geometry;
 using Rhino.Input;
 using Rhino.Input.Custom;
+using System;
 
 namespace SampleCsCommands
 {
@@ -127,18 +127,18 @@ namespace SampleCsCommands
 
     public Curve Calculate()
     {
-      var points = new Point3d[m_steps + 1];
-      var theta = 0.0;
-      var theta_step = 2.0 * Math.PI / m_steps;
+      Point3d[] points = new Point3d[m_steps + 1];
+      double theta = 0.0;
+      double theta_step = 2.0 * Math.PI / m_steps;
 
-      var s = (m_major_ripple + m_minor_ripple) / m_minor_ripple;
-      var rr = m_minor_ripple + m_major_ripple;
-      var rp = m_minor_ripple + m_radius;
+      double s = (m_major_ripple + m_minor_ripple) / m_minor_ripple;
+      double rr = m_minor_ripple + m_major_ripple;
+      double rp = m_minor_ripple + m_radius;
 
-      for (var t = 0; t < m_steps + 1; t++)
+      for (int t = 0; t < m_steps + 1; t++)
       {
-        var x = rr * Math.Cos(m_multiplier * theta) + rp * Math.Cos(s * m_multiplier * theta);
-        var y = rr * Math.Sin(m_multiplier * theta) + rp * Math.Sin(s * m_multiplier * theta);
+        double x = rr * Math.Cos(m_multiplier * theta) + rp * Math.Cos(s * m_multiplier * theta);
+        double y = rr * Math.Sin(m_multiplier * theta) + rp * Math.Sin(s * m_multiplier * theta);
         x *= m_amplitude;
         y *= m_amplitude;
 
@@ -171,7 +171,7 @@ namespace SampleCsCommands
     public void UpdateCurve()
     {
       m_curve = null;
-      var curve = Args.Calculate();
+      Curve curve = Args.Calculate();
       if (null != curve && curve.IsValid)
         m_curve = curve;
     }
@@ -188,7 +188,7 @@ namespace SampleCsCommands
     {
       if (null != m_curve && m_curve.IsValid)
       {
-        var color = Rhino.ApplicationSettings.AppearanceSettings.DefaultLayerColor;
+        System.Drawing.Color color = Rhino.ApplicationSettings.AppearanceSettings.DefaultLayerColor;
         e.Display.DrawCurve(m_curve, color);
       }
     }
@@ -204,35 +204,35 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var conduit = new GuillocheConduit { Enabled = true };
+      GuillocheConduit conduit = new GuillocheConduit { Enabled = true };
       doc.Views.Redraw();
 
-      var opt_amplitude = new OptionDouble(conduit.Args.Amplitude, Guilloche.MinAmplitude, Guilloche.MaxAmplitude);
-      var opt_major_ripple = new OptionDouble(conduit.Args.MajorRipple, Guilloche.MinMajorRipple, Guilloche.MinMinorRipple);
-      var opt_minor_ripple = new OptionDouble(conduit.Args.MinorRipple, Guilloche.MinMinorRipple, Guilloche.MaxMinorRipple);
-      var opt_multiplier = new OptionDouble(conduit.Args.Multiplier, Guilloche.MinMultiplier, Guilloche.MaxMultiplier);
-      var opt_radius = new OptionDouble(conduit.Args.Radius, Guilloche.MinRadius, Guilloche.MaxRadius);
-      var opt_steps = new OptionInteger(conduit.Args.Steps, Guilloche.MinSteps, Guilloche.MaxSteps);
+      OptionDouble opt_amplitude = new OptionDouble(conduit.Args.Amplitude, Guilloche.MinAmplitude, Guilloche.MaxAmplitude);
+      OptionDouble opt_major_ripple = new OptionDouble(conduit.Args.MajorRipple, Guilloche.MinMajorRipple, Guilloche.MinMinorRipple);
+      OptionDouble opt_minor_ripple = new OptionDouble(conduit.Args.MinorRipple, Guilloche.MinMinorRipple, Guilloche.MaxMinorRipple);
+      OptionDouble opt_multiplier = new OptionDouble(conduit.Args.Multiplier, Guilloche.MinMultiplier, Guilloche.MaxMultiplier);
+      OptionDouble opt_radius = new OptionDouble(conduit.Args.Radius, Guilloche.MinRadius, Guilloche.MaxRadius);
+      OptionInteger opt_steps = new OptionInteger(conduit.Args.Steps, Guilloche.MinSteps, Guilloche.MaxSteps);
 
-      var go = new GetOption();
+      GetOption go = new GetOption();
       go.SetCommandPrompt("Guilloché pattern options");
       go.AcceptNothing(true);
       for (; ; )
       {
         go.ClearCommandOptions();
 
-        var idx_amplitude = go.AddOptionDouble("Amplitude", ref opt_amplitude);
-        var idx_major_ripple = go.AddOptionDouble("MajorRipple", ref opt_major_ripple);
-        var idx_minor_ripple = go.AddOptionDouble("MinorRipple", ref opt_minor_ripple);
-        var idx_multiplier = go.AddOptionDouble("Multiplier", ref opt_multiplier);
-        var idx_radius = go.AddOptionDouble("Radius", ref opt_radius);
-        var idx_steps = go.AddOptionInteger("Steps", ref opt_steps);
+        int idx_amplitude = go.AddOptionDouble("Amplitude", ref opt_amplitude);
+        int idx_major_ripple = go.AddOptionDouble("MajorRipple", ref opt_major_ripple);
+        int idx_minor_ripple = go.AddOptionDouble("MinorRipple", ref opt_minor_ripple);
+        int idx_multiplier = go.AddOptionDouble("Multiplier", ref opt_multiplier);
+        int idx_radius = go.AddOptionDouble("Radius", ref opt_radius);
+        int idx_steps = go.AddOptionInteger("Steps", ref opt_steps);
 
-        var res = go.Get();
+        GetResult res = go.Get();
 
         if (res == GetResult.Option)
         {
-          var option = go.Option();
+          CommandLineOption option = go.Option();
           if (null != option)
           {
             if (idx_amplitude == option.Index)
@@ -261,7 +261,7 @@ namespace SampleCsCommands
         break;
       }
 
-      var curve = conduit.Args.Calculate();
+      Curve curve = conduit.Args.Calculate();
       if (null != curve && curve.IsValid)
       {
         doc.Objects.AddCurve(curve);

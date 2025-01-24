@@ -1,10 +1,9 @@
-﻿using Rhino.UI.Controls;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Runtime;
-
+using Rhino.UI.Controls;
 using System;
+using System.Collections.Generic;
 
 namespace SampleCustomRenderSettingsSections
 {
@@ -41,7 +40,7 @@ namespace SampleCustomRenderSettingsSections
         m_uuidRenderSettingsSection_ColorAdjustment = new Guid("26126531-70c2-42bc-b50c-3368260dc0b4");
       }
 
-      if(HostUtils.RunningOnOSX)
+      if (HostUtils.RunningOnOSX)
       {
         m_uuidRenderSettingsSection_CurrentRenderer = new Guid("5B1FAC38-CE66-4319-A05F-88185FC757EE");
         m_uuidRenderSettingsSection_Resolution = new Guid("C3CF2B4A-5F0F-499E-8E95-364F8767B8DA");

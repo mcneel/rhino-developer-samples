@@ -1,7 +1,6 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-using Rhino.DocObjects;
+﻿using Rhino.DocObjects;
 using Rhino.UI;
+using System.Drawing;
 
 namespace SampleCsWinForms.Forms
 {
@@ -11,7 +10,7 @@ namespace SampleCsWinForms.Forms
 
     public override System.Drawing.Icon PageIcon(System.Drawing.Size sizeInPixels)
     {
-      var icon = Rhino.UI.DrawingUtilities.LoadIconWithScaleDown(
+      Icon icon = Rhino.UI.DrawingUtilities.LoadIconWithScaleDown(
         "SampleCsWinForms.Resources.Property.ico",
         sizeInPixels.Width,
         GetType().Assembly);
@@ -24,7 +23,7 @@ namespace SampleCsWinForms.Forms
 
     public override bool ShouldDisplay(ObjectPropertiesPageEventArgs e)
     {
-      var rc = false;
+      bool rc = false;
       // One object selected
       if (1 == e.ObjectCount)
       {
@@ -33,7 +32,7 @@ namespace SampleCsWinForms.Forms
       else
       {
         // Multiple objects selected
-        foreach (var rh_obj in e.Objects)
+        foreach (RhinoObject rh_obj in e.Objects)
         {
           rc = true;
           break;

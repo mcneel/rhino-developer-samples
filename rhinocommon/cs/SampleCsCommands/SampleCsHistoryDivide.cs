@@ -1,12 +1,11 @@
-﻿using System;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 
 namespace SampleCsCommands
 {
   public class SampleCsHistoryDivide : Command
   {
-    static int _historyVersion = 20121101; 
+    static int _historyVersion = 20121101;
 
     public override string EnglishName => "SampleCsHistoryDivide";
 

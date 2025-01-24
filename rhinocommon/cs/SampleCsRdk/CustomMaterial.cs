@@ -1,9 +1,9 @@
-using System.Drawing;
-using System.Drawing.Imaging;
 using Rhino.Render;
 using Rhino.Render.Fields;
 using Rhino.UI.Controls;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace SampleCsRdk
 {
@@ -23,7 +23,7 @@ namespace SampleCsRdk
       //Non visible fields to store texture on-ness and amount
       Field field = Fields.Add("color-texture-on", true);
       BindParameterToField("color", "texture-on", field, ChangeContexts.UI);
-      
+
       field = Fields.Add("color-texture-amount", 100.0);
       BindParameterToField("color", "texture-amount", field, ChangeContexts.UI);
     }
@@ -38,14 +38,14 @@ namespace SampleCsRdk
       base.SimulateMaterial(ref simulatedMaterial, forDataOnly);
 
       Rhino.Display.Color4f color;
-      if( Fields.TryGetValue("color", out color) )
+      if (Fields.TryGetValue("color", out color))
         simulatedMaterial.DiffuseColor = color.AsSystemColor();
     }
 
     public override bool Icon(System.Drawing.Size size, out System.Drawing.Bitmap bitmap)
     {
       bitmap = new Bitmap(size.Width, size.Height, PixelFormat.Format24bppRgb);
-      using (var g = Graphics.FromImage(bitmap))
+      using (Graphics g = Graphics.FromImage(bitmap))
         g.Clear(Color.Red);
       return true;
     }
@@ -86,9 +86,9 @@ namespace SampleCsRdk
     protected override void OnAddUserInterfaceSections()
     {
 
-      var s1 = new CustomMaterialWpfUserInterfaceSectionHost();
-      var s2 = new CustomMaterialUserInterfaceSection();
-      var s3 = new CustomMaterialUserInterfaceSection2();
+      CustomMaterialWpfUserInterfaceSectionHost s1 = new CustomMaterialWpfUserInterfaceSectionHost();
+      CustomMaterialUserInterfaceSection s2 = new CustomMaterialUserInterfaceSection();
+      CustomMaterialUserInterfaceSection2 s3 = new CustomMaterialUserInterfaceSection2();
 
       //These next three lines will be unnecessary from Rhino 6.9 onwards.
       m_sections_to_keep_alive.Add(s1);

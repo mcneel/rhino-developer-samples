@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using Rhino.PlugIns;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using Rhino.PlugIns;
 
 [assembly: PlugInDescription(DescriptionType.Address, "3670 Woodland Park Avenue North\r\nSeattle, WA 98103")]
 [assembly: PlugInDescription(DescriptionType.Country, "United States")]

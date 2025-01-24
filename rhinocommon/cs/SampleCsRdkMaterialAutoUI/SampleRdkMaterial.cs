@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Rhino.Render;
+﻿using Rhino.Render;
 using Rhino.Render.Fields;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -41,7 +36,7 @@ namespace SampleRdkMaterialAutoUI
     {
       // The icon is a red square
       bitmap = new Bitmap(size.Width, size.Height, PixelFormat.Format24bppRgb);
-      using (var g = Graphics.FromImage(bitmap))
+      using (Graphics g = Graphics.FromImage(bitmap))
         g.Clear(Color.Red);
       return true;
     }

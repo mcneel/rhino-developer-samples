@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <Company>Robert McNeel &amp; Associates</Company>
     <Copyright>Copyright © 2013-2024, Robert McNeel &amp; Associates</Copyright>
-    <Product>SampleCsUserData</Product>
+    <Product>SampleCsCommands</Product>
     <Description>Sample Commands Plug-in</Description>
     <Version>8.0.0</Version>
   </PropertyGroup>

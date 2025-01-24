@@ -1,9 +1,8 @@
-﻿using System;
-using System.Globalization;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System.Globalization;
 
 namespace SampleCsCommands
 {
@@ -13,28 +12,28 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var gp = new GetPoint();
+      GetPoint gp = new GetPoint();
       gp.SetCommandPrompt("Pick a point");
       gp.Get();
       if (gp.CommandResult() != Result.Success)
         return gp.CommandResult();
 
-      var point = gp.Point();
+      Point3d point = gp.Point();
 
-      var format = string.Format("F{0}", doc.DistanceDisplayPrecision);
-      var provider = CultureInfo.InvariantCulture;
+      string format = string.Format("F{0}", doc.DistanceDisplayPrecision);
+      CultureInfo provider = CultureInfo.InvariantCulture;
 
-      var x = point.X.ToString(format, provider);
-      var y = point.Y.ToString(format, provider);
-      var z = point.Z.ToString(format, provider);
+      string x = point.X.ToString(format, provider);
+      string y = point.Y.ToString(format, provider);
+      string z = point.Z.ToString(format, provider);
       RhinoApp.WriteLine("World coordinates: {0},{1},{2}", x, y, z);
 
-      var view = gp.View();
+      Rhino.Display.RhinoView view = gp.View();
       if (null != view)
       {
-        var plane = view.ActiveViewport.ConstructionPlane();
-        var xform = Transform.ChangeBasis(Plane.WorldXY, plane);
-        
+        Plane plane = view.ActiveViewport.ConstructionPlane();
+        Transform xform = Transform.ChangeBasis(Plane.WorldXY, plane);
+
         point.Transform(xform);
 
         x = point.X.ToString(format, provider);

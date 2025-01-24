@@ -14,21 +14,21 @@ namespace SampleCsCommands
 
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
-      var get_grips = new GetObject();
+      GetObject get_grips = new GetObject();
       get_grips.SetCommandPrompt("Select grips to pull to mesh");
       get_grips.GeometryFilter = ObjectType.Grip;
       get_grips.GetMultiple(1, 0);
       if (get_grips.CommandResult() != Result.Success)
         return get_grips.CommandResult();
 
-      var object_list = new TransformObjectList();
+      TransformObjectList object_list = new TransformObjectList();
       object_list.AddObjects(get_grips, true);
 
-      var grip_count = object_list.GripCount;
+      int grip_count = object_list.GripCount;
       if (0 == grip_count)
         return Result.Failure;
 
-      var get_mesh = new GetObject();
+      GetObject get_mesh = new GetObject();
       get_mesh.SetCommandPrompt("Select mesh that pulls");
       get_mesh.GeometryFilter = ObjectType.Mesh;
       get_mesh.EnablePreSelect(false, true);
@@ -37,28 +37,28 @@ namespace SampleCsCommands
       if (get_mesh.CommandResult() != Result.Success)
         return get_mesh.CommandResult();
 
-      var mesh = get_mesh.Object(0).Mesh();
+      Mesh mesh = get_mesh.Object(0).Mesh();
       if (null == mesh)
         return Result.Failure;
 
-      var grips = object_list.GripArray();
-      var locations = grips.Select(grip => grip.CurrentLocation).ToArray();
+      GripObject[] grips = object_list.GripArray();
+      Point3d[] locations = grips.Select(grip => grip.CurrentLocation).ToArray();
       if (locations.Length != grip_count)
         return Result.Failure;
 
-      var points = mesh.PullPointsToMesh(locations);
+      Point3d[] points = mesh.PullPointsToMesh(locations);
       if (null == points || points.Length != grip_count)
         return Result.Failure;
 
-      for (var i = 0; i < grip_count; i++)
+      for (int i = 0; i < grip_count; i++)
       {
-        var dir = points[i] - grips[i].CurrentLocation;
-        var xform = Transform.Translation(dir);
+        Vector3d dir = points[i] - grips[i].CurrentLocation;
+        Transform xform = Transform.Translation(dir);
         if (xform.IsValid)
           grips[i].Move(xform);
       }
 
-      foreach (var owner in object_list.GripOwnerArray())
+      foreach (RhinoObject owner in object_list.GripOwnerArray())
         doc.Objects.GripUpdate(owner, true);
 
       doc.Views.Redraw();

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Rhino;
+﻿using Rhino;
 using Rhino.Commands;
 using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
+using System.Collections.Generic;
 
 namespace SampleCsCommands
 {
@@ -15,7 +14,7 @@ namespace SampleCsCommands
     protected override Result RunCommand(RhinoDoc doc, RunMode mode)
     {
       // Select curves to project
-      var gc = new GetObject();
+      GetObject gc = new GetObject();
       gc.SetCommandPrompt("Select curves to project");
       gc.GeometryFilter = ObjectType.Curve;
       gc.GetMultiple(1, 0);
@@ -23,7 +22,7 @@ namespace SampleCsCommands
         return gc.CommandResult();
 
       // Select planar surface to project onto
-      var gs = new GetObject();
+      GetObject gs = new GetObject();
       gs.SetCommandPrompt("Select planar surface to project onto");
       gs.GeometryFilter = ObjectType.Surface;
       gs.EnablePreSelect(false, true);
@@ -33,12 +32,12 @@ namespace SampleCsCommands
         return gs.CommandResult();
 
       // Get the Brep face
-      var brep_face = gs.Object(0).Face();
+      BrepFace brep_face = gs.Object(0).Face();
       if (null == brep_face)
         return Result.Failure;
 
       // Verify the Brep face is planar
-      var tolerance = doc.ModelAbsoluteTolerance;
+      double tolerance = doc.ModelAbsoluteTolerance;
       if (!brep_face.IsPlanar(tolerance))
       {
         RhinoApp.WriteLine("Surface is not planar.");
@@ -46,9 +45,9 @@ namespace SampleCsCommands
       }
 
       // Get normal direction of Brep face
-      var u = brep_face.Domain(0).Min;
-      var v = brep_face.Domain(1).Min;
-      var normal = brep_face.NormalAt(u, v);
+      double u = brep_face.Domain(0).Min;
+      double v = brep_face.Domain(1).Min;
+      Vector3d normal = brep_face.NormalAt(u, v);
       // If the Brep face's orientation is opposite of natural surface orientation,
       // then reverse the normal vector.
       if (brep_face.OrientationIsReversed)
@@ -58,23 +57,23 @@ namespace SampleCsCommands
       normal.Reverse();
 
       // Create a array of Breps to project onto
-      var breps = new Brep[1];
+      Brep[] breps = new Brep[1];
       breps[0] = brep_face.DuplicateFace(true); // Create a single Brep, including trims
 
       // Create a collection of curves to project
-      var curves = new List<Curve>(gc.ObjectCount);
-      for (var i = 0; i < gc.ObjectCount; i++)
+      List<Curve> curves = new List<Curve>(gc.ObjectCount);
+      for (int i = 0; i < gc.ObjectCount; i++)
       {
-        var curve = gc.Object(i).Curve();
+        Curve curve = gc.Object(i).Curve();
         if (null != curve)
           curves.Add(curve);
       }
 
       // Do the projection
-      var projected_curves = Curve.ProjectToBrep(curves, breps, normal, tolerance);
+      Curve[] projected_curves = Curve.ProjectToBrep(curves, breps, normal, tolerance);
 
       // Add the results to the document
-      foreach (var crv in projected_curves)
+      foreach (Curve crv in projected_curves)
         doc.Objects.AddCurve(crv);
 
       doc.Views.Redraw();
