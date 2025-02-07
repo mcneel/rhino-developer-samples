@@ -52,7 +52,7 @@ namespace SampleCsWinForms.Forms
       m_controls = new SortedDictionary<int, Control>();
       if (LoadControlsTabIndices(form.Controls))
       {
-        m_form.KeyPress += OnKeyPress;
+        m_form.KeyDown += OnKeyDown;
         m_enumerator = m_controls.GetEnumerator();
       }
     }
@@ -143,13 +143,53 @@ namespace SampleCsWinForms.Forms
     }
 
     /// <summary>
-    /// Tab key pressed event handler
+    /// Returns the previous control based on TabIndex, wrapping to the last control
+    /// if at the beginning of the sequence.
     /// </summary>
-    private void OnKeyPress(object sender, KeyPressEventArgs e)
+    private Control PreviousControl
     {
-      if (e.KeyChar == '\t')
+      get
       {
-        NextControl.Focus();
+        Control ctrl = GetActiveControl();
+        if (m_enumerator.Current.Value != ctrl)
+          InitializeControlEnumerator(ctrl);
+
+        int currentKey = m_enumerator.Current.Key;
+
+        int? previousKey = null;
+        foreach (var kvp in m_controls)
+        {
+          if (kvp.Key == currentKey)
+            break;
+          previousKey = kvp.Key;
+        }
+
+        if (!previousKey.HasValue)
+        {
+          foreach (var kvp in m_controls)
+          {
+            previousKey = kvp.Key;
+          }
+        }
+
+        return m_controls[previousKey.Value];
+      }
+    }
+
+    private void OnKeyDown(object sender, KeyEventArgs e)
+    {
+      if (e.KeyCode == Keys.Tab)
+      {
+        e.Handled = true;
+
+        if (e.Shift)
+        {
+          PreviousControl.Focus();
+        }
+        else
+        {
+          NextControl.Focus();
+        }
       }
     }
   }
