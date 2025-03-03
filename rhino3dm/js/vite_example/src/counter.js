@@ -1,3 +1,4 @@
+import rhino3dm from 'rhino3dm'
 let sphere
 export async function setupCounter(element) {
   const rhino = await rhino3dm()

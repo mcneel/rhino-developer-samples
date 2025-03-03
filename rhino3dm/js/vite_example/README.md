@@ -6,9 +6,17 @@ The app was created with `npm create vite@latest`
 
 To run: `npm run dev`
 
-To make this work, I have the rhino3dm library imported in a script tag in the index.html. 
-rhino3dm is referenced in counter.js and a sphere is created as the counter increments.
+Note: There are three things I needed to do to make this work:
 
-Maybe there is a better way to import the library, but other attempts to import the library via npm always resulted in errors.
+1. Import rhino3dm: `npm i rhino3dm`
+2. Change the 'main' entry file to rhino3dm to use the module. This change is in `node_modules/rhino3dm/package.json`:  "main": "rhino3dm.module.js"
+3. Create a vite.config.js file in the root of the project with the following contents:
 
-If someone knows how to use npm to manage the rhino3dm dependency so that it can be imported, then please suggest the changes.
+```js
+import {defineConfig} from 'vite'
+export default defineConfig({
+  optimizeDeps: {
+    exclude: ['rhino3dm'],
+  },
+});
+```
