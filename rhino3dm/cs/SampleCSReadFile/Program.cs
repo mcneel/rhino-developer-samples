@@ -1,6 +1,6 @@
 ﻿using Rhino.FileIO;
 
-// note: the 3dm file is copued to the output directory when this project is built
+// note: the 3dm file is copied to the output directory when this project is built
 
 File3dm file3dm = new File3dm();
 file3dm = File3dm.Read("RectifiedArchimedeanSolids8.3dm");
