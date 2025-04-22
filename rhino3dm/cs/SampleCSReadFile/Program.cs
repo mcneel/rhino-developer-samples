@@ -1,17 +1,8 @@
 ﻿using Rhino.FileIO;
 
-Console.WriteLine("Hello, World!");
-
-var path = Directory.GetCurrentDirectory();
+// note: the 3dm file is copued to the output directory when this project is built
 
 File3dm file3dm = new File3dm();
-
-//the path will be different whether you are using dotnet run or debugging
-if(path.Contains("net7.0")){
-    file3dm = File3dm.Read("../../../RectifiedArchimedeanSolids8.3dm");
-} else{
-    file3dm = File3dm.Read("RectifiedArchimedeanSolids8.3dm");
-} 
-
+file3dm = File3dm.Read("RectifiedArchimedeanSolids8.3dm");
 Console.WriteLine("Number of objects in file {0}", file3dm.Objects.Count);
 
