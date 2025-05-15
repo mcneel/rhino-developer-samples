@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchOperation", "BatchOperation.csproj", "{423512F7-2EE8-4E84-8997-2CE424B861EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{423512F7-2EE8-4E84-8997-2CE424B861EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{423512F7-2EE8-4E84-8997-2CE424B861EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{423512F7-2EE8-4E84-8997-2CE424B861EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{423512F7-2EE8-4E84-8997-2CE424B861EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DDECAB80-56BB-478C-9276-C546F471187E}
+	EndGlobalSection
+EndGlobal
