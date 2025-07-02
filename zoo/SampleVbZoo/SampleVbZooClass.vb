@@ -21,7 +21,7 @@ Public Class SampleVbZooClass : Implements IZooPlugin3
   ''' Returns the address of your company or organization.
   ''' </summary>
   Public Function Address() As String Implements IZooPlugin.Address
-    Return "3670 Woodland Park Avenue North" & vbCrLf & "Seattle, WA 98115"
+    Return "146 North Canal Street, Suite 320" & vbCrLf & "Seattle, WA 98115"
   End Function
 
   ''' <summary>
@@ -42,14 +42,14 @@ Public Class SampleVbZooClass : Implements IZooPlugin3
   ''' Returns a phone number that a customer can use to contact you.
   ''' </summary>
   Public Function Phone() As String Implements IZooPlugin.Phone
-    Return "206.545.7000"
+    Return "+1 (206) 545-7000"
   End Function
 
   ''' <summary>
   ''' Returns a FAX number that a customer can use to contact you. 
   ''' </summary>
   Public Function Fax() As String Implements IZooPlugin.Fax
-    Return "206.545.7321"
+    Return "+1 (206) 545-7321"
   End Function
 
   ''' <summary>
@@ -74,14 +74,14 @@ Public Class SampleVbZooClass : Implements IZooPlugin3
   ''' choose type type of license to validate.
   ''' </summary>
   Public Function ProductTitle() As String Implements IZooPlugin.ProductTitle
-    Return "SampleVbZoo 6"
+    Return "SampleVbZoo 8"
   End Function
 
   ''' <summary>
   ''' The product key text mask, as shown when you add licenses to the Zoo.
   ''' </summary>
   Public Function ProductKeyTextMask() As String Implements IZooPlugin3.ProductKeyTextMask
-    Return ">ZO6\0-AAAA-AAAA-AAAA-AAAA-AAAA"
+    Return ">ZO8\0-AAAA-AAAA-AAAA-AAAA-AAAA"
   End Function
 
   ''' <summary>
@@ -135,7 +135,7 @@ Public Class SampleVbZooClass : Implements IZooPlugin3
     ' This value will display in user interface items, such as in
     ' the Zoo console and in About dialog boxes.
     ' (e.g. "Rhinoceros 5.0", "Rhinoceros 5.0 Commercial", etc.)
-    licenseData.LicenseTitle = "SampleVbZoo 6 Educational"
+    licenseData.LicenseTitle = "SampleVbZoo 8 Educational"
 
     ' The build of the product that this license work with.
     ' When your product requests a license from the Zoo, it
