@@ -126,7 +126,7 @@ ON_MappingTag CZAnalysisVAM::MappingTag() const
 
   // This is the analysis mode id passed to the 
   // CRhinoVisualAnalysisMode constructor. Use the
-  // m_am_id member and it this code will alwasy 
+  // m_am_id member and it this code will always 
   // work correctly.
   mt.m_mapping_id = m_am_id;
 

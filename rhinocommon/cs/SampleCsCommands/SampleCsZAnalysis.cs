@@ -7,6 +7,7 @@ using Rhino.Input;
 using Rhino.Render;
 using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace SampleCsCommands
 {
@@ -78,6 +79,7 @@ namespace SampleCsCommands
   /// This simple example provides a false color based on the world z-coordinate.
   /// For details, see the implementation of the FalseColor() function.
   /// </summary>
+  [Guid("AAD83C88-6BBE-4F76-BF2C-B06E63B529B6")]
   public class SampleCsZAnalysisMode : VisualAnalysisMode
   {
     private Interval m_z_range = new Interval(-10.0, 10.0);
@@ -109,27 +111,35 @@ namespace SampleCsCommands
     /// <inheritdoc />
     protected override void UpdateVertexColors(RhinoObject obj, Mesh[] meshes)
     {
-      // A "mapping tag" is used to determine if the colors need to be set
-      MappingTag mt = GetMappingTag();
-
-      foreach (Mesh mesh in meshes)
+      // Rhino calls this function when it is time for you
+      // to set the false colors on the analysis mesh vertices.
+      // For breps, there is one mesh per face.  For mesh objects,
+      // there is a single mesh.
+      int count = null != meshes ? meshes.Length : 0;
+      if (count > 0)
       {
-        if (mesh.VertexColors.Tag.Id != Id)
+        // A "mapping tag" is used to determine if the colors need to be set
+        MappingTag mt = GetMappingTag();
+        for (int mi = 0; mi < count; mi++)
         {
-          // The mesh's mapping tag is different from ours. Either the mesh has
-          // no false colors, has false colors set by another analysis mode, has
-          // false colors set using different m_z_range[]/m_hue_range[] values, or
-          // the mesh has been moved.  In any case, we need to set the false
-          // colors to the ones we want.
-          Color[] colors = new Color[mesh.Vertices.Count];
-          for (int i = 0; i < mesh.Vertices.Count; i++)
+          Mesh mesh = meshes[mi];
+          if (null != mesh && 0 != CompareMappingTags(mesh.VertexColors.Tag, mt))
           {
-            double z = mesh.Vertices[i].Z;
-            colors[i] = FalseColor(z);
+            // The mesh's mapping tag is different from ours. Either the mesh has
+            // no false colors, has false colors set by another analysis mode, has
+            // false colors set using different m_z_range[]/m_hue_range[] values, or
+            // the mesh has been moved.  In any case, we need to set the false
+            // colors to the ones we want.
+            Color[] colors = new Color[mesh.Vertices.Count];
+            for (int vi = 0; vi < mesh.Vertices.Count; vi++)
+            {
+              double z = mesh.Vertices[vi].Z;
+              colors[vi] = FalseColor(z);
+            }
+            mesh.VertexColors.SetColors(colors);
+            // set the mesh's color tag
+            mesh.VertexColors.Tag = mt;
           }
-          mesh.VertexColors.SetColors(colors);
-          // set the mesh's color tag
-          mesh.VertexColors.Tag = mt;
         }
       }
     }
@@ -142,18 +152,19 @@ namespace SampleCsCommands
     /// </summary>
     private MappingTag GetMappingTag()
     {
-      MappingTag mt = new MappingTag();
+      MappingTag mt = new MappingTag
+      {
+        // Since the false colors that are shown will change if
+        // the mesh is transformed, we have to initialize the
+        // transformation.
+        MeshTransform = Transform.Identity,
 
-      // Since the false colors that are shown will change if
-      // the mesh is transformed, we have to initialize the
-      // transformation.
-      mt.MeshTransform = Transform.Identity;
-
-      // This is the analysis mode id passed to the 
-      // CRhinoVisualAnalysisMode constructor. Use the
-      // m_am_id member and it this code will alwasy 
-      // work correctly.
-      mt.Id = Id;
+        // This is the analysis mode id passed to the 
+        // SampleCsZAnalysisMode attributes. Use the
+        // ID member and it this code will always 
+        // work correctly.
+        Id = Id
+      };
 
       // This is a 32 bit CRC or the information used to
       // set the false colors.
@@ -172,12 +183,32 @@ namespace SampleCsCommands
     }
 
     /// <summary>
+    /// Compares two mapping tags
+    /// </summary>
+    private static int CompareMappingTags(MappingTag lhs, MappingTag rhs)
+    {
+      TextureMappingType lhs_type = lhs.MappingType;
+      TextureMappingType rhs_type = rhs.MappingType;
+      if (lhs_type < rhs_type)
+        return -1;
+      if (lhs_type > rhs_type)
+        return 1;
+      int rc = lhs.Id.CompareTo(rhs.Id);
+      if (0 != rc)
+        return rc;
+      if (lhs.MappingCRC < rhs.MappingCRC)
+        return -1;
+      if (lhs.MappingCRC > rhs.MappingCRC)
+        return 1;
+      return lhs.MeshTransform.CompareTo(rhs.MeshTransform);
+    }
+
+    /// <summary>
     /// Calculate false color.
     /// </summary>
     private Color FalseColor(double z)
     {
-      // Simple example of one way to change a number
-      // into a color.
+      // Simple example of one way to change a number into a color.
       double s = m_z_range.NormalizedParameterAt(z);
       s = RhinoMath.Clamp(s, 0.0, 1.0);
       double hue = m_hue_range.ParameterAt(s);
@@ -188,7 +219,7 @@ namespace SampleCsCommands
     /// Returns a color from an hue, saturation, value.
     /// </summary>
     /// <param name="hue">Hue in radians.</param>
-    /// <param name="saturation">Satuation, hwere 0.0 = gray, 1.0 = saturated.</param>
+    /// <param name="saturation">Satuation, where 0.0 = gray, 1.0 = saturated.</param>
     /// <param name="value">The value.</param>
     /// <returns>The color.</returns>
     private static Color ColorFromHsv(double hue, double saturation, double value)
@@ -263,6 +294,5 @@ namespace SampleCsCommands
 
       return Color.FromArgb(a, r, g, b);
     }
-
   }
 }
