@@ -37,36 +37,26 @@ END_MESSAGE_MAP()
 
 // CSampleExportMeshApp construction
 
-CSampleExportMeshApp::CSampleExportMeshApp()
-{
-  // CRITICAL: DO NOT CALL RHINO SDK FUNCTIONS HERE!
-  //   Only standard MFC DLL instance construction belongs here. 
-  //   All other significant initialization should take place in
-  //   CSampleExportMeshPlugIn::OnLoadPlugIn().
-}
-
 // The one and only CSampleExportMeshApp object
-CSampleExportMeshApp theApp;
+static class CSampleExportMeshApp theApp;
 
 // CSampleExportMeshApp initialization
 
 BOOL CSampleExportMeshApp::InitInstance()
 {
   // CRITICAL: DO NOT CALL RHINO SDK FUNCTIONS HERE!
-  //   Only standard MFC DLL instance initialization belongs here. 
-  //   All other significant initialization should take place in
-  //   CSampleExportMeshPlugIn::OnLoadPlugIn().
-
+  // Only standard MFC DLL instance initialization belongs here. 
+  // All other significant initialization should take place in
+  // CSampleExportMeshPlugIn::OnLoadPlugIn().
   CWinApp::InitInstance();
-
   return TRUE;
 }
 
 int CSampleExportMeshApp::ExitInstance()
 {
   // CRITICAL: DO NOT CALL RHINO SDK FUNCTIONS HERE!
-  //   Only standard MFC DLL instance clean up belongs here. 
-  //   All other significant cleanup should take place in either
-  //   CSampleExportMeshPlugIn::OnSaveAllSettings() or CSampleExportMeshPlugIn::OnUnloadPlugIn().
+  // Only standard MFC DLL instance clean up belongs here. 
+  // All other significant cleanup should take place in either
+  // CSampleExportMeshPlugIn::OnSaveAllSettings() or CSampleExportMeshPlugIn::OnUnloadPlugIn().
   return CWinApp::ExitInstance();
 }

@@ -35,38 +35,26 @@
 BEGIN_MESSAGE_MAP(CSampleImportGeomviewApp, CWinApp)
 END_MESSAGE_MAP()
 
-// CSampleImportGeomviewApp construction
-
-CSampleImportGeomviewApp::CSampleImportGeomviewApp()
-{
-  // CRITICAL: DO NOT CALL RHINO SDK FUNCTIONS HERE!
-  //   Only standard MFC DLL instance construction belongs here. 
-  //   All other significant initialization should take place in
-  //   CSampleImportGeomviewPlugIn::OnLoadPlugIn().
-}
-
 // The one and only CSampleImportGeomviewApp object
-CSampleImportGeomviewApp theApp;
+static class CSampleImportGeomviewApp theApp;
 
 // CSampleImportGeomviewApp initialization
 
 BOOL CSampleImportGeomviewApp::InitInstance()
 {
   // CRITICAL: DO NOT CALL RHINO SDK FUNCTIONS HERE!
-  //   Only standard MFC DLL instance initialization belongs here. 
-  //   All other significant initialization should take place in
-  //   CSampleImportGeomviewPlugIn::OnLoadPlugIn().
-
+  // Only standard MFC DLL instance initialization belongs here. 
+  // All other significant initialization should take place in
+  // CSampleImportGeomviewPlugIn::OnLoadPlugIn().
   CWinApp::InitInstance();
-
   return TRUE;
 }
 
 int CSampleImportGeomviewApp::ExitInstance()
 {
   // CRITICAL: DO NOT CALL RHINO SDK FUNCTIONS HERE!
-  //   Only standard MFC DLL instance clean up belongs here. 
-  //   All other significant cleanup should take place in either
-  //   CSampleImportGeomviewPlugIn::OnSaveAllSettings() or CSampleImportGeomviewPlugIn::OnUnloadPlugIn().
+  // Only standard MFC DLL instance clean up belongs here. 
+  // All other significant cleanup should take place in either
+  // CSampleImportGeomviewPlugIn::OnSaveAllSettings() or CSampleImportGeomviewPlugIn::OnUnloadPlugIn().
   return CWinApp::ExitInstance();
 }

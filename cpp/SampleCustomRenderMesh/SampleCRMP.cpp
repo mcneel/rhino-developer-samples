@@ -112,12 +112,12 @@ std::shared_ptr<const IRenderMeshes> CSampleCRMP::RenderMeshes(
 	// Check the cache.
 	if (IManager::Flags::DisableCaching != (flags & IManager::Flags::DisableCaching))
 	{
-		const auto* pTrackingRecord = m_tracking.Tracker(doc).Record(objectId);
+		const auto* pTrackingRecord = m_tracking.Tracker(doc).Record2(objectId);
 		if (nullptr != pTrackingRecord)
 		{
 			if (pTrackingRecord->Hash() == runningHash)
 			{
-				return pTrackingRecord->Primitives();
+				return pTrackingRecord->Primitives2(flags);
 			}
 		}
 	}

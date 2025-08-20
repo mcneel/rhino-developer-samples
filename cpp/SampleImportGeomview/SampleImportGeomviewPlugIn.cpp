@@ -48,9 +48,8 @@ RHINO_PLUG_IN_DEVELOPER_WEBSITE(L"http://www.rhino3d.com");
 RHINO_PLUG_IN_UPDATE_URL(L"https://github.com/mcneel/rhino-developer-samples");
 
 // The one and only CSampleImportGeomviewPlugIn object
-static CSampleImportGeomviewPlugIn thePlugIn;
+static class CSampleImportGeomviewPlugIn thePlugIn;
 
-/////////////////////////////////////////////////////////////////////////////
 // CSampleImportGeomviewPlugIn definition
 
 CSampleImportGeomviewPlugIn& SampleImportGeomviewPlugIn()
@@ -84,7 +83,6 @@ CSampleImportGeomviewPlugIn::~CSampleImportGeomviewPlugIn()
   // TODO: Add destruction code here
 }
 
-/////////////////////////////////////////////////////////////////////////////
 // Required overrides
 
 const wchar_t* CSampleImportGeomviewPlugIn::PlugInName() const
@@ -120,6 +118,8 @@ GUID CSampleImportGeomviewPlugIn::PlugInID() const
   return ON_UuidFromString(RhinoPlugInId());
 }
 
+// Additional overrides
+
 BOOL CSampleImportGeomviewPlugIn::OnLoadPlugIn()
 {
   // Description:
@@ -154,7 +154,6 @@ void CSampleImportGeomviewPlugIn::OnUnloadPlugIn()
   CRhinoFileImportPlugIn::OnUnloadPlugIn();
 }
 
-/////////////////////////////////////////////////////////////////////////////
 // Online help overrides
 
 BOOL CSampleImportGeomviewPlugIn::AddToPlugInHelpMenu() const
@@ -176,7 +175,6 @@ BOOL CSampleImportGeomviewPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
   return CRhinoFileImportPlugIn::OnDisplayPlugInHelp(hWnd);
 }
 
-/////////////////////////////////////////////////////////////////////////////
 // File import overrides
 
 void CSampleImportGeomviewPlugIn::AddFileType(ON_ClassArray<CRhinoFileType>& extensions, const CRhinoFileReadOptions& options)
@@ -210,11 +208,6 @@ void CSampleImportGeomviewPlugIn::AddFileType(ON_ClassArray<CRhinoFileType>& ext
 
 BOOL CSampleImportGeomviewPlugIn::ReadFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileReadOptions& options)
 {
-  UNREFERENCED_PARAMETER(filename);
-  UNREFERENCED_PARAMETER(index);
-  UNREFERENCED_PARAMETER(doc);
-  UNREFERENCED_PARAMETER(options);
-
   // Description:
   //   Rhino calls ReadFile() to create document geometry from an external file.
   // Parameters:
