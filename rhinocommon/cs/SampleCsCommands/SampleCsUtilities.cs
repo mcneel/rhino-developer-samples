@@ -22,26 +22,29 @@ namespace SampleCsCommands
     public static Guid[] RunCommandScript(RhinoDoc doc, string script, bool echo)
     {
       Guid[] rc = Array.Empty<Guid>();
-      try
+      if (null != doc && !string.IsNullOrEmpty(script))
       {
-        uint start_sn = RhinoObject.NextRuntimeSerialNumber;
-        RhinoApp.RunScript(script, echo);
-        uint end_sn = RhinoObject.NextRuntimeSerialNumber;
-        if (start_sn < end_sn)
+        try
         {
-          List<Guid> object_ids = new List<Guid>();
-          for (uint sn = start_sn; sn < end_sn; sn++)
+          uint start_sn = RhinoObject.NextRuntimeSerialNumber;
+          RhinoApp.RunScript(script, echo);
+          uint end_sn = RhinoObject.NextRuntimeSerialNumber;
+          if (start_sn < end_sn)
           {
-            RhinoObject obj = doc.Objects.Find(sn);
-            if (null != obj)
-              object_ids.Add(obj.Id);
+            List<Guid> object_ids = new List<Guid>();
+            for (uint sn = start_sn; sn < end_sn; sn++)
+            {
+              RhinoObject obj = doc.Objects.Find(sn);
+              if (null != obj)
+                object_ids.Add(obj.Id);
+            }
+            rc = object_ids.Distinct().ToArray();
           }
-          rc = object_ids.Distinct().ToArray();
         }
-      }
-      catch
-      {
-        // ignored
+        catch
+        {
+          // ignored
+        }
       }
       return rc;
     }
