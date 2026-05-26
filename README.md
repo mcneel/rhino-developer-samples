@@ -1,7 +1,5 @@
 # Rhino Developer Samples
 
-<img align="left" src="https://github.com/mcneel/developer-rhino3d-com/blob/master/images/dev-logo-rhino-small.png">
-
 This repository contains all the sample developer code for programming in the Rhino and Grasshopper ecosystem.
 
 The source of this repository will be used to populate the [Samples](http://developer.rhino3d.com/samples/) section of the [Rhino Developer website](http://developer.rhino3d.com/).
