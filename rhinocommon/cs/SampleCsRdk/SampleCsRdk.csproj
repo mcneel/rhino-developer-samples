@@ -1,159 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E0A775C2-7D67-4125-885F-B140D4F9CC7C}</ProjectGuid>
-    <OutputType>library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworks>net9.0-windows;net48</TargetFrameworks>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <TargetExt>.rhp</TargetExt>
     <RootNamespace>SampleCsRdk</RootNamespace>
     <AssemblyName>SampleCsRdk</AssemblyName>
-    <TargetExt>.rhp</TargetExt>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWpf>true</UseWpf>
     <OutputPath>..\bin\</OutputPath>
-    <TargetExt>.rhp</TargetExt>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <NoWarn>NU1701;NETSDK1086</NoWarn>
+    <Deterministic>false</Deterministic>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\</OutputPath>
-    <TargetExt>.rhp</TargetExt>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="WindowsFormsIntegration" />
-    <Reference Include="RhinoCommon">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7\System\rhinocommon.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Eto">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7\System\Eto.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Eto.Wpf">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7\System\Eto.Wpf.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Rhino.UI">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7\System\Rhino.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RhinoWindows">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Rhino 7\System\RhinoWindows.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BufferedTreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomMaterialWpfUserInterfaceSection.xaml.cs">
-      <DependentUpon>CustomMaterialWpfUserInterfaceSection.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CustomContentIo.cs" />
-    <Compile Include="CustomEnvironment.cs" />
-    <Compile Include="CustomMaterial.cs" />
-    <Compile Include="CustomEtoUiSectionMaterial.cs" />
-    <Compile Include="CustomMaterialUserInterfaceSection.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomMaterialUserInterfaceSection.Designer.cs">
-      <DependentUpon>CustomMaterialUserInterfaceSection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomMaterialUserInterfaceSection2.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomMaterialUserInterfaceSection2.Designer.cs">
-      <DependentUpon>CustomMaterialUserInterfaceSection2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomMaterialViewModel.cs" />
-    <Compile Include="CustomRenderPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomRenderPanel.Designer.cs">
-      <DependentUpon>CustomRenderPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomTexture.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="rdktest_csCommand.cs" />
-    <Compile Include="rdktest_csPlugIn.cs" />
-    <Compile Include="TestCustomMeshProvider.cs" />
-    <EmbeddedResource Include="CustomMaterialUserInterfaceSection.resx">
-      <DependentUpon>CustomMaterialUserInterfaceSection.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomMaterialUserInterfaceSection2.resx">
-      <DependentUpon>CustomMaterialUserInterfaceSection2.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomRenderPanel.resx">
-      <DependentUpon>CustomRenderPanel.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <AppDesigner Include="Properties\" />
-  </ItemGroup>
+
   <ItemGroup>
     <Resource Include="Resources\AtoZ.jpg" />
   </ItemGroup>
+
   <ItemGroup>
-    <Page Include="CustomMaterialWpfUserInterfaceSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <PackageReference Include="RhinoCommon" Version="9.0.26146.14285-wip" ExcludeAssets="runtime" />
+    <PackageReference Include="RhinoWindows" Version="9.0.26146.14285-wip" ExcludeAssets="runtime" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
+    <PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
