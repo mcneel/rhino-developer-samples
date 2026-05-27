@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworks>net9.0;net48</TargetFrameworks>
     <Version>1.0</Version>
     <Title>Test3dmWrite</Title>
     <Description>Description of Test3dmWrite</Description>
@@ -13,7 +13,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="RhinoCommon" Version="7.13.21348.13001" IncludeAssets="compile;build" />
+    <PackageReference Include="RhinoCommon" Version="9.0.26146.14285-wip" IncludeAssets="compile;build" />
   </ItemGroup>
   
 </Project>
