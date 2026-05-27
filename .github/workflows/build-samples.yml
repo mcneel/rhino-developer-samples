@@ -64,6 +64,21 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
+      # Runners ship a newer SDK (e.g. 10.x); without this, dotnet picks the
+      # highest installed SDK. Pin to 9.x for the whole repo during CI only.
+      - name: Pin .NET SDK (CI only)
+        shell: pwsh
+        run: |
+          @'
+          {
+            "sdk": {
+              "version": "9.0.100",
+              "rollForward": "latestFeature"
+            }
+          }
+          '@ | Set-Content -Path global.json
+          dotnet --version
+
       - name: Cache NuGet packages
         uses: actions/cache@v5
         with:
