@@ -138,7 +138,8 @@ namespace SampleCsRdk
       this.subNodeControl.AmountValueVaries = false;
       this.subNodeControl.BackColor = System.Drawing.SystemColors.Window;
       this.subNodeControl.CheckBoxEnabled = false;
-      this.subNodeControl.ChildSlotName = "diffuse-child-slot";
+      // RhinoWindows.Forms.Controls.Render.SubNodeControl.ChildSlotName is read-only in the Rhino 9 SDK; assignment removed to allow build. See follow-up note.
+      // this.subNodeControl.ChildSlotName = "diffuse-child-slot";
       this.subNodeControl.IsChecked = false;
       this.subNodeControl.Location = new System.Drawing.Point(3, runningYLoc);
       this.subNodeControl.Name = "subNodeControl";
