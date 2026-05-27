@@ -10,6 +10,7 @@
     <Copyright>Copyright © 2024, Robert McNeel &amp; Associates</Copyright>
     <TargetExt>.rhp</TargetExt>
     <NoWarn>NU1701</NoWarn>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
 
   <ItemGroup>
