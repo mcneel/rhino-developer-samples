@@ -105,6 +105,16 @@ jobs:
           $results = @()
           foreach ($proj in $projects) {
             $rel = (Resolve-Path -Relative $proj.FullName) -replace '\\', '/'
+
+            # Skip legacy non-SDK projects: they need msbuild + nuget restore
+            # and/or an installed Rhino, so they are not built in CI for now.
+            $isSdkStyle = (Get-Content $proj.FullName -Raw) -match '<Project\s+Sdk='
+            if (-not $isSdkStyle) {
+              Write-Host "::notice title=Skipped (legacy non-SDK)::$rel"
+              $results += [pscustomobject]@{ Project = $rel; Status = 'skipped' }
+              continue
+            }
+
             Write-Host "::group::Building $rel"
             dotnet build $proj.FullName -c Release --nologo
             $code = $LASTEXITCODE
@@ -118,13 +128,14 @@ jobs:
             }
           }
 
-          $passed = ($results | Where-Object Status -eq 'pass').Count
-          $failed = ($results | Where-Object Status -eq 'FAILED').Count
+          $passed  = ($results | Where-Object Status -eq 'pass').Count
+          $failed  = ($results | Where-Object Status -eq 'FAILED').Count
+          $skipped = ($results | Where-Object Status -eq 'skipped').Count
 
           $lines = @()
           $lines += $summaryHeader
           $lines += ""
-          $lines += "**$passed passed, $failed failed** of $($results.Count) project(s)."
+          $lines += "**$passed passed, $failed failed, $skipped skipped** of $($results.Count) project(s)."
           $lines += ""
           $lines += "| Project | Result |"
           $lines += "| --- | --- |"
@@ -133,8 +144,8 @@ jobs:
           }
           ($lines -join "`n") | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
 
-          Write-Host "$env:CATEGORY: $passed passed, $failed failed."
-          # Hard gate: any failed project fails the job.
+          Write-Host "$env:CATEGORY: $passed passed, $failed failed, $skipped skipped."
+          # Hard gate: any failed project fails the job (skipped does not).
           if ($failed -gt 0) { exit 1 }
           exit 0
 
