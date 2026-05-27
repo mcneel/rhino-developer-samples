@@ -1,0 +1,140 @@
+name: Build Samples
+
+on:
+  pull_request:
+    paths:
+      - 'rhinocommon/**'
+      - 'rhino3dm/**'
+      - 'grasshopper/**'
+      - 'compute/**'
+      - 'rhino.inside/**'
+      - '.github/workflows/build-samples.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Cancel an in-progress run when newer commits land on the same PR/ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build ${{ matrix.category }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      # Keep every category running even if one fails - we want full coverage.
+      fail-fast: false
+      matrix:
+        include:
+          # net48 + net9.0-windows -> needs Windows.
+          - category: rhinocommon
+            path: rhinocommon
+            os: windows-latest
+          # net7.0 + Rhino3dm NuGet (native libs for win/mac/linux) -> build on all three.
+          - category: rhino3dm
+            path: rhino3dm
+            os: ubuntu-latest
+          - category: rhino3dm
+            path: rhino3dm
+            os: macos-latest
+          - category: rhino3dm
+            path: rhino3dm
+            os: windows-latest
+          # Grasshopper/RhinoCommon NuGet, mostly net48 -> Windows.
+          - category: grasshopper
+            path: grasshopper
+            os: windows-latest
+          # RhinoCommon/Compute NuGet, net48 -> Windows.
+          - category: compute
+            path: compute
+            os: windows-latest
+          # Rhino.Inside NuGet, mixed net48/*-windows -> Windows.
+          - category: rhino.inside
+            path: rhino.inside
+            os: windows-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles(format('{0}/**/*.csproj', matrix.path)) }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - name: Build all projects
+        shell: pwsh
+        env:
+          CATEGORY: ${{ matrix.category }}
+          SEARCH_PATH: ${{ matrix.path }}
+        run: |
+          $projects = Get-ChildItem -Path $env:SEARCH_PATH -Filter *.csproj -Recurse -File | Sort-Object FullName
+          $summaryHeader = "## $env:CATEGORY build results"
+
+          if ($projects.Count -eq 0) {
+            Write-Host "No .csproj files found under $env:SEARCH_PATH"
+            "$summaryHeader`n`nNo projects found under ``$env:SEARCH_PATH``." |
+              Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
+            exit 0
+          }
+
+          $results = @()
+          foreach ($proj in $projects) {
+            $rel = (Resolve-Path -Relative $proj.FullName) -replace '\\', '/'
+            Write-Host "::group::Building $rel"
+            dotnet build $proj.FullName -c Release --nologo
+            $code = $LASTEXITCODE
+            Write-Host "::endgroup::"
+            if ($code -eq 0) {
+              Write-Host "::notice title=Build passed::$rel"
+              $results += [pscustomobject]@{ Project = $rel; Status = 'pass' }
+            } else {
+              Write-Host "::error title=Build failed::$rel (exit code $code)"
+              $results += [pscustomobject]@{ Project = $rel; Status = 'FAILED' }
+            }
+          }
+
+          $passed = ($results | Where-Object Status -eq 'pass').Count
+          $failed = ($results | Where-Object Status -eq 'FAILED').Count
+
+          $lines = @()
+          $lines += $summaryHeader
+          $lines += ""
+          $lines += "**$passed passed, $failed failed** of $($results.Count) project(s)."
+          $lines += ""
+          $lines += "| Project | Result |"
+          $lines += "| --- | --- |"
+          foreach ($r in $results) {
+            $lines += "| $($r.Project) | $($r.Status) |"
+          }
+          ($lines -join "`n") | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append
+
+          Write-Host "$env:CATEGORY: $passed passed, $failed failed."
+          # Hard gate: any failed project fails the job.
+          if ($failed -gt 0) { exit 1 }
+          exit 0
+
+  # Single check that is green only when every category job succeeded.
+  gate:
+    name: Build gate
+    needs: build
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify all category builds passed
+        run: |
+          echo "build matrix result: ${{ needs.build.result }}"
+          if [ "${{ needs.build.result }}" != "success" ]; then
+            echo "One or more category builds failed."
+            exit 1
+          fi
+          echo "All category builds passed."
