@@ -1,82 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{888804B9-6529-4805-9E56-4101697C4664}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworks>net9.0;net48</TargetFrameworks>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <TargetExt>.rhp</TargetExt>
     <RootNamespace>SampleCsSnapshotsClient</RootNamespace>
     <AssemblyName>SampleCsSnapshotsClient</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <NoWarn>NU1701</NoWarn>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Eto">
-      <HintPath>C:\Program Files\Rhino 7\System\Eto.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Rhino.UI">
-      <HintPath>C:\Program Files\Rhino 7\System\Rhino.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RhinoCommon">
-      <HintPath>C:\Program Files\Rhino 7\System\RhinoCommon.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="SampleCsSnapshotsClientCommand.cs" />
-    <Compile Include="SampleCsSnapshotsClientPlugIn.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SampleSnapShotClient.cs" />
-  </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="Resources\SampleCs.ico" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)$(ProjectName).rhp"
-Erase "$(TargetPath)"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <FallbackCulture>en-US</FallbackCulture>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartProgram>C:\Program Files\Rhino 7\System\Rhino.exe</StartProgram>
-    <StartArguments>
-    </StartArguments>
-    <StartAction>Program</StartAction>
-  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RhinoCommon" Version="9.0.26146.14285-wip" ExcludeAssets="runtime" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+#if NETFRAMEWORK
 using System.Runtime.Remoting.Messaging;
+#endif
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
