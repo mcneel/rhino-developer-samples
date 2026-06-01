@@ -20,7 +20,7 @@ namespace SampleCsCommands
 
       Point3d point = gp.Point();
 
-      string format = string.Format("F{0}", doc.DistanceDisplayPrecision);
+      string format = string.Format("F{0}", doc.ModelDistanceDisplayPrecision);
       CultureInfo provider = CultureInfo.InvariantCulture;
 
       string x = point.X.ToString(format, provider);
