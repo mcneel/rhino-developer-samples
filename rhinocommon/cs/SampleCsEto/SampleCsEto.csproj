@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net48</TargetFrameworks>
+    <TargetFrameworks>net9.0;net48</TargetFrameworks>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <Version>8.0</Version>
     <Title>SampleCsEto</Title>
@@ -10,12 +10,13 @@
     <Copyright>Copyright © 2024, Robert McNeel &amp; Associates</Copyright>
     <TargetExt>.rhp</TargetExt>
     <NoWarn>NU1701</NoWarn>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RhinoCommon" Version="8.0.23304.9001" ExcludeAssets="runtime" />
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" ExcludeAssets="runtime" />
-    <PackageReference Include="System.Resources.Extensions" Version="7.0.0" ExcludeAssets="runtime" />
+    <PackageReference Include="RhinoCommon" Version="9.0.26146.14285-wip" ExcludeAssets="runtime" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.0" ExcludeAssets="runtime" />
+    <PackageReference Include="System.Resources.Extensions" Version="9.0.0" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup>

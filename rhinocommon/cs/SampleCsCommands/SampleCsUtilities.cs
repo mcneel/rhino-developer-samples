@@ -1,4 +1,5 @@
 ﻿using Rhino;
+using Rhino.DocObjects;
 using Rhino.Geometry;
 using System;
 using System.Collections.Generic;
@@ -16,31 +17,34 @@ namespace SampleCsCommands
     /// <param name="echo">Echo prompts to the command window.</param>
     /// <returns>
     /// The identifiers of the objects that were most recently created or changed
-    /// by the scripted command,
+    /// by the scripted command. Retreive this objects using ObjectTable.FindId.
     /// </returns>
     public static Guid[] RunCommandScript(RhinoDoc doc, string script, bool echo)
     {
-      Guid[] rc = new Guid[0];
-      try
+      Guid[] rc = Array.Empty<Guid>();
+      if (null != doc && !string.IsNullOrEmpty(script))
       {
-        uint start_sn = Rhino.DocObjects.RhinoObject.NextRuntimeSerialNumber;
-        RhinoApp.RunScript(script, false);
-        uint end_sn = Rhino.DocObjects.RhinoObject.NextRuntimeSerialNumber;
-        if (start_sn < end_sn)
+        try
         {
-          List<Guid> object_ids = new List<Guid>();
-          for (uint sn = start_sn; sn < end_sn; sn++)
+          uint start_sn = RhinoObject.NextRuntimeSerialNumber;
+          RhinoApp.RunScript(script, echo);
+          uint end_sn = RhinoObject.NextRuntimeSerialNumber;
+          if (start_sn < end_sn)
           {
-            Rhino.DocObjects.RhinoObject obj = doc.Objects.Find(sn);
-            if (null != obj)
-              object_ids.Add(obj.Id);
+            List<Guid> object_ids = new List<Guid>();
+            for (uint sn = start_sn; sn < end_sn; sn++)
+            {
+              RhinoObject obj = doc.Objects.Find(sn);
+              if (null != obj)
+                object_ids.Add(obj.Id);
+            }
+            rc = object_ids.Distinct().ToArray();
           }
-          rc = object_ids.Distinct().ToArray();
         }
-      }
-      catch
-      {
-        // ignored
+        catch
+        {
+          // ignored
+        }
       }
       return rc;
     }

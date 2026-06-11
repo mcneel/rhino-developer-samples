@@ -59,7 +59,7 @@ namespace CommandPlugin
         {
           Eto.Forms.MessageBox.Show(content.Xml, "C#", Eto.Forms.MessageBoxType.Information);
 
-          iterator.DeleteThis();
+          iterator.Dispose();
           return Rhino.Commands.Result.Success;
         }
 

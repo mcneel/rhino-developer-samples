@@ -20,7 +20,7 @@ namespace SampleCsZoo
     /// Returns the address of your company or organization. Use a "\r\n"
     /// character combination to separate lines.
     /// </summary>
-    public string Address() => "3670 Woodland Park Avenue North\r\nSeattle, WA 98115";
+    public string Address() => "146 North Canal Street, Suite 320\r\nSeattle, WA 98115";
 
     /// <summary>
     /// Returns the country in which your company or organization is located.
@@ -35,12 +35,12 @@ namespace SampleCsZoo
     /// <summary>
     /// Returns a phone number that a customer can use to contact you.
     /// </summary>
-    public string Phone() => "206.545.7000";
+    public string Phone() => "+1 (206) 545-7000";
 
     /// <summary>
     /// Returns a FAX number that a customer can use to contact you.
     /// </summary>
-    public string Fax() => "206.545.7321";
+    public string Fax() => "+1 (206) 545-7321";
 
     /// <summary>
     /// Returns the web address or url of your company or organization.
@@ -59,13 +59,13 @@ namespace SampleCsZoo
     /// validates. This string will appear in user interfaces were one can 
     /// choose type type of license to validate.
     /// </summary>
-    public string ProductTitle() => "SampleCsZoo 6";
+    public string ProductTitle() => "SampleCsZoo 8";
 
     /// <summary>
     /// The product key text mask, as shown when you add licenses to the Zoo.
     /// </summary>
     /// <returns></returns>
-    public string ProductKeyTextMask() => @">ZO6\0-AAAA-AAAA-AAAA-AAAA-AAAA";
+    public string ProductKeyTextMask() => @">ZO8\0-AAAA-AAAA-AAAA-AAAA-AAAA";
 
     /// <summary>
     /// Validates a product, or CD, key that was entered into the Zoo administrator
@@ -117,7 +117,7 @@ namespace SampleCsZoo
       // This value will display in user interface items, such as in
       // the Zoo console and in About dialog boxes.
       // (e.g. "Rhinoceros 5.0", "Rhinoceros 5.0 Commercial", etc.)
-      licenseData.LicenseTitle = "SampleCsZoo 6 Commercial";
+      licenseData.LicenseTitle = "SampleCsZoo 8 Commercial";
 
       // The build of the product that this license work with.
       // When your product requests a license from the Zoo, it

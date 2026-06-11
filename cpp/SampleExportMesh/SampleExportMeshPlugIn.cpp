@@ -15,15 +15,15 @@ RHINO_PLUG_IN_DECLARE
 
 // Rhino plug-in name
 // Provide a short, friendly name for this plug-in.
-RHINO_PLUG_IN_NAME( L"SampleExportMesh" );
+RHINO_PLUG_IN_NAME(L"SampleExportMesh");
 
 // Rhino plug-in id
 // Provide a unique uuid for this plug-in
-RHINO_PLUG_IN_ID( L"F2F3C62B-31F9-4A6F-BEAA-7F1EE7AB6709" );
+RHINO_PLUG_IN_ID(L"F2F3C62B-31F9-4A6F-BEAA-7F1EE7AB6709");
 
 // Rhino plug-in version
 // Provide a version number string for this plug-in
-RHINO_PLUG_IN_VERSION( __DATE__ "  " __TIME__ )
+RHINO_PLUG_IN_VERSION(__DATE__ "  " __TIME__)
 
 // Rhino plug-in description
 // Provide a description of this plug-in
@@ -44,9 +44,8 @@ RHINO_PLUG_IN_DEVELOPER_WEBSITE(L"http://www.rhino3d.com");
 RHINO_PLUG_IN_UPDATE_URL(L"https://github.com/mcneel/rhino-developer-samples");
 
 // The one and only CSampleExportMeshPlugIn object
-static CSampleExportMeshPlugIn thePlugIn;
+static class CSampleExportMeshPlugIn thePlugIn;
 
-/////////////////////////////////////////////////////////////////////////////
 // CSampleExportMeshPlugIn definition
 
 CSampleExportMeshPlugIn& SampleExportMeshPlugIn()
@@ -81,7 +80,6 @@ CSampleExportMeshPlugIn::~CSampleExportMeshPlugIn()
   // TODO: Add destruction code here
 }
 
-/////////////////////////////////////////////////////////////////////////////
 // Required overrides
 
 const wchar_t* CSampleExportMeshPlugIn::PlugInName() const
@@ -114,7 +112,7 @@ GUID CSampleExportMeshPlugIn::PlugInID() const
 
   // TODO: Return a unique identifier for the plug-in.
   // {F2F3C62B-31F9-4A6F-BEAA-7F1EE7AB6709}
-  return ON_UuidFromString( RhinoPlugInId() );
+  return ON_UuidFromString(RhinoPlugInId());
 }
 
 BOOL CSampleExportMeshPlugIn::OnLoadPlugIn()
@@ -151,7 +149,6 @@ void CSampleExportMeshPlugIn::OnUnloadPlugIn()
   CRhinoFileExportPlugIn::OnUnloadPlugIn();
 }
 
-/////////////////////////////////////////////////////////////////////////////
 // Online help overrides
 
 BOOL CSampleExportMeshPlugIn::AddToPlugInHelpMenu() const
@@ -163,23 +160,20 @@ BOOL CSampleExportMeshPlugIn::AddToPlugInHelpMenu() const
   return FALSE;
 }
 
-BOOL CSampleExportMeshPlugIn::OnDisplayPlugInHelp( HWND hWnd ) const
+BOOL CSampleExportMeshPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
   // Description:
   //   Called when the user requests help about your plug-in.
   //   It should display a standard Windows Help file (.hlp or .chm).
 
   // TODO: Add support for online help here.
-  return CRhinoFileExportPlugIn::OnDisplayPlugInHelp( hWnd );
+  return CRhinoFileExportPlugIn::OnDisplayPlugInHelp(hWnd);
 }
 
-/////////////////////////////////////////////////////////////////////////////
 // File export overrides
 
 void CSampleExportMeshPlugIn::AddFileType(ON_ClassArray<CRhinoFileType>& extensions, const CRhinoFileWriteOptions& options)
 {
-  UNREFERENCED_PARAMETER(options);
-
   // Description:
   //   When Rhino gets ready to display either the save or export file dialog,
   //   it calls AddFileType() once for each loaded file export plug-in.
@@ -203,11 +197,6 @@ void CSampleExportMeshPlugIn::AddFileType(ON_ClassArray<CRhinoFileType>& extensi
 
 BOOL CSampleExportMeshPlugIn::WriteFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileWriteOptions& options)
 {
-  UNREFERENCED_PARAMETER(filename);
-  UNREFERENCED_PARAMETER(index);
-  UNREFERENCED_PARAMETER(doc);
-  UNREFERENCED_PARAMETER(options);
-
   // Description:
   //   Rhino calls WriteFile() to write document geometry to an external file.
   // Parameters:
@@ -238,7 +227,7 @@ BOOL CSampleExportMeshPlugIn::WriteFile(const wchar_t* filename, int index, CRhi
   }
 
   // Do the iteration...
-  const CRhinoObject* obj = 0;
+  const CRhinoObject* obj = nullptr;
   for (obj = it.First(); obj; obj = it.Next())
     objects.Append(obj);
 
@@ -264,10 +253,9 @@ BOOL CSampleExportMeshPlugIn::WriteFile(const wchar_t* filename, int index, CRhi
   }
 
   // Write the mesh file
-  FILE* fp = 0;
+  FILE* fp = nullptr;
   errno_t err = _wfopen_s(&fp, filename, L"w");
-  bool rc = (0 == err || 0 != fp);
-  if (!rc)
+  if (0 != err || nullptr == fp)
   {
     RhinoApp().Print(L"\nUnable to open \"%ls\" for writing.\n", filename);
     return FALSE;
@@ -276,7 +264,7 @@ BOOL CSampleExportMeshPlugIn::WriteFile(const wchar_t* filename, int index, CRhi
   // Write mesh count
   ON_wString s;
   s.Format(L"meshcount=%d\n", meshes.Count());
-  rc = (fputws(s, fp) >= 0);
+  bool rc = (fputws(s, fp) >= 0);
 
   int i, j;
   for (i = 0; rc && i < meshes.Count(); i++)
