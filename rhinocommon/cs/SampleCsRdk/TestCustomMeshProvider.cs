@@ -5,6 +5,15 @@ using Rhino.Geometry;
 using Rhino.Render;
 using System;
 
+// TODO (RH-95837): CustomRenderMeshProvider2 / RenderPrimitiveList are obsolete in
+// Rhino 9. This sample should be ported to the new
+// Rhino.Render.CustomRenderMeshes.RenderMeshProvider API (HasCustomRenderMeshes /
+// RenderMeshes returning a RenderMeshes collection of Instance objects). The port
+// changes the programming model and needs to be verified against a running Rhino,
+// so the deprecation warnings are suppressed here until that work is done.
+#pragma warning disable CS0612 // Type/member is obsolete
+#pragma warning disable CS0618 // Type/member is obsolete (with message)
+
 namespace SampleCsRdk
 {
   /// <summary>
@@ -86,4 +95,6 @@ namespace SampleCsRdk
     }
   }
 }
+#pragma warning restore CS0618
+#pragma warning restore CS0612
 

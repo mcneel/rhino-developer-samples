@@ -1,6 +1,11 @@
 ﻿using System.Windows.Forms;
 using RhinoWindows.Forms;
 
+// TODO (RH-95837): RhinoWindows.Forms.Controls.Render.SubNodeControl is obsolete in
+// Rhino 9. This designer-generated section demonstrates that control; the warning is
+// suppressed until a supported replacement control is identified.
+#pragma warning disable CS0612 // Type/member is obsolete
+
 namespace SampleCsRdk
 {
   partial class CustomMaterialUserInterfaceSection
@@ -210,3 +215,4 @@ namespace SampleCsRdk
     private BufferedTreeView bufferedTreeView;
   }
 }
+#pragma warning restore CS0612

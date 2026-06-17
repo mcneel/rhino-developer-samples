@@ -346,8 +346,13 @@ namespace SampleCsRdk
       RealtimeDisplayMode.RegisterDisplayModes(this);
       //Rhino.Render.IOPlugIn.RegisterContentIo(this.Assembly, this.Id);
 
-      // Tell Rhino about our custom mesh provider
+      // Tell Rhino about our custom mesh provider.
+      // TODO (RH-95837): CustomRenderMeshProvider2 is obsolete in Rhino 9; port
+      // TestCustomMeshProvider to Rhino.Render.CustomRenderMeshes.RenderMeshProvider
+      // and register it with RenderMeshProvider.RegisterProviders.
+#pragma warning disable CS0612 // Type/member is obsolete
       CustomRenderMeshProvider2.RegisterProviders(GetType().Assembly, Id);
+#pragma warning restore CS0612
 
       RhinoDoc.NewDocument += g_rhino_doc_new_doc;
 
@@ -366,8 +371,13 @@ namespace SampleCsRdk
       Type type = typeof(CustomEnvironment);
       CustomEnvironment content = RenderContent.Create(type, RenderContent.ShowContentChooserFlags.None, rhinoDoc) as CustomEnvironment;
       if (content == null) return;
-      rhinoDoc.CurrentEnvironment.ForBackground = content;
-      rhinoDoc.RenderSettings.BackgroundStyle = BackgroundStyle.Environment;
+
+      // RhinoDoc.CurrentEnvironment is obsolete in Rhino 9; set the environment
+      // through RenderSettings and assign the modified copy back to the document.
+      RenderSettings rs = rhinoDoc.RenderSettings;
+      rs.SetRenderEnvironment(RenderSettings.EnvironmentUsage.Background, content);
+      rs.BackgroundStyle = BackgroundStyle.Environment;
+      rhinoDoc.RenderSettings = rs;
     }
 
     protected override void RegisterRenderPanels(RenderPanels panels)

@@ -3,6 +3,10 @@ using System.Threading;
 
 namespace SampleCsConsole
 {
+  // This sample drives Rhino through COM automation, which is Windows-only.
+#if !NETFRAMEWORK
+  [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+#endif
   class Program
   {
     static void Main()
