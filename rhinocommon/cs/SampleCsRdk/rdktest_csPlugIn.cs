@@ -346,8 +346,10 @@ namespace SampleCsRdk
       RealtimeDisplayMode.RegisterDisplayModes(this);
       //Rhino.Render.IOPlugIn.RegisterContentIo(this.Assembly, this.Id);
 
-      // Tell Rhino about our custom mesh provider.
-      Rhino.Render.CustomRenderMeshes.RenderMeshProvider.RegisterProviders(this);
+      // Tell Rhino about our custom mesh provider. Register the instance
+      // explicitly (rather than the assembly-scan overload) so registration does
+      // not depend on RDK plug-in lookup timing during OnLoad.
+      Rhino.Render.CustomRenderMeshes.RenderMeshProvider.RegisterProvider(new TestCustomMeshProvider(), this);
 
       RhinoDoc.NewDocument += g_rhino_doc_new_doc;
 

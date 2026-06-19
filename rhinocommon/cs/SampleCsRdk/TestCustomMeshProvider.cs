@@ -43,18 +43,19 @@ namespace SampleCsRdk
 
       RhinoObject obj = doc?.Objects.FindId(objectId);
 
-      Sphere sphere;
-      RenderMaterial material;
-      if (obj == null)
-      {
-        sphere = new Sphere(new Point3d(0.0, 0.0, 0.0), 10.0);
-        material = RenderMaterial.CreateBasicMaterial(Material.DefaultMaterial, doc);
-      }
-      else
-      {
-        sphere = SphereFromObject(obj);
-        material = obj.RenderMaterial;
-      }
+      Sphere sphere = obj == null
+        ? new Sphere(new Point3d(0.0, 0.0, 0.0), 10.0)
+        : SphereFromObject(obj);
+
+      // Always supply a valid material for the instance. In principle, when the
+      // caller sets the ReturnNullForStandardMaterial flag we could return a null
+      // material to mean "use the object's standard material". However, honoring
+      // that flag currently leaves the custom render meshes unshaded (wireframe)
+      // in shaded display - both the per-object and non-object CRM display paths
+      // fail to substitute a material for the null. Until that is fixed in the
+      // core (see RH-96417), always resolve and supply a material here so the
+      // sample renders correctly.
+      RenderMaterial material = obj?.RenderMaterial ?? RenderMaterial.CreateBasicMaterial(Material.DefaultMaterial, doc);
 
       // Fold the incoming hash together with this sphere so the cached meshes
       // are rebuilt when an upstream provider or the source geometry changes.
