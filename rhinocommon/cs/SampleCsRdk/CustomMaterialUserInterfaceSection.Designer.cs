@@ -1,10 +1,9 @@
 ﻿using System.Windows.Forms;
 using RhinoWindows.Forms;
 
-// TODO (RH-95837): RhinoWindows.Forms.Controls.Render.SubNodeControl is obsolete in
-// Rhino 9. This designer-generated section demonstrates that control; the warning is
-// suppressed until a supported replacement control is identified.
-#pragma warning disable CS0612 // Type/member is obsolete
+// NOTE: RhinoWindows.Forms.Controls.Render.SubNodeControl is obsolete in Rhino 9 and
+// has no supported replacement yet. The control is disabled (commented out) here until
+// a replacement is available; tracked as a separate bug (RDK / Max). See RH-95837.
 
 namespace SampleCsRdk
 {
@@ -47,7 +46,8 @@ namespace SampleCsRdk
       this.buttonC = new System.Windows.Forms.Button();
       this.buttonColor = new System.Windows.Forms.Button();
       this.checkBox1 = new System.Windows.Forms.CheckBox();
-      this.subNodeControl = new RhinoWindows.Forms.Controls.Render.SubNodeControl();
+      // SubNodeControl disabled (obsolete in Rhino 9, no replacement yet) - see note above.
+      // this.subNodeControl = new RhinoWindows.Forms.Controls.Render.SubNodeControl();
       this.bufferedTreeView = new BufferedTreeView();
 
       this.imageList.Images.Add(Properties.Resources.AtoZ);
@@ -135,25 +135,24 @@ namespace SampleCsRdk
       this.checkBox1.CheckedChanged += new System.EventHandler(this.CheckBox1CheckedChanged);
 
       runningYLoc += this.checkBox1.Height + pad;
-      // 
-      // subNodeControl
-      // 
-      this.subNodeControl.AmountValue = 1D;
-      this.subNodeControl.AmountValueEnabled = false;
-      this.subNodeControl.AmountValueVaries = false;
-      this.subNodeControl.BackColor = System.Drawing.SystemColors.Window;
-      this.subNodeControl.CheckBoxEnabled = false;
-      // RhinoWindows.Forms.Controls.Render.SubNodeControl.ChildSlotName is read-only in the Rhino 9 SDK; assignment removed to allow build. See follow-up note.
-      // this.subNodeControl.ChildSlotName = "diffuse-child-slot";
-      this.subNodeControl.IsChecked = false;
-      this.subNodeControl.Location = new System.Drawing.Point(3, runningYLoc);
-      this.subNodeControl.Name = "subNodeControl";
-      this.subNodeControl.ShowAmountEditControl = true;
-      this.subNodeControl.ShowCheckBox = true;
-      this.subNodeControl.Size = Dpi.ScaleSize(new System.Drawing.Size(149, 20));
-      this.subNodeControl.TabIndex = 3;
-
-      runningYLoc += this.subNodeControl.Height + pad;
+      //
+      // subNodeControl - disabled (obsolete in Rhino 9, no replacement yet). See note
+      // at the top of this file; tracked as a separate bug (RDK / Max).
+      //
+      //this.subNodeControl.AmountValue = 1D;
+      //this.subNodeControl.AmountValueEnabled = false;
+      //this.subNodeControl.AmountValueVaries = false;
+      //this.subNodeControl.BackColor = System.Drawing.SystemColors.Window;
+      //this.subNodeControl.CheckBoxEnabled = false;
+      //this.subNodeControl.ChildSlotName = "diffuse-child-slot";
+      //this.subNodeControl.IsChecked = false;
+      //this.subNodeControl.Location = new System.Drawing.Point(3, runningYLoc);
+      //this.subNodeControl.Name = "subNodeControl";
+      //this.subNodeControl.ShowAmountEditControl = true;
+      //this.subNodeControl.ShowCheckBox = true;
+      //this.subNodeControl.Size = Dpi.ScaleSize(new System.Drawing.Size(149, 20));
+      //this.subNodeControl.TabIndex = 3;
+      //runningYLoc += this.subNodeControl.Height + pad;
       // slider
       this.trackBar = new TrackBar();
       this.trackBar.Location = new System.Drawing.Point(3, runningYLoc);
@@ -186,7 +185,7 @@ namespace SampleCsRdk
       this.Controls.Add(this.buttonB);
       this.Controls.Add(this.buttonC);
       this.Controls.Add(this.bufferedTreeView);
-      this.Controls.Add(this.subNodeControl);
+      // this.Controls.Add(this.subNodeControl); // disabled - SubNodeControl obsolete in Rhino 9
       this.Controls.Add(this.checkBox1);
       this.Controls.Add(this.buttonColor);
       this.Controls.Add(this.labelColor);
@@ -211,8 +210,8 @@ namespace SampleCsRdk
     private System.Windows.Forms.CheckBox checkBox1;
     private System.Windows.Forms.ImageList imageList;
     private System.Windows.Forms.TrackBar trackBar;
-    private RhinoWindows.Forms.Controls.Render.SubNodeControl subNodeControl;
+    // SubNodeControl obsolete in Rhino 9 with no replacement yet - field disabled. See note above.
+    // private RhinoWindows.Forms.Controls.Render.SubNodeControl subNodeControl;
     private BufferedTreeView bufferedTreeView;
   }
 }
-#pragma warning restore CS0612

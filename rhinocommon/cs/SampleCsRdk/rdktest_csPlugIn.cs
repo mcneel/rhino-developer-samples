@@ -347,12 +347,7 @@ namespace SampleCsRdk
       //Rhino.Render.IOPlugIn.RegisterContentIo(this.Assembly, this.Id);
 
       // Tell Rhino about our custom mesh provider.
-      // TODO (RH-95837): CustomRenderMeshProvider2 is obsolete in Rhino 9; port
-      // TestCustomMeshProvider to Rhino.Render.CustomRenderMeshes.RenderMeshProvider
-      // and register it with RenderMeshProvider.RegisterProviders.
-#pragma warning disable CS0612 // Type/member is obsolete
-      CustomRenderMeshProvider2.RegisterProviders(GetType().Assembly, Id);
-#pragma warning restore CS0612
+      Rhino.Render.CustomRenderMeshes.RenderMeshProvider.RegisterProviders(this);
 
       RhinoDoc.NewDocument += g_rhino_doc_new_doc;
 

@@ -1,65 +1,78 @@
-﻿using Rhino;
+using Rhino;
 using Rhino.Display;
 using Rhino.DocObjects;
 using Rhino.Geometry;
+using Rhino.PlugIns;
 using Rhino.Render;
+using Rhino.Render.CustomRenderMeshes;
 using System;
-
-// TODO (RH-95837): CustomRenderMeshProvider2 / RenderPrimitiveList are obsolete in
-// Rhino 9. This sample should be ported to the new
-// Rhino.Render.CustomRenderMeshes.RenderMeshProvider API (HasCustomRenderMeshes /
-// RenderMeshes returning a RenderMeshes collection of Instance objects). The port
-// changes the programming model and needs to be verified against a running Rhino,
-// so the deprecation warnings are suppressed here until that work is done.
-#pragma warning disable CS0612 // Type/member is obsolete
-#pragma warning disable CS0618 // Type/member is obsolete (with message)
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace SampleCsRdk
 {
   /// <summary>
   /// Make this class public to test.  If it is public and the plug-in is
-  /// loaded then any viewports that are in rendered mode will display a
-  /// sphere with a center at the center of the objects bounding box and a
-  /// radius of 1/4 the bounding box diagonal vector length.
+  /// loaded then any object in a viewport that is in rendered mode will display
+  /// a sphere centered on the object's bounding box with a radius of 1/4 the
+  /// bounding box diagonal length.
+  ///
+  /// Ported to the Rhino 9 Rhino.Render.CustomRenderMeshes.RenderMeshProvider
+  /// API (replacing the obsolete CustomRenderMeshProvider2 / RenderPrimitiveList).
+  /// The new API is hash based: instead of caching meshes ourselves and
+  /// invalidating them on object replace, we fold the source geometry into the
+  /// running hash so the RDK rebuilds the meshes whenever the object changes.
   /// </summary>
-  public class TestCustomMeshProvider : CustomRenderMeshProvider2
+  [Guid("4959B079-F6C7-4006-BE15-0CB3255CD77D")]
+  public class TestCustomMeshProvider : RenderMeshProvider
   {
-    Guid PluginId { get; set; }
-    public TestCustomMeshProvider()
-    {
-      PluginId = rdktest_csPlugIn.IdFromName("C# Test Render Plug-In (RDK)");
-      Rhino.RhinoDoc.ReplaceRhinoObject += RhinoDocReplaceRhinoObject;
-    }
-
-    void RhinoDocReplaceRhinoObject(object sender, RhinoReplaceObjectEventArgs e)
-    {
-      ObjectChanged(e.Document, e.NewRhinoObject);
-    }
-
     public override string Name
     {
       get { return "Test Custom Mesh Provider"; }
     }
 
-    public override BoundingBox BoundingBox(ViewportInfo vp, RhinoObject obj, RhinoDoc doc, Guid requestingPlugIn, DisplayPipelineAttributes attrs)
+    public override bool HasCustomRenderMeshes(MeshType mt, ViewportInfo vp, RhinoDoc doc, Guid objectId, ref Flags flags, PlugIn plugin, DisplayPipelineAttributes attrs)
     {
-      BoundingBox bbox = base.BoundingBox(vp, obj, doc, requestingPlugIn, attrs);
+      return true;
+    }
 
+    public override RenderMeshes RenderMeshes(MeshType mt, ViewportInfo vp, RhinoDoc doc, Guid objectId, List<InstanceObject> ancestry, ref Flags flags, RenderMeshes previousPrimitives, PlugIn plugin, DisplayPipelineAttributes attrs)
+    {
+      if (!HasCustomRenderMeshes(mt, vp, doc, objectId, ref flags, plugin, attrs))
+        return null;
+
+      RhinoObject obj = doc?.Objects.FindId(objectId);
+
+      Sphere sphere;
+      RenderMaterial material;
       if (obj == null)
       {
-        Sphere sphere = new Sphere(new Point3d(0.0, 0.0, 0.0), 10.0);
-        bbox.Union(sphere.BoundingBox);
+        sphere = new Sphere(new Point3d(0.0, 0.0, 0.0), 10.0);
+        material = RenderMaterial.CreateBasicMaterial(Material.DefaultMaterial, doc);
       }
       else
       {
-        Sphere sphere = SphereFromObject(obj);
-        bbox.Union(sphere.BoundingBox);
+        sphere = SphereFromObject(obj);
+        material = obj.RenderMaterial;
       }
 
-      return bbox;
+      // Fold the incoming hash together with this sphere so the cached meshes
+      // are rebuilt when an upstream provider or the source geometry changes.
+      uint incomingHash = previousPrimitives?.Hash ?? 0;
+      uint modificationHash = (uint)(sphere.Center.GetHashCode() ^ sphere.Radius.GetHashCode());
+
+      RenderMeshes renderMeshes = new RenderMeshes(doc, objectId, ProviderId, incomingHash + modificationHash, (uint)Flags.None);
+
+      renderMeshes.AddInstance(new Instance
+      {
+        Mesh = Mesh.CreateFromSphere(sphere, 100, 100),
+        Material = material
+      });
+
+      return renderMeshes;
     }
 
-    Sphere SphereFromObject(RhinoObject obj)
+    static Sphere SphereFromObject(RhinoObject obj)
     {
       BoundingBox bbox = obj.Geometry.GetBoundingBox(false);
       double radius = bbox.Diagonal.Length * 0.25;
@@ -67,34 +80,5 @@ namespace SampleCsRdk
       Sphere sphere = new Sphere(bbox.Center, radius);
       return sphere;
     }
-
-    public override bool WillBuildCustomMeshes(ViewportInfo vp, RhinoObject obj, RhinoDoc doc, Guid requestingPlugIn, DisplayPipelineAttributes attrs)
-    {
-      return true;
-    }
-
-    public override bool BuildCustomMeshes(ViewportInfo vp, RhinoDoc doc, RenderPrimitiveList objMeshes, Guid requestingPlugIn, DisplayPipelineAttributes attrs)
-    {
-      if (!WillBuildCustomMeshes(vp, objMeshes.RhinoObject, doc, requestingPlugIn, attrs))
-        return false;
-
-      RhinoObject obj = objMeshes.RhinoObject;
-
-      if (obj == null)
-      {
-        Sphere sphere = new Sphere(new Point3d(0.0, 0.0, 0.0), 10.0);
-        objMeshes.Add(Rhino.Geometry.Mesh.CreateFromSphere(sphere, 100, 100), RenderMaterial.CreateBasicMaterial(Rhino.DocObjects.Material.DefaultMaterial, doc));
-      }
-      else
-      {
-        Sphere sphere = SphereFromObject(obj);
-        objMeshes.Add(Mesh.CreateFromSphere(sphere, 100, 100), obj.RenderMaterial);
-      }
-
-      return true;
-    }
   }
 }
-#pragma warning restore CS0618
-#pragma warning restore CS0612
-
