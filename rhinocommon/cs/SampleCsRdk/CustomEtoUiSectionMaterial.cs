@@ -131,9 +131,9 @@ namespace SampleCsRdk
       AddUserInterfaceSection(s1);
     }
 
-    public override void SimulateMaterial(ref Rhino.DocObjects.Material simulatedMaterial, bool forDataOnly)
+    public override void SimulateMaterial(ref Rhino.DocObjects.Material simulatedMaterial, RenderTexture.TextureGeneration tg)
     {
-      base.SimulateMaterial(ref simulatedMaterial, forDataOnly);
+      base.SimulateMaterial(ref simulatedMaterial, tg);
 
       if (Fields.TryGetValue("diffuse_color", out Color4f color))
       {

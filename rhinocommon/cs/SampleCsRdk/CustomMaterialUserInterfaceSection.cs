@@ -16,7 +16,9 @@ namespace SampleCsRdk
 
       m_view_model = new CustomMaterialViewModel(this);
 
-      subNodeControl.Section = this;
+      // SubNodeControl is obsolete in Rhino 9 with no replacement yet, so it is
+      // disabled here (see CustomMaterialUserInterfaceSection.Designer.cs).
+      // subNodeControl.Section = this;
 
       //Hook up the data display to the changed event
       DataChanged += UserInterfaceDisplayData;
@@ -79,7 +81,8 @@ namespace SampleCsRdk
       buttonColor.Text = m_view_model.ColorText;
       buttonColor.Refresh();
 
-      subNodeControl.ParentInstanceList = m_view_model.SelectedMaterialIdList;
+      // SubNodeControl disabled (obsolete in Rhino 9, no replacement yet).
+      // subNodeControl.ParentInstanceList = m_view_model.SelectedMaterialIdList;
 
       int? tbPos = m_view_model.TrackBarPositionVaries;
       if (tbPos != null)

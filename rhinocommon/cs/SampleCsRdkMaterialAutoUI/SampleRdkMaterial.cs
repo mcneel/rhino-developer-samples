@@ -23,9 +23,9 @@ namespace SampleRdkMaterialAutoUI
       AddAutomaticUserInterfaceSection("Parameters", 0);
     }
 
-    public override void SimulateMaterial(ref Rhino.DocObjects.Material simulatedMaterial, bool forDataOnly)
+    public override void SimulateMaterial(ref Rhino.DocObjects.Material simulatedMaterial, RenderTexture.TextureGeneration tg)
     {
-      base.SimulateMaterial(ref simulatedMaterial, forDataOnly);
+      base.SimulateMaterial(ref simulatedMaterial, tg);
 
       Rhino.Display.Color4f color;
       if (Fields.TryGetValue("color", out color))

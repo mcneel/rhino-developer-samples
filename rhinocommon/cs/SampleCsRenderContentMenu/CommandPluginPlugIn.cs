@@ -63,7 +63,7 @@ namespace CommandPlugin
           return Rhino.Commands.Result.Success;
         }
 
-        iterator.DeleteThis();
+        iterator.Dispose();
       }
 
       return Rhino.Commands.Result.Failure;

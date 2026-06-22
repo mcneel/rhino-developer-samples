@@ -341,7 +341,8 @@ namespace SampleCsRdk
     {
       get
       {
-        return Color == null ? "varies" : "";
+        // VariesColor is null when the selected materials have differing colors.
+        return VariesColor == null ? "varies" : "";
       }
       set
       {
