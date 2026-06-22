@@ -1,29 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFrameworks>net9.0-windows;net48</TargetFrameworks>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWpf>true</UseWpf>
     <TargetExt>.rhp</TargetExt>
     <RootNamespace>SampleCsRdk</RootNamespace>
     <AssemblyName>SampleCsRdk</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWpf>true</UseWpf>
-    <OutputPath>..\bin\</OutputPath>
-    <NoWarn>NU1701;NETSDK1086</NoWarn>
     <Deterministic>false</Deterministic>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <OutputPath>..\bin\</OutputPath>
+    <NoWarn>NU1701;NETSDK1086</NoWarn>
+    <Company>Robert McNeel &amp; Associates</Company>
+    <Copyright>Copyright © 2013-2026, Robert McNeel &amp; Associates</Copyright>
+    <Version>9.0.0</Version>
   </PropertyGroup>
-
   <ItemGroup>
     <Resource Include="Resources\AtoZ.jpg" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="RhinoCommon" Version="9.0.26146.14285-wip" ExcludeAssets="runtime" />
     <PackageReference Include="RhinoWindows" Version="9.0.26146.14285-wip" ExcludeAssets="runtime" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
     <PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
   </ItemGroup>
-
 </Project>

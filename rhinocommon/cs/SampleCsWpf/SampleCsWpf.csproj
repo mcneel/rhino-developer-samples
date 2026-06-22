@@ -1,17 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net9.0-windows;net48</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <TargetExt>.rhp</TargetExt>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <OutputPath>..\Bin\</OutputPath>
     <OutputType>Library</OutputType>
     <Company>Robert McNeel &amp; Associates</Company>
-    <Copyright>Copyright © 2013-2024, Robert McNeel &amp; Associates</Copyright>
+    <Copyright>Copyright © 2013-2026, Robert McNeel &amp; Associates</Copyright>
     <Product>SampleCsWpf</Product>
     <Description>Sample WPF Plug-in</Description>
-    <Version>8.0.0</Version>
-    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <Version>9.0.0</Version>
   </PropertyGroup>
   <PropertyGroup>
     <NoWarn>1701;1702;NU1701</NoWarn>

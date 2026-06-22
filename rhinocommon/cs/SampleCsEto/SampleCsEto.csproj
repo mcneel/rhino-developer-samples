@@ -1,24 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net9.0;net48</TargetFrameworks>
     <EnableDynamicLoading>true</EnableDynamicLoading>
-    <Version>8.0</Version>
+    <TargetExt>.rhp</TargetExt>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <NoWarn>NU1701</NoWarn>
+    <Company>Robert McNeel &amp; Associates</Company>
+    <Copyright>Copyright © 2013-2026, Robert McNeel &amp; Associates</Copyright>
     <Title>SampleCsEto</Title>
     <Description>RhinoCommon Sample - SampleCsEto</Description>
-    <Company>Robert McNeel &amp; Associates</Company>
-    <Copyright>Copyright © 2024, Robert McNeel &amp; Associates</Copyright>
-    <TargetExt>.rhp</TargetExt>
-    <NoWarn>NU1701</NoWarn>
-    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+    <Version>9.0.0</Version>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="RhinoCommon" Version="9.0.26146.14285-wip" ExcludeAssets="runtime" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.0" ExcludeAssets="runtime" />
     <PackageReference Include="System.Resources.Extensions" Version="9.0.0" ExcludeAssets="runtime" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -26,12 +23,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>

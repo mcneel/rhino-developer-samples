@@ -1,19 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net9.0;net48</TargetFrameworks>
-    <Version>1.0</Version>
+    <TargetExt>.rhp</TargetExt>
+    <Company>Robert McNeel &amp; Associates</Company>
+    <Copyright>Copyright © 2013-2026, Robert McNeel &amp; Associates</Copyright>
     <Title>Test3dmWrite</Title>
     <Description>Description of Test3dmWrite</Description>
-    <TargetExt>.rhp</TargetExt>
+    <Version>9.0.0</Version>
   </PropertyGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="EmbeddedResources\**\*" />
   </ItemGroup>
-  
   <ItemGroup>
     <PackageReference Include="RhinoCommon" Version="9.0.26146.14285-wip" IncludeAssets="compile;build" />
   </ItemGroup>
-  
 </Project>
