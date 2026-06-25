@@ -13,8 +13,6 @@ public:
 
 	static GUID ID(void);
 
-	virtual void AddPagesToObjectPropertiesDialog(CRhinoPropertiesPanelPageCollection& collection) override;
-
 	// Required overrides.
 	virtual const wchar_t* PlugInName() const override;
 	virtual const wchar_t* PlugInVersion() const override;
@@ -34,7 +32,7 @@ public:
 	// Menu.
 	virtual void AddMarmaladeMenu(void);
 	virtual void RemoveMarmaladeMenu(void);
-	virtual BOOL OnPlugInMenuCommand(WPARAM wParam);
+	virtual BOOL OnPlugInMenuCommand(WPARAM wParam) override;
 	virtual void UpdateMarmaladeMenuState(void);
 
 	// Render methods
@@ -52,6 +50,7 @@ private:
 	CMarmaladeRdkPlugIn* m_pRdkPlugIn = nullptr;
 	CMenu* m_pMenu = nullptr;
 	UINT_PTR m_iTimer;
+	class IRhinoAddPropertiesPages* m_pPropertiesPages = nullptr;
 };
 
 CMarmaladePlugIn& MarmaladePlugIn();

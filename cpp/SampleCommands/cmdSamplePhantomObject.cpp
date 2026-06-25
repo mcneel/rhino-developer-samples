@@ -66,7 +66,7 @@ public:
 
   virtual	void Draw(CRhinoDisplayPipeline& dp) const
   {
-    dp.DrawWireframeMesh(m_mesh, Attributes().DrawColor(Document(), dp.GetRhinoVP()->ViewportId()), false);
+    dp.DrawWireframeMesh(m_mesh, Attributes().DrawColor(Document(), dp.GetRhinoVP()->ViewportId()), nullptr);
   }
 
   virtual	bool IsMeshable(ON::mesh_type mesh_type) const

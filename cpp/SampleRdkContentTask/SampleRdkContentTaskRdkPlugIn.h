@@ -15,7 +15,7 @@ public:
 
 	virtual CRhinoPlugIn& RhinoPlugIn() const override;
 
-	virtual PreviewRenderTypes PreviewRenderType(void) const { return PreviewRenderTypes::Progressive; }
+	virtual PreviewRenderTypes PreviewRenderType(void) const override { return PreviewRenderTypes::Progressive; }
 
 protected:
 	virtual void RegisterExtensions() const override;

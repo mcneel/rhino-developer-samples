@@ -79,10 +79,10 @@ bool CCommandSampleRenderSettings::Sun(CRhinoDoc& doc) const
   const auto& rs = doc.Properties().RenderSettings();
 
   // Reading a property the old way.
-  const auto value_old = sun_old.Latitude();
+  [[maybe_unused]] const auto value_old = sun_old.Latitude();
 
   // Reading a property the new way.
-  const auto value_new = rs.Sun().Latitude();
+  [[maybe_unused]] const auto value_new = rs.Sun().Latitude();
 
   // Writing a property the old way required a call to BeginChange() to get a non-const object.
   auto& sun_write_old = sun_old.BeginChange(RhRdkChangeContext::UI);
@@ -116,10 +116,10 @@ bool CCommandSampleRenderSettings::GroundPlane(CRhinoDoc& doc) const
   const auto& rs = doc.Properties().RenderSettings();
 
   // Reading a property the old way.
-  const auto value_old = gp_old.Altitude();
+  [[maybe_unused]] const auto value_old = gp_old.Altitude();
 
   // Reading a property the new way.
-  const auto value_new = rs.GroundPlane().Altitude();
+  [[maybe_unused]] const auto value_new = rs.GroundPlane().Altitude();
 
   // Writing a property the old way required a call to BeginChange() to get a non-const object.
   auto& gp_write_old = gp_old.BeginChange(RhRdkChangeContext::UI);
@@ -153,10 +153,10 @@ bool CCommandSampleRenderSettings::SafeFrame(CRhinoDoc& doc) const
   const auto& rs = doc.Properties().RenderSettings();
 
   // Reading a property the old way.
-  const auto value_old = sf.ActionFrameXScale();
+  [[maybe_unused]] const auto value_old = sf.ActionFrameXScale();
 
   // Reading a property the new way.
-  const auto value_new = rs.SafeFrame().ActionFrameXScale();
+  [[maybe_unused]] const auto value_new = rs.SafeFrame().ActionFrameXScale();
 
   // Writing a property the old way required a call to BeginChange() to get a non-const object.
   auto& sf_write_old = sf.BeginChange(RhRdkChangeContext::UI);
@@ -190,10 +190,10 @@ bool CCommandSampleRenderSettings::Skylight(CRhinoDoc& doc) const
   const auto& rs = doc.Properties().RenderSettings();
 
   // Reading a property the old way.
-  const auto value_old = sl_old.Enabled();
+  [[maybe_unused]] const auto value_old = sl_old.Enabled();
 
   // Reading a property the new way.
-  const auto value_new = rs.Skylight().Enabled();
+  [[maybe_unused]] const auto value_new = rs.Skylight().Enabled();
 
   // Writing a property the old way required a call to BeginChange() to get a non-const object.
   auto& sl_write_old = sl_old.BeginChange(RhRdkChangeContext::UI);
@@ -227,10 +227,10 @@ bool CCommandSampleRenderSettings::LinearWorkflow(CRhinoDoc& doc) const
   const auto& rs = doc.Properties().RenderSettings();
 
   // Reading a property the old way.
-  const auto value_old = lw_old.PostProcessGamma();
+  [[maybe_unused]] const auto value_old = lw_old.PostProcessGamma();
 
   // Reading a property the new way.
-  const auto value_new = rs.LinearWorkflow().PostProcessGamma();
+  [[maybe_unused]] const auto value_new = rs.LinearWorkflow().PostProcessGamma();
 
   // Writing a property the old way required a call to BeginChange() to get a non-const object.
   auto& lw_write_old = lw_old.BeginChange(RhRdkChangeContext::UI);
@@ -264,10 +264,10 @@ bool CCommandSampleRenderSettings::Dithering(CRhinoDoc& doc) const
   const auto& rs = doc.Properties().RenderSettings();
 
   // Reading a property the old way.
-  const auto value_old = dit_old.Method();
+  [[maybe_unused]] const auto value_old = dit_old.Method();
 
   // Reading a property the new way.
-  const auto value_new = rs.Dithering().Method();
+  [[maybe_unused]] const auto value_new = rs.Dithering().Method();
 
   // Writing a property the old way required a call to BeginChange() to get a non-const object.
   auto& dit_write_old = dit_old.BeginChange(RhRdkChangeContext::UI);
@@ -301,10 +301,10 @@ bool CCommandSampleRenderSettings::RenderChannels(CRhinoDoc& doc) const
   const auto& rs = doc.Properties().RenderSettings();
 
   // Reading a property the old way.
-  const auto value_old = rch_old.Mode();
+  [[maybe_unused]] const auto value_old = rch_old.Mode();
 
   // Reading a property the new way.
-  const auto value_new = rs.RenderChannels().Mode();
+  [[maybe_unused]] const auto value_new = rs.RenderChannels().Mode();
 
   // Writing a property the old way required a call to BeginChange() to get a non-const object.
   auto& rch_write_old = rch_old.BeginChange(RhRdkChangeContext::UI);
@@ -404,18 +404,18 @@ bool CCommandSampleRenderSettings::CurrentEnvironment(CRhinoDoc& doc) const
   const auto& rs = doc.Properties().RenderSettings();
 
   // Reading environment on-ness for each usage the old way.
-  const auto back_on_old = ce.On(ICEU::Background);
-  const auto refl_on_old = ce.On(ICEU::Reflection);
-  const auto skyl_on_old = ce.On(ICEU::Skylighting);
+  [[maybe_unused]] const auto back_on_old = ce.On(ICEU::Background);
+  [[maybe_unused]] const auto refl_on_old = ce.On(ICEU::Reflection);
+  [[maybe_unused]] const auto skyl_on_old = ce.On(ICEU::Skylighting);
 
   // Reading environment override for each usage the new way.
   // When an override is enabled for a particular usage, it enables that usage's id to override
   // the background environment's id.
   // NOTE: 'Background' is allowed for convenience even though it's not really an override.
   // See the comments at the definition of ON_3dmRenderSettings::RenderEnvironmentOverride().
-  const auto back_on_new = rs.RenderEnvironmentOverride(OCEU::Background);
-  const auto refl_on_new = rs.RenderEnvironmentOverride(OCEU::Reflection);
-  const auto skyl_on_new = rs.RenderEnvironmentOverride(OCEU::Skylighting);
+  [[maybe_unused]] const auto back_on_new = rs.RenderEnvironmentOverride(OCEU::Background);
+  [[maybe_unused]] const auto refl_on_new = rs.RenderEnvironmentOverride(OCEU::Reflection);
+  [[maybe_unused]] const auto skyl_on_new = rs.RenderEnvironmentOverride(OCEU::Skylighting);
 
   // Reading environment id for each usage the old way.
   const auto back_id_old = ce.Get(ICEU::Background,  ICEP::Simple);

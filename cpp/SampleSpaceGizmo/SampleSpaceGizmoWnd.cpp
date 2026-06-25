@@ -34,7 +34,7 @@ BOOL CSampleSpaceGizmoWnd::InitializeSpaceGizmo()
   memset(&siOpenData, 0, sizeof(SiOpenData));
   SiOpenWinInit(&siOpenData, GetSafeHwnd());
 
-  m_siHdl = SiOpen("Rhino50", SI_ANY_DEVICE, SI_NO_MASK, SI_EVENT, &siOpenData);
+  m_siHdl = SiOpen(const_cast<char*>("Rhino50"), SI_ANY_DEVICE, SI_NO_MASK, SI_EVENT, &siOpenData);
   if (0 == m_siHdl)
   {
     SiTerminate();

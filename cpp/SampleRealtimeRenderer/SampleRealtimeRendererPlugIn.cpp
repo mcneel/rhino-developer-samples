@@ -160,7 +160,7 @@ BOOL CSampleRealtimeRendererPlugIn::OnLoadPlugIn()
 			pDisplayAttrsMgrListDesc->m_pAttrs->SetUuid(DisplayModeId());
 			pDisplayAttrsMgrListDesc->m_pAttrs->SetName(PlugInName());
 			pDisplayAttrsMgrListDesc->m_pAttrs->SetRealtimeDisplayId(DisplayModeId());
-			pDisplayAttrsMgrListDesc->m_pAttrs->SetPipeline(&ON_CLASS_RTTI(CRhinoDisplayPipeline_OGL));
+			pDisplayAttrsMgrListDesc->m_pAttrs->SetPipelineId(ON_CLASS_RTTI(CRhinoDisplayPipeline_OGL).Uuid());
 			// Save changes
 			CRhinoDisplayAttrsMgr::SaveProfile(RhinoApp().ProfileContext());
 		}

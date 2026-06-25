@@ -16,11 +16,11 @@ Parameters:
                       DISPATCH_PROPERTYPUT - Set property value
                       DISPATCH_PROPERTYGET - Get property value
                       DISPATCH_METHOD - Call a method
-  pvResult   – [in] Return value for the call made, which can be another IDispatch object,
+  pvResult   â€“ [in] Return value for the call made, which can be another IDispatch object,
                     or an integer value, or a boolean, or so on...
-  lpDispatch – [in] IDispatch interface object for which the call is to be made.
-  lpName     – [in] Property or method name.
-  cArgs      – [in] Number of arguments followed after this parameter.
+  lpDispatch â€“ [in] IDispatch interface object for which the call is to be made.
+  lpName     â€“ [in] Property or method name.
+  cArgs      â€“ [in] Number of arguments followed after this parameter.
   ...        - [in] Parameters in reverse order for the call (it can be values of a property,
                     or parameters of a method for the IDispatch object).
 Returns:
@@ -175,7 +175,7 @@ CRhinoCommand::result CCommandSampleAutomateGrasshopper::RunCommand(const CRhino
     // Invoke the "OpenDocument" method
     COleVariant vaResult;
     COleVariant vaFileName(filename);
-    HRESULT hr = OLEMethod(DISPATCH_METHOD, &vaResult, lpDispatch, L"OpenDocument", 1, vaFileName.Detach());
+    HRESULT hr = OLEMethod(DISPATCH_METHOD, &vaResult, lpDispatch, const_cast<LPOLESTR>(L"OpenDocument"), 1, vaFileName.Detach());
 
     // Interpret results
     if (SUCCEEDED(hr))

@@ -31,7 +31,7 @@ protected:
 protected:
 	virtual BOOL OnInitDialog() override;
 	virtual void DisplayData(void) override;
-	virtual bool IsHidden(void) const;
+	virtual bool IsHidden(void) const override;
 	virtual UUID PlugInId(void) const override { return MarmaladePlugIn().PlugInID(); }
 	virtual AFX_MODULE_STATE* GetModuleState(void) const override { return AfxGetStaticModuleState(); }
 	virtual void OnEvent(IRhinoUiController& con, const UUID& uuidData, IRhinoUiController::EventPriority ep, const IRhinoUiEventInfo* pInfo) override;
@@ -100,7 +100,7 @@ public:
 	CMarmaladeRenderSettingsSection2_Detailed(RhRdkUiModalities m) : CMarmaladeRenderSettingsSection2(m) { }
 
 protected:
-	virtual UUID Uuid(void) const { return uuid_options_2D; }
-	virtual ON_wString Caption(bool bAlwaysEnglish) const { return L"DETAILED Marmalade Options 2"; }
+	virtual UUID Uuid(void) const override { return uuid_options_2D; }
+	virtual ON_wString Caption(bool bAlwaysEnglish) const override { return L"DETAILED Marmalade Options 2"; }
 	virtual bool IsDetailed(void) const override { return true; }
 };

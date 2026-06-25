@@ -282,7 +282,7 @@ CRhRdkContent* CSampleRdkContentIOPlugIn::Load(const CRhinoDoc* pDoc, const wcha
 	const ON_String sFilename = wszFilename;
 	const auto pFile = fopen(sFilename, "rb");
 	if (nullptr == pFile)
-		return false;
+		return nullptr;
 
 	// Get the length of the file.
 	fseek(pFile, 0, SEEK_END);

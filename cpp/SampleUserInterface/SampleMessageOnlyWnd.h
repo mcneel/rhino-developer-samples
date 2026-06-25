@@ -16,7 +16,7 @@ public:
   static void DestroyWnd();
 
 protected:
-  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
   DECLARE_MESSAGE_MAP()
 
 private:

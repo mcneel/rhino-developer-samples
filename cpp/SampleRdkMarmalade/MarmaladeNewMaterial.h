@@ -9,7 +9,7 @@
 class CMarmaladeNewMaterialFactory : public CRhRdkMaterialFactory
 {
 protected:
-	virtual CRhRdkMaterial* NewMaterial(void) const;
+	virtual CRhRdkMaterial* NewMaterial(void) const override;
 };
 
 class CMarmaladeNewMaterial : public CRhRdkMaterial

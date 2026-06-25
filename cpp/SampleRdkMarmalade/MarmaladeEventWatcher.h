@@ -55,7 +55,7 @@ public: // CRhinoEventWatcher overrides.
 	virtual void GroupTableEvent(CRhinoEventWatcher::group_event event, const CRhinoGroupTable& group_table, int group_index, const ON_Group* old_settings) override;
 	//OBSOLETE -- See dimstyles -- virtual void FontTableEvent(CRhinoEventWatcher::font_event event, const CRhinoFontTable& font_table, int font_index, const ON_Font* old_settings) override;
 	virtual void DimStyleTableEvent(CRhinoEventWatcher::dimstyle_event event, const CRhinoDimStyleTable& dimstyle_table, int dimstyle_index, const ON_DimStyle* old_settings) override;
-	virtual void OnUpdateObjectMesh(CRhinoDoc& doc, CRhinoObject& object, ON::mesh_type mesh_type);
+	virtual void OnUpdateObjectMesh(CRhinoDoc& doc, CRhinoObject& object, ON::mesh_type mesh_type) override;
 
 private:
 	UUID m_uuidOldRenderEngine;

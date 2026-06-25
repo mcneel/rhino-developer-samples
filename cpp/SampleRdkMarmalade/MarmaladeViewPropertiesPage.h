@@ -27,7 +27,7 @@ protected:
 	virtual CRhinoCommand::result RunScript(IRhinoPropertiesPanelPageEventArgs& e) override;
 	virtual void UpdatePage(IRhinoPropertiesPanelPageEventArgs& e) override;
 	virtual int Index(void) const override { return 100; }
-	virtual RhinoPropertiesPanelPageType PageType() const { return RhinoPropertiesPanelPageType::View; }
+	virtual RhinoPropertiesPanelPageType PageType() const override { return RhinoPropertiesPanelPageType::View; }
 
 protected:
 	afx_msg void OnKillfocusEditTarget();

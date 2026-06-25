@@ -48,7 +48,7 @@ static void AttachTestRuntimeDibTextureToMaterial(const CRhinoDoc* pDocAssoc, CR
     dib->ProcessPixels(func);
 
     // Create a dib texture from the dib and set it as a child of the Basic Material in the bump texture slot.
-    auto* pTexture = ::RhRdkNewDibTexture(dib, pDocAssoc);
+    auto* pTexture = ::RhRdkNewDibTexture(std::shared_ptr<const CRhinoDib>(dib), pDocAssoc);
     if (nullptr != pTexture)
     {
         material.SetChild(pTexture, wszChildSlotName);

@@ -12,7 +12,7 @@
 class CMarmaladeMaterialFactory : public CRhRdkMaterialFactory
 {
 protected:
-	virtual CRhRdkMaterial* NewMaterial(void) const;
+	virtual CRhRdkMaterial* NewMaterial(void) const override;
 };
 
 static const wchar_t* wszColor          = L"color";

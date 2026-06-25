@@ -7,7 +7,7 @@ class CSampleScriptObject : public CCmdTarget
 public:
   CSampleScriptObject();
   virtual ~CSampleScriptObject();
-  virtual void OnFinalRelease();
+  virtual void OnFinalRelease() override;
 
 protected:
   DECLARE_MESSAGE_MAP()

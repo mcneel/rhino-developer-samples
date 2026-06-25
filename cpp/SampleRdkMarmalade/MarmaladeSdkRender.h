@@ -21,9 +21,9 @@ public:
 	virtual BOOL RenderSceneWithNoMeshes() override { return TRUE; }
 	virtual BOOL IgnoreRhinoObject(const CRhinoObject*) override { return FALSE; }
 	virtual BOOL RenderPreCreateWindow() override;
-	virtual BOOL RenderEnterModalLoop() override{ return TRUE; }
+	virtual BOOL RenderEnterModalLoop() override { return TRUE; }
 	virtual BOOL RenderContinueModal() override;
-	virtual BOOL RenderExitModalLoop() override{ return TRUE; }
+	virtual BOOL RenderExitModalLoop() override { return TRUE; }
 	virtual bool ReuseRenderWindow(void) const override { return true; }
 	virtual BOOL NeedToProcessGeometryTable() override;
 	virtual BOOL NeedToProcessLightTable() override;

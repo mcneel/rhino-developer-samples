@@ -24,7 +24,6 @@ public:
   CRhinoPlugIn::plugin_load_time PlugInLoadTime() override;
   void AddPagesToOptionsDialog(CRhinoOptionsPageCollection& collection) override;
   void AddPagesToDocumentPropertiesDialog(CRhinoOptionsPageCollection& collection) override;
-  void AddPagesToObjectPropertiesDialog(CRhinoPropertiesPanelPageCollection& collection);
   void OnInitPlugInMenuPopups(WPARAM wParam, LPARAM lParam) override;
   BOOL OnPlugInMenuCommand(WPARAM wParam) override;
 
@@ -57,6 +56,7 @@ private:
   CSampleLayerContextMenuExtension* m_extension_menu;
   CMenu m_menu;
   bool m_bScriptMode;
+  class IRhinoAddPropertiesPages* m_object_properties_pages = nullptr;
 };
 
 CSampleUserInterfacePlugIn& SampleUserInterfacePlugIn();

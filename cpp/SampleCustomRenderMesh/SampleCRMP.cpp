@@ -103,7 +103,7 @@ std::shared_ptr<const IRenderMeshes> CSampleCRMP::RenderMeshes(
 	auto* ud = object->Attributes().GetUserData(SampleCustomRenderMeshUserDataUuid);
 	const auto* user_data = CSampleCustomRenderMeshUserData::Cast(ud);
 	if (user_data == nullptr)
-		return false;
+		return nullptr;
 
 	auto runningHash = previousMeshes->Hash();
 	const double amount = user_data->Amount();

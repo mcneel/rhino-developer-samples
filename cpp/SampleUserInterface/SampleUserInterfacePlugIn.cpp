@@ -63,6 +63,27 @@ CSampleUserInterfacePlugIn& SampleUserInterfacePlugIn()
   return thePlugIn;
 }
 
+// Derive a class from IRhinoAddPropertiesPages to add custom object properties pages.
+// This replaces the deprecated CRhinoPlugIn::AddPagesToObjectPropertiesDialog override.
+// An instance is owned by the plug-in; its destructor removes the pages automatically.
+class CSampleObjectPropertiesPages : public IRhinoAddPropertiesPages
+{
+public:
+  ON_UUID PropertiesPlugInId() const override
+  {
+    return SampleUserInterfacePlugIn().PlugInID();
+  }
+
+  void GetPropertiesPages(CRhinoPropertiesPanelPageCollection& collection) override
+  {
+    // This method is called each time a new document is created.
+    AFX_MANAGE_STATE(AfxGetStaticModuleState());
+    CSampleObjectPropertiesPageDialog* page = new CSampleObjectPropertiesPageDialog();
+    if (nullptr != page)
+      collection.Add(page);
+  }
+};
+
 CSampleUserInterfacePlugIn::CSampleUserInterfacePlugIn()
   : m_dialog(0)
   , m_extension_menu(0)
@@ -200,6 +221,9 @@ BOOL CSampleUserInterfacePlugIn::OnLoadPlugIn()
   // Extend the Layer panel's context menu
   m_extension_menu = new CSampleLayerContextMenuExtension(*this);
 
+  // Register the custom object properties pages. The instance removes the pages when deleted.
+  m_object_properties_pages = new CSampleObjectPropertiesPages;
+
   // Show our sample menu on Rhino's main menu.
   // Note, the proper way of doing this today is to embed a menu
   // in a custom RUI using the toolbar workspace editor.
@@ -218,6 +242,10 @@ void CSampleUserInterfacePlugIn::OnUnloadPlugIn()
   //    or tools here.
 
   // TODO: Add plug-in cleanup code here.
+
+  // Deleting the instance removes the custom object properties pages.
+  delete m_object_properties_pages;
+  m_object_properties_pages = nullptr;
 
   CRhinoUtilityPlugIn::OnUnloadPlugIn();
 }
@@ -354,14 +382,6 @@ void CSampleUserInterfacePlugIn::AddPagesToDocumentPropertiesDialog(CRhinoOption
   CSampleDocumentPropertiesPage* page = new CSampleDocumentPropertiesPage();
   if (nullptr != page)
     collection.AddPage(page);
-}
-
-void CSampleUserInterfacePlugIn::AddPagesToObjectPropertiesDialog(CRhinoPropertiesPanelPageCollection& collection)
-{
-  AFX_MANAGE_STATE(AfxGetStaticModuleState());
-  CSampleObjectPropertiesPageDialog* page = new CSampleObjectPropertiesPageDialog();
-  if (nullptr != page)
-    collection.Add(page);
 }
 
 void CSampleUserInterfacePlugIn::OnInitPlugInMenuPopups(WPARAM wParam, LPARAM lParam)

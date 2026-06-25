@@ -31,7 +31,7 @@ public:
   };
 
 protected:
-  virtual void PreSubclassWindow();
+  virtual void PreSubclassWindow() override;
   afx_msg void OnEnable(BOOL bEnable);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   afx_msg void OnPaint();

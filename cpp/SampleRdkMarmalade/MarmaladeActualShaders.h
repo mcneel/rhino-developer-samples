@@ -23,11 +23,11 @@ class CMarmaladeOrangeShader : public CMarmaladeShader
 public:
 	CMarmaladeOrangeShader(void);
 
-	virtual UUID Uuid(void) const;
-	virtual ON_wString Name(void)         const { return L"orange"; }
-	virtual ON_wString FriendlyName(void) const { return L"Marmalade Orange"; }
-	virtual ON_wString Description(void)  const { return L"Marmalade orange shader"; }
-	virtual CMarmaladeShader* Clone(void) const { return new CMarmaladeOrangeShader; }
+	virtual UUID Uuid(void) const override;
+	virtual ON_wString Name(void)         const override { return L"orange"; }
+	virtual ON_wString FriendlyName(void) const override { return L"Marmalade Orange"; }
+	virtual ON_wString Description(void)  const override { return L"Marmalade orange shader"; }
+	virtual CMarmaladeShader* Clone(void) const override { return new CMarmaladeOrangeShader; }
 };
 
 class CMarmaladeSatinShader : public CMarmaladeShader
@@ -35,11 +35,11 @@ class CMarmaladeSatinShader : public CMarmaladeShader
 public:
 	CMarmaladeSatinShader();
 
-	virtual UUID Uuid(void) const;
-	virtual ON_wString Name(void)         const { return L"satin"; }
-	virtual ON_wString FriendlyName(void) const { return L"Marmalade Satin"; }
-	virtual ON_wString Description(void)  const { return L"Marmalade satin shader"; }
-	virtual CMarmaladeShader* Clone(void) const { return new CMarmaladeSatinShader; }
+	virtual UUID Uuid(void) const override;
+	virtual ON_wString Name(void)         const override { return L"satin"; }
+	virtual ON_wString FriendlyName(void) const override { return L"Marmalade Satin"; }
+	virtual ON_wString Description(void)  const override { return L"Marmalade satin shader"; }
+	virtual CMarmaladeShader* Clone(void) const override { return new CMarmaladeSatinShader; }
 };
 
 class CMarmaladeLemonCurdShader : public CMarmaladeShader
@@ -47,9 +47,9 @@ class CMarmaladeLemonCurdShader : public CMarmaladeShader
 public:
 	CMarmaladeLemonCurdShader();
 
-	virtual UUID Uuid(void) const;
-	virtual ON_wString Name(void)         const { return L"lemon_curd"; }
-	virtual ON_wString FriendlyName(void) const { return L"Marmalade Lemon Curd"; }
-	virtual ON_wString Description(void)  const { return L"Marmalade lemon curd shader"; }
-	virtual CMarmaladeShader* Clone(void) const { return new CMarmaladeLemonCurdShader; }
+	virtual UUID Uuid(void) const override;
+	virtual ON_wString Name(void)         const override { return L"lemon_curd"; }
+	virtual ON_wString FriendlyName(void) const override { return L"Marmalade Lemon Curd"; }
+	virtual ON_wString Description(void)  const override { return L"Marmalade lemon curd shader"; }
+	virtual CMarmaladeShader* Clone(void) const override { return new CMarmaladeLemonCurdShader; }
 };

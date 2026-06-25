@@ -7,7 +7,7 @@ public:
 	CMarmaladeAutoUITextureFactory();
 
 protected:
-	virtual CRhRdkTexture* NewTexture(void) const;
+	virtual CRhRdkTexture* NewTexture(void) const override;
 };
 
 class CMarmaladeAutoUITexture : public CRhRdkTexture

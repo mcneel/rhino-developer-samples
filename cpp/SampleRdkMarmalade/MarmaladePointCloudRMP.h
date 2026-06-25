@@ -36,7 +36,7 @@ public:
 	virtual bool IsViewDependent(void) const override { return true; } /////??????
 	virtual bool IsRequestingPlugInDependent(void) const override { return false; } /////??????
 	virtual bool IsPreviewAndStandardSameMesh(void) const override { return false; } /////??????
-	virtual CRhRdkVariant GetParameter(const CRhinoObject&, const wchar_t*) const { return 0; }
+	virtual CRhRdkVariant GetParameter(const CRhinoObject&, const wchar_t*) const override { return 0; }
 	virtual void SetParameter(const CRhinoObject&, const wchar_t*,const CRhRdkVariant&) override { }
 
 	virtual bool WillBuildCustomMesh(const ON_Viewport& vp, const CRhinoObject* pObject, const CRhinoDoc& doc,

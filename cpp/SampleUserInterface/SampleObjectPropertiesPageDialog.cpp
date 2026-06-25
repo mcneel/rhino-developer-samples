@@ -135,7 +135,7 @@ CRhinoCommand::result CSampleObjectPropertiesPageDialog::RunScript(IRhinoPropert
 
   CRhinoGetString gs;
   gs.SetCommandPrompt(L"Hyperlink");
-  gs.SetDefaultString(m_old_value.IsEmpty() ? Varies() : m_old_value);
+  gs.SetDefaultString(m_old_value.IsEmpty() ? Varies() : m_old_value.Array());
   gs.AcceptNothing();
   CRhinoGet::result res = gs.GetString();
   if (res == CRhinoGet::cancel)
@@ -176,7 +176,7 @@ void CSampleObjectPropertiesPageDialog::OnEditChange()
   CString str;
   m_edit.GetWindowText(str);
 
-  ON_wString value = str;
+  ON_wString value = static_cast<const wchar_t*>(str);
   value.TrimLeftAndRight();
 
   BOOL bEnable = FALSE;
@@ -191,7 +191,7 @@ void CSampleObjectPropertiesPageDialog::OnButton()
   CString str;
   m_edit.GetWindowText(str);
 
-  ON_wString value = str;
+  ON_wString value = static_cast<const wchar_t*>(str);
   value.TrimLeftAndRight();
 
   if (!value.IsEmpty() && 0 != value.CompareOrdinal(Varies(), false))
@@ -207,7 +207,7 @@ void CSampleObjectPropertiesPageDialog::OnEditKillFocus()
   CString str;
   m_edit.GetWindowText(str);
 
-  ON_wString value = str;
+  ON_wString value = static_cast<const wchar_t*>(str);
   value.TrimLeftAndRight();
 
   if (!value.IsEmpty() && 0 != value.CompareOrdinal(Varies(), false))

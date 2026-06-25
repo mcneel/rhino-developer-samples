@@ -100,10 +100,10 @@ void CSampleRdkMaterialCustomUIDlg::DisplayData(void)
 
 		const CRhRdkColor col = c.GetParameter(L"color").AsRdkColor();
 
-		CString sName = c.InstanceName();
+		CString sName = c.InstanceName().Array();
 		sName.Trim();
 
-		CString sNotes = c.Notes();
+		CString sNotes = c.Notes().Array();
 		sNotes.Trim();
 
 		if (0 == count++)

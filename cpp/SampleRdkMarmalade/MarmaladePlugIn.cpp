@@ -17,7 +17,7 @@
 #pragma warning( pop )
 
 // rhinoSdkPlugInDeclare.h defines the RHINO_PLUG_IN_DECLARE macro
-#include "C:/Program Files/Rhino 8 SDK/Inc/rhinoSdkPlugInDeclare.h"
+#include "rhinoSdkPlugInDeclare.h"
 RHINO_PLUG_IN_DECLARE
 
 RHINO_PLUG_IN_DEVELOPER_ORGANIZATION(L"Robert McNeel & Associates");
@@ -40,10 +40,30 @@ void CALLBACK EXPORT TimerProc(HWND hWnd, UINT nMsg, UINT_PTR nIDEvent, DWORD dw
 const UINT iTimerId = 0x4576343;
 
 CMarmaladePlugIn& MarmaladePlugIn()
-{ 
+{
 	// Return a reference to the one and only CMarmaladePlugIn object
-	return thePlugIn; 
+	return thePlugIn;
 }
+
+// Derive a class from IRhinoAddPropertiesPages to add custom object properties pages.
+// The deprecated CRhinoPlugIn::AddPagesToObjectPropertiesDialog override has been replaced
+// by this interface. An instance is owned by the plug-in; its destructor removes the pages.
+class CMarmaladePropertiesPages : public IRhinoAddPropertiesPages
+{
+public:
+	virtual ON_UUID PropertiesPlugInId() const override
+	{
+		return CMarmaladePlugIn::ID();
+	}
+
+	virtual void GetPropertiesPages(CRhinoPropertiesPanelPageCollection& collection) override
+	{
+		// This method is called each time a new document is created.
+		AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+		collection.Add(new CMarmaladeViewPropertiesPage);
+	}
+};
 
 CMarmaladePlugIn::CMarmaladePlugIn()
 {
@@ -156,6 +176,9 @@ BOOL CMarmaladePlugIn::OnLoadPlugIn()
 	m_event_watcher.Register();
 	m_event_watcher.Enable(TRUE);
 
+	// Register the custom object properties pages. The instance removes the pages when deleted.
+	m_pPropertiesPages = new CMarmaladePropertiesPages;
+
 	if (RhinoApp().GetDefaultRenderApp() == PlugInID())
 	{
 		AddMarmaladeMenu();
@@ -178,6 +201,10 @@ void CMarmaladePlugIn::OnUnloadPlugIn()
 	// Description:
 	//   Called when the plug-in is about to be unloaded.  After
 	//   this function is called, the destructor will be called.
+
+	// Deleting the instance removes the custom object properties pages.
+	delete m_pPropertiesPages;
+	m_pPropertiesPages = nullptr;
 
 	delete m_pMenu;
 	m_pMenu = nullptr;
@@ -371,11 +398,3 @@ void CMarmaladePlugIn::UpdateMarmaladeMenuState(void)
 	m_pMenu->CheckMenuItem(ID_TEXTURE_EDITOR_CMD, (bVis ? MF_CHECKED : MF_UNCHECKED));
 }
 
-void CMarmaladePlugIn::AddPagesToObjectPropertiesDialog(CRhinoPropertiesPanelPageCollection& coll)
-{
-	// This method is called once at the completion of loading the plug-in.
-
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-	coll.Add(new CMarmaladeViewPropertiesPage);
-}

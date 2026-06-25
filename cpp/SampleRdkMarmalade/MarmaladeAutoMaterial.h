@@ -9,7 +9,7 @@ public:
 	CMarmaladeAutoMaterialFactory(const UUID& uuidShader);
 
 protected:
-	virtual CRhRdkMaterial* NewMaterial(void) const;
+	virtual CRhRdkMaterial* NewMaterial(void) const override;
 
 private:
 	UUID m_uuid;
