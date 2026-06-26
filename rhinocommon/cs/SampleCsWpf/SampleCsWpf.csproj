@@ -5,7 +5,7 @@
     <UseWPF>true</UseWPF>
     <TargetExt>.rhp</TargetExt>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    <OutputPath>..\Bin\</OutputPath>
+    <OutputPath>../bin/</OutputPath>
     <OutputType>Library</OutputType>
     <Company>Robert McNeel &amp; Associates</Company>
     <Copyright>Copyright © 2013-2026, Robert McNeel &amp; Associates</Copyright>

@@ -6,7 +6,7 @@
     <RootNamespace>MockingBirdIntro</RootNamespace>
     <AssemblyName>MockingBirdIntro</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <OutputPath>..\..\..\bin\</OutputPath>
+    <OutputPath>../../../bin/</OutputPath>
     <NoWarn>NU1701</NoWarn>
     <Company>Robert McNeel &amp; Associates</Company>
     <Copyright>Copyright © 2013-2026, Robert McNeel &amp; Associates</Copyright>

@@ -250,14 +250,14 @@ BEGIN
     BEGIN
         BLOCK "040b04e4"
         BEGIN
-            VALUE "CompanyName", "My Company Name"
+            VALUE "CompanyName", "Robert McNeel & Associates"
             VALUE "FileDescription", "Marmalade"
-            VALUE "FileVersion", "1.0.0.0"
+            VALUE "FileVersion", "9.0.0.0"
             VALUE "InternalName", "Marmalade.rhp"
-            VALUE "LegalCopyright", "Copyright © 2018, My Company Name"
+            VALUE "LegalCopyright", "Copyright © 2013-2026, Robert McNeel & Associates"
             VALUE "OriginalFilename", "Marmalade.rhp"
             VALUE "ProductName", "Marmalade"
-            VALUE "ProductVersion", "1.0.0.0"
+            VALUE "ProductVersion", "9.0.0.0"
         END
     END
     BLOCK "VarFileInfo"

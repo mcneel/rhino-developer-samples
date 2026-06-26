@@ -24,7 +24,7 @@ using Rhino.PlugIns;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Letwory Interactive")]
 [assembly: AssemblyProduct("MockingBird (modal)")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © 2013-2026, Robert McNeel & Associates")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

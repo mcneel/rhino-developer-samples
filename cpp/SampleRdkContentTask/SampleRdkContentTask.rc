@@ -67,8 +67,8 @@ LANGUAGE 9, 1
 //
 
 VS_VERSION_INFO     VERSIONINFO
-  FILEVERSION       1,0,0,1
-  PRODUCTVERSION    1,0,0,1
+  FILEVERSION       9,0,0,0
+  PRODUCTVERSION    9,0,0,0
  FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
 #ifdef _DEBUG
  FILEFLAGS VS_FF_DEBUG
@@ -83,14 +83,14 @@ BEGIN
 	BEGIN
         BLOCK "0409"
 		BEGIN
-            VALUE "CompanyName", "My Company Name"
+            VALUE "CompanyName", "Robert McNeel & Associates"
             VALUE "FileDescription", "SampleRdkContentTask"
-			VALUE "FileVersion",     "1.0.0.0"
+			VALUE "FileVersion",     "9.0.0.0"
 			VALUE "InternalName",    "SampleRdkContentTask.rhp"
-            VALUE "LegalCopyright", "Copyright © 2018, My Company Name"
+            VALUE "LegalCopyright", "Copyright © 2013-2026, Robert McNeel & Associates"
 			VALUE "OriginalFilename","SampleRdkContentTask.rhp"
             VALUE "ProductName", "SampleRdkContentTask"
-			VALUE "ProductVersion",  "1.0.0.0"
+			VALUE "ProductVersion",  "9.0.0.0"
 		END
 	END
 	BLOCK "VarFileInfo"

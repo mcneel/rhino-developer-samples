@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net9.0;net48</TargetFrameworks>
+    <OutputPath>../bin/</OutputPath>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <TargetExt>.rhp</TargetExt>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>

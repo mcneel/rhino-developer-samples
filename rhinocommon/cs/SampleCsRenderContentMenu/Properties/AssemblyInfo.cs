@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CommandPlugin")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
+[assembly: AssemblyCopyright("Copyright © 2013-2026, Robert McNeel & Associates")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

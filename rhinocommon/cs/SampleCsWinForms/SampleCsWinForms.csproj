@@ -9,7 +9,7 @@
     <AssemblyName>SampleCsWinForms</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    <OutputPath>..\bin\</OutputPath>
+    <OutputPath>../bin/</OutputPath>
     <NoWarn>NU1701;NETSDK1086</NoWarn>
     <Company>Robert McNeel &amp; Associates</Company>
     <Copyright>Copyright © 2013-2026, Robert McNeel &amp; Associates</Copyright>

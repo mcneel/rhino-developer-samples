@@ -4,7 +4,7 @@
     <TargetExt>.rhp</TargetExt>
     <OutputType>Library</OutputType>
     <Company>Robert McNeel &amp; Associates</Company>
-    <Copyright>Copyright © 2013-2023, Robert McNeel &amp; Associates</Copyright>
+    <Copyright>Copyright © 2013-2026, Robert McNeel &amp; Associates</Copyright>
     <Product>SampleSharedXformOwner</Product>
     <Description>SampleSharedXformOwner utility plug-in</Description>
     <Version>8.0</Version>

@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Robert McNeel & Associates")]
 [assembly: AssemblyProduct("SampleCsDragDrop")]
-[assembly: AssemblyCopyright("Copyright © 2019, Robert McNeel & Associates")]
+[assembly: AssemblyCopyright("Copyright © 2013-2026, Robert McNeel & Associates")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -50,8 +50,8 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("6.0.0.0")]
-[assembly: AssemblyFileVersion("6.0.0.0")]
+[assembly: AssemblyVersion("9.0.0.0")]
+[assembly: AssemblyFileVersion("9.0.0.0")]
 
 // Make compatible with Rhino Installer Engine
 [assembly: AssemblyInformationalVersion("2")]

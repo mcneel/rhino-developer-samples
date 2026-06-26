@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net9.0;net48</TargetFrameworks>
+    <OutputPath>../bin/</OutputPath>
     <TargetExt>.rhp</TargetExt>
     <Company>Robert McNeel &amp; Associates</Company>
     <Copyright>Copyright © 2013-2026, Robert McNeel &amp; Associates</Copyright>

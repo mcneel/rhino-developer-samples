@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Robert McNeel & Associates")]
 [assembly: AssemblyProduct("SampleCsWizardPanel")]
-[assembly: AssemblyCopyright("Copyright © 2017, Robert McNeel & Associates")]
+[assembly: AssemblyCopyright("Copyright © 2013-2026, Robert McNeel & Associates")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -44,5 +44,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.0.0.0")]
-[assembly: AssemblyFileVersion("6.0.0.0")]
+[assembly: AssemblyVersion("9.0.0.0")]
+[assembly: AssemblyFileVersion("9.0.0.0")]

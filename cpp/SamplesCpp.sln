@@ -120,6 +120,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkRemoveUnusedConten
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleRdkMaterialPreview", "SampleRdkMaterialPreview\SampleRdkMaterialPreview.vcxproj", "{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleCppEtoInterop", "SampleCppEtoInterop\SampleCppEtoInterop.vcxproj", "{F5746952-DE92-4E09-B064-4DED7F993164}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -472,6 +474,14 @@ Global
 		{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}.Release|Any CPU.Build.0 = Release|x64
 		{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}.Release|x64.ActiveCfg = Release|x64
 		{F4FB60CF-0260-4CD1-990E-DC499D68C3B6}.Release|x64.Build.0 = Release|x64
+		{F5746952-DE92-4E09-B064-4DED7F993164}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{F5746952-DE92-4E09-B064-4DED7F993164}.Debug|Any CPU.Build.0 = Debug|x64
+		{F5746952-DE92-4E09-B064-4DED7F993164}.Debug|x64.ActiveCfg = Debug|x64
+		{F5746952-DE92-4E09-B064-4DED7F993164}.Debug|x64.Build.0 = Debug|x64
+		{F5746952-DE92-4E09-B064-4DED7F993164}.Release|Any CPU.ActiveCfg = Release|x64
+		{F5746952-DE92-4E09-B064-4DED7F993164}.Release|Any CPU.Build.0 = Release|x64
+		{F5746952-DE92-4E09-B064-4DED7F993164}.Release|x64.ActiveCfg = Release|x64
+		{F5746952-DE92-4E09-B064-4DED7F993164}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
