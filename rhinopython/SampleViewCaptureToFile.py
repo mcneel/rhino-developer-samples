@@ -1,8 +1,9 @@
 ################################################################################
 # SampleViewCaptureToFile.py
-# Copyright (c) 2018 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import System
 import Rhino
 import scriptcontext as sc

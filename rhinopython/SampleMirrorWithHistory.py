@@ -1,8 +1,9 @@
 ################################################################################
 # SampleMirrorWithHistory.py
-# Copyright (c) 2018 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import rhinoscriptsyntax
 import scriptcontext
@@ -17,7 +18,7 @@ def SampleMirrorWithHistory():
         
     # restore default axis if it has been saved
     default = False
-    if scriptcontext.sticky.has_key("axis"):
+    if "axis" in scriptcontext.sticky:
         default = scriptcontext.sticky["axis"]
         
     # specify mirror axis

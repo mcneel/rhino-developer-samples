@@ -1,9 +1,10 @@
 ################################################################################
 # SampleMake2dSnapshots.py
-# Copyright (c) 2018 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
 
+# ! python3
 import Rhino
 import System
 import scriptcontext as sc
@@ -86,13 +87,13 @@ def SampleMake2dSnapshots():
     
     # Verify there are objects in the document
     if 0 == sc.doc.Objects.Count:
-        print "No objects to make a 2-D drawing."
+        print("No objects to make a 2-D drawing.")
         return
     
     # Verify there are snapshots in the document
     snapshots = sc.doc.Snapshots.Names
     if 0 == snapshots.Length:
-        print "No snapshots to restore."
+        print("No snapshots to restore.")
         return
     
     # Get the active view
@@ -103,7 +104,7 @@ def SampleMake2dSnapshots():
     # Verify the active viewport is in a perspective projection
     viewport = view.ActiveViewport
     if not viewport.IsPerspectiveProjection:
-        print "Set a perspective view active before running script."
+        print("Set a perspective view active before running script.")
         return
     
     # Store the results of each operation on a layer, with the name
@@ -149,7 +150,7 @@ def SampleMake2dSnapshots():
                 continue
             if not hld_curve.ParentCurve: 
                 continue
-            if hld_curve.ParentCurve.SilhouetteType == Rhino.Geometry.SilhouetteType.None: 
+            if hld_curve.ParentCurve.SilhouetteType == getattr(Rhino.Geometry.SilhouetteType, 'None'):
                 continue
             if hld_curve.SegmentVisibility == Rhino.Geometry.HiddenLineDrawingSegment.Visibility.Visible: 
                 if hld_curve.IsSceneSilhouette:

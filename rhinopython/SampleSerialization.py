@@ -1,36 +1,33 @@
 ################################################################################
 # SampleSerialization.py
-# Copyright (c) 2018 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
-import clr
+# ! python3
 import System
-import System.Collections.Generic.IEnumerable as IEnumerable
+from System.Collections.Generic import IEnumerable
 import Rhino
 import rhinoscriptsyntax as rs
 import scriptcontext as sc
 
 ################################################################################
-# Converts GeometryBase object to an array of bytes
+# Converts a GeometryBase object to an array of bytes.
+# BinaryFormatter is unsupported on modern .NET (Rhino 9), so serialize the
+# geometry to JSON and return its UTF-8 bytes.
 ################################################################################
 def GeometryBaseToBytes(geometry):
-    with System.IO.MemoryStream() as stream:
-        formatter = System.Runtime.Serialization.Formatters.Binary.BinaryFormatter()
-        formatter.Serialize(stream, geometry);
-        return stream.ToArray()
+    options = Rhino.FileIO.SerializationOptions()
+    json = geometry.ToJSON(options)
+    return System.Text.Encoding.UTF8.GetBytes(json)
 
 ################################################################################
-# Converts an array of bytes to GeometryBase object
+# Converts an array of bytes to a GeometryBase object
 ################################################################################
 def BytesToGeometryBase(bytes):
-    with System.IO.MemoryStream() as stream:
-        formatter = System.Runtime.Serialization.Formatters.Binary.BinaryFormatter()
-        stream.Write(bytes, 0, bytes.Length)
-        stream.Seek(0, System.IO.SeekOrigin.Begin)
-        obj = formatter.Deserialize(stream)
-        geometry = clr.Convert(obj, Rhino.Geometry.GeometryBase)
-        if geometry and geometry.IsValid:
-            return geometry
+    json = System.Text.Encoding.UTF8.GetString(bytes)
+    geometry = Rhino.Geometry.GeometryBase.FromJSON(json)
+    if geometry and geometry.IsValid:
+        return geometry
 
 ################################################################################
 # Main function
@@ -52,7 +49,7 @@ def SampleSerialization():
     
     # Add bytes to base object's dictionary
     key = 'test'
-    base_obj.Attributes.UserDictionary.Set.Overloads[str,IEnumerable[System.Byte]](key ,bytes)
+    base_obj.Attributes.UserDictionary.Set.Overloads[System.String, IEnumerable[System.Byte]](key, bytes)
     
     # Get bytes from base object
     new_bytes = base_obj.Attributes.UserDictionary.GetBytes(key)

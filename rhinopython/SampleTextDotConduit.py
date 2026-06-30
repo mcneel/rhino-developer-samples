@@ -1,8 +1,9 @@
 ################################################################################
 # SampleTextDotConduit.py
-# Copyright (c) 2018 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import System
 import Rhino
 import scriptcontext
@@ -11,6 +12,7 @@ class SampleTextDotConduit(Rhino.Display.DisplayConduit):
     
     # Initializer
     def __init__(self, uuid, text):
+        super().__init__()
         # Initialize member variables
         self.m_uuid = uuid
         self.m_text = text
@@ -99,7 +101,7 @@ class SampleTextDotConduit(Rhino.Display.DisplayConduit):
 def TestSampleTextDotConduit():
     
     # See if the form is already visible
-    if scriptcontext.sticky.has_key('sample_textdot_conduit'):
+    if 'sample_textdot_conduit' in scriptcontext.sticky:
         conduit = scriptcontext.sticky['sample_textdot_conduit']
         if conduit and conduit.IsValid():
             # Prompt for some text
@@ -114,13 +116,13 @@ def TestSampleTextDotConduit():
                 # Destroy class object
                 conduit = None
                 # Remove sticky
-                scriptcontext.sticky.Remove('sample_textdot_conduit')
+                scriptcontext.sticky.pop('sample_textdot_conduit', None)
                 
             # Redraw
             scriptcontext.doc.Views.Redraw()
             return
             
-    if scriptcontext.sticky.has_key('sample_textdot_conduit'):
+    if 'sample_textdot_conduit' in scriptcontext.sticky:
         conduit = scriptcontext.sticky['sample_textdot_conduit']
         if conduit:
             conduit = None

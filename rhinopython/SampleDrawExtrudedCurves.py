@@ -1,8 +1,9 @@
 ################################################################################
 # SampleDrawExtrudedCurves.py
-# Copyright (c) 2019 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import scriptcontext as sc
 import Rhino
 import System
@@ -23,6 +24,7 @@ class GetPlanarCurve(Rhino.Input.Custom.GetObject):
 # DisplayConduit-derived class that draws Breps
 class DrawBrepConduit(Rhino.Display.DisplayConduit):
     def __init__(self, breps):
+        super().__init__()
         self.breps = breps
         
     def CalculateBoundingBox(self, e):

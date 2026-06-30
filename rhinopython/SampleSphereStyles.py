@@ -1,8 +1,9 @@
 ################################################################################
 # SampleSphereStyles.py
-# Copyright (c) 2019 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import scriptcontext as sc
 
@@ -11,6 +12,7 @@ class SampleGetSphere(Rhino.Input.Custom.GetPoint):
     
     # Class initializer
     def __init__(self, plane):
+        super().__init__()
         self.m_plane = plane
         self.m_sphere = Rhino.Geometry.Sphere(plane, 1.0)
         self.m_draw = False
@@ -63,7 +65,7 @@ def SampleSphereStyles():
     gp = Rhino.Input.Custom.GetPoint()
     gp.SetCommandPrompt("Center of sphere")
     gp.Get()
-    if gp.CommandResult() <> Rhino.Commands.Result.Success:
+    if gp.CommandResult() != Rhino.Commands.Result.Success:
         return gp.CommandResult()
     
     # Calculate base plane
@@ -76,7 +78,7 @@ def SampleSphereStyles():
     gs.SetBasePoint(base_plane.Origin, True)
     gs.DrawLineFromPoint(base_plane.Origin, True)
     gs.Get()
-    if gs.CommandResult() <> Rhino.Commands.Result.Success:
+    if gs.CommandResult() != Rhino.Commands.Result.Success:
         return gs.CommandResult()
     
     # One final calculation

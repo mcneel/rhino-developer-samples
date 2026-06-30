@@ -1,8 +1,9 @@
 ################################################################################
 # SampleBoxSpaceMorph.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import rhinoscriptsyntax as rs
 import scriptcontext
@@ -11,6 +12,7 @@ import scriptcontext
 class BoxMorph(Rhino.Geometry.SpaceMorph):
     
     def __init__(self, box, corners):
+        super().__init__()
         if 8 == len(box): self.box = box[:]
         if 8 == len(corners): self.corners = corners[:]
         if 8 == len(self.box):

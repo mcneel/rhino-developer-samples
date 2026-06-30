@@ -1,11 +1,11 @@
 ################################################################################
 # SampleCircleRadius.py 
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import scriptcontext
-import System.Drawing.Color
 
 # Rhino.Input.Custom.GetPoint derived class 
 # that dynamically draws a circle.   
@@ -13,6 +13,7 @@ class GetRadiusPoint(Rhino.Input.Custom.GetPoint):
     
     # Class initializer
     def __init__(self, plane):
+        super().__init__()
         self.base_plane = plane
         self.can_draw = False
         self.draw_color = Rhino.ApplicationSettings.AppearanceSettings.DefaultLayerColor

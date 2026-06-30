@@ -1,12 +1,12 @@
 ################################################################################
 # SampleMove.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
-from Rhino import *
-from Rhino.Commands import *
-from Rhino.Geometry import *
-from Rhino.Input.Custom import *
+# ! python3
+from Rhino.Commands import Result
+from Rhino.Geometry import Transform
+from Rhino.Input.Custom import GetObject, GetPoint
 from scriptcontext import doc
 
 # Rhino.Input.Custom.GetPoint derived class that dynamically
@@ -15,6 +15,7 @@ class SampleGetMovePoint(GetPoint):
     
     # Class initializer
     def __init__(self, go, base_point):
+        super().__init__()
         self.m_objects = [o.Object() for o in go.Objects()]
         self.m_point = base_point
         self.m_xform = Transform.Identity
@@ -46,14 +47,14 @@ def SampleMove():
     go = GetObject()
     go.SetCommandPrompt("Select objects to move")
     go.GetMultiple(1, 0)
-    if go.CommandResult() <> Result.Success:
+    if go.CommandResult() != Result.Success:
         return go.CommandResult()
     
     # Point to move from
     gp = GetPoint()
     gp.SetCommandPrompt("Point to move from")
     gp.Get()
-    if gp.CommandResult() <> Result.Success:
+    if gp.CommandResult() != Result.Success:
         return gp.CommandResult()
     
     base_point = gp.Point()
@@ -64,7 +65,7 @@ def SampleMove():
     gm.SetBasePoint(base_point, True)
     gm.DrawLineFromPoint(base_point, True)
     gm.Get()
-    if gm.CommandResult() <> Result.Success:
+    if gm.CommandResult() != Result.Success:
         return gm.CommandResult()
     
     target_point = gm.Point()

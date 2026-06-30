@@ -1,8 +1,9 @@
 ################################################################################
 # SampleGetArc.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import scriptcontext as sc
 
@@ -50,7 +51,7 @@ def SampleGetArc():
     go.SetCommandPrompt('Select arc')
     go.GeometryFilter = Rhino.DocObjects.ObjectType.Curve
     go.Get()
-    if go.CommandResult() <> Rhino.Commands.Result.Success:
+    if go.CommandResult() != Rhino.Commands.Result.Success:
         return go.CommandResult()
         
     curve = go.Object(0).Curve()

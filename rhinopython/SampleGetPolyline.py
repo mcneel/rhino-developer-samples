@@ -1,8 +1,9 @@
 ################################################################################
 # SampleGetPolyline.py
-# Copyright (c) 20197 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import System
 import Rhino
 import scriptcontext as sc
@@ -11,6 +12,7 @@ import scriptcontext as sc
 class GetPolylinePoint(Rhino.Input.Custom.GetPoint):
     
     def __init__(self):
+        super().__init__()
         self.color = Rhino.ApplicationSettings.AppearanceSettings.DefaultLayerColor
         self.points = []
     

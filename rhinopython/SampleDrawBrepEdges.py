@@ -1,8 +1,9 @@
 ################################################################################
 # SampleDrawBrepEdges.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import scriptcontext
 import rhinoscriptsyntax as rs
 import Rhino
@@ -15,6 +16,7 @@ class SampleDrawBrepEdgesConduit(Rhino.Display.DisplayConduit):
     draw_color = System.Drawing.Color.Pink
     # class constructor
     def __init__(self, brep):
+        super().__init__()
         self.brep = brep
     # DrawOverlay override
     def DrawOverlay(self, e):

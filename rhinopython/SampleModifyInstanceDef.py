@@ -1,8 +1,9 @@
 ################################################################################
 # SampleModifyInstanceDef.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import scriptcontext as sc
 
@@ -18,7 +19,7 @@ def SampleModifyInstanceDef():
     # Find the instance definition
     idef = sc.doc.InstanceDefinitions.Find(idef_name)
     if idef is None:
-        print 'Instance definition not found'
+        print('Instance definition not found')
         return
     
     # Get the instance definition's objects

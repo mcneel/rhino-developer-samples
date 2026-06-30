@@ -1,8 +1,9 @@
 ################################################################################
 # SampleRebuildSrfDeviation.py
-# Copyright (c) 2018 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import System
 import rhinoscriptsyntax as rs
@@ -61,7 +62,7 @@ def TestSampleRebuildSrfDeviation():
         face = brep.Faces[0]
         srf = brep.Surfaces[face.SurfaceIndex]
         nurb = srf.Rebuild(3, 3, 8, 8)
-        print 'Maximum deviation =', SampleRebuildSrfDeviation(face, nurb)
+        print('Maximum deviation =', SampleRebuildSrfDeviation(face, nurb))
 
 # Check to see if this file is being executed as the "main" python
 # script instead of being used as a module by some other python script

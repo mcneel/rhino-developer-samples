@@ -1,9 +1,10 @@
 ################################################################################
 # SampleEtoRebuildCurve.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
 # Imports
+# ! python3
 import Rhino
 import scriptcontext as sc
 import Rhino.UI
@@ -35,6 +36,7 @@ class RebuildCurveDialog(forms.Dialog[bool]):
     
     # Initializer
     def __init__(self, args):
+        super().__init__()
         self.Args = args
         # Initialize dialog box
         self.Title = 'Rebuild'
@@ -54,21 +56,23 @@ class RebuildCurveDialog(forms.Dialog[bool]):
     # Creates numeric stepper controls
     def CreateSteppers(self):
         # Create labels
-        label0 = forms.Label(Text = 'Point count:')
-        label1 = forms.Label(Text = 'Degree:')
-        label2 = forms.Label(Text = '({})'.format(self.Args.PointCount))
-        label3 = forms.Label(Text = '({})'.format(self.Args.Degree))
+        label0 = forms.Label()
+        label0.Text = 'Point count:'
+        label1 = forms.Label()
+        label1.Text = 'Degree:'
+        label2 = forms.Label()
+        label2.Text = '({})'.format(self.Args.PointCount)
+        label3 = forms.Label()
+        label3.Text = '({})'.format(self.Args.Degree)
         # Create numeric steppers
-        self.PointCount = forms.NumericStepper(
-            Value = self.Args.PointCount,
-            MinValue = 2,
-            MaxValue = 32767
-            )
-        self.Degree = forms.NumericStepper(
-            Value = self.Args.Degree,
-            MinValue = 1,
-            MaxValue = 11
-            )
+        self.PointCount = forms.NumericStepper()
+        self.PointCount.Value = self.Args.PointCount
+        self.PointCount.MinValue = 2
+        self.PointCount.MaxValue = 32767
+        self.Degree = forms.NumericStepper()
+        self.Degree.Value = self.Args.Degree
+        self.Degree.MinValue = 1
+        self.Degree.MaxValue = 11
         # Create table layout
         layout = forms.DynamicLayout()
         layout.Spacing = drawing.Size(5, 5)
@@ -79,16 +83,14 @@ class RebuildCurveDialog(forms.Dialog[bool]):
     # Creates checkbox controls
     def CreateCheckBoxes(self):
         # Create checkboxes
-        self.DeleteInput = forms.CheckBox(
-            Text = 'Delete input', 
-            Checked = self.Args.DeleteInput,
-            ThreeState = False
-            )
-        self.PreserveTangents = forms.CheckBox(
-            Text = 'Preserve tangent end directions', 
-            Checked = self.Args.PreserveTangents,
-            ThreeState = False
-            )
+        self.DeleteInput = forms.CheckBox()
+        self.DeleteInput.Text = 'Delete input'
+        self.DeleteInput.Checked = self.Args.DeleteInput
+        self.DeleteInput.ThreeState = False
+        self.PreserveTangents = forms.CheckBox()
+        self.PreserveTangents.Text = 'Preserve tangent end directions'
+        self.PreserveTangents.Checked = self.Args.PreserveTangents
+        self.PreserveTangents.ThreeState = False
         # Create table layout
         layout = forms.DynamicLayout()
         layout.Spacing = drawing.Size(5, 5)
@@ -112,10 +114,12 @@ class RebuildCurveDialog(forms.Dialog[bool]):
     # Create button controls
     def CreateButtons(self):
         # Create the default button
-        self.DefaultButton = forms.Button(Text = 'OK')
+        self.DefaultButton = forms.Button()
+        self.DefaultButton.Text = 'OK'
         self.DefaultButton.Click += self.OnOkButtonClick
         # Create the abort button
-        self.AbortButton = forms.Button(Text = 'Cancel')
+        self.AbortButton = forms.Button()
+        self.AbortButton.Text = 'Cancel'
         self.AbortButton.Click += self.OnCancelButtonClick
         # Create button layout
         button_layout = forms.DynamicLayout()

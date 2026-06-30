@@ -1,8 +1,9 @@
 ################################################################################
 # SampleCurvature.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import System
 import scriptcontext
@@ -13,6 +14,7 @@ class SampleGetCurvaturePoint(Rhino.Input.Custom.GetPoint):
     
     # Class initializer
     def __init__(self, curve):
+        super().__init__()
         self.m_curve = curve
         self.Constrain(curve, False)
     

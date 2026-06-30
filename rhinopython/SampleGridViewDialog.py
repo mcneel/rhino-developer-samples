@@ -1,3 +1,9 @@
+################################################################################
+# SampleGridViewDialog.py
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
+# See License.md in the root of this repository for details.
+################################################################################
+# ! python3
 import System
 import scriptcontext as sc
 import Rhino.UI
@@ -5,12 +11,13 @@ import Eto
 
 class SampleGridViewDialog(Rhino.UI.Forms.CommandDialog):
     def __init__(self, doc):
+        super().__init__()
         self._doc = doc
         self.Title = 'Layers'
         self.Size = Eto.Drawing.Size(350, 350)
         self.ShowHelpButton = False
         self.Content = self.__create_layout()
-        
+
     def __create_layout(self):
         # table
         layout = Eto.Forms.TableLayout()
@@ -19,14 +26,14 @@ class SampleGridViewDialog(Rhino.UI.Forms.CommandDialog):
         # label
         label = Eto.Forms.Label()
         label.Text = 'Turns layers on or off:'
-        layout.Rows.Add(label)
+        layout.Rows.Add(Eto.Forms.TableRow(Eto.Forms.TableCell(label)))
         # grid
         grid = self.__create_grid()
-        row = Eto.Forms.TableRow(grid)
+        row = Eto.Forms.TableRow(Eto.Forms.TableCell(grid, True))
         row.ScaleHeight = True
         layout.Rows.Add(row)
         return layout
-        
+
     def __create_grid(self):
         # grid
         grid = Eto.Forms.GridView()
@@ -39,7 +46,7 @@ class SampleGridViewDialog(Rhino.UI.Forms.CommandDialog):
         col0.AutoSize = True
         col0.Editable = False
         grid.Columns.Add(col0)
-        # column `
+        # column 1
         col1 = Eto.Forms.GridColumn()
         col1.HeaderText = 'Visible'
         col1.DataCell = Eto.Forms.CheckBoxCell(1)
@@ -49,19 +56,21 @@ class SampleGridViewDialog(Rhino.UI.Forms.CommandDialog):
         # datastore
         self.__set_datastore(grid)
         return grid
-    
+
     def __set_datastore(self, control):
-        names = []
-        visible = []
+        # Rhino 9 runs CPython/pythonnet. A Python list cannot be used here:
+        # WPF's DataGrid automation peer hashes each row item, and a Python
+        # list is unhashable -> fatal crash. Use a .NET collection of
+        # Eto.Forms.GridItem (hashable .NET objects) for both the container
+        # and the rows so no Python list enters the grid's data path.
+        self._collection = System.Collections.Generic.List[Eto.Forms.GridItem]()
         for layer in self._doc.Layers:
-            names.append(layer.Name)
-            visible.append(layer.IsVisible)
-        self._collection = [list(i) for i in zip(names, visible)]
+            self._collection.Add(Eto.Forms.GridItem(layer.Name, layer.IsVisible))
         control.DataStore = self._collection
-    
+
     def GetCollection(self):
         return self._collection
-        
+
 if __name__ == '__main__':
     dlg = SampleGridViewDialog(sc.doc)
     dlg.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow)

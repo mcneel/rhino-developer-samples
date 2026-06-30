@@ -1,10 +1,11 @@
 ################################################################################
 # SampleEtoTabbedDialog.py
-# Copyright (c) 2018 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
 
 # Imports
+# ! python3
 import System
 import Rhino.UI
 import Eto.Drawing as drawing
@@ -16,6 +17,7 @@ import Eto.Forms as forms
 class LabelPanel(forms.Panel):
     # Initializer
     def __init__(self):
+        super().__init__()
         # create a control
         label = forms.Label()
         label.Text = "Text Label"
@@ -34,6 +36,7 @@ class LabelPanel(forms.Panel):
 class TextAreaPanel(forms.Scrollable):
     # Initializer
     def __init__(self):
+        super().__init__()
         # create a control
         text = forms.TextArea()
         text.Text = "Every Good Boy Deserves Fudge."
@@ -41,7 +44,7 @@ class TextAreaPanel(forms.Scrollable):
         layout = forms.TableLayout()
         layout.Padding = drawing.Padding(10)
         layout.Spacing = drawing.Size(5, 5)
-        layout.Rows.Add(text)
+        layout.Rows.Add(forms.TableRow(forms.TableCell(text, True)))
         # set the panel content
         self.Content = layout
 
@@ -52,6 +55,7 @@ class SampleEtoTabbedDialog(forms.Dialog):
     
     # Initializer
     def __init__(self):
+        super().__init__()
         self.Rnd = System.Random()
         self.Title = "Sample Eto Tabbed Dialog"
         self.Padding = drawing.Padding(10)
@@ -68,16 +72,16 @@ class SampleEtoTabbedDialog(forms.Dialog):
         button_layout = forms.StackLayout()
         button_layout.Orientation = forms.Orientation.Horizontal
         button_layout.Items.Add(None)
-        button_layout.Items.Add(self.AddTab())
-        button_layout.Items.Add(self.RemoveTab())
-        button_layout.Items.Add(self.SelectTab())
+        button_layout.Items.Add(forms.StackLayoutItem(self.AddTab()))
+        button_layout.Items.Add(forms.StackLayoutItem(self.RemoveTab()))
+        button_layout.Items.Add(forms.StackLayoutItem(self.SelectTab()))
         button_layout.Items.Add(None)
         # create stack layout for content
         layout = forms.StackLayout()
         layout.Spacing = 5
         layout.HorizontalContentAlignment = forms.HorizontalAlignment.Stretch
         # add the stuff above to this layout
-        layout.Items.Add(button_layout)
+        layout.Items.Add(forms.StackLayoutItem(button_layout))
         layout.Items.Add(tab_items)
         return layout
     

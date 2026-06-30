@@ -1,8 +1,9 @@
 ################################################################################
 # SampleEtoViewports.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import Rhino.UI
 import Eto.Drawing as drawing
@@ -15,13 +16,19 @@ class ViewportsDialog(forms.Dialog[bool]):
     
     # Initializer
     def __init__(self):
+        super().__init__()
         # Initialize dialog box
         self.Title = 'Rhino Viewport in an Eto Control'
         self.Padding = drawing.Padding(5)
         self.Resizable = True
+        # Give the dialog an explicit size so the two 400x200 viewports are not
+        # squished: the ViewportControl's own Size does not drive the window width.
+        self.ClientSize = drawing.Size(420, 470)
         # Create viewport controls
-        viewport0 = Rhino.UI.Controls.ViewportControl(Size = drawing.Size(400, 200))
-        viewport1 = Rhino.UI.Controls.ViewportControl(Size = drawing.Size(400, 200))
+        viewport0 = Rhino.UI.Controls.ViewportControl()
+        viewport0.Size = drawing.Size(400, 200)
+        viewport1 = Rhino.UI.Controls.ViewportControl()
+        viewport1.Size = drawing.Size(400, 200)
         # Create layout
         layout = forms.DynamicLayout()
         layout.Padding = drawing.Padding(5)
@@ -40,7 +47,8 @@ class ViewportsDialog(forms.Dialog[bool]):
     # Create button control
     def CloseButton(self):
         # Create the default button
-        self.DefaultButton = forms.Button(Text = 'Close')
+        self.DefaultButton = forms.Button()
+        self.DefaultButton.Text = 'Close'
         self.DefaultButton.Click += self.OnCloseButtonClick
         return self.DefaultButton
     

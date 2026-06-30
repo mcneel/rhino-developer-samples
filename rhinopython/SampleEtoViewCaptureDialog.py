@@ -1,9 +1,10 @@
 ################################################################################
 # SampleEtoViewCaptureDialog.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
 # Imports
+# ! python3
 import Rhino
 import Rhino.UI
 import Eto
@@ -20,6 +21,7 @@ class SampleEtoViewCaptureDialog(Eto.Forms.Dialog[bool]):
     
     # Class initializer
     def __init__(self):
+        super().__init__()
         # Initialize dialog box
         self.Title = 'SampleEtoViewCaptureDialog'
         self.Padding = drawing.Padding(10)
@@ -36,7 +38,8 @@ class SampleEtoViewCaptureDialog(Eto.Forms.Dialog[bool]):
     
     # Create the dialog label
     def CreateLabel(self):
-        self.m_label = forms.Label(Text = 'Click the "Capture" button...')
+        self.m_label = forms.Label()
+        self.m_label.Text = 'Click the "Capture" button...'
         return self.m_label
     
     # Create the dialog image list
@@ -67,10 +70,12 @@ class SampleEtoViewCaptureDialog(Eto.Forms.Dialog[bool]):
     # Create the dialog buttons
     def CreateButtons(self):
         # Create the default button
-        self.DefaultButton = forms.Button(Text = 'Capture')
+        self.DefaultButton = forms.Button()
+        self.DefaultButton.Text = 'Capture'
         self.DefaultButton.Click += self.OnCaptureButtonClick
         # Create the abort button
-        self.AbortButton = forms.Button(Text = 'Close')
+        self.AbortButton = forms.Button()
+        self.AbortButton.Text = 'Close'
         self.AbortButton.Click += self.OnCloseButtonClick
         # Create button layout
         button_layout = forms.DynamicLayout()
@@ -92,7 +97,7 @@ def TestSampleEtoViewCaptureDialog():
     dialog = SampleEtoViewCaptureDialog();
     rc = dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow)
     if (rc):
-        print 'have image'
+        print('have image')
     
 ################################################################################
 # Check to see if this file is being executed as the "main" python

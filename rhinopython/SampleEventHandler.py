@@ -1,8 +1,9 @@
 ################################################################################
 # SampleEventHandler.py
-# Copyright (c) 2018 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import scriptcontext as sc
 
@@ -34,39 +35,39 @@ class SampleEventHandler():
     
     # AddRhinoObject event handler
     def OnAddRhinoObject(self, sender, e):
-        print '> SampleEventHandler.OnAddRhinoObject'
+        print('> SampleEventHandler.OnAddRhinoObject')
     
     # ReplaceRhinoObject event handler
     def OnReplaceRhinoObject(self, sender, e):
-        print '> SampleEventHandler.OnReplaceRhinoObject'
+        print('> SampleEventHandler.OnReplaceRhinoObject')
     
     # DeleteRhinoObject event handler
     def OnDeleteRhinoObject(self, sender, e):
-        print '> SampleEventHandler.OnDeleteRhinoObject'
+        print('> SampleEventHandler.OnDeleteRhinoObject')
     
     # UndeleteRhinoObject event handler
     def OnUndeleteRhinoObject(self, sender, e):
-        print '> SampleEventHandler.OnUndeleteRhinoObject'      
+        print('> SampleEventHandler.OnUndeleteRhinoObject')      
         
 ################################################################################
 # TestSampleEventHandler function
 ################################################################################
 def TestSampleEventHandler():
     # See if we already have a handler
-    if sc.sticky.has_key('sample_event_handler'):
+    if 'sample_event_handler' in sc.sticky:
         # Delete the handler
         handler = sc.sticky.pop('sample_event_handler', None)
         if handler:
             handler.Disable()
             handler = None
-            print ' SampleEventHandler disabled'  
+            print(' SampleEventHandler disabled')  
     else:
         # Create handler
         handler = SampleEventHandler()
         # Add the handler to the sticky dictionary so it
         # survives when the main function ends.
         sc.sticky['sample_event_handler'] = handler       
-        print ' SampleEventHandler enabled'  
+        print(' SampleEventHandler enabled')  
     
 ################################################################################
 # Check to see if this file is being executed as the 'main' python

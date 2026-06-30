@@ -1,9 +1,10 @@
 ################################################################################
 # SampleEtoListBoxDialog.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
 
+# ! python3
 # Imports
 import System
 from System.Collections.ObjectModel import ObservableCollection
@@ -22,10 +23,13 @@ class Fruit(object):
         self.m_name = name
         self.m_color = color
         
+    def __str__(self):
+        return self.m_name
+
     @property
     def Name(self):
         return self.m_name
-  
+
     @property
     def Color(self):
         return self.m_color
@@ -37,6 +41,7 @@ class SampleEtoListBoxDialog(forms.Dialog[bool]):
     
     # Initializer
     def __init__(self, collection):
+        super().__init__()
         self.m_collection = collection
         # Initialize dialog box properties
         self.Title = 'Sample Eto ListBox'
@@ -61,12 +66,19 @@ class SampleEtoListBoxDialog(forms.Dialog[bool]):
     def FruitDelegate(self, fruit):
         return fruit.Name
         
-   # Creates a ListBox control
+    # Creates a ListBox control
     def CreateListBox(self):
-        # Create labels
         listbox = forms.ListBox()
         listbox.Size = drawing.Size(100, 150)
-        listbox.ItemTextBinding = forms.Binding.Delegate[Fruit, System.String](self.FruitDelegate)
+        # Tell the ListBox how to get display text from a Fruit. Parameterize
+        # the delegate with 'object' (a CLR type), not the Python class Fruit
+        # (Rhino 9 pythonnet rejects a Python class as a generic type argument).
+        # Without a text binding, Eto casts each item to IListItem -> InvalidCastException.
+        listbox.ItemTextBinding = forms.Binding.Delegate[object, System.String](self.FruitDelegate)
+        # Also set ItemKeyBinding: on selection change Eto reads the item's "key",
+        # which by default calls Convert.ToString(item) and fails on a Python object
+        # (InvalidCastException). Bind it to the delegate so it returns a real string.
+        listbox.ItemKeyBinding = forms.Binding.Delegate[object, System.String](self.FruitDelegate)
         listbox.DataStore = self.m_collection
         listbox.SelectedIndex = 0
         self.m_listbox = listbox
@@ -84,10 +96,12 @@ class SampleEtoListBoxDialog(forms.Dialog[bool]):
     # Create button controls
     def CreateButtons(self):
         # Create the default button
-        self.DefaultButton = forms.Button(Text = 'OK')
+        self.DefaultButton = forms.Button()
+        self.DefaultButton.Text = 'OK'
         self.DefaultButton.Click += self.OnOkButtonClick
         # Create the abort button
-        self.AbortButton = forms.Button(Text = 'Cancel')
+        self.AbortButton = forms.Button()
+        self.AbortButton.Text = 'Cancel'
         self.AbortButton.Click += self.OnCancelButtonClick
         # Create button layout
         button_layout = forms.DynamicLayout()
@@ -105,8 +119,10 @@ class SampleEtoListBoxDialog(forms.Dialog[bool]):
 ################################################################################
 def TestSampleEtoListBoxDialog():
     
-    # Create and initialize collection
-    collection = ObservableCollection[Fruit]()
+    # Create and initialize collection. Use ObservableCollection[object]:
+    # Rhino 9's pythonnet rejects a pure-Python class (Fruit) as a .NET
+    # generic type argument ('type(s) expected'). Items display via Fruit.__str__.
+    collection = ObservableCollection[object]()
     collection.Add(Fruit('Apple', 'Red'))
     collection.Add(Fruit('Banana', 'Yellow'))
     collection.Add(Fruit('Grape', 'Purple'))
@@ -119,8 +135,8 @@ def TestSampleEtoListBoxDialog():
     if (rc):
         # Print results
         fruit = collection[dlg.SelectedIndex]
-        print fruit.Name
-        print fruit.Color
+        print(fruit.Name)
+        print(fruit.Color)
 
 ################################################################################
 # Check to see if this file is being executed as the 'main' python

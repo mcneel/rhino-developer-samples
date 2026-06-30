@@ -1,9 +1,10 @@
 ################################################################################
 # SampleEtoModelessForm.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
 
+# ! python3
 import System
 import Rhino
 import Rhino.UI
@@ -18,6 +19,7 @@ class SampleEtoModelessForm(forms.Form):
     
     # Initializer
     def __init__(self):
+        super().__init__()
         self.m_selecting = False
         # Basic form initialization
         self.Initialize()
@@ -131,9 +133,11 @@ class SampleEtoModelessForm(forms.Form):
         layout.Padding = drawing.Padding(10)
         layout.Spacing = drawing.Size(5, 5)
         # Add controls to layout
-        layout.Rows.Add(forms.Label(Text = 'Rhino Objects:'))
+        objects_label = forms.Label()
+        objects_label.Text = 'Rhino Objects:'
+        layout.Rows.Add(forms.TableRow(forms.TableCell(objects_label)))
         layout.Rows.Add(self.CreateListBoxRow())
-        layout.Rows.Add(self.CreateButtonRow())
+        layout.Rows.Add(forms.TableRow(forms.TableCell(self.CreateButtonRow())))
         # Set the content
         self.Content = layout
     
@@ -157,7 +161,7 @@ class SampleEtoModelessForm(forms.Form):
         # Create the table row
         table_row = forms.TableRow()
         table_row.ScaleHeight = True
-        table_row.Cells.Add(self.m_listbox)
+        table_row.Cells.Add(forms.TableCell(self.m_listbox, True))
         return table_row
     
     # 'Select' button click handler
@@ -178,14 +182,17 @@ class SampleEtoModelessForm(forms.Form):
     # table row that contains the button controls.
     def CreateButtonRow(self):
         # Select button
-        select_button = forms.Button(Text = 'Select All')
+        select_button = forms.Button()
+        select_button.Text = 'Select All'
         select_button.Click += self.OnSelectClick
         # Clear button
-        clear_button = forms.Button(Text = 'Clear')
+        clear_button = forms.Button()
+        clear_button.Text = 'Clear'
         clear_button.Click += self.OnClearClick
         # Create layout
-        layout = forms.TableLayout(Spacing = drawing.Size(5, 5))
-        layout.Rows.Add(forms.TableRow(None, select_button, clear_button, None))
+        layout = forms.TableLayout()
+        layout.Spacing = drawing.Size(5, 5)
+        layout.Rows.Add(forms.TableRow(forms.TableCell(None), forms.TableCell(select_button), forms.TableCell(clear_button), forms.TableCell(None)))
         return layout
     
     # Form Closed event handler
@@ -193,12 +200,12 @@ class SampleEtoModelessForm(forms.Form):
         # Remove the events added in the initializer
         self.RemoveEvents()
         # Dispose of the form and remove it from the sticky dictionary
-        if sc.sticky.has_key('sample_modeless_form'):
+        if 'sample_modeless_form' in sc.sticky:
             form = sc.sticky['sample_modeless_form']
             if form:
                 form.Dispose()
                 form = None
-            sc.sticky.Remove('sample_modeless_form')
+            sc.sticky.pop('sample_modeless_form', None)
     
 ################################################################################
 # TestSampleEtoModelessForm function
@@ -206,7 +213,7 @@ class SampleEtoModelessForm(forms.Form):
 def TestSampleEtoModelessForm():
     
     # See if the form is already visible
-    if sc.sticky.has_key('sample_modeless_form'):
+    if 'sample_modeless_form' in sc.sticky:
         return
     
     # Create and show form

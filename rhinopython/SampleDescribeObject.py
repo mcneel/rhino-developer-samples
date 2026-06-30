@@ -1,8 +1,9 @@
 ################################################################################
 # SampleDescribeObject.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import rhinoscriptsyntax as rs
 
@@ -13,7 +14,7 @@ def SampleDumpGeometry():
     if obj_id:
         geom = rs.coercegeometry(obj_id)
         dump = Rhino.Runtime.HostUtils.DebugDumpToString(geom)
-        print dump
+        print(dump)
         
 # Reports object properties details
 def SampleDescribeObject():
@@ -22,7 +23,7 @@ def SampleDescribeObject():
         obj = rs.coercerhinoobject(obj_id)
         log = Rhino.FileIO.TextLog()
         obj.Description(log)
-        print log
+        print(log)
 
 # Check to see if this file is being executed as the "main" python
 # script instead of being used as a module by some other python script

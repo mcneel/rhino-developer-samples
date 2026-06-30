@@ -1,8 +1,9 @@
 ################################################################################
 # SampleEtoCollapsibleDialog.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import scriptcontext
 import rhinoscriptsyntax as rs
 import Rhino.UI
@@ -15,6 +16,7 @@ import Eto.Forms as forms
 class CollapsableEtoDialog(forms.Dialog[bool]): # return True or False from ShowModal()
 
     def __init__(self):
+        super().__init__()
         self.Title = "My Collapsible Eto Form"
         self.Resizable = False
         self.Padding = drawing.Padding(5)
@@ -27,9 +29,18 @@ class CollapsableEtoDialog(forms.Dialog[bool]): # return True or False from Show
             m_label.TextAlignment = forms.TextAlignment.Right
             return m_label
 
+        # Custom checkbox helper (set properties after construction)
+        def CB(text):
+            m_cb = forms.CheckBox()
+            m_cb.Text = text
+            return m_cb
 
-        # set content of the collapsed section
-        self.collapsePanel = forms.DynamicLayout(Visible = False, Padding = drawing.Padding(40, 10), DefaultSpacing = drawing.Size(5, 5))
+
+        # set content of the collapsed section (shown expanded by default)
+        self.collapsePanel = forms.DynamicLayout()
+        self.collapsePanel.Visible = True
+        self.collapsePanel.Padding = drawing.Padding(40, 10)
+        self.collapsePanel.DefaultSpacing = drawing.Size(5, 5)
         self.collapsePanel.BeginVertical()
         self.collapsePanel.AddRow(None, L("Density:"), forms.NumericUpDown())
         self.collapsePanel.AddRow(None, L("Maximum angle:"), forms.NumericUpDown())
@@ -40,23 +51,28 @@ class CollapsableEtoDialog(forms.Dialog[bool]): # return True or False from Show
         self.collapsePanel.AddRow(None, L("Minimum initial grid quads:"), forms.NumericUpDown())
         self.collapsePanel.EndVertical()
         self.collapsePanel.BeginVertical()
-        self.collapsePanel.AddRow(None, forms.CheckBox(Text = "Refine mesh"))
-        self.collapsePanel.AddRow(None, forms.CheckBox(Text = "Jagged seams"), forms.CheckBox(Text = "Pack textures"), None)
-        self.collapsePanel.AddRow(None, forms.CheckBox(Text = "Simple planes"))
+        self.collapsePanel.AddRow(None, CB("Refine mesh"))
+        self.collapsePanel.AddRow(None, CB("Jagged seams"), CB("Pack textures"), None)
+        self.collapsePanel.AddRow(None, CB("Simple planes"))
         self.collapsePanel.EndVertical()
 
-        # button to toggle collapsing
-        self.collapseButton = forms.Button(Text = "v", MinimumSize = drawing.Size.Empty)
+        # button to toggle collapsing (starts expanded, so show the collapse arrow)
+        self.collapseButton = forms.Button()
+        self.collapseButton.Text = "^"
+        self.collapseButton.MinimumSize = drawing.Size.Empty
         self.collapseButton.Click += self.collapseButton_Click
-        
+
         # a few buttons always shown at the bottom
-        self.previewButton = forms.Button(Text = "Preview")
+        self.previewButton = forms.Button()
+        self.previewButton.Text = "Preview"
 
 
-        self.cancelButton = forms.Button(Text = "Cancel")
+        self.cancelButton = forms.Button()
+        self.cancelButton.Text = "Cancel"
         self.cancelButton.Click += self.cancelButton_Click;
 
-        self.okButton = forms.Button(Text = "OK")
+        self.okButton = forms.Button()
+        self.okButton.Text = "OK"
         self.okButton.Click += self.okButton_Click
         
         # set default buttons when user presses enter or escape anywhere on the form
@@ -66,7 +82,8 @@ class CollapsableEtoDialog(forms.Dialog[bool]): # return True or False from Show
         toleranceUpDown = forms.NumericUpDown()
 
     # our main layout
-        layout = forms.DynamicLayout(DefaultSpacing = drawing.Size(2,2))
+        layout = forms.DynamicLayout()
+        layout.DefaultSpacing = drawing.Size(2,2)
         layout.AddSeparateRow(None, L("Tolerance"), toleranceUpDown, L("millimeters"), self.collapseButton)
         layout.AddCentered(self.collapsePanel) # we need this auto-sized so we can get its width to adjust form height
         layout.Add(None); # expanding space, in case you want the form re-sizable
@@ -76,26 +93,27 @@ class CollapsableEtoDialog(forms.Dialog[bool]): # return True or False from Show
 
     def collapseButton_Click(self, sender, e):
         if self.collapsePanel.Visible:
-           self.ClientSize = drawing.Size(self.ClientSize.Width, self.ClientSize.Height - self.collapsePanel.Height)
+           # Collapse: remember the panel's height while it is still visible
+           # (a hidden panel reports 0, which would break re-expanding).
+           self.m_panel_height = self.collapsePanel.Height
+           # Clamp to >= 0: a negative window height is a fatal error in Rhino 9's WPF/Eto.
+           new_height = max(0, self.ClientSize.Height - self.m_panel_height)
+           self.ClientSize = drawing.Size(self.ClientSize.Width, new_height)
            self.collapsePanel.Visible = False
-           self.collapseButton.Text = "^"
-        else:
-           self.collapsePanel.Visible = True
            self.collapseButton.Text = "v"
-           self.ClientSize = drawing.Size(max(self.ClientSize.Width, self.collapsePanel.Width), self.ClientSize.Height + self.collapsePanel.Height)
-#            except:
-#             print "Unexpected error:", sys.exc_info()[0]
-#             pass # so we don't bring down rhino if there's a bug in the script
+        else:
+           # Expand: restore using the remembered panel height.
+           self.collapsePanel.Visible = True
+           self.collapseButton.Text = "^"
+           panel_height = getattr(self, "m_panel_height", self.collapsePanel.Height)
+           self.ClientSize = drawing.Size(self.ClientSize.Width, self.ClientSize.Height + panel_height)
+
     def cancelButton_Click (self, sender, e):
         self.Close(False)
 
 
     def okButton_Click (self, sender, e):
         self.Close(True)
-
-
-        if self.ShowModal():
-            print "Do something, user clicked OK"
 
 ################################################################################
 # Creating a dialog instance and displaying the dialog.

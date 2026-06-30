@@ -1,9 +1,10 @@
 ################################################################################
 # SampleEtoPushPickButtonDialog.py
-# Copyright (c) 2018 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
 # Imports
+# ! python3
 import Rhino.UI
 import Eto.Drawing as drawing
 import Eto.Forms as forms
@@ -11,6 +12,7 @@ import Eto.Forms as forms
 class SampleEtoPushPickButtonDialog(forms.Dialog):
     
     def __init__(self):
+        super().__init__()
         self.Title = "Sample Eto PushPickButton Dialog"
         self.ClientSize = drawing.Size(200, 200)
         self.Padding = drawing.Padding(5)

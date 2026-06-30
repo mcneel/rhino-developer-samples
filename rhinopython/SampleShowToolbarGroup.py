@@ -1,8 +1,9 @@
 ################################################################################
 # SampleShowToolbarGroup.py
-# Copyright (c) 2017 Robert McNeel & Associates.
+# Copyright (c) 2013-2026, Robert McNeel & Associates.
 # See License.md in the root of this repository for details.
 ################################################################################
+# ! python3
 import Rhino
 import System
 
@@ -19,11 +20,11 @@ def SampleShowToolbarGroup():
         # Get path to user profile
         path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData)
         # Try loading 'Default" toolbar collection
-        tb = tb_files.Open(path + '\McNeel\Rhinoceros\5.0\UI\Default.rui')
+        tb = tb_files.Open(path + r'\McNeel\Rhinoceros\9.0\UI\Default.rui')
     
     if not tb:
         # Something wrong...
-        RhinoApp.WriteLine('Unable to open Default.rui')
+        Rhino.RhinoApp.WriteLine('Unable to open Default.rui')
         return
     
     # Find the 'Polygon' toolbar group
