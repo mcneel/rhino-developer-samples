@@ -1,9 +1,9 @@
 ﻿using System.Windows.Forms;
 using RhinoWindows.Forms;
 
-// NOTE: RhinoWindows.Forms.Controls.Render.SubNodeControl is obsolete in Rhino 9 and
-// has no supported replacement yet. The control is disabled (commented out) here until
-// a replacement is available; tracked as a separate bug (RDK / Max). See RH-95837.
+// NOTE: RhinoWindows.Forms.Controls.Render.SubNodeControl is obsolete in Rhino 9 with
+// no supported replacement. The control is disabled (commented out) here until a
+// replacement is available.
 
 namespace SampleCsRdk
 {
