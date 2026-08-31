@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SampleImportExportPluginApp.cpp" />
+    <ClCompile Include="SampleImportExportPluginPlugIn.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SampleImportExportPluginApp.h" />
+    <ClInclude Include="SampleImportExportPluginPlugIn.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\SampleImportExportPlugin.rc2" />
+    <None Include="SampleImportExportPlugin.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SampleImportExportPlugin.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\SampleImportExportPlugin.ico" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>MFCDLLProj</Keyword>
+    <ProjectGuid>{7C2A4E19-93B5-4F86-A1D0-58E3B7642C9F}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <!--
+    Optional source-tree build. Set RhinoSourceTree to a Rhino repo root, e.g.
+      msbuild /p:RhinoSourceTree=C:\mcneel\rhino9x
+    Use this while CRhinoImportExportPlugIn has not shipped in an installed C++
+    SDK. It bypasses the Rhino.Cpp.PlugIn.props sheets, which resolve the SDK
+    from the registry.
+
+    RhinoSourceTree can come from /p: on the command line or from an environment
+    variable of the same name. Neither is set when building inside Visual Studio,
+    so fall back to a Rhino tree checked out beside this repository.
+
+    This has to be resolved before Microsoft.Cpp.props reads UseDebugLibraries.
+  -->
+  <PropertyGroup Condition="'$(RhinoSourceTree)' == ''">
+    <RhinoSourceTreeDefault>$(MSBuildThisFileDirectory)..\..\..\rhino9x</RhinoSourceTreeDefault>
+    <RhinoSourceTree Condition="exists('$(RhinoSourceTreeDefault)\src4\rhino4\SDK\inc\RhinoSdkStdafxPreamble.h')">$(RhinoSourceTreeDefault)</RhinoSourceTree>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- _DEBUG makes rhinoSdk.h define RHINO_SDK_DEBUG, which is what a plug-in
+         linking with a Debug Rhino needs. NDEBUG is correct against an installed
+         SDK, where a "Debug" plug-in still links with a release Rhino. -->
+    <RhinoDebugConfigDefine>NDEBUG</RhinoDebugConfigDefine>
+    <RhinoDebugConfigDefine Condition="'$(RhinoSourceTree)' != ''">_DEBUG</RhinoDebugConfigDefine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <!-- The Debug Rhino in src4\bin\Debug uses the debug CRT and mfc140ud. Mixing
+         those with the release CRT in one process does not work. -->
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(RhinoSourceTree)' != ''">true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+   <RhinoSdkVersion>9.0</RhinoSdkVersion>
+   <!-- Set RhinoSourceTree to a Rhino repo root to build against that tree's
+        headers and libraries instead of an installed C++ SDK. Needed while
+        CRhinoImportExportPlugIn has not shipped in an SDK yet. -->
+   <RhinoSdkPath>$([MSBuild]::GetRegistryValueFromView('HKEY_LOCAL_MACHINE\SOFTWARE\McNeel\Rhinoceros\SDK\$(RhinoSdkVersion)', 'InstallPath', null, RegistryView.Registry64))</RhinoSdkPath>
+  </PropertyGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props" Condition="'$(RhinoSdkPath)' != '' and exists('$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props" Condition="'$(RhinoSdkPath)' != '' and exists('$(RhinoSdkPath)PropertySheets\Rhino.Cpp.PlugIn.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;$(RhinoDebugConfigDefine);_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN64;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(RhinoSourceTree)' != ''">
+    <RhinoSourceIncDir>$(RhinoSourceTree)\src4\rhino4\SDK\inc</RhinoSourceIncDir>
+    <!-- An installed SDK stages opennurbs beside inc. A source tree does not, so
+         this makes the relative opennurbs includes inside RhinoSdk.h resolve. -->
+    <RhinoSourceRootIncDir>$(RhinoSourceTree)\src4\rhino4</RhinoSourceRootIncDir>
+    <RhinoSourceRdkIncDir>$(RhinoSourceTree)\src4\rhino4\Plug-ins\RDK\RDK\inc</RhinoSourceRdkIncDir>
+    <RhinoSourceLibDir>$(RhinoSourceTree)\src4\bin\$(Configuration)</RhinoSourceLibDir>
+    <!-- rhinoSdkPlugInLinkingPragmas.h expects RhinoCore.lib, opennurbs.lib and
+         rdk.lib in one directory. An installed SDK stages them together; a source
+         tree keeps rdk.lib one level down, so stage the three here. -->
+    <RhinoStagedLibDir>$(IntDir)RhinoLibs</RhinoStagedLibDir>
+    <!-- Rhino.Cpp.$(Platform).$(Configuration).PlugIn.props sets this. Without it the
+         build produces a .dll, which Rhino will not load as a plug-in. -->
+    <TargetExt>.rhp</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(RhinoSourceTree)' != ''">
+    <ClCompile>
+      <!-- No RHINO_DEBUG_PLUGIN: that means a debug plug-in linking with a release
+           Rhino, and rhinoSdk.h then suppresses RHINO_SDK_DEBUG. -->
+      <PreprocessorDefinitions>RHINO_LIB_DIR="$(RhinoStagedLibDir.Replace('\','/'))";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(RhinoSourceIncDir);$(RhinoSourceRootIncDir);$(RhinoSourceRdkIncDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <!-- The resource compiler has its own include path. targetver.h, pulled in by
+           the .rc, includes rhinoSdkWindowsVersion.h from the SDK. -->
+      <AdditionalIncludeDirectories>$(RhinoSourceIncDir);$(RhinoSourceRootIncDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <!-- rhinoSdkPlugInLinkingPragmas.h names RhinoCore.lib, opennurbs.lib and
+           rdk.lib. rdk.lib is staged one level below the other two. -->
+      <AdditionalLibraryDirectories>$(RhinoSourceLibDir);$(RhinoSourceLibDir)\Plug-ins;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Target Name="StageRhinoSourceLibs" BeforeTargets="ClCompile" Condition="'$(RhinoSourceTree)' != ''">
+    <Copy SourceFiles="$(RhinoSourceLibDir)\RhinoCore.lib;$(RhinoSourceLibDir)\opennurbs.lib;$(RhinoSourceLibDir)\Plug-ins\rdk.lib"
+          DestinationFolder="$(RhinoStagedLibDir)" SkipUnchangedFiles="true" />
+  </Target>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
