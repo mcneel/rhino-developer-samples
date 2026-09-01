@@ -249,6 +249,9 @@
     <ClCompile Include="cmdSampleLoft.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cmdSampleMake2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="cmdSampleMakeBlock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
