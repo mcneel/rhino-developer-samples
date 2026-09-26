@@ -1,0 +1,4 @@
+[submodule "cpp/SDK"]
+	path = cpp/SDK
+	url = https://github.com/mcneel/rhino_sdk_cpp.git
+	branch = main
