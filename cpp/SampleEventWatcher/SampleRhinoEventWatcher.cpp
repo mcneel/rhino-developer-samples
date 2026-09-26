@@ -14,22 +14,22 @@ void CSampleRhinoEventWatcher::OnNewDocument(CRhinoDoc&)
   RhinoApp().Print(L"** EVENT: New Document **\n");
 }
 
-void CSampleRhinoEventWatcher::OnBeginOpenDocument(CRhinoDoc&, const wchar_t*, BOOL, BOOL)
+void CSampleRhinoEventWatcher::OnBeginOpenDocument(CRhinoDoc&, const wchar_t*, BOOL32, BOOL32)
 {
   RhinoApp().Print(L"** EVENT: Begin Open Document **\n");
 }
 
-void CSampleRhinoEventWatcher::OnEndOpenDocument(CRhinoDoc&, const wchar_t*, BOOL, BOOL)
+void CSampleRhinoEventWatcher::OnEndOpenDocument(CRhinoDoc&, const wchar_t*, BOOL32, BOOL32)
 {
   RhinoApp().Print(L"** EVENT: End Open Document **\n");
 }
 
-void CSampleRhinoEventWatcher::OnBeginSaveDocument(CRhinoDoc&, const wchar_t*, BOOL)
+void CSampleRhinoEventWatcher::OnBeginSaveDocument(CRhinoDoc&, const wchar_t*, BOOL32)
 {
   RhinoApp().Print(L"** EVENT: Begin Save Document **\n");
 }
 
-void CSampleRhinoEventWatcher::OnEndSaveDocument(CRhinoDoc&, const wchar_t*, BOOL)
+void CSampleRhinoEventWatcher::OnEndSaveDocument(CRhinoDoc&, const wchar_t*, BOOL32)
 {
   RhinoApp().Print(L"** EVENT: End Save Document **\n");
 }
@@ -196,7 +196,11 @@ void CSampleRhinoEventWatcher::HatchPatternTableEvent(CRhinoEventWatcher::hatchp
 ////////////////////////////////////////////////////////////////
 // Undo event
 
-void CSampleRhinoEventWatcher::UndoEvent(CRhinoEventWatcher::undo_event type, unsigned int, const CRhinoCommand*)
+void CSampleRhinoEventWatcher::UndoEvent(
+#ifdef ON_RUNTIME_APPLE
+  const CRhinoDoc&,
+#endif
+  CRhinoEventWatcher::undo_event type, unsigned int, const CRhinoCommand*)
 {
   ON_wString str;
   switch (type)

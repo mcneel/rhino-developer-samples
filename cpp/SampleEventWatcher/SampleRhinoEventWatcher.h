@@ -7,10 +7,10 @@ class CSampleRhinoEventWatcher : public CRhinoEventWatcher
 
   void OnCloseDocument(CRhinoDoc& doc) override;
   void OnNewDocument(CRhinoDoc& doc) override;
-  void OnBeginOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference) override;
-  void OnEndOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference) override;
-  void OnBeginSaveDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bExportSelected) override;
-  void OnEndSaveDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bExportSelected) override;
+  void OnBeginOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bMerge, BOOL32 bReference) override;
+  void OnEndOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bMerge, BOOL32 bReference) override;
+  void OnBeginSaveDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bExportSelected) override;
+  void OnEndSaveDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bExportSelected) override;
   void OnDocumentPropertiesChanged(CRhinoDoc& doc) override;
   void OnAppSettingsChanged(const CRhinoAppSettings& new_app_settings) override;
 
@@ -60,5 +60,9 @@ class CSampleRhinoEventWatcher : public CRhinoEventWatcher
   //////////////////////////////////////////////////////////////
   // Undo event
 
-  void UndoEvent(CRhinoEventWatcher::undo_event type, unsigned int undo_record_serialnumber, const CRhinoCommand* cmd) override;
+  void UndoEvent(
+#ifdef ON_RUNTIME_APPLE
+    const CRhinoDoc& doc,
+#endif
+    CRhinoEventWatcher::undo_event type, unsigned int undo_record_serialnumber, const CRhinoCommand* cmd) override;
 };
