@@ -15,12 +15,38 @@ set(SOURCES
 if(WIN32)
     # The MFC DLL entry point. Rhino for Mac does not use MFC.
     list(APPEND SOURCES SampleEventWatcherApp.cpp stdafx.cpp)
+
+    # CMake's default MSVC flags define WIN32.  Rhino for Windows is 64-bit only
+    # and rhinoSdkChecks.h stops the build unless WIN64 is defined and WIN32 is not.
+    string(REPLACE "/DWIN32" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+
+    set(CMAKE_MFC_FLAG 2)  # MFC in a shared DLL
 endif()
 
 add_library(SampleEventWatcher MODULE ${SOURCES})
 target_include_directories(SampleEventWatcher PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}" "${RHINO_SDK}/inc")
 set_target_properties(SampleEventWatcher PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED ON)
+
+if(WIN32)
+    # Rhino plug-ins always link the release CRT and MFC, even when built with
+    # debugging information.  A plug-in built against the debug CRT will not load,
+    # so RHINO_DEBUG_PLUGIN takes the place of _DEBUG.
+    set_target_properties(SampleEventWatcher PROPERTIES
+        MSVC_RUNTIME_LIBRARY "MultiThreadedDLL" SUFFIX ".rhp")
+    target_compile_definitions(SampleEventWatcher PRIVATE
+        $<$<CONFIG:Debug>:RHINO_DEBUG_PLUGIN>)
+
+    # RHINO_LIB_DIR is pasted into the SDK's #pragma comment(lib, ...) lines, which
+    # the linker resolves relative to the build directory, so it has to be absolute.
+    target_compile_definitions(SampleEventWatcher PRIVATE
+        WIN64 _WINDOWS _USRDLL _AFXDLL _UNICODE UNICODE
+        RHINO_LIB_DIR="${RHINO_SDK}/lib")
+
+    # stdafx.h has to be compiled first in every source file.
+    target_compile_options(SampleEventWatcher PRIVATE
+        "/FI${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h")
+endif()
 
 if(APPLE)
     # stdafx.h has to be compiled first in every source file.
