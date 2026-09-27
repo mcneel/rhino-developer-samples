@@ -23,18 +23,19 @@ bool CSampleRdkAddRdkMaterialsRdkPlugIn::Initialize(void)
 {
 	// TODO: Initialize your plug-in. Return false on failure.
 
-	return __super::Initialize();
+	return CRhRdkPlugIn::Initialize();
 }
 
 void CSampleRdkAddRdkMaterialsRdkPlugIn::Uninitialize(void)
 {
 	// TODO: Do any necessary plug-in clean-up here.
 
-	__super::Uninitialize();
+	CRhRdkPlugIn::Uninitialize();
 }
 
 bool CSampleRdkAddRdkMaterialsRdkPlugIn::Icon(OUT CRhinoDib& dibOut) const
 {
+#if defined(ON_RUNTIME_WIN)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	const int s = CRhinoDpi::IconSize(CRhinoDpi::IconType::SmallIcon);
@@ -49,4 +50,12 @@ bool CSampleRdkAddRdkMaterialsRdkPlugIn::Icon(OUT CRhinoDib& dibOut) const
 	::DeleteObject(info.hbmMask);
 
 	return true;
+#else
+	// The icon comes out of the plug-in's Windows resources, and a Mac bundle
+	// has none.  Returning false means the plug-in has no icon, which Rhino
+	// handles; to supply one, read an image out of the bundle's Resources and
+	// hand it to dibOut.
+	UNREFERENCED_PARAMETER(dibOut);
+	return false;
+#endif
 }

@@ -1,5 +1,7 @@
 
 #include "stdafx.h"
+#include <chrono>
+#include <thread>
 #include "SampleRdkContentTaskRdkPlugIn.h"
 #include "SampleRdkContentTaskPlugIn.h"
 #include "SampleRdkContentTask.h"
@@ -18,14 +20,14 @@ bool CSampleRdkContentTaskRdkPlugIn::Initialize()
 {
 	// TODO: Initialize your plug-in. Return false on failure.
 
-	return __super::Initialize();
+	return CRhRdkRenderPlugIn::Initialize();
 }
 
 void CSampleRdkContentTaskRdkPlugIn::Uninitialize()
 {
 	// TODO: Do any necessary plug-in clean-up here.
 
-	__super::Uninitialize();
+	CRhRdkRenderPlugIn::Uninitialize();
 }
 
 void CSampleRdkContentTaskRdkPlugIn::RegisterExtensions() const
@@ -34,7 +36,7 @@ void CSampleRdkContentTaskRdkPlugIn::RegisterExtensions() const
 
 	// TODO: Add further material/environment/texture factories by calling AddExtension(new MyFactory);
 
-	__super::RegisterExtensions();
+	CRhRdkRenderPlugIn::RegisterExtensions();
 }
 
 void CSampleRdkContentTaskRdkPlugIn::AbortRender()
@@ -82,7 +84,7 @@ bool CSampleRdkContentTaskRdkPlugIn::CreatePreview(const ON_2iSize& sizeImage, R
 	while ((amount < 1.001f) && !m_bCancelPreview)
 	{
 		// Fake a long rendering time.
-		::Sleep(700);
+		std::this_thread::sleep_for(std::chrono::milliseconds(700));
 
 		CRhRdkColor col(RGB(255, 255, 255));
 		col.BlendTo(amount, colTarget);

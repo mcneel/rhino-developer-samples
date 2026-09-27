@@ -46,7 +46,7 @@ public:
   // run. This is a good place to perform any significant initialization,
   // license checking, and so on.  This function must return TRUE for
   // the plug-in to continue to load.  
-  virtual BOOL OnLoadPlugIn() override;
+  virtual int OnLoadPlugIn() override;
 
   // Called one time when plug-in is about to be unloaded. By this time,
   // Rhino's mainframe window has been destroyed, and some of the SDK
@@ -68,8 +68,8 @@ public:
 
   virtual plugin_load_time PlugInLoadTime() override { return load_plugin_at_startup; }
 
-  BOOL SaveRenderedImage(ON_wString filename) override;
-  BOOL CloseRenderWindow() override;
+  BOOL32 SaveRenderedImage(ON_wString filename) override;
+  BOOL32 CloseRenderWindow() override;
 
   // Render methods
   CRhinoCommand::result RenderQuiet( const CRhinoCommandContext& context, bool bPreview);

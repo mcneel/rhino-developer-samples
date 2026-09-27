@@ -65,7 +65,7 @@ UUID CSampleRdkMaterial::PlugInId(void) const
 
 unsigned int CSampleRdkMaterial::BitFlags(void) const
 {
-	auto flags = __super::BitFlags();
+	auto flags = CRhRdkMaterial::BitFlags();
 
 	flags |=  bfFields;         // We're using fields (CRhRdkContentField).
 	flags &= ~bfTextureSummary; // No texture summary required.
@@ -159,7 +159,7 @@ bool CSampleRdkMaterial::IsFactoryProductAcceptableAsChild(const CRhRdkContentFa
 	// Note: The child-slot-name is the same as the field (AKA parameter) name for our textured fields,
 	// because we don't override ChildSlotNameFromParamName().
 
-	if (0 == _wcsicmp(L"diffuse-color", wszChildSlotName))
+	if (0 == on_wcsicmp(L"diffuse-color", wszChildSlotName))
 	{
 		// The diffuse-color child slot is limited to bitmap textures.
 		if (f.ContentTypeId() == uuidBitmapTextureType)
@@ -169,14 +169,14 @@ bool CSampleRdkMaterial::IsFactoryProductAcceptableAsChild(const CRhRdkContentFa
 			return true;
 	}
 	else
-	if (0 == _wcsicmp(L"emission-color", wszChildSlotName))
+	if (0 == on_wcsicmp(L"emission-color", wszChildSlotName))
 	{
 		// The emission-color child slot is limited to any textures.
 		if (f.IsKind(Kinds::Texture))
 			return true;
 	}
 	else
-	if (0 == _wcsicmp(L"material", wszChildSlotName))
+	if (0 == on_wcsicmp(L"material", wszChildSlotName))
 	{
 		// The environment child slot is limited to any materials.
 		if (f.IsKind(Kinds::Material))
@@ -196,7 +196,7 @@ void CSampleRdkMaterial::AddUISections(IRhRdkExpandableContentUI& ui)
 	//AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	//ui.AddSection(new CMySection);
 
-	__super::AddUISections(ui);
+	CRhRdkMaterial::AddUISections(ui);
 }
 
 CRhRdkContent::ParamSerialMethod CSampleRdkMaterial::ParameterSerializationMethod(void) const

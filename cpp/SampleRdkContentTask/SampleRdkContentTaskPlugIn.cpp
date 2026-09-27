@@ -112,7 +112,7 @@ GUID CSampleRdkContentTaskPlugIn::PlugInID() const
 /////////////////////////////////////////////////////////////////////////////
 // Additional overrides
 
-BOOL CSampleRdkContentTaskPlugIn::OnLoadPlugIn()
+int CSampleRdkContentTaskPlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
@@ -208,7 +208,7 @@ CRhinoCommand::result CSampleRdkContentTaskPlugIn::RenderQuiet(const CRhinoComma
   return CRhinoCommand::failure;
 }
 
-BOOL CSampleRdkContentTaskPlugIn::SaveRenderedImage(ON_wString filename)
+BOOL32 CSampleRdkContentTaskPlugIn::SaveRenderedImage(ON_wString filename)
 {
   // Description:
   //   Message sent from a script to save the rendering to a file.
@@ -219,7 +219,7 @@ BOOL CSampleRdkContentTaskPlugIn::SaveRenderedImage(ON_wString filename)
   return FALSE;
 }
 
-BOOL CSampleRdkContentTaskPlugIn::CloseRenderWindow()
+BOOL32 CSampleRdkContentTaskPlugIn::CloseRenderWindow()
 {
   // Description:
   //   Close render window notification. Called when rendering is done and render window
