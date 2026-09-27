@@ -23,7 +23,12 @@ CSampleRdkRendererSdkRender::CSampleRdkRendererSdkRender(const CRhinoCommandCont
 
 CSampleRdkRendererSdkRender::~CSampleRdkRendererSdkRender()
 {
-	ASSERT(!m_RenderThread.joinable());
+	// A thread that has finished is still joinable, and destroying a joinable std::thread stops Rhino.
+	if (m_RenderThread.joinable())
+	{
+		m_bCancel = true;
+		m_RenderThread.join();
+	}
 }
 
 static float Random(void)
