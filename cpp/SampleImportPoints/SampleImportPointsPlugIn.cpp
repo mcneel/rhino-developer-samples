@@ -195,9 +195,19 @@ void CSampleImportPointsPlugIn::AddFileType(ON_ClassArray<CRhinoFileType>& exten
   //      extensions.Append(ft);
   //   }
 
-  // TODO: Add supported file extensions here
-
-  CRhinoFileType ft(PlugInID(), L"Points File (*.pts)", L"pts");
+  // Pick an extension no other file import plug-in claims.
+  //
+  // When two import plug-ins offer the same extension, Rhino resolves the
+  // clash in favour of its own built-in importer, and a third-party plug-in
+  // cannot win: the deciding test is a base class that is not in the public
+  // SDK.  Your ReadFile() is then simply never called, and nothing is printed
+  // to tell you why - the import still appears to succeed, because Rhino's
+  // importer did the work.
+  //
+  // This sample used to register ".pts", which Rhino's own Points Import
+  // plug-in already reads (along with .asc, .csv, .txt and .xyz), so it never
+  // ran on either platform.  ".samplepts" belongs to nobody.
+  CRhinoFileType ft(PlugInID(), L"Sample Points File (*.samplepts)", L"samplepts");
   extensions.Append(ft);
 }
 
