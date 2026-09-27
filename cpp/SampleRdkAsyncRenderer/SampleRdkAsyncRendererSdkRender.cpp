@@ -1,6 +1,9 @@
 
 #include "stdafx.h"
 #include "SampleRdkAsyncRendererSdkRender.h"
+#include <atomic>
+#include <chrono>
+#include <thread>
 #include "SampleRdkAsyncRendererPlugIn.h"
 
 class CAsyncRenderContext : public IRhRdkAsyncRenderContext
@@ -22,9 +25,9 @@ public: // Implement IRhRdkAsyncRenderContext.
 	virtual void* EVF(const wchar_t*, void*) override { return nullptr; }
 
 public:
-	CRect m_RectRender;
-	CRect m_Region;
-	HANDLE m_hRenderThread = NULL;
+	ON_4iRect m_RectRender;
+	ON_4iRect m_Region;
+	std::thread m_RenderThread;
 	IRhRdkRenderWindow* m_pRenderWindow = nullptr;
 	ON_3dmRenderSettings m_RenderSettings;
 	IRhRdkRenderWindow::IChannel* m_pChanRGBA = nullptr;
@@ -33,8 +36,11 @@ public:
 	IRhRdkRenderWindow::IChannel* m_pChanNormalY = nullptr;
 	IRhRdkRenderWindow::IChannel* m_pChanNormalZ = nullptr;
 	bool m_bPreview = false;
-	bool m_bPause = false;
-	volatile bool m_bCancel = false;
+
+	// The main thread writes these and the render thread reads them, so they
+	// have to be atomic.  volatile is not a threading construct.
+	std::atomic<bool> m_bPause{false};
+	std::atomic<bool> m_bCancel{false};
 };
 
 // CAsyncRenderContext
@@ -55,13 +61,10 @@ CAsyncRenderContext::~CAsyncRenderContext()
 void CAsyncRenderContext::StopRendering(void)
 {
 	// If rendering is in progress, cancel it and wait for it to stop.
-	if (NULL != m_hRenderThread)
+	if (m_RenderThread.joinable())
 	{
 		m_bCancel = true;
-
-		::WaitForSingleObject(m_hRenderThread, INFINITE);
-		::CloseHandle(m_hRenderThread);
-		m_hRenderThread = NULL;
+		m_RenderThread.join();
 	}
 }
 
@@ -82,7 +85,7 @@ void CAsyncRenderContext::ResumeRendering(void)
 
 static float Random(void)
 {
-	return float(rand()) / RAND_MAX;
+	return float(rand()) / float(RAND_MAX);
 }
 
 bool CAsyncRenderContext::RenderCore(void)
@@ -114,9 +117,9 @@ bool CAsyncRenderContext::RenderCore(void)
 
 	const float pi = float(ON_PI);
 
-	const float size = float(min(width, height));
+	const float size = float(std::min(width, height));
 
-	const CPoint origin(m_Region.left, m_Region.bottom);
+	const ON_2iPoint origin(m_Region.left, m_Region.bottom);
 
 	const int mosaic = 8;
 
@@ -127,8 +130,10 @@ bool CAsyncRenderContext::RenderCore(void)
 		if (m_bCancel)
 			break;
 
+#if defined(ON_RUNTIME_WIN)
 		if (0 != (::GetAsyncKeyState(VK_SHIFT) & 0x8000))
 			return false; // Press SHIFT to fail (for testing).
+#endif
 
 		const int pixelY = y - m_Region.top;
 
@@ -189,10 +194,10 @@ bool CAsyncRenderContext::RenderCore(void)
 			}
 
 			float rgba[4];
-			rgba[0] = max(0.0f, min(1.0f, r / samples));
-			rgba[1] = max(0.0f, min(1.0f, g / samples));
-			rgba[2] = max(0.0f, min(1.0f, b / samples));
-			rgba[3] = max(0.0f, min(1.0f, a / samples));
+			rgba[0] = std::max(0.0f, std::min(1.0f, r / samples));
+			rgba[1] = std::max(0.0f, std::min(1.0f, g / samples));
+			rgba[2] = std::max(0.0f, std::min(1.0f, b / samples));
+			rgba[3] = std::max(0.0f, std::min(1.0f, a / samples));
 
 			const float z = (rgba[0] + rgba[1] + rgba[2]) / 3.0f;
 
@@ -246,14 +251,21 @@ bool CAsyncRenderContext::RenderCore(void)
 		percent = (pixelY * 100) / height;
 		m_pRenderWindow->SetProgress(L"Rendering...", percent);
 
-		if (0 == (::GetAsyncKeyState(VK_CONTROL) & 0x8000))
+#if defined(ON_RUNTIME_WIN)
+		const bool bFullSpeed = (0 != (::GetAsyncKeyState(VK_CONTROL) & 0x8000));
+#else
+		// The Mac SDK has no call for this yet. RH-99063
+		const bool bFullSpeed = false;
+#endif
+		if (!bFullSpeed)
 		{
-			::Sleep(m_bPreview ? 10 : 100); // Deliberate slowdown for testing.
+			// Deliberate slowdown for testing.
+			std::this_thread::sleep_for(std::chrono::milliseconds(m_bPreview ? 10 : 100));
 		}
 
 		while (m_bPause && !m_bCancel)
 		{
-			::Sleep(500);
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
 	}
 
@@ -422,7 +434,7 @@ CRhinoSdkRender::RenderReturnCodes CSampleRdkAsyncRendererSdkRender::Render(cons
 	if (!SetUpRender(RhinoApp().ActiveView(), false))
 		return CRhinoSdkRender::render_error_starting_render;
 
-	CRhinoSdkRender::RenderReturnCodes rc = __super::Render(sizeImage);
+	CRhinoSdkRender::RenderReturnCodes rc = CRhRdkSdkRender::Render(sizeImage);
 
 	return rc;
 }
@@ -439,35 +451,36 @@ CRhinoSdkRender::RenderReturnCodes CSampleRdkAsyncRendererSdkRender::RenderWindo
 		// Rendering the specified region in a normal popup window.
 
 		// This method gives roughly a region-sized frame.
-		const CRect rect(pRect);
+		// ON_4iRect has no constructor from a RECT pointer, which is what CRect gave us.
+		const ON_4iRect rect(pRect->left, pRect->top, pRect->right, pRect->bottom);
 		const auto cs = rect.Size();
 		const auto size = ON_2iSize(cs.cx, cs.cy);
 
-		rc = __super::Render(size);
+		rc = CRhRdkSdkRender::Render(size);
 
 		// This method gives a normal-sized frame with a region-sized rendered area inside it.
-//		rc = __super::Render(sizeRender);
+//		rc = CRhRdkSdkRender::Render(sizeRender);
 	}
 	else
 	{
 		// Rendering directly into the viewport.
-		rc = __super::RenderWindow(pView, pRect, bInPopupWindow);
+		rc = CRhRdkSdkRender::RenderWindow(pView, pRect, bInPopupWindow);
 	}
 
 	return rc;
 }
 
-BOOL CSampleRdkAsyncRendererSdkRender::NeedToProcessGeometryTable()
+BOOL32 CSampleRdkAsyncRendererSdkRender::NeedToProcessGeometryTable()
 {
 	return ::SampleRdkAsyncRendererPlugIn().SceneChanged();
 }
 
-BOOL CSampleRdkAsyncRendererSdkRender::NeedToProcessLightTable()
+BOOL32 CSampleRdkAsyncRendererSdkRender::NeedToProcessLightTable()
 {
 	return ::SampleRdkAsyncRendererPlugIn().LightingChanged();
 }
 
-BOOL CSampleRdkAsyncRendererSdkRender::RenderPreCreateWindow()
+BOOL32 CSampleRdkAsyncRendererSdkRender::RenderPreCreateWindow()
 {
 	::SampleRdkAsyncRendererPlugIn().SetSceneChanged(FALSE);
 	::SampleRdkAsyncRendererPlugIn().SetLightingChanged(FALSE);
@@ -481,11 +494,6 @@ bool CSampleRdkAsyncRendererSdkRender::ReuseRenderWindow(void) const
 	return true;
 }
 
-static int RenderThread(void* pv)
-{
-	return reinterpret_cast<CAsyncRenderContext*>(pv)->ThreadedRender();
-}
-
 void CSampleRdkAsyncRendererSdkRender::StartRendering()
 {
 	const auto pRC = AsyncRC();
@@ -497,15 +505,15 @@ void CSampleRdkAsyncRendererSdkRender::StartRendering()
 		return;
 
 	const auto size = RenderSize(*pDoc, true);
-	pRC->m_RectRender = CRect(0, 0, size.cx, size.cy);
+	pRC->m_RectRender = ON_4iRect(0, 0, size.cx, size.cy);
 
 	pRC->m_pRenderWindow = &GetRenderWindow();
 	pRC->m_pRenderWindow->SetProgress(L"", 0);
 
-	pRC->m_hRenderThread = ::CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RenderThread, pRC, 0, NULL);
+	pRC->m_RenderThread = std::thread(&CAsyncRenderContext::ThreadedRender, pRC);
 }
 
-BOOL CSampleRdkAsyncRendererSdkRender::StartRenderingInWindow(CRhinoView*, const LPCRECT rect)
+BOOL32 CSampleRdkAsyncRendererSdkRender::StartRenderingInWindow(CRhinoView*, const LPCRECT rect)
 {
 	const auto pRC = AsyncRC();
 	if (nullptr == pRC)
@@ -515,12 +523,12 @@ BOOL CSampleRdkAsyncRendererSdkRender::StartRenderingInWindow(CRhinoView*, const
 	if (nullptr == pDoc)
 		return false;
 
-	pRC->m_RectRender = rect;
+	pRC->m_RectRender = ON_4iRect(rect->left, rect->top, rect->right, rect->bottom);
 
 	pRC->m_pRenderWindow = &GetRenderWindow();
 	pRC->m_pRenderWindow->SetProgress(L"", 0);
 
-	pRC->m_hRenderThread = ::CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RenderThread, pRC, 0, NULL);
+	pRC->m_RenderThread = std::thread(&CAsyncRenderContext::ThreadedRender, pRC);
 
 	return true;
 }

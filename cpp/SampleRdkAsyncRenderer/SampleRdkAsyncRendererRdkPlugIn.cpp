@@ -17,14 +17,14 @@ bool CSampleRdkAsyncRendererRdkPlugIn::Initialize()
 {
 	// TODO: Initialize your plug-in. Return false on failure.
 
-	return __super::Initialize();
+	return CRhRdkRenderPlugIn::Initialize();
 }
 
 void CSampleRdkAsyncRendererRdkPlugIn::Uninitialize()
 {
 	// TODO: Do any necessary plug-in clean-up here.
 
-	__super::Uninitialize();
+	CRhRdkRenderPlugIn::Uninitialize();
 }
 
 void CSampleRdkAsyncRendererRdkPlugIn::RegisterExtensions() const
@@ -32,7 +32,7 @@ void CSampleRdkAsyncRendererRdkPlugIn::RegisterExtensions() const
 	// TODO: Add material/environment/texture factories by calling AddExtension(new MyFactory);
 	// See SampleRdkMaterialCustomUI project.
 
-	__super::RegisterExtensions();
+	CRhRdkRenderPlugIn::RegisterExtensions();
 }
 
 void CSampleRdkAsyncRendererRdkPlugIn::AbortRender()

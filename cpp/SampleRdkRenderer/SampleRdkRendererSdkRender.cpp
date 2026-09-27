@@ -23,12 +23,12 @@ CSampleRdkRendererSdkRender::CSampleRdkRendererSdkRender(const CRhinoCommandCont
 
 CSampleRdkRendererSdkRender::~CSampleRdkRendererSdkRender()
 {
-	ASSERT(NULL == m_hRenderThread);
+	ASSERT(!m_RenderThread.joinable());
 }
 
 static float Random(void)
 {
-	return float(rand()) / RAND_MAX;
+	return float(rand()) / float(RAND_MAX);
 }
 
 bool CSampleRdkRendererSdkRender::RenderCore(void)
@@ -60,9 +60,9 @@ bool CSampleRdkRendererSdkRender::RenderCore(void)
 
 	const float pi = float(ON_PI);
 
-	const float size = float(min(width, height));
+	const float size = float(std::min(width, height));
 
-	const CPoint origin(m_Region.left, m_Region.bottom);
+	const ON_2iPoint origin(m_Region.left, m_Region.bottom);
 
 	const int mosaic = 8;
 
@@ -73,8 +73,10 @@ bool CSampleRdkRendererSdkRender::RenderCore(void)
 		if (m_bCancel)
 			break;
 
+#if defined(ON_RUNTIME_WIN)
 		if (0 != (::GetAsyncKeyState(VK_SHIFT) & 0x8000))
 			return false; // Press SHIFT to fail (for testing).
+#endif
 
 		const int pixelY = y - m_Region.top;
 
@@ -135,10 +137,10 @@ bool CSampleRdkRendererSdkRender::RenderCore(void)
 			}
 
 			float rgba[4];
-			rgba[0] = max(0.0f, min(1.0f, r / samples));
-			rgba[1] = max(0.0f, min(1.0f, g / samples));
-			rgba[2] = max(0.0f, min(1.0f, b / samples));
-			rgba[3] = max(0.0f, min(1.0f, a / samples));
+			rgba[0] = std::max(0.0f, std::min(1.0f, r / samples));
+			rgba[1] = std::max(0.0f, std::min(1.0f, g / samples));
+			rgba[2] = std::max(0.0f, std::min(1.0f, b / samples));
+			rgba[3] = std::max(0.0f, std::min(1.0f, a / samples));
 
 			const float z = (rgba[0] + rgba[1] + rgba[2]) / 3.0f;
 
@@ -192,9 +194,16 @@ bool CSampleRdkRendererSdkRender::RenderCore(void)
 		percent = (pixelY * 100) / height;
 		GetRenderWindow().SetProgress(L"Rendering...", percent);
 
-		if (0 == (::GetAsyncKeyState(VK_CONTROL) & 0x8000))
+#if defined(ON_RUNTIME_WIN)
+		const bool bFullSpeed = (0 != (::GetAsyncKeyState(VK_CONTROL) & 0x8000));
+#else
+		// The Mac SDK has no call for this yet. RH-99063
+		const bool bFullSpeed = false;
+#endif
+		if (!bFullSpeed)
 		{
-			::Sleep(m_bPreview ? 10 : 100); // Deliberate slowdown for testing.
+			// Deliberate slowdown for testing.
+			std::this_thread::sleep_for(std::chrono::milliseconds(m_bPreview ? 10 : 100));
 		}
 	}
 
@@ -266,9 +275,8 @@ void CSampleRdkRendererSdkRender::StopRendering()
 	// It is critical that the main thread waits for the render thread
 	// to finish. Otherwise this object can go off the stack while the
 	// render thread is still using it.
-	::WaitForSingleObject(m_hRenderThread, INFINITE);
-
-	m_hRenderThread = NULL;
+	if (m_RenderThread.joinable())
+		m_RenderThread.join();
 }
 
 bool CSampleRdkRendererSdkRender::SetUpRender(CRhinoView* pView, bool bQuiet)
@@ -311,7 +319,7 @@ CRhinoSdkRender::RenderReturnCodes CSampleRdkRendererSdkRender::Render(const ON_
 	if (!SetUpRender(RhinoApp().ActiveView(), false))
 		return CRhinoSdkRender::render_error_starting_render;
 
-	return __super::Render(sizeImage);
+	return CRhRdkSdkRender::Render(sizeImage);
 }
 
 CRhinoSdkRender::RenderReturnCodes CSampleRdkRendererSdkRender::RenderWindow(CRhinoView* pView, const LPRECT pRect, bool bInPopupWindow)
@@ -326,35 +334,36 @@ CRhinoSdkRender::RenderReturnCodes CSampleRdkRendererSdkRender::RenderWindow(CRh
 		// Rendering the specified region in a normal popup window.
 
 		// This method gives roughly a region-sized frame.
-		const CRect rect(pRect);
+		// ON_4iRect has no constructor from a RECT pointer, which is what CRect gave us.
+		const ON_4iRect rect(pRect->left, pRect->top, pRect->right, pRect->bottom);
 		const auto cs = rect.Size();
 		const auto size = ON_2iSize(cs.cx, cs.cy);
 
-		rc = __super::Render(size);
+		rc = CRhRdkSdkRender::Render(size);
 
 		// This method gives a normal-sized frame with a region-sized rendered area inside it.
-//		rc = __super::Render(sizeRender);
+//		rc = CRhRdkSdkRender::Render(sizeRender);
 	}
 	else
 	{
 		// Rendering directly into the viewport.
-		rc = __super::RenderWindow(pView, pRect, bInPopupWindow);
+		rc = CRhRdkSdkRender::RenderWindow(pView, pRect, bInPopupWindow);
 	}
 
 	return rc;
 }
 
-BOOL CSampleRdkRendererSdkRender::NeedToProcessGeometryTable()
+BOOL32 CSampleRdkRendererSdkRender::NeedToProcessGeometryTable()
 {
 	return ::SampleRdkRendererPlugIn().SceneChanged();
 }
 
-BOOL CSampleRdkRendererSdkRender::NeedToProcessLightTable()
+BOOL32 CSampleRdkRendererSdkRender::NeedToProcessLightTable()
 {
 	return ::SampleRdkRendererPlugIn().LightingChanged();
 }
 
-BOOL CSampleRdkRendererSdkRender::RenderPreCreateWindow()
+BOOL32 CSampleRdkRendererSdkRender::RenderPreCreateWindow()
 {
 	::SampleRdkRendererPlugIn().SetSceneChanged(FALSE);
 	::SampleRdkRendererPlugIn().SetLightingChanged(FALSE);
@@ -368,11 +377,6 @@ bool CSampleRdkRendererSdkRender::ReuseRenderWindow(void) const
 	return false;
 }
 
-static int RenderThread(void* pv)
-{
-	return reinterpret_cast<CSampleRdkRendererSdkRender*>(pv)->ThreadedRender();
-}
-
 void CSampleRdkRendererSdkRender::StartRendering()
 {
 	const auto* doc = CommandContext().Document();
@@ -380,16 +384,16 @@ void CSampleRdkRendererSdkRender::StartRendering()
 		return;
 
 	const auto size = RenderSize(*doc, true);
-	m_RectRender = CRect(0, 0, size.cx, size.cy);
+	m_RectRender = ON_4iRect(0, 0, size.cx, size.cy);
 
-	m_hRenderThread = ::CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RenderThread, this, 0, NULL);
+	m_RenderThread = std::thread(&CSampleRdkRendererSdkRender::ThreadedRender, this);
 }
 
-BOOL CSampleRdkRendererSdkRender::StartRenderingInWindow(CRhinoView*, const LPCRECT rect)
+BOOL32 CSampleRdkRendererSdkRender::StartRenderingInWindow(CRhinoView*, const LPCRECT rect)
 {
-	m_RectRender = rect;
+	m_RectRender = ON_4iRect(rect->left, rect->top, rect->right, rect->bottom);
 
-	m_hRenderThread = ::CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RenderThread, this, 0, NULL);
+	m_RenderThread = std::thread(&CSampleRdkRendererSdkRender::ThreadedRender, this);
 
 	return true;
 }

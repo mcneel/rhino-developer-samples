@@ -1,7 +1,7 @@
 // SampleRealtimeRendererPlugIn.cpp : defines the initialization routines for the plug-in.
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleRealtimeRendererPlugIn.h"
 #include "SampleDisplayMode.h"
@@ -123,7 +123,7 @@ GUID CSampleRealtimeRendererPlugIn::PlugInID() const
 	return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleRealtimeRendererPlugIn::OnLoadPlugIn()
+int CSampleRealtimeRendererPlugIn::OnLoadPlugIn()
 {
 	// Description:
 	//   Called after the plug-in is loaded and the constructor has been

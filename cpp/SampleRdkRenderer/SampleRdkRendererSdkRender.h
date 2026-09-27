@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <atomic>
+#include <thread>
+
 class CSampleRdkRendererSdkRender : public CRhRdkSdkRender
 {
 public:
@@ -14,15 +17,15 @@ public:
 
 public:
 	// CRhRdkSdkRender overrides.
-	virtual BOOL RenderSceneWithNoMeshes(void) override { return true; }
-	virtual BOOL RenderEnterModalLoop() override { return true; }
-	virtual BOOL RenderContinueModal()  override { return m_bContinueModal; }
-	virtual BOOL RenderExitModalLoop()  override { return true; }
-	virtual BOOL NeedToProcessLightTable() override;
-	virtual BOOL NeedToProcessGeometryTable() override;
-	virtual BOOL RenderPreCreateWindow() override;
-	virtual BOOL IgnoreRhinoObject(const CRhinoObject*) override { return false; }
-	virtual BOOL StartRenderingInWindow(CRhinoView* pView, const LPCRECT pRect) override;
+	virtual BOOL32 RenderSceneWithNoMeshes(void) override { return true; }
+	virtual BOOL32 RenderEnterModalLoop() override { return true; }
+	virtual BOOL32 RenderContinueModal()  override { return m_bContinueModal; }
+	virtual BOOL32 RenderExitModalLoop()  override { return true; }
+	virtual BOOL32 NeedToProcessLightTable() override;
+	virtual BOOL32 NeedToProcessGeometryTable() override;
+	virtual BOOL32 RenderPreCreateWindow() override;
+	virtual BOOL32 IgnoreRhinoObject(const CRhinoObject*) override { return false; }
+	virtual BOOL32 StartRenderingInWindow(CRhinoView* pView, const LPCRECT pRect) override;
 	virtual void StartRendering() override;
 	virtual void StopRendering() override;
 	virtual bool ReuseRenderWindow(void) const override;
@@ -35,9 +38,9 @@ protected:
 	bool RenderCore(void);
 
 private:
-	CRect m_RectRender;
-	CRect m_Region;
-	HANDLE m_hRenderThread = NULL;
+	ON_4iRect m_RectRender;
+	ON_4iRect m_Region;
+	std::thread m_RenderThread;
 	ON_3dmRenderSettings m_RenderSettings;
 	IRhRdkRenderWindow::IChannel* m_pChanRGBA = nullptr;
 	IRhRdkRenderWindow::IChannel* m_pChanZ = nullptr;
@@ -46,5 +49,8 @@ private:
 	IRhRdkRenderWindow::IChannel* m_pChanNormalZ = nullptr;
 	bool m_bPreview = false;
 	bool m_bContinueModal = true;
-	volatile bool m_bCancel = false;
+
+	// Written by the main thread in StopRendering() and read by the render
+	// thread, so it has to be atomic.  volatile is not a threading construct.
+	std::atomic<bool> m_bCancel{false};
 };

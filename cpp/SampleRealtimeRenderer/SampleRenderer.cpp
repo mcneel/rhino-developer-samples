@@ -5,10 +5,12 @@
 #include "stdafx.h"
 #include "SampleRenderer.h"
 
+#include <chrono>
+#include <thread>
+
 
 CSampleRenderer::CSampleRenderer(RhRdk::Realtime::ISignalUpdate* pSignalUpdateInterface)
-: m_pRenderThread(0),
- m_pSignalUpdateInterface(pSignalUpdateInterface)
+: m_pSignalUpdateInterface(pSignalUpdateInterface)
 {
 	// Initialize in idle state
 	m_bRunning = false;
@@ -39,19 +41,15 @@ bool CSampleRenderer::StartRenderProcess(const ON_2iSize& frameSize)
 	}
 
 	// If the render thread doesn't exist then create one and start it
-	if (0 == m_pRenderThread)
+	if (!m_RenderThread.joinable())
 	{
-		// Set flag that the renderer should keep on running
+		// Set the flag before the thread starts, so it does not see a stale false
 		m_bRunning = true;
 
-		// Create the thread in suspended state, pass it a pointer to this object.
-		m_pRenderThread = AfxBeginThread(RenderProcess, (void*)this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED, 0);
-
-		// We'll destroy the thread object ourselves
-		m_pRenderThread->m_bAutoDelete = FALSE;
-
-		// Start the thread
-		m_pRenderThread->ResumeThread();
+		// Pass the thread a pointer to this object.  There is no suspended
+		// state to manage and nothing to delete afterwards: std::thread owns
+		// the thread and join() below disposes of it.
+		m_RenderThread = std::thread(RenderProcess, this);
 	}
 
 	return true;
@@ -60,19 +58,14 @@ bool CSampleRenderer::StartRenderProcess(const ON_2iSize& frameSize)
 void CSampleRenderer::StopRenderProcess()
 {
 	// Stop the render if it's running
-	if (0 != m_pRenderThread)
+	if (m_RenderThread.joinable())
 	{
 		// Set the flag to tell renderer that it should stop
 		m_bRunning = false;
 
-		// Wait until renderer checks the flag and returns
-		WaitForSingleObject(m_pRenderThread->m_hThread, INFINITE);
-
-		// Delete the thread
-		delete m_pRenderThread;
-
-		// And set the pointer to NULL so we don't try stopping it again
-		m_pRenderThread = 0;
+		// Wait until renderer checks the flag and returns.  After join() the
+		// thread object is empty, so a second call does nothing.
+		m_RenderThread.join();
 	}
 
 	delete m_pRenderWnd;
@@ -138,7 +131,7 @@ unsigned int CSampleRenderer::RenderProcess(void* pData)
 		iScanline--;
 
 		// Rest for about 50 milliseconds
-		Sleep(50);
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 
 	return 0;

@@ -107,7 +107,7 @@ GUID CSampleRdkRendererPlugIn::PlugInID() const
 	return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleRdkRendererPlugIn::OnLoadPlugIn()
+int CSampleRdkRendererPlugIn::OnLoadPlugIn()
 {
 	// Description:
 	//   Called after the plug-in is loaded and the constructor has been
@@ -239,7 +239,7 @@ CRhinoCommand::result CSampleRdkRendererPlugIn::RenderQuiet(const CRhinoCommandC
 	return CRhinoCommand::failure;
 }
 
-BOOL CSampleRdkRendererPlugIn::SaveRenderedImage(ON_wString filename)
+BOOL32 CSampleRdkRendererPlugIn::SaveRenderedImage(ON_wString filename)
 {
 	// Description:
 	//   Message sent from a script to save the rendering to a file.
@@ -250,7 +250,7 @@ BOOL CSampleRdkRendererPlugIn::SaveRenderedImage(ON_wString filename)
 	return FALSE;
 }
 
-BOOL CSampleRdkRendererPlugIn::CloseRenderWindow()
+BOOL32 CSampleRdkRendererPlugIn::CloseRenderWindow()
 {
 	// Description:
 	//   Close render window notification. Called when rendering is done and render window

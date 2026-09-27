@@ -1,5 +1,8 @@
 #pragma once
 
+#include <atomic>
+#include <thread>
+
 // This class creates a render thread to process rendering in the background
 
 class CSampleRenderer
@@ -22,11 +25,12 @@ private:
 	// pData will be a pointer to an instance of this class.
 	static unsigned int RenderProcess(void* pData);
 
-	// Used by Running()
-	bool m_bRunning;
+	// Used by Running().  The main thread clears it in StopRenderProcess()
+	// and the render thread reads it, so it has to be atomic.
+	std::atomic<bool> m_bRunning{false};
 
-	// Pointer to the thread object
-	CWinThread* m_pRenderThread;
+	// The render thread itself
+	std::thread m_RenderThread;
 
 	// Dib to contain the rendered image - thread safe
 	IRhRdkRenderWindow* m_pRenderWnd = nullptr;
