@@ -22,7 +22,7 @@ RHINO_PLUG_IN_NAME(L"SampleRdkRenderer");
 
 // Rhino plug-in id
 // Provide a unique uuid for this plug-in.
-RHINO_PLUG_IN_ID(L"E3476DAB-0118-4D22-9F42-63EC01B39E4B");
+RHINO_PLUG_IN_ID(L"318E7235-520C-4830-98F8-490F5C22F37D");
 
 // Rhino plug-in version
 // Provide a version number string for this plug-in.
@@ -103,7 +103,7 @@ GUID CSampleRdkRendererPlugIn::PlugInID() const
 	//   manage the plug-ins.
 
 	// TODO: Return a unique identifier for the plug-in.
-	// {E3476DAB-0118-4D22-9F42-63EC01B39E4B}
+	// {318E7235-520C-4830-98F8-490F5C22F37D}
 	return ON_UuidFromString(RhinoPlugInId());
 }
 
