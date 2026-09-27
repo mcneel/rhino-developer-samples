@@ -4,7 +4,7 @@
 #error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "Resource.h"		// main symbols
+#include "resource.h"		// main symbols
 
 /////////////////////////////////////////////////////////////////////////////
 // CSampleWithLicensingApp

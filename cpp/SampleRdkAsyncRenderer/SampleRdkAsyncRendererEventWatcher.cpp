@@ -376,6 +376,8 @@ void CSampleRdkAsyncRendererEventWatcher::LightTableEvent(
     case light_modified:
       m_light_modified = true;
       break;
+    default:
+      break;
   }
 }
 
@@ -401,6 +403,8 @@ void CSampleRdkAsyncRendererEventWatcher::MaterialTableEvent(
       break;
     case CRhinoEventWatcher::material_modified:
       m_material_modified = true;
+      break;
+    default:
       break;
   }
 }

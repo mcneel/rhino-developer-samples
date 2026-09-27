@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleWithLicensingPlugIn.h"
 #include "resource.h"

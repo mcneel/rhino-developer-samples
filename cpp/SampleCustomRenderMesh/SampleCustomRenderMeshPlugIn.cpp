@@ -1,7 +1,7 @@
 ﻿// SampleCustomRenderMeshPlugIn.cpp : defines the initialization routines for the plug-in.
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleCustomRenderMeshPlugIn.h"
 #include "Resource.h"

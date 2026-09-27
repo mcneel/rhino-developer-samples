@@ -229,6 +229,8 @@ void CSampleRhinoEventWatcher::UndoEvent(
   case CRhinoEventWatcher::purge_record:
     str = L"Purge Record";
     break;
+  default:
+    break;
   }
   RhinoApp().Print(L"** EVENT: Undo, Type: %ls **\n", static_cast<const wchar_t*>(str));
 }

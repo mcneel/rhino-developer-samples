@@ -3,7 +3,7 @@
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleRdkContentTaskPlugIn.h"
 #include "SampleRdkContentTaskRdkPlugIn.h"
-#include "resource.h"
+#include "Resource.h"
 
 // The plug-in object must be constructed before any plug-in classes derived
 // from CRhinoCommand. The #pragma init_seg(lib) ensures that this happens.

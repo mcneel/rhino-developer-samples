@@ -1,7 +1,7 @@
 // cmdSampleChangeQueue.cpp : command file
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SampleChangeQueuePlugIn.h"
 #include "SampleChangeQueue.h"
 

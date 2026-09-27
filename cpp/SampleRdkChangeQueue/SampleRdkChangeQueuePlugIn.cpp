@@ -1,7 +1,7 @@
 ﻿// SampleRdkChangeQueuePlugIn.cpp : defines the initialization routines for the plug-in.
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleRdkChangeQueuePlugIn.h"
 #include "Resource.h"

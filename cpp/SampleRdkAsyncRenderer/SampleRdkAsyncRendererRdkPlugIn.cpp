@@ -49,7 +49,7 @@ bool CSampleRdkAsyncRendererRdkPlugIn::CreatePreview(const ON_2iSize& sizeImage,
 	UNREFERENCED_PARAMETER(pNotify);
 	UNREFERENCED_PARAMETER(dibOut);
 
-	return NULL;
+	return false;
 }
 
 bool CSampleRdkAsyncRendererRdkPlugIn::CreatePreview(const ON_2iSize& sizeImage, const CRhRdkTexture& texture, CRhinoDib& dibOut)
@@ -60,7 +60,7 @@ bool CSampleRdkAsyncRendererRdkPlugIn::CreatePreview(const ON_2iSize& sizeImage,
 	UNREFERENCED_PARAMETER(texture);
 	UNREFERENCED_PARAMETER(dibOut);
 
-	return NULL;
+	return false;
 }
 
 bool CSampleRdkAsyncRendererRdkPlugIn::SupportsFeature(const UUID& uuidFeature) const

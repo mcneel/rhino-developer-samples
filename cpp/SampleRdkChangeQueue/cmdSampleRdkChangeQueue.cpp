@@ -1,7 +1,7 @@
 // cmdSampleRdkChangeQueue.cpp : command file
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SampleRdkChangeQueuePlugIn.h"
 #include "CustomChangeQueue.h"
 
