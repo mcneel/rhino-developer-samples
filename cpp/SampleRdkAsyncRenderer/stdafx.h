@@ -6,6 +6,9 @@
 
 #if defined(_WIN32) || defined(_MSC_VER)
 
+// windows.h defines min and max as macros, and the renderer uses std::min and std::max.
+#define NOMINMAX
+
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN                             // Exclude rarely-used stuff from Windows headers
 #endif
