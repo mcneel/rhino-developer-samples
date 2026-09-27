@@ -16,6 +16,11 @@ if(WIN32)
     # The MFC DLL entry point. Rhino for Mac does not use MFC.
     list(APPEND SOURCES SampleEventWatcherApp.cpp stdafx.cpp)
 
+    # Without the .rc the plug-in has no version, and Options > Plug-ins shows
+    # it blank.  The .rc includes no SDK headers, so the resource compiler does
+    # not run the SDK checks.
+    list(APPEND SOURCES SampleEventWatcher.rc)
+
     # CMake's default MSVC flags define WIN32.  Rhino for Windows is 64-bit only
     # and rhinoSdkChecks.h stops the build unless WIN64 is defined and WIN32 is not.
     string(REPLACE "/DWIN32" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
