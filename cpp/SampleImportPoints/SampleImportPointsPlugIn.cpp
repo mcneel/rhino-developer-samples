@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleImportPointsPlugIn.h"
 #include "Resource.h"
@@ -116,7 +116,7 @@ GUID CSampleImportPointsPlugIn::PlugInID() const
   return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleImportPointsPlugIn::OnLoadPlugIn()
+int CSampleImportPointsPlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
@@ -153,16 +153,16 @@ void CSampleImportPointsPlugIn::OnUnloadPlugIn()
 /////////////////////////////////////////////////////////////////////////////
 // Online help overrides
 
-BOOL CSampleImportPointsPlugIn::AddToPlugInHelpMenu() const
+BOOL32 CSampleImportPointsPlugIn::AddToPlugInHelpMenu() const
 {
   // Description:
   //   Return true to have your plug-in name added to the Rhino help menu.
   //   OnDisplayPlugInHelp will be called when to activate your plug-in help.
 
-  return FALSE;
+  return false;
 }
 
-BOOL CSampleImportPointsPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
+BOOL32 CSampleImportPointsPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
   // Description:
   //   Called when the user requests help about your plug-in.
@@ -195,13 +195,23 @@ void CSampleImportPointsPlugIn::AddFileType(ON_ClassArray<CRhinoFileType>& exten
   //      extensions.Append(ft);
   //   }
 
-  // TODO: Add supported file extensions here
-
-  CRhinoFileType ft(PlugInID(), L"Points File (*.pts)", L"pts");
+  // Pick an extension no other file import plug-in claims.
+  //
+  // When two import plug-ins offer the same extension, Rhino resolves the
+  // clash in favour of its own built-in importer, and a third-party plug-in
+  // cannot win: the deciding test is a base class that is not in the public
+  // SDK.  Your ReadFile() is then simply never called, and nothing is printed
+  // to tell you why - the import still appears to succeed, because Rhino's
+  // importer did the work.
+  //
+  // This sample used to register ".pts", which Rhino's own Points Import
+  // plug-in already reads (along with .asc, .csv, .txt and .xyz), so it never
+  // ran on either platform.  ".samplepts" belongs to nobody.
+  CRhinoFileType ft(PlugInID(), L"Sample Points File (*.samplepts)", L"samplepts");
   extensions.Append(ft);
 }
 
-BOOL CSampleImportPointsPlugIn::ReadFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileReadOptions& options)
+BOOL32 CSampleImportPointsPlugIn::ReadFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileReadOptions& options)
 {
   UNREFERENCED_PARAMETER(index);
   UNREFERENCED_PARAMETER(options);
@@ -217,72 +227,55 @@ BOOL CSampleImportPointsPlugIn::ReadFile(const wchar_t* filename, int index, CRh
   //   The plug-in is responsible for opening the file and writing to it.
   // Return TRUE if successful, otherwise return FALSE.
 
-  // TODO: Add file import code here
+  FILE* file = ON_FileStream::Open(filename, L"r");
+  if (nullptr == file)
+    return false;
 
-  CStdioFile* file = 0;
+  ON_3dPointArray point_list;
+  const wchar_t* delimiter = L",";
+  ON_String buffer;
 
-  TRY
+  for (;;)
   {
-    file = new CStdioFile(filename, CFile::modeRead | CFile::shareDenyNone | CFile::typeText);
-    if (nullptr == file)
-      return FALSE;
+    const int ch = fgetc(file);
 
-    ON_3dPointArray point_list;
-    CString string;
-    const wchar_t* delimiter = L",";
-
-    while (file->ReadString(string))
+    if (EOF != ch && '\n' != ch)
     {
-      string.TrimLeft();
-      string.TrimRight();
-      string.Remove('\r');
-      string.Remove('\n');
-      string.Remove('"');
-
-      ON_3dPoint pt;
-      if (ParsePointValue(string, delimiter, pt))
-        point_list.Append(pt);
+      buffer += (char)ch;
+      continue;
     }
 
-    if (point_list.Count() > 0)
-    {
-      for (int i = 0; i < point_list.Count(); i++)
-        doc.AddPointObject(point_list[i]);
-    }
+    ON_wString line(buffer.Array());
+    line.Remove('\r');
+    line.Remove('"');
+    line.TrimLeftAndRight();
 
-    file->Close();
-    delete file;
-    file = nullptr;
+    // ParsePointValue() tokenises in place, so hand it the writable buffer
+    // rather than letting ON_wString convert to const wchar_t*.
+    ON_3dPoint pt;
+    if (ParsePointValue(line.Array(), delimiter, pt))
+      point_list.Append(pt);
 
-    doc.Redraw();
+    buffer.Empty();
 
-    return TRUE;
-  }
-  CATCH(CFileException, e)
-  {
-    e->ReportError();
-    if (file)
-    {
-      file->Close();
-      delete file;
-      file = 0;
-    }
-    return FALSE;
-  }
-  AND_CATCH(CMemoryException, pEx)
-  {
-    AfxAbort();
+    if (EOF == ch)
+      break;
   }
 
-  END_CATCH
+  ON_FileStream::Close(file);
 
-  return FALSE;
+  for (int i = 0; i < point_list.Count(); i++)
+    doc.AddPointObject(point_list[i]);
+
+  doc.Redraw();
+
+  return true;
 }
 
-BOOL CSampleImportPointsPlugIn::ParsePointValue(const wchar_t* string, const wchar_t* delimiter, ON_3dPoint& value)
+bool CSampleImportPointsPlugIn::ParsePointValue(const wchar_t* string, const wchar_t* delimiter, ON_3dPoint& value)
 {
   if (nullptr == string || 0 == string[0] || nullptr == delimiter || 0 == delimiter[0])
-    return FALSE;
+    return false;
 
   ON_3dPoint point = ON_3dPoint::UnsetPoint;
   double d = 0.0;
@@ -292,13 +285,13 @@ BOOL CSampleImportPointsPlugIn::ParsePointValue(const wchar_t* string, const wch
   if (token && ParseRealValue(token, d))
     point.x = d;
   else
-    return FALSE;
+    return false;
 
   token = wcstok_s(nullptr, delimiter, &context);
   if (token && ParseRealValue(token, d))
     point.y = d;
   else
-    return FALSE;
+    return false;
 
   token = wcstok_s(nullptr, delimiter, &context);
   if (token)
@@ -306,23 +299,23 @@ BOOL CSampleImportPointsPlugIn::ParsePointValue(const wchar_t* string, const wch
     if (ParseRealValue(token, d))
       point.z = d;
     else
-      return FALSE;
+      return false;
   }
   else
     point.z = 0.0;
 
   if (!point.IsValid())
-    return FALSE;
+    return false;
 
   value = point;
 
-  return TRUE;
+  return true;
 }
 
-BOOL CSampleImportPointsPlugIn::ParseRealValue(const wchar_t* string, double& value)
+bool CSampleImportPointsPlugIn::ParseRealValue(const wchar_t* string, double& value)
 {
   if (nullptr == string || 0 == string[0])
-    return FALSE;
+    return false;
 
-  return (RhinoParseNumber(string, &value) > 0) ? TRUE : FALSE;
+  return (RhinoParseNumber(string, &value) > 0) ? true : false;
 }

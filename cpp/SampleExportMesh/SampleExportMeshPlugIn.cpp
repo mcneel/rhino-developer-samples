@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleExportMeshPlugIn.h"
 #include "Resource.h"
@@ -115,7 +115,7 @@ GUID CSampleExportMeshPlugIn::PlugInID() const
   return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleExportMeshPlugIn::OnLoadPlugIn()
+int CSampleExportMeshPlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
@@ -151,7 +151,7 @@ void CSampleExportMeshPlugIn::OnUnloadPlugIn()
 
 // Online help overrides
 
-BOOL CSampleExportMeshPlugIn::AddToPlugInHelpMenu() const
+BOOL32 CSampleExportMeshPlugIn::AddToPlugInHelpMenu() const
 {
   // Description:
   //   Return true to have your plug-in name added to the Rhino help menu.
@@ -160,7 +160,7 @@ BOOL CSampleExportMeshPlugIn::AddToPlugInHelpMenu() const
   return FALSE;
 }
 
-BOOL CSampleExportMeshPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
+BOOL32 CSampleExportMeshPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
   // Description:
   //   Called when the user requests help about your plug-in.
@@ -195,7 +195,7 @@ void CSampleExportMeshPlugIn::AddFileType(ON_ClassArray<CRhinoFileType>& extensi
   extensions.Append(CRhinoFileType(PlugInID(), L"Sample Mesh (*.mesh)", L"mesh"));
 }
 
-BOOL CSampleExportMeshPlugIn::WriteFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileWriteOptions& options)
+int CSampleExportMeshPlugIn::WriteFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileWriteOptions& options)
 {
   // Description:
   //   Rhino calls WriteFile() to write document geometry to an external file.
@@ -253,9 +253,10 @@ BOOL CSampleExportMeshPlugIn::WriteFile(const wchar_t* filename, int index, CRhi
   }
 
   // Write the mesh file
-  FILE* fp = nullptr;
-  errno_t err = _wfopen_s(&fp, filename, L"w");
-  if (0 != err || nullptr == fp)
+  // ON_FileStream::Open takes a wide path on both platforms; _wfopen_s is
+  // Microsoft's.
+  FILE* fp = ON_FileStream::Open(filename, L"w");
+  if (nullptr == fp)
   {
     RhinoApp().Print(L"\nUnable to open \"%ls\" for writing.\n", filename);
     return FALSE;
@@ -317,7 +318,7 @@ BOOL CSampleExportMeshPlugIn::WriteFile(const wchar_t* filename, int index, CRhi
     }
   }
 
-  fclose(fp);
+  ON_FileStream::Close(fp);
 
   return (rc) ? TRUE : FALSE;
 }

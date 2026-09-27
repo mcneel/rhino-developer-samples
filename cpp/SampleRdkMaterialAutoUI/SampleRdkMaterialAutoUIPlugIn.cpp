@@ -29,7 +29,7 @@ RHINO_PLUG_IN_VERSION( __DATE__ "  " __TIME__ )
 
 // Rhino plug-in description
 // Provide a description of this plug-in
-RHINO_PLUG_IN_DESCRIPTION(L"SampleRdkMaterialAutoUI plug-in for Rhinoceros®");
+RHINO_PLUG_IN_DESCRIPTION(L"SampleRdkMaterialAutoUI plug-in for Rhinoceros\u00AE");
 
 // Rhino plug-in icon resource id
 // Provide an icon resource this plug-in.
@@ -116,7 +116,7 @@ GUID CSampleRdkMaterialAutoUIPlugIn::PlugInID() const
 	return ON_UuidFromString( RhinoPlugInId() );
 }
 
-BOOL CSampleRdkMaterialAutoUIPlugIn::OnLoadPlugIn()
+int CSampleRdkMaterialAutoUIPlugIn::OnLoadPlugIn()
 {
 	// Description:
 	//   Called after the plug-in is loaded and the constructor has been
@@ -198,7 +198,7 @@ CRhinoCommand::result CSampleRdkMaterialAutoUIPlugIn::Render(const CRhinoCommand
 /////////////////////////////////////////////////////////////////////////////
 // Online help overrides
 
-BOOL CSampleRdkMaterialAutoUIPlugIn::AddToPlugInHelpMenu() const
+BOOL32 CSampleRdkMaterialAutoUIPlugIn::AddToPlugInHelpMenu() const
 {
 	// Description:
 	//   Return true to have your plug-in name added to the Rhino help menu.
@@ -207,7 +207,7 @@ BOOL CSampleRdkMaterialAutoUIPlugIn::AddToPlugInHelpMenu() const
 	return FALSE;
 }
 
-BOOL CSampleRdkMaterialAutoUIPlugIn::OnDisplayPlugInHelp( HWND hWnd ) const
+BOOL32 CSampleRdkMaterialAutoUIPlugIn::OnDisplayPlugInHelp( HWND hWnd ) const
 {
 	// Description:
 	//   Called when the user requests help about your plug-in.

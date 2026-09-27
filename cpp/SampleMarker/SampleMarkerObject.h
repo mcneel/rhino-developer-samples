@@ -16,14 +16,14 @@ public:
   CSampleMarkerObject& operator=(const CRhinoPointObject&);   // copies source object UUID
   CSampleMarkerObject& operator=(const ON_3dPoint&);          // leave attributes unchanged.
 
-  int Pick(const CRhinoPickContext& pick_context, CRhinoObjRefArray& pick_list) const;
+  int Pick(const CRhinoPickContext& pick_context, CRhinoObjRefArray& pick_list) const override;
 
   // virtual CRhinoObject::Draw override
-  void Draw(CRhinoDisplayPipeline&) const;
+  void Draw(CRhinoDisplayPipeline&) const override;
 
   // virtual CRhinoObject::Draw override
   void Draw(CRhinoViewport&) const;
 
   // virtual CRhinoObject::ShortDescription override
-  const wchar_t* ShortDescription(bool bPlural) const;
+  const wchar_t* ShortDescription(bool bPlural) const override;
 };

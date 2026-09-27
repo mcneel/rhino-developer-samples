@@ -116,7 +116,7 @@ GUID CSampleChangeQueuePlugIn::PlugInID() const
 /////////////////////////////////////////////////////////////////////////////
 // Additional overrides
 
-BOOL CSampleChangeQueuePlugIn::OnLoadPlugIn()
+int CSampleChangeQueuePlugIn::OnLoadPlugIn()
 {
 	// Description:
 	//   Called after the plug-in is loaded and the constructor has been

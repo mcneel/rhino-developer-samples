@@ -41,7 +41,7 @@ public:
   // run. This is a good place to perform any significant initialization,
   // license checking, and so on.  This function must return TRUE for
   // the plug-in to continue to load.  
-  BOOL OnLoadPlugIn() override;
+  int OnLoadPlugIn() override;
 
   // Called one time when plug-in is about to be unloaded. By this time,
   // Rhino's mainframe window has been destroyed, and some of the SDK
@@ -52,8 +52,8 @@ public:
 
   // Online help overrides
 
-  BOOL AddToPlugInHelpMenu() const override;
-  BOOL OnDisplayPlugInHelp(HWND hWnd) const override;
+  BOOL32 AddToPlugInHelpMenu() const override;
+  BOOL32 OnDisplayPlugInHelp(HWND hWnd) const override;
 
   // File export overrides
 
@@ -62,7 +62,7 @@ public:
   void AddFileType(ON_ClassArray<CRhinoFileType>& extensions, const CRhinoFileWriteOptions& options) override;
 
   // Called by Rhino to write document geometry to an external file.
-  BOOL WriteFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileWriteOptions& options) override;
+  int WriteFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileWriteOptions& options) override;
 
 private:
   ON_wString m_plugin_version;

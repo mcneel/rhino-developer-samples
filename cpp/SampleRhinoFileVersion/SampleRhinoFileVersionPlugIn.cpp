@@ -1,7 +1,7 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleRhinoFileVersionPlugIn.h"
-#include "resource.h"
+#include "Resource.h"
 
 // The plug-in object must be constructed before any plug-in classes derived
 // from CRhinoCommand. The #pragma init_seg(lib) ensures that this happens.
@@ -122,7 +122,7 @@ GUID CSampleRhinoFileVersionPlugIn::PlugInID() const
   return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleRhinoFileVersionPlugIn::OnLoadPlugIn()
+int CSampleRhinoFileVersionPlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
@@ -166,7 +166,7 @@ CRhinoPlugIn::plugin_load_time CSampleRhinoFileVersionPlugIn::PlugInLoadTime()
   return CRhinoPlugIn::load_plugin_at_startup;
 }
 
-void CSampleRhinoFileVersionWatcher::OnBeginOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference)
+void CSampleRhinoFileVersionWatcher::OnBeginOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bMerge, BOOL32 bReference)
 {
   UNREFERENCED_PARAMETER(doc);
   UNREFERENCED_PARAMETER(bMerge);
@@ -175,10 +175,15 @@ void CSampleRhinoFileVersionWatcher::OnBeginOpenDocument(CRhinoDoc& doc, const w
   if (0 == filename || 0 == filename[0] || !CRhinoFileUtilities::FileExists(filename))
     return;
 
-  wchar_t ext[_MAX_EXT];
-  wmemset(ext, 0, cch(ext));
-  _wsplitpath_s(filename, 0, 0, 0, 0, 0, 0, ext, cch(ext));
-  if (0 == ext[0] || (0 != _wcsicmp(L".3dm", ext) && 0 != _wcsicmp(L".3dmbak", ext)))
+  // on_wsplitpath is openNURBS's own splitter and points into filename, so it
+  // needs no buffer and no _MAX_EXT.
+  const wchar_t* ext = nullptr;
+  on_wsplitpath(filename, nullptr, nullptr, nullptr, &ext);
+  if (nullptr == ext || 0 == ext[0])
+    return;
+
+  const ON_wString extension(ext);
+  if (!extension.EqualOrdinal(L".3dm", true) && !extension.EqualOrdinal(L".3dmbak", true))
     return;
 
   int rhino_file_version = 0;

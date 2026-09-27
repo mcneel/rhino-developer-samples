@@ -1,7 +1,7 @@
 // SampleRdkRendererEventWatcher.cpp
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SampleRdkRendererEventWatcher.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -120,7 +120,7 @@ void CSampleRdkRendererEventWatcher::SetLightFlags( BOOL b /*= FALSE*/)
 // CRhinoEventWatcher overrides
 //
 
-void CSampleRdkRendererEventWatcher::OnEnableEventWatcher( BOOL b )
+void CSampleRdkRendererEventWatcher::OnEnableEventWatcher( BOOL32 b )
 {
 	UNREFERENCED_PARAMETER(b);
 	Defaults();
@@ -147,7 +147,7 @@ void CSampleRdkRendererEventWatcher::OnNewDocument( CRhinoDoc& doc )
 	Defaults( true);
 }
 
-void CSampleRdkRendererEventWatcher::OnBeginOpenDocument( CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference )
+void CSampleRdkRendererEventWatcher::OnBeginOpenDocument( CRhinoDoc& doc, const wchar_t* filename, BOOL32 bMerge, BOOL32 bReference )
 {
 	UNREFERENCED_PARAMETER(doc);
 	UNREFERENCED_PARAMETER(filename);
@@ -156,7 +156,7 @@ void CSampleRdkRendererEventWatcher::OnBeginOpenDocument( CRhinoDoc& doc, const 
 	Defaults( true);
 }
 
-void CSampleRdkRendererEventWatcher::OnEndOpenDocument( CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference )
+void CSampleRdkRendererEventWatcher::OnEndOpenDocument( CRhinoDoc& doc, const wchar_t* filename, BOOL32 bMerge, BOOL32 bReference )
 {
 	UNREFERENCED_PARAMETER(doc);
 	UNREFERENCED_PARAMETER(filename);
@@ -165,14 +165,14 @@ void CSampleRdkRendererEventWatcher::OnEndOpenDocument( CRhinoDoc& doc, const wc
 	Defaults( true);
 }
 
-void CSampleRdkRendererEventWatcher::OnBeginSaveDocument( CRhinoDoc& doc, const wchar_t* filename, BOOL bExportSelected )
+void CSampleRdkRendererEventWatcher::OnBeginSaveDocument( CRhinoDoc& doc, const wchar_t* filename, BOOL32 bExportSelected )
 {
 	UNREFERENCED_PARAMETER(doc);
 	UNREFERENCED_PARAMETER(filename);
 	UNREFERENCED_PARAMETER(bExportSelected);
 }
 
-void CSampleRdkRendererEventWatcher::OnEndSaveDocument( CRhinoDoc& doc, const wchar_t* filename, BOOL bExportSelected )
+void CSampleRdkRendererEventWatcher::OnEndSaveDocument( CRhinoDoc& doc, const wchar_t* filename, BOOL32 bExportSelected )
 {
 	UNREFERENCED_PARAMETER(doc);
 	UNREFERENCED_PARAMETER(filename);

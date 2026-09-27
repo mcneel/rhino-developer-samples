@@ -63,16 +63,17 @@ UUID CSampleRdkMaterialIOPlugIn::RdkPlugInId(void) const
 	return CSampleRdkMaterialAutoUIRdkPlugIn::RdkPlugInId();
 }
 
-static _locale_t Locale(void)
+// Parse a double in the "C" locale, so a decimal point stays a decimal point
+// whatever the user's locale says.  Microsoft and POSIX spell this differently.
+static double AtofC(const char* p)
 {
-	static _locale_t loc = nullptr;
-
-	if (nullptr == loc)
-	{
-		loc = _create_locale(LC_ALL, "C");
-	}
-
-	return loc;
+#if defined(ON_RUNTIME_WIN)
+	static _locale_t loc = _create_locale(LC_ALL, "C");
+	return _atof_l(p, loc);
+#else
+	static locale_t loc = newlocale(LC_ALL_MASK, "C", nullptr);
+	return strtod_l(p, nullptr, loc);
+#endif
 }
 
 static void SkipWhiteSpace(char*& p)
@@ -130,7 +131,7 @@ bool CSampleRdkMaterialIOPlugIn::ParseDouble(char*& p, double& value) const
 {
 	SkipWhiteSpace(p);
 
-	value = _atof_l(p, Locale());
+	value = AtofC(p);
 
 	while (('+' == *p) || ('-' == *p))
 		*p++;

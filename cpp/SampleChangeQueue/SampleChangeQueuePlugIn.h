@@ -47,7 +47,7 @@ public:
   // run. This is a good place to perform any significant initialization,
   // license checking, and so on.  This function must return TRUE for
   // the plug-in to continue to load.  
-  BOOL OnLoadPlugIn() override;
+  int OnLoadPlugIn() override;
   
   // Called one time when plug-in is about to be unloaded. By this time,
   // Rhino's mainframe window has been destroyed, and some of the SDK

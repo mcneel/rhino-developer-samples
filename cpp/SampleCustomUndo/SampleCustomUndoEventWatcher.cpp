@@ -15,8 +15,15 @@ Remarks:
     in an efficient way and then make any changes that are required in a
     CRhinoIsIdle.Notify() override.
 */
-void CSampleCustomUndoEventWatcher::UndoEvent(CRhinoEventWatcher::undo_event undo_event, unsigned int undo_event_sn, const CRhinoCommand* cmd)
+void CSampleCustomUndoEventWatcher::UndoEvent(
+#ifdef ON_RUNTIME_APPLE
+  const CRhinoDoc& doc,
+#endif
+  CRhinoEventWatcher::undo_event undo_event, unsigned int undo_event_sn, const CRhinoCommand* cmd)
 {
+#ifdef ON_RUNTIME_APPLE
+  UNREFERENCED_PARAMETER(doc);
+#endif
   const wchar_t* cmd_name = cmd ? cmd->LocalCommandName() : 0;
   if (0 == cmd_name)
     cmd_name = L"<none>";

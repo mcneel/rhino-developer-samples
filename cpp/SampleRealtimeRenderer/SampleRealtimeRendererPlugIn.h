@@ -13,7 +13,7 @@ public:
 	const wchar_t* PlugInName() const;
 	const wchar_t* PlugInVersion() const;
 	GUID PlugInID() const;
-	BOOL OnLoadPlugIn();
+	int OnLoadPlugIn();
 	void OnUnloadPlugIn();
 
 	// Load time override

@@ -108,7 +108,7 @@ GUID CSampleRdkChangeQueuePlugIn::PlugInID() const
 /////////////////////////////////////////////////////////////////////////////
 // Additional overrides
 
-BOOL CSampleRdkChangeQueuePlugIn::OnLoadPlugIn()
+int CSampleRdkChangeQueuePlugIn::OnLoadPlugIn()
 {
 	// Description:
 	//   Called after the plug-in is loaded and the constructor has been

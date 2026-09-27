@@ -33,15 +33,15 @@ public:
   virtual BOOL RenderLightingModified() const;
 
   // CRhinoEventWatcher overrides
-  void OnEnableEventWatcher(BOOL b) override;
+  void OnEnableEventWatcher(BOOL32 b) override;
   void OnInitRhino(CRhinoApp& app) override;
   void OnCloseRhino(CRhinoApp& app) override;
   void OnCloseDocument(CRhinoDoc& doc) override;
   void OnNewDocument(CRhinoDoc& doc) override;
-  void OnBeginOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference) override;
-  void OnEndOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference) override;
-  void OnBeginSaveDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bExportSelected) override;
-  void OnEndSaveDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bExportSelected) override;
+  void OnBeginOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bMerge, BOOL32 bReference) override;
+  void OnEndOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bMerge, BOOL32 bReference) override;
+  void OnBeginSaveDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bExportSelected) override;
+  void OnEndSaveDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bExportSelected) override;
   void OnDocumentPropertiesChanged(CRhinoDoc& doc) override;
   void OnBeginCommand(const CRhinoCommand& command, const CRhinoCommandContext& context) override;
   void OnEndCommand(const CRhinoCommand& command, const CRhinoCommandContext& context, CRhinoCommand::result rc) override;

@@ -23,7 +23,7 @@ CSampleRdkMaterialWithChildren::CSampleRdkMaterialWithChildren()
 
 bool CSampleRdkMaterialWithChildren::Initialize(void)
 {
-	if (!__super::Initialize())
+	if (!CRhRdkMaterial::Initialize())
 		return false;
 
 	// Get the child slot name from the diffuse color param name.
@@ -57,7 +57,7 @@ UUID CSampleRdkMaterialWithChildren::PlugInId(void) const
 
 unsigned int CSampleRdkMaterialWithChildren::BitFlags(void) const
 {
-	auto flags = __super::BitFlags();
+	auto flags = CRhRdkMaterial::BitFlags();
 
 	flags |=  bfFields;         // We're using fields (CRhRdkContentField).
 	flags &= ~bfTextureSummary; // No texture summary required.
@@ -108,12 +108,12 @@ void CSampleRdkMaterialWithChildren::AddUISections(IRhRdkExpandableContentUI& ui
 	const wchar_t* wsz1 = L"Sample RDK material settings";
 	AddAutomaticUISection(ui, wsz1, wsz1, 0);
 
-	__super::AddUISections(ui);
+	CRhRdkMaterial::AddUISections(ui);
 }
 
 void CSampleRdkMaterialWithChildren::SimulateMaterial(ON_Material& matOut, CRhRdkTexture::TextureGeneration tg, int iSimulatedTextureSize, const CRhinoObject* pObject) const
 {
-	__super::SimulateMaterial(matOut, tg, iSimulatedTextureSize, pObject);
+	CRhRdkMaterial::SimulateMaterial(matOut, tg, iSimulatedTextureSize, pObject);
 
 	CRhRdkColor col = m_diffuse_color;
 	matOut.SetDiffuse(col.OnColor());

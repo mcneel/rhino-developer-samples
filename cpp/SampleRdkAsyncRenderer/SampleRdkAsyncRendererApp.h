@@ -7,7 +7,7 @@
 	#error "include 'stdafx.h' before including this file for PCH"
 #endif
 
-#include "resource.h" // main symbols
+#include "Resource.h" // main symbols
 
 // CSampleRdkAsyncRendererApp
 // See SampleRdkAsyncRendererApp.cpp for the implementation of this class
