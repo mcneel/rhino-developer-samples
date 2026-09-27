@@ -2,7 +2,7 @@
 
 class CSampleRhinoFileVersionWatcher : public CRhinoEventWatcher
 {
-  void OnBeginOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference);
+  void OnBeginOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bMerge, BOOL32 bReference);
 };
 
 class CSampleRhinoFileVersionPlugIn : public CRhinoUtilityPlugIn
@@ -15,7 +15,7 @@ public:
   const wchar_t* PlugInName() const;
   const wchar_t* PlugInVersion() const;
   GUID PlugInID() const;
-  BOOL OnLoadPlugIn();
+  int OnLoadPlugIn();
   void OnUnloadPlugIn();
 
   CRhinoPlugIn::plugin_load_time PlugInLoadTime();

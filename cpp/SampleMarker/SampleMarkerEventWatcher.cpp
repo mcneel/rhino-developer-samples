@@ -28,7 +28,7 @@ static void PromoteRhinoPointObjectToMarkerObject(const CRhinoPointObject* point
   }
 }
 
-void CSampleMarkerEventWatcher::OnEndOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL bMerge, BOOL bReference)
+void CSampleMarkerEventWatcher::OnEndOpenDocument(CRhinoDoc& doc, const wchar_t* filename, BOOL32 bMerge, BOOL32 bReference)
 {
   UNREFERENCED_PARAMETER(filename);
   UNREFERENCED_PARAMETER(bMerge);

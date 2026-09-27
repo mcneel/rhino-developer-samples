@@ -1,10 +1,10 @@
 // SampleCustomUndoPlugIn.cpp : defines the initialization routines for the plug-in.
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleCustomUndoPlugIn.h"
-#include "resource.h"
+#include "Resource.h"
 
 // The plug-in object must be constructed before any plug-in classes derived
 // from CRhinoCommand. The #pragma init_seg(lib) ensures that this happens.
@@ -119,7 +119,7 @@ GUID CSampleCustomUndoPlugIn::PlugInID() const
   return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleCustomUndoPlugIn::OnLoadPlugIn()
+int CSampleCustomUndoPlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
@@ -156,7 +156,7 @@ void CSampleCustomUndoPlugIn::OnUnloadPlugIn()
 /////////////////////////////////////////////////////////////////////////////
 // Online help overrides
 
-BOOL CSampleCustomUndoPlugIn::AddToPlugInHelpMenu() const
+BOOL32 CSampleCustomUndoPlugIn::AddToPlugInHelpMenu() const
 {
   // Description:
   //   Return true to have your plug-in name added to the Rhino help menu.
@@ -165,7 +165,7 @@ BOOL CSampleCustomUndoPlugIn::AddToPlugInHelpMenu() const
   return FALSE;
 }
 
-BOOL CSampleCustomUndoPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
+BOOL32 CSampleCustomUndoPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
   // Description:
   //   Called when the user requests help about your plug-in.

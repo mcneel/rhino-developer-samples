@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // SampleSerializeWatcher.cpp
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SampleSerializeWatcher.h"
 #include "SampleSerializePlugIn.h"
 #include "SampleSerializeData.h"

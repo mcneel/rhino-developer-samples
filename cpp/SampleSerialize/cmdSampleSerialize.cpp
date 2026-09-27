@@ -2,7 +2,7 @@
 // cmdSampleSerialize.cpp
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SampleSerializePlugIn.h"
 
 class CCommandSampleSerialize : public CRhinoCommand

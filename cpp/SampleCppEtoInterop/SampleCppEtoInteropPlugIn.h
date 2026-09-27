@@ -19,7 +19,7 @@ public:
   GUID PlugInID() const override;
 
   // Additional overrides
-  BOOL OnLoadPlugIn() override;
+  int OnLoadPlugIn() override;
   void OnUnloadPlugIn() override;
 
 private:

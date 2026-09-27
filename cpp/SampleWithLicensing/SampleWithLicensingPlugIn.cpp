@@ -87,7 +87,7 @@ GUID CSampleWithLicensingPlugIn::PlugInID() const
   return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleWithLicensingPlugIn::OnLoadPlugIn()
+int CSampleWithLicensingPlugIn::OnLoadPlugIn()
 {
   // Before requesting a license, we must inform the license
   // manager what we are capable of supporting.

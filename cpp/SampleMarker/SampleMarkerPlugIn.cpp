@@ -116,7 +116,7 @@ GUID CSampleMarkerPlugIn::PlugInID() const
   return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleMarkerPlugIn::OnLoadPlugIn()
+int CSampleMarkerPlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
@@ -157,7 +157,7 @@ void CSampleMarkerPlugIn::OnUnloadPlugIn()
 /////////////////////////////////////////////////////////////////////////////
 // Online help overrides
 
-BOOL CSampleMarkerPlugIn::AddToPlugInHelpMenu() const
+BOOL32 CSampleMarkerPlugIn::AddToPlugInHelpMenu() const
 {
   // Description:
   //   Return true to have your plug-in name added to the Rhino help menu.
@@ -166,7 +166,7 @@ BOOL CSampleMarkerPlugIn::AddToPlugInHelpMenu() const
   return FALSE;
 }
 
-BOOL CSampleMarkerPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
+BOOL32 CSampleMarkerPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
   // Description:
   //   Called when the user requests help about your plug-in.

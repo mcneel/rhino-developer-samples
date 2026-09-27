@@ -75,14 +75,18 @@ CRhinoLicenseValidator::result CSampleWithLicensingValidator::VerifyLicenseKey(
 
   // This icon will displayed in the "Licenses" page in the Options dialog.
   // TODO: provide a a product icon here.
+#if defined(ON_RUNTIME_WIN)
+  // The icon comes out of the plug-in's Windows resources, which a Mac bundle
+  // does not have.
   if (0 == m_product_icon)
   {
     int size = CRhinoDpi::IconSize(CRhinoDpi::IconType::NormalIcon);
     m_product_icon = CRhinoDpi::LoadIcon(AfxGetInstanceHandle(), IDI_MAIN, size);
   }
+#endif
 
-  CString license_key(licenseKey);
-  CString validation_code(validationCode);
+  ON_wString license_key(licenseKey);
+  ON_wString validation_code(validationCode);
 
   bool bEvaluation = false;
 
@@ -146,10 +150,16 @@ CRhinoLicenseValidator::result CSampleWithLicensingValidator::VerifyLicenseKey(
   // then just this value to null.
   if (bEvaluation)
   {
+#if defined(ON_RUNTIME_WIN)
     COleDateTime expire_date = COleDateTime::GetCurrentTime();
     COleDateTimeSpan interval;
     interval.SetDateTimeSpan(90, 0, 0, 0);
     m_date_to_expire = expire_date + interval;
+#else
+    // DATE is an automation date - days since 30 December 1899 - and 25569 is
+    // the number of those days up to 1 January 1970, where time() starts.
+    m_date_to_expire = 25569.0 + (double)time(nullptr) / 86400.0 + 90.0;
+#endif
   }
 
   return CRhinoLicenseValidator::success;
@@ -162,8 +172,8 @@ bool CSampleWithLicensingValidator::VerifyPreviousVersionLicense(
   const wchar_t* previousVersionLicenseKey
 )
 {
-  CString license_key(licenseKey);
-  CString previous_version_license(previousVersionLicenseKey);
+  ON_wString license_key(licenseKey);
+  ON_wString previous_version_license(previousVersionLicenseKey);
 
   if (license_key.IsEmpty())
     return false;

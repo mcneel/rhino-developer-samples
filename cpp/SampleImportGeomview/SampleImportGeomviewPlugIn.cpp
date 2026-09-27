@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleImportGeomviewPlugIn.h"
 #include "Resource.h"
@@ -120,7 +120,7 @@ GUID CSampleImportGeomviewPlugIn::PlugInID() const
 
 // Additional overrides
 
-BOOL CSampleImportGeomviewPlugIn::OnLoadPlugIn()
+int CSampleImportGeomviewPlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
@@ -156,7 +156,7 @@ void CSampleImportGeomviewPlugIn::OnUnloadPlugIn()
 
 // Online help overrides
 
-BOOL CSampleImportGeomviewPlugIn::AddToPlugInHelpMenu() const
+BOOL32 CSampleImportGeomviewPlugIn::AddToPlugInHelpMenu() const
 {
   // Description:
   //   Return true to have your plug-in name added to the Rhino help menu.
@@ -165,7 +165,7 @@ BOOL CSampleImportGeomviewPlugIn::AddToPlugInHelpMenu() const
   return FALSE;
 }
 
-BOOL CSampleImportGeomviewPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
+BOOL32 CSampleImportGeomviewPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
   // Description:
   //   Called when the user requests help about your plug-in.
@@ -206,7 +206,7 @@ void CSampleImportGeomviewPlugIn::AddFileType(ON_ClassArray<CRhinoFileType>& ext
   extensions.Append(ft);
 }
 
-BOOL CSampleImportGeomviewPlugIn::ReadFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileReadOptions& options)
+BOOL32 CSampleImportGeomviewPlugIn::ReadFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileReadOptions& options)
 {
   // Description:
   //   Rhino calls ReadFile() to create document geometry from an external file.

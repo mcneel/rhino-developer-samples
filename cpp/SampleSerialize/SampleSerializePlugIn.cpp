@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleSerializePlugIn.h"
 #include "Resource.h"
@@ -116,7 +116,7 @@ GUID CSampleSerializePlugIn::PlugInID() const
   return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleSerializePlugIn::OnLoadPlugIn()
+int CSampleSerializePlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
@@ -157,7 +157,7 @@ void CSampleSerializePlugIn::OnUnloadPlugIn()
 /////////////////////////////////////////////////////////////////////////////
 // Online help overrides
 
-BOOL CSampleSerializePlugIn::AddToPlugInHelpMenu() const
+BOOL32 CSampleSerializePlugIn::AddToPlugInHelpMenu() const
 {
   // Description:
   //   Return true to have your plug-in name added to the Rhino help menu.
@@ -166,7 +166,7 @@ BOOL CSampleSerializePlugIn::AddToPlugInHelpMenu() const
   return FALSE;
 }
 
-BOOL CSampleSerializePlugIn::OnDisplayPlugInHelp(HWND hWnd) const
+BOOL32 CSampleSerializePlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
   // Description:
   //   Called when the user requests help about your plug-in.
@@ -179,13 +179,13 @@ BOOL CSampleSerializePlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 /////////////////////////////////////////////////////////////////////////////
 // Document user data overrides
 
-BOOL CSampleSerializePlugIn::CallWriteDocument(const CRhinoFileWriteOptions& options)
+BOOL32 CSampleSerializePlugIn::CallWriteDocument(const CRhinoFileWriteOptions& options)
 {
   // Don't save document data if only selected objects are saved
   return options.SelectedObjectFilter() ? FALSE : TRUE;
 }
 
-BOOL CSampleSerializePlugIn::WriteDocument(CRhinoDoc& doc, ON_BinaryArchive& archive, const CRhinoFileWriteOptions& options)
+BOOL32 CSampleSerializePlugIn::WriteDocument(CRhinoDoc& doc, ON_BinaryArchive& archive, const CRhinoFileWriteOptions& options)
 {
   UNREFERENCED_PARAMETER(doc);
   UNREFERENCED_PARAMETER(options);
@@ -195,7 +195,7 @@ BOOL CSampleSerializePlugIn::WriteDocument(CRhinoDoc& doc, ON_BinaryArchive& arc
   return rc ? TRUE : FALSE;
 }
 
-BOOL CSampleSerializePlugIn::ReadDocument(CRhinoDoc& doc, ON_BinaryArchive& archive, const CRhinoFileReadOptions& options)
+BOOL32 CSampleSerializePlugIn::ReadDocument(CRhinoDoc& doc, ON_BinaryArchive& archive, const CRhinoFileReadOptions& options)
 {
   UNREFERENCED_PARAMETER(doc);
 

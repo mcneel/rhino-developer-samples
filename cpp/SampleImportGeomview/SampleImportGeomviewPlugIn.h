@@ -39,7 +39,7 @@ public:
   // run. This is a good place to perform any significant initialization,
   // license checking, and so on.  This function must return TRUE for
   // the plug-in to continue to load.  
-  BOOL OnLoadPlugIn() override;
+  int OnLoadPlugIn() override;
 
   // Called one time when plug-in is about to be unloaded. By this time,
   // Rhino's mainframe window has been destroyed, and some of the SDK
@@ -50,17 +50,17 @@ public:
 
   // Online help overrides
 
-  BOOL AddToPlugInHelpMenu() const override;
-  BOOL OnDisplayPlugInHelp(HWND hWnd) const override;
+  BOOL32 AddToPlugInHelpMenu() const override;
+  BOOL32 OnDisplayPlugInHelp(HWND hWnd) const override;
 
   // File import overrides
 
   // Called by Rhino when displaying the open file dialog
   // Add supported file type extensions here.  
-  void AddFileType(ON_ClassArray<CRhinoFileType>& extensions, const CRhinoFileReadOptions& options);
+  void AddFileType(ON_ClassArray<CRhinoFileType>& extensions, const CRhinoFileReadOptions& options) override;
   
   // Called by Rhino to read document geometry from an external file.
-  BOOL ReadFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileReadOptions& options);
+  BOOL32 ReadFile(const wchar_t* filename, int index, CRhinoDoc& doc, const CRhinoFileReadOptions& options) override;
 
 private:
   BOOL ReadOffFile(const wchar_t* filename, CRhinoDoc& doc);

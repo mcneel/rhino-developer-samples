@@ -2,7 +2,7 @@
 // SampleSerializeData.cpp
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SampleSerializeData.h"
 
 CSampleSerializeData::CSampleSerializeData()

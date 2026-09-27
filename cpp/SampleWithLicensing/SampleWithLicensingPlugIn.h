@@ -15,7 +15,7 @@ public:
   const wchar_t* PlugInName() const override;
   const wchar_t* PlugInVersion() const override;
   GUID PlugInID() const override;
-  BOOL OnLoadPlugIn() override;
+  int OnLoadPlugIn() override;
   void OnUnloadPlugIn() override;
 
 private:

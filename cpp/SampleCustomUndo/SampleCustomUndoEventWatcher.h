@@ -17,5 +17,11 @@ public:
      in an efficient way and then make any changes that are required in a
      CRhinoIsIdle.Notify() override.
   */
-  void UndoEvent(CRhinoEventWatcher::undo_event undo_event, unsigned int undo_event_sn, const CRhinoCommand* cmd);
+  void UndoEvent(
+#ifdef ON_RUNTIME_APPLE
+    // The SDK declares an extra leading document argument on the Mac.  Without
+    // it the override does not match and is never called.
+    const CRhinoDoc& doc,
+#endif
+    CRhinoEventWatcher::undo_event undo_event, unsigned int undo_event_sn, const CRhinoCommand* cmd) override;
 };

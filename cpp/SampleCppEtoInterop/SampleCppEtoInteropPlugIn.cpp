@@ -76,7 +76,7 @@ GUID CSampleCppEtoInteropPlugIn::PlugInID() const
 /////////////////////////////////////////////////////////////////////////////
 // Additional overrides
 
-BOOL CSampleCppEtoInteropPlugIn::OnLoadPlugIn()
+int CSampleCppEtoInteropPlugIn::OnLoadPlugIn()
 {
   return TRUE;
 }

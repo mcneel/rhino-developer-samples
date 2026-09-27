@@ -117,7 +117,7 @@ GUID CSampleCustomRenderMeshPlugIn::PlugInID() const
 /////////////////////////////////////////////////////////////////////////////
 // Additional overrides
 
-BOOL CSampleCustomRenderMeshPlugIn::OnLoadPlugIn()
+int CSampleCustomRenderMeshPlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
