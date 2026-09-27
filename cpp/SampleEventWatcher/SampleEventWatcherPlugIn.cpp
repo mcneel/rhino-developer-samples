@@ -116,7 +116,7 @@ GUID CSampleEventWatcherPlugIn::PlugInID() const
   return ON_UuidFromString(RhinoPlugInId());
 }
 
-BOOL CSampleEventWatcherPlugIn::OnLoadPlugIn()
+int CSampleEventWatcherPlugIn::OnLoadPlugIn()
 {
   // Description:
   //   Called after the plug-in is loaded and the constructor has been
@@ -153,7 +153,7 @@ void CSampleEventWatcherPlugIn::OnUnloadPlugIn()
 /////////////////////////////////////////////////////////////////////////////
 // Online help overrides
 
-BOOL CSampleEventWatcherPlugIn::AddToPlugInHelpMenu() const
+BOOL32 CSampleEventWatcherPlugIn::AddToPlugInHelpMenu() const
 {
   // Description:
   //   Return true to have your plug-in name added to the Rhino help menu.
@@ -162,7 +162,7 @@ BOOL CSampleEventWatcherPlugIn::AddToPlugInHelpMenu() const
   return FALSE;
 }
 
-BOOL CSampleEventWatcherPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
+BOOL32 CSampleEventWatcherPlugIn::OnDisplayPlugInHelp(HWND hWnd) const
 {
   // Description:
   //   Called when the user requests help about your plug-in.
@@ -179,10 +179,10 @@ class CRhinoGetTranslationPoint : public CRhinoGetXform
 public:
   CRhinoGetTranslationPoint() = default;
   ~CRhinoGetTranslationPoint() = default;
-  BOOL CalculateTransform(CRhinoViewport& vp, const ON_3dPoint& pt, ON_Xform& xform);
+  BOOL32 CalculateTransform(CRhinoViewport& vp, const ON_3dPoint& pt, ON_Xform& xform);
 };
 
-BOOL CRhinoGetTranslationPoint::CalculateTransform(CRhinoViewport& vp, const ON_3dPoint& pt, ON_Xform& xform)
+BOOL32 CRhinoGetTranslationPoint::CalculateTransform(CRhinoViewport& vp, const ON_3dPoint& pt, ON_Xform& xform)
 {
   UNREFERENCED_PARAMETER(vp);
   ON_3dVector dir = pt - m_basepoint;

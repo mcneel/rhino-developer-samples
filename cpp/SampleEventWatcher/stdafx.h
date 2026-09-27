@@ -4,6 +4,8 @@
 
 #pragma once
 
+#if defined(_WIN32) || defined(_MSC_VER)
+
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN                             // Exclude rarely-used stuff from Windows headers
 #endif
@@ -74,3 +76,17 @@
 
 // Rhino SDK linking pragmas
 #include "rhinoSdkPlugInLinkingPragmas.h"
+
+#elif defined(__APPLE__)
+
+// Rhino for Mac has no MFC.  The SDK preamble still has to come first.
+#include "rhinoSdkStdafxPreamble.h"
+#include "rhinoSdk.h"
+#include "RhRdkHeaders.h"
+#include "rhinoSdkChecks.h"
+
+#if !defined(UNREFERENCED_PARAMETER)
+#define UNREFERENCED_PARAMETER(p) (void)(p)
+#endif
+
+#endif

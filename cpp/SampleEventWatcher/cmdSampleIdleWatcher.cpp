@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <ctime>
 #include "SampleEventWatcherPlugIn.h"
 
 ////////////////////////////////////////////////////////////////
@@ -16,7 +17,7 @@ public:
   void Notify(const class CRhinoIsIdle::CParameters& params);
 
 private:
-  __time64_t m_time0;
+  time_t m_time0;
 };
 
 // The one and only CSampleIdleWatcherIsIdleEventWatcher object
@@ -30,8 +31,8 @@ CSampleIdleWatcherIsIdleEventWatcher::CSampleIdleWatcherIsIdleEventWatcher()
 
 void CSampleIdleWatcherIsIdleEventWatcher::Notify(const class CRhinoIsIdle::CParameters& params)
 {
-  const __time64_t time_interval = 5;
-  __time64_t time1 = _time64(0);
+  const time_t time_interval = 5;
+  time_t time1 = time(nullptr);
   if (0 == m_time0 || time1 > m_time0 + time_interval)
   {
     RhinoApp().Print(L"Sample Idle Watcher: count =  %d\n", params.m_count);
