@@ -109,8 +109,11 @@ bool CSampleRdkMaterialAutoUIRdkPlugIn::CreatePreview(const ON_2iSize& sizeImage
 	// Get a simulation of the material and set the dib to the diffuse color.
 	// In a real-world scenario we would actually render all the objects properly using
 	// all the scene server information (geometry, lights, environment etc).
-	const auto& mat = pMaterial->ToOnMaterial();
-	dib.Clear(mat.Diffuse());
+	const auto pMat = pMaterial->ToOnMaterialPtr();
+	if (nullptr == pMat)
+		return false;
+
+	dib.Clear(pMat->Diffuse());
 
 	// Output the result.
 	dibOut = dib;
