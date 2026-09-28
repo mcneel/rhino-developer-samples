@@ -127,7 +127,7 @@ void CSampleRdkMaterialWithChildren::SimulateMaterial(ON_Material& matOut, CRhRd
 	const auto* pTexture = dynamic_cast<const CRhRdkTexture*>(FindChild(sChildSlotName));
 	if (nullptr != pTexture)
 	{
-		CRhRdkSimulatedTexture tex;
+		CRhRdkSimulatedTexture tex(DocumentAssoc());
 		pTexture->SimulateTexture(tex, tg, iSimulatedTextureSize, pObject);
 		matOut.AddTexture(tex.OnTexture());
 	}

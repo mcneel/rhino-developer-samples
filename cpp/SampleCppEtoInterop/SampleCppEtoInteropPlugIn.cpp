@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "rhinoSdkPlugInDeclare.h"
 #include "SampleCppEtoInteropPlugIn.h"
-#include "Resource.h"
+#include "resource.h"
 
 #pragma warning(push)
 #pragma warning(disable : 4073)
@@ -24,7 +24,7 @@ RHINO_PLUG_IN_ID(L"DFD76B02-BFE6-4071-BEC6-EBA057C8CCC7");
 RHINO_PLUG_IN_VERSION(__DATE__ "  " __TIME__)
 
 // Rhino plug-in description
-RHINO_PLUG_IN_DESCRIPTION(L"SampleCppEtoInterop plug-in for Rhinoceros®");
+RHINO_PLUG_IN_DESCRIPTION(L"SampleCppEtoInterop plug-in for Rhinoceros\u00AE");
 
 // Rhino plug-in icon resource id
 RHINO_PLUG_IN_ICON_RESOURCE_ID(IDI_ICON);

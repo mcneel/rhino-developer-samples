@@ -7,7 +7,7 @@
 	#error "include 'stdafx.h' before including this file for PCH"
 #endif
 
-#include "resource.h" // main symbols
+#include "Resource.h" // main symbols
 
 // CSampleRdkChangeQueueApp
 // See SampleRdkChangeQueueApp.cpp for the implementation of this class

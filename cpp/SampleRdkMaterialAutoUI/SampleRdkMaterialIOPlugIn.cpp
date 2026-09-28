@@ -134,10 +134,10 @@ bool CSampleRdkMaterialIOPlugIn::ParseDouble(char*& p, double& value) const
 	value = AtofC(p);
 
 	while (('+' == *p) || ('-' == *p))
-		*p++;
+		p++;
 
 	if ('.' == *p)
-		*p++;
+		p++;
 
 	if (!isdigit(*p))
 		return false;
@@ -146,7 +146,7 @@ bool CSampleRdkMaterialIOPlugIn::ParseDouble(char*& p, double& value) const
 		p++;
 
 	if ('.' == *p)
-		*p++;
+		p++;
 
 	while (isdigit(*p))
 		p++;
@@ -155,11 +155,11 @@ bool CSampleRdkMaterialIOPlugIn::ParseDouble(char*& p, double& value) const
 	if ('e' == char(tolower(*p)))
 	{
 		bExponent = true;
-		*p++;
+		p++;
 	}
 
 	while (('+' == *p) || ('-' == *p))
-		*p++;
+		p++;
 
 	if (bExponent && !isdigit(*p))
 		return false;
@@ -357,7 +357,7 @@ CRhRdkContent* CSampleRdkMaterialIOPlugIn::Load(const CRhinoDoc* pDoc, const wch
 
 			// Search for end of line; stop if end of buffer.
 			while ((0 != *p) && (('\r' == *p) || ('\n' == *p)))
-				*p++;
+				p++;
 
 			// If there are more characters to parse, set pLine to the start of the
 			// next line and reset pValue to null in case the next line is invalid.

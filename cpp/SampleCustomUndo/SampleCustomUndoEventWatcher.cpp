@@ -51,5 +51,7 @@ void CSampleCustomUndoEventWatcher::UndoEvent(
   case CRhinoEventWatcher::purge_record:
     RhinoApp().Print(L"> UNDO EVENT %5d: Purging %ls changes\n", undo_event_sn, cmd_name);
     break;
+  default:
+    break;
   }
 }

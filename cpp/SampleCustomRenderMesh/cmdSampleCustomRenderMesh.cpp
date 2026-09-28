@@ -1,7 +1,7 @@
 // cmdSampleCustomRenderMesh.cpp : command file
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SampleCustomRenderMeshPlugIn.h"
 #include "SampleCustomRenderMeshUserData.h"
 

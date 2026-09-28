@@ -107,8 +107,11 @@ bool CSampleRdkContentIOPlugInRdkPlugIn::CreatePreview(const ON_2iSize& sizeImag
 	// In a real-world scenario we would actually render all the objects properly using
 	// all the scene server information (geometry, lights, environment etc).
 
-	const auto& mat = pMaterial->ToOnMaterial();
-	dib.Clear(mat.Diffuse());
+	const auto pMat = pMaterial->ToOnMaterialPtr();
+	if (nullptr == pMat)
+		return false;
+
+	dib.Clear(pMat->Diffuse());
 
 	// Output the result.
 	dibOut = dib;

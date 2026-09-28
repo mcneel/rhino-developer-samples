@@ -1,5 +1,5 @@
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SampleRdkMaterialAutoUIPlugIn.h"
 #include "SampleRdkMaterial.h"
 

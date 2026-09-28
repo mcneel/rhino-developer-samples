@@ -20,7 +20,7 @@
 // loaded, RhinoExecuteNamedCallback returns false and the command reports it.
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "SampleCppEtoInteropPlugIn.h"
 
 #pragma region SampleCppEtoRebuildCurve command
