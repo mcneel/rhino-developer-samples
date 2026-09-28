@@ -111,7 +111,7 @@ void CustomChangeQueue::ApplyMeshInstanceChanges(const ON_SimpleArray<ON__UINT32
 		RhinoApp().Print("\t\t%f %f %f %f\n", xform[2][0], xform[2][1], xform[2][2], xform[2][3]);
 		RhinoApp().Print("\t\t%f %f %f %f\n", xform[3][0], xform[3][1], xform[3][2], xform[3][3]);
 	}
-	RhinoApp().Print("End of ApplyMeshInstances");
+	RhinoApp().Print("End of ApplyMeshInstances\n");
 }
 void CustomChangeQueue::ApplySunChanges(const ON_Light& sun) const {
 	// The sun is an ON_Light, but is signalled separately. If no sun is enabled on CreateWorld this won't be called.
