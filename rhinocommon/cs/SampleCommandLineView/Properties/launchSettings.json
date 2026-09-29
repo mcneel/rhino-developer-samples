@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "Rhino BETA netcore": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Rhino 9 WIP\\System\\Rhino.exe",
+      "commandLineArgs": "/netcore",
+      "environmentVariables": {
+        "RHINO_PACKAGE_DIRS": "$(ProjectDir)$(OutputPath)\\"
+      }
+    },
+    "Rhino BETA netfx": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Rhino 9 WIP\\System\\Rhino.exe",
+      "commandLineArgs": "/netfx",
+      "environmentVariables": {
+        "RHINO_PACKAGE_DIRS": "$(ProjectDir)$(OutputPath)\\"
+      }
+    }
+  }
+}
