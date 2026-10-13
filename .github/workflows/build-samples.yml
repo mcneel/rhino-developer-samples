@@ -116,7 +116,7 @@ jobs:
             }
 
             Write-Host "::group::Building $rel"
-            dotnet build $proj.FullName -c Release --nologo
+            dotnet build $proj.FullName -c Release --nologo -warnaserror
             $code = $LASTEXITCODE
             Write-Host "::endgroup::"
             if ($code -eq 0) {
