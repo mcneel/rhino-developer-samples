@@ -57,7 +57,8 @@ CRhinoCommand::result CCommandSampleExportRenderMeshes::RunCommand(const CRhinoC
 
           if (spMesh && spMaterial)
           {
-            if (DoExport(*doc, objref, *spMesh, spMaterial->ToOnMaterial()))
+            const auto spOnMaterial = spMaterial->ToOnMaterialPtr();
+            if (spOnMaterial && DoExport(*doc, objref, *spMesh, *spOnMaterial))
             {
               count++;
             }

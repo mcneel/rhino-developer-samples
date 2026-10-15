@@ -48,14 +48,32 @@ CRhinoCommand::result CCommandSampleSurfaceBlend::RunCommand(const CRhinoCommand
   {
     const CRhinoObjRef& obj_ref = go.Object(i);
 
-    const ON_BrepTrim* trim = obj_ref.Trim();
-    if (nullptr == trim)
-      return CRhinoCommand::failure;
+    const ON_BrepFace* face = nullptr;
+    const ON_BrepEdge* edge = nullptr;
 
-    const ON_BrepFace* face = trim->Face();
-    const ON_BrepEdge* edge = trim->Edge();
+    const ON_BrepTrim* trim = obj_ref.Trim();
+    if (nullptr != trim)
+    {
+      face = trim->Face();
+      edge = trim->Edge();
+    }
+    else
+    {
+      // An edge picked without its trim: use the face it bounds (a naked edge has one)
+      edge = obj_ref.Edge();
+      if (nullptr != edge)
+      {
+        ON_SimpleArray<const ON_BrepFace*> adjacent_faces;
+        if (edge->AdjacentFaces(adjacent_faces) > 0)
+          face = adjacent_faces[0];
+      }
+    }
+
     if (nullptr == face || nullptr == edge)
+    {
+      RhinoApp().Print(L"Edge %d: no face found\n", i + 1);
       return CRhinoCommand::failure;
+    }
 
     ON_Interval domain = edge->Domain();
     bool rev = false;
@@ -86,19 +104,23 @@ CRhinoCommand::result CCommandSampleSurfaceBlend::RunCommand(const CRhinoCommand
     output
   );
 
+  int added = 0;
   if (rc)
   {
     for (int i = 0; i < output.Count(); i++)
     {
-      if (nullptr != output[0])
+      if (nullptr != output[i])
       {
         CRhinoBrepObject* brep_obj = new CRhinoBrepObject();
-        brep_obj->SetBrep(output[0]);
-        output[0] = nullptr;
+        brep_obj->SetBrep(output[i]);
+        output[i] = nullptr;
         doc->AddObject(brep_obj);
+        added++;
       }
     }
   }
+
+  RhinoApp().Print(L"SampleSurfaceBlend: %d surface(s) added\n", added);
 
   doc->Redraw();
 
