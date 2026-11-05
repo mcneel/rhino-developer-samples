@@ -16,6 +16,6 @@
     <EmbeddedResource Include="Resources\SampleCsWizardPanel.ico" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="RhinoCommon" Version="9.0.26146.14285-wip" ExcludeAssets="runtime" />
+    <PackageReference Include="RhinoCommon" Version="9.0.26300.9401" ExcludeAssets="runtime" />
   </ItemGroup>
 </Project>

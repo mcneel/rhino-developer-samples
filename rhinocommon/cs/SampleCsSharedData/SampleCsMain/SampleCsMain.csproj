@@ -22,8 +22,8 @@
     <ProjectReference Include="..\SampleCsCommon\SampleCsCommon.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="RhinoCommon" Version="9.0.26146.14285-wip" ExcludeAssets="runtime" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.0" />
-    <PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
+    <PackageReference Include="RhinoCommon" Version="9.0.26300.9401" ExcludeAssets="runtime" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.14" />
+    <PackageReference Include="System.Resources.Extensions" Version="10.0.14" />
   </ItemGroup>
 </Project>
