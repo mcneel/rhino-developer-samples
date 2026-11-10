@@ -30,8 +30,15 @@ function convert () {
       scene.add( obj )
 
       const mesh = obj.children[ 0 ]
-      const rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: mesh.geometry } )
-      doc.objects().add( rhinoMesh, null )
+      // createFromThreejsBuffers takes the BufferGeometry's attribute arrays; true rotates from three.js's Y-up to Rhino's Z-up
+      const attributes = mesh.geometry.attributes
+      const rhinoMesh = rhino.Mesh.createFromThreejsBuffers( {
+        position: attributes.position.array,
+        normal: attributes.normal?.array,
+        uv: attributes.uv?.array,
+        index: mesh.geometry.index?.array
+      }, true )
+      doc.objects.add( rhinoMesh, null )
 
     }, 
     
@@ -66,7 +73,7 @@ function convert () {
 function download () {
   const options = new rhino.File3dmWriteOptions()
   options.version = 7
-  let buffer = doc.toByteArrayOptions(options)
+  let buffer = doc.toByteArray(options)
   saveByteArray( 'rhinoObjects'+options.version+'.3dm', buffer )
 }
 

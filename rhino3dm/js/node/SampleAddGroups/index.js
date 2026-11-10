@@ -5,19 +5,18 @@ const rhino = await rhino3dm()
 
 const doc = new rhino.File3dm()
 
-const g = new rhino.Group()
-doc.groups().add(g)
+const groupIndex = doc.allGroups.addGroup()
 
 for( let i = 1; i < 10; i ++ ) {
     
     const circle = new rhino.Circle(i)
-    doc.objects().add(circle.toNurbsCurve(), null)
-    const ro = doc.objects().get(i - 1)
-    ro.attributes().addToGroup(0)
+    const id = doc.objects.add(rhino.Circle.toNurbsCurve(circle), null)
+    const ro = doc.objects.findId(id)
+    ro.attributes.addToGroup(groupIndex)
     
 }
 
 const options = new rhino.File3dmWriteOptions()
 options.version = 8
-let buffer = doc.toByteArrayOptions(options)
+let buffer = doc.toByteArray(options)
 fs.writeFileSync("fileWithGroups.3dm", buffer);

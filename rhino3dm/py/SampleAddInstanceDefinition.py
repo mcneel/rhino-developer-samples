@@ -22,7 +22,7 @@ print("Index of new idef: " + str(index))
 #create iref
 idef = model.InstanceDefinitions.FindIndex(index)
 xf = rhino3dm.Transform(10.00)
-iref = rhino3dm.InstanceReference(idef.Id, xf)
+iref = rhino3dm.InstanceReferenceGeometry(idef.Id, xf)
 uuid = model.Objects.Add(iref, None)
 print("id of new iref: " + str(uuid))
 

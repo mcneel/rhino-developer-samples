@@ -12,21 +12,21 @@ const model = '../../../models/Rhino_Logo_Mesh8_NamedViews.3dm'
 const buffer = fs.readFileSync(model)
 const arr = new Uint8Array(buffer)
 const doc = rhino.File3dm.fromByteArray(arr)
-const views = doc.views()
-const namedviews = doc.namedViews()
+const views = doc.views
+const namedviews = doc.namedViews
 
 console.log('--- Views ---')
 for ( let i = 0; i < views.count; i ++ ) {
     const view = views.get(i)
     console.log(view.name)
-    viewportInfo(view.getViewport())
+    viewportInfo(view.viewport)
 }
 
 console.log('--- Named Views ---')
 for ( let i = 0; i < namedviews.count; i ++ ) {
     const view = namedviews.get(i)
     console.log(view.name)
-    viewportInfo(view.getViewport())
+    viewportInfo(view.viewport)
 }
 
 function viewportInfo(vp) {
@@ -36,18 +36,18 @@ function viewportInfo(vp) {
      console.log(`IsParallelProjection: ${vp.isParallelProjection}`)
      console.log(`IsPerspectiveProjection: ${vp.isPerspectiveProjection}`)
      console.log(`IsTwoPointPerspectiveProjection: ${vp.isTwoPointPerspectiveProjection}`)
-     console.log(`CameraLocation: ${vp.cameraLocation}`)
-     console.log(`CameraDirection: ${vp.cameraDirection}`)
-     console.log(`CameraUp: ${vp.cameraUp}`)
-     console.log(`CameraX: ${vp.cameraX}`)
-     console.log(`CameraY: ${vp.cameraY}`)
-     console.log(`CameraZ: ${vp.cameraZ}`)
+     console.log(`CameraLocation: ${JSON.stringify(vp.cameraLocation)}`)
+     console.log(`CameraDirection: ${JSON.stringify(vp.cameraDirection)}`)
+     console.log(`CameraUp: ${JSON.stringify(vp.cameraUp)}`)
+     console.log(`CameraX: ${JSON.stringify(vp.cameraX)}`)
+     console.log(`CameraY: ${JSON.stringify(vp.cameraY)}`)
+     console.log(`CameraZ: ${JSON.stringify(vp.cameraZ)}`)
      console.log(`GetFrustum: ${vp.getFrustum()}`)
      console.log(`GetScreenPort: ${vp.screenPort}`)
      console.log(`ScreenPortAspect: ${vp.screenPortAspect}`)
      console.log(`CameraAngle: ${vp.cameraAngle}`)
      console.log(`Camera35mmLensLength: ${vp.camera35mmLensLength}`)
-     console.log(`TargetPoint: ${vp.targetPoint}`)
+     console.log(`TargetPoint: ${JSON.stringify(vp.targetPoint)}`)
      console.log(`Id: ${vp.id}`)
      console.log()
 }

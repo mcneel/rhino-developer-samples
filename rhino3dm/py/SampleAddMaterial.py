@@ -2,17 +2,20 @@ import rhino3dm
 
 model = rhino3dm.File3dm()
 
-ef = rhino3dm.EmbeddedFile.Read('./rhinologo.png')
+ef = rhino3dm.File3dmEmbeddedFile.Read('./rhinologo.png')
 print('FileName: ' + ef.Filename)
-ef.Filename = 'rhinologo.png'
+# an embedded file's Filename is read-only, and EmbeddedFiles.Add takes a path,
+# so embed the file under the name the material uses
+model.EmbeddedFiles.Add('rhinologo.png')
+ef = list(model.EmbeddedFiles)[0]
 print('FileName: ' + ef.Filename)
-model.EmbeddedFiles.Add(ef)
 
 print('How many embedded files: ' + str(len(model.EmbeddedFiles)))
 
 material = rhino3dm.Material()
 material.SetBitmapTexture('rhinologo.png')
-index = model.Materials.Add(material)
+model.Materials.Add(material)
+index = len(model.Materials) - 1
 
 oa = rhino3dm.ObjectAttributes()
 oa.MaterialSource = rhino3dm.ObjectMaterialSource.MaterialFromObject

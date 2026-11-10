@@ -1,11 +1,11 @@
 {
   "name": "samples",
   "version": "0.0.1",
+  "private": true,
   "description": "rhino3dm.js samples to run in node",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node AddInstanceDefinition.js && node AddMaterialWithTexture.js && node ReadDocMaterials.js"
   },
   "keywords": [
     "rhino3dm"
@@ -13,6 +13,6 @@
   "author": "Luis E. Fraguada",
   "license": "MIT",
   "dependencies": {
-    "rhino3dm": "8.6.0-beta"
+    "rhino3dm": "9.2.0-beta.0"
   }
 }

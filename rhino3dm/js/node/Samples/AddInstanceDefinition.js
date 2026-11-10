@@ -17,24 +17,24 @@ const box = new rhino.Box(bbox)
 const extrusion = rhino.Extrusion.createBoxExtrusion( box, false )
 
 const objects = []
-objects.push(circle.toNurbsCurve(), extrusion)
+objects.push(rhino.Circle.toNurbsCurve(circle), extrusion)
 
 const attributes = []
 const oa = new rhino.ObjectAttributes()
 attributes.push(oa, oa)
 
-const point = [0,0,0]
-const index = model.instanceDefinitions().add('test', 'an idef', 'https://www.rhino3d.com', 'tag', point, objects, attributes)
+const point = { X: 0, Y: 0, Z: 0 }
+const index = model.instanceDefinitions.add('test', 'an idef', 'https://www.rhino3d.com', 'tag', point, objects, attributes)
 
 
-const idef = model.instanceDefinitions().findIndex(index)
+const idef = model.instanceDefinitions.findIndex(index)
 const xform = new rhino.Transform(100)
-const iref = new rhino.InstanceReference(idef.id, xform)
-model.objects().addInstanceObject(iref, null)
+const iref = new rhino.InstanceReferenceGeometry(idef.id, xform)
+model.objects.addInstanceObject(iref, null)
 
 let opts = new rhino.File3dmWriteOptions()
 opts.version = 8
-let buffer = model.toByteArrayOptions(opts)
+let buffer = model.toByteArray(opts)
 fs.writeFileSync('idef_js.3dm', buffer)
 
 

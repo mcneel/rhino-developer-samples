@@ -49,7 +49,7 @@ let scene, camera, renderer
 const doc = new rhino.File3dm()
 
 //turn off the rhinoground plane
-//doc.settings().renderSettings().groundPlane.enabled = false
+//doc.settings.renderSettings.groundPlane.enabled = false
 
 // #endregion OBJECTS and VARS //
 
@@ -57,53 +57,53 @@ const doc = new rhino.File3dm()
 
 const redMaterial = new rhino.Material()
 redMaterial.toPhysicallyBased()
-redMaterial.physicallyBased().baseColor = { r: 1, g: 0, b: 0, a: 0 }
-redMaterial.physicallyBased().metallic = 0.7
-redMaterial.physicallyBased().roughness = 0.5
-doc.materials().add(redMaterial)
+redMaterial.physicallyBased.baseColor = { R: 1, G: 0, B: 0, A: 0 }
+redMaterial.physicallyBased.metallic = 0.7
+redMaterial.physicallyBased.roughness = 0.5
+doc.materials.add(redMaterial)
 
 const redThreeMaterial = new THREE.MeshPhysicalMaterial( {color:0xff0000, metalness:0.7, roughness: 0.5} )
 
 const magentaMaterial = new rhino.Material()
 magentaMaterial.toPhysicallyBased()
-magentaMaterial.physicallyBased().baseColor = { r: 1, g: 0, b: 1, a: 0 }
-magentaMaterial.physicallyBased().metallic = 0.2
-magentaMaterial.physicallyBased().roughness = 0.9
-doc.materials().add(magentaMaterial)
+magentaMaterial.physicallyBased.baseColor = { R: 1, G: 0, B: 1, A: 0 }
+magentaMaterial.physicallyBased.metallic = 0.2
+magentaMaterial.physicallyBased.roughness = 0.9
+doc.materials.add(magentaMaterial)
 
 const magentaThreeMaterial = new THREE.MeshPhysicalMaterial( {color:0xff00ff, metalness:0.2, roughness: 0.9} )
 
 const greenMaterial = new rhino.Material()
 greenMaterial.toPhysicallyBased()
-greenMaterial.physicallyBased().baseColor = { r: 0, g: 1, b: 0, a: 0 }
-greenMaterial.physicallyBased().metallic = 0.2
-greenMaterial.physicallyBased().roughness = 0.9
-doc.materials().add(greenMaterial)
+greenMaterial.physicallyBased.baseColor = { R: 0, G: 1, B: 0, A: 0 }
+greenMaterial.physicallyBased.metallic = 0.2
+greenMaterial.physicallyBased.roughness = 0.9
+doc.materials.add(greenMaterial)
 
 const greenThreeMaterial = new THREE.MeshPhysicalMaterial( {color:0x00ff00, metalness:0.7, roughness: 0.9} )
 
-console.log(doc.materials().count)
+console.log(doc.materials.count)
 
 // #endregion MATERIALS //
 
 // #region LAYERS //
 
-const main_layer_index = doc.layers().addLayer( 'Objects', { r: 255, g: 255, b: 255, a: 255 } )
-const main_layer = doc.layers().findIndex(main_layer_index)
+const main_layer_index = doc.layers.addLayer( 'Objects', { r: 255, g: 255, b: 255, a: 255 } )
+const main_layer = doc.layers.findIndex(main_layer_index)
 const main_layer_id = main_layer.id
 
-const brep_layer_index = doc.layers().addLayer( 'Spheres', { r: 255, g: 0, b: 0, a: 255 } )
-const brep_layer = doc.layers().findIndex(brep_layer_index)
+const brep_layer_index = doc.layers.addLayer( 'Spheres', { r: 255, g: 0, b: 0, a: 255 } )
+const brep_layer = doc.layers.findIndex(brep_layer_index)
 brep_layer.parentLayerId = main_layer_id
 brep_layer.renderMaterialIndex = 0
 
-const ext_layer_index = doc.layers().addLayer( 'Extrusions', { r: 255, g: 0, b: 255, a: 255 } )
-const ext_layer = doc.layers().findIndex(ext_layer_index)
+const ext_layer_index = doc.layers.addLayer( 'Extrusions', { r: 255, g: 0, b: 255, a: 255 } )
+const ext_layer = doc.layers.findIndex(ext_layer_index)
 ext_layer.parentLayerId = main_layer_id
 ext_layer.renderMaterialIndex = 1
 
-const cyl_layer_index = doc.layers().addLayer( 'Cylinders', { r: 0, g: 255, b: 0, a: 255 } )
-const cyl_layer = doc.layers().findIndex(cyl_layer_index)
+const cyl_layer_index = doc.layers.addLayer( 'Cylinders', { r: 0, g: 255, b: 0, a: 255 } )
+const cyl_layer = doc.layers.findIndex(cyl_layer_index)
 cyl_layer.parentLayerId = main_layer_id
 cyl_layer.renderMaterialIndex = 2
 
@@ -139,7 +139,7 @@ function createObject(objectType) {
     const x = Math.random() * xDim * (Math.random() > 0.5 ? 1 : - 1)
     const y = Math.random() * yDim * (Math.random() > 0.5 ? 1 : - 1)
     const z = Math.random() * zDim * (Math.random() > 0.5 ? 1 : - 1)
-    const xform = rhino.Transform.translationXYZ(x, y, z)
+    const xform = rhino.Transform.translation(x, y, z)
 
     console.log( [ x, y, z ] )
 
@@ -151,11 +151,11 @@ function createObject(objectType) {
             geometry = new THREE.SphereGeometry( dim, 32, 32 )
             geometry.translate( x, z, -y )
 
-            const sphere = new rhino.Sphere( [ x, y, z ], dim )
+            const sphere = new rhino.Sphere( { X: x, Y: y, Z: z }, dim )
             rhinoObject = rhino.Brep.createFromSphere( sphere )
 
-            rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: geometry } )
-            result = rhinoObject.faces().get(0).setMesh( rhinoMesh, rhino.MeshType.Render )
+            rhinoMesh = meshFromThreejs( geometry )
+            result = rhinoObject.faces.get(0).setMesh( rhino.MeshType.Render, rhinoMesh )
 
             oa.layerIndex = brep_layer_index
 
@@ -168,11 +168,11 @@ function createObject(objectType) {
             geometry = new THREE.BoxGeometry( dim, dim, dim, 1, 1, 1 )
             geometry.translate( x, z, -y )
 
-            const rhinoBox = new rhino.Box( new rhino.BoundingBox( [ -halfDim, -halfDim, -halfDim ], [ halfDim, halfDim, halfDim ] ) )
+            const rhinoBox = new rhino.Box( new rhino.BoundingBox( { X: -halfDim, Y: -halfDim, Z: -halfDim }, { X: halfDim, Y: halfDim, Z: halfDim } ) )
             rhinoObject = rhino.Extrusion.createBoxExtrusion( rhinoBox, true )
             rhinoObject.transform( xform )
 
-            rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: geometry } )
+            rhinoMesh = meshFromThreejs( geometry )
             result = rhinoObject.setMesh( rhinoMesh, rhino.MeshType.Render )
 
             oa.layerIndex = ext_layer_index
@@ -186,12 +186,12 @@ function createObject(objectType) {
             geometry = new THREE.CylinderGeometry( dim, dim, dim, 32 )
             geometry.translate( x, z + halfDim, -y)
 
-            const circle = new rhino.Circle([ x, y, z ], dim)
+            const circle = new rhino.Circle({ X: x, Y: y, Z: z }, dim)
             const cylinder = new rhino.Cylinder(circle, dim)
             rhinoObject = rhino.Extrusion.createCylinderExtrusion( cylinder, true, true )
             rhinoObject.transform( xform )
 
-            rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: geometry } )
+            rhinoMesh = meshFromThreejs( geometry )
             result = rhinoObject.setMesh( rhinoMesh, rhino.MeshType.Render )
 
             oa.layerIndex = cyl_layer_index
@@ -204,7 +204,7 @@ function createObject(objectType) {
     const mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
 
-    doc.objects().add( rhinoObject, oa)
+    doc.objects.add( rhinoObject, oa)
 
 }
 
@@ -264,10 +264,22 @@ function onWindowResize() {
 
 // #region UTILITIES //
 
+/**
+ * A rhino3dm mesh from a three.js BufferGeometry, rotated from three.js's Y-up to Rhino's Z-up
+ */
+function meshFromThreejs(geometry) {
+    return rhino.Mesh.createFromThreejsBuffers( {
+        position: geometry.attributes.position.array,
+        normal: geometry.attributes.normal?.array,
+        uv: geometry.attributes.uv?.array,
+        index: geometry.index?.array
+    }, true )
+}
+
 function download() {
     const options = new rhino.File3dmWriteOptions()
     options.version = 8
-    let buffer = doc.toByteArrayOptions(options)
+    let buffer = doc.toByteArray(options)
     saveByteArray('rhinoDocument_' + options.version + '.3dm', buffer)
 }
 

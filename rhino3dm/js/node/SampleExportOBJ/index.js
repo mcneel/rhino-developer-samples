@@ -13,11 +13,10 @@ const model = '../../../models/Rhino_Logo_Mesh7.3dm'
 let buffer = fs.readFileSync(model)
 let arr = new Uint8Array(buffer)
 let doc = rhino.File3dm.fromByteArray(arr)
-let objects = doc.objects()
+let objects = doc.objects
 
 console.log(`objects: ${objects.count}`)
 
-const loader = new THREE.BufferGeometryLoader()
 const exporter = new OBJExporter()
 
 const scene = new THREE.Scene()
@@ -25,13 +24,19 @@ const material = new THREE.MeshBasicMaterial()
 
 // go through objects and add the meshes to the scene
 // finally, export the scne as an obj
-for ( let i = 0; i < objects.count; i ++ ) {
+for ( const object of objects ) {
 
-    const rgeo = objects.get( i ).geometry()
+    const rgeo = object.geometry
 
     if( rgeo.objectType === rhino.ObjectType.Mesh) {
 
-        const geometry = loader.parse( rgeo.toThreejsJSON() )
+        // toThreejsBuffers returns typed arrays for a three.js BufferGeometry
+        const buffers = rgeo.toThreejsBuffers( false )
+        const geometry = new THREE.BufferGeometry()
+        geometry.setAttribute( 'position', new THREE.BufferAttribute( buffers.position, 3 ) )
+        geometry.setAttribute( 'normal', new THREE.BufferAttribute( buffers.normal, 3 ) )
+        if ( buffers.uv ) geometry.setAttribute( 'uv', new THREE.BufferAttribute( buffers.uv, 2 ) )
+        geometry.setIndex( new THREE.BufferAttribute( buffers.index, 1 ) )
         const mesh = new THREE.Mesh( geometry, material )
         scene.add( mesh )
         

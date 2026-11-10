@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack serve --config config/webpack.dev.js"
+    "dev": "webpack serve --config config/webpack.dev.js",
+    "build": "webpack --config config/webpack.dev.js"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "copy-webpack-plugin": "^13.0.0",
     "html-webpack-plugin": "^5.6.3",
     "webpack": "^5.98.0",
     "webpack-cli": "^6.0.1",
@@ -17,6 +17,6 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "rhino3dm": "^8.9.0"
+    "rhino3dm": "9.2.0-beta.0"
   }
 }

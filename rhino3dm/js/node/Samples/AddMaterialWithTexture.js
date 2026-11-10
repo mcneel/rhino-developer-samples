@@ -10,38 +10,37 @@ const model = new rhino.File3dm()
 const b = fs.readFileSync('./rhinologo.png');
 const a = new Uint8Array(b)
 
-const ef = rhino.EmbeddedFile.fromByteArray(a)
-console.log(ef.length)
-
+// name the embedded file as the texture refers to it, then add it to the model
 const ef_fileName = 'rhinologo.png'
-ef.fileName = ef_fileName
-console.log('Filename: ' + ef.fileName)
-model.embeddedFiles().add(ef)
+const ef = rhino.File3dmEmbeddedFile.fromByteArray(a, ef_fileName)
+console.log('Length: ' + ef.length)
+console.log('Filename: ' + ef.filename)
 
-console.log('how many embedded files: ' + model.embeddedFiles().count)
+model.embeddedFiles.add(ef)
+console.log('how many embedded files: ' + model.embeddedFiles.count)
 
 const texture = new rhino.Texture()
 texture.fileName = ef_fileName
 
 const material = new rhino.Material()
 material.toPhysicallyBased()
-material.physicallyBased().baseColor = { r: 1, g: 0, b: 0, a: 0 }
-material.physicallyBased().metallic = 0.7
-material.physicallyBased().roughness = 0.5
+material.physicallyBased.baseColor = { R: 1, G: 0, B: 0, A: 0 }
+material.physicallyBased.metallic = 0.7
+material.physicallyBased.roughness = 0.5
 material.setBitmapTexture(texture)
 
-const index = model.materials().add(material)
+const index = model.materials.addMaterial(material)
 
-const sphere = rhino.Brep.createFromSphere( new rhino.Sphere( [ 0,0,0 ], 10 ) )
+const sphere = rhino.Brep.createFromSphere( new rhino.Sphere( { X: 0, Y: 0, Z: 0 }, 10 ) )
 
 const oa = new rhino.ObjectAttributes()
 oa.materialSource = rhino.ObjectMaterialSource.MaterialFromObject
 oa.materialIndex = index
 
-model.objects().add(sphere, oa)
+model.objects.add(sphere, oa)
 
 //save model
 let opts = new rhino.File3dmWriteOptions()
 opts.version = 8
-let buffer = model.toByteArrayOptions(opts)
+let buffer = model.toByteArray(opts)
 fs.writeFileSync('materialWithEmbeddedFile_js.3dm', buffer)

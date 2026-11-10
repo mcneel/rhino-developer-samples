@@ -18,54 +18,54 @@ create()
 function create() {
 
   doc = new rhino.File3dm()
-  const loader = new THREE.BufferGeometryLoader();
 
   // -- POINTS / POINTCLOUDS -- //
 
   // POINTS
 
-  let ptA = [0, 0, 0]
+  let ptA = { X: 0, Y: 0, Z: 0 }
 
   const geometry = new THREE.BufferGeometry()
-  const vertices = new Float32Array(ptA)
+  const vertices = new Float32Array([ptA.X, ptA.Y, ptA.Z])
   geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
   const pointsMaterial = new THREE.PointsMaterial({ color: 0xff0000 })
   const threejsPoint = new THREE.Points(geometry, pointsMaterial)
 
   scene.add(threejsPoint)
-  doc.objects().addPoint(ptA)
+  doc.objects.addPoint(ptA)
 
   // POINTCLOUD
 
-  const ptB = [10, 0, 0]
-  const ptC = [10, 10, 0]
-  const ptD = [0, 10, 0]
-  const ptE = [20, 20, 20]
-  const ptF = [30, 0, 0]
-  const ptG = [35, 5, 0]
-  const ptH = [40, -5, 0]
-  const ptI = [45, 5, 0]
-  const ptJ = [50, 0, 0]
+  const ptB = { X: 10, Y: 0, Z: 0 }
+  const ptC = { X: 10, Y: 10, Z: 0 }
+  const ptD = { X: 0, Y: 10, Z: 0 }
+  const ptE = { X: 20, Y: 20, Z: 20 }
+  const ptF = { X: 30, Y: 0, Z: 0 }
+  const ptG = { X: 35, Y: 5, Z: 0 }
+  const ptH = { X: 40, Y: -5, Z: 0 }
+  const ptI = { X: 45, Y: 5, Z: 0 }
+  const ptJ = { X: 50, Y: 0, Z: 0 }
 
   const red = { r: 255, g: 0, b: 0, a: 0 }
 
   const pointCloud = new rhino.PointCloud()
-  pointCloud.addPointColor(ptA, red)
-  pointCloud.addPointColor(ptB, red)
-  pointCloud.addPointColor(ptC, red)
-  pointCloud.addPointColor(ptD, red)
-  pointCloud.addPointColor(ptE, red)
-  pointCloud.addPointColor(ptF, red)
-  pointCloud.addPointColor(ptG, red)
-  pointCloud.addPointColor(ptH, red)
-  pointCloud.addPointColor(ptI, red)
-  pointCloud.addPointColor(ptJ, red)
+  pointCloud.add(ptA, red)
+  pointCloud.add(ptB, red)
+  pointCloud.add(ptC, red)
+  pointCloud.add(ptD, red)
+  pointCloud.add(ptE, red)
+  pointCloud.add(ptF, red)
+  pointCloud.add(ptG, red)
+  pointCloud.add(ptH, red)
+  pointCloud.add(ptI, red)
+  pointCloud.add(ptJ, red)
 
-  const threejsPointsGeometry = loader.parse(pointCloud.toThreejsJSON())
+  const threejsPointsGeometry = new THREE.BufferGeometry()
+  threejsPointsGeometry.setAttribute('position', new THREE.BufferAttribute(pointCloud.toThreejsBuffers(false).position, 3))
   const threejsPoints = new THREE.Points(threejsPointsGeometry, pointsMaterial)
 
   scene.add(threejsPoints)
-  doc.objects().add(pointCloud, null)
+  doc.objects.add(pointCloud, null)
 
   // -- CURVES -- //
 
@@ -74,42 +74,43 @@ function create() {
   const line = new rhino.LineCurve(ptA, ptE)
 
   const lineGeometry = new THREE.BufferGeometry()
-  const lineVertices = new Float32Array(line.line.from.concat(line.line.to))
+  const lineVertices = new Float32Array([line.line.From.X, line.line.From.Y, line.line.From.Z, line.line.To.X, line.line.To.Y, line.line.To.Z])
   lineGeometry.setAttribute('position', new THREE.BufferAttribute(lineVertices, 3))
   const lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff })
   const lineObject = new THREE.Line(lineGeometry, lineMaterial)
   scene.add(lineObject)
-  doc.objects().add(line.toNurbsCurve(), null)
+  doc.objects.add(line.toNurbsCurve(), null)
 
   // CIRCLE //
 
   const circle = new rhino.Circle(10)
 
-  const circleGeometry = new THREE.RingGeometry(circle.radius, circle.radius, 32)
+  const circleGeometry = new THREE.RingGeometry(circle.Radius, circle.Radius, 32)
   const circleObject = new THREE.Line(circleGeometry, lineMaterial)
-  circleObject.position.fromArray(circle.center)
+  const center = rhino.Circle.center(circle)
+  circleObject.position.set(center.X, center.Y, center.Z)
   scene.add(circleObject)
-  doc.objects().add(circle.toNurbsCurve(), null)
+  doc.objects.add(rhino.Circle.toNurbsCurve(circle), null)
 
   // ARC //
 
   const arc = new rhino.Arc(circle, Math.PI)
-  const arcGeometry = new THREE.RingGeometry(arc.radius, arc.radius, 32, 1, 0, arc.angleRadians)
+  const arcGeometry = new THREE.RingGeometry(arc.Radius, arc.Radius, 32, 1, 0, rhino.Arc.angle(arc))
   const arcObject = new THREE.Line(arcGeometry, lineMaterial)
 
   scene.add(arcObject)
-  doc.objects().add(arc.toNurbsCurve(), null)
+  doc.objects.add(rhino.Arc.toNurbsCurve(arc), null)
 
   // ELLIPSE //
 
   // CURVE //
 
   const curvePoints = new rhino.Point3dList()
-  curvePoints.add(ptF[0], ptF[1], ptF[2])
-  curvePoints.add(ptG[0], ptG[1], ptG[2])
-  curvePoints.add(ptH[0], ptH[1], ptH[2])
-  curvePoints.add(ptI[0], ptI[1], ptI[2])
-  curvePoints.add(ptJ[0], ptJ[1], ptJ[2])
+  curvePoints.add(ptF.X, ptF.Y, ptF.Z)
+  curvePoints.add(ptG.X, ptG.Y, ptG.Z)
+  curvePoints.add(ptH.X, ptH.Y, ptH.Z)
+  curvePoints.add(ptI.X, ptI.Y, ptI.Z)
+  curvePoints.add(ptJ.X, ptJ.Y, ptJ.Z)
 
   const nurbsCurve = rhino.NurbsCurve.create(false, 3, curvePoints)
 
@@ -120,13 +121,13 @@ function create() {
 
   for (let i = 0; i < 20; i++) {
 
-    let t = domain[0] + (i / divisions) * (domain[1] - domain[0]);
+    let t = domain.T0 + (i / divisions) * (domain.T1 - domain.T0);
 
     const tPt = nurbsCurve.pointAt(t)
 
-    cPts.push(tPt[0])
-    cPts.push(tPt[1])
-    cPts.push(tPt[2])
+    cPts.push(tPt.X)
+    cPts.push(tPt.Y)
+    cPts.push(tPt.Z)
 
   }
 
@@ -136,29 +137,35 @@ function create() {
   const curveObject = new THREE.Line(curveGeometry, lineMaterial)
 
   scene.add(curveObject)
-  doc.objects().add(nurbsCurve, null)
+  doc.objects.add(nurbsCurve, null)
 
   // -- MESHES -- //
 
   const mesh = new rhino.Mesh()
-  mesh.vertices().add(ptA[0], ptA[1], ptA[2])
-  mesh.vertices().add(ptB[0], ptB[1], ptB[2])
-  mesh.vertices().add(ptC[0], ptC[1], ptC[2])
+  mesh.vertices.add(ptA.X, ptA.Y, ptA.Z)
+  mesh.vertices.add(ptB.X, ptB.Y, ptB.Z)
+  mesh.vertices.add(ptC.X, ptC.Y, ptC.Z)
 
-  mesh.faces().addTriFace(0, 1, 2)
+  mesh.faces.addFace(0, 1, 2)
 
-  mesh.vertexColors().add(255, 0, 255)
-  mesh.vertexColors().add(0, 255, 255)
-  mesh.vertexColors().add(255, 255, 255)
+  mesh.vertexColors.add(255, 0, 255)
+  mesh.vertexColors.add(0, 255, 255)
+  mesh.vertexColors.add(255, 255, 255)
 
-  mesh.normals().computeNormals()
+  mesh.normals.computeNormals()
 
-  const meshGeometry = loader.parse(mesh.toThreejsJSON())
+  // toThreejsBuffers returns typed arrays for a three.js BufferGeometry
+  const buffers = mesh.toThreejsBuffers(false)
+  const meshGeometry = new THREE.BufferGeometry()
+  meshGeometry.setAttribute('position', new THREE.BufferAttribute(buffers.position, 3))
+  meshGeometry.setAttribute('normal', new THREE.BufferAttribute(buffers.normal, 3))
+  meshGeometry.setAttribute('color', new THREE.BufferAttribute(buffers.color, 3))
+  meshGeometry.setIndex(new THREE.BufferAttribute(buffers.index, 1))
   console.log(meshGeometry)
   const threejsMesh = new THREE.Mesh(meshGeometry, new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide }))
   scene.add(threejsMesh)
 
-  doc.objects().add(mesh, null)
+  doc.objects.add(mesh, null)
 
   // hide spinner
   document.getElementById('loader').style.display = 'none'

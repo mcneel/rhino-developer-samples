@@ -4,13 +4,13 @@ console.log('Loaded rhino3dm.')
 
 const file3dm = new rhino.File3dm()
 
-console.log( `Flatshade Enabled: ${ file3dm.settings().renderSettings().flatShade }` ) // false
-file3dm.settings().renderSettings().flatShade = true
-console.log( `Flatshade Enabled: ${ file3dm.settings().renderSettings().flatShade }` ) // true
+console.log( `Flatshade Enabled: ${ file3dm.settings.renderSettings.flatShade }` ) // false
+file3dm.settings.renderSettings.flatShade = true
+console.log( `Flatshade Enabled: ${ file3dm.settings.renderSettings.flatShade }` ) // true
 
-const renderSettings = file3dm.settings().renderSettings()
+const renderSettings = file3dm.settings.renderSettings
 
-const gp = file3dm.settings().renderSettings().groundPlane
+const gp = file3dm.settings.renderSettings.groundPlane
 
 console.log( `Ground Plane Enabled: ${ gp.enabled }` )
 console.log( `Ground Plane Altitude: ${ gp.altitude }` )

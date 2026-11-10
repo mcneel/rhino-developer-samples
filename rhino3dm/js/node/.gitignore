@@ -1,0 +1,7 @@
+# files the samples write
+fileWithGroups.3dm
+file.3dm
+idef_js.3dm
+materialWithEmbeddedFile_js.3dm
+Rhino_Logo_Mesh.3dm
+Rhino_Logo_Mesh.obj

@@ -1,0 +1,17 @@
+{
+  "name": "rhino3dm-node-samples",
+  "version": "0.0.1",
+  "private": true,
+  "description": "rhino3dm.js samples to run in node.js",
+  "type": "module",
+  "workspaces": [
+    "Sample*"
+  ],
+  "scripts": {
+    "test": "npm run start --workspaces"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "license": "MIT"
+}

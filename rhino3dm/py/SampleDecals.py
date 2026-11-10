@@ -1,5 +1,5 @@
-# requires rhino3dm 8.0.0b2
-# python3 -m pip install rhino3dm==8.0.0b2
+# requires rhino3dm 9.2.0b0
+# python3 -m pip install rhino3dm==9.2.0b0
 
 import rhino3dm
 model = rhino3dm.File3dm.Read('../models/decal_r8.3dm')
@@ -9,9 +9,9 @@ for obj in model.Objects:
     for decal in obj.Attributes.Decals:
         print('Decal Texture Instance Id: ' + str(decal.TextureInstanceId))
 
-        rc = model.RenderContent.FindId(decal.TextureInstanceId)
+        rc = model.RenderTextures.Find(decal.TextureInstanceId)
 
-        print('Decal Texture FileName: ' + str(rc.FileName))
+        print('Decal Texture FileName: ' + str(rc.Filename))
 
         print('Decal Mapping: ' + str(decal.Mapping))
         print('Decal Projection: ' + str(decal.Projection))
@@ -22,18 +22,21 @@ for obj in model.Objects:
         print('Decal VectorAcross: ' + str(decal.VectorAcross))
         print('Decal Height: ' + str(decal.Height))
         print('Decal Radius: ' + str(decal.Radius))
-        print('Decal HorzSweepStart: ' + str(decal.HorzSweepStart))
-        print('Decal HorzSweepEnd: ' + str(decal.HorzSweepEnd))
-        print('Decal VertSweepStart: ' + str(decal.VertSweepStart))
-        print('Decal VertSweepEnd: ' + str(decal.VertSweepEnd))
-        print('Decal BoundsMinU: ' + str(decal.BoundsMinU))
-        print('Decal BoundsMinV: ' + str(decal.BoundsMinV))
-        print('Decal BoundsMaxU: ' + str(decal.BoundsMaxU))
-        print('Decal BoundsMaxV: ' + str(decal.BoundsMaxV))
+        horzSweepStart, horzSweepEnd = decal.HorzSweep()
+        vertSweepStart, vertSweepEnd = decal.VertSweep()
+        boundsMinU, boundsMinV, boundsMaxU, boundsMaxV = decal.GetUVBounds()
+        print('Decal HorzSweepStart: ' + str(horzSweepStart))
+        print('Decal HorzSweepEnd: ' + str(horzSweepEnd))
+        print('Decal VertSweepStart: ' + str(vertSweepStart))
+        print('Decal VertSweepEnd: ' + str(vertSweepEnd))
+        print('Decal BoundsMinU: ' + str(boundsMinU))
+        print('Decal BoundsMinV: ' + str(boundsMinV))
+        print('Decal BoundsMaxU: ' + str(boundsMaxU))
+        print('Decal BoundsMaxV: ' + str(boundsMaxV))
         print()
 
-        decal.Mapping = rhino3dm.Mappings.Spherical
-        decal.Projection = rhino3dm.Projections.Backward
+        decal.Mapping = rhino3dm.DecalMapping.Spherical
+        decal.Projection = rhino3dm.DecalProjection.Backward
         decal.MapToInside = True
         decal.Transparency = 0.5
         decal.Origin = rhino3dm.Point3d(1,0,1)
@@ -41,14 +44,9 @@ for obj in model.Objects:
         decal.VectorAcross = rhino3dm.Vector3d(11,11,11)
         decal.Height = 2.0
         decal.Radius = 11.11
-        decal.HorzSweepStart = 0.2
-        decal.HorzSweepEnd = 1.55
-        decal.VertSweepStart = 0.2
-        decal.VertSweepEnd = 2.11
-        decal.BoundsMinU = 0.2
-        decal.BoundsMinV = 1.2
-        decal.BoundsMaxU = 0.3
-        decal.BoundsMaxV = 1.44
+        decal.SetHorzSweep(0.2, 1.55)
+        decal.SetVertSweep(0.2, 2.11)
+        decal.SetUVBounds(0.2, 1.2, 0.3, 1.44)
         print()
 
         print('Decal Mapping: ' + str(decal.Mapping))
@@ -60,13 +58,16 @@ for obj in model.Objects:
         print('Decal VectorAcross: ' + str(decal.VectorAcross))
         print('Decal Height: ' + str(decal.Height))
         print('Decal Radius: ' + str(decal.Radius))
-        print('Decal HorzSweepStart: ' + str(decal.HorzSweepStart))
-        print('Decal HorzSweepEnd: ' + str(decal.HorzSweepEnd))
-        print('Decal VertSweepStart: ' + str(decal.VertSweepStart))
-        print('Decal VertSweepEnd: ' + str(decal.VertSweepEnd))
-        print('Decal BoundsMinU: ' + str(decal.BoundsMinU))
-        print('Decal BoundsMinV: ' + str(decal.BoundsMinV))
-        print('Decal BoundsMaxU: ' + str(decal.BoundsMaxU))
-        print('Decal BoundsMaxV: ' + str(decal.BoundsMaxV))
+        horzSweepStart, horzSweepEnd = decal.HorzSweep()
+        vertSweepStart, vertSweepEnd = decal.VertSweep()
+        boundsMinU, boundsMinV, boundsMaxU, boundsMaxV = decal.GetUVBounds()
+        print('Decal HorzSweepStart: ' + str(horzSweepStart))
+        print('Decal HorzSweepEnd: ' + str(horzSweepEnd))
+        print('Decal VertSweepStart: ' + str(vertSweepStart))
+        print('Decal VertSweepEnd: ' + str(vertSweepEnd))
+        print('Decal BoundsMinU: ' + str(boundsMinU))
+        print('Decal BoundsMinV: ' + str(boundsMinV))
+        print('Decal BoundsMaxU: ' + str(boundsMaxU))
+        print('Decal BoundsMaxV: ' + str(boundsMaxV))
         print()
 

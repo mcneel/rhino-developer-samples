@@ -3,6 +3,7 @@ import * as fs from 'fs'
 import rhino3dm from 'rhino3dm'
 import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 
 const rhino = await rhino3dm()
 
@@ -19,19 +20,26 @@ if (obj.children) {
         if (!exportGeometry) {
             exportGeometry = mesh.geometry
         } else {
-            exportGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries([exportGeometry, mesh.geometry], false)
+            exportGeometry = mergeGeometries([exportGeometry, mesh.geometry], false)
         }
     })
 }
 
-const rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: exportGeometry } )
+// createFromThreejsBuffers takes the BufferGeometry's attribute arrays; true rotates from three.js's Y-up to Rhino's Z-up
+const attributes = exportGeometry.attributes
+const rhinoMesh = rhino.Mesh.createFromThreejsBuffers( {
+    position: attributes.position.array,
+    normal: attributes.normal?.array,
+    uv: attributes.uv?.array,
+    index: exportGeometry.index?.array
+}, true )
 
 const doc = new rhino.File3dm()
-doc.objects().add(rhinoMesh, null)
+doc.objects.add(rhinoMesh, null)
 
 let opts = new rhino.File3dmWriteOptions()
 opts.version = 8
-let buffer = doc.toByteArrayOptions(opts)
+let buffer = doc.toByteArray(opts)
 fs.writeFileSync('Rhino_Logo_Mesh.3dm', buffer)
 
 

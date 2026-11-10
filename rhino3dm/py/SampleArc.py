@@ -15,7 +15,7 @@ def info(arc, name):
     print(name + ' AngleDomain: ' + str(arc.AngleDomain))
     print(name + ' StartAngle: ' + str(arc.StartAngle))
     print(name + ' EndAngle: ' + str(arc.EndAngle))
-    print(name + ' AngleRadians: ' + str(arc.AngleRadians))
+    print(name + ' AngleRadians: ' + str(arc.Angle))
     print(name + ' StartAngleDegrees: ' + str(arc.StartAngleDegrees))
     print(name + ' EndAngleDegrees: ' + str(arc.EndAngleDegrees))
     print(name + ' AngleDegrees: ' + str(arc.AngleDegrees))
