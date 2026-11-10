@@ -18,7 +18,7 @@ create()
 function create () {
 
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.4.0/' )
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.35.0/' )
 
     doc = new rhino.File3dm()
 

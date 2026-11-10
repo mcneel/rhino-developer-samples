@@ -18,7 +18,7 @@ public class Function
         double radius;
         if( Double.TryParse(input, out radius) ) {
             var circle = new Rhino.Geometry.Circle(radius);
-            return circle.Circumference.ToString();
+            return circle.Circumference.ToString(System.Globalization.CultureInfo.InvariantCulture);
         } else {
             return "Could not parse input";
         }

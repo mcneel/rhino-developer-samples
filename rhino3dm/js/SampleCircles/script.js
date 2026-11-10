@@ -6,10 +6,10 @@ run()
 
 
 function pointToString(pt) {
-  var str = pt[0] + ',';
-  str = str + pt[1] + ',';
-  str = str + pt[2] + ',';
-  str = str + pt[3];
+  var str = pt.X + ',';
+  str = str + pt.Y + ',';
+  str = str + pt.Z + ',';
+  str = str + pt.Weight;
   return str;
 }
 
@@ -17,17 +17,17 @@ function dumpNurbsCurve(nc) {
   console.log('dimension: ' + nc.dimension);
   console.log('order: ' + nc.order);
   console.log('rational: ' + nc.isRational);
-  var cv_count = nc.points().count;
+  var cv_count = nc.points.count;
   console.log('cv_count: ' + cv_count);
   for (let i = 0; i < cv_count; i++) {
-    var pt = nc.points().get(i);
+    var pt = nc.points.get(i);
     var str = pointToString(pt)
     console.log('cv[' + i + '] = ' + str);
   }
-  var knot_count = nc.knots().count;
+  var knot_count = nc.knots.count;
   console.log('knot_count: ' + knot_count);
   for (let i = 0; i < knot_count; i++) {
-    var k = nc.knots().get(i);
+    var k = nc.knots.get(i);
     console.log('k[' + i + '] = ' + k);
   }
   console.log('\n');
@@ -41,7 +41,7 @@ function run() {
   const circle = new rhino.Circle(1.0);
 
   // Get it's NURB form
-  const curve0 = circle.toNurbsCurve();
+  const curve0 = rhino.Circle.toNurbsCurve(circle);
 
   // Dump
   console.log('CURVE0:');
@@ -52,15 +52,15 @@ function run() {
   const dimension = curve0.dimension; // 3
   const order = curve0.order; // order = degree + 1
   const rational = curve0.isRational;
-  const cv_count = curve0.points().count
-  const knot_count = curve0.knots().count;
+  const cv_count = curve0.points.count
+  const knot_count = curve0.knots.count;
 
-  const curve1 = new rhino.NurbsCurve(dimension, rational, order, cv_count)
+  const curve1 = new rhino.NurbsCurve(dimension, rational, order, cv_count);
   for (let i = 0; i < cv_count; i++) {
-    curve1.points().set(i, curve0.points().get(i));
+    curve1.points.set(i, curve0.points.get(i));
   }
   for (let i = 0; i < knot_count; i++) {
-    curve1.knots().set(i, curve0.knots().get(i));
+    curve1.knots.set(i, curve0.knots.get(i));
   }
 
   // Dump
@@ -69,26 +69,26 @@ function run() {
   dumpNurbsCurve(curve1);
 
   // Create a new NURBS curve, that evaluates to a circle, from scratch
-  const curve2 = new rhino.NurbsCurve(3, true, 3, 9)
-  curve2.points().set(0, [1.0, 0.0, 0.0, 1.0]);
-  curve2.points().set(1, [0.7071067811865475, 0.7071067811865475, 0.0, 0.7071067811865475]);
-  curve2.points().set(2, [0.0, 1.0, 0.0, 1.0]);
-  curve2.points().set(3, [-0.7071067811865475, 0.7071067811865475, 0.0, 0.7071067811865475]);
-  curve2.points().set(4, [-1.0, 0.0, 0.0, 1.0]);
-  curve2.points().set(5, [-0.7071067811865475, -0.7071067811865475, 0.0, 0.7071067811865475]);
-  curve2.points().set(6, [0.0, -1.0, 0.0, 1.0]);
-  curve2.points().set(7, [0.7071067811865475, -0.7071067811865475, 0.0, 0.7071067811865475]);
-  curve2.points().set(8, [1.0, 0.0, 0.0, 1.0]);
-  curve2.knots().set(0, 0.0);
-  curve2.knots().set(1, 0.0);
-  curve2.knots().set(2, 0.5 * Math.PI);
-  curve2.knots().set(3, 0.5 * Math.PI);
-  curve2.knots().set(4, Math.PI);
-  curve2.knots().set(5, Math.PI);
-  curve2.knots().set(6, 1.5 * Math.PI);
-  curve2.knots().set(7, 1.5 * Math.PI);
-  curve2.knots().set(8, 2.0 * Math.PI);
-  curve2.knots().set(9, 2.0 * Math.PI);
+  const curve2 = new rhino.NurbsCurve(3, true, 3, 9);
+  curve2.points.set(0, new rhino.ControlPoint(1.0, 0.0, 0.0, 1.0));
+  curve2.points.set(1, new rhino.ControlPoint(0.7071067811865475, 0.7071067811865475, 0.0, 0.7071067811865475));
+  curve2.points.set(2, new rhino.ControlPoint(0.0, 1.0, 0.0, 1.0));
+  curve2.points.set(3, new rhino.ControlPoint(-0.7071067811865475, 0.7071067811865475, 0.0, 0.7071067811865475));
+  curve2.points.set(4, new rhino.ControlPoint(-1.0, 0.0, 0.0, 1.0));
+  curve2.points.set(5, new rhino.ControlPoint(-0.7071067811865475, -0.7071067811865475, 0.0, 0.7071067811865475));
+  curve2.points.set(6, new rhino.ControlPoint(0.0, -1.0, 0.0, 1.0));
+  curve2.points.set(7, new rhino.ControlPoint(0.7071067811865475, -0.7071067811865475, 0.0, 0.7071067811865475));
+  curve2.points.set(8, new rhino.ControlPoint(1.0, 0.0, 0.0, 1.0));
+  curve2.knots.set(0, 0.0);
+  curve2.knots.set(1, 0.0);
+  curve2.knots.set(2, 0.5 * Math.PI);
+  curve2.knots.set(3, 0.5 * Math.PI);
+  curve2.knots.set(4, Math.PI);
+  curve2.knots.set(5, Math.PI);
+  curve2.knots.set(6, 1.5 * Math.PI);
+  curve2.knots.set(7, 1.5 * Math.PI);
+  curve2.knots.set(8, 2.0 * Math.PI);
+  curve2.knots.set(9, 2.0 * Math.PI);
    
   // Dump
    console.log('CURVE2:');

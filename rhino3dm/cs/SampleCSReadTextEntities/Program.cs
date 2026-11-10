@@ -9,7 +9,7 @@ Console.WriteLine("Current Directory: {0}",path);
 File3dm file3dm = new File3dm();
 
 //the path will be different whether you are using dotnet run or debugging
-if(path.Contains("net7.0")){
+if(path.Contains("net10.0")){
     file3dm = File3dm.Read("../../../../../models/textEntities_r8.3dm");
 } else{
     file3dm = File3dm.Read("../../models/textEntities_r8.3dm");

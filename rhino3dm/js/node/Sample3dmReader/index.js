@@ -15,13 +15,13 @@ const rhino = await rhino3dm()
 const buffer = fs.readFileSync(file3dmpath);
 const arr = new Uint8Array(buffer)
 const file3dm = rhino.File3dm.fromByteArray(arr)
-const objects = file3dm.objects();
+const objects = file3dm.objects;
 
 const stats = {}
 
-for ( let i = 0; i < objects.count; i ++ ) {
+for ( const object of objects ) {
 
-    const geometry = objects.get(i).geometry()
+    const geometry = object.geometry
     const prop = geometry.objectType.constructor.name.substring(11)
     increment(stats, prop)
 

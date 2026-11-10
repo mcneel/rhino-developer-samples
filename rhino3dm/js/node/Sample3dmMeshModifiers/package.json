@@ -1,11 +1,11 @@
 {
   "name": "sample3dmmeshmodifiers",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "private": true,
   "type": "module",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "keywords": [
     "rhino3dm"
@@ -13,6 +13,6 @@
   "author": "Luis E. Fraguada",
   "license": "MIT",
   "dependencies": {
-    "rhino3dm": "^8.4.0"
+    "rhino3dm": "9.2.0-beta.0"
   }
 }

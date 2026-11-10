@@ -1,10 +1,10 @@
-# requires rhino3dm 8.0.0b2
-# python3 -m pip install rhino3dm==8.0.0b2
+# requires rhino3dm 9.2.0b0
+# python3 -m pip install rhino3dm==9.2.0b0
 
 import rhino3dm
 model = rhino3dm.File3dm.Read('../models/MeshBox_r5.3dm')
 
-mesh = model.Objects[0].Geometry
+mesh = list(model.Objects)[0].Geometry
 
 bbox = rhino3dm.BoundingBox(-10,-10,0, 10,10,20)
 box = rhino3dm.Box(bbox)
@@ -14,4 +14,4 @@ extrusion.SetMesh(mesh, rhino3dm.MeshType.Render)
 
 outModel = rhino3dm.File3dm()
 outModel.Objects.AddExtrusion(extrusion, None)
-outModel.Write('../models/ExtrusionBox_r8.3dm')
+outModel.Write('../models/ExtrusionBox_r8.3dm', 0)

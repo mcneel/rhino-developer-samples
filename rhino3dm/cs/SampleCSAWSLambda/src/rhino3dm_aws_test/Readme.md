@@ -2,8 +2,8 @@
 This is a very minimal project to demonstrate how to use Rhino3dm in AWS Lambda.
 
 Notes: 
-- At the time of writing, 8.0.0-beta2 on nuget includes a faulty librhino3dm_native.so file. This example references manually copied results from our GitHub Actions Release workflow, "rhino3dm.net nupkg" (librhino3dm.so from runtimes/linux-x64/native and Rhino.dll from lib/netstandard2.0).
-- At the time of writing, we only support the linux-x64 runtime (not linux-arm64).
+- This example references the Rhino3dm package from NuGet, which includes librhino3dm_native.so for linux-x64 and linux-arm64 (runtimes/linux-x64/native, runtimes/linux-arm64/native).
+- The function is deployed for x86_64 (`function-architecture` in aws-lambda-tools-defaults.json). Set it to `arm64` to run on Graviton.
 
 ## Useage
 This assumes you have the appropriate AWS account and permissions, and understand how to authenticate the AWS CLI.

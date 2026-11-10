@@ -1,16 +1,17 @@
 {
-  "name": "3dm-to-obj-via-threejs",
+  "name": "sampleexportobj",
   "version": "0.0.1",
+  "private": true,
   "description": "An example cli tool that loads a 3dm and converts it to obj!",
-  "main": "index.js",
   "type": "module",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Luis Fraguada",
   "license": "MIT",
   "dependencies": {
-    "rhino3dm": "8.4.0",
-    "three": "0.158.0"
+    "rhino3dm": "9.2.0-beta.0",
+    "three": "0.187.0"
   }
 }

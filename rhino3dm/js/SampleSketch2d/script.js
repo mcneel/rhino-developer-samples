@@ -43,7 +43,7 @@ function download() {
 
   let doc = new rhino.File3dm()
   for(let i=0; i<_model.curves.length;i++) {
-    doc.objects().add(_model.curves[i], null)
+    doc.objects.add(_model.curves[i], null)
   }
 
   let options = new rhino.File3dmWriteOptions()
@@ -86,7 +86,7 @@ function onMouseMove(event) {
   let index = _model.points.count - 1
   if (index >= 0) {
     let [x,y] = getXY(event)
-    _model.points.set(index, [x, y, 0])
+    _model.points.set(index, { X: x, Y: y, Z: 0 })
     draw()
   }
 }
@@ -137,9 +137,16 @@ function getXY(evt) {
   let x = evt.clientX - rect.left
   let y = evt.clientY - rect.top
   let s2w = _model.viewport.getXform(rhino.CoordinateSystem.Screen, rhino.CoordinateSystem.World)
-  let world_point = rhino.Point3d.transform([x,y,0], s2w)
-  s2w.delete()
+  let world_point = transformPoint({ X: x, Y: y, Z: 0 }, s2w)
   return [world_point[0],world_point[1]]
+}
+
+// transforms a copy of a point and returns its [x, y, z]
+// (Point3d.transform moves the point it is given, and a Transform is a plain value: no delete() needed)
+function transformPoint(point, xform) {
+  const p = { X: point.X, Y: point.Y, Z: point.Z }
+  rhino.Point3d.transform(p, xform)
+  return [p.X, p.Y, p.Z]
 }
 
 /* * * * * * * * * * * * * * * * *  drawing   * * * * * * * * * * * * * * * * */
@@ -158,21 +165,21 @@ function draw() {
   ctx.strokeStyle = 'rgb(130,130,130)';
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   for(let i=0; i<50; i+=1){
-    let [x,y] = rhino.Point3d.transform([i,-50,0], w2s);
-    let [x1,y1] = rhino.Point3d.transform([i,50,0], w2s);
+    let [x,y] = transformPoint({ X: i, Y: -50, Z: 0 }, w2s);
+    let [x1,y1] = transformPoint({ X: i, Y: 50, Z: 0 }, w2s);
     ctx.moveTo(x,y);
     ctx.lineTo(x1,y1);
-    [x,y] = rhino.Point3d.transform([-i,-50,0], w2s);
-    [x1,y1] = rhino.Point3d.transform([-i,50,0], w2s);
+    [x,y] = transformPoint({ X: -i, Y: -50, Z: 0 }, w2s);
+    [x1,y1] = transformPoint({ X: -i, Y: 50, Z: 0 }, w2s);
     ctx.moveTo(x,y);
     ctx.lineTo(x1,y1);
 
-    [x,y] = rhino.Point3d.transform([-50, i, 0], w2s);
-    [x1,y1] = rhino.Point3d.transform([50, i, 0], w2s);
+    [x,y] = transformPoint({ X: -50, Y: i, Z: 0 }, w2s);
+    [x1,y1] = transformPoint({ X: 50, Y: i, Z: 0 }, w2s);
     ctx.moveTo(x,y);
     ctx.lineTo(x1,y1);
-    [x,y] = rhino.Point3d.transform([-50, -i, 0], w2s);
-    [x1,y1] = rhino.Point3d.transform([50, -i, 0], w2s);
+    [x,y] = transformPoint({ X: -50, Y: -i, Z: 0 }, w2s);
+    [x1,y1] = transformPoint({ X: 50, Y: -i, Z: 0 }, w2s);
     ctx.moveTo(x,y);
     ctx.lineTo(x1,y1);
   }
@@ -180,15 +187,15 @@ function draw() {
 
   ctx.lineWidth = 2;
   ctx.strokeStyle = 'rgb(150,75,75)';
-  let [x,y] = rhino.Point3d.transform([0,0,0], w2s);
-  let [x1,y1] = rhino.Point3d.transform([50,0,0], w2s);
+  let [x,y] = transformPoint({ X: 0, Y: 0, Z: 0 }, w2s);
+  let [x1,y1] = transformPoint({ X: 50, Y: 0, Z: 0 }, w2s);
   ctx.beginPath();
   ctx.moveTo(x,y);
   ctx.lineTo(x1,y1);
   ctx.stroke();
   ctx.beginPath();
   ctx.strokeStyle = 'rgb(75,150,75)';
-  [x1,y1] = rhino.Point3d.transform([0,50,0], w2s);
+  [x1,y1] = transformPoint({ X: 0, Y: 50, Z: 0 }, w2s);
   ctx.moveTo(x,y);
   ctx.lineTo(x1,y1);
   ctx.stroke();
@@ -213,8 +220,6 @@ function draw() {
     // (webassembly memory management isn't great)
     curve.delete();
   }
-
-  w2s.delete();
 }
 
 // draws a nurbs curve
@@ -225,14 +230,14 @@ function drawNurbsCurve(ctx, curve, w2s) {
   const divisions = 200 // TODO: dynamic
   ctx.beginPath()
 
-  let [t0,t1] = curve.domain
+  let { T0: t0, T1: t1 } = curve.domain
   let world_point = curve.pointAt(t0)
-  let screen_point = rhino.Point3d.transform(world_point, w2s)
+  let screen_point = transformPoint(world_point, w2s)
   ctx.moveTo(screen_point[0],screen_point[1])
   for (let j=1; j<=divisions; j++) {
     let t = t0 + j / divisions * (t1-t0)
     world_point = curve.pointAt(t)
-    let screen_point = rhino.Point3d.transform(world_point, w2s)
+    let screen_point = transformPoint(world_point, w2s)
     ctx.lineTo(screen_point[0],screen_point[1])
   }
   ctx.stroke()
@@ -248,7 +253,7 @@ function drawControlPolygon(ctx, points) {
   let w2s = _model.viewport.getXform(rhino.CoordinateSystem.World, rhino.CoordinateSystem.Screen)
   for (let i=0; i<points.count; i++) {
     let world_point = points.get(i)
-    let screen_point = rhino.Point3d.transform(world_point, w2s)
+    let screen_point = transformPoint(world_point, w2s)
     if (0 === i)
       ctx.moveTo(screen_point[0], screen_point[1])
     else
@@ -256,7 +261,7 @@ function drawControlPolygon(ctx, points) {
   }
   if( points.count > 2 ){
     let world_point = points.get(0)
-    let screen_point = rhino.Point3d.transform(world_point, w2s)
+    let screen_point = transformPoint(world_point, w2s)
     ctx.lineTo(screen_point[0], screen_point[1])
   }
 
@@ -268,10 +273,9 @@ function drawControlPolygon(ctx, points) {
   ctx.strokeStyle = 'black'
   for (let i=0; i<points.count; i++) {
     let world_point = points.get(i)
-    let screen_point = rhino.Point3d.transform(world_point, w2s)
+    let screen_point = transformPoint(world_point, w2s)
     let [x,y,z] = screen_point
     ctx.fillRect(x-1,y-1, 3, 3)
     ctx.strokeRect(x-2, y-2, 5, 5)
   }
-  w2s.delete()
 }

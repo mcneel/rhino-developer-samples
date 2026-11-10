@@ -23,13 +23,11 @@ async function load() {
   const arr = new Uint8Array(buffer)
   const doc = rhino.File3dm.fromByteArray(arr)
 
-  const objects = doc.objects()
-  const cnt = objects.count
+  const objects = doc.objects
 
-  for ( let i = 0; i < cnt; i ++ ) {
+  for ( const object of objects ) {
 
-    const object = objects.get( i )
-    const objectType = object.geometry().objectType
+    const objectType = object.geometry.objectType
 
     //console.log( objectType )
 
@@ -37,22 +35,22 @@ async function load() {
 
       case rhino.ObjectType.Brep:
 
-        const brep = object.geometry()
+        const brep = object.geometry
 
-        console.log(`Brep Vertices Count: ${brep.vertices().count}`)
-        console.log(`Brep Vertex: ${brep.vertices().get(3).location}`)
-        console.log(`Brep Vertex Index: ${brep.vertices().get(3).vertexIndex}`)
-        console.log(`Brep Edge Count: ${brep.vertices().get(3).edgeCount}`)
-        console.log(`Brep Edge Indices: ${brep.vertices().get(3).edgeIndices}`)
-        console.log(`Brep Edge Index: ${brep.vertices().get(3).edgeIndices[1]}`)
+        console.log(`Brep Vertices Count: ${brep.vertices.count}`)
+        console.log(`Brep Vertex: ${JSON.stringify(brep.vertices.get(3).location)}`)
+        console.log(`Brep Vertex Index: ${brep.vertices.get(3).vertexIndex}`)
+        console.log(`Brep Edge Count: ${brep.vertices.get(3).edgeIndices().length}`)
+        console.log(`Brep Edge Indices: ${brep.vertices.get(3).edgeIndices()}`)
+        console.log(`Brep Edge Index: ${brep.vertices.get(3).edgeIndices()[1]}`)
 
-        const surface = brep.surfaces().get( 0 )
+        const surface = brep.surfaces.get( 0 )
 
         console.log( surface.domain( 0 ) ) //domain in u
         console.log( surface.domain( 1 ) ) //domain in v
 
-        surface.setDomain( 0, [0,1] )
-        surface.setDomain( 1, [0,1] )
+        surface.setDomain( 0, new rhino.Interval( 0, 1 ) )
+        surface.setDomain( 1, new rhino.Interval( 0, 1 ) )
 
         console.log( surface.domain( 0 ) ) //domain in u
         console.log( surface.domain( 1 ) ) //domain in v
@@ -65,7 +63,7 @@ async function load() {
 
             const pt3d = surface.pointAt( u, v )
 
-            const pt = new THREE.Vector3().fromArray( pt3d )
+            const pt = new THREE.Vector3( pt3d.X, pt3d.Y, pt3d.Z )
 
             s_points.push( pt )
 
@@ -82,27 +80,27 @@ async function load() {
 
         console.log( nurbssurface.orderU )
         console.log( nurbssurface.orderV )
-        console.log( nurbssurface.points().countU )
-        console.log( nurbssurface.points().countV )
-        console.log( nurbssurface.points().count )
-        console.log( nurbssurface.points().makeRational() )
-        console.log( nurbssurface.points().makeNonRational() )
-        console.log( nurbssurface.points().get( 0, 0 ) )
-        console.log( nurbssurface.knotsU().get( 3 ) )
+        console.log( nurbssurface.points.countU )
+        console.log( nurbssurface.points.countV )
+        console.log( nurbssurface.points.countU * nurbssurface.points.countV ) // NurbsSurfacePointList has no count, as in RhinoCommon
+        console.log( nurbssurface.makeRational() )
+        console.log( nurbssurface.makeNonRational() )
+        console.log( nurbssurface.points.getControlPoint( 0, 0 ) )
+        console.log( nurbssurface.knotsU.get( 3 ) )
 
         const points = []
 
-        const cnt_u = nurbssurface.points().countU
-        const cnt_v = nurbssurface.points().countV
+        const cnt_u = nurbssurface.points.countU
+        const cnt_v = nurbssurface.points.countV
 
         for ( let u = 0; u < cnt_u; u ++ ) {
 
           for ( let v = 0; v < cnt_v; v ++ ) {
 
-            const pt4d = nurbssurface.points().get( u, v )
-            const pt3d = nurbssurface.points().getPoint( u, v )
+            const pt4d = nurbssurface.points.getControlPoint( u, v )
+            const [ ok, pt3d ] = nurbssurface.points.getPoint( u, v )
 
-            const pt = new THREE.Vector3().fromArray( pt3d )
+            const pt = new THREE.Vector3( pt3d.X, pt3d.Y, pt3d.Z )
             points.push( pt )
 
           }
@@ -116,11 +114,12 @@ async function load() {
 
 
 
-        const data = object.geometry().faces().get( 0 ).getMesh( rhino.MeshType.Any ).toThreejsJSON()
+        const buffers = object.geometry.faces.get( 0 ).getMesh( rhino.MeshType.Any ).toThreejsBuffers( false )
 
-        const loader = new THREE.BufferGeometryLoader()
-
-        const geometry = loader.parse( data )
+        const geometry = new THREE.BufferGeometry()
+        geometry.setAttribute( 'position', new THREE.BufferAttribute( buffers.position, 3 ) )
+        geometry.setAttribute( 'normal', new THREE.BufferAttribute( buffers.normal, 3 ) )
+        geometry.setIndex( new THREE.BufferAttribute( buffers.index, 1 ) )
 
         const material = new THREE.MeshNormalMaterial( { side: THREE.DoubleSide } )
 
@@ -131,9 +130,9 @@ async function load() {
         break
       case rhino.ObjectType.Curve:
 
-        const nurbscurve = object.geometry().toNurbsCurve()
+        const nurbscurve = object.geometry.toNurbsCurve()
 
-        console.log( nurbscurve.points().get( 0 ) )
+        console.log( nurbscurve.points.get( 0 ) )
 
         break
     }
@@ -152,34 +151,33 @@ async function load() {
 function create() {
 
   doc = new rhino.File3dm()
-  const loader = new THREE.BufferGeometryLoader();
 
   // -- POINTS / POINTCLOUDS -- //
 
   // POINTS
 
-  let ptA = [0, 0, 0]
+  let ptA = { X: 0, Y: 0, Z: 0 }
 
   const geometry = new THREE.BufferGeometry()
-  const vertices = new Float32Array(ptA)
+  const vertices = new Float32Array([ptA.X, ptA.Y, ptA.Z])
   geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
   const pointsMaterial = new THREE.PointsMaterial({ color: 0xff0000 })
   const threejsPoint = new THREE.Points(geometry, pointsMaterial)
 
   scene.add(threejsPoint)
-  doc.objects().addPoint(ptA)
+  doc.objects.addPoint(ptA)
 
   // POINTCLOUD
 
-  const ptB = [10, 0, 0]
-  const ptC = [10, 10, 0]
-  const ptD = [0, 10, 0]
-  const ptE = [20, 20, 20]
-  const ptF = [30, 0, 0]
-  const ptG = [35, 5, 0]
-  const ptH = [40, -5, 0]
-  const ptI = [45, 5, 0]
-  const ptJ = [50, 0, 0]
+  const ptB = { X: 10, Y: 0, Z: 0 }
+  const ptC = { X: 10, Y: 10, Z: 0 }
+  const ptD = { X: 0, Y: 10, Z: 0 }
+  const ptE = { X: 20, Y: 20, Z: 20 }
+  const ptF = { X: 30, Y: 0, Z: 0 }
+  const ptG = { X: 35, Y: 5, Z: 0 }
+  const ptH = { X: 40, Y: -5, Z: 0 }
+  const ptI = { X: 45, Y: 5, Z: 0 }
+  const ptJ = { X: 50, Y: 0, Z: 0 }
 
   const red = { r: 255, g: 0, b: 0, a: 0 }
 
@@ -195,11 +193,12 @@ function create() {
   pointCloud.add(ptI, red)
   pointCloud.add(ptJ, red)
 
-  const threejsPointsGeometry = loader.parse(pointCloud.toThreejsJSON())
+  const threejsPointsGeometry = new THREE.BufferGeometry()
+  threejsPointsGeometry.setAttribute('position', new THREE.BufferAttribute(pointCloud.toThreejsBuffers(false).position, 3))
   const threejsPoints = new THREE.Points(threejsPointsGeometry, pointsMaterial)
 
   scene.add(threejsPoints)
-  doc.objects().add(pointCloud, null)
+  doc.objects.add(pointCloud, null)
 
   // -- CURVES -- //
 
@@ -208,42 +207,43 @@ function create() {
   const line = new rhino.LineCurve(ptA, ptE)
 
   const lineGeometry = new THREE.BufferGeometry()
-  const lineVertices = new Float32Array(line.line.from.concat(line.line.to))
+  const lineVertices = new Float32Array([line.line.From.X, line.line.From.Y, line.line.From.Z, line.line.To.X, line.line.To.Y, line.line.To.Z])
   lineGeometry.setAttribute('position', new THREE.BufferAttribute(lineVertices, 3))
   const lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff })
   const lineObject = new THREE.Line(lineGeometry, lineMaterial)
   scene.add(lineObject)
-  doc.objects().add(line.toNurbsCurve(), null)
+  doc.objects.add(line.toNurbsCurve(), null)
 
   // CIRCLE //
 
   const circle = new rhino.Circle(10)
 
-  const circleGeometry = new THREE.RingGeometry(circle.radius, circle.radius, 32)
+  const circleGeometry = new THREE.RingGeometry(circle.Radius, circle.Radius, 32)
   const circleObject = new THREE.Line(circleGeometry, lineMaterial)
-  circleObject.position.fromArray(circle.center)
+  const center = rhino.Circle.center(circle)
+  circleObject.position.set(center.X, center.Y, center.Z)
   scene.add(circleObject)
-  doc.objects().add(circle.toNurbsCurve(), null)
+  doc.objects.add(rhino.Circle.toNurbsCurve(circle), null)
 
   // ARC //
 
   const arc = new rhino.Arc(circle, Math.PI)
-  const arcGeometry = new THREE.RingGeometry(arc.radius, arc.radius, 32, 1, 0, arc.angleRadians)
+  const arcGeometry = new THREE.RingGeometry(arc.Radius, arc.Radius, 32, 1, 0, rhino.Arc.angle(arc))
   const arcObject = new THREE.Line(arcGeometry, lineMaterial)
 
   scene.add(arcObject)
-  doc.objects().add(arc.toNurbsCurve(), null)
+  doc.objects.add(rhino.Arc.toNurbsCurve(arc), null)
 
   // ELLIPSE //
 
   // CURVE //
 
   const curvePoints = new rhino.Point3dList()
-  curvePoints.add(ptF[0], ptF[1], ptF[2])
-  curvePoints.add(ptG[0], ptG[1], ptG[2])
-  curvePoints.add(ptH[0], ptH[1], ptH[2])
-  curvePoints.add(ptI[0], ptI[1], ptI[2])
-  curvePoints.add(ptJ[0], ptJ[1], ptJ[2])
+  curvePoints.add(ptF.X, ptF.Y, ptF.Z)
+  curvePoints.add(ptG.X, ptG.Y, ptG.Z)
+  curvePoints.add(ptH.X, ptH.Y, ptH.Z)
+  curvePoints.add(ptI.X, ptI.Y, ptI.Z)
+  curvePoints.add(ptJ.X, ptJ.Y, ptJ.Z)
 
   const nurbsCurve = rhino.NurbsCurve.create(false, 3, curvePoints)
 
@@ -254,13 +254,13 @@ function create() {
 
   for (let i = 0; i < 20; i++) {
 
-    let t = domain[0] + (i / divisions) * (domain[1] - domain[0]);
+    let t = domain.T0 + (i / divisions) * (domain.T1 - domain.T0);
 
     const tPt = nurbsCurve.pointAt(t)
 
-    cPts.push(tPt[0])
-    cPts.push(tPt[1])
-    cPts.push(tPt[2])
+    cPts.push(tPt.X)
+    cPts.push(tPt.Y)
+    cPts.push(tPt.Z)
 
   }
 
@@ -270,27 +270,32 @@ function create() {
   const curveObject = new THREE.Line(curveGeometry, lineMaterial)
 
   scene.add(curveObject)
-  doc.objects().add(nurbsCurve, null)
+  doc.objects.add(nurbsCurve, null)
 
   // -- MESHES -- //
 
   const mesh = new rhino.Mesh()
-  mesh.vertices().add(ptA[0], ptA[1], ptA[2])
-  mesh.vertices().add(ptB[0], ptB[1], ptB[2])
-  mesh.vertices().add(ptC[0], ptC[1], ptC[2])
+  mesh.vertices.add(ptA.X, ptA.Y, ptA.Z)
+  mesh.vertices.add(ptB.X, ptB.Y, ptB.Z)
+  mesh.vertices.add(ptC.X, ptC.Y, ptC.Z)
 
-  mesh.faces().addFace(0, 1, 2)
+  mesh.faces.addFace(0, 1, 2)
 
-  mesh.vertexColors().add(255, 0, 255)
-  mesh.vertexColors().add(0, 255, 255)
-  mesh.vertexColors().add(255, 255, 255)
+  mesh.vertexColors.add(255, 0, 255)
+  mesh.vertexColors.add(0, 255, 255)
+  mesh.vertexColors.add(255, 255, 255)
 
-  mesh.normals().computeNormals()
+  mesh.normals.computeNormals()
 
-  const meshGeometry = loader.parse(mesh.toThreejsJSON())
+  const buffers = mesh.toThreejsBuffers(false)
+  const meshGeometry = new THREE.BufferGeometry()
+  meshGeometry.setAttribute('position', new THREE.BufferAttribute(buffers.position, 3))
+  meshGeometry.setAttribute('normal', new THREE.BufferAttribute(buffers.normal, 3))
+  meshGeometry.setAttribute('color', new THREE.BufferAttribute(buffers.color, 3))
+  meshGeometry.setIndex(new THREE.BufferAttribute(buffers.index, 1))
   const threejsMesh = new THREE.Mesh(meshGeometry, new THREE.MeshStandardMaterial({ vertexColors: true }))
   scene.add(threejsMesh)
-  doc.objects().add(mesh, null)
+  doc.objects.add(mesh, null)
 
   // hide spinner
   document.getElementById('loader').style.display = 'none'

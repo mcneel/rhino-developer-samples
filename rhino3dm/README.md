@@ -12,7 +12,7 @@ Functionality includes
 
 ## Samples
 
-- [C#](https://github.com/mcneel/rhino-developer-samples/tree/7/opennurbs/cs)
+- [C#](cs)
 - [JavaScript](js)
   - [SampleSketch2d](js/SampleSketch2d) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleSketch2d/)] Sketch NURBS curves on a canvas. Also shows how to download the resulting 3dm file.
   - [SampleObjectTypes](js/SampleObjectTypes) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleObjectTypes/)] Sample shows the creation of various object types.
@@ -25,7 +25,7 @@ Functionality includes
   - [SampleViewer Multiple Files](js/SampleViewer/01.2_multipleFiles) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleViewer/01.2_multipleFiles/)] Select dropdown input to load different files. Renders the geometry with [Three.js](https://threejs.org).
   ![rhino3dm_multifile](https://user-images.githubusercontent.com/1014562/133775084-9910570c-5bc2-47b3-a8d4-0b7d245ccd1e.gif)
   - [Sample OBJ to 3DM conversion](js/SampleObjTo3dm) - [[Live](https://mcneel.github.io/rhino-developer-samples/rhino3dm/js/SampleObjTo3dm/)] Loads an .obj file via Three.js and converts the object to a 3dm.
-  - [Sample3dmReader (node.js)](js/node/Sample3dmReader) - Shows how to read a file with node.js.
+  - [node.js samples](js/node) - Read and write 3dm files with node.js. `npm install` once in that folder runs them all.
 - [Python](py)
   - [SampleSimple](py/SampleSimple.py)
   - [SampleGetMeshes](py/SampleGetMeshes.py)

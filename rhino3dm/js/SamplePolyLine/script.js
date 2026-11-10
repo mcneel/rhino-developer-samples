@@ -54,7 +54,7 @@ function create ()
 
     }
 
-    doc.objects().addPolyline( rhinoPolyline, null )
+    doc.objects.addPolyline( rhinoPolyline, null )
 
      // hide spinner
     document.getElementById('loader').style.display = 'none'
@@ -70,7 +70,7 @@ function create ()
 function download() {
     const options = new rhino.File3dmWriteOptions()
     options.version = 8
-    let buffer = doc.toByteArrayOptions(options)
+    let buffer = doc.toByteArray(options)
     saveByteArray('rhinoObjectTypes' + options.version + '.3dm', buffer)
   }
   

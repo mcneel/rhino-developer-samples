@@ -27,10 +27,10 @@ var idef = model.AllInstanceDefinitions.ToArray()[index];
 
 var xform = new Rhino.Geometry.Transform(100);
 var iref = new Rhino.Geometry.InstanceReferenceGeometry(idef.Id, xform);
-var guid = model.Objects.AddInstanceObject(iref, null);
+var guid = model.Objects.AddInstanceObject(iref, new Rhino.DocObjects.ObjectAttributes());
 
 Console.WriteLine("Guid of the new iRef: {0}", guid);
 
-model.Write("idef_cs.3dm", null);
+model.Write("idef_cs.3dm", new Rhino.FileIO.File3dmWriteOptions());
 
 

@@ -33,7 +33,7 @@ jobs:
           - category: rhinocommon
             path: rhinocommon
             os: windows-latest
-          # net7.0 + Rhino3dm NuGet (native libs for win/mac/linux) -> build on all three.
+          # net10.0 + Rhino3dm NuGet (native libs for win/mac/linux) -> build on all three.
           - category: rhino3dm
             path: rhino3dm
             os: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
           - category: grasshopper
             path: grasshopper
             os: windows-latest
-          # RhinoCommon/Compute NuGet, net48 -> Windows.
+          # Rhino3dm + RhinoCompute (net10.0) and a RhinoCommon plug-in (net48) -> Windows.
           - category: compute
             path: compute
             os: windows-latest
@@ -62,17 +62,18 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
 
       # Runners ship a newer SDK (e.g. 10.x); without this, dotnet picks the
-      # highest installed SDK. Pin to 9.x for the whole repo during CI only.
+      # highest installed SDK. Pin to 10.x for the whole repo during CI only (the rhino3dm
+      # and compute samples target net10.0; the SDK still builds the net48 / net9 projects).
       - name: Pin .NET SDK (CI only)
         shell: pwsh
         run: |
           @'
           {
             "sdk": {
-              "version": "9.0.100",
+              "version": "10.0.100",
               "rollForward": "latestFeature"
             }
           }
@@ -85,6 +86,31 @@ jobs:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles(format('{0}/**/*.csproj', matrix.path)) }}
           restore-keys: ${{ runner.os }}-nuget-
+
+      # Every SDK project must be in a solution under the category, so opening the
+      # solution shows every sample.
+      - name: Check every project is in a solution
+        shell: pwsh
+        env:
+          SEARCH_PATH: ${{ matrix.path }}
+        run: |
+          $listed = @{}
+          foreach ($sln in Get-ChildItem -Path $env:SEARCH_PATH -Filter *.sln -Recurse -File) {
+            foreach ($line in (dotnet sln $sln.FullName list | Select-Object -Skip 2)) {
+              $full = [System.IO.Path]::GetFullPath((Join-Path $sln.DirectoryName ($line.Trim() -replace '\\', '/')))
+              $listed[$full] = $true
+            }
+          }
+          $missing = @()
+          foreach ($proj in Get-ChildItem -Path $env:SEARCH_PATH -Filter *.csproj -Recurse -File) {
+            if ((Get-Content $proj.FullName -Raw) -notmatch '<Project\s+Sdk=') { continue }
+            if (-not $listed.ContainsKey($proj.FullName)) { $missing += (Resolve-Path -Relative $proj.FullName) }
+          }
+          if ($missing.Count -gt 0) {
+            $missing | ForEach-Object { Write-Host "::error title=Not in a solution::$_" }
+            exit 1
+          }
+          Write-Host "Every SDK project under $env:SEARCH_PATH is in a solution."
 
       - name: Build all projects
         shell: pwsh
@@ -149,18 +175,45 @@ jobs:
           if ($failed -gt 0) { exit 1 }
           exit 0
 
+  # The rhino3dm.js node.js samples share one npm workspace: install it once and run every sample.
+  node:
+    name: Run rhino3dm.js node samples (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    defaults:
+      run:
+        working-directory: rhino3dm/js/node
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Install
+        shell: bash
+        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Run every sample
+        run: npm test
+
   # Single check that is green only when every category job succeeded.
   gate:
     name: Build gate
-    needs: build
+    needs: [build, node]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Verify all category builds passed
         run: |
           echo "build matrix result: ${{ needs.build.result }}"
-          if [ "${{ needs.build.result }}" != "success" ]; then
-            echo "One or more category builds failed."
+          echo "node samples result: ${{ needs.node.result }}"
+          if [ "${{ needs.build.result }}" != "success" ] || [ "${{ needs.node.result }}" != "success" ]; then
+            echo "One or more category builds or the node samples failed."
             exit 1
           fi
           echo "All category builds passed."

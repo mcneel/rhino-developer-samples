@@ -1,15 +1,16 @@
 {
-  "name": "simple-3dm-reader",
+  "name": "sample3dmreader",
   "version": "1.0.0",
+  "private": true,
   "description": "An example cli tool that reads a 3dm file and prints some stuff about it!",
-  "main": "index.js",
   "type": "module",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js ../../../models/RectifiedArchimedeanSolids8.3dm"
   },
   "author": "Luis Fraguada",
   "license": "MIT",
   "dependencies": {
-    "rhino3dm": "8.4.0"
+    "rhino3dm": "9.2.0-beta.0"
   }
 }

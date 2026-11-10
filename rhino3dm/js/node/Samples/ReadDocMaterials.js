@@ -10,19 +10,18 @@ const model = '../../../models/unassignedmaterials.3dm'
 let buffer = fs.readFileSync(model)
 let arr = new Uint8Array(buffer)
 let doc = rhino.File3dm.fromByteArray(arr)
-let objects = doc.objects()
-let materials = doc.materials()
+let objects = doc.objects
+let materials = doc.materials
+
+// render content comes in one collection per kind: materials, environments and textures
+const renderContentCount = [...doc.renderMaterials].length + [...doc.renderEnvironments].length + [...doc.renderTextures].length
 
 console.log('Materials in file: ', materials.count)
-console.log(`Render Content Count: ${doc.renderContent().count}`)
+console.log(`Render Content Count: ${renderContentCount}`)
 
-for ( let i = 0; i < doc.renderContent().count; i ++ ) {
+for ( const rc of doc.renderMaterials ) {
 
-    const rc = doc.renderContent().get(i)
-
-    if(rc.kind === 'material') {
-        const material = rc.toMaterial()
-        console.log(material.name)
-    }
+    const material = rc.toMaterial()
+    console.log(material.name)
 
 }

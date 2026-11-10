@@ -1,5 +1,5 @@
-# requires rhino3dm 8.0.0b2
-# python3 -m pip install rhino3dm==8.0.0b2
+# requires rhino3dm 9.2.0b0
+# python3 -m pip install rhino3dm==9.2.0b0
 import rhino3dm
 
 pc = rhino3dm.PointCloud()
@@ -34,13 +34,13 @@ pc.Insert(1, rhino3dm.Point3d(10,10,10), rhino3dm.Vector3d(10,10,10), (255,255,2
 print('Point Cloud Length ' + str(len(pc)))
 print('Point Cloud Has Normals ' + str(pc.ContainsNormals))
 print('Point Cloud Has Colors ' + str(pc.ContainsColors))
-print('Point Cloud Has Point Values ' + str(pc.ContainsValues))
+print('Point Cloud Has Point Values ' + str(pc.ContainsPointValues))
 print()
 
 pts = pc.GetPoints()
 nrmls = pc.GetNormals()
 cols = pc.GetColors()
-vals = pc.GetValues()
+vals = pc.GetPointValues()
 
 print('Pts len: ' + str(len(pts)))
 
