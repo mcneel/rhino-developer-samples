@@ -142,13 +142,13 @@ bool CSampleBlendCurveHelper::ComputeBlendCurve()
     switch (m_continuity)
     {
     case BlendContinuity::Position:
-      m_blend_curve = ON_BlendG0Curve(curveA, curveB);
+      m_blend_curve = RH_BlendG0Curve(curveA, curveB);
       break;
     case BlendContinuity::Tangency:
-      m_blend_curve = ON_BlendG1Curve(curveA, curveB, m_bulgeA, m_bulgeB);
+      m_blend_curve = RH_BlendG1Curve(curveA, curveB, m_bulgeA, m_bulgeB);
       break;
     case BlendContinuity::Curvature:
-      m_blend_curve = ON_BlendG2Curve(curveA, curveB, m_bulgeA, m_bulgeB);
+      m_blend_curve = RH_BlendG2Curve(curveA, curveB, m_bulgeA, m_bulgeB);
       break;
     }
   }

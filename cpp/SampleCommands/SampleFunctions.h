@@ -7,7 +7,7 @@
 /// <param name="t">Evaluation parameter.</param>
 /// <returns>The torsion if successful.</returns>
 /// <remarks>See Barrett O'Neill, Elementary Differential Geometry, page 69.</remarks>
-double ON_CurveTorsion(const ON_Curve& curve, double t);
+double RH_CurveTorsion(const ON_Curve& curve, double t);
 
 /// <summary>
 /// Create a blend curve with G0 continuity between two existing curves.
@@ -19,7 +19,7 @@ double ON_CurveTorsion(const ON_Curve& curve, double t);
 /// CRITICAL: Memory for the resulting curve is allocated. It is the calling
 /// functions responsibility to clean up the memory.
 /// </remarks>
-ON_Curve* ON_BlendG0Curve(
+ON_Curve* RH_BlendG0Curve(
   const ON_Curve* crvA,
   const ON_Curve* crvB
 );
@@ -36,7 +36,7 @@ ON_Curve* ON_BlendG0Curve(
 /// CRITICAL: Memory for the resulting curve is allocated. It is the calling
 /// functions responsibility to clean up the memory.
 /// </remarks>
-ON_Curve* ON_BlendG1Curve(
+ON_Curve* RH_BlendG1Curve(
   const ON_Curve* crvA,
   const ON_Curve* crvB,
   double bulgeA,
@@ -55,7 +55,7 @@ ON_Curve* ON_BlendG1Curve(
 /// CRITICAL: Memory for the resulting curve is allocated. It is the calling
 /// functions responsibility to clean up the memory.
 /// </remarks>
-ON_Curve* ON_BlendG2Curve(
+ON_Curve* RH_BlendG2Curve(
   const ON_Curve* crvA,
   const ON_Curve* crvB,
   double bulgeA,
