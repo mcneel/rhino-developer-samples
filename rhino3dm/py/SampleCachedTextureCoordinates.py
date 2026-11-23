@@ -1,5 +1,5 @@
-# requires rhino3dm 9.2.0b0
-# python3 -m pip install rhino3dm==9.2.0b0
+# requires rhino3dm 9.2.0b1
+# python3 -m pip install rhino3dm==9.2.0b1
 
 # Computes the texture coordinates a mesh object gets from its material's
 # texture mappings, caches them on the mesh, and reads them back per texture.

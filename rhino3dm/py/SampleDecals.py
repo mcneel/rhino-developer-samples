@@ -1,5 +1,5 @@
-# requires rhino3dm 9.2.0b0
-# python3 -m pip install rhino3dm==9.2.0b0
+# requires rhino3dm 9.2.0b1
+# python3 -m pip install rhino3dm==9.2.0b1
 
 import rhino3dm
 model = rhino3dm.File3dm.Read('../models/decal_r8.3dm')
