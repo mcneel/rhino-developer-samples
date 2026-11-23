@@ -31,7 +31,7 @@ namespace CircleIntersection
             // just some helper routines to create an SVG file of the results so we can see what was generated
             string path = "circle_intersection.svg";
             WriteSvgFile(path, c1, c2, intersectionMeshes);
-            System.Diagnostics.Process.Start(path);
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
         }
 
 

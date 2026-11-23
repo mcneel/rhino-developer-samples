@@ -40,7 +40,7 @@ async function compute() {
     scene.add(mainMesh)
 
     // create 3dm sphere
-    const rhinoMesh = rhino.Mesh.createFromThreejsJSON( { data: mainSphere } )
+    const rhinoMesh = meshFromThreejs( mainSphere )
     const rhinoMeshData = JSON.stringify( rhinoMesh.encode() )
 
     // create collision spheres
@@ -58,7 +58,7 @@ async function compute() {
         clashSphere.translate(x, y, z)
 
         //create 3dm clash sphere
-        const clashMesh = rhino.Mesh.createFromThreejsJSON( { data: clashSphere } )
+        const clashMesh = meshFromThreejs( clashSphere )
         const clashMeshData = JSON.stringify( clashMesh.encode() )
         rhinoCollisionMeshData.push( clashMeshData )
 
@@ -119,13 +119,13 @@ function collectResults(responseJson) {
           // ...load rhino geometry into doc
           const rhinoObject = decodeItem(branch[j])
           if (rhinoObject !== null) {
-            doc.objects().add(rhinoObject, null)
+            doc.objects.add(rhinoObject, null)
           }
         }
       }
     }
 
-    if (doc.objects().count < 1) {
+    if (doc.objects.count < 1) {
       console.error('No rhino objects to load!')
       showSpinner(false)
       return
@@ -133,7 +133,8 @@ function collectResults(responseJson) {
 
     // set up loader for converting the results to threejs
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta/' )
+    // the three.js 3DMLoader loads its own copy of rhino3dm and uses the rhino3dm 8 API, so it stays on 8.x
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.35.0/' )
 
     const resMaterial = new THREE.MeshBasicMaterial( {wireframe: true, color: 0x00ff00} )
 
@@ -248,4 +249,14 @@ function animate() {
     requestAnimationFrame(animate)
     renderer.render(scene, camera)
 
+}
+
+// three.js BufferGeometry -> rhino3dm Mesh (three.js is Y-up, Rhino is Z-up)
+function meshFromThreejs(geometry) {
+  return rhino.Mesh.createFromThreejsBuffers( {
+    position: geometry.attributes.position.array,
+    normal: geometry.attributes.normal?.array,
+    uv: geometry.attributes.uv?.array,
+    index: geometry.index?.array
+  }, true )
 }

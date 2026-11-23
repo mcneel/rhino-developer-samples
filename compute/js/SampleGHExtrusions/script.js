@@ -134,7 +134,10 @@ function onWindowResize() {
 }
 
 function meshToThreejs(mesh, material) {
-    const loader = new THREE.BufferGeometryLoader()
-    const geometry = loader.parse(mesh.toThreejsJSON())
+    const buffers = mesh.toThreejsBuffers(false)
+    const geometry = new THREE.BufferGeometry()
+    geometry.setAttribute('position', new THREE.BufferAttribute(buffers.position, 3))
+    geometry.setAttribute('normal', new THREE.BufferAttribute(buffers.normal, 3))
+    geometry.setIndex(new THREE.BufferAttribute(buffers.index, 1))
     return new THREE.Mesh(geometry, material)
 }

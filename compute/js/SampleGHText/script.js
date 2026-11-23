@@ -100,9 +100,9 @@ function collectResults(responseJson) {
   const str = values[0].InnerTree['{0}'][0].data
   const data = JSON.parse(str)
   const arr = _base64ToArrayBuffer(data)
-  doc = rhino.File3dm.fromByteArray(arr)
+  doc = rhino.File3dm.fromByteArray(new Uint8Array(arr))
 
-  if (doc.objects().count < 1) {
+  if (doc.objects.count < 1) {
     console.error('No rhino objects to load!')
     showSpinner(false)
     return
@@ -110,7 +110,8 @@ function collectResults(responseJson) {
 
   // set up loader for converting the results to threejs
   const loader = new Rhino3dmLoader()
-  loader.setLibraryPath('https://unpkg.com/rhino3dm@8.0.0-beta/')
+  // the three.js 3DMLoader loads its own copy of rhino3dm and uses the rhino3dm 8 API, so it stays on 8.x
+  loader.setLibraryPath('https://unpkg.com/rhino3dm@8.35.0/')
 
   // const lineMat = new THREE.LineBasicMaterial({color: new THREE.Color('black')});
   // load rhino doc into three.js scene
@@ -163,7 +164,10 @@ function showSpinner(enable) {
 
 // download button handler
 function download() {
-  let buffer = doc.toByteArray()
+  // write a Rhino 8 file, so that Rhino 8 and later can open it
+  const options = new rhino.File3dmWriteOptions()
+  options.version = 8
+  let buffer = doc.toByteArray(options)
   saveByteArray('rhinoObjects.3dm', buffer)
 }
 

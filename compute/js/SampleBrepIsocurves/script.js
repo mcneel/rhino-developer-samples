@@ -5,6 +5,7 @@ import { RhinoCompute } from 'rhinocompute'
 
 // holds top level variables
 var RHINOLOGO = {};
+var controls;
 
 const btnLoad = document.getElementById('btn-load')
 btnLoad.addEventListener('click', (event) => {
@@ -152,24 +153,25 @@ function getRhinoLogoMeshes() {
  */
 function meshToLineSegments(mesh, material) {
 
-  function tovec3(pt) {  return new THREE.Vector3(pt[0], pt[1], pt[2]); }
+  function tovec3(pt) {  return new THREE.Vector3(pt.X, pt.Y, pt.Z); }
 
-  var verts = mesh.vertices();
-  var faces = mesh.faces();
+  var verts = mesh.vertices;
+  var faces = mesh.faces;
 
-  var geometry = new THREE.Geometry();
+  var points = [];
   for ( var i = 0; i < faces.count; i++ ) {
     var face = faces.get(i);
-    var pts = [verts.get(face[0]), verts.get(face[1]), verts.get(face[2]), verts.get(face[3])];
-    geometry.vertices.push(
+    var pts = [verts.get(face.A), verts.get(face.B), verts.get(face.C), verts.get(face.D)];
+    points.push(
       tovec3(pts[0]), tovec3(pts[1]),
       tovec3(pts[1]), tovec3(pts[2]),
       tovec3(pts[2]), tovec3(pts[3])
     );
-    if( face[2]!=face[3] ){
-      geometry.vertices.push( tovec3(pts[3]), tovec3(pts[0]) );
+    if( face.C!=face.D ){
+      points.push( tovec3(pts[3]), tovec3(pts[0]) );
     }
   }
+  var geometry = new THREE.BufferGeometry().setFromPoints( points );
   return new THREE.LineSegments( geometry, material );
 }
 
@@ -177,13 +179,13 @@ function curveToLineSegments(curve, material) {
 
   const points = []
   var domain = curve.domain;
-  var start = domain[0];
-  var range = domain[1]-domain[0];
+  var start = domain.T0;
+  var range = domain.T1-domain.T0;
   var interval = range / 50.0;
   for ( var i = 0; i < 51; i++ ) {
     let t = start + i*interval;
     var pt = curve.pointAt(t);
-    points.push( new THREE.Vector3( pt[0], pt[1], pt[2] ) )
+    points.push( new THREE.Vector3( pt.X, pt.Y, pt.Z ) )
     //geometry.vertices.push(new THREE.Vector3(pt[0], pt[1], pt[2]));
   }
 
@@ -203,35 +205,35 @@ function curveToLineSegments(curve, material) {
  */
 function meshToThreejs(mesh, material) {
   var geometry = new THREE.BufferGeometry();
-  var vertices = mesh.vertices();
+  var vertices = mesh.vertices;
   var vertexbuffer = new Float32Array(3 * vertices.count);
   for( var i=0; i<vertices.count; i++) {
     let pt = vertices.get(i);
-    vertexbuffer[i*3] = pt[0];
-    vertexbuffer[i*3+1] = pt[1];
-    vertexbuffer[i*3+2] = pt[2];
+    vertexbuffer[i*3] = pt.X;
+    vertexbuffer[i*3+1] = pt.Y;
+    vertexbuffer[i*3+2] = pt.Z;
   }
   // itemSize = 3 because there are 3 values (components) per vertex
   geometry.setAttribute( 'position', new THREE.BufferAttribute( vertexbuffer, 3 ) );
 
   let indices = [];
-  var faces = mesh.faces();
+  var faces = mesh.faces;
   for( var i=0; i<faces.count; i++) {
     let face = faces.get(i);
-    indices.push(face[0], face[1], face[2]);
-    if( face[2] != face[3] ) {
-      indices.push(face[2], face[3], face[0]);
+    indices.push(face.A, face.B, face.C);
+    if( face.C != face.D ) {
+      indices.push(face.C, face.D, face.A);
     }
   }
   geometry.setIndex(indices);
 
-  var normals = mesh.normals();
+  var normals = mesh.normals;
   var normalBuffer = new Float32Array(3*normals.count);
   for( var i=0; i<normals.count; i++) {
     let pt = normals.get(i);
-    normalBuffer[i*3] = pt[0];
-    normalBuffer[i*3+1] = pt[1];
-    normalBuffer[i*3+2] = pt[1];
+    normalBuffer[i*3] = pt.X;
+    normalBuffer[i*3+1] = pt.Y;
+    normalBuffer[i*3+2] = pt.Z;
   }
   geometry.setAttribute( 'normal', new THREE.BufferAttribute( normalBuffer, 3 ) );
   return new THREE.Mesh( geometry, material );
@@ -289,11 +291,11 @@ function onWiresComputed(model) {
  */
 function onModelLoaded(doc) {
   RHINOLOGO.doc = doc;
-  // the Rhino Logo works better when rotated on to the XY plane
-  var objects = doc.model.objects();
-  for( var i=0; i<objects.count; i++ ) {
-    var geometry = objects.get(i).geometry();
-    geometry.rotate(-1.571, [1,0,0], [0,0,0]);
+  // the Rhino Logo works better when rotated on to the XY plane.
+  // Rotate the breps the doc keeps: each obj.geometry is a separate copy-on-write view,
+  // so rotating a new view from model.objects would not change them
+  for( var i=0; i<doc.breps.length; i++ ) {
+    doc.breps[i]["geometry"].rotate(-1.571, {X:1,Y:0,Z:0}, {X:0,Y:0,Z:0});
   }
 }
 
@@ -303,10 +305,8 @@ class RhinoLogoDoc {
   constructor(model) {
     this.model = model;
     this.breps = [];
-    var objecttable = model.objects();
-    for(var i=0; i<objecttable.count; i++) {
-      var modelobject = objecttable.get(i);
-      this.breps.push({"geometry":modelobject.geometry(), "meshes":[], "wires":[], "threejs":null, "threejswires":null});
+    for(const modelobject of model.objects) {
+      this.breps.push({"geometry":modelobject.geometry, "meshes":[], "wires":[], "threejs":null, "threejswires":null});
     }
   }
 
