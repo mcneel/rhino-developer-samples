@@ -17,6 +17,6 @@
     "webpack-merge": "^6.0.1"
   },
   "dependencies": {
-    "rhino3dm": "9.2.0-beta.0"
+    "rhino3dm": "9.2.0-beta.1"
   }
 }
