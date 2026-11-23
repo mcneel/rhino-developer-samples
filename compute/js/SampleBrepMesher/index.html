@@ -50,7 +50,7 @@
   <script type="importmap">
         {
             "imports": {
-                "rhino3dm":"https://unpkg.com/rhino3dm@8.0.0-beta/rhino3dm.module.js",
+                "rhino3dm":"https://unpkg.com/rhino3dm@9.2.0-beta.1/rhino3dm.module.min.js",
                 "rhinocompute": "https://www.unpkg.com/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js"
             }
         }
@@ -97,8 +97,8 @@
 
     function runMeshMaker() {
       // First test of rhinocommon.js
-      let sphere = new rhino.Sphere([250, 250, 0], 100);
-      let brep = sphere.toBrep();
+      let sphere = new rhino.Sphere({ X: 250, Y: 250, Z: 0 }, 100);
+      let brep = rhino.Sphere.toBrep(sphere);
       RhinoCompute.Mesh.createFromBrep(brep)
         .then(result => {
           var meshes = result.map(r => rhino.CommonObject.decode(r));
@@ -106,8 +106,7 @@
           drawMesh();
         });
 
-      // Don't need the sphere and brep anymore
-      sphere.delete();
+      // Don't need the brep anymore (the sphere is a plain value)
       brep.delete();
     }
 
@@ -124,24 +123,24 @@
       ctx.lineWidth = 1;
       ctx.strokeStyle = 'red';
 
-      let verts = mesh.vertices();
-      let faces = mesh.faces();
+      let verts = mesh.vertices;
+      let faces = mesh.faces;
 
       ctx.beginPath();
       for (let i = 0; i < faces.count; i++) {
         let face = faces.get(i);
-        let pts = [verts.get(face[0]), verts.get(face[1]), verts.get(face[2]), verts.get(face[3])];
-        ctx.moveTo(pts[0][0], pts[0][1]);
-        ctx.lineTo(pts[1][0], pts[1][1]);
-        ctx.lineTo(pts[2][0], pts[2][1]);
-        ctx.lineTo(pts[3][0], pts[3][1]);
+        let pts = [verts.get(face.A), verts.get(face.B), verts.get(face.C), verts.get(face.D)];
+        ctx.moveTo(pts[0].X, pts[0].Y);
+        ctx.lineTo(pts[1].X, pts[1].Y);
+        ctx.lineTo(pts[2].X, pts[2].Y);
+        ctx.lineTo(pts[3].X, pts[3].Y);
       }
       ctx.stroke();
     }
 
 
     function rotateMesh() {
-      mesh.rotate(.1, [1, 1, 0], [250, 250, 0]);
+      mesh.rotate(.1, { X: 1, Y: 1, Z: 0 }, { X: 250, Y: 250, Z: 0 });
       drawMesh();
     }
   </script>

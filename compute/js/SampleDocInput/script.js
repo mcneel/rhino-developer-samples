@@ -113,13 +113,13 @@ async function compute() {
           // ...load rhino geometry into doc
           const rhinoObject = decodeItem(branch[j])
           if (rhinoObject !== null) {
-            doc.objects().add(rhinoObject, null)
+            doc.objects.add(rhinoObject, null)
           }
         }
       }
     }
   
-    if (doc.objects().count < 1) {
+    if (doc.objects.count < 1) {
       console.error('No rhino objects to load!')
       showSpinner(false)
       return
@@ -130,7 +130,8 @@ async function compute() {
   
     // set up loader for converting the results to threejs
     const loader = new Rhino3dmLoader()
-    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.0.0-beta/' )
+    // the three.js 3DMLoader loads its own copy of rhino3dm and uses the rhino3dm 8 API, so it stays on 8.x
+    loader.setLibraryPath( 'https://unpkg.com/rhino3dm@8.35.0/' )
   
     loader.parse( buffer, ( object )  =>
     {

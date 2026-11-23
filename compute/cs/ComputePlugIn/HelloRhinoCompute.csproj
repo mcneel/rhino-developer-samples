@@ -6,7 +6,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="RhinoCommon" Version="7.0.20314.3001" />
+    <PackageReference Include="RhinoCommon" />
   </ItemGroup>
 
 </Project>

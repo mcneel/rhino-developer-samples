@@ -1,3 +1,5 @@
+# requires rhino3dm 9.2.0b1
+# python3 -m pip install rhino3dm==9.2.0b1 compute-rhino3d
 from rhino3dm import *
 import tkinter as Tkinter
 import time
@@ -29,7 +31,7 @@ for x in range(100):
     faces = mesh.Faces
     for i in range(len(faces)):
         face = faces[i]
-        pts = [verts[face[0]], verts[face[1]], verts[face[2]], verts[face[3]]]
+        pts = [verts[face.A], verts[face.B], verts[face.C], verts[face.D]]
         w.create_line(pts[0].X, pts[0].Y, pts[1].X, pts[1].Y)
         w.create_line(pts[1].X, pts[1].Y, pts[2].X, pts[2].Y)
         w.create_line(pts[2].X, pts[2].Y, pts[3].X, pts[3].Y)

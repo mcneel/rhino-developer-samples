@@ -1,3 +1,5 @@
+# requires rhino3dm 9.2.0b1
+# python3 -m pip install rhino3dm==9.2.0b1 compute-rhino3d
 import compute_rhino3d.Util
 import compute_rhino3d.Grasshopper as gh
 import rhino3dm
@@ -36,4 +38,4 @@ model = rhino3dm.File3dm()
 for l in lines:
     model.Objects.AddCurve(l) # they're actually LineCurves...
 
-model.Write(filename)
+model.Write(filename, 0) # 0: the current 3dm version

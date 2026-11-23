@@ -7,7 +7,7 @@ This sample uses [Rhino.Compute](https://developer.rhino3d.com/guides/compute) t
 ```commandline
 $ python3 -m venv venv
 $ source venv/scripts/activate
-$ pip install rhino3dm compute-rhino3d
+$ pip install rhino3dm==9.2.0b1 compute-rhino3d
 $ python lines.py
 ```
 
@@ -16,7 +16,7 @@ $ python lines.py
 ```commandline
 > py -3 -m venv venv
 > .\venv\Scripts\activate
-> pip install rhino3dm compute-rhino3d
+> pip install rhino3dm==9.2.0b1 compute-rhino3d
 > python lines.py
 ```
 

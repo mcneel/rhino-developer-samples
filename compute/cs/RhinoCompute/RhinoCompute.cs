@@ -17,6 +17,25 @@ namespace Rhino.Compute
         public static string ApiKey { get; set; }
         public static string Version => "0.12.0";
 
+        /// <summary>
+        /// The Rhino version that geometry sent to the server is written for.
+        /// Rhino3dm 9 writes Rhino 9 data by default, which a Rhino 8 Compute server cannot read,
+        /// so geometry is written as Rhino 8 data unless this is changed.
+        /// </summary>
+        public static int SerializationRhinoVersion { get; set; } = 8;
+
+        static JsonSerializerSettings SerializerSettings(JsonConverter converter = null)
+        {
+            var options = new Rhino.FileIO.SerializationOptions { RhinoVersion = SerializationRhinoVersion };
+            var settings = new JsonSerializerSettings
+            {
+                Context = new StreamingContext(StreamingContextStates.All, options)
+            };
+            if (converter != null)
+                settings.Converters.Add(converter);
+            return settings;
+        }
+
         public static T Post<T>(string function, params object[] postData)
         {
             return PostWithConverter<T>(function, null, postData);
@@ -38,9 +57,7 @@ namespace Rhino.Compute
                 }
             }
 
-            string json = converter == null ?
-                JsonConvert.SerializeObject(postData, Formatting.None) :
-                JsonConvert.SerializeObject(postData, Formatting.None, converter);
+            string json = JsonConvert.SerializeObject(postData, Formatting.None, SerializerSettings(converter));
             var response = DoPost(function, json);
             using (var streamReader = new StreamReader(response.GetResponseStream()))
             {
@@ -56,7 +73,7 @@ namespace Rhino.Compute
             if (string.IsNullOrWhiteSpace(AuthToken) && WebAddress.Equals("https://compute.rhino3d.com"))
                 throw new UnauthorizedAccessException("AuthToken must be set for compute.rhino3d.com");
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(postData);
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(postData, SerializerSettings());
             var response = DoPost(function, json);
             using (var streamReader = new StreamReader(response.GetResponseStream()))
             {
@@ -73,7 +90,7 @@ namespace Rhino.Compute
             if (string.IsNullOrWhiteSpace(AuthToken) && WebAddress.Equals("https://compute.rhino3d.com"))
                 throw new UnauthorizedAccessException("AuthToken must be set for compute.rhino3d.com");
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(postData);
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(postData, SerializerSettings());
             var response = DoPost(function, json);
             using (var streamReader = new StreamReader(response.GetResponseStream()))
             {
@@ -93,7 +110,7 @@ namespace Rhino.Compute
             if (!function.StartsWith("/")) // add leading /
                 function = "/" + function; // if not present
 
-            string uri = $"{WebAddress}{function}".ToLower();
+            string uri = $"{WebAddress.TrimEnd('/')}{function}".ToLower(); // WebAddress may end in /
             var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
             request.ContentType = "application/json";
             request.UserAgent = $"compute.rhino3d.cs/{Version}";

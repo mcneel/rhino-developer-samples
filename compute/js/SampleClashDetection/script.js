@@ -49,7 +49,7 @@ function compute() {
     scene.add(mainMesh);
 
     // create 3dm sphere
-    let mainRhinoSphere = rhino.Mesh.createFromThreejsJSON( { data: mainSphere } )
+    let mainRhinoSphere = meshFromThreejs( mainSphere )
     model.sphere = mainRhinoSphere;
 
     createClashSpheres();
@@ -74,7 +74,7 @@ function createClashSpheres() {
         clashSphere.translate(x, y, z);
 
         //create 3dm clash sphere
-        let rhinoClashSphere = rhino.Mesh.createFromThreejsJSON( { data: clashSphere } );
+        let rhinoClashSphere = meshFromThreejs( clashSphere );
         model.spheres.push(rhinoClashSphere);
 
         positionBuffer[i*3] = x;
@@ -108,9 +108,7 @@ function doMeshClash() {
                 let m = rhino.CommonObject.decode(result[i].MeshB);
                 let material = new THREE.MeshBasicMaterial({ wireframe: true, color: 0x00ff00 });
      
-                const loader = new THREE.BufferGeometryLoader();
-                const geometry = loader.parse((m.toThreejsJSON()));
-                let threemesh = new THREE.Mesh(geometry, material);
+                let threemesh = meshToThreejs(m, material);
                 
                 //need to rotate these
                 threemesh.rotateOnWorldAxis(new THREE.Vector3(1,0,0), THREE.MathUtils.degToRad(-90));
@@ -156,4 +154,24 @@ function onWindowResize() {
     camera.updateProjectionMatrix()
     renderer.setSize( window.innerWidth, window.innerHeight )
     animate()
+}
+
+// three.js BufferGeometry -> rhino3dm Mesh (three.js is Y-up, Rhino is Z-up)
+function meshFromThreejs(geometry) {
+  return rhino.Mesh.createFromThreejsBuffers( {
+    position: geometry.attributes.position.array,
+    normal: geometry.attributes.normal?.array,
+    uv: geometry.attributes.uv?.array,
+    index: geometry.index?.array
+  }, true )
+}
+
+// rhino3dm Mesh -> three.js mesh
+function meshToThreejs(mesh, material) {
+  const buffers = mesh.toThreejsBuffers(false)
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.BufferAttribute(buffers.position, 3))
+  geometry.setAttribute('normal', new THREE.BufferAttribute(buffers.normal, 3))
+  geometry.setIndex(new THREE.BufferAttribute(buffers.index, 1))
+  return new THREE.Mesh(geometry, material)
 }
